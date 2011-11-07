@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{0C102B01-5ABA-4CC9-B531-78ECC48390F3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6225D78A-D7D5-4779-B3E3-85CE2318AA65}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributionBuilder", "Plugins\DistributionBuilder\DistributionBuilder.csproj", "{C40DF506-20B8-4A25-BDA3-2BF895CE451B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

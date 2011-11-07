@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AE818F3B-EB93-4C97-9FED-C3D503BA4327}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CK.StandardPlugins.ObjectExplorer</RootNamespace>
+    <AssemblyName>ObjectExplorer</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <UICulture>en-US</UICulture>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Output\Release\Plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\..\..\Runtime\Current\Caliburn.Micro\Debug\Caliburn.Micro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Context, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Context.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Config.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Plugin.Runner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Runner.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.SharedDic">
+      <HintPath>..\..\..\Runtime\Current\CK.SharedDic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="UI\ReportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\CommonDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\AssemblyDataTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\ServiceRefDataTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\ServiceDataTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\LogsDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\PluginDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Resources\Dictionnaries\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Logs\Impl\LogConfig.cs" />
+    <Compile Include="Logs\Impl\LogConfigExtensions.cs" />
+    <Compile Include="Logs\Impl\LogEventConfig.cs" />
+    <Compile Include="Logs\Impl\LogMethodConfig.cs" />
+    <Compile Include="Logs\Impl\LogParameterInfo.cs" />
+    <Compile Include="Logs\Impl\LogPropertyConfig.cs" />
+    <Compile Include="Logs\Impl\LogServiceConfig.cs" />
+    <Compile Include="Logs\Impl\ServiceHostConfiguration.cs" />
+    <Compile Include="Logs\Model\ILogConfig.cs" />
+    <Compile Include="Logs\Model\ILogEventConfig.cs" />
+    <Compile Include="Logs\Model\ILogExtension.cs" />
+    <Compile Include="Logs\Model\ILogMethodConfig.cs" />
+    <Compile Include="Logs\Model\ILogParameterInfo.cs" />
+    <Compile Include="Logs\Model\ILogPropertyConfig.cs" />
+    <Compile Include="Logs\Model\ILogServiceConfig.cs" />
+    <Compile Include="Logs\Model\LogErrorFilter.cs" />
+    <Compile Include="Logs\Model\LogEventFilter.cs" />
+    <Compile Include="Logs\Model\LogMethodFilter.cs" />
+    <Compile Include="Logs\Model\LogPropertyFilter.cs" />
+    <Compile Include="R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AttachedProperties\AutoExpand.cs" />
+    <Compile Include="UI\AttachedProperties\CustomEnabling.cs" />
+    <Compile Include="UI\AttachedProperties\TypeAheadBehaviour.cs" />
+    <Compile Include="UI\Converters\EnumDisplayer.cs" />
+    <Compile Include="UI\Converters\NXORConverter.cs" />
+    <Compile Include="UI\Converters\ScrollBarConverters.cs" />
+    <Compile Include="UI\Converters\SimpleStringFormatConverter.cs" />
+    <Compile Include="UI\Converters\MultiStringFormatConverter.cs" />
+    <Page Include="UI\Resources\Dictionnaries\TreeDataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\SystemInformations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\VMIContextView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ObjectExplorer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\AttachedProperties\TreeViewItemImage.cs" />
+    <Compile Include="UI\Converters\FolderConverter.cs" />
+    <Compile Include="UI\ReportWindow.xaml.cs">
+      <DependentUpon>ReportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TemplateSelectors\AssemblyChildrenTemplateSelector.cs" />
+    <Compile Include="UI\TemplateSelectors\DetailsDisplay.cs" />
+    <Compile Include="UI\TemplateSelectors\TreeDisplay.cs" />
+    <Compile Include="UI\TemplateSelectors\ShortDisplay.cs" />
+    <Compile Include="UI\UserControls\SystemInformations.xaml.cs">
+      <DependentUpon>SystemInformations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\VMOsInfo.cs" />
+    <Compile Include="ViewModels\VMAlias.cs" />
+    <Compile Include="ViewModels\ISelectableElement.cs" />
+    <Compile Include="ViewModels\LogViewModels\VMLogBaseElement.cs" />
+    <Compile Include="ViewModels\LogViewModels\VMLogEventConfig.cs" />
+    <Compile Include="ViewModels\LogViewModels\VMLogMethodConfig.cs" />
+    <Compile Include="ViewModels\LogViewModels\VMLogConfig.cs" />
+    <Compile Include="ViewModels\LogViewModels\VMLogPropertyConfig.cs" />
+    <Compile Include="ViewModels\LogViewModels\VMLogServiceConfig.cs" />
+    <Compile Include="ViewModels\VMIFolder.cs" />
+    <Compile Include="ViewModels\VMIAssembly.cs" />
+    <Compile Include="ViewModels\VMIContextViewModel.cs" />
+    <Compile Include="ViewModels\VMICoreElement.cs" />
+    <Compile Include="ViewModels\VMISelectableElement.cs" />
+    <Compile Include="ViewModels\VMIService.cs" />
+    <Compile Include="ViewModels\VMIPlugin.cs" />
+    <Compile Include="ViewModels\VMIBase.cs" />
+    <None Include="ViewModels\VMs.cd" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\PushedCross.png" />
+    <Resource Include="UI\Resources\TreeImages\assembly.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Resources\TreeImages\plugin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Resources\TreeImages\service.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\editor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\serviceRef.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Application\Host.Services\Host.Services.csproj">
+      <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
+      <Name>Host.Services</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
+      <Name>CK.WPF.Controls</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
+      <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
+      <Name>CK.WPF.ViewModel</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CommonServices\CommonServices.csproj">
+      <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\runningPlugin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\stoppedPlugin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\defaultPluginIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\greenIndicator.png" />
+    <Resource Include="UI\Resources\DetailsImages\redIndicator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\yellowIndicator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\defaultServiceIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\defaultAssemblyIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\folder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\category.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\general.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\ActivatedLogIcon.png" />
+    <Resource Include="UI\Resources\LogImages\DeactivatedLogIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\LogIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\Cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\GrayCross.png" />
+    <Resource Include="UI\Resources\LogImages\WhiteCross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\TreeImages\osinfo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\OSInfos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\object-explorer-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\grayIndicator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="R.fr.resx" />
+    <EmbeddedResource Include="R.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

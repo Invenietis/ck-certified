@@ -1,0 +1,87 @@
+﻿<Window x:Class="CK.AppRecovery.CrashLogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:ClassModifier="internal" 
+        x:Uid="crashlog-window" Title="Erhh.." Height="308" Width="710" WindowStartupLocation="CenterScreen" MinWidth="400" MinHeight="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock  Grid.Row="0" x:Name="header" Margin="10" TextWrapping="Wrap">
+            <Run x:Uid="crashlog-sorry-run">An unexpected error has been raised, we're deeply sorry for the inconvenience.</Run>
+            <LineBreak/>
+            <Run x:Uid="crashlog-helpus-run">Help us improve CiviKey by sending to our developping team the information retrieved when this error occured.</Run>
+        </TextBlock>
+        <ListView Margin="10 0 10 0" Grid.Row="1" x:Name="list" ItemsSource="{Binding Path=Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Uid="crashlog-file-header" Width="Auto" Header="File" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn x:Uid="crashlog-date-header" Width="Auto" Header="Date" DisplayMemberBinding="{Binding CreationTime, StringFormat='F'}"  />
+                    <GridViewColumn x:Uid="crashlog-size-header" Width="Auto" Header="Size" DisplayMemberBinding="{Binding Length}"  />
+                    <GridViewColumn Width="Auto" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Command="{Binding Path=DataContext.ViewFileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" 
+                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" >
+                                        <StackPanel MinWidth="85" Orientation="Horizontal">
+                                            <Image Source="magnifier.png" Width="16" />
+                                            <TextBlock x:Uid="crashlog-read-report-header" Margin="5,0,0,0">Read the report</TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Command="{Binding Path=DataContext.DeleteFileCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" 
+                                            CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" 
+                                            Margin="10,0,0,0" >
+                                        <StackPanel MinWidth="85" Orientation="Horizontal">
+                                            <Image Source="error.png" Width="16"  />
+                                            <TextBlock x:Uid="crashlog-delete-textblock" Margin="5,0,0,0">Delete</TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock Grid.Row="2" x:Name="footer" HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top">
+            <Run x:Uid="crashlog-personnal-info-run" >No personal information is sent. You can make sure of that by controlling the content of the files above.</Run>
+        </TextBlock>
+        <ProgressBar Grid.Row="2" x:Name="progress" Visibility="{Binding Path=DisplayProgress}" Value="{Binding Path=ProgressPercentage, Mode=OneWay}" Margin="2" />
+
+        <Grid Margin="10" Grid.Row="0" Grid.RowSpan="3" x:Name="thanks" Visibility="{Binding Path=DisplayThanks}" Background="#FFF0F0F0">
+            <TextBlock HorizontalAlignment="Left" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top">
+                <Bold x:Uid="crashlog-thanks-run" >Thank you !</Bold><LineBreak/>
+                <LineBreak/>
+                <Run x:Uid="crashlog-fixing-run" >We'll do our best to solve the problem you just encountered and provide you with a fixed version of CiviKey as soon as possible.</Run>
+                <LineBreak/>
+                <LineBreak/>
+                <Italic x:Uid="crashlog-opensource-run"> Civikey is an Open Source project, feel free to help us improve this software, in anyway you find relevant.</Italic>
+            </TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Stretch" Margin="10 0 10 10" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Name="error" Visibility="{Binding Path=DisplayError}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="warning.png" Stretch="UniformToFill" Height="60" Width="60" />
+                <TextBlock Grid.Column="1" Text="{Binding Path=ErrorMessage}" TextWrapping="Wrap" />
+            </Grid>
+            <Button Grid.Column="1" Name="send" IsDefault="True" Padding="10" Visibility="{Binding Path=DisplaySendButton}" IsEnabled="{Binding Path=CanSend}" Click="send_Click">Envoyer maintenant</Button>
+            <Button Grid.Column="2" Name="ok" IsCancel="True" Padding="10" Margin="10,0,0,0" Content="{Binding Path=OkButtonText}" />
+        </Grid>
+
+    </Grid>
+</Window>
+

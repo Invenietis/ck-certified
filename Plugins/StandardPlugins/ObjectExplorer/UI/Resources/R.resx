@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="ActivateLogs" xml:space="preserve">
+    <value>Activate logs : </value>
+  </data>
+  <data name="AssembliesTreeHeader" xml:space="preserve">
+    <value>Assemblies</value>
+  </data>
+  <data name="A_AssemblyAssemblyFullName" xml:space="preserve">
+    <value>Assembly full name : {0}</value>
+  </data>
+  <data name="A_AssemblyPath" xml:space="preserve">
+    <value>Path : {0}</value>
+  </data>
+  <data name="A_AssemblyPlugins" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="A_AssemblyServices" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="A_AssemblyVersion" xml:space="preserve">
+    <value>Version : {0}</value>
+  </data>
+  <data name="Caller" xml:space="preserve">
+    <value>Caller</value>
+  </data>
+  <data name="CategoriesTreeHeader" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="DefinitionInformationsHeader" xml:space="preserve">
+    <value>Definition informations</value>
+  </data>
+  <data name="Delegates" xml:space="preserve">
+    <value>Delegates</value>
+  </data>
+  <data name="ErrorMessageLabel" xml:space="preserve">
+    <value>Error message : </value>
+  </data>
+  <data name="GeneralTreeHeader" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Get" xml:space="preserve">
+    <value>Get</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="LogConfigActivated" xml:space="preserve">
+    <value>Logs Activated</value>
+  </data>
+  <data name="LogConfigApplyModifications" xml:space="preserve">
+    <value>Apply all modifications</value>
+  </data>
+  <data name="LogConfigCancelAllModifications" xml:space="preserve">
+    <value>Cancel all modifications</value>
+  </data>
+  <data name="LogConfigDeactivated" xml:space="preserve">
+    <value>Logs Deactivated</value>
+  </data>
+  <data name="LogConfigEventsHeader" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="LogConfigInformationsGroupBoxHeader" xml:space="preserve">
+    <value>Log configuration informations</value>
+  </data>
+  <data name="LogConfigIsBoundWarningShownText" xml:space="preserve">
+    <value>Service not bound</value>
+  </data>
+  <data name="LogConfigIsBoundWarningToolTip_1" xml:space="preserve">
+    <value>This Service couldn't be found in the list of available services, logging this service is therefor impossible</value>
+  </data>
+  <data name="LogConfigIsBoundWarningToolTip_2" xml:space="preserve">
+    <value>Make sure the plugin corresponding to this service is running and try re-launching the discoverer</value>
+  </data>
+  <data name="LogConfigMethodsHeader" xml:space="preserve">
+    <value>Methods</value>
+  </data>
+  <data name="LogConfigNumberOfLoadedServices" xml:space="preserve">
+    <value>Number of loaded services : {0}</value>
+  </data>
+  <data name="LogConfigNumberOfLoggedServices" xml:space="preserve">
+    <value>Number of logged services : {0}</value>
+  </data>
+  <data name="LogConfigPropertiesHeader" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="LogConfigServiceLogActivation" xml:space="preserve">
+    <value>Activate logs on this service : </value>
+  </data>
+  <data name="LogConfigServiceSelection" xml:space="preserve">
+    <value>Select the Service to configure : </value>
+  </data>
+  <data name="LogConfigTitle" xml:space="preserve">
+    <value>Log Configuration</value>
+  </data>
+  <data name="LogConsoleTitle" xml:space="preserve">
+    <value>Log Output</value>
+  </data>
+  <data name="LogServiceConfigLogStatus" xml:space="preserve">
+    <value>Logs on the {0} Service are : {1}</value>
+  </data>
+  <data name="LogsTreeHeader" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="P_PluginCategoriesLabel" xml:space="preserve">
+    <value>Categories : {0}</value>
+  </data>
+  <data name="P_PluginDescriptionLabel" xml:space="preserve">
+    <value>Description : {0}</value>
+  </data>
+  <data name="P_PluginGUIDLabel" xml:space="preserve">
+    <value>Guid : {0}</value>
+  </data>
+  <data name="P_ImplementedServicesLabel" xml:space="preserve">
+    <value>Exposed service</value>
+  </data>
+  <data name="PluginServiceReferencesLabel" xml:space="preserve">
+    <value>Service references</value>
+  </data>
+  <data name="P_StartButtonLabel" xml:space="preserve">
+    <value>Start the plugin</value>
+  </data>
+  <data name="PluginStatusLabel" xml:space="preserve">
+    <value>Default plugin status :</value>
+  </data>
+  <data name="P_StopButtonLabel" xml:space="preserve">
+    <value>Stop the plugin</value>
+  </data>
+  <data name="PluginsTreeHeader" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="P_PluginURLLabel" xml:space="preserve">
+    <value>Reference url : {0}</value>
+  </data>
+  <data name="ReturnValue" xml:space="preserve">
+    <value>ReturnValue</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="S_ServiceAssemblyInfo" xml:space="preserve">
+    <value>AssemblyInfo : {0}</value>
+  </data>
+  <data name="S_ServiceAssemblyName" xml:space="preserve">
+    <value>Assembly name : {0}</value>
+  </data>
+  <data name="S_ServiceIsOnError" xml:space="preserve">
+    <value>Service unavailable</value>
+  </data>
+  <data name="S_ServiceRefOwner" xml:space="preserve">
+    <value>Owner : {0}</value>
+  </data>
+  <data name="S_ServiceRefPropertyName" xml:space="preserve">
+    <value>Property name : {0}</value>
+  </data>
+  <data name="S_ServiceRefRequirements" xml:space="preserve">
+    <value>Requirements : {0}</value>
+  </data>
+  <data name="S_ServiceRefServiceReferenced" xml:space="preserve">
+    <value>Service referenced : {0}</value>
+  </data>
+  <data name="ServicesTreeHeader" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="Set" xml:space="preserve">
+    <value>Set</value>
+  </data>
+  <data name="ShortInformationsDisplayAssembly" xml:space="preserve">
+    <value>// Assembly : {0}, {1}</value>
+  </data>
+  <data name="ShortInformationsDisplayLocation" xml:space="preserve">
+    <value>Location : {0}</value>
+  </data>
+  <data name="ShortInformationsDisplayName" xml:space="preserve">
+    <value>Name : {0}</value>
+  </data>
+  <data name="Stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="NoImpl" xml:space="preserve">
+    <value>There is no implementation for this service</value>
+  </data>
+  <data name="P_PluginVersionLabel" xml:space="preserve">
+    <value>Version : {0}</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="DisablePluginLabel" xml:space="preserve">
+    <value>Disable this plugin</value>
+  </data>
+  <data name="EnablePluginLabel" xml:space="preserve">
+    <value>Enable this plugin</value>
+  </data>
+  <data name="OldVersion" xml:space="preserve">
+    <value>Old version</value>
+  </data>
+  <data name="LogConfigurationHeaderStringFormat" xml:space="preserve">
+    <value>LogConfiguration : {0}</value>
+  </data>
+  <data name="ModifyServiceLogConfiguration" xml:space="preserve">
+    <value>Edit this log configuration</value>
+  </data>
+  <data name="SystemDisabledTitle" xml:space="preserve">
+    <value>The low level configuration changed</value>
+  </data>
+  <data name="SystemStateChangedContent" xml:space="preserve">
+    <value>You must restart CiviKey in order for the changes to take effect</value>
+  </data>
+  <data name="ResetConfig" xml:space="preserve">
+    <value>Reset to "Manual"</value>
+  </data>
+  <data name="SystemInformations" xml:space="preserve">
+    <value>Local informations</value>
+  </data>
+  <data name="DoCatchBadEventHandling" xml:space="preserve">
+    <value>Silence bad event handling errors</value>
+  </data>
+  <data name="DoCatchBadEventHandlingToolTip" xml:space="preserve">
+    <value>Silence errors raised when a subscriber raises an error while handling this event</value>
+  </data>
+  <data name="DoCatchEventWhenServiceStopped" xml:space="preserve">
+    <value>Silence event errors</value>
+  </data>
+  <data name="DoCatchEventWhenServiceStoppedToolTip" xml:space="preserve">
+    <value>Silence errors raised when a stopped service fires this event</value>
+  </data>
+  <data name="DoLogCaughtEventWhenServiceStopped" xml:space="preserve">
+    <value>Log silenced event errors</value>
+  </data>
+  <data name="EndRaise" xml:space="preserve">
+    <value>Log end raise</value>
+  </data>
+  <data name="EndRaiseToolTip" xml:space="preserve">
+    <value>Log the moment when the event has been handled by all the subscribers</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="Leave" xml:space="preserve">
+    <value>Leave</value>
+  </data>
+  <data name="LogErrors" xml:space="preserve">
+    <value>Log Errors</value>
+  </data>
+  <data name="StartRaise" xml:space="preserve">
+    <value>Log start raise</value>
+  </data>
+  <data name="StartRaiseToolTip" xml:space="preserve">
+    <value>Log the moment when the event is raised</value>
+  </data>
+  <data name="S_AllImplementationsLabel" xml:space="preserve">
+    <value>Plugins that implement this service</value>
+  </data>
+  <data name="S_AllReferencingLabel" xml:space="preserve">
+    <value>Plugins that reference this service</value>
+  </data>
+  <data name="FinalRequirement" xml:space="preserve">
+    <value>Requirement : </value>
+  </data>
+  <data name="ImplementationsLabel" xml:space="preserve">
+    <value>Implementations</value>
+  </data>
+  <data name="S_LinkedPlugins" xml:space="preserve">
+    <value>Linked Plugins</value>
+  </data>
+  <data name="ResetLiveConfig" xml:space="preserve">
+    <value>Reset to "None"</value>
+  </data>
+  <data name="RunningImplementationLabel" xml:space="preserve">
+    <value>Currently running implementation</value>
+  </data>
+  <data name="RunningReferencingLabel" xml:space="preserve">
+    <value>Running plugins that reference this plugin</value>
+  </data>
+  <data name="UserAction" xml:space="preserve">
+    <value>User Action : </value>
+  </data>
+  <data name="ImplementingPluginRunningToolTip" xml:space="preserve">
+    <value>This plugin is running</value>
+  </data>
+  <data name="ImplementingPluginStoppedToolTip" xml:space="preserve">
+    <value>This plugin is stopped</value>
+  </data>
+  <data name="MustExist" xml:space="preserve">
+    <value>Must exist</value>
+  </data>
+  <data name="MustExistAndRun" xml:space="preserve">
+    <value>Must exist, Must run</value>
+  </data>
+  <data name="MustExistAndRunServiceRefToolTip" xml:space="preserve">
+    <value>This plugin requires the service to be running</value>
+  </data>
+  <data name="MustExistServiceRefToolTip" xml:space="preserve">
+    <value>This plugin requires the {0} service to be existing ( but not necessarily running )</value>
+  </data>
+  <data name="MustExistTryStart" xml:space="preserve">
+    <value>Must exist, Try start</value>
+  </data>
+  <data name="MustExistTryStartServiceRefToolTip" xml:space="preserve">
+    <value>The plugin requires the {0} service to be existing and will try to launch it</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="OptionalServiceRefToolTip" xml:space="preserve">
+    <value>This plugin doesn't impact the service's launching</value>
+  </data>
+  <data name="OptionalTryStart" xml:space="preserve">
+    <value>Optional, Try to start</value>
+  </data>
+  <data name="OptionalTryStartServiceRefToolTip" xml:space="preserve">
+    <value>This plugin will try to start the service if it exists</value>
+  </data>
+  <data name="ReferencingPluginRunningToolTip" xml:space="preserve">
+    <value>This plugin is running</value>
+  </data>
+  <data name="ReferencingPluginStoppedToolTip" xml:space="preserve">
+    <value>This plugin is stopped</value>
+  </data>
+  <data name="P_ApplyButtonToolTip" xml:space="preserve">
+    <value>Applies all the changes made, applies changes made on other plugins as well</value>
+  </data>
+  <data name="LiveConfigurationToolTip_1" xml:space="preserve">
+    <value>Launching configuration that you have initiated by clicking on the "Start/Stop button" of this plugin </value>
+  </data>
+  <data name="LiveConfigurationToolTip_2" xml:space="preserve">
+    <value>Reset by clicking the icon on the right of the value</value>
+  </data>
+  <data name="P_ImplementedServicesToolTip" xml:space="preserve">
+    <value>The service that the {0} plugin exposes (there can only be one)</value>
+  </data>
+  <data name="PluginServiceReferencesToolTip" xml:space="preserve">
+    <value>All the services that the {0} plugin uses</value>
+  </data>
+  <data name="RequirementToolTip" xml:space="preserve">
+    <value>Launching Requirement for this plugin, may have been set by any plugin, can't be modified</value>
+  </data>
+  <data name="P_ServiceConfigurationToolTip" xml:space="preserve">
+    <value>Configuration of the exposed service. Has an impact on this plugin's launching</value>
+  </data>
+  <data name="P_SystemConfigurationToolTip" xml:space="preserve">
+    <value>Launching configuration for this plugin, at System level</value>
+  </data>
+  <data name="P_UserConfigurationToolTip" xml:space="preserve">
+    <value>Launching configuration for this plugin, at User level</value>
+  </data>
+  <data name="P_ServiceConfigurationLabel" xml:space="preserve">
+    <value>Exposed service configuration</value>
+  </data>
+  <data name="S_AllImplementationsToolTip" xml:space="preserve">
+    <value>All the plugins that implement this service (there can only be one launched at a given time)</value>
+  </data>
+  <data name="S_AllReferencingToolTip" xml:space="preserve">
+    <value>All the plugins that use this service</value>
+  </data>
+  <data name="A_AssemblyPluginsToolTip" xml:space="preserve">
+    <value>Plugins that have been discovered in the assembly</value>
+  </data>
+  <data name="A_AssemblyServicesToolTip" xml:space="preserve">
+    <value>Services that have been discovered in the assembly</value>
+  </data>
+  <data name="GotoToolTip" xml:space="preserve">
+    <value>Click to get more information about this object</value>
+  </data>
+</root>

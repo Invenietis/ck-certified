@@ -1,0 +1,162 @@
+﻿<Window x:Class="SimpleSkinEditor.EditorView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:cal="http://www.caliburnproject.org"
+            xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+            xmlns:cce="http://shemas.civikey.org/CustomControls/WpfToolkitExtended"
+            Background="#FFEFEFEF"
+            MinWidth="350"
+            MinHeight="365"
+            SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <Style TargetType="Border" x:Key="Rounded">
+            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="BorderBrush" Value="Gray"></Setter>
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+            <Setter Property="Padding" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Border" x:Key="Splitter">
+            <Setter Property="BorderThickness" Value="0 0 0 0.5"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="MinHeight" Value="40"/>
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="false"/>
+            <Setter Property="MinHeight" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Border" Style="{StaticResource Rounded}" >
+                            <ContentPresenter Margin="2"  VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
+                            </Trigger>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#FFEFEFEF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="#E0E0E0" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#606060" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type cce:ColorPicker}">
+            <Setter Property="Width" Value="41"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0 0 10 0"/>
+        </Style>
+        <Style TargetType="cc:ImageButton">
+            <Setter Property="Source" Value="/SimpleSkin;component/Editor/Images/reset.png"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Margin" Value="0 0 10 0" />
+            <Setter Property="Command" Value="{Binding ClearPropertyCmd}"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Border Style="{StaticResource Rounded}" Margin="5">
+            <DockPanel>
+                <TextBlock x:Uid="target" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Target :</TextBlock>
+                <StackPanel>
+                    <ToggleButton x:Uid="select-keyboard" x:Name="ToggleCurrentKeyboardAsHolder" IsChecked="True">All keys of the keyboard</ToggleButton>
+                    <DockPanel Margin="0 8 0 0">
+                        <TextBlock x:Uid="select-zone" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Or select a zone :</TextBlock>
+                        <ComboBox ItemsSource="{Binding Zones}" IsEnabled="{Binding CanSelectZones}" SelectedItem="{Binding SelectedHolder}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <ContentPresenter x:Name="p" Content="{Binding Path=Name}"/>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Name}" Value="">
+                                            <Setter TargetName="p" Property="Content" Value="Default"/>
+                                            <Setter TargetName="p" Property="TextElement.FontStyle" Value="Italic"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DockPanel>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+            <StackPanel Orientation="Vertical">
+                <Border Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding Background}" />
+                            <TextBlock x:Uid="normal-bg-color" VerticalAlignment="Center">Normal background color</TextBlock>
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="Background"/>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding HoverBackground}" />
+                            <TextBlock x:Uid="hover-bg-color" VerticalAlignment="Center">Hover background color</TextBlock>
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="HoverBackground"/>
+                    </DockPanel>
+                </Border>
+                <Border BorderThickness="0" Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" >
+                            <cce:ColorPicker SelectedColor="{Binding PressedBackground}" />
+                            <TextBlock x:Uid="pressed-bg-color" VerticalAlignment="Center">Pressed background color</TextBlock>
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="PressedBackground"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+            <StackPanel>
+                <Border Style="{StaticResource Splitter}">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Font size :</TextBlock>
+                            <ComboBox Margin="0 3" ItemsSource="{Binding FontSizes}" SelectedValue="{Binding FontSize}" />
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="FontSize"/>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="font-styles" VerticalAlignment="Center" Margin="0 0 10 0">Font styles :</TextBlock>
+                            <ToggleButton x:Uid="bold" Padding="3 2" IsChecked="{Binding FontWeight}">Bold</ToggleButton>
+                            <ToggleButton x:Uid="Italic" Padding="3 2" IsChecked="{Binding FontStyle}">Italic</ToggleButton>
+                            <ToggleButton x:Uid="underline" Padding="3 2" IsChecked="{Binding TextDecorations}">Underline</ToggleButton>
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="FontWeight,FontStyle,TextDecorations"/>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource Splitter}" BorderThickness="0" Padding="5" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding FontColor}"/>
+                            <TextBlock x:Uid="font-color" VerticalAlignment="Center">Font color</TextBlock>
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="LetterColor"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Window>

@@ -1,0 +1,28 @@
+﻿<Window x:Class="CK.StandardPlugins.AutoClick.Views.AutoClickEditorWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Background="#FFEFEFEF"
+             mc:Ignorable="d"
+             Width="400" Height="365"
+            ShowInTaskbar="False"
+             Topmost="True"
+             WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                  Source="Dictionnaries/Editor.xaml">
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel>
+        <Grid>        
+            <Image Height="100" Source="../Res/Images/splash.png"></Image>
+            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 0"></Label>            
+        </Grid>
+        <ContentControl Template="{StaticResource AutoClickEditorTemplate}"/>
+    </StackPanel>
+</Window>

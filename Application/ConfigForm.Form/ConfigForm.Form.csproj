@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3772506A-66AA-4AE6-A8BB-B38F8FF66E6E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CK.Config.UI</RootNamespace>
+    <AssemblyName>CK.ConfigForm.Form</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CK.Context, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Runtime\Current\CK.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Runtime\Current\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Model, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Runtime\Current\CK.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Host.Model">
+      <HintPath>..\..\Runtime\Current\CK.Plugin.Host.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>D:\Invenietis\CiviKey\CK-Certified\Runtime\Current\CK.SharedDic.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config\CVKConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\CVKConfigForm.Designer.cs">
+      <DependentUpon>CVKConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\CVKEditorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\CVKEditorPanel.Designer.cs">
+      <DependentUpon>CVKEditorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\CVKMainPlugin.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Config\CVKMainPlugin.Designer.cs">
+      <DependentUpon>CVKMainPlugin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\CVKPluginPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\CVKPluginPanel.Designer.cs">
+      <DependentUpon>CVKPluginPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\CVKTab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\CVKTab.Designer.cs">
+      <DependentUpon>CVKTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\CVKTabBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\CVKTabBase.Designer.cs">
+      <DependentUpon>CVKTabBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Config\Win32Utils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Config\CVKConfigForm.fr.resx">
+      <DependentUpon>CVKConfigForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\CVKConfigForm.resx">
+      <DependentUpon>CVKConfigForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\CVKEditorPanel.resx">
+      <DependentUpon>CVKEditorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\CVKMainPlugin.resx">
+      <DependentUpon>CVKMainPlugin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\CVKPluginPanel.resx">
+      <DependentUpon>CVKPluginPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\CVKTab.resx">
+      <DependentUpon>CVKTab.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\CVKTabBase.resx">
+      <DependentUpon>CVKTabBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\Resources.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>CK</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CVKSplashScreenS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DegradeBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Degrader.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_cvk_32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_cvk_48x48.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_cvk_48x48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_cvk_64x64.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_cvk_64x64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Run.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thankBG.JPG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tick.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vide.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Accessibility.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_cvk.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Misc.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Predictor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Visual.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\accessibilite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.ico" />
+    <None Include="Resources\CVKThanks.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

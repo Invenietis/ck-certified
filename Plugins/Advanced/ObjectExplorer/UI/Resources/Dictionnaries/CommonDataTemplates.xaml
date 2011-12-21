@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
+                    xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
+                    xmlns:loe="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels"
+                    xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Simple datatemplate that display an element in a listview.
+        Used to enable GoTo command. -->
+    <DataTemplate DataType="{x:Type oe:VMISelectableElement}" x:Key="SimpleListSelectableElement">
+        <StackPanel Orientation="Horizontal" DataContext="{Binding Data}">
+            <Button Command="{Binding GoTo}" CommandParameter="{Binding}" Content="{Binding Label}" Style="{StaticResource TextButton}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- Template used to display a VMAlias<plugin>'s simple info (can be found in the VMIService DataTemplate and the VMIAssembly DataTemplate,
+            Shows the plugin's running status and its label with the GoTo command -->
+    <DataTemplate x:Key="PluginGoToTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image Margin="10 0" Width="20" Height="20" Source="../DetailsImages/redIndicator.png" x:Name="indicator" />
+            <Button VerticalAlignment="Center" Grid.Column="1" Command="{Binding Data.GoTo}" CommandParameter="{Binding}" Content="{Binding Data.Label}" Style="{StaticResource TextButton}"/>
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Data.IsRunning}" Value="True">
+                <Setter TargetName="indicator" Property="Source" Value="../DetailsImages/greenIndicator.png" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type oe:VMOSInfo}">
+        <uc:SystemInformations DataContext="{Binding}"/>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,120 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"
+    xmlns:converters="clr-namespace:CK.Plugins.AutoClick.Converters"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:b="clr-namespace:CK.Plugins.AutoClick.Behaviors"
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+
+
+    <!--ActionOnOverButton Template (Editor)-->
+    <ControlTemplate x:Key="CTEditor_OverButtonTemplateSimple" TargetType="{x:Type views:ActionOnOverButton}">
+        <Grid>
+            <Button Content="{TemplateBinding Content}" 
+                FontSize="{TemplateBinding FontSize}" 
+                Width="{TemplateBinding Width}" 
+                Height="{TemplateBinding Height}"
+                Command="{TemplateBinding Command}"/>
+            <Border Visibility="Hidden" x:Name="OnOverButtonBorder" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderThickness="1" BorderBrush="Black" CornerRadius="2"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="OnOverButtonBorder" Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- CTEditor_OptionsTextBlock Style : Title of the option (Editor) -->
+    <Style x:Key="CTEditor_OptionsTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Width" Value="225"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- CTEditor_MillisecondsLabel Style : "ms" (Editor) -->
+    <Style x:Key="CTEditor_MillisecondsLabel" TargetType="{x:Type Label}">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- CTEditor_ValueLabel Style : Value of the option (Editor) -->
+    <Style x:Key="CTEditor_ValueLabel" TargetType="{x:Type Label}">
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <!-- Rounded : Taken from the host's Generix.xaml-->
+    <!-- Could cause duplicate keys  -->
+    <Style TargetType="Border" x:Key="Rounded">
+        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="BorderBrush" Value="Gray"></Setter>
+        <Setter Property="BorderThickness" Value="0.5"></Setter>
+        <Setter Property="CornerRadius" Value="5"></Setter>
+        <Setter Property="Margin" Value="5 0 5 5"></Setter>
+        <Setter Property="Padding" Value="5 5"></Setter>
+    </Style>
+
+    <!-- AutoClickEditorTemplate (Editor)-->
+    <ControlTemplate x:Key="AutoClickEditorTemplate">
+        <StackPanel Orientation="Vertical" Width="380" Margin="0 5">
+            <Border Style="{StaticResource Rounded}">
+                <StackPanel Orientation="Horizontal" Margin="2 0 2 2">
+                    <TextBlock x:Uid="autoclick-editor-timeBeforeCountDownStarts" Text="Time before the countdown starts :" Style="{StaticResource CTEditor_OptionsTextBlock}"/>
+                    <Label Content="{Binding TimeBeforeCountDownStarts}" Style="{StaticResource CTEditor_ValueLabel}"/>
+                    <Label x:Uid="autoclick-editor-timeBeforeCountDownStarts-unit-ms" Content="ms" Style="{StaticResource CTEditor_MillisecondsLabel}" />
+                    <StackPanel Orientation="Vertical" Width="30">
+
+                        <views:ActionOnOverButton Content="+" FontWeight="Bold" Margin="0 0 0 2" 
+                                                    MouseEnterCommand="{Binding Selector.IncrementTimeBeforeCountDownStartsCommand}" 
+                                                    Command="{Binding Selector.IncrementTimeBeforeCountDownStartsCommand}"
+                                                    Template="{StaticResource CTEditor_OverButtonTemplateSimple}" Width="30" Height="30" />
+                        
+                        <views:ActionOnOverButton Content="-" FontWeight="Bold"
+                                                    MouseEnterCommand="{Binding Selector.DecrementTimeBeforeCountDownStartsCommand}"  
+                                                    Command="{Binding Selector.DecrementTimeBeforeCountDownStartsCommand}"
+                                                    Template="{StaticResource CTEditor_OverButtonTemplateSimple}" Width="30" Height="30"/>                        
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Rounded}">
+                <StackPanel Orientation="Horizontal" Margin="2 0 2 2">
+                    <TextBlock x:Uid="autoclick-editor-countDownDuration" Text="Countdown duration :" Style="{StaticResource CTEditor_OptionsTextBlock}" />
+                    <Label Content="{Binding CountDownDuration}" Style="{StaticResource CTEditor_ValueLabel}"/>
+                    <Label x:Uid="autoclick-editor-countDownDuration-unit-ms" Content="ms" Style="{StaticResource CTEditor_MillisecondsLabel}"  />
+                    <StackPanel Orientation="Vertical"  Width="30">
+
+                        <views:ActionOnOverButton Content="+" Margin="0 0 0 2"
+                                                          MouseEnterCommand="{Binding Selector.IncrementCountDownDurationCommand}"  
+                                                          Command="{Binding Selector.IncrementCountDownDurationCommand}"
+                                                          Template="{StaticResource CTEditor_OverButtonTemplateSimple}" Width="30" Height="30" />
+                        <views:ActionOnOverButton  Content="-"
+                                                          MouseEnterCommand="{Binding Selector.DecrementCountDownDurationCommand}"                                                         
+                                                          Command="{Binding Selector.DecrementCountDownDurationCommand}"
+                                                          Template="{StaticResource CTEditor_OverButtonTemplateSimple}" Width="30" Height="30" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Rounded}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*">                            
+                        </ColumnDefinition>
+                        <ColumnDefinition Width="auto">
+                        </ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Uid="autoclick-editor-showprogressmouse" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Show a progress indicator above the pointer :" Style="{StaticResource CTEditor_OptionsTextBlock}" />
+                    <CheckBox Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ShowMousePanelOption, Mode=TwoWay}" Margin="0 0 20 0"/>
+                </Grid>
+            </Border>
+            
+        </StackPanel>
+    </ControlTemplate>
+
+
+</ResourceDictionary>

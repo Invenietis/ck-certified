@@ -1,0 +1,72 @@
+﻿<Window x:Class="SimpleSkin.MiniView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="150" Height="150"
+        ResizeMode="NoResize"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" Left="{Binding Mode=TwoWay, Path=MiniViewPositionX}" Top="{Binding Mode=TwoWay, Path=MiniViewPositionY}">
+	<Window.Resources>
+		<Storyboard x:Key="ShowMove">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="move">
+				<SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="HideMove">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="move">
+				<SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</Window.Resources>
+	<Window.Triggers>
+		<EventTrigger RoutedEvent="Mouse.MouseEnter">
+			<BeginStoryboard Storyboard="{StaticResource ShowMove}"/>
+		</EventTrigger>
+		<EventTrigger RoutedEvent="Mouse.MouseLeave">
+			<BeginStoryboard Storyboard="{StaticResource HideMove}"/>
+		</EventTrigger>
+	</Window.Triggers>
+    <Grid>
+        <Image x:Name="image" Source="/SimpleSkin;component/Images/logo.png" RenderTransformOrigin="0.5,0.5" >
+            <Image.Style>
+                <Style>
+                    <Style.Triggers>
+                        <Trigger Property="UIElement.IsVisible" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                            <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1" KeySpline="0.52,0,1,1" />
+                                            <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.8" KeySpline="0,0,1,1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                            <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="1" KeySpline="0.52,0,1,1" />
+                                            <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0.8" KeySpline="0,0,1,1" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" >
+                                            <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" >
+                                            <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="0" ScaleX="0"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Name="move" HorizontalAlignment="Right" Width="64" Height="64" Source="/SimpleSkin;component/Images/move.png" Cursor="SizeAll" Opacity="0"/>
+    </Grid>
+</Window>

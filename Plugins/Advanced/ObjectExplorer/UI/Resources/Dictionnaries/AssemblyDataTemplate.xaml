@@ -1,0 +1,125 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
+                    xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
+                    xmlns:loe="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels"
+                    xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml" />
+        <ResourceDictionary Source="CommonDataTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+
+    <!-- Assembly -->
+    <DataTemplate DataType="{x:Type oe:VMIAssembly}" x:Key="AssemblyDetails">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!-- Title -->
+            <StackPanel Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Image Source="{Binding Icon}" Width="48" Height="48"/>
+                    <TextBlock FontWeight="Bold" FontSize="17" Margin="10 0 0 0" Text="{Binding AssemblyName}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Separator/>
+            </StackPanel>
+
+            <!-- TopLeft -->
+            <GroupBox HeaderTemplate="{StaticResource BoldHeaderTemplate}" 
+                      x:Uid="assembly-definitionheader" Header="Definition informations" 
+                      Grid.Row="1" Background="{StaticResource FirstLayerColor}">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="assembly-assemblyfullname"  Text="Assembly full name :"/>
+                            <TextBlock Text="{Binding AssemblyFullName}"/>
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="assembly-assemblyversion"  Text="Assembly version :"/>
+                            <TextBlock Text="{Binding AssemblyVersion}"/>
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="assembly-assemblypath"  Text="Assembly path :"/>
+                            <TextBlock Text="{Binding AssemblyPath}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+            <GridSplitter HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Stretch" Grid.Row="2" Grid.ColumnSpan="3" ResizeBehavior="PreviousAndNext"
+                  Height="3" Background="White"/>
+
+            <!-- Bottom -->
+            <GroupBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3"
+                    SnapsToDevicePixels="True" 
+                    x:Uid="assembly-content" Header="Assembly content"
+                    Background="{StaticResource FirstLayerColor}"
+                    HeaderTemplate="{StaticResource BoldHeaderTemplate}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Services -->
+                    <Border Grid.Column="0" Margin="5" x:Name="ServicesPanel">
+                        <StackPanel>
+                            <StackPanel TextElement.FontSize="11" Orientation="Horizontal" x:Name="ServiceTitle">
+                                <TextBlock x:Uid="assembly-content-servicestitle" FontWeight="Bold" Text="Services" />
+                                <TextBlock FontWeight="Bold" Text=" (" VerticalAlignment="Center" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Services.Count}" VerticalAlignment="Center" />
+                                <TextBlock FontWeight="Bold" Text=")" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <Separator Margin="0 5"/>
+                            <ListView BorderBrush="LightGray" x:Name="ServicesList"
+                                      BorderThickness="1"
+                                      ItemsSource="{Binding Services}"
+                                      ItemTemplate="{StaticResource SimpleListSelectableElement}"/>
+                        </StackPanel>
+                    </Border>
+                    <GridSplitter HorizontalAlignment="Stretch" 
+                                  VerticalAlignment="Stretch" 
+                                  Grid.Column="1" ResizeBehavior="PreviousAndNext"
+                                  Width="3" Background="White" BorderBrush="LightGray" BorderThickness="1 0 0 0"/>
+
+                    <!-- Plugins -->
+                    <Border Grid.Column="2" Margin="5" x:Name="PluginsPanel">
+                        <StackPanel>
+                            <StackPanel TextElement.FontSize="11" Orientation="Horizontal" x:Name="PluginTitle" ToolTip="Plugins that have been discovered in the assembly">
+                                <TextBlock x:Uid="assembly-content-pluginstitle" FontWeight="Bold" Text="Plugins" />
+                                <TextBlock FontWeight="Bold" Text=" (" VerticalAlignment="Center" />
+                                <TextBlock FontWeight="Bold" Text="{Binding Plugins.Count}" VerticalAlignment="Center" />
+                                <TextBlock FontWeight="Bold" Text=")" VerticalAlignment="Center" />
+                            </StackPanel>
+                            <Separator Margin="0 5"/>
+                            <ListView BorderBrush="LightGray" x:Name="PluginsList"
+                                      BorderThickness="1" ItemsSource="{Binding Plugins}"
+                                      ItemTemplate="{StaticResource PluginGoToTemplate}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Plugins.Count}" Value="0">
+                <Setter TargetName="PluginsList" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PluginTitle" Property="Opacity" Value="0.5" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Services.Count}" Value="0">
+                <Setter TargetName="ServicesList" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="ServiceTitle" Property="Opacity" Value="0.5" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+</ResourceDictionary>

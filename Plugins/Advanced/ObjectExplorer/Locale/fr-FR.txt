@@ -1,0 +1,394 @@
+﻿ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.Grid.Row	None	False	True		0
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:CK.StandardPlugins.ObjectExplorer.TypeAheadBehaviour.IsEnabled	Text	True	True		True
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.Primitives.TextBoxBase.IsReadOnly	None	False	True		False
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.Text	Text	True	True		Rechercher
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.MaxLength	None	True	False		10
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.FrameworkElement.Margin	None	False	True		0,0,0,10
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		#Logs-treenode;#SystemInfos-treenode;
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Général
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/general.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/LogImages/LogIcon.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Traçage
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/osinfo.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Informations système
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Assemblages
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/assembly.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Plugins
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:CK.StandardPlugins.ObjectExplorer.AutoExpand.IsEnabled	Menu	True	True		True
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/plugin.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Services
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:CK.StandardPlugins.ObjectExplorer.AutoExpand.IsEnabled	Menu	True	True		True
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/service.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Catégories
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:CK.StandardPlugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/category.png
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		17
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.FrameworkElement.Margin	None	False	True		10 0 0 0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Informations système
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-title:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-title:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Système d'exploitation et applications
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-title:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osname:System.Windows.Controls.Label.$Content	Label	True	True		Nom du système d'exploitation
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osname:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osname:System.Windows.Controls.Grid.Row	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osedition:System.Windows.Controls.Label.$Content	Label	True	True		Edition du système d'exploitation
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osedition:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osedition:System.Windows.Controls.Grid.Row	None	False	True		2
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-ossp:System.Windows.Controls.Label.$Content	Label	True	True		Service Pack du système d'exploitation
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-ossp:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-ossp:System.Windows.Controls.Grid.Row	None	False	True		4
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osversion:System.Windows.Controls.Label.$Content	Label	True	True		Version du système d'exploitation
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osversion:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osversion:System.Windows.Controls.Grid.Row	None	False	True		6
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osrevisionnumber:System.Windows.Controls.Label.$Content	Label	True	True		Numéro de révision du système d'exploitation
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osrevisionnumber:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osrevisionnumber:System.Windows.Controls.Grid.Row	None	False	True		8
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osbuildversion:System.Windows.Controls.Label.$Content	Label	True	True		Version de compilation du système d'exploitation
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osbuildversion:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-soft-osbuildversion:System.Windows.Controls.Grid.Row	None	False	True		10
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-title:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-title:System.Windows.Controls.Grid.Column	None	False	True		1
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-title:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Architecture matérielle
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-title:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-machinename:System.Windows.Controls.Label.$Content	Label	True	True		Nom de la machine
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-machinename:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-machinename:System.Windows.Controls.Grid.Row	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-currentusername:System.Windows.Controls.Label.$Content	Label	True	True		Nom de l'utilisateur en cours
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-currentusername:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-currentusername:System.Windows.Controls.Grid.Row	None	False	True		2
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-softbits:System.Windows.Controls.Label.$Content	Label	True	True		Plateforme logicielle
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-softbits:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-softbits:System.Windows.Controls.Grid.Row	None	False	True		4
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-osbits:System.Windows.Controls.Label.$Content	Label	True	True		Plateforme du système
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-osbits:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-osbits:System.Windows.Controls.Grid.Row	None	False	True		6
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-hardbits:System.Windows.Controls.Label.$Content	Label	True	True		Plateforme de la machine
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-hardbits:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-hardbits:System.Windows.Controls.Grid.Row	None	False	True		8
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-definitionheader:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Informations générales
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-definitionheader:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyfullname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyfullname:System.Windows.Controls.TextBlock.Text	Text	True	True		Nom complet de l'assemblage :
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyversion:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyversion:System.Windows.Controls.TextBlock.Text	Text	True	True		Version de l'assemblage :
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblypath:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblypath:System.Windows.Controls.TextBlock.Text	Text	True	True		Chemin de l'assemblage :
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.ColumnSpan	None	False	True		3
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.Row	None	False	True		3
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Contenu de l'assemblage
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.Text	Text	True	True		Services
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-disabled:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-disabled:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		Disabled
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-disabled:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Désactivé
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-manual:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-manual:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		Manual
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-manual:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Manuel (défaut)
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-automaticstart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-automaticstart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		AutomaticStart
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-automaticstart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Démarrage automatique
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-optional:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-optional:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		Optional
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-optional:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Optionnel (défaut)
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-optionaltrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-optionaltrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		OptionalTryStart
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-optionaltrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Optionnel avec tentative de démarrage
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexist:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexist:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExist
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexist:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Doit exister
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexittrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexittrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExistTryStart
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexittrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Doit exister avec tentative de démarrage
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexistandrun:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexistandrun:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExistAndRun
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-mustexistandrun:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Doit exister et être démarré
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-disabled:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-disabled:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		Disabled
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	SolvedConfigStatus-disabled:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Désactiver
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-runningtext-stopped:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-runningtext-stopped:System.Windows.Controls.TextBlock.FontSize	None	True	True		14
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-runningtext-stopped:System.Windows.Controls.TextBlock.FontWeight	None	True	True		DemiBold
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-runningtext-stopped:System.Windows.Controls.TextBlock.Text	Text	True	True		Arrété
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-runningtext-stopped:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-description:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-description:System.Windows.Controls.TextBlock.Text	Text	True	True		Description : 
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-categories:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-categories:System.Windows.Controls.TextBlock.Text	Text	True	True		Catégories :
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-version:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-version:System.Windows.Controls.TextBlock.Text	Text	True	True		Version : 
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-guid:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-guid:System.Windows.Controls.TextBlock.Text	Text	True	True		Identifiant : 
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-referenceurl:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-referenceurl:System.Windows.Controls.TextBlock.Text	Text	True	True		Url de référence : 
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-title:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Statut
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-configuration:System.Windows.Controls.TextBlock.$Content	Text	True	True		Configuration :
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-configuration:System.Windows.FrameworkElement.Margin	None	False	True		7
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-configuration:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-userconfiguration:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-userconfiguration:System.Windows.FrameworkElement.Width	None	False	True		110
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-userconfiguration:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-userconfiguration:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-userconfiguration:System.Windows.Controls.TextBlock.Text	Text	True	True		Couche utilisateur :
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-userconfiguration:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Stratégie de démarrage sur la couche utilisateur
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-systemconfiguration:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-systemconfiguration:System.Windows.FrameworkElement.Width	None	False	True		110
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-systemconfiguration:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-systemconfiguration:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-systemconfiguration:System.Windows.Controls.TextBlock.Text	Text	True	True		Couche système :
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-systemconfiguration:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Stratégie de démarrage sur la couche système
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-paneltooltip:System.Windows.FrameworkElement.Margin	None	False	True		5 0
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-paneltooltip:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Le status dynamique est la dernière action explicite que vous avez fait sur le plugin.
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		Dernière action explicite :
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-title:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-title:System.Windows.FrameworkElement.Margin	None	False	True		7
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-start:System.Windows.Controls.Label.$Content	Label	True	True		Démarrer
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-start:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-stop:System.Windows.Controls.Label.$Content	Label	True	True		Arreter
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-liveconfig-stop:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-strongestreq:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-strongestreq:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Left
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-strongestreq:System.Windows.Controls.TextBlock.Text	Text	True	True		Plus haut pré-requis : 
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-solvedconfig:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-solvedconfig:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Left
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-solvedconfig:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-status-req-solvedconfig:System.Windows.Controls.TextBlock.Text	Text	True	True		Configuration finale : 
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-services-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-services-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-services-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-services-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Services exposés
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-services-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-services-tooltip:System.Windows.Controls.ContentControl.Content	ToolTip	True	True		Le service qu'expose le plugin (il ne peut y en avoir qu'un)
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-servicerefs-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-servicerefs-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-servicerefs-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-servicerefs-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Référence à des services
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-servicerefs-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-servicerefs-tooltip:System.Windows.Controls.ContentControl.Content	ToolTip	True	True		Tous les services que le plugin utilise
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-oldversion:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-oldversion:System.Windows.Setter.Value	None	False	True		Ancienne version
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-running:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	plugin-running:System.Windows.Setter.Value	None	False	True		Démarré
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-headertitle:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Informations générales
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-headertitle:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-owner:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-owner:System.Windows.Controls.TextBlock.Text	Text	True	True		Propriétaire : 
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-referenced:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-referenced:System.Windows.Controls.TextBlock.Text	Text	True	True		Service référencé : 
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-requirement:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-requirement:System.Windows.Controls.TextBlock.Text	Text	True	True		Pré-requis : 
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-propname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicerefdatatemplate.baml	serviceref-propname:System.Windows.Controls.TextBlock.Text	Text	True	True		Nom de la propriété : 
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-optional:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-optional:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		Optional
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-optional:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Optionnel (défaut)
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-optionaltrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-optionaltrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		OptionalTryStart
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-optionaltrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Optionnel avec tentative de démarrage
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexist:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexist:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExist
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexist:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Doit exister
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexisttrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexisttrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExistTryStart
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexisttrystart:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Doit exister avec tentative de démarrage
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexistandrun:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexistandrun:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExistAndRun
+ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexistandrun:CK.StandardPlugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Doit exister et être démarré
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.FontSize	None	True	True		14
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.FontWeight	None	True	True		DemiBold
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.Text	Text	True	True		Disponible
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Informations générales
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyname:System.Windows.Controls.TextBlock.Text	Text	True	True		Nom de l'assemblage : 
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyinfo:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyinfo:System.Windows.Controls.TextBlock.Text	Text	True	True		Informations de l'assemblage : 
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFFF0000
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.UIElement.Visibility	None	False	True		Collapsed
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.Text	Text	True	True		Message d'erreur : 
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins qui implémentent ce service
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Tous les plugins qui implémentent ce service (il ne peut y en avoir qu'un seul à un instant T)
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins qui utilisent ce service
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Tous les plugins qui utilisent ce service
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-unavailable:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-unavailable:System.Windows.Setter.Value	None	False	True		Non disponible
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Plugins liés
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header:System.Windows.Controls.Expander.IsExpanded	None	False	True		True
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header:System.Windows.Controls.Expander.ExpandDirection	None	True	False		Down
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Fonctions
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-name:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-name:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Nom
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-name:System.Windows.Controls.GridViewColumn.Width	None	False	True		Auto
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-log:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-log:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Tracer
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-log:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-logErrors:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-logErrors:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Tracer les erreurs
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-logErrors:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-enter:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-enter:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Entrée
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-enter:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-parameters:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-parameters:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Paramètres
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-parameters:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-caller:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-caller:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Appelant
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-caller:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-leave:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-leave:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Sortie
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-leave:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-returnValue:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-returnValue:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Valeur de retour
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header-returnValue:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header:System.Windows.Controls.Expander.IsExpanded	None	False	True		True
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header:System.Windows.Controls.Expander.ExpandDirection	None	True	False		Down
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Evènements
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-name:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-name:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Nom
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-name:System.Windows.Controls.GridViewColumn.Width	None	False	True		Auto
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-log:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-log:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Tracer
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-log:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-logErrors:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-logErrors:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Tracer les erreurs
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-logErrors:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-startRaise:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-startRaise:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Début
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-startRaise:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-parameters:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-parameters:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Paramètres
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-parameters:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-endRaise:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-endRaise:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Fin
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-endRaise:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-silenceEventErrors:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-silenceEventErrors:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Etouffer erreurs
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-silenceEventErrors:System.Windows.Controls.GridViewColumn.Width	None	False	True		120
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-logSilencedEventErrors:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-logSilencedEventErrors:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Tracer erreurs étouffées
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-logSilencedEventErrors:System.Windows.Controls.GridViewColumn.Width	None	False	True		120
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-silenceBadEventHandlingErrors:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-silenceBadEventHandlingErrors:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Etouffer erreurs abonnés
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-events-header-silenceBadEventHandlingErrors:System.Windows.Controls.GridViewColumn.Width	None	False	True		120
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-proporties-header:System.Windows.Controls.Expander.IsExpanded	None	False	True		True
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-proporties-header:System.Windows.Controls.Expander.ExpandDirection	None	True	False		Down
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-proporties-header:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Propriétés
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-name:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-name:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Nom
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-name:System.Windows.Controls.GridViewColumn.Width	None	False	True		Auto
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-log:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-log:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Tracer
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-log:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-caller:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-caller:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Appelant
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-caller:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-get:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-get:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Get
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-get:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-set:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-set:System.Windows.Controls.GridViewColumn.Header	Label	True	True		Set
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-properties-header-set:System.Windows.Controls.GridViewColumn.Width	None	False	True		100
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-apply:System.Windows.Controls.Button.$Content	Button	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-apply:System.Windows.Controls.Control.Padding	None	False	True		5 0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-apply:System.Windows.Controls.ContentControl.Content	Button	True	True		Appliquer
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-cancel:System.Windows.Controls.Button.$Content	Button	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-cancel:System.Windows.FrameworkElement.Margin	None	False	True		0 0 5 0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-cancel:System.Windows.Controls.Control.Padding	None	False	True		5 0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-cancel:System.Windows.Controls.ContentControl.Content	Button	True	True		Annuler
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-logsDeactivated:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-logsDeactivated:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-logsDeactivated:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-logsDeactivated:System.Windows.Controls.TextBlock.Text	Text	True	True		Traçage désactivé
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-logsActivated:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-logsActivated:System.Windows.Setter.Value	None	False	True		Logs Activated
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.Controls.TextBlock.FontSize	None	True	True		17
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.FrameworkElement.Margin	None	False	True		10 0 0 0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.Controls.TextBlock.Text	Text	True	True		Configuration du traçage
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Left
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-LogConfiguration:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-activateLogs:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-title-activateLogs:System.Windows.Controls.TextBlock.Text	Text	True	True		Activer le traçage : 
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-radio-yes:System.Windows.Controls.RadioButton.$Content	RadioButton	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-radio-yes:System.Windows.FrameworkElement.Margin	None	False	True		10,0,0,0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-radio-yes:System.Windows.Controls.ContentControl.Content	RadioButton	True	True		Oui
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-radio-no:System.Windows.Controls.RadioButton.$Content	RadioButton	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-radio-no:System.Windows.FrameworkElement.Margin	None	False	True		10,0,0,0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-radio-no:System.Windows.Controls.ContentControl.Content	RadioButton	True	True		Non
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-stopped:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-stopped:System.Windows.Controls.TextBlock.FontSize	None	True	True		14
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-stopped:System.Windows.Controls.TextBlock.FontWeight	None	True	True		DemiBold
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-stopped:System.Windows.Controls.TextBlock.Text	Text	True	True		Arreté
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-stopped:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Right
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-stopped:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-groupbox-title-logConfigurationInformations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Informations
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-groupbox-title-logConfigurationInformations:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-groupbox-title-logConfigurationInformations:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-numberOfLoggedServices:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-numberOfLoggedServices:System.Windows.Controls.TextBlock.Text	Text	True	True		Nombre de services actuellement suivis : 
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-numberOfLoadedServices:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-numberOfLoadedServices:System.Windows.Controls.TextBlock.Text	Text	True	True		Nombre de services chargés : 
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.Controls.Button.$Content	Button	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.Controls.ContentControl.Content	Button	True	True		Appliquer toutes les modifications 
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Top
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.FrameworkElement.Margin	None	False	True		10 5 5 5
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.FrameworkElement.Height	None	False	True		25
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-applyAllModifications:System.Windows.FrameworkElement.Width	None	False	True		Auto
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.Controls.Button.$Content	Button	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.Controls.ContentControl.Content	Button	True	True		Annuler toutes les modifications
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Top
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.FrameworkElement.Margin	None	False	True		10 5 5 5
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.FrameworkElement.Height	None	False	True		25
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-button-cancelAllModifications:System.Windows.FrameworkElement.Width	None	False	True		Auto
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-activateLogsOnThisService:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-activateLogsOnThisService:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-activateLogsOnThisService:System.Windows.Controls.TextBlock.Text	Text	True	True		Activer le traçage de ce service : 
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-radio-yes:System.Windows.Controls.RadioButton.$Content	RadioButton	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-radio-yes:System.Windows.FrameworkElement.Margin	None	False	True		10,0,0,0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-radio-yes:System.Windows.Controls.ContentControl.Content	RadioButton	True	True		Oui
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-radio-no:System.Windows.Controls.RadioButton.$Content	RadioButton	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-radio-no:System.Windows.FrameworkElement.Margin	None	False	True		10,0,0,0
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-radio-no:System.Windows.Controls.ContentControl.Content	RadioButton	True	True		Non
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-status-logsDeactivated:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-status-logsDeactivated:System.Windows.Controls.TextBlock.Text	Text	True	True		Traçage désactivé
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-status-logsDeactivated:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-tooltip-1:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-tooltip-1:System.Windows.Controls.TextBlock.Text	Text	True	True		Ce service n'est pas chargé, il ne sera donc pas tracé.
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-tooltip-2:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-tooltip-2:System.Windows.Controls.TextBlock.Text	Text	True	True		Vérifiez que le plugin correspondant à ce service est bien chargé, et essayez de relancer la découverte de plugins.
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-serviceNotBound:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-serviceNotBound:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-serviceNotBound:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-unbound-serviceNotBound:System.Windows.Controls.TextBlock.Text	Text	True	True		Ce service n'est pas chargé
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-status-logsActivated:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-service-status-logsActivated:System.Windows.Setter.Value	None	False	True		Traçage activé
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-running:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-global-status-running:System.Windows.Setter.Value	None	False	True		Lancé

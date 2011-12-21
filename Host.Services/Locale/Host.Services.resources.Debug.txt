@@ -1,0 +1,25 @@
+﻿Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-window:System.Windows.Window.Title	Title	True	True		Erhh..
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-window:System.Windows.FrameworkElement.Height	None	False	True		308
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-window:System.Windows.FrameworkElement.Width	None	False	True		710
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-window:System.Windows.Window.WindowStartupLocation	None	False	True		CenterScreen
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-window:System.Windows.FrameworkElement.MinWidth	None	False	True		400
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-window:System.Windows.FrameworkElement.MinHeight	None	False	True		300
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-sorry-run:System.Windows.Documents.Run.$Content	Text	True	True		An unexpected error has been raised, we&apos;re deeply sorry for the inconvenience.
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-helpus-run:System.Windows.Documents.Run.$Content	Text	True	True		Help us improve the CiviKey by sending to our developping team the information retrieved when this error occured.
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-file-header:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-file-header:System.Windows.Controls.GridViewColumn.Width	None	False	True		Auto
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-file-header:System.Windows.Controls.GridViewColumn.Header	None	True	True		File
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-date-header:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-date-header:System.Windows.Controls.GridViewColumn.Width	None	False	True		Auto
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-date-header:System.Windows.Controls.GridViewColumn.Header	None	True	True		Date
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-size-header:System.Windows.Controls.GridViewColumn.$Content	None	False	True		
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-size-header:System.Windows.Controls.GridViewColumn.Width	None	False	True		Auto
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-size-header:System.Windows.Controls.GridViewColumn.Header	None	True	True		Size
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-read-report-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		Read the report
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-read-report-header:System.Windows.FrameworkElement.Margin	None	False	True		5,0,0,0
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-delete-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Delete
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-delete-textblock:System.Windows.FrameworkElement.Margin	None	False	True		5,0,0,0
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-personnal-info-run:System.Windows.Documents.Run.$Content	Text	True	True		No personal information is sent. You can make sure of that by controlling the ontent of the files above.
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-thanks-run:System.Windows.Documents.Bold.$Content	Text	True	True		Thank you !
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-fixing-run:System.Windows.Documents.Run.$Content	Text	True	True		We&apos;ll do our best to solve the problem you just encountered and provide you with a fixed version of CiviKey as soon as possible.
+Host.Services.g.en-US.resources:crashlogwindow.baml	crashlog-opensource-run:System.Windows.Documents.Italic.$Content	Text	True	True		Civikey is an Open Source project, feel free to help us improve this software, in anyway you find relevant.

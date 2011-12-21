@@ -1,0 +1,33 @@
+﻿<Window x:Class="CK.Plugins.CommonTimerWindow.TimerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Height="300" Width="300">
+    <Window.Resources>
+        <Storyboard x:Key="HeartBeat">
+            <DoubleAnimation From="1.0" To="1.1" Duration="0:0:0.1" Storyboard.TargetName="HeartResizeTransform" Storyboard.TargetProperty="ScaleX"/>
+            <DoubleAnimation From="1.0" To="1.1" Duration="0:0:0.1" Storyboard.TargetName="HeartResizeTransform" Storyboard.TargetProperty="ScaleY"/>
+            <DoubleAnimation From="1.1" To="1.0" Duration="0:0:0.1" Storyboard.TargetName="HeartResizeTransform" Storyboard.TargetProperty="ScaleX"/>
+            <DoubleAnimation From="1.1" To="1.0" Duration="0:0:0.1" Storyboard.TargetName="HeartResizeTransform" Storyboard.TargetProperty="ScaleY"/>
+        </Storyboard>
+    </Window.Resources>
+    <Grid>
+        <Image Margin="20" x:Name="Heart" Stretch="Fill" Source="/CommonTimerWindow;component/Res/coeur.png">
+            <Image.RenderTransform>
+                <ScaleTransform x:Name="HeartResizeTransform" CenterX="127" CenterY="119"/>
+            </Image.RenderTransform>
+        </Image>
+        <StackPanel Orientation="Vertical" Margin="0,45,0,0" HorizontalAlignment="Center" Width="200">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Foreground="White">Multiple :</Label>
+                <Label Foreground="White" Content="{Binding ElementName=Slider, Path=Value}"/>
+            </StackPanel>
+            <Slider Height="22" x:Name="Slider" VerticalAlignment="Center" Minimum="1" Maximum="10" IsSnapToTickEnabled="True" TickPlacement="None" Value="3" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Foreground="White" Text="Timer frequency : "/>
+                <TextBox x:Name="TimerFrequency" Width="50" Margin="0,0,5,0" IsReadOnly="False"/>
+                <Button x:Name="ModifyButtonP" Width="20">+</Button>
+                <Button x:Name="ModifyButtonM" Width="20" >-</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

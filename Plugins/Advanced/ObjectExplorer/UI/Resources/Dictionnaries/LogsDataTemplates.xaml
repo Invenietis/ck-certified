@@ -1,0 +1,434 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
+                    xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
+                    xmlns:loe="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels"
+                    xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <LinearGradientBrush x:Key="GreenGradientBrush" StartPoint="1,1" EndPoint="2,1">
+        <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <SkewTransform CenterX="1" CenterY="1" AngleX="18" AngleY="0"/>
+                <RotateTransform CenterX="1" CenterY="1" Angle="240"/>
+            </TransformGroup>
+        </LinearGradientBrush.RelativeTransform>
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Color="#FF08E33B" Offset="0.0211864"/>
+            <GradientStop Color="#FF83F19D" Offset="0.0635593"/>
+            <GradientStop Color="#FFF6F6F6" Offset="0.127119"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradientBrush" StartPoint="1,1" EndPoint="2,1">
+        <LinearGradientBrush.RelativeTransform>
+            <TransformGroup>
+                <SkewTransform CenterX="1" CenterY="1" AngleX="18" AngleY="0"/>
+                <RotateTransform CenterX="1" CenterY="1" Angle="240"/>
+            </TransformGroup>
+        </LinearGradientBrush.RelativeTransform>
+        <LinearGradientBrush.GradientStops>
+            <GradientStop Color="#FFFC5959" Offset="0.0211864"/>
+            <GradientStop Color="#FFFDACAC" Offset="0.0635593"/>
+            <GradientStop Color="#FFF6F6F6" Offset="0.127119"/>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!-- Simple CheckBox DataTemplates and styles, used by the LogConfiguration GridView -->
+    <DataTemplate x:Key="CheckBoxDoLogTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogErrorsTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogErrors}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogEnterTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogEnter}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogParametersTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogParameters}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogCallerTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogCaller}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogLeaveTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogLeave}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogReturnValueTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogReturnValue}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogGetTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogGet}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogSetTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogSet}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CheckBoxDoLogStartRaiseTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogStartRaise}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogEndRaiseTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogEndRaise}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoCatchEventWhenServiceStoppedTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoCatchEventWhenServiceStopped}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoLogCaughtEventWhenServiceStoppedTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogCaughtEventWhenServiceStopped}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="CheckBoxDoCatchBadEventHandlingTemplate">
+        <TextBlock TextAlignment="Center">
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoCatchBadEventHandling}" IsEnabled="{Binding DoLog}"/>
+        </TextBlock>
+    </DataTemplate>
+
+    <!-- Template : Configuration of the selected service -->
+    <DataTemplate x:Key="VMLogServiceConfigTemplate" DataType="{x:Type loe:VMLogServiceConfig}">
+        <Grid>
+            <StackPanel Grid.Row="0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Style="{StaticResource CollapsingMethodStackPanel}" Margin="0 10 0 0">
+                            <Expander x:Uid="log-configuration-methods-header" IsExpanded="True" ExpandDirection="Down" Header="Methods" HeaderTemplate="{StaticResource ExpanderHeaderTemplate}">
+                                <ListView Margin="0 5 0 0" IsEnabled="{Binding Path=(oe:CustomEnabling.IsEnabled), RelativeSource={RelativeSource Mode=TemplatedParent}}" ItemsSource="{Binding Methods}" ItemContainerStyle="{StaticResource LVIContentAlignementStyle}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-name" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Name" Width="Auto" DisplayMemberBinding="{Binding Path=CleanSignature}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-log" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Log" Width="100" CellTemplate="{StaticResource CheckBoxDoLogTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-logErrors" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Log errors" Width="100" CellTemplate="{StaticResource CheckBoxDoLogErrorsTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-enter" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Enter" Width="100" CellTemplate="{StaticResource CheckBoxDoLogEnterTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-parameters" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Parameters" Width="100" CellTemplate="{StaticResource CheckBoxDoLogParametersTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-caller" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Caller" Width="100" CellTemplate="{StaticResource CheckBoxDoLogCallerTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-leave" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Leave" Width="100" CellTemplate="{StaticResource CheckBoxDoLogLeaveTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-methods-header-returnValue" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Return value" Width="100" CellTemplate="{StaticResource CheckBoxDoLogReturnValueTemplate}"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Expander>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource CollapsingEventStackPanel}" Margin="0 10 0 0">
+                            <Expander x:Uid="log-configuration-events-header" IsExpanded="True" ExpandDirection="Down" Header="Events" HeaderTemplate="{StaticResource ExpanderHeaderTemplate}">
+                                <ListView Margin="0 5 0 0" IsEnabled="{Binding Path=(oe:CustomEnabling.IsEnabled), RelativeSource={RelativeSource Mode=TemplatedParent}}" ItemsSource="{Binding Events}" ItemContainerStyle="{StaticResource LVIContentAlignementStyle}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-name" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Name" Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-log" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Log" Width="100" CellTemplate="{StaticResource CheckBoxDoLogTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-logErrors" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Log errors" Width="100" CellTemplate="{StaticResource CheckBoxDoLogErrorsTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-startRaise" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Start raise" Width="100" CellTemplate="{StaticResource CheckBoxDoLogStartRaiseTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-parameters" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Parameters" Width="100" CellTemplate="{StaticResource CheckBoxDoLogParametersTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-endRaise" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="End raise" Width="100" CellTemplate="{StaticResource CheckBoxDoLogEndRaiseTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-silenceEventErrors" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Silence event errors" Width="120" CellTemplate="{StaticResource CheckBoxDoCatchEventWhenServiceStoppedTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-logSilencedEventErrors" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Log silenced event errors" Width="120" CellTemplate="{StaticResource CheckBoxDoLogCaughtEventWhenServiceStoppedTemplate}"/>
+                                            <GridViewColumn x:Uid="log-configuration-events-header-silenceBadEventHandlingErrors" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Silence bad event handling errors" Width="120" CellTemplate="{StaticResource CheckBoxDoCatchBadEventHandlingTemplate}"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Expander>
+                        </StackPanel>
+                       
+                            <!-- Properties configuration, we're not sure wether where're going to use it or not -->
+                            <!--<StackPanel Style="{StaticResource CollapsingPropertyStackPanel}" Margin="0 10 0 0">
+                                <Expander x:Uid="log-configuration-proporties-header" IsExpanded="True" ExpandDirection="Down" Header="Properties" HeaderTemplate="{StaticResource ExpanderHeaderTemplate}">
+                                    <ListView Margin="0 5 0 0" IsEnabled="{Binding Path=(oe:CustomEnabling.IsEnabled), RelativeSource={RelativeSource Mode=TemplatedParent}}" ItemsSource="{Binding Properties}" ItemContainerStyle="{StaticResource LVIContentAlignementStyle}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn x:Uid="log-configuration-properties-header-name" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Name" Width="Auto" DisplayMemberBinding="{Binding Path=Name}"/>
+                                                <GridViewColumn x:Uid="log-configuration-properties-header-log" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Log" Width="100" CellTemplate="{StaticResource CheckBoxDoLogTemplate}"/>
+                                                <GridViewColumn x:Uid="log-configuration-properties-header-caller" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Caller" Width="100" CellTemplate="{StaticResource CheckBoxDoLogCallerTemplate}"/>
+                                                <GridViewColumn x:Uid="log-configuration-properties-header-get" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Get" Width="100" CellTemplate="{StaticResource CheckBoxDoLogGetTemplate}"/>
+                                                <GridViewColumn x:Uid="log-configuration-properties-header-set" HeaderTemplate="{StaticResource GridViewHeaderTemplate}" Header="Set" Width="100" CellTemplate="{StaticResource CheckBoxDoLogSetTemplate}"/>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Expander>
+                            </StackPanel>-->
+                    </StackPanel>
+                </ScrollViewer>
+                <StackPanel Visibility="{Binding Path=(oe:CustomEnabling.IsEnabled), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                    <Button x:Uid="log-configuration-service-cancel" Margin="0 0 5 0" Padding="5 0" Content="Cancel" Command="{Binding CancelCommand}"/>
+                    <Button Padding="5 0" x:Uid="log-configuration-service-apply" Content="Apply" Command="{Binding ApplyCommand}"/>
+                </StackPanel>               
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Template : Service : Entire right Pane -->
+    <DataTemplate x:Key="ServiceLogContentTemplate" DataType="{x:Type loe:VMLogServiceConfig}">
+        <StackPanel Orientation="Vertical">
+            <GroupBox x:Name="LogConfigurationGroupBox" ClipToBounds="True" Background="{StaticResource RedGradientBrush}">
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="100*"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                    <!-- Log activation - Top -->
+                    <StackPanel DockPanel.Dock="Right">
+                    <Button HorizontalAlignment="Center" Command="{Binding ModifyCommand}" CommandParameter="{Binding}" Style="{StaticResource TextButton}" Content="Edit this log configuration"/>
+                    <Separator/>
+                </StackPanel>
+
+                    <!-- Body -->
+                    <ContentPresenter oe:CustomEnabling.IsEnabled="False" Grid.Row="1" Content="{Binding}" ContentTemplate="{StaticResource VMLogServiceConfigTemplate}"/>
+
+                    <!-- DoLog Indicator -->
+                    <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <TextBlock x:Uid="log-configuration-service-logsDeactivated" Name="DoLogIndicator" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Logs Deactivated"/>
+                        <Image Width="16" Height="16" Name="LogIcon" Margin="10 0" Source="../LogImages/DeactivatedLogIcon.png"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>           
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DoLog}" Value="True">
+                <Setter TargetName="LogIcon" Property="Source" Value="../LogImages/ActivatedLogIcon.png"/>
+                <Setter x:Uid="log-configuration-service-logsActivated" TargetName="DoLogIndicator" Property="Text" Value="Logs Activated"/>
+                <Setter TargetName="LogConfigurationGroupBox" Property="Background" Value="{StaticResource GreenGradientBrush}"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <Style TargetType="Border" x:Key="roundedBorder">
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+    
+    <!-- Template : LogConfig : Global -->
+    <DataTemplate DataType="{x:Type loe:VMLogConfig}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="30*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="300*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title -->
+            <StackPanel Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Image Source="{Binding Icon}" Width="48" Height="48"/>
+                        <TextBlock x:Uid="log-configuration-global-title-LogConfiguration" FontWeight="Bold" FontSize="17" Margin="10 0 0 0" Text="Log Configuration" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Name="ConfigIsDirtyIndicator"  HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="17" Text="*" Foreground="Red" Visibility="Collapsed"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock x:Uid="log-configuration-global-title-activateLogs" Text="Activate logs : "/>
+                        <RadioButton x:Uid="log-configuration-global-radio-yes"  Margin="10,0,0,0" GroupName="globalLogsTogglerYes" IsChecked="{Binding Path=DoLog, Mode=TwoWay, Converter={StaticResource NXORConverter}, ConverterParameter=true}" Content="Yes"/>
+                        <RadioButton x:Uid="log-configuration-global-radio-no" Margin="10,0,0,0" GroupName="globalLogsTogglerNo" IsChecked="{Binding Path=DoLog, Mode=TwoWay, Converter={StaticResource NXORConverter}, ConverterParameter=false}" Content="No"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" Margin="0 0 25 0" >
+                        <TextBlock x:Uid="log-configuration-global-status-stopped" FontSize="14" FontWeight="DemiBold" x:Name="RunningText" Text="Stopped" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <Image Width="36" Margin="8 0 0 0" x:Name="ErrorLight" Source="../DetailsImages/redIndicator.png"/>
+                    </StackPanel>
+                </Grid>
+                <Separator/>
+            </StackPanel>
+
+            <!-- TopLeft -->
+            <GroupBox x:Uid="log-configuration-global-groupbox-title-logConfigurationInformations" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Log configuration informations" Grid.Row="1" Grid.Column="0" >
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="log-configuration-global-numberOfLoggedServices" Text="Number of logged services : "/>
+                            <TextBlock Text="{Binding Path=NumberOfLoggedServices}"/>
+                        </WrapPanel>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="log-configuration-global-numberOfLoadedServices" Text="Number of loaded services : "/>
+                            <TextBlock Text="{Binding Path=Services.Count}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+
+            <GridSplitter HorizontalAlignment="Right" 
+                  VerticalAlignment="Stretch" 
+                  Grid.Column="1" Grid.Row="1" ResizeBehavior="PreviousAndNext"
+                  Width="3" Background="White"/>
+
+            <!-- TopRight -->
+            <GroupBox Grid.Column="2" Grid.Row="1" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Actions">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0 5 0 0" Orientation="Vertical">
+                        <Button x:Uid="log-configuration-global-button-applyAllModifications" x:Name="ApplyBtn" Content="Apply all modifications"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top" Margin="10 5 5 5" Height="25" Width="Auto"
+                                Command="{Binding ApplyCommand}"/>
+                        <Button x:Uid="log-configuration-global-button-cancelAllModifications" x:Name="CancelBtn" Content="Cancel all modifications"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top" Margin="10 5 5 5" Height="25" Width="Auto"
+                                Command="{Binding CancelCommand}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </GroupBox>
+
+            <!-- Separator -->
+            <Border Grid.Row="2" Margin="-5 5 -5 0" Grid.ColumnSpan="3" Height="5" Background="{StaticResource FirstLayerColor}" BorderBrush="{StaticResource FirstLayerColor}"/>
+
+            <!-- Body -->
+            <!--<ScrollViewer  Grid.Row="3" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">-->
+                <Grid Grid.Row="3" Grid.ColumnSpan="3" Margin="0 5 0 0">
+                    <TabControl TabStripPlacement="Top" ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}">
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=SimpleName}" FontSize="9" FontWeight="Bold"/>
+                                    <TextBlock Text="*" FontWeight="Bold" Foreground="Red" Visibility="Collapsed" Name="ConfigIsDirtyIndicator"/>
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsDirty}" Value="True">
+                                        <Setter TargetName="ConfigIsDirtyIndicator" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <DockPanel LastChildFill="True">
+                                    <GroupBox DockPanel.Dock="Top" Margin="2 10 2 2" Grid.ColumnSpan="4" Grid.Row="4" ClipToBounds="True"
+                                    Background="{StaticResource FirstLayerColor}">
+                                        <GroupBox.Header>
+                                            <TextBlock Text="Log Configuration" FontWeight="Bold"/>
+                                        </GroupBox.Header>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="100*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <DockPanel Grid.Row="0" Margin="0 5 0 0">
+                                                <StackPanel Margin="0 5 0 0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <TextBlock x:Uid="log-configuration-service-activateLogsOnThisService" HorizontalAlignment="Center" Text="Activate logs on this service : "/>
+                                                    <RadioButton x:Uid="log-configuration-service-radio-yes" Margin="10,0,0,0" IsChecked="{Binding Path=DoLog, Mode=TwoWay, Converter={StaticResource NXORConverter}, ConverterParameter=true}" GroupName="DoLogRadioButtonsYes" Content="Yes"/>
+                                                    <RadioButton x:Uid="log-configuration-service-radio-no" Margin="10,0,0,0" IsChecked="{Binding Path=DoLog, Mode=TwoWay, Converter={StaticResource NXORConverter}, ConverterParameter=false}" GroupName="DoLogRadioButtonsNo" Content="No"/>
+                                                </StackPanel>
+                                                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+                                                    <TextBlock x:Uid="log-configuration-service-status-logsDeactivated" Name="LogStatus" Text="Logs Deactivated"  VerticalAlignment="Center"/>
+                                                    <Image Width="16" Height="16" Name="LogIcon" Margin="10 0" Source="../LogImages/DeactivatedLogIcon.png"  VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </DockPanel>
+                                            <ContentPresenter oe:CustomEnabling.IsEnabled="True" Grid.Row="1" Content="{Binding}" ContentTemplate="{StaticResource VMLogServiceConfigTemplate}"/>
+                                            <Border Name="UnboundNotifier" Grid.Row="2"
+                                                BorderThickness="1" Background="LightGray" 
+                                                BorderBrush="Gray" CornerRadius="10"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center" Visibility="Collapsed"
+                                                Padding="3">
+                                                <Border.ToolTip>
+                                                    <ToolTip ToolTipService.ShowDuration="20">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock x:Uid="log-configuration-service-unbound-tooltip-1" Text="This Service couldn't be found in the list of available services, logging this service is therefor impossible"/>
+                                                            <TextBlock x:Uid="log-configuration-service-unbound-tooltip-2" Text="Make sure the plugin corresponding to this service is running and try re-launching the discoverer"/>
+                                                        </StackPanel>
+                                                    </ToolTip>
+                                                </Border.ToolTip>
+                                                <StackPanel Orientation="Horizontal" Margin="5 0">
+                                                    <Image Margin="0 0 5 0" VerticalAlignment="Center" Height="15" Width="15" Source="../LogImages/warning.png"/>
+                                                    <TextBlock x:Uid="log-configuration-service-unbound-serviceNotBound" x:Name="NotBoundTextIndicator" TextWrapping="Wrap" VerticalAlignment="Center" Text="Service not bound"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </GroupBox>
+                                    <!-- Output Console -->
+                                <GroupBox Header="Output Console">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20"></RowDefinition>
+                                                <RowDefinition Height="*"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <DockPanel Grid.Row="0" LastChildFill="False">
+                                                <TextBlock DockPanel.Dock="Left" FontSize="10" Text="This console shows 'live' logs, as they are triggered." />
+                                                <Button DockPanel.Dock="Right" Command="{Binding Holder.ClearOutputConsoleCommand}" Content="Clear Console" />
+                                            </DockPanel>
+                                            <ScrollViewer Grid.Row="1" >
+                                                <ItemsControl ItemsSource="{Binding Holder.OutputTextArray}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel />                             
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Style="{StaticResource roundedBorder}" Padding="5" Margin="2">
+                                                                <StackPanel Orientation="Vertical">
+                                                                    <TextBlock Text="{Binding Index, StringFormat=0\.}" />
+                                                                    <TextBlock Text="{Binding Message}" />
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ScrollViewer>
+                                        </Grid>
+                                    </GroupBox>
+                                </DockPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding DoLog}" Value="True">
+                                        <Setter x:Uid="log-configuration-service-status-logsActivated" TargetName="LogStatus" Property="Text" Value="Logs Activated"></Setter>
+                                        <Setter TargetName="LogIcon" Property="Source" Value="../LogImages/ActivatedLogIcon.png"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsBound}" Value="False">
+                                        <Setter TargetName="UnboundNotifier" Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+                </Grid>
+            <!--</ScrollViewer>-->
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DoLog}" Value="True">
+                <Setter x:Uid="log-configuration-global-status-running" TargetName="RunningText" Property="Text" Value="Running"/>
+                <Setter TargetName="ErrorLight" Property="Source" Value="../DetailsImages/greenIndicator.png"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsDirty}" Value="True">
+                <Setter TargetName="ConfigIsDirtyIndicator" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+</ResourceDictionary>

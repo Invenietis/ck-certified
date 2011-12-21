@@ -1,0 +1,8 @@
+﻿<Window x:Class="CK.Plugins.ObjectExplorer.ReportWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
+    Title="Last discover report" Height="500" Width="500">   
+    <Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvancedUserNotice" xml:space="preserve">
+    <value>(Utilisateur avancé)</value>
+  </data>
+  <data name="AppConfig" xml:space="preserve">
+    <value>Configuration de l'application </value>
+  </data>
+  <data name="AppFeature" xml:space="preserve">
+    <value>Fonctionnalités</value>
+  </data>
+  <data name="AutoClickConfig" xml:space="preserve">
+    <value>Configuration du clic automatique</value>
+  </data>
+  <data name="AutoClickCountDownDuration" xml:space="preserve">
+    <value>Durée du décompte</value>
+  </data>
+  <data name="AutoClickSectionName" xml:space="preserve">
+    <value>clic automatique</value>
+  </data>
+  <data name="AutoClickShowMousePanelOption" xml:space="preserve">
+    <value>Afficher l'indicateur de progression au dessus du pointeur</value>
+  </data>
+  <data name="AutoClickTimeBeforeCountDownStarts" xml:space="preserve">
+    <value>Temps avant que le décompte ne commence</value>
+  </data>
+  <data name="CiviKey" xml:space="preserve">
+    <value>CiviKey - Standard</value>
+  </data>
+  <data name="CKIsRunning" xml:space="preserve">
+    <value>Bienvenue dans CiviKey</value>
+  </data>
+  <data name="ComingSoon" xml:space="preserve">
+    <value>Coming soon !</value>
+  </data>
+  <data name="ComingSoonContent" xml:space="preserve">
+    <value>Cette fonctionnalité n'est pas encore implementé Nous y travaillons ! </value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ConfirmExitApp" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir quitter CiviKey ?</value>
+  </data>
+  <data name="ContextIsEmpty" xml:space="preserve">
+    <value>Le Contexte courant ne contient aucune définition de clavier. Vous pouvez cliquer sur l'icone ci-contre pour en charger un.</value>
+  </data>
+  <data name="ContextLoadedContent" xml:space="preserve">
+    <value>Les claviers ont été chargés, vous pouvez maintenant en choisir un et commencer à utiliser le CiviKey !</value>
+  </data>
+  <data name="ContextLoadedTitle" xml:space="preserve">
+    <value>Les claviers ont été chargés.</value>
+  </data>
+  <data name="CopyError" xml:space="preserve">
+    <value>Copier l'erreur.</value>
+  </data>
+  <data name="EditConfig" xml:space="preserve">
+    <value>Cliquez sur l'image pour editer la configuration du CiviKey.</value>
+  </data>
+  <data name="EditSkin" xml:space="preserve">
+    <value>Démarrer l'éditeur graphique du clavier</value>
+  </data>
+  <data name="ErrorApplyingConfiguration" xml:space="preserve">
+    <value>Une erreur est survenue durant le démarrage d'un Plugin ou un prérequis ne peut être satisfait.</value>
+  </data>
+  <data name="ExceptionNotificationTitle" xml:space="preserve">
+    <value>Un erreur est survenue.</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Accueil</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Clavier</value>
+  </data>
+  <data name="KeyboardChanged" xml:space="preserve">
+    <value>Le clavier courant a changé.</value>
+  </data>
+  <data name="KeyboardChangedContent" xml:space="preserve">
+    <value>Le nouveau clavier courant s'appelle {0}.</value>
+  </data>
+  <data name="Keyboards" xml:space="preserve">
+    <value>Claviers</value>
+  </data>
+  <data name="LoadContext" xml:space="preserve">
+    <value>Charger un Contexte.</value>
+  </data>
+  <data name="LoadUserConfig" xml:space="preserve">
+    <value>Charger une Configuration d'Utilisateur.</value>
+  </data>
+  <data name="ObjectExplorer" xml:space="preserve">
+    <value>Explorateur d'Objets</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Oups" xml:space="preserve">
+    <value>Oups !</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="ShowSystrayIcon" xml:space="preserve">
+    <value>Montrer l'icône dans la mini-barre des applications</value>
+  </data>
+  <data name="ShowTaskbarIcon" xml:space="preserve">
+    <value>Montrer l'icône dans la barre des tâches</value>
+  </data>
+  <data name="SkinAutohideFeature" xml:space="preserve">
+    <value>Activer la fonctionnalité de minimisation automatique</value>
+  </data>
+  <data name="SkinAutohideTimeout" xml:space="preserve">
+    <value>Temps après lequel le clavier visuel se minimisera</value>
+  </data>
+  <data name="SkinConfig" xml:space="preserve">
+    <value>Configuration du clavier visuel</value>
+  </data>
+  <data name="SkinSectionName" xml:space="preserve">
+    <value>clavier visuel</value>
+  </data>
+  <data name="SkinViewConfig" xml:space="preserve">
+    <value>Editer l'aspect du clavier</value>
+  </data>
+  <data name="UnableToLoadContext" xml:space="preserve">
+    <value>Impossible de charger les claviers.</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="UpdateMessage" xml:space="preserve">
+    <value>Une mise à jour est disponible, voulez-vous l'installer maintenant ?</value>
+  </data>
+  <data name="ForbiddenAction" xml:space="preserve">
+    <value>Une action a mis la configuration dans un état instable.</value>
+  </data>
+  <data name="ForbiddenActionTitle" xml:space="preserve">
+    <value>Action interdite</value>
+  </data>
+  <data name="PluginThrewExceptionAtStart" xml:space="preserve">
+    <value>Le plugin nomme : '{0}' a mal fonctionné. Il a été désactivé, voulez-vous continuer à executer CiviKey sans ce plugin ? </value>
+  </data>
+  <data name="PluginThrewExceptionAtStartTitle" xml:space="preserve">
+    <value>Problème de lancement d'un plugin</value>
+  </data>
+</root>

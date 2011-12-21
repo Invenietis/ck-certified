@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B75173D0-E265-4060-84CB-C3B188FD693B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Keyboard</RootNamespace>
+    <AssemblyName>Keyboard</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Keyboard.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Runtime\Current\CK.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Key.cs" />
+    <Compile Include="Key.KeyModes.cs" />
+    <Compile Include="Keyboard.cs" />
+    <Compile Include="Keyboard.Keys.cs" />
+    <Compile Include="Keyboard.Modes.cs" />
+    <Compile Include="KeyboardCollection.cs" />
+    <Compile Include="KeyboardContext.cs" />
+    <Compile Include="KeyboardContext.Modes.cs" />
+    <Compile Include="KeyboardMode.cs" />
+    <Compile Include="KeyMode.cs" />
+    <Compile Include="KeyProgram.cs" />
+    <Compile Include="Layout.cs" />
+    <Compile Include="LayoutCollection.cs" />
+    <Compile Include="LayoutKey.cs" />
+    <Compile Include="LayoutKey.LayoutKeyModes.cs" />
+    <Compile Include="LayoutKeyMode.cs" />
+    <Compile Include="LayoutZone.cs" />
+    <Compile Include="ModeObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Res\R.Designer.cs" />
+    <Compile Include="Res\R.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Res\R1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Zone.cs" />
+    <Compile Include="Zone.Keys.cs" />
+    <Compile Include="ZoneCollection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="KeyboardContext.Util.cs" />
+    <None Include="Res\Context_Layouts_Modes.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Res\R.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Res\R.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

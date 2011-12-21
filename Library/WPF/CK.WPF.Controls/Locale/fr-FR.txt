@@ -1,0 +1,19 @@
+﻿CK.WPF.Controls.g.en-US.resources:generic.baml	available-colors:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+CK.WPF.Controls.g.en-US.resources:generic.baml	available-colors:System.Windows.Controls.TextBlock.Text	Text	True	True		Couleurs disponibles
+CK.WPF.Controls.g.en-US.resources:generic.baml	available-colors:System.Windows.Controls.TextBlock.Background	None	False	True		\#FFF0F8FF
+CK.WPF.Controls.g.en-US.resources:generic.baml	available-colors:System.Windows.Controls.TextBlock.Padding	None	False	True		2
+CK.WPF.Controls.g.en-US.resources:generic.baml	available-colors:System.Windows.FrameworkElement.Margin	None	False	True		0,0,0,1
+CK.WPF.Controls.g.en-US.resources:generic.baml	standard-colors:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+CK.WPF.Controls.g.en-US.resources:generic.baml	standard-colors:System.Windows.Controls.TextBlock.Text	Text	True	True		Couleurs standard
+CK.WPF.Controls.g.en-US.resources:generic.baml	standard-colors:System.Windows.Controls.TextBlock.Background	None	False	True		\#FFF0F8FF
+CK.WPF.Controls.g.en-US.resources:generic.baml	standard-colors:System.Windows.Controls.TextBlock.Padding	None	False	True		2
+CK.WPF.Controls.g.en-US.resources:generic.baml	standard-colors:System.Windows.FrameworkElement.Margin	None	False	True		0,1,0,1
+CK.WPF.Controls.g.en-US.resources:generic.baml	recent-colors:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+CK.WPF.Controls.g.en-US.resources:generic.baml	recent-colors:System.Windows.Controls.TextBlock.Text	Text	True	True		Récente
+CK.WPF.Controls.g.en-US.resources:generic.baml	recent-colors:System.Windows.Controls.TextBlock.Background	None	False	True		\#FFF0F8FF
+CK.WPF.Controls.g.en-US.resources:generic.baml	recent-colors:System.Windows.Controls.TextBlock.Padding	None	False	True		2
+CK.WPF.Controls.g.en-US.resources:generic.baml	recent-colors:System.Windows.FrameworkElement.Margin	None	False	True		0,1,0,1
+CK.WPF.Controls.g.en-US.resources:generic.baml	advanced:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		
+CK.WPF.Controls.g.en-US.resources:generic.baml	advanced:System.Windows.Controls.Grid.Row	None	False	True		2
+CK.WPF.Controls.g.en-US.resources:generic.baml	advanced:System.Windows.Controls.ContentControl.Content	Button	True	True		Avancé
+CK.WPF.Controls.g.en-US.resources:generic.baml	advanced:System.Windows.FrameworkElement.Margin	None	False	True		5

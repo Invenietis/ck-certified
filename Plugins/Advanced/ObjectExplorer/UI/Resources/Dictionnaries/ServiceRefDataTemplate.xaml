@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
+                    xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
+                    xmlns:loe="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels"
+                    xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml" />
+        <ResourceDictionary Source="CommonDataTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- ServiceRef -->
+    <DataTemplate DataType="{x:Type oe:VMIService}" x:Key="ServiceRefDetails">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- Title -->
+            <StackPanel Grid.Column="0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Image Source="{Binding Icon}" Width="48" Height="48"/>
+                    <TextBlock FontWeight="Bold" FontSize="17" Margin="10 0 0 0" Text="{Binding ServiceFullName}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Separator/>
+            </StackPanel>
+
+            <!-- TopLeft -->
+            <GroupBox x:Uid="serviceref-headertitle" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Definition informations" Grid.Row="1" Background="{StaticResource FirstLayerColor}">
+                <StackPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="serviceref-owner" Text="Owner : "/>
+                        <TextBlock Text="{Binding Owner.Name}"/>
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="serviceref-referenced" Text="Service referenced : "/>
+                        <TextBlock Text="{Binding Reference.ServiceFullName}"/>
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="serviceref-requirement" Text="Requirement : "/>
+                        <TextBlock Text="{Binding Requirements, Converter={StaticResource RunningRequirement}}"/>
+                    </WrapPanel>
+                    <WrapPanel Orientation="Horizontal">
+                        <TextBlock x:Uid="serviceref-propname" Text="Property name : "/>
+                        <TextBlock Text="{Binding PropertyName}"/>
+                    </WrapPanel>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

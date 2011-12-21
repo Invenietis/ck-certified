@@ -1,0 +1,31 @@
+﻿<Window x:Class="CK.Plugins.AutoClick.Views.MouseProgressPieWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"             
+             mc:Ignorable="d"
+             Width="20" Height="20"
+             WindowStyle="None"
+            ShowInTaskbar="False"
+            AllowsTransparency="True"
+            Background="Transparent"            
+            Topmost="True"        
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                  Source="Dictionnaries/AutoClick.xaml">
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel>
+        <Viewbox>
+            <views:WPFClickTypeWatch IsEnabled="False" Visibility="{Binding ShowMousePanel, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" Template="{StaticResource PieProgressBarTemplate}"
+                                         Width="20" Height="20"
+                                         BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}" />
+        </Viewbox>
+    </StackPanel>
+</Window>

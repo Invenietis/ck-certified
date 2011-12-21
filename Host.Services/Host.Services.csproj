@@ -36,29 +36,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
-      <HintPath>..\..\Runtime\Current\Caliburn.Micro\Debug\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\Runtime\Current\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="CK.Core">
-      <HintPath>..\..\Runtime\Current\CK.Core.dll</HintPath>
+      <HintPath>..\Runtime\Current\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Interop">
-      <HintPath>..\..\Runtime\Current\CK.Interop.dll</HintPath>
+      <HintPath>..\Runtime\Current\CK.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config">
+      <HintPath>..\Runtime\Current\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Reflection">
-      <HintPath>..\..\Runtime\Current\CK.Reflection.dll</HintPath>
+      <HintPath>..\Runtime\Current\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage">
-      <HintPath>..\..\Runtime\Current\CK.Storage.dll</HintPath>
+      <HintPath>..\Runtime\Current\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Runtime\Current\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
-      <HintPath>..\..\ThirdParty\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <HintPath>..\Runtime\Current\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

@@ -108,7 +108,7 @@ namespace CK.Keyboard
 
         IEnumerator<IKey> IEnumerable<IKey>.GetEnumerator()
         {
-            Converter<Key,IKey> conv = (Converter<Key, IKey>)Converter<Key, IKey>.CreateDelegate( typeof( Key ), typeof( Key ).GetMethod( "Invoke" ) ); 
+            Converter<Key,IKey> conv = delegate(Key key) { return (IKey)key; };            
             return Wrapper<IKey>.CreateEnumerator( _keys, conv );
         }
 

@@ -57,7 +57,7 @@ namespace CK.AppRecovery
 
         protected void AddProperty<THolder, TProperty>( THolder holder, Expression<Func<THolder, TProperty>> property )
         {
-            _first = new CachedProperty<TProperty>( holder, Helper.GetPropertyInfo( holder, property ), _first );
+            _first = new CachedProperty<TProperty>( holder, ReflectionHelper.GetPropertyInfo( holder, property ), _first );
         }
 
 
@@ -262,7 +262,7 @@ namespace CK.AppRecovery
 
         private void ViewFile( FileInfo f )
         {
-            TemporaryFile tmpFile = new TemporaryFile( false, ".txt" );
+            TemporaryFile tmpFile = new TemporaryFile( false ); //, ".txt"
             File.Copy( f.FullName, tmpFile.Path, true );
             Process.Start( tmpFile.Path );
         }

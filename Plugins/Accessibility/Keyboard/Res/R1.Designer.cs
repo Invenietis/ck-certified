@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Keyboard.Res {
+namespace CK.Keyboard.Res {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Keyboard.Res {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Keyboard.Res.R", typeof(R).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CK.Keyboard.Res.R", typeof(R).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

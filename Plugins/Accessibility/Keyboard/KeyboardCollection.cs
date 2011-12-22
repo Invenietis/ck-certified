@@ -161,7 +161,7 @@ namespace CK.Keyboard
 
         public IEnumerator<IKeyboard> GetEnumerator()
         {
-            Converter<Keyboard,IKeyboard> conv = (Converter<Keyboard, IKeyboard>)Converter<Keyboard, IKeyboard>.CreateDelegate( typeof( Keyboard ), typeof( Keyboard ).GetMethod( "Invoke" ) ); 
+            Converter<Keyboard,IKeyboard> conv = delegate( Keyboard k ) { return (IKeyboard)k; }; 
             return Wrapper<IKeyboard>.CreateEnumerator( _keyboards.Values, conv );
         }
 

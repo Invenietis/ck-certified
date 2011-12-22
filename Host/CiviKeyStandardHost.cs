@@ -55,19 +55,12 @@ namespace Host
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" ), RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
 
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
-            //if( ContextPath != null && File.Exists( ContextPath ) )
-            //{
             LoadResult res = Instance.LoadContext();//CivikeyStandardHost.Instance.ContextPath            
-            //}
-            //else
-            //{
-            //    Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
-            //}
 
             // Initializes Services.
             {

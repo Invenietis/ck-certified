@@ -56,7 +56,7 @@ namespace SimpleSkin
         {
             _interopHelper = new WindowInteropHelper( this );
 
-            Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (long)Win.WS_EX.NOACTIVATE );
+            Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (uint)Win.WS_EX.NOACTIVATE );
 
             HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
 

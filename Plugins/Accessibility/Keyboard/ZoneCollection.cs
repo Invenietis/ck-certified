@@ -84,7 +84,7 @@ namespace CK.Keyboard
 
         IEnumerator<IZone> IEnumerable<IZone>.GetEnumerator()
         {
-            Converter<Zone,IZone> conv = (Converter<Zone, IZone>)Converter<Zone, IZone>.CreateDelegate( typeof( Zone ), typeof( Zone ).GetMethod( "Invoke" ) );                        
+            Converter<Zone,IZone> conv = delegate( Zone l ) { return (IZone)l; }; 
             return Wrapper<IZone>.CreateEnumerator( _zones.Values, conv );
         }
 

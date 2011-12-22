@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B75173D0-E265-4060-84CB-C3B188FD693B}</ProjectGuid>
+    <ProjectGuid>{99BB5255-DEA7-4548-A402-9DB077D195B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Keyboard</RootNamespace>
-    <AssemblyName>Keyboard</AssemblyName>
+    <RootNamespace>CK.Keyboard</RootNamespace>
+    <AssemblyName>CK.Keyboard</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Keyboard.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\CK.Keyboard.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

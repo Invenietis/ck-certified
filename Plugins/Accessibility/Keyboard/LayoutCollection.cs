@@ -86,7 +86,7 @@ namespace CK.Keyboard
 
         public IEnumerator<ILayout> GetEnumerator()
         {
-            Converter<Layout,ILayout> conv = (Converter<Layout, ILayout>)Converter<Layout, ILayout>.CreateDelegate( typeof( Layout ), typeof( Layout ).GetMethod( "Invoke" ) ); 
+            Converter<Layout,ILayout> conv = delegate( Layout l ) { return (ILayout)l; }; 
             return _layouts == null ? new EnumMono<ILayout>( _defaultLayout ) : Wrapper<ILayout>.CreateEnumerator( _layouts.Values, conv );
         }
 

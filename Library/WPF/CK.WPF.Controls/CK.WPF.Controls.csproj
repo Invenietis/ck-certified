@@ -131,7 +131,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

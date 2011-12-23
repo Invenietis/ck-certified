@@ -60,19 +60,19 @@ namespace Host
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
-            LoadResult res = Instance.LoadContext();//CivikeyStandardHost.Instance.ContextPath            
+            LoadResult res = Instance.LoadContext();        
 
             // Initializes Services.
             {
                 // inject specific xaml serializers.
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<Size>), new XamlSerializer<Size>());
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<Color>), new XamlSerializer<Color>() );
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<LinearGradientBrush>), new XamlSerializer<LinearGradientBrush>() );
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<TextDecorationCollection>), new XamlSerializer<TextDecorationCollection>() );
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<FontWeight>), new XamlSerializer<FontWeight>() );
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<FontStyle>), new XamlSerializer<FontStyle>() );
-                ctx.ServiceContainer.Add(typeof(IStructuredSerializer<Image>), new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add(typeof(INotificationService), _notificationMngr );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Size> ), new XamlSerializer<Size>() );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Color> ), new XamlSerializer<Color>() );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<LinearGradientBrush> ), new XamlSerializer<LinearGradientBrush>() );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<TextDecorationCollection> ), new XamlSerializer<TextDecorationCollection>() );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontWeight> ), new XamlSerializer<FontWeight>() );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontStyle> ), new XamlSerializer<FontStyle>() );
+                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Image> ), new XamlSerializer<Image>() );
+                ctx.ServiceContainer.Add( typeof( INotificationService ), _notificationMngr );
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );

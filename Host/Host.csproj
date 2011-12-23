@@ -157,6 +157,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.fr.resx" />
     <EmbeddedResource Include="Resources\R.resx" />
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

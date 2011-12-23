@@ -46,10 +46,6 @@
       <HintPath>..\..\..\Runtime\Current\CK.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Keyboard.Model">
-      <HintPath>..\..\..\Runtime\Current\CK.Keyboard.Model.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
@@ -86,6 +82,12 @@
     <Compile Include="VMKey.cs" />
     <Compile Include="VMKeyboard.cs" />
     <Compile Include="VMZone.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

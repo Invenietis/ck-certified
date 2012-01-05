@@ -135,6 +135,10 @@
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Globals.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppBootstrapper.cs" />
@@ -167,9 +171,6 @@
     <None Include="Resources\Contexts\ContextCiviKey.xml.old" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Views\Splash.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Views\AppView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -183,6 +184,10 @@
     <ProjectReference Include="..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
       <Name>CK.Keyboard.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
+      <Name>CK.WPF.Controls</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +210,13 @@
     <Resource Include="Resources\Images\ok.png" />
     <Resource Include="Resources\Images\save.png" />
     <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\edit.png" />
+    <Resource Include="Views\Images\Keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Splash.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

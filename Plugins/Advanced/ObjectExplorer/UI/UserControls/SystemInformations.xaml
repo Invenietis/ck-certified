@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -112,6 +113,23 @@
                 <Rectangle Fill="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5"/>
                 <Rectangle Fill="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7"/>
             </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="2" Grid.ColumnSpan="2" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Applications Paths" >
+            <StackPanel Orientation="Vertical" Margin="0 5 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Context Path - "/>
+                    <TextBox Text="{Binding ContextPath, Mode=OneWay}" IsReadOnly="True"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="User Configuration Path - "/>
+                    <TextBox Text="{Binding UserConfigurationPath, Mode=OneWay}" IsReadOnly="True"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="System Configuration Path - "/>
+                    <TextBox Text="{Binding SystemConfigurationPath, Mode=OneWay}" IsReadOnly="True"/>
+                </StackPanel>
+            </StackPanel>
         </GroupBox>
     </Grid>
 </UserControl>

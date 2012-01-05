@@ -32,7 +32,7 @@ namespace CK.Keyboard.Model
     /// <summary>
     /// Defines virtual keyboard service.
     /// </summary>
-    public interface IKeyboardService : IDynamicService, IKeyboardContext, IKeyboardContextMode
-    {
-    }
+    //public interface IKeyboardService : IDynamicService, IKeyboardContext, IKeyboardContextMode
+    //{
+    //}
 }

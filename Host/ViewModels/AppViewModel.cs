@@ -45,7 +45,7 @@ namespace Host
 
         public ConfigManager ConfigManager { get; private set; }
 
-        public string AppVersion { get { return CivikeyHost.Version.ToString(); } }
+        public string AppVersion { get { return CivikeyHost.AppVersion.ToString(); } }
 
         public bool ShowTaskbarIcon
         {

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedUserNotice" xml:space="preserve">
     <value>(Advanced user)</value>
@@ -260,5 +260,11 @@
   </data>
   <data name="PluginThrewExceptionAtStartTitle" xml:space="preserve">
     <value>Error while launching a plugin</value>
+  </data>
+  <data name="ContextAddressRequired" xml:space="preserve">
+    <value>An address for the context is required.</value>
+  </data>
+  <data name="NewContextDisplayName" xml:space="preserve">
+    <value>Created on {0:D}</value>
   </data>
 </root>

@@ -3,6 +3,7 @@ using CK.Core;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using CK.Windows.App;
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMOSInfo : VMISelectableElement
@@ -11,6 +12,12 @@ namespace CK.Plugins.ObjectExplorer
             : base( ctx, null )
         {
         }
+
+        public string SystemConfigurationPath { get { return System.IO.Path.Combine(CKApp.CurrentParameters.CommonApplicationDataPath, "System.config.ck"); } }
+
+        public string UserConfigurationPath { get { return System.IO.Path.Combine(CKApp.CurrentParameters.ApplicationDataPath, "User.config.ck"); } }
+
+        public string ContextPath { get { return System.IO.Path.Combine(CKApp.CurrentParameters.ApplicationDataPath, "Context.xml"); } }        
 
         public object Data { get { return this; } }
 

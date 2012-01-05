@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\Output\Release\Plugins\</OutputPath>
+    <OutputPath>..\..\..\Output\Release\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,18 +35,23 @@
   <ItemGroup>
     <Reference Include="CK.Core">
       <HintPath>..\..\..\Runtime\Current\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Interop">
       <HintPath>..\..\..\Runtime\Current\CK.Interop.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model">
       <HintPath>..\..\..\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Model">
       <HintPath>..\..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.Core">
       <HintPath>..\..\..\Runtime\Current\CK.Windows.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -129,16 +134,17 @@
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
-      <Private>True</Private>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>
       <Name>CommonServices</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,6 @@ using Host.VM;
 
 namespace Host
 {
-
     public class RootConfigViewModel : CK.Windows.Config.ConfigPage
     {
         AppViewModel _app;
@@ -29,17 +28,17 @@ namespace Host
 
         protected override void OnInitialize()
         {
-            //var keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards );
-            //keyboards.ImagePath = "Keyboard.png";
-            //_app.KeyboardContext.Keyboards.KeyboardCreated += keyboards.ValuesRefresh;
-            //_app.KeyboardContext.Keyboards.KeyboardDestroyed += keyboards.ValuesRefresh;
-            //_app.KeyboardContext.Keyboards.KeyboardRenamed += keyboards.ValuesRefresh;
+            var keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards );
+            keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
+            _app.KeyboardContext.Keyboards.KeyboardCreated += keyboards.ValuesRefresh;
+            _app.KeyboardContext.Keyboards.KeyboardDestroyed += keyboards.ValuesRefresh;
+            _app.KeyboardContext.Keyboards.KeyboardRenamed += keyboards.ValuesRefresh;
 
-            //var g = this.AddGroup();
-            //var i = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
-            //g.Items.Add( i );
+            var g = this.AddGroup();
+            var i = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
+            g.Items.Add( i );
 
-            //this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
+            this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             base.OnInitialize();
         }

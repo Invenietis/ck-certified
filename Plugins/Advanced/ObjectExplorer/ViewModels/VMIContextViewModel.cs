@@ -148,7 +148,7 @@ namespace CK.Plugins.ObjectExplorer
 
         void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
-            if( e.Success )
+            if( !e.Success )
                 NotificationService.ShowNotification( Guid.Empty, R.ApplyDoneErrorCaption, R.ApplyDoneError, 4000, NotificationTypes.Warning );
         }
 

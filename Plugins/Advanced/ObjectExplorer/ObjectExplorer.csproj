@@ -92,6 +92,9 @@
       <HintPath>..\..\..\Runtime\Current\CK.SharedDic.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CK.Windows.App">
+      <HintPath>..\..\..\Runtime\Current\CK.Windows.App.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Windows.Core">
       <HintPath>..\..\..\Runtime\Current\CK.Windows.Core.dll</HintPath>
       <Private>False</Private>

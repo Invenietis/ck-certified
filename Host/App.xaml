@@ -4,12 +4,13 @@
              xmlns:local="clr-namespace:Host"
              ShutdownMode="OnMainWindowClose">
     <Application.Resources>        
-        <ResourceDictionary>
+        <ResourceDictionary>           
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="boostrapper"/>
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>                
+                <ResourceDictionary Source="Globals.xaml"/> 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

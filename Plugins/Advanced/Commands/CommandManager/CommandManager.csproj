@@ -39,14 +39,17 @@
     <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Runtime\Current\CK.Context.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Runtime\Current\CK.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -69,6 +72,7 @@
     <ProjectReference Include="..\..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
       <Name>CK.Keyboard.Model</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>

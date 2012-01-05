@@ -1,37 +1,65 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ckctrl="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+                    xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+                    xmlns:ckwinconf="clr-namespace:CK.Windows.Config;assembly=CK.Windows.Config"
+                    xmlns:pluginConfig="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config"
+                    xmlns:local="clr-namespace:Host.VM">
     
-    <ck:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    
-    <Style TargetType="Border" x:Key="Rounded">
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="BorderBrush" Value="Gray"></Setter>
-        <Setter Property="BorderThickness" Value="0.5"></Setter>
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="Margin" Value="5 0 5 5"></Setter>
-    </Style>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <StaticResource x:Key="OriginalConfigPageSelector" ResourceKey="CK.Config.DefaultPageSelector" />
+            <StaticResource x:Key="OriginalConfigItemSelector" ResourceKey="CK.Config.DefaultItemSelector" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="Border" x:Key="ClickableRounded">
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="BorderBrush" Value="Gray"></Setter>
-        <Setter Property="BorderThickness" Value="0.5"></Setter>
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="Margin" Value="5 0 5 5"></Setter>
-        <Setter Property="Cursor" Value="Hand"></Setter>
-    </Style>
+    <ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(pluginConfig:IUriHistoryCollection)}" >
+            <DataTemplate>
+                <DockPanel LastChildFill="False" DataContext="{Binding Value.Current}">
+                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="User : "/>
+                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" FontWeight="DemiBold" Content="{Binding DisplayName}">
+                        <Label.ToolTip>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <ContentPresenter Content="Address : " />
+                                    <ContentPresenter Content="{Binding Address}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Label.ToolTip>
+                    </Label>
+                    <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath}" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
 
-    <Style TargetType="ListView">
-        <Setter Property="Margin" Value="3"></Setter>
-        <Setter Property="BorderBrush" Value="{x:Null}"></Setter>
-        <Setter Property="BorderThickness" Value="0"></Setter>
-    </Style>
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ConfigFeatureStarter}">
+            <DataTemplate>
+                <DockPanel Margin="3" Name="featureContainer" LastChildFill="False">
+                    <!--<ToggleButton DockPanel.Dock="Right">
+                        <ContentPresenter Name="statename" Margin="5 0" Content="Stopped"/>
+                    </ToggleButton>-->
+                    <Button x:Uid="configfeatureselector-disable" Name="disable" Content="Disable" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
+                    <Button x:Uid="configfeatureselector-enable" Name="enable" Content="Enable" DockPanel.Dock="Right" Padding="5 2" Margin="3 0" Command="{Binding Start}" />
+                    <TextBlock x:Uid="configfeatureselector-featurename" DockPanel.Dock="Left" Text="Enable" VerticalAlignment="Center"/>
+                    <TextBlock FontWeight="Bold" DockPanel.Dock="Left" Margin="2 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                        <Setter TargetName="enable" Property="IsEnabled" Value="False"/>
+                        <Setter TargetName="disable" Property="IsEnabled" Value="True"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsRunnable}" Value="False">
+                        <Setter TargetName="featureContainer" Property="IsEnabled" Value="False"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
 
-    <Style TargetType="Border" x:Key="BorderedListView">
-        <Setter Property="BorderBrush" Value="Gray"></Setter>
-        <Setter Property="BorderThickness" Value="0.5"></Setter>
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="Margin" Value="3"></Setter>
-    </Style>
-    
+    </ckwincore:CompositeDataTemplateSelector>
+
 </ResourceDictionary>

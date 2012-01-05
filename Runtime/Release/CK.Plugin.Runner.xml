@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CK.Plugin.Runner</name>
+    </assembly>
+    <members>
+        <member name="T:CK.Plugin.Hosting.PlanCalculator">
+            <summary>
+            This class calculates and returns the best <see cref="T:CK.Plugin.Hosting.ExecutionPlan"/> for a given configuration context.
+            </summary>
+        </member>
+        <member name="F:CK.Plugin.Hosting.PlanCalculator.ReapplyNeeded">
+            <summary>
+            Fields that stores the fact that something changed during an apply of the <see cref="P:CK.Plugin.Hosting.PlanCalculator.LastBestPlan"/> and
+            that a new plan must be computed. This is stored here since the life time of this PlanCalculator is
+            bound to the global PluginRunner.Apply method execution and can be reused if necessary (by calling ObtainBestPlan again).
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.ObtainBestPlan(System.Collections.Generic.Dictionary{System.Object,CK.Plugin.SolvedConfigStatus})">
+            <summary>
+            Launches ComputeCombination for each "plugin status combination".
+            Gets the lower cost among all the combinations generated.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.ComputeCombination">
+            <summary>
+            Launches ComputeElementCost on each plugin that can be found in the parseMap set as parameter
+            </summary>
+            <returns>the cost of the parseMap set as parameter</returns>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.ComputeElementCost(System.Int32)">
+            <summary>
+            Gets the index of the plugin which cost to calculate, together with the current parseMap
+            Returns how much launching (or not) this plugin costs.
+            </summary>
+            <param name="i">The index of the plugin to compute</param>
+            <returns>The plugin's cost</returns>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.GenerateExecutionPlan(System.Collections.BitArray)">
+            <summary>
+            Returns the ExecutionPlan corresponding to a combination.
+            </summary>
+            <param name="bestCombination">The best plugin starting combination. Null for impossible plan.</param>        
+        </member>
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.GenerateNextCombination">
+            <summary>
+            Generates the next "plugin status combination"
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.IncrementBitArray(System.Int32)">
+            <summary>
+            Adds 1 to the parsed map. it gets the next "plugin status combination".
+            Called this method with 0 as parameter, if you want to get a combination taking every plugin into account.
+            </summary>
+            <param name="i">set 0 if you want a combination taking every plugin into account.</param>
+        </member>
+        <member name="P:CK.Plugin.Hosting.PlanCalculator.LastBestPlan">
+            <summary>
+            Gets the last (the current) execution plan computed by <see cref="M:CK.Plugin.Hosting.PlanCalculator.ObtainBestPlan(System.Collections.Generic.Dictionary{System.Object,CK.Plugin.SolvedConfigStatus})"/>
+            that is not impossible
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.PluginConfigAccessor.RaiseConfigChanged(CK.Plugin.Config.ConfigChangedEventArgs)">
+            <summary>
+            Change detection is made by the runner itself (one event subscription) since
+            it use its dictionnary to route the event: this is far more efficient than 
+            if each PluginConfigAccessor had to subscribe and filter the event for its plugin identifier.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:CK.Plugin.Runner.R">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.InitializeRequired">
+            <summary>
+              Looks up a localized string similar to PluginRunner.Initialize method must be called first..
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.ReentrantApplyCall">
+            <summary>
+              Looks up a localized string similar to Apply is not reentrant..
+            </summary>
+        </member>
+        <member name="E:CK.Plugin.Hosting.SolvedPluginConfigurationSnapshot.Changed">
+            <summary>
+            Unused by this implementation (snapshot).
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Hosting.RequirementLayerSnapshot">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.RunnerRequirements.Initialize">
+            <summary>
+            Initialize the internal count of differences and set RunningConfiguration.IsDirty accordingly.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.RunnerRequirements.FinalResult.#ctor">
+            <summary>
+            A new FinalResult is created the first time the PluginId is met.
+            Since we do not even know if it exists in the discoverer, we set its 
+            status to "unknown" (-1). 
+            If it is not here, nothing changed if the status is Disabled.
+            If it is available, nothing changed if the status is Optional.
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Hosting.ExecutionPlan">
+            <summary>
+            Describes the final state that must be reached to satisfy 
+            a new plugins and service requirements description.
+            </summary>
+            <remarks>
+            The current running status of the plugins can be used to compute the best execution plan but does not change the content 
+            of the <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStart"/>, <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStop"/> and <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToDisable"/>.
+            </remarks>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStart">
+            <summary>
+            Gets the collection of plugins that must be started.
+            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStop">
+            <summary>
+            Gets the collection of plugins that must be stopped.
+            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToDisable">
+            <summary>
+            Gets the collection of plugins that must be disabled. 
+            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.Impossible">
+            <summary>
+            Gets whether the execution is not possible (no running configuration that satisfy
+            the requirements can be found).
+            </summary>
+        </member>
+    </members>
+</doc>

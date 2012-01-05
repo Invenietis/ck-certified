@@ -35,8 +35,8 @@ namespace Host.VM
             g.AddProperty( R.ShowTaskbarIcon, _app, a => a.ShowTaskbarIcon );
             g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
 
-            //this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
-            //this.AddLink( _sVm ?? (_sVm = new SkinViewModel( _app )) );
+            this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
+            this.AddLink( _sVm ?? (_sVm = new SkinViewModel( _app )) );
             
             var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartEditor ) );
             action.ImagePath = "edit.png";

@@ -10,11 +10,11 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
             <!--<StaticResource x:Key="OriginalConfigPageSelector" ResourceKey="CK.Config.DefaultPageSelector" />-->
-            <!--<StaticResource x:Key="OriginalConfigItemSelector" ResourceKey="CK.Config.DefaultItemSelector" />-->
+            <StaticResource x:Key="OriginalConfigItemSelector" ResourceKey="CK.Config.DefaultItemSelector" />
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
-    <!--<ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
+    <ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
         <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(pluginConfig:IUriHistoryCollection)}" >
             <DataTemplate>
                 <DockPanel LastChildFill="False" DataContext="{Binding Value.Current}">
@@ -37,11 +37,11 @@
 
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ConfigFeatureStarter}">
             <DataTemplate>
-                <DockPanel Margin="3" Name="featureContainer" LastChildFill="False">-->
+                <DockPanel Margin="3" Name="featureContainer" LastChildFill="False">
                     <!--<ToggleButton DockPanel.Dock="Right">
                         <ContentPresenter Name="statename" Margin="5 0" Content="Stopped"/>
                     </ToggleButton>-->
-                    <!--<Button x:Uid="configfeatureselector-disable" Name="disable" Content="Disable" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
+                    <Button x:Uid="configfeatureselector-disable" Name="disable" Content="Disable" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
                     <Button x:Uid="configfeatureselector-enable" Name="enable" Content="Enable" DockPanel.Dock="Right" Padding="5 2" Margin="3 0" Command="{Binding Start}" />
                     <TextBlock x:Uid="configfeatureselector-featurename" DockPanel.Dock="Left" Text="Enable" VerticalAlignment="Center"/>
                     <TextBlock FontWeight="Bold" DockPanel.Dock="Left" Margin="2 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
@@ -60,6 +60,6 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
-    </ckwincore:CompositeDataTemplateSelector>-->
+    </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

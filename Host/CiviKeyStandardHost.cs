@@ -92,7 +92,7 @@ namespace Host
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
-        //ExecutionPlanREsult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
+        //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
 
         //    if( e.ExecutionPlanResult != null )
         //    {

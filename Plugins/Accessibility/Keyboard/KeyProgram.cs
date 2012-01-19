@@ -70,8 +70,11 @@ namespace CK.Keyboard
         {
             XmlWriter w = sw.Xml;
             w.WriteStartElement( "KeyProgram" );
+            w.WriteAttributeString( "xml", "space", null, "preserve" );
             foreach( String cmd in _commands )
+            {
                 w.WriteElementString( "Cmd", cmd );
+            }
             w.WriteEndElement();
         }
 

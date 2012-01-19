@@ -44,9 +44,7 @@ namespace CK.Plugins.AutoClick.Views
 
         protected override void OnMouseLeave( MouseEventArgs e )
         {
-            //_overTimer.Tick -= new EventHandler( OnTick );
             _overTimer.Stop();
-            //_overTimer = null;
             base.OnMouseLeave( e );
         }
 

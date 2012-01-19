@@ -37,4 +37,9 @@
     <DataTemplate DataType="{x:Type oe:VMOSInfo}">
         <uc:SystemInformations DataContext="{Binding}"/>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type oe:VMApplicationInfo}">
+        <uc:ApplicationInformations DataContext="{Binding}"/>
+    </DataTemplate>
+
 </ResourceDictionary>

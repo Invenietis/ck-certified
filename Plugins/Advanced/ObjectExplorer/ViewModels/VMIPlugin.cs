@@ -8,6 +8,7 @@ using CK.Plugin.Config;
 using CK.Plugin.Hosting;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -166,6 +167,9 @@ namespace CK.Plugins.ObjectExplorer
             VMIContext.Context.ConfigManager.SystemConfiguration.PluginsStatus.Changed += new EventHandler<PluginStatusCollectionChangedEventArgs>( OnSystemPluginStatusChanged );
             VMIContext.Context.ConfigManager.UserConfiguration.PluginsStatus.Changed += new EventHandler<PluginStatusCollectionChangedEventArgs>( OnUserPluginStatusChanged );
 
+            VMIContext.Context.ConfigManager.UserConfiguration.PropertyChanged += new PropertyChangedEventHandler( OnUserConfigurationChanged );
+            VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged += new PropertyChangedEventHandler( OnSystemConfigurationChanged );
+
             CreateCommands();
 
             IList<IPluginInfo> editableBy = new List<IPluginInfo>();
@@ -213,23 +217,48 @@ namespace CK.Plugins.ObjectExplorer
             StopCommand = new VMCommand( Stop, CanStop );            
         }
 
+        #region User Configuration Changes
+
+        void OnUserConfigurationChanged( object o, PropertyChangedEventArgs e )
+        {            
+            RefreshUserPluginStatus();
+        }
+        
         void OnUserPluginStatusChanged( object sender, PluginStatusCollectionChangedEventArgs e )
         {
-            if( e.PluginID == Id )
-            {
-                _userPluginStatus = VMIContext.Context.ConfigManager.UserConfiguration.PluginsStatus.GetStatus( Id, ConfigPluginStatus.Manual );
-                OnPropertyChanged( "UserPluginStatus" );
-            }
+            if( e.PluginID == Id ) RefreshUserPluginStatus();
+        }
+
+        void RefreshUserPluginStatus()
+        {
+            _userPluginStatus = VMIContext.Context.ConfigManager.UserConfiguration.PluginsStatus.GetStatus( Id, ConfigPluginStatus.Manual );
+            OnPropertyChanged( "UserPluginStatus" );
+        }
+
+        #endregion
+
+        #region System Configuration Changes
+
+        void OnSystemConfigurationChanged( object o, PropertyChangedEventArgs e )
+        {
+            RefreshSystemPluginStatus();
         }
 
         void OnSystemPluginStatusChanged( object sender, PluginStatusCollectionChangedEventArgs e )
         {
             if( e.PluginID == Id )
             {
-                _systemPluginStatus = VMIContext.Context.ConfigManager.SystemConfiguration.PluginsStatus.GetStatus( Id, ConfigPluginStatus.Manual );
-                OnPropertyChanged( "SystemPluginStatus" );
+                RefreshSystemPluginStatus();
             }
         }
+
+        private void RefreshSystemPluginStatus()
+        {
+            _systemPluginStatus = VMIContext.Context.ConfigManager.SystemConfiguration.PluginsStatus.GetStatus( Id, ConfigPluginStatus.Manual );
+            OnPropertyChanged( "SystemPluginStatus" );
+        }
+
+        #endregion
 
         void OnLiveUserConfigurationChanged( object sender, LiveUserConfigurationChangedEventArgs e )
         {
@@ -254,6 +283,9 @@ namespace CK.Plugins.ObjectExplorer
             VMIContext.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.Changed -= new EventHandler<LiveUserConfigurationChangedEventArgs>( OnLiveUserConfigurationChanged );
             VMIContext.Context.ConfigManager.SystemConfiguration.PluginsStatus.Changed -= new EventHandler<PluginStatusCollectionChangedEventArgs>( OnSystemPluginStatusChanged );
             VMIContext.Context.ConfigManager.UserConfiguration.PluginsStatus.Changed -= new EventHandler<PluginStatusCollectionChangedEventArgs>( OnUserPluginStatusChanged );
+
+            VMIContext.Context.ConfigManager.UserConfiguration.PropertyChanged -= new PropertyChangedEventHandler( OnUserConfigurationChanged );
+            VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged -= new PropertyChangedEventHandler( OnSystemConfigurationChanged );
 
             base.OnDispose();
         }

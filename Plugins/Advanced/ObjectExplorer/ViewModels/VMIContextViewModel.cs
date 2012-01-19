@@ -49,6 +49,7 @@ namespace CK.Plugins.ObjectExplorer
         public ObservableCollection<VMIFolder> Categories { get; private set; }
         public VMLogConfig VMLogConfig { get { return _vmLogConfig; } }
         public VMOSInfo OsInfo { get; private set; }
+        public VMApplicationInfo VMApplicationInfo { get; private set; }
 
         public INotificationService NotificationService { get; private set; }
 
@@ -113,6 +114,9 @@ namespace CK.Plugins.ObjectExplorer
             _vmLogConfig.Initialize();
 
             OsInfo = new VMOSInfo( this );
+            
+            VMApplicationInfo = new VMApplicationInfo( this );
+            
 
             Dictionary<string,List<IPluginInfo>> categoryFolders = new Dictionary<string, List<IPluginInfo>>();
             foreach( IPluginInfo plugin in PluginRunner.Discoverer.AllPlugins )
@@ -234,6 +238,7 @@ namespace CK.Plugins.ObjectExplorer
         public void Dispose()
         {
             _pluginRunner.ApplyDone -= new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
+            VMApplicationInfo.Dispose();
 
             foreach( VMIBase vm in _plugins.Values )
                 vm.Dispose();

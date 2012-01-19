@@ -84,8 +84,9 @@ namespace SimpleSkinEditor
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            e.Previous.CurrentLayoutChanged -= new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
-            e.Current.CurrentLayoutChanged += new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
+            //When switching user, all Keyboards are destroyed, so the CurrentKeyboard is null
+            if( e.Previous != null ) e.Previous.CurrentLayoutChanged -= new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
+            if( e.Current != null ) e.Current.CurrentLayoutChanged += new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
 
             _zoneCache.Clear();
             Zones.Refresh();

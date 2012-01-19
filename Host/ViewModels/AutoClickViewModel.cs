@@ -48,7 +48,7 @@ namespace Host.VM
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.PluginId.UniqueId == _acId )
+            if( e.MultiPluginId.Contains( _acId ))
             {
                 NotifyOfPropertyChange( () => CountDownDuration );
                 NotifyOfPropertyChange( () => TimeBeforeCountDownStarts );

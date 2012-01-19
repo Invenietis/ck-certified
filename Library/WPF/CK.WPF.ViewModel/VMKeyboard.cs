@@ -112,7 +112,6 @@ namespace CK.WPF.ViewModel
             {
                 OnPropertyChanged( "W" );
                 OnPropertyChanged( "H" );
-                OnPropertyChanged( "Size" );
             }
         }
         #endregion

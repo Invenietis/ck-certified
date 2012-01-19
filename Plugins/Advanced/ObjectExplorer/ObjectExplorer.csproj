@@ -190,6 +190,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\UserControls\ApplicationInformations.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\UserControls\SystemInformations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,12 +217,16 @@
     <Compile Include="UI\TemplateSelectors\DetailsDisplay.cs" />
     <Compile Include="UI\TemplateSelectors\TreeDisplay.cs" />
     <Compile Include="UI\TemplateSelectors\ShortDisplay.cs" />
+    <Compile Include="UI\UserControls\ApplicationInformations.xaml.cs">
+      <DependentUpon>ApplicationInformations.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\SystemInformations.xaml.cs">
       <DependentUpon>SystemInformations.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\VMIContextView.xaml.cs">
       <DependentUpon>VMIContextView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\VMApplicationInfo.cs" />
     <Compile Include="ViewModels\VMOsInfo.cs" />
     <Compile Include="ViewModels\VMAlias.cs" />
     <Compile Include="ViewModels\ISelectableElement.cs" />

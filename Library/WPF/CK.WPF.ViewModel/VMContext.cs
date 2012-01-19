@@ -22,6 +22,9 @@ namespace CK.WPF.ViewModel
         EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
         ObservableCollection<TB> _keyboards;
 
+        //public event EventHandler KeyboardChanging;
+        //public event EventHandler KeyboardChanged;
+
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
 
         public IContext Context { get { return _ctx; } }
@@ -137,9 +140,22 @@ namespace CK.WPF.ViewModel
             _keyboards.Add( k );
         }
 
+        //Post 4.0 version (there has been changes in the WPF notify engine, we now need to close the whole window and re-create it
+        //void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        //{
+        //    if ( e.Current != null )
+        //    {
+        //        if ( KeyboardChanging != null ) KeyboardChanging( this, new EventArgs() );
+        //        _currentKeyboard = Obtain( e.Current );
+        //        if ( KeyboardChanged != null ) KeyboardChanged( this, new EventArgs() );
+        //    }
+        //}
+
+        //Pre 4.0 version (there has been changes in the WPF notify engine, when processing the X binding,
+        //the engine moves the window, which SETS the Y, before processing it
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( e.Current != null )
+            if ( e.Current != null )
             {
                 _currentKeyboard = Obtain( e.Current );
                 OnPropertyChanged( "Keyboard" );

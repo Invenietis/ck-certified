@@ -15,22 +15,43 @@
     </ResourceDictionary.MergedDictionaries>
 
     <ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
-        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(pluginConfig:IUriHistoryCollection)}" >
-            <DataTemplate>
-                <DockPanel LastChildFill="False" DataContext="{Binding Value.Current}">
+        <!--<ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(pluginConfig:IUriHistoryCollection)}" >
+            <DataTemplate>                                 
+                <DockPanel LastChildFill="False" DataContext="{Binding Value}">                        
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="User : "/>
-                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" FontWeight="DemiBold" Content="{Binding DisplayName}">
-                        <Label.ToolTip>
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <ContentPresenter Content="Address : " />
-                                    <ContentPresenter Content="{Binding Address}" />
+                        <ComboBox DockPanel.Dock="Left" VerticalAlignment="Center" SelectedItem="{Binding Current}" ItemsSource="{Binding}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <ComboBox.ToolTip>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ContentPresenter Content="Address : " />
+                                        <ContentPresenter Content="{Binding Current.Address}" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Label.ToolTip>
-                    </Label>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
                     <Image DockPanel.Dock="Right" Stretch="None" Source="{Binding ImagePath}" />
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>-->
+
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemCurrent(pluginConfig:IUriHistory)}" >
+            <DataTemplate>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>
+                    <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem.DisplayName}"></Label>                    
+                    <ComboBox Visibility="{Binding ShowMultiple}" FontSize="12" Margin="3" ItemsSource="{Binding Values}" IsSynchronizedWithCurrentItem="True">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding DisplayName}"></Label>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>

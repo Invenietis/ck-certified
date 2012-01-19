@@ -1,9 +1,6 @@
-﻿
-using CK.Core;
+﻿using CK.Core;
 using System;
-using System.Collections.Generic;
-using System.Windows;
-using CK.Windows.App;
+
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMOSInfo : VMISelectableElement
@@ -12,13 +9,6 @@ namespace CK.Plugins.ObjectExplorer
             : base( ctx, null )
         {
         }
-
-        public string SystemConfigurationPath { get { return System.IO.Path.Combine(CKApp.CurrentParameters.CommonApplicationDataPath, "System.config.ck"); } }
-
-        public string UserConfigurationPath { get { return System.IO.Path.Combine(CKApp.CurrentParameters.ApplicationDataPath, "User.config.ck"); } }
-
-        public string ContextPath { get { return System.IO.Path.Combine(CKApp.CurrentParameters.ApplicationDataPath, "Context.xml"); } }        
-
         public object Data { get { return this; } }
 
         public string OSName { get { return OSVersionInfo.Name; } }
@@ -30,7 +20,7 @@ namespace CK.Plugins.ObjectExplorer
         public int OSBuildVersion { get { return OSVersionInfo.BuildVersion; } }
 
         public int OSRevisionVersion { get { return OSVersionInfo.RevisionVersion; } }
-        
+
         public Version OSVersion { get { return OSVersionInfo.Version; } }
 
         public string MachineName { get { return Environment.MachineName; } }

@@ -11,6 +11,7 @@ using CommonServices;
 using Host.Services;
 using SimpleSkin.Helper;
 using SimpleSkin.ViewModels;
+using System.Diagnostics;
 
 namespace SimpleSkin
 {
@@ -54,6 +55,12 @@ namespace SimpleSkin
             return true;
         }
 
+       // void OnTimerTick( object sender, EventArgs e )
+       // {
+       //     this._ctxVm.Keyboard.Layout.W = this._ctxVm.Keyboard.Layout.W - 5;
+
+        //}
+
         public void Start()
         {
             if( KeyboardContext.Keyboards.Count > 0 )
@@ -64,6 +71,9 @@ namespace SimpleSkin
                 _ctxVm = new VMContextSimple( Context, KeyboardContext );
                 _skinWindow = new SkinWindow( _ctxVm );
                 _skinWindow.Show();
+
+                //DispatcherTimer t = new DispatcherTimer( new TimeSpan( 0, 0, 0, 1, 0 ), DispatcherPriority.Normal, OnTimerTick, _skinWindow.Dispatcher );
+                //t.Start();
 
                 _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
                 
@@ -86,7 +96,12 @@ namespace SimpleSkin
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
+
+            if ( e.MultiPluginId.Contains( PluginId ) )
+            {
+                if (e.Key == "autohide" || e.Key == "autohide-timeout") UpdateAutoHideConfig();
+            }
+
         }
 
         void UpdateAutoHideConfig()

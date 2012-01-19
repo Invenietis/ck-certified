@@ -115,12 +115,12 @@ namespace CK.Plugins.AutoClick
 
         public int TimeBeforeCountDownStarts 
         { 
-            get { return (int)Config.User["TimeBeforeCountDownStarts"]; }
+            get { return (int)Config.Context["TimeBeforeCountDownStarts"]; }
         }
 
         public int CountDownDuration
         {
-            get { return (int)Config.User["CountDownDuration"]; }
+            get { return (int)Config.Context["CountDownDuration"]; }
         }
 
         #region IPlugin Members
@@ -183,7 +183,8 @@ namespace CK.Plugins.AutoClick
         }
 
         public void Stop()
-        {            
+        {
+            Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( Config_ConfigChanged );
             UnregisterEvents();
             Config.User["AutoClickWindowWidth"] = (int)_wpfStandardClickTypeWindow.Width;
             Config.User["AutoClickWindowHeight"] = (int)_wpfStandardClickTypeWindow.Height;
@@ -331,14 +332,14 @@ namespace CK.Plugins.AutoClick
                 int newValue = CountDownDuration;
                 if( CountDownDuration + value > 0 )
                     newValue = CountDownDuration + value;
-                Config.User[property] = newValue;
+                Config.Context[property] = newValue;
             }
             else if( property == "TimeBeforeCountDownStarts" )
             {
                 int newValue = TimeBeforeCountDownStarts;
                 if( TimeBeforeCountDownStarts + value > 0 )
                     newValue = TimeBeforeCountDownStarts + value;
-                Config.User[property] = newValue;
+                Config.Context[property] = newValue;
             }
             OnPropertyChanged( property );
         }

@@ -14,6 +14,7 @@ using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Host
 {
@@ -87,7 +88,46 @@ namespace Host
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
             
             _firstApplySucceed = Context.PluginRunner.Apply();
+
+            ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnSystemConfigurationPropertyChanged);
+            ctx.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationPropertyChanged );
+            
             return ctx;
+        }
+
+        private void OnSystemConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            //If the user has changed, we need to load the corresponding user configuration
+            if ( e.PropertyName == "CurrentUserProfile" )
+            {
+                //Save the previous context and user configuration, not to lose one's data.
+                //WARNING : need to finish saving the context before doing anything else
+                //SaveContext();
+                
+                //TODO : find a way to get the previous user's adress, to save into the right file
+                //SaveUserConfig(previousUserAdress);
+
+                //if the user does want to use his own configurations. Otherwise, clone the configurations into a new Userconf for this user. (TODO)
+                Context.ConfigManager.Extended.HostUserConfig.Clear();
+                Context.ConfigManager.Extended.Container.ClearAll();
+                
+                LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
+                Context.PluginRunner.Apply( true );
+            }
+        }
+
+        private void OnUserConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            //If the user has changed, we need to load the corresponding context
+            if ( e.PropertyName == "CurrentContextProfile" )
+            {
+                //Save the previous context and user configuration, not to lose one's data.             
+                //SaveContext();
+
+                //WARNING : need to sequence these two calls
+
+                LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
+            }
         }
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
@@ -191,7 +231,7 @@ namespace Host
 
         public string SubAppName
         {
-            get { return applicationParameters.SubAppName; }
+            get { return applicationParameters.DistribName; }
         }
     }
 }

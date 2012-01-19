@@ -1,5 +1,5 @@
 ﻿<UserControl x:Class="CK.Plugins.ObjectExplorer.VMIContextView"
-                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
@@ -45,6 +45,7 @@
                         <TreeViewItem x:Uid="General-treenode" Header="General" oe:TreeViewItemImage.Image="Resources/TreeImages/general.png" Style="{StaticResource ResourceKey=HeaderedTVI}">
                             <TreeViewItem x:Uid="Logs-treenode" DataContext="{Binding VMLogConfig}" oe:TreeViewItemImage.Image="Resources/LogImages/LogIcon.png" Header="Logs" Style="{StaticResource HeaderedSelectableTVI}"/>
                             <TreeViewItem x:Uid="SystemInfos-treenode" DataContext="{Binding OsInfo}" oe:TreeViewItemImage.Image="Resources/TreeImages/osinfo.png" Header="System informations" Style="{StaticResource HeaderedSelectableTVI}"/>
+                            <TreeViewItem x:Uid="ApplicationInfos-treenode" DataContext="{Binding VMApplicationInfo}" oe:TreeViewItemImage.Image="Resources/TreeImages/assembly.png" Header="Application informations" Style="{StaticResource HeaderedSelectableTVI}"/>
                         </TreeViewItem>
                         <TreeViewItem x:Uid="Assemblies-treenode" ItemsSource="{Binding Assemblies}" ItemTemplate="{StaticResource AssembliesNode}" Header="Assemblies"
                                       oe:TreeViewItemImage.Image="Resources/TreeImages/assembly.png" Style="{StaticResource ResourceKey=HeaderedTVI}"/>

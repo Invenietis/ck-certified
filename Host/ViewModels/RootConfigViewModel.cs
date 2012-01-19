@@ -28,11 +28,13 @@ namespace Host
 
         protected override void OnInitialize()
         {
-            var keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards );
+            var keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards, false, "" );
             keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
-            _app.KeyboardContext.Keyboards.KeyboardCreated += keyboards.ValuesRefresh;
-            _app.KeyboardContext.Keyboards.KeyboardDestroyed += keyboards.ValuesRefresh;
-            _app.KeyboardContext.Keyboards.KeyboardRenamed += keyboards.ValuesRefresh;
+
+            _app.KeyboardContext.Keyboards.KeyboardCreated += ( s, e ) => { keyboards.RefreshValues( s, e ); };
+            _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) => { keyboards.RefreshValues( s, e ); };
+            _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) => { keyboards.RefreshValues( s, e ); };
+            _app.KeyboardContext.Keyboards.CurrentChanged += ( s, e ) => { keyboards.RefreshCurrent( s, e ); };
 
             var g = this.AddGroup();
             var i = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };

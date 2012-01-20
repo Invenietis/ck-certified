@@ -93,10 +93,7 @@ namespace CK.Plugins.AutoClick
         public bool ShowMousePanelOption
         {
             get { return (bool)Config.User["ShowMousePanelOption"]; }
-            set 
-            { 
-                Config.User["ShowMousePanelOption"] = value;
-            }
+            set { Config.User["ShowMousePanelOption"] = value; }
         }
 
         //true if the user wants to see the MousePanel and the autoclick is not paused
@@ -132,6 +129,7 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
+            throw new Exception( "C'est la folie" );
             bool isFirstLaunch = false;
             _selector = new StdClickTypeSelector( this );
             _wpfStandardClickTypeWindow = new WPFStdClickTypeWindow() { DataContext = this };
@@ -194,9 +192,16 @@ namespace CK.Plugins.AutoClick
 
         public void Teardown()
         {
-            if( _mouseWindow.IsVisible ) _mouseWindow.Close();
-            if( _editorWindow.IsVisible ) _editorWindow.Close();
-            if( _wpfStandardClickTypeWindow.IsVisible ) _wpfStandardClickTypeWindow.Close();
+            if( _mouseWindow != null )
+            {
+                if( _mouseWindow.IsVisible ) _mouseWindow.Close();
+                if( _editorWindow.IsVisible ) _editorWindow.Close();
+            }
+
+            if( _wpfStandardClickTypeWindow != null)
+            {
+                if( _wpfStandardClickTypeWindow.IsVisible ) _wpfStandardClickTypeWindow.Close();
+            }
 
             _selector = null;
             _wpfStandardClickTypeWindow = null;

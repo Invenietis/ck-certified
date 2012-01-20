@@ -36,54 +36,46 @@
             <Separator/>
         </StackPanel>
 
-        <!--<GroupBox x:Uid="appinfo-soft-title" Grid.Row="1" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Operating System and software" SnapsToDevicePixels="True">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="1"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Label x:Uid="appinfo-context-path" Grid.Column="0" Grid.Row="0">ContextPath</Label>
-                <Label x:Uid="appinfo-user-config-path" Grid.Column="0" Grid.Row="2">UserConfigurationPath</Label>
-                <Label x:Uid="appinfo-system-config-path" Grid.Column="0" Grid.Row="4">SystemConfigurationPath</Label>
-
-                <Label Grid.Column="1" Grid.Row="0" Content="{Binding ContextPath}" FontWeight="DemiBold"/>
-                <Label Grid.Column="1" Grid.Row="2" Content="{Binding UserConfigurationPath}" FontWeight="DemiBold"/>
-                <Label Grid.Column="1" Grid.Row="4" Content="{Binding SystemConfigurationPath}" FontWeight="DemiBold"/>
-
-                <Rectangle Fill="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"/>
-                <Rectangle Fill="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3"/>
-                <Rectangle Fill="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5"/>
-            </Grid>
-        </GroupBox>-->
-
-
         <GroupBox Grid.Row="2" Grid.ColumnSpan="2" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Applications Paths" >
             <StackPanel Orientation="Vertical" Margin="0 5 0 0">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock FontWeight="Bold" Text="Context Path - "/>
-                    <TextBox Text="{Binding ContextPath, Mode=OneWay}" IsReadOnly="True"/>
+                    <TextBlock FontWeight="Bold" Text="Context Path : " VerticalAlignment="Center"/>                    
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding ContextPath, Mode=OneWay}" VerticalAlignment="Center"/>
+                        <Button Command="{Binding OpenFileCommand}" CommandParameter="{Binding ContextPath, Mode=OneWay}">
+                            <Image Width="15" ToolTip="Open the file" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <BitmapImage DecodePixelWidth="15" UriSource="../Resources/DetailsImages/openFile.png" />
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock FontWeight="Bold" Text="User Configuration Path - "/>
-                    <TextBox Text="{Binding UserConfigurationPath, Mode=OneWay}" IsReadOnly="True"/>
+                    <TextBlock FontWeight="Bold" Text="User Configuration Path : " VerticalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding UserConfigurationPath, Mode=OneWay}" VerticalAlignment="Center" />
+                        <Button Command="{Binding OpenFileCommand}" CommandParameter="{Binding UserConfigurationPath, Mode=OneWay}">
+                            <Image Width="15" ToolTip="Open the file" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <BitmapImage DecodePixelWidth="15" UriSource="../Resources/DetailsImages/openFile.png" />
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                    </StackPanel>                  
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock FontWeight="Bold" Text="System Configuration Path - "/>
-                    <TextBox Text="{Binding SystemConfigurationPath, Mode=OneWay}" IsReadOnly="True"/>
+                    <TextBlock FontWeight="Bold" Text="System Configuration Path : " VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding SystemConfigurationPath, Mode=OneWay}" VerticalAlignment="Center" />
+                        <Button Command="{Binding OpenFileCommand}" CommandParameter="{Binding SystemConfigurationPath, Mode=OneWay}">
+                            <Image Width="15" ToolTip="Open the file" VerticalAlignment="Center" >
+                                <Image.Source>
+                                    <BitmapImage DecodePixelWidth="15" UriSource="../Resources/DetailsImages/openFile.png" />
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </GroupBox>

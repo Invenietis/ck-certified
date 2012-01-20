@@ -40,7 +40,7 @@ namespace Host
             var i = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
             g.Items.Add( i );
 
-            this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
+            this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             base.OnInitialize();
         }

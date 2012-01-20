@@ -18,29 +18,22 @@ namespace Host
         [STAThread]
         public static void Main( string[] args )
         {
-            try
+            // Crash logs upload and updater availability is managed during this initialization.
+            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", "Standard" ) ) )
             {
-                // Crash logs upload and updater availability is managed during this initialization.
-                using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", "Standard" ) ) )
+                // Common logger is actually bound to log4net.
+                // CK-Windows must not depend on log4Net: its initialization must be done here.
+                CommonLogger.Initialize( CKApp.CurrentParameters.ApplicationDataPath + @"AppLogs\", false );
+                if( init != null )
                 {
-                    // Common logger is actually bound to log4net.
-                    // CK-Windows must not depend on log4Net: its initialization must be done here.
-                    CommonLogger.Initialize( CKApp.CurrentParameters.ApplicationDataPath + @"AppLogs\", false );
-                    if( init != null )
+                    CKApp.Run( () =>
                     {
-                        CKApp.Run( () =>
-                        {
-                            CivikeyStandardHost.Instance.CreateContext();
-                            App app = new App();
-                            app.InitializeComponent();
-                            return app;
-                        } );
-                    }
+                        CivikeyStandardHost.Instance.CreateContext();
+                        App app = new App();
+                        app.InitializeComponent();
+                        return app;
+                    } );
                 }
-            }
-            catch( Exception ex )
-            {
-                Console.WriteLine( ex.Message );
             }
         }
 

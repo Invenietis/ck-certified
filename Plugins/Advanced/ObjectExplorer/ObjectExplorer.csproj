@@ -248,6 +248,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="UI\Resources\DetailsImages\openFile.png" />
     <Resource Include="UI\Resources\LogImages\PushedCross.png" />
     <Resource Include="UI\Resources\TreeImages\assembly.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

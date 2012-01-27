@@ -171,6 +171,12 @@
             and it becomes the first one.
             </summary>
         </member>
+        <member name="P:CK.Plugin.Config.ISystemConfiguration.PreviousUserProfile">
+            <summary>
+            Gets the previous user. 
+            Returns null if the current user is the only one used since application start.
+            </summary>
+        </member>
         <member name="P:CK.Plugin.Config.ISystemConfiguration.PluginsStatus">
             <summary>
             Gets <see cref="T:CK.Plugin.Config.IPluginStatus">plugins status</see> configured at the system level.

@@ -6,23 +6,23 @@
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     Background="Transparent" WindowStyle="None"
     Topmost="True" WindowStartupLocation="Manual"
-    Left="{Binding Mode=TwoWay, Path=Keyboard.X}" Top="{Binding Mode=TwoWay, Path=Keyboard.Y}"
-    Width="{Binding Mode=TwoWay, Path=Keyboard.ViewportWidth}" Height="{Binding Mode=TwoWay, Path=Keyboard.ViewportHeight}"
+    Left="{Binding Mode=TwoWay, Path=X}" Top="{Binding Mode=TwoWay, Path=Y}"
+    Width="{Binding Mode=TwoWay, Path=ViewportWidth}" Height="{Binding Mode=TwoWay, Path=ViewportHeight}"
     Title="Simple skin">
     <Window.Resources>
         
         <ctrls:NotNullConverter x:Key="notnull"/>
 
         <Style TargetType="{x:Type view:StdKeyboardView}">
-            <Setter Property="Width" Value="{Binding Keyboard.W}" />
-            <Setter Property="Height" Value="{Binding Keyboard.H}" />
-            <Setter Property="Keys" Value="{Binding Keyboard.Keys}"/>
+            <Setter Property="Width" Value="{Binding W}" />
+            <Setter Property="Height" Value="{Binding H}" />
+            <Setter Property="Keys" Value="{Binding Keys}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=Keyboard.Background, Converter={StaticResource notnull}}" Value="true">
-                    <Setter Property="Background" Value="{Binding Keyboard.Background}"/>
+                    <Setter Property="Background" Value="{Binding Background}"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=Keyboard.BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
-                    <Setter Property="BackgroundImagePath" Value="{Binding Keyboard.BackgroundImagePath}"/>
+                    <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -85,6 +85,6 @@
         
     </Window.Resources>
     <Viewbox Stretch="Fill" x:Name="MainContainer">
-        <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" />
+        <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding Keyboard}" />
     </Viewbox>
 </Window>

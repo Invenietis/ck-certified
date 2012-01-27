@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using CK.Core;
 using System.Linq;
 using System.ComponentModel;
+using CK.Plugin.Config;
 
 namespace Host
 {
@@ -36,15 +37,15 @@ namespace Host
         /// </summary>
         public Version AppVersion
         {
-            get { return _appVersion ?? (_appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) )); }
+            get { return _appVersion ?? ( _appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) ) ); }
         }
-        
-         /// <summary>
+
+        /// <summary>
         /// The SubAppName is the name of the package (Standard, Steria etc...)
         /// using that, we can have different contexts/userconfs for each packages installed on the computer.
         /// </summary>
-        private CivikeyStandardHost(CKAppParameters parameters)
-        {                        
+        private CivikeyStandardHost( CKAppParameters parameters )
+        {
             applicationParameters = parameters;
         }
 
@@ -55,9 +56,9 @@ namespace Host
 
         public override IContext CreateContext()
         {
-            IContext ctx = base.CreateContext();            
+            IContext ctx = base.CreateContext();
 
-            _notificationMngr = new NotificationManager();                        
+            _notificationMngr = new NotificationManager();
 
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
@@ -69,7 +70,7 @@ namespace Host
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
-            LoadResult res = Instance.LoadContext();        
+            LoadResult res = Instance.LoadContext();
 
             // Initializes Services.
             {
@@ -86,79 +87,90 @@ namespace Host
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
-            
+
             _firstApplySucceed = Context.PluginRunner.Apply();
 
-            ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(OnSystemConfigurationPropertyChanged);
+            ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationPropertyChanged );
             ctx.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationPropertyChanged );
-            
+
             return ctx;
         }
 
-        private void OnSystemConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
+        void OnSystemConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
         {
             //If the user has changed, we need to load the corresponding user configuration
-            if ( e.PropertyName == "CurrentUserProfile" )
+            if( e.PropertyName == "CurrentUserProfile" )
             {
-                //Save the previous context and user configuration, not to lose one's data.
-                //WARNING : need to finish saving the context before doing anything else
-                //SaveContext();
-                
-                //TODO : find a way to get the previous user's adress, to save into the right file
-                //SaveUserConfig(previousUserAdress);
+                //This feature should'nt be put here.
+                //bool cloneContext = MessageBox.Show( "Do you want to copy the previous user's configurations and ?", "Changing user", MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
+                bool cloneContext = false;
 
-                //if the user does want to use his own configurations. Otherwise, clone the configurations into a new Userconf for this user. (TODO)
+                Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
+
+                SaveContext();
+
+                SaveUserConfig( Context.ConfigManager.SystemConfiguration.PreviousUserProfile.Address, false );
                 Context.ConfigManager.Extended.HostUserConfig.Clear();
-                Context.ConfigManager.Extended.Container.ClearAll();
-                
                 LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
+
+                if( cloneContext )
+                {
+                    //Cloning the current context
+                    string newContextAdress = Path.GetDirectoryName( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
+                                               + Path.DirectorySeparatorChar
+                                               + Path.GetFileNameWithoutExtension( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
+                                               + " - " 
+                                               + DateTime.UtcNow.ToFileTime() + ".xml";
+
+                    Uri newContextUri = new Uri( "file:///" + newContextAdress );
+                    File.Copy( previousContextAdress.AbsolutePath, newContextAdress, true );
+                    IUriHistory newContext = Context.ConfigManager.UserConfiguration.ContextProfiles.FindOrCreate( newContextUri );
+                    Context.ConfigManager.UserConfiguration.CurrentContextProfile = newContext;
+                }
+                else
+                {
+                    //otherwise, going on with the loading of the first context of the new user configuration
+                    Context.ConfigManager.Extended.Container.Clear( Context );
+                    LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
+                }
+
                 Context.PluginRunner.Apply( true );
             }
         }
 
-        private void OnUserConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
+        void OnUserConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
         {
-            //If the user has changed, we need to load the corresponding context
-            if ( e.PropertyName == "CurrentContextProfile" )
-            {
-                //Save the previous context and user configuration, not to lose one's data.             
-                //SaveContext();
-
-                //WARNING : need to sequence these two calls
-
-                LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
-            }
         }
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
-        //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
+            //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
 
-        //    if( e.ExecutionPlanResult != null )
-        //    {
-        //        if(
-        //            (e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.SetupError
-        //            || e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.StartError) )
-        //        {
-        //            if( System.Windows.MessageBox.Show( String.Format( R.PluginThrewExceptionAtStart, e.ExecutionPlanResult.Culprit.PublicName ), R.PluginThrewExceptionAtStartTitle, MessageBoxButton.YesNo ) == MessageBoxResult.Yes )
-        //            {//if the user wants to try launching CiviKey without the culprit
-        //                Context.PluginRunner.Apply();
-        //            }
-        //            else
-        //            {//otherwise, stop CiviKey
-        //                Context.RaiseExitApplication( true );
-        //            }
-        //        }
-        //    }
-        //    else //e is null means that the plan couldn't be resolved, the system hasn't been changed, but requirements are messy
-        //    {
-        //        if( _notificationMngr != null )
-        //            _notificationMngr.ShowNotification( Guid.Empty, R.ForbiddenActionTitle, R.ForbiddenAction, 5000, NotificationTypes.Warning );
-        //        else
-        //            System.Windows.MessageBox.Show( R.ForbiddenAction );
+            //    if( e.ExecutionPlanResult != null )
+            //    {
+            //        if(
+            //            (e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.SetupError
+            //            || e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.StartError) )
+            //        {
+            //            if( System.Windows.MessageBox.Show( String.Format( R.PluginThrewExceptionAtStart, e.ExecutionPlanResult.Culprit.PublicName ), R.PluginThrewExceptionAtStartTitle, MessageBoxButton.YesNo ) == MessageBoxResult.Yes )
+            //            {//if the user wants to try launching CiviKey without the culprit
+            //                Context.PluginRunner.Apply();
+            //            }
+            //            else
+            //            {//otherwise, stop CiviKey
+            //                Context.RaiseExitApplication( true );
+            //            }
+            //        }
+            //    }
+            //    else //e is null means that the plan couldn't be resolved, the system hasn't been changed, but requirements are messy
+            //    {
+            //        if( _notificationMngr != null )
+            //            _notificationMngr.ShowNotification( Guid.Empty, R.ForbiddenActionTitle, R.ForbiddenAction, 5000, NotificationTypes.Warning );
+            //        else
+            //            System.Windows.MessageBox.Show( R.ForbiddenAction );
 
-        //        //TODO : Revert the configuration (if it is possible ?)
-        //    }
+            //        //TODO : Revert the configuration (if it is possible ?)
+            //    }
         }
 
         /// <summary>
@@ -200,8 +212,8 @@ namespace Host
         {
             var e = new ContextProfileRequiredEventArgs( Context, saving )
             {
-                Address = new Uri(Path.Combine(applicationParameters.ApplicationDataPath, "Context.xml")),
-                DisplayName = String.Format("", DateTime.Now ) // R.NewContextDisplayName
+                Address = new Uri( Path.Combine( applicationParameters.ApplicationDataPath, "Context.xml" ) ),
+                DisplayName = String.Format( "", DateTime.Now ) // R.NewContextDisplayName
             };
             var h = ContextAddressRequired;
             if( h != null )

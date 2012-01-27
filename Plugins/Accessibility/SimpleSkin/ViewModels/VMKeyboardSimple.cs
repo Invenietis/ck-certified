@@ -25,8 +25,9 @@ namespace SimpleSkin.ViewModels
 
             _viewportHeight = ViewportSize.Height;
             _viewportWidth = ViewportSize.Width;
-            _x = Convert.ToInt32( CheckPostion().X );
-            _y = Convert.ToInt32( CheckPostion().Y );
+            System.Drawing.Point p =  CheckPostion();
+            _x = Convert.ToInt32( p.X );
+            _y = Convert.ToInt32( p.Y );
         }
 
         protected override void OnDispose()
@@ -40,6 +41,21 @@ namespace SimpleSkin.ViewModels
             base.OnDispose();
         }
 
+        protected override void OnTriggerPropertyChanged()
+        {
+            int y = Y;
+            OnPropertyChanged( "X" );
+            Y = y;
+            OnPropertyChanged( "Y" );
+
+            double w = ViewportWidth;
+            OnPropertyChanged( "ViewportHeight" );
+            ViewportWidth = w;
+            OnPropertyChanged( "ViewportWidth" );
+            
+            base.OnTriggerPropertyChanged();
+        }
+
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( e.Obj == Layout)
@@ -51,6 +67,13 @@ namespace SimpleSkin.ViewModels
                else if( e.Key == "InsideBorderColor" )
                {
                    OnPropertyChanged( "InsideBorderColor" );
+               }
+               else if( e.Key == "ViewPortSize" )
+               {
+                   ViewportWidth = ViewportSize.Width;
+                   ViewportHeight = ViewportSize.Height;
+                   OnPropertyChanged( "ViewportWidth" );
+                   OnPropertyChanged( "ViewportHeight" );
                }
             }
         }

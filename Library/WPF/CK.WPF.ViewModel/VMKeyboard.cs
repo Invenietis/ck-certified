@@ -23,12 +23,23 @@ namespace CK.WPF.ViewModel
         /// <summary>
         /// Gets the width of the current layout.
         /// </summary>
-        public int W { get { return _keyboard.CurrentLayout.W; } }
+        public int W 
+        { 
+            get 
+            { 
+                return _keyboard.CurrentLayout.W; 
+            } 
+        }
 
         /// <summary>
         /// Gets the height of the current layout.
         /// </summary>
-        public int H { get { return _keyboard.CurrentLayout.H; } }
+        public int H { 
+            get 
+            { 
+                return _keyboard.CurrentLayout.H; 
+            } 
+        }
         
         public ObservableCollection<TZ> Zones { get { return _zones; } }
         public ObservableCollection<TK> Keys { get { return _keys; } }
@@ -73,6 +84,20 @@ namespace CK.WPF.ViewModel
             _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
             _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+        }
+
+        public void TriggerPropertyChanged()
+        {
+            OnTriggerPropertyChanged();
+            OnPropertyChanged( "Keys" );
+            OnPropertyChanged( "Background" );
+            OnPropertyChanged( "BackgroundImagePath" );
+            OnPropertyChanged( "W" );
+            OnPropertyChanged( "H" );
+        }
+
+        protected virtual void OnTriggerPropertyChanged()
+        {
         }
 
         #region OnXXXXX

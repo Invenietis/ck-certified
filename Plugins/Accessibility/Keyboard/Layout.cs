@@ -312,10 +312,10 @@ namespace CK.Keyboard
             Debug.Assert( r.Name == "Layout" );
 
             if( r.GetAttribute( "Width" ) != null )
-                _width = int.Parse( r.GetAttribute( "Width" ) );
+                W = int.Parse( r.GetAttribute( "Width" ) );
 
             if( r.GetAttribute( "Height" ) != null )
-                _height = int.Parse( r.GetAttribute( "Height" ) );            
+                H = int.Parse( r.GetAttribute( "Height" ) );            
 
             r.Read();
 

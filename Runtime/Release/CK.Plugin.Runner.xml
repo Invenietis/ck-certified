@@ -16,19 +16,19 @@
             bound to the global PluginRunner.Apply method execution and can be reused if necessary (by calling ObtainBestPlan again).
             </summary>
         </member>
-        <member name="M:CK.Plugin.Hosting.PlanCalculator.ObtainBestPlan(System.Collections.Generic.Dictionary{System.Object,CK.Plugin.SolvedConfigStatus})">
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.ObtainBestPlan(System.Collections.Generic.Dictionary{System.Object,CK.Plugin.SolvedConfigStatus},System.Boolean)">
             <summary>
             Launches ComputeCombination for each "plugin status combination".
             Gets the lower cost among all the combinations generated.
             </summary>
         </member>
-        <member name="M:CK.Plugin.Hosting.PlanCalculator.ComputeCombination">
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.ComputeCombination(System.Boolean)">
             <summary>
             Launches ComputeElementCost on each plugin that can be found in the parseMap set as parameter
             </summary>
             <returns>the cost of the parseMap set as parameter</returns>
         </member>
-        <member name="M:CK.Plugin.Hosting.PlanCalculator.ComputeElementCost(System.Int32)">
+        <member name="M:CK.Plugin.Hosting.PlanCalculator.ComputeElementCost(System.Int32,System.Boolean)">
             <summary>
             Gets the index of the plugin which cost to calculate, together with the current parseMap
             Returns how much launching (or not) this plugin costs.
@@ -56,7 +56,7 @@
         </member>
         <member name="P:CK.Plugin.Hosting.PlanCalculator.LastBestPlan">
             <summary>
-            Gets the last (the current) execution plan computed by <see cref="M:CK.Plugin.Hosting.PlanCalculator.ObtainBestPlan(System.Collections.Generic.Dictionary{System.Object,CK.Plugin.SolvedConfigStatus})"/>
+            Gets the last (the current) execution plan computed by <see cref="M:CK.Plugin.Hosting.PlanCalculator.ObtainBestPlan(System.Collections.Generic.Dictionary{System.Object,CK.Plugin.SolvedConfigStatus},System.Boolean)"/>
             that is not impossible
             </summary>
         </member>
@@ -98,6 +98,13 @@
             <summary>
             Unused by this implementation (snapshot).
             </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PluginRunner.Apply(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="keepRunningLaunchedOptionals">if false, all plugins that are "optional" but are already launched will be stopped</param>
+            <returns></returns>
         </member>
         <member name="T:CK.Plugin.Hosting.RequirementLayerSnapshot">
             <summary>

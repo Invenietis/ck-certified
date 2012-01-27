@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CK.Plugin;
+using System.ComponentModel;
 
 namespace CommonServices
 {
@@ -11,6 +12,10 @@ namespace CommonServices
         int TimeBeforeCountDownStarts { get; set; }
         int CountDownDuration { get; set; }
 
+        /// <summary>
+        /// Event fired when a property on the IMouseWatcher implementation changes.
+        /// </summary>
+        event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Event fired when the MouseWatcher starts to count.

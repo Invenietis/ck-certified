@@ -168,10 +168,16 @@
             </param>
             <returns>The configuration value associated to the triplet object/plugin/key.</returns>
         </member>
-        <member name="M:CK.Plugin.Config.IConfigContainer.ClearAll">
+        <member name="M:CK.Plugin.Config.IConfigContainer.DestroyAll">
             <summary>
             Clear all data contained by this container.
             Objects and plugins are removed.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.IConfigContainer.ClearAll">
+            <summary>
+            Empty all data contained by this container.
+            Objects and plugins are NOT removed.
             </summary>
         </member>
         <member name="M:CK.Plugin.Config.IConfigContainer.Set(System.Object,CK.Core.INamedVersionedUniqueId,System.String,System.Object)">
@@ -465,34 +471,27 @@
             It is always available (if <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Obj"/> is not null, this collection contains it).
             </summary>
         </member>
-        <member name="F:CK.Plugin.Config.ConfigChangedEventArgs.PluginId">
-            <summary>
-            The <see cref="T:CK.Core.INamedVersionedUniqueId"/> that uniquely identifies the plugin whose configuration has changed if there is only one plugin concerned. 
-            If multiple plugins are concerned (such as when an object is cleared) this field is null and <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.MultiPluginId"/> must be used. 
-            </summary>
-        </member>
         <member name="F:CK.Plugin.Config.ConfigChangedEventArgs.MultiPluginId">
             <summary>
             The plugins whose configuration have changed.
-            It is always available (if <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.PluginId"/> is not null, this collection contains it).
             </summary>
         </member>
         <member name="F:CK.Plugin.Config.ConfigChangedEventArgs.Key">
             <summary>
             The name of the entry whose configuration has changed. 
-            Null if the configuration, the object, the plugin or the association (by <see cref="!:IConfigContainer.Remove(object,INamedVersionedUniqueId)"/>) has been cleared (<see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Status"/> is <see cref="F:CK.Core.ChangeStatus.ContainerClear"/>).
+            Null if the configuration, the object, the plugin or the association (by <see cref="!:IConfigContainer.Remove(object,INamedVersionedUniqueId)"/>) has been cleared (<see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Status"/> is <see cref="F:CK.Core.ChangeStatus.ContainerClear"/> or <see cref="F:CK.Core.ChangeStatus.ContainerDestroy"/>).
             </summary>
         </member>
         <member name="F:CK.Plugin.Config.ConfigChangedEventArgs.Value">
             <summary>
             The new value when <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Key"/> is not null and <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Status"/> is <see cref="F:CK.Core.ChangeStatus.Update"/> or <see cref="F:CK.Core.ChangeStatus.Add"/>.
-            Null when <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Status"/> is <see cref="F:CK.Core.ChangeStatus.Delete"/> or <see cref="F:CK.Core.ChangeStatus.ContainerClear"/>.
+            Null when <see cref="F:CK.Plugin.Config.ConfigChangedEventArgs.Status"/> is <see cref="F:CK.Core.ChangeStatus.Delete"/> or <see cref="F:CK.Core.ChangeStatus.ContainerClear"/> or <see cref="F:CK.Core.ChangeStatus.ContainerDestroy"/>.
             </summary>
         </member>
         <member name="F:CK.Plugin.Config.ConfigChangedEventArgs.Status">
             <summary>
             Status of the change. 
-            Can be <see cref="F:CK.Core.ChangeStatus.Update"/>, <see cref="F:CK.Core.ChangeStatus.Add"/>,  <see cref="F:CK.Core.ChangeStatus.Delete"/> or <see cref="F:CK.Core.ChangeStatus.ContainerClear"/>.
+            Can be <see cref="F:CK.Core.ChangeStatus.Update"/>, <see cref="F:CK.Core.ChangeStatus.Add"/>,  <see cref="F:CK.Core.ChangeStatus.Delete"/> or <see cref="F:CK.Core.ChangeStatus.ContainerClear"/> or <see cref="F:CK.Core.ChangeStatus.ContainerDestroy"/>.
             </summary>
         </member>
         <member name="F:CK.Plugin.Config.ConfigChangedEventArgs.IsAllPluginsConcerned">
@@ -513,8 +512,15 @@
         <member name="P:CK.Plugin.Config.ConfigChangedEventArgs.IsClearAll">
             <summary>
             Gets whether this change is the result of a <see cref="M:CK.Plugin.Config.IConfigContainer.ClearAll"/>.
+            Meaning that objects have been emptied, but not destroyed
             </summary>
             <returns>True if the whole configuration is cleared.</returns>
+        </member>
+        <member name="P:CK.Plugin.Config.ConfigChangedEventArgs.IsDestroyedAll">
+            <summary>
+            Gets whether this change is the result of a <see cref="M:CK.Plugin.Config.IConfigContainer.DestroyAll"/>.
+            </summary>
+            <returns>True if the whole configuration is destroyed.</returns>
         </member>
         <member name="T:CK.Plugin.Config.IObjectPluginAssociation">
             <summary>

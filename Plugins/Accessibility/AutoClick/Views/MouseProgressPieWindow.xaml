@@ -10,8 +10,7 @@
             ShowInTaskbar="False"
             AllowsTransparency="True"
             Background="Transparent"            
-            Topmost="True"        
-        >
+            Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,9 +22,9 @@
     </Window.Resources>
     <StackPanel>
         <Viewbox>
-            <views:WPFClickTypeWatch IsEnabled="False" Visibility="{Binding ShowMousePanel, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" Template="{StaticResource PieProgressBarTemplate}"
-                                         Width="20" Height="20"
-                                         BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}" />
+            <views:WPFClickTypeWatch IsEnabled="False" Visibility="{Binding ShowMousePanel, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                     Template="{StaticResource PieProgressBarTemplate}" Width="20" Height="20"
+                                     BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}" />
         </Viewbox>
     </StackPanel>
 </Window>

@@ -15,12 +15,20 @@ using CK.WPF.ViewModel;
 using System.Windows;
 using CK.Plugin.Config;
 using System.Windows.Forms;
+using CK.Core;
+using System.ComponentModel;
 
 namespace CK.Plugins.AutoClick
 {
-    [Plugin( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", PublicName = "AutoClick Plugin", Version = "1.0.0", Categories = new string[] { "Advanced" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
     public class AutoClick : VMBase, IPlugin
     {
+        const string PluginGuidString = "{989BE0E6-D710-489e-918F-FBB8700E2BB2}";
+        Guid PluginGuid = new Guid( PluginGuidString );
+        const string PluginIdVersion = "1.0.0";
+        const string PluginPublicName = "AutoClick Plugin";
+        public readonly INamedVersionedUniqueId PluginId;
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
 
@@ -74,6 +82,7 @@ namespace CK.Plugins.AutoClick
                 {
                     _togglePauseCommand = new VMCommand( () => { if( IsPaused ) Resume( this ); else Pause( this ); } );
                 }
+
                 return _togglePauseCommand;
             }
         }
@@ -112,12 +121,12 @@ namespace CK.Plugins.AutoClick
 
         public int TimeBeforeCountDownStarts 
         { 
-            get { return (int)Config.Context["TimeBeforeCountDownStarts"]; }
+            get { return (int)Config.User["TimeBeforeCountDownStarts"]; }
         }
 
         public int CountDownDuration
         {
-            get { return (int)Config.Context["CountDownDuration"]; }
+            get { return (int)Config.User["CountDownDuration"]; }
         }
 
         #region IPlugin Members
@@ -129,7 +138,7 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
-            throw new Exception( "C'est la folie" );
+            _isPaused = true;
             bool isFirstLaunch = false;
             _selector = new StdClickTypeSelector( this );
             _wpfStandardClickTypeWindow = new WPFStdClickTypeWindow() { DataContext = this };
@@ -153,10 +162,10 @@ namespace CK.Plugins.AutoClick
             _mouseWindow = new MouseProgressPieWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
 
-            Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( Config_ConfigChanged );
+            Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             ConfigureMouseWatcher();
             RegisterEvents();
-
+            
             _mouseWindow.Show();
 
             if( isFirstLaunch )
@@ -182,7 +191,7 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
-            Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( Config_ConfigChanged );
+            Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             UnregisterEvents();
             Config.User["AutoClickWindowWidth"] = (int)_wpfStandardClickTypeWindow.Width;
             Config.User["AutoClickWindowHeight"] = (int)_wpfStandardClickTypeWindow.Height;
@@ -216,72 +225,80 @@ namespace CK.Plugins.AutoClick
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Config_ConfigChanged( object sender, ConfigChangedEventArgs e )
+        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            switch( e.Key )
+            if( e.MultiPluginId.Any( ( c ) => String.Compare( "989BE0E6-D710-489e-918F-FBB8700E2BB2", c.UniqueId.ToString(), true ) == 0 ) && !String.IsNullOrEmpty( e.Key ) )
             {
-                case "TimeBeforeCountDownStarts":
-                    MouseWatcher.TimeBeforeCountDownStarts = (int)e.Value;
-                    break;
-                case "CountDownDuration":
-                    MouseWatcher.CountDownDuration = (int)e.Value;
-                    break;
-                case "ShowMousePanelOption":
-                    break;
-                default:
-                    return;
-            }
+                switch( e.Key )
+                {
+                    case "TimeBeforeCountDownStarts":
+                        MouseWatcher.TimeBeforeCountDownStarts = (int)e.Value;
+                        break;
+                    case "CountDownDuration":
+                        MouseWatcher.CountDownDuration = (int)e.Value;
+                        break;
+                    case "ShowMousePanelOption":
+                        break;
+                    default:
+                        return;
+                }
 
-            OnPropertyChanged( e.Key );
+                OnPropertyChanged( e.Key );
+            }
         }
 
-            void MouseDriver_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        void OnMouseDriverServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopped )
             {
-                if( e.Current == RunningStatus.Stopped )
-                {
-                    MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
-                }
+                MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
             }
+        }
 
-            void OnPointerMove( object sender, PointerDeviceEventArgs e )
-            {
-                _mouseWindow.Left = e.X + 10;
-                _mouseWindow.Top = e.Y - 20;
-            }
+        void OnPointerMove( object sender, PointerDeviceEventArgs e )
+        {
+            _mouseWindow.Left = e.X + 10;
+            _mouseWindow.Top = e.Y - 20;
+        }
 
-            private void OnEditorWindowVisibilityChanged( object sender, DependencyPropertyChangedEventArgs e )
-            {
-                OnPropertyChanged( "IsEditorOpened" );
-            }        
+        private void OnEditorWindowVisibilityChanged( object sender, DependencyPropertyChangedEventArgs e )
+        {
+            OnPropertyChanged( "IsEditorOpened" );
+        }
 
-            private void OnClickCancelled( object sender, EventArgs e )
-            {
-                OnPropertyChanged( "ProgressValue" );
-                //TODO Nice animation to show that the click has failed ?
-            }
+        private void OnClickCancelled( object sender, EventArgs e )
+        {
+            OnPropertyChanged( "ProgressValue" );
+            //TODO Nice animation to show that the click has failed ?
+        }
 
-            private void OnHasPaused( object sender, EventArgs e )
-            {
-                _isPaused = true;
-                OnPropertyChanged( "ProgressValue" );
-            }
+        private void OnHasPaused( object sender, EventArgs e )
+        {
+            _isPaused = true;
+            OnPropertyChanged( "ProgressValue" );
+        }
 
-            private void OnHasResumed( object sender, EventArgs e )
-            {
-                _isPaused = false;
-            }
+        private void OnHasResumed( object sender, EventArgs e )
+        {
+            _isPaused = false;
+        }
 
-            private void OnProgressValueChanged( object sender, AutoClickProgressValueChangedEventArgs e )
-            {
-                OnPropertyChanged( "ProgressValue" );
-            }
+        private void OnProgressValueChanged( object sender, AutoClickProgressValueChangedEventArgs e )
+        {
+            OnPropertyChanged( "ProgressValue" );
+        }
 
-            private void OnClickAsked( object sender, EventArgs e )
-            {
-                //Asking for a click, the IClickTypeSelector will respond via the ClickTypeChosenEvent
-                //TODO : Nice animation ?
-                _selector.AskClickType();
-            }
+        private void OnClickAsked( object sender, EventArgs e )
+        {
+            //Asking for a click, the IClickTypeSelector will respond via the ClickTypeChosenEvent
+            //TODO : Nice animation ?
+            _selector.AskClickType();
+        }
+
+        private void OnMouseWatcherPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            OnPropertyChanged( e.PropertyName );
+        }
 
         #endregion
 
@@ -296,11 +313,12 @@ namespace CK.Plugins.AutoClick
                 MouseWatcher.ClickCanceled += new EventHandler( OnClickCancelled );
                 MouseWatcher.HasPaused += new EventHandler( OnHasPaused );
                 MouseWatcher.HasResumed += new EventHandler( OnHasResumed );
+                MouseWatcher.PropertyChanged += new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
                 _selector.AutoClickClickTypeChosen += new ClickTypeChosenEventHandler( SendClick );
                 _selector.AutoClickResumeEvent += new AutoClickResumeEventHandler( Resume );
                 _selector.AutoClickStopEvent += new AutoClickStopEventHandler( Pause );
 
-                MouseDriver.ServiceStatusChanged += new EventHandler<ServiceStatusChangedEventArgs>( MouseDriver_ServiceStatusChanged );
+                MouseDriver.ServiceStatusChanged += new EventHandler<ServiceStatusChangedEventArgs>( OnMouseDriverServiceStatusChanged );
             }
         private void UnregisterEvents()
         {
@@ -312,6 +330,7 @@ namespace CK.Plugins.AutoClick
             MouseWatcher.ClickCanceled -= new EventHandler( OnClickCancelled );
             MouseWatcher.HasPaused -= new EventHandler( OnHasPaused );
             MouseWatcher.HasResumed -= new EventHandler( OnHasResumed );
+            MouseWatcher.PropertyChanged -= new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
             _selector.AutoClickClickTypeChosen -= new ClickTypeChosenEventHandler( SendClick );
             _selector.AutoClickResumeEvent -= new AutoClickResumeEventHandler( Resume );
             _selector.AutoClickStopEvent -= new AutoClickStopEventHandler( Pause );
@@ -337,14 +356,14 @@ namespace CK.Plugins.AutoClick
                 int newValue = CountDownDuration;
                 if( CountDownDuration + value > 0 )
                     newValue = CountDownDuration + value;
-                Config.Context[property] = newValue;
+                Config.User[property] = newValue;
             }
             else if( property == "TimeBeforeCountDownStarts" )
             {
                 int newValue = TimeBeforeCountDownStarts;
                 if( TimeBeforeCountDownStarts + value > 0 )
                     newValue = TimeBeforeCountDownStarts + value;
-                Config.Context[property] = newValue;
+                Config.User[property] = newValue;
             }
             OnPropertyChanged( property );
         }

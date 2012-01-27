@@ -4,13 +4,14 @@ using CK.Plugin;
 using System.Diagnostics;
 using System.Windows.Threading;
 using CK.Plugin.Config;
+using System.ComponentModel;
 
 namespace MouseWatcher
 {
     /// <summary>
     /// This plugin watches the MousePointer, and indicates whether is hasn't been moving since a certain period of time (that can be set via <see cref="TimeBeforeCountDownStarts"/>).
-    /// it also provides the progress value (from 0 to 100) accordingly to the 
-    /// Provides only one instance of watchers ,wo pugins can't use it with different configurations, the last to be set is the one used.
+    /// it also provides the progress value (from 0 to 100) accordingly to the time set
+    /// Provides only one instance of watchers, two plugins can't use it with different configurations, the last to be set is the one used.
     /// </summary>
     [Plugin( "{D4D8660C-973B-46d3-8414-6FCC02AD74F5}", PublicName = "Mouse Watcher", Version = "1.0.0", Categories = new string[] { "Advanced" } )]
     public class MouseWatcher : IPlugin, IMouseWatcher
@@ -20,7 +21,11 @@ namespace MouseWatcher
 
         public IPluginConfigAccessor Config { get; set; }
 
-        private bool _isPaused = false;
+        Stopwatch _progressStopwatch = new Stopwatch(); //Watch used for the progressbar
+        DispatcherTimer _idleTimer = new DispatcherTimer(); //Watch used to launch the progressStopwatch
+        DispatcherTimer _updateTimer = new DispatcherTimer(); //Used to keep the view updated
+
+        private bool _isPaused = true;
         public bool IsPaused
         {
             get { return _isPaused; }
@@ -33,10 +38,6 @@ namespace MouseWatcher
             }
         }
 
-        Stopwatch _progressStopwatch = new Stopwatch(); //Watch used for the progressbar
-        DispatcherTimer _idleTimer = new DispatcherTimer(); //Watch used to launch the progressStopwatch
-        DispatcherTimer _updateTimer = new DispatcherTimer(); //Used to keep the view updated
-
         private int _countDownDuration;
         public int CountDownDuration { 
             get { return _countDownDuration; } 
@@ -45,9 +46,11 @@ namespace MouseWatcher
                 if( value < 100 )
                     _countDownDuration = 100;
                 else
-                    _countDownDuration = value;                
+                    _countDownDuration = value;
+                if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( "CountDownDuration" ) );
             } 
         }
+
         private int _timeBeforeCountDownStarts;
         public int TimeBeforeCountDownStarts { 
             get { return _timeBeforeCountDownStarts; } 
@@ -59,7 +62,8 @@ namespace MouseWatcher
                     _timeBeforeCountDownStarts = value;
 
                 _idleTimer.Interval = new TimeSpan( 0, 0, 0, 0, TimeBeforeCountDownStarts );
-            } 
+                if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( "TimeBeforeCountDownStarts" ) );
+            }
         }
 
         #region IPlugin Members
@@ -98,6 +102,8 @@ namespace MouseWatcher
         #endregion
 
         #region IMouseWatcher Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public event AutoClickCountDownEventHandler StartingCountDown;
 

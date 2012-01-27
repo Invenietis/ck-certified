@@ -68,6 +68,38 @@ namespace SimpleSkinEditor
             Zones = new VMCollection<LayoutZoneViewModel, ILayoutZone>( _ctx.CurrentKeyboard.CurrentLayout.LayoutZones, FindOrCreate );
 
             _ctx.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
+            _config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnLayoutConfigChanged );
+        }
+
+        void OnLayoutConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.MultiPluginId.Any( ( c ) => String.Compare(c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", true ) == 0 ) )
+            {
+                switch( e.Key )
+                {
+                    case "Background":
+                    case "HoverBackground":
+                    case "PressedBackground":
+                    case "FontSize":
+                    case "FontWeight":
+                    case "FontSizes":
+                    case "FontStyle":
+                    case "TextDecorations":                      
+                    case "FontColor":
+                        NotifyOfPropertyChange( () => Background );
+                        NotifyOfPropertyChange( () => HoverBackground );
+                        NotifyOfPropertyChange( () => PressedBackground );
+                        NotifyOfPropertyChange( () => FontSize );
+                        NotifyOfPropertyChange( () => FontWeight );
+                        NotifyOfPropertyChange( () => FontSizes );
+                        NotifyOfPropertyChange( () => FontStyle );    
+                        NotifyOfPropertyChange( () => TextDecorations );
+                        NotifyOfPropertyChange( () => FontColor );
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         LayoutZoneViewModel FindOrCreate( ILayoutZone model )
@@ -84,14 +116,18 @@ namespace SimpleSkinEditor
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            //When switching user, all Keyboards are destroyed, so the CurrentKeyboard is null
             if( e.Previous != null ) e.Previous.CurrentLayoutChanged -= new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
-            if( e.Current != null ) e.Current.CurrentLayoutChanged += new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
+            if( e.Current != null )
+            {
+                e.Current.CurrentLayoutChanged += new EventHandler<KeyboardCurrentLayoutChangedEventArgs>( OnCurrentLayoutChanged );
 
-            _zoneCache.Clear();
-            Zones.Refresh();
-
-            Refresh();
+                _zoneCache.Clear();
+                Zones.Refresh();
+                Zones = new VMCollection<LayoutZoneViewModel, ILayoutZone>( _ctx.CurrentKeyboard.CurrentLayout.LayoutZones, FindOrCreate );
+                ToggleCurrentKeyboardAsHolder();
+                NotifyOfPropertyChange( () => Zones );
+                Refresh();
+            }
         }
 
         void OnCurrentLayoutChanged( object sender, KeyboardCurrentLayoutChangedEventArgs e )

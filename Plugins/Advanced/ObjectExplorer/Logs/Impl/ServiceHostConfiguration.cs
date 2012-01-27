@@ -33,14 +33,19 @@ namespace CK.Plugins.ObjectExplorer
 
         public ServiceLogEventOptions GetOptions( System.Reflection.EventInfo e )
         {
+            if( !_logConfig.DoLog ) return ServiceLogEventOptions.None;
+
             foreach( ILogServiceConfig s in _logConfig.Services )
             {
-                if( e.DeclaringType.FullName == s.Name )
+                if( e.DeclaringType.FullName == s.Name)
                 {
+                    if( !s.DoLog ) return ServiceLogEventOptions.None;
+
                     foreach( ILogEventConfig lE in s.Events )
                     {
                         if( lE.Name == e.Name )
                         {
+                            if( !lE.DoLog ) return ServiceLogEventOptions.None;
                             return lE.LogOptions;
                         }
                     }
@@ -52,14 +57,19 @@ namespace CK.Plugins.ObjectExplorer
 
         public ServiceLogMethodOptions GetOptions( System.Reflection.MethodInfo m )
         {
+            if( !_logConfig.DoLog ) return ServiceLogMethodOptions.None;
+
             foreach( ILogServiceConfig s in _logConfig.Services )
             {
                 if( m.DeclaringType.FullName == s.Name )
                 {
+                    if( !s.DoLog ) return ServiceLogMethodOptions.None;
+
                     foreach( ILogMethodConfig lM in s.Methods )
                     {
                         if( lM.GetSimpleSignature() == m.GetSimpleSignature() )
                         {
+                            if( !lM.DoLog ) return ServiceLogMethodOptions.None;
                             return lM.LogOptions;
                         }
                     }

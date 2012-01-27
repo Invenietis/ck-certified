@@ -18,6 +18,9 @@ namespace CommonServices
     public delegate void LogTriggeredEventHandler( object sender, LogTriggeredEventArgs e );
     public class LogTriggeredEventArgs : EventArgs
     {
+        DateTime _triggerTime;
+        public DateTime TriggerTime { get { return _triggerTime; } }
+
         string _logLevel;
         public string LogLevel { get { return _logLevel; } }
 

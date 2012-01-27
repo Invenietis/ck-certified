@@ -395,7 +395,11 @@
                                                             <Border Style="{StaticResource roundedBorder}" Padding="5" Margin="2">
                                                                 <StackPanel Orientation="Vertical">
                                                                     <TextBlock Text="{Binding Index, StringFormat=0\.}" />
-                                                                    <TextBlock Text="{Binding Message}" />
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="Trigger date : "/>
+                                                                    <TextBlock Text="{Binding TriggeredTime}"/>
+                                                                </StackPanel>
+                                                                <TextBlock Text="{Binding Message}" />
                                                                 </StackPanel>
                                                             </Border>
                                                         </DataTemplate>

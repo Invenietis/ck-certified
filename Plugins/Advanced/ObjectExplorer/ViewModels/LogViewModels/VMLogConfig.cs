@@ -530,12 +530,15 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         {
             _message = message;
             _index = index;
+            _triggeredTime = DateTime.UtcNow;
         }
 
         public string Message { get { return _message; } }
         public int Index { get { return _index; } }
+        public DateTime TriggeredTime { get { return _triggeredTime; } }
 
         string _message;
         int _index;
+        DateTime _triggeredTime;
     }
 }

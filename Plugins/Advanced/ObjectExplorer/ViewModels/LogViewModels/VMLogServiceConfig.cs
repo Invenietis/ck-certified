@@ -21,9 +21,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             VMLogServiceConfig result = new VMLogServiceConfig( s.ServiceFullName, true );
             result._holder = holder;
             result.Config = result._holder.Config;
-            
-            if( result.Config.User[result._dataPath + " ServiceDoLog"] == null ) result._doLog = true;
-            else result._doLog = (bool)result.Config.User[result._dataPath + " ServiceDoLog"];
+
+            result.DoLog = result.Config.User.GetOrSet( result._doLogDataPath, true );
 
             foreach( ISimpleEventInfo e in s.EventsInfoCollection )
             {
@@ -110,6 +109,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         public event EventHandler ServiceApplyAsked;
         bool _isDirty;
         string _dataPath;
+        string _doLogDataPath;
         ICommand _applyCommand;
         ICommand _modifyCommand;
         ICommand _cancelCommand;
@@ -272,7 +272,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         public VMLogServiceConfig(string name, bool isBound)
             : base(name, isBound)
         {
-            _dataPath = this.Name;            
+            _dataPath = this.Name;
+            _doLogDataPath = _dataPath + "-ServiceDoLog";
 
             _methods = new ObservableCollection<VMLogMethodConfig>();
             _methodsEx = new ReadOnlyCollectionTypeConverter<ILogMethodConfig, VMLogMethodConfig>( _methods, ( m ) => { return (ILogMethodConfig)m; } );
@@ -295,7 +296,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         internal void UpdatePropertyBag()
         {
-            Config.User[_dataPath + " ServiceDoLog"] = DoLog;
+            Config.User.Set( _doLogDataPath, DoLog );
             
             foreach( VMLogEventConfig e in Events )
             {

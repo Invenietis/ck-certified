@@ -180,9 +180,11 @@
     </Compile>
     <Compile Include="UI\AttachedProperties\AutoExpand.cs" />
     <Compile Include="UI\AttachedProperties\CustomEnabling.cs" />
+    <Compile Include="UI\AttachedProperties\ListBoxAttachedProperties.cs" />
     <Compile Include="UI\AttachedProperties\TypeAheadBehaviour.cs" />
     <Compile Include="UI\Converters\EnumDisplayer.cs" />
     <Compile Include="UI\Converters\NXORConverter.cs" />
+    <Compile Include="UI\Converters\OrConverter.cs" />
     <Compile Include="UI\Converters\ScrollBarConverters.cs" />
     <Compile Include="UI\Converters\SimpleStringFormatConverter.cs" />
     <Compile Include="UI\Converters\MultiStringFormatConverter.cs" />

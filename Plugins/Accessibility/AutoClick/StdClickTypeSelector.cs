@@ -15,7 +15,7 @@ namespace CK.Plugins.AutoClick
     public class StdClickTypeSelector : CK.WPF.ViewModel.VMBase, IClickTypeSelector
     {
 
-        #region Variables & Properties        
+        #region Variables & Properties
 
         private ICommand _incrementTimeBeforeCountDownStartsCommand;
         public ICommand IncrementTimeBeforeCountDownStartsCommand
@@ -67,10 +67,10 @@ namespace CK.Plugins.AutoClick
                 }
                 return _decrementCountDownDurationCommand;
             }
-        }        
+        }
 
-        public int TimeBeforeCountDownStarts { get { return _holder.MouseWatcher.TimeBeforeCountDownStarts ;} }
-        public int CountDownDuration { get { return _holder.MouseWatcher.CountDownDuration; } }
+        public int TimeBeforeCountDownStarts { get { return _holder.MouseWatcher.Service.TimeBeforeCountDownStarts; } }
+        public int CountDownDuration { get { return _holder.MouseWatcher.Service.CountDownDuration; } }
 
         private AutoClick _holder;
 

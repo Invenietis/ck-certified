@@ -150,7 +150,8 @@ namespace MouseWatcher
 
         private void ProgressCompleted()
         {
-            StartProgressWatch(); //Back to second state directly (to enable pretty quick multiple clicks on the same button)
+            LaunchTimers(); //Back to the first state
+
             if( LaunchClick != null )
                 LaunchClick( this, EventArgs.Empty );
         }

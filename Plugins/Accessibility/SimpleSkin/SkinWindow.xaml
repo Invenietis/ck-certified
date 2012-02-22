@@ -4,10 +4,9 @@
     xmlns:view="http://shemas.civikey.org/StandardViews"
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
-    Background="Transparent" WindowStyle="None"
-    Topmost="True" WindowStartupLocation="Manual"
-    Left="{Binding Mode=TwoWay, Path=X}" Top="{Binding Mode=TwoWay, Path=Y}"
-    Width="{Binding Mode=TwoWay, Path=ViewportWidth}" Height="{Binding Mode=TwoWay, Path=ViewportHeight}"
+    WindowStartupLocation="Manual"
+    Left="{Binding Mode=TwoWay, Path=Keyboard.X}" Top="{Binding Mode=TwoWay, Path=Keyboard.Y}"
+    Width="{Binding Mode=TwoWay, Path=Keyboard.ViewportWidth}" Height="{Binding Mode=TwoWay, Path=Keyboard.ViewportHeight}"
     Title="Simple skin">
     <Window.Resources>
         
@@ -18,10 +17,10 @@
             <Setter Property="Height" Value="{Binding H}" />
             <Setter Property="Keys" Value="{Binding Keys}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Keyboard.Background, Converter={StaticResource notnull}}" Value="true">
+                <DataTrigger Binding="{Binding Path=Background, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="Background" Value="{Binding Background}"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Keyboard.BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
+                <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
                 </DataTrigger>
             </Style.Triggers>

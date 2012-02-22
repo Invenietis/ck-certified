@@ -26,7 +26,7 @@ namespace LogPlugin
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "ServiceLogs";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
-        
+
         static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<ServiceLogs>();
 
         EventHandler<LogEventArgs> _hCreating;
@@ -57,6 +57,15 @@ namespace LogPlugin
             Context.LogCenter.EventCreating += _hCreating;
             Context.LogCenter.EventCreated += _hCreated;
             _buffer = new StringWriter();
+            foreach( ILogErrorCaught error in Context.LogCenter.UntrackedErrors )
+            {
+                LogHostEventArgs e = error as LogHostEventArgs;
+                if( e != null )
+                {
+                    if( e.IsCreating ) OnEventCreating( this, e );
+                    else OnEventCreated( this, e );
+                }
+            }
         }
 
         public void Stop()
@@ -77,7 +86,7 @@ namespace LogPlugin
         {
             _buffer.GetStringBuilder().Length = 0;
             Process( _buffer, e );
-            Log( _buffer.GetStringBuilder().ToString(), Common.Logging.LogLevel.Info );            
+            Log( e, _buffer.GetStringBuilder().ToString(), Common.Logging.LogLevel.Info );
         }
 
         void OnEventCreated( object sender, LogEventArgs e )
@@ -87,7 +96,7 @@ namespace LogPlugin
             string message = _buffer.GetStringBuilder().ToString();
             if( er != null )
             {
-                Log( message, Common.Logging.LogLevel.Error );
+                Log( e, message, Common.Logging.LogLevel.Error );
                 bool errorLogCreated;
                 using( var fileLog = CrashLogManager.CreateNew( "errorLog" ) )
                 {
@@ -107,7 +116,7 @@ namespace LogPlugin
                     }
                 }
             }
-            else Log( message, Common.Logging.LogLevel.Info );
+            else Log( e, message, Common.Logging.LogLevel.Info );
         }
 
         /// <summary>
@@ -121,15 +130,28 @@ namespace LogPlugin
                 CrashLogWriter.WriteLineProperty( w, "Entering", e.GetType().Name );
                 WriteLineMember( w, e );
                 WriteLineParameters( w, e );
+                WriteLineReturnValueAndCaller( w, e );
                 return null;
             }
             else
             {
                 CrashLogWriter.WriteLineProperty( w, "Log", e.GetType().Name );
                 WriteLineMember( w, e );
+                WriteLineParameters( w, e );
+                WriteLineReturnValueAndCaller( w, e );
                 NotifyError n = WriteLineError( w, e );
                 w.NewLine = Environment.NewLine + new String( ' ', e.Depth );
                 return n;
+            }
+        }
+
+        private static void WriteLineReturnValueAndCaller( TextWriter w, LogEventArgs e )
+        {
+            var m = e as ILogMethodEntry;
+            if( m != null )
+            {
+                if( m.ReturnValue != null ) CrashLogWriter.WriteLineProperties( w, "Return Value", new object[] { m.ReturnValue.ToString() } );
+                if( m.Caller != null ) CrashLogWriter.WriteLineProperties( w, "Caller", new object[] { m.Caller.ToString() } );
             }
         }
 
@@ -138,7 +160,7 @@ namespace LogPlugin
             var p = e as ILogWithParametersEntry;
             if( p != null )
             {
-                CrashLogWriter.WriteLineProperties( w, "Parameters", p.Parameters );
+                if( p.Parameters != null && p.Parameters.Length > 0 ) CrashLogWriter.WriteLineProperties( w, "Parameters", p.Parameters );
             }
         }
 
@@ -163,7 +185,7 @@ namespace LogPlugin
                             && typeof( ILogErrorCulprit ).IsAssignableFrom( typeof( ILogErrorCaught ) ), "These 2 interfaces both are ILogErrorCulprit." );
             Debug.Assert( typeof( ILogErrorCaught ).IsAssignableFrom( typeof( ILogEventNotRunningError ) ) == false
                             && typeof( ILogEventNotRunningError ).IsAssignableFrom( typeof( ILogErrorCaught ) ) == false, "These 2 interfaces are independant." );
-            
+
             var culprit = e as ILogErrorCulprit;
             if( culprit != null )
             {
@@ -195,42 +217,44 @@ namespace LogPlugin
         {
         }
 
-        
+
         public event LogTriggeredEventHandler LogTriggered;
 
         private void Log( string message, Common.Logging.LogLevel logLevel )
         {
-            
-            switch (logLevel)
-	        {
+            Log( null, message, logLevel );
+        }
+
+        private void Log( LogEventArgs e, string message, Common.Logging.LogLevel logLevel )
+        {
+            switch( logLevel )
+            {
                 case Common.Logging.LogLevel.Debug:
-                    _log.Debug(message);
-                 break;
+                    _log.Debug( message );
+                    break;
                 case Common.Logging.LogLevel.Error:
-                    _log.Error(message);
-                 break;
+                    _log.Error( message );
+                    break;
                 case Common.Logging.LogLevel.Fatal:
-                    _log.Fatal(message);
-                 break;
+                    _log.Fatal( message );
+                    break;
                 case Common.Logging.LogLevel.Info:
-                    _log.Info(message);
-                 break;
                 case Common.Logging.LogLevel.Trace:
-                    _log.Info(message);
-                 break;
+                    _log.Info( message );
+                    break;
                 case Common.Logging.LogLevel.Warn:
-                    _log.Warn(message);
-                 break;
+                    _log.Warn( message );
+                    break;
                 default:
-                    _log.Info(message);
-                 break;
-	        }
+                    _log.Info( message );
+                    break;
+            }
 
             //Enable other plugins to get formatted logs
             if( LogTriggered != null )
             {
-                LogTriggered( this, new LogTriggeredEventArgs( message, logLevel.ToString() ) );
+                LogTriggered( this, new LogTriggeredEventArgs( e, message, logLevel.ToString() ) );
             }
         }
-    }   
+    }
 }

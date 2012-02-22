@@ -33,7 +33,7 @@ namespace CK.Plugins.AutoClick
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IMouseWatcher MouseWatcher { get; set; }
+        public IService<IMouseWatcher> MouseWatcher { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -54,7 +54,7 @@ namespace CK.Plugins.AutoClick
                     {
                         //Ugly fix, waiting for me to really understand how Show/Close/Visiblity work
                         double editorWindowWidth = _editorWindow.ActualWidth == 0 ? _editorWindow.Width : _editorWindow.ActualWidth;
-                        
+
                         double editorLeft = _wpfStandardClickTypeWindow.Left - editorWindowWidth;
                         if( editorLeft > 0 && editorLeft + _editorWindow.ActualWidth < System.Windows.SystemParameters.PrimaryScreenWidth )
                             _editorWindow.Left = editorLeft;
@@ -110,17 +110,17 @@ namespace CK.Plugins.AutoClick
         {
             get { return !_isPaused && _showMousePanelOption; }
         }
-     
+
         /// <summary>
         /// Progression of the click cycle ( 0 to 100)
         /// </summary>
         public int ProgressValue
         {
-            get { return MouseWatcher.ProgressValue; }
-        }        
+            get { return MouseWatcher.Service.ProgressValue; }
+        }
 
-        public int TimeBeforeCountDownStarts 
-        { 
+        public int TimeBeforeCountDownStarts
+        {
             get { return (int)Config.User["TimeBeforeCountDownStarts"]; }
         }
 
@@ -138,6 +138,7 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
+
             _isPaused = true;
             bool isFirstLaunch = false;
             _selector = new StdClickTypeSelector( this );
@@ -165,19 +166,19 @@ namespace CK.Plugins.AutoClick
             Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             ConfigureMouseWatcher();
             RegisterEvents();
-            
+
             _mouseWindow.Show();
 
             if( isFirstLaunch )
             {
                 Config.User["AutoClickWindowLeft"] = (int)_wpfStandardClickTypeWindow.Left;
                 Config.User["AutoClickWindowTop"] = (int)_wpfStandardClickTypeWindow.Top;
-                             
-                _wpfStandardClickTypeWindow.Left = System.Windows.SystemParameters.PrimaryScreenWidth - _wpfStandardClickTypeWindow.Width;
-                _wpfStandardClickTypeWindow.Top = (System.Windows.SystemParameters.PrimaryScreenHeight - _wpfStandardClickTypeWindow.Height)/4;
 
-                _wpfStandardClickTypeWindow.Show(); 
-                
+                _wpfStandardClickTypeWindow.Left = System.Windows.SystemParameters.PrimaryScreenWidth - _wpfStandardClickTypeWindow.Width;
+                _wpfStandardClickTypeWindow.Top = ( System.Windows.SystemParameters.PrimaryScreenHeight - _wpfStandardClickTypeWindow.Height ) / 4;
+
+                _wpfStandardClickTypeWindow.Show();
+
             }
             else
             {
@@ -207,7 +208,7 @@ namespace CK.Plugins.AutoClick
                 if( _editorWindow.IsVisible ) _editorWindow.Close();
             }
 
-            if( _wpfStandardClickTypeWindow != null)
+            if( _wpfStandardClickTypeWindow != null )
             {
                 if( _wpfStandardClickTypeWindow.IsVisible ) _wpfStandardClickTypeWindow.Close();
             }
@@ -232,10 +233,10 @@ namespace CK.Plugins.AutoClick
                 switch( e.Key )
                 {
                     case "TimeBeforeCountDownStarts":
-                        MouseWatcher.TimeBeforeCountDownStarts = (int)e.Value;
+                        MouseWatcher.Service.TimeBeforeCountDownStarts = (int)e.Value;
                         break;
                     case "CountDownDuration":
-                        MouseWatcher.CountDownDuration = (int)e.Value;
+                        MouseWatcher.Service.CountDownDuration = (int)e.Value;
                         break;
                     case "ShowMousePanelOption":
                         break;
@@ -290,8 +291,8 @@ namespace CK.Plugins.AutoClick
 
         private void OnClickAsked( object sender, EventArgs e )
         {
+            OnPropertyChanged( "ProgressValue" );
             //Asking for a click, the IClickTypeSelector will respond via the ClickTypeChosenEvent
-            //TODO : Nice animation ?
             _selector.AskClickType();
         }
 
@@ -302,35 +303,39 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
-        #region Methods 
-       
+        #region Methods
+
         private void RegisterEvents()
-            {
-                MouseDriver.Service.PointerMove += new PointerDeviceEventHandler( OnPointerMove );
+        {
+            MouseDriver.Service.PointerMove += new PointerDeviceEventHandler( OnPointerMove );
 
-                MouseWatcher.LaunchClick += new EventHandler( OnClickAsked );
-                MouseWatcher.ProgressValueChanged += new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );
-                MouseWatcher.ClickCanceled += new EventHandler( OnClickCancelled );
-                MouseWatcher.HasPaused += new EventHandler( OnHasPaused );
-                MouseWatcher.HasResumed += new EventHandler( OnHasResumed );
-                MouseWatcher.PropertyChanged += new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
-                _selector.AutoClickClickTypeChosen += new ClickTypeChosenEventHandler( SendClick );
-                _selector.AutoClickResumeEvent += new AutoClickResumeEventHandler( Resume );
-                _selector.AutoClickStopEvent += new AutoClickStopEventHandler( Pause );
+            MouseWatcher.Service.LaunchClick += new EventHandler( OnClickAsked );
+            MouseWatcher.Service.ProgressValueChanged += new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );
+            MouseWatcher.Service.ClickCanceled += new EventHandler( OnClickCancelled );
+            MouseWatcher.Service.HasPaused += new EventHandler( OnHasPaused );
+            MouseWatcher.Service.HasResumed += new EventHandler( OnHasResumed );
+            MouseWatcher.Service.PropertyChanged += new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
+            _selector.AutoClickClickTypeChosen += new ClickTypeChosenEventHandler( SendClick );
+            _selector.AutoClickResumeEvent += new AutoClickResumeEventHandler( Resume );
+            _selector.AutoClickStopEvent += new AutoClickStopEventHandler( Pause );
 
-                MouseDriver.ServiceStatusChanged += new EventHandler<ServiceStatusChangedEventArgs>( OnMouseDriverServiceStatusChanged );
-            }
+            MouseDriver.ServiceStatusChanged += new EventHandler<ServiceStatusChangedEventArgs>( OnMouseDriverServiceStatusChanged );
+        }
         private void UnregisterEvents()
         {
             if( MouseDriver.Status != RunningStatus.Stopped && MouseDriver.Status != RunningStatus.Disabled )
                 MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
 
-            MouseWatcher.LaunchClick -= new EventHandler( OnClickAsked );
-            MouseWatcher.ProgressValueChanged -= new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );
-            MouseWatcher.ClickCanceled -= new EventHandler( OnClickCancelled );
-            MouseWatcher.HasPaused -= new EventHandler( OnHasPaused );
-            MouseWatcher.HasResumed -= new EventHandler( OnHasResumed );
-            MouseWatcher.PropertyChanged -= new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
+            if( MouseWatcher.Status != RunningStatus.Stopped && MouseWatcher.Status != RunningStatus.Disabled )
+            {
+                MouseWatcher.Service.LaunchClick -= new EventHandler( OnClickAsked );
+                MouseWatcher.Service.ProgressValueChanged -= new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );
+                MouseWatcher.Service.ClickCanceled -= new EventHandler( OnClickCancelled );
+                MouseWatcher.Service.HasPaused -= new EventHandler( OnHasPaused );
+                MouseWatcher.Service.HasResumed -= new EventHandler( OnHasResumed );
+                MouseWatcher.Service.PropertyChanged -= new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
+            }
+
             _selector.AutoClickClickTypeChosen -= new ClickTypeChosenEventHandler( SendClick );
             _selector.AutoClickResumeEvent -= new AutoClickResumeEventHandler( Resume );
             _selector.AutoClickStopEvent -= new AutoClickStopEventHandler( Pause );
@@ -345,8 +350,8 @@ namespace CK.Plugins.AutoClick
             if( Config.User["CountDownDuration"] == null )
                 Config.User["CountDownDuration"] = 2000;
 
-            MouseWatcher.TimeBeforeCountDownStarts = (int)Config.User["TimeBeforeCountDownStarts"];
-            MouseWatcher.CountDownDuration = (int)Config.User["CountDownDuration"];
+            MouseWatcher.Service.TimeBeforeCountDownStarts = (int)Config.User["TimeBeforeCountDownStarts"];
+            MouseWatcher.Service.CountDownDuration = (int)Config.User["CountDownDuration"];
         }
 
         internal void ModifyCountDownConfiguration( string property, int value )
@@ -411,7 +416,7 @@ namespace CK.Plugins.AutoClick
         /// <param name="sender"></param>
         public void Resume( object sender )
         {
-            MouseWatcher.Resume();
+            MouseWatcher.Service.Resume();
             IsPaused = false;
         }
 
@@ -421,7 +426,7 @@ namespace CK.Plugins.AutoClick
         /// <param name="sender"></param>
         public void Pause( object sender )
         {
-            MouseWatcher.Pause();
+            MouseWatcher.Service.Pause();
             IsPaused = true;
         }
 

@@ -19,6 +19,7 @@
     <oe:MultiStringFormatConverter x:Key="MultiStringFormatConverter"/>
     <oe:SimpleStringFormatConverter x:Key="SimpleStringFormatConverter"/>
     <ckwc:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <oe:OrConverter x:Key="OrConverter"/>
 
     <oe:EnumDisplayer Type="{x:Type pm:RunningRequirement}" x:Key="RunningRequirement">
         <oe:EnumDisplayEntry x:Uid="RunningRequirement-optional" EnumValue="Optional" DisplayString="Optional (default)"/>

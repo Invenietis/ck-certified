@@ -145,9 +145,6 @@ namespace CK.WPF.ViewModel
             _keyboards.Add( k );
         }
 
-        //Post 4.0 version (there has been changes in the WPF notify engine, when processing the X binding,
-        //the engine moves the window, which SETS the Y, before processing it
-        //X and Y are now processed specifically through AfterKeyboardChanged
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             if( e.Current != null )

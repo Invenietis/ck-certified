@@ -88,12 +88,13 @@ namespace CK.WPF.ViewModel
 
         public void TriggerPropertyChanged()
         {
+            OnPropertyChanged( "W" );
             OnTriggerPropertyChanged();
             OnPropertyChanged( "Keys" );
             OnPropertyChanged( "Background" );
             OnPropertyChanged( "BackgroundImagePath" );
-            OnPropertyChanged( "W" );
             OnPropertyChanged( "H" );
+            
         }
 
         protected virtual void OnTriggerPropertyChanged()

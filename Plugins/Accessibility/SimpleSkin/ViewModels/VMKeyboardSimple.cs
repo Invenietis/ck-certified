@@ -22,12 +22,9 @@ namespace SimpleSkin.ViewModels
             : base( ctx, kb )
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-
             _viewportHeight = ViewportSize.Height;
             _viewportWidth = ViewportSize.Width;
             System.Drawing.Point p =  CheckPostion();
-            _x = Convert.ToInt32( p.X );
-            _y = Convert.ToInt32( p.Y );
         }
 
         protected override void OnDispose()
@@ -41,40 +38,38 @@ namespace SimpleSkin.ViewModels
             base.OnDispose();
         }
 
+        /// <summary>
+        /// When there is a change of Keyboard, need to handle some PropertyChanges manually
+        /// </summary>
         protected override void OnTriggerPropertyChanged()
         {
-            int y = Y;
-            OnPropertyChanged( "X" );
-            Y = y;
             OnPropertyChanged( "Y" );
-
-            double w = ViewportWidth;
-            OnPropertyChanged( "ViewportHeight" );
-            ViewportWidth = w;
-            OnPropertyChanged( "ViewportWidth" );
-            
-            base.OnTriggerPropertyChanged();
+            OnPropertyChanged( "X" );
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( e.Obj == Layout)
             {
-               if( e.Key == "KeyboardBackground" )
+                switch( e.Key )
                 {
-                    OnPropertyChanged( "Background" );                   
+                    case "KeyboardBackground":
+                        OnPropertyChanged( "Background" );
+                        break;
+                    case "InsideBorderColor":
+                        OnPropertyChanged( "InsideBorderColor" );
+                        break;
+                    case "ViewPortSize":
+                        OnPropertyChanged( "ViewportHeight" );
+                        OnPropertyChanged( "ViewportWidth" );
+                        break;
+                    case "PositionX":
+                        OnPropertyChanged( "X" );
+                        break;
+                    case "PositionY":
+                        OnPropertyChanged( "Y" );
+                        break;
                 }
-               else if( e.Key == "InsideBorderColor" )
-               {
-                   OnPropertyChanged( "InsideBorderColor" );
-               }
-               else if( e.Key == "ViewPortSize" )
-               {
-                   ViewportWidth = ViewportSize.Width;
-                   ViewportHeight = ViewportSize.Height;
-                   OnPropertyChanged( "ViewportWidth" );
-                   OnPropertyChanged( "ViewportHeight" );
-               }
             }
         }
 
@@ -100,8 +95,8 @@ namespace SimpleSkin.ViewModels
                 rect.Width = s.Width;
                 rect.Height = s.Height;
 
-                Context.Config[Layout]["PositionX"] = rect.X;
-                Context.Config[Layout]["PositionY"] = rect.Y;
+                X = rect.X;
+                X = rect.Y;
             }
 
             return rect.Location;
@@ -118,7 +113,7 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public double ViewportWidth
         {
-            get { return _viewportWidth; }
+            get { return ViewportSize.Width; }
             set { _viewportWidth = value; }
         }
 
@@ -127,7 +122,7 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public double ViewportHeight
         {
-            get { return _viewportHeight; }
+            get { return ViewportSize.Height; }
             set { _viewportHeight = value; }
         }
 
@@ -136,8 +131,8 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int X
         {
-            get { return _x; }
-            set { _x = value; }
+            get { return Context.Config[Layout].GetOrSet( "PositionX", 300 ); }
+            set { Context.Config[Layout].Set( "PositionX", value ); }
         }
 
         /// <summary>
@@ -145,8 +140,8 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int Y
         {
-            get { return _y; }
-            set { _y = value; }
+            get { return Context.Config[Layout].GetOrSet( "PositionY", 300 ); }
+            set { Context.Config[Layout].Set( "PositionY", value ); }
         }
 
         public Brush InsideBorderColor 
@@ -163,7 +158,6 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-
                 if( Context.Config[Layout]["KeyboardBackground"] == null )
                 {
                     Context.Config[Layout]["KeyboardBackground"] = "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png";

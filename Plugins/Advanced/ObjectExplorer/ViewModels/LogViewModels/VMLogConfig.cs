@@ -16,6 +16,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 {
     public class VMLogConfig : VMISelectableElement, ILogConfig
     {
+        const string GLOBAL_LOGS = "GlobalLogs";
+        const string OUTPUT_MAX_COUNT = "OutputMaxCount";
 
         #region Variables & Properties
 
@@ -42,12 +44,12 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         /// <summary>
         /// Text that can be seen in the Output Console
         /// </summary>
-        public ObservableCollection<OutputLogEntry> OutputTextArray 
-        { 
+        public ObservableCollection<OutputLogEntry> OutputTextArray
+        {
             get { return _outputTextArray; }
-            set 
-            { 
-                _outputTextArray = value; 
+            set
+            {
+                _outputTextArray = value;
                 OnPropertyChanged( "OutputTextArray" );
             }
         }
@@ -132,11 +134,11 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _clearOutputConsoleCommand == null )
                 {
-                    _clearOutputConsoleCommand = new VMCommand( () => 
-                    { 
+                    _clearOutputConsoleCommand = new VMCommand( () =>
+                    {
                         OutputTextArray.Clear();
                         _logCounter = 0;
-                    });
+                    } );
                 }
                 return _clearOutputConsoleCommand;
             }
@@ -145,7 +147,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         public IPluginConfigAccessor Config { get { return VMIContext.Config; } }
         public object Data { get { return this; } }
         public string Icon { get { return "../LogImages/LogIcon.png"; } }
-        
+
         public VMLogServiceConfig SelectedService
         {
             get
@@ -183,18 +185,9 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         {
             _vmiContext = ctx;
             _services = new ObservableCollection<VMLogServiceConfig>();
-            _servicesEx = new ReadOnlyCollectionTypeConverter<ILogServiceConfig, VMLogServiceConfig>( _services, ( c ) => { return (ILogServiceConfig)c; } );            
+            _servicesEx = new ReadOnlyCollectionTypeConverter<ILogServiceConfig, VMLogServiceConfig>( _services, ( c ) => { return (ILogServiceConfig)c; } );
             _logService = logService;
             _outputTextArray = new ObservableCollection<OutputLogEntry>();
-
-            object maxWidth = ctx.Config.User["log-output-text-array-max-width"];            
-            if( maxWidth == null )
-            {
-                ctx.Config.User["log-output-text-array-max-width"] = 300;
-                _outputTextArrayMaxWidth = 300;
-            }
-            else           
-                _outputTextArrayMaxWidth = (int)maxWidth;            
         }
 
         #endregion
@@ -209,8 +202,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             _services.Clear();
             FillFromDiscoverer( _services );
 
-            if( Config.User["GlobalLogs"] == null ) _doLog = true;
-            else _doLog = (bool)Config.User["GlobalLogs"];
+            _outputTextArrayMaxWidth = Config.User.GetOrSet( OUTPUT_MAX_COUNT, 100 );
+            DoLog = Config.User.GetOrSet( GLOBAL_LOGS, true );
 
             _hostConfiguration = new ServiceHostConfiguration( this );
             _pluginRunner = _vmiContext.Context.GetService<PluginRunner>( true );
@@ -233,7 +226,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             if( OutputTextArray.Count == _outputTextArrayMaxWidth )
                 OutputTextArray.RemoveAt( 0 );
 
-            OutputTextArray.Add( new OutputLogEntry( e.Content, ++_logCounter ) );
+            OutputTextArray.Add( new OutputLogEntry( e.LogEventArgs, e.Content, ++_logCounter ) );
             OnPropertyChanged( "OutputTextArray" );
         }
 
@@ -308,9 +301,9 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         internal void UpdateFrom( IPluginConfigAccessor config )
         {
-            if( config.User["logconfig_dolog"] != null )
+            if( config.User[GLOBAL_LOGS] != null )
             {
-                DoLog = (bool)config.User["logconfig_dolog"];
+                DoLog = (bool)config.User[GLOBAL_LOGS];
             }
             foreach( VMLogServiceConfig service in Services )
             {
@@ -372,12 +365,12 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         /// </summary>
         internal void Apply()
         {
-            ILogConfig l = ((ILogConfig)this).Clone();
+            ILogConfig l = ( (ILogConfig)this ).Clone();
             _hostConfiguration.ApplyConfiguration( l );
             _pluginRunner.ServiceHost.ApplyConfiguration();
 
             _isDirty = false;
-            Config.User["GlobalLogs"] = DoLog;
+            Config.User.Set( GLOBAL_LOGS, DoLog );
 
             foreach( VMLogServiceConfig s in Services )
             {
@@ -484,8 +477,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal void ServiceApply(VMLogServiceConfig service)
-        {            
+        internal void ServiceApply( VMLogServiceConfig service )
+        {
             if( service != null )
             {
                 _hostConfiguration.ApplyConfiguration( service );
@@ -521,24 +514,31 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             return null;
         }
 
-        #endregion      
+        #endregion
     }
 
     public class OutputLogEntry
     {
-        public OutputLogEntry( string message, int index )
+
+        public OutputLogEntry( LogEventArgs e, string message, int index )
         {
+            _logEventArgs = e;
             _message = message;
             _index = index;
-            _triggeredTime = DateTime.UtcNow;
         }
 
-        public string Message { get { return _message; } }
+        public bool IsCreating { get { return _logEventArgs.IsCreating; } }
+        public string UnderlyingType { get { return _logEventArgs.EntryType.ToString(); } }
         public int Index { get { return _index; } }
-        public DateTime TriggeredTime { get { return _triggeredTime; } }
+        public string Message { get { return _message; } }
 
+        public DateTime CreationTimeUtc { get { return _logEventArgs.CreationTimeUtc; } }
+        public Thickness Margin { get { return new Thickness( _logEventArgs.Depth * 2, 2, 0, 2 ); } }
+
+        public LogEventArgs LogObject { get { return _logEventArgs; } }
+
+        LogEventArgs _logEventArgs;
         string _message;
         int _index;
-        DateTime _triggeredTime;
     }
 }

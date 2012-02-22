@@ -23,15 +23,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
                 result.Parameters.Add( new LogParameterInfo( p.ParameterName, p.ParameterType ) );
             }
 
-            result._holder = holder;
-            result._dataPath = result._holder.Name + "_" + result.FullSignature;
-
-            //If there is no config, we set the default one.
-            if( result._holder.Config.User[result._dataPath + "_logoptions"] == null ) result._doLogErrors = true;
-            else result.LogOptions = (ServiceLogMethodOptions)result._holder.Config.User[result._dataPath + "_logoptions"];
-
-            if( holder.Config.User[result._dataPath + "_globaldolog"] == null ) result._doLog = true;
-            else result._doLog = (bool)result._holder.Config.User[result._dataPath + "_globaldolog"];
+            result.LogOptions = result.Config.User.GetOrSet( result._logOptionsDataPath, ServiceLogMethodOptions.LogError );
+            result.DoLog = result.Config.User.GetOrSet( result._doLogDataPath, true );
 
             return result;
         }
@@ -63,6 +56,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         bool _doLogReturnValue;
 
         string _dataPath;
+        string _doLogDataPath;
+        string _logOptionsDataPath;
 
         public string FullSignature
         {
@@ -131,10 +126,17 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         internal VMLogMethodConfig( VMLogServiceConfig holder, string name, string returnType, List<ILogParameterInfo> parameters, bool isBound )
             : base( name, isBound )
         {
-            _holder = holder; 
+            _holder = holder;
+            Config = _holder.Config;
+
             _returnType = returnType;
             _parameters = parameters;
-            _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>( _parameters );            
+            _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>( _parameters );
+
+            _dataPath = _holder.Name + "-" + FullSignature;
+            _doLogDataPath = _dataPath + "-MethodDoLog";
+            _logOptionsDataPath = _dataPath + "-MethodLogOptions";
+
         }
         #endregion
 
@@ -142,8 +144,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         internal void UpdatePropertyBag()
         {
-            _holder.Config.User[_dataPath + "_logoptions"] = GetLogOptions();
-            _holder.Config.User[_dataPath + "_globaldolog"] = DoLog;
+            _holder.Config.User.Set( _logOptionsDataPath, GetLogOptions() );
+            _holder.Config.User.Set( _doLogDataPath, DoLog );
         }
 
         public bool UpdateFrom( ILogMethodConfig m )
@@ -167,11 +169,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         public void UpdateFrom( IPluginConfigAccessor config )
         {
-            string path = this.Name + "_logoptions";
-            if( config.User[path] != null )
-            {
-                LogOptions = (ServiceLogMethodOptions)config.User[path];
-            }
+            LogOptions = config.User.GetOrSet( _logOptionsDataPath, ServiceLogMethodOptions.LogError );
         }
 
         public void ClearConfig()
@@ -183,7 +181,6 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             DoLogParameters = false;
             DoLogLeave = false;
             DoLogReturnValue = false;
-
         }
 
         private void ProcessLogOptions( ServiceLogMethodOptions logOptions )

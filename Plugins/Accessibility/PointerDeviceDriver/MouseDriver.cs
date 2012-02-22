@@ -130,6 +130,8 @@ namespace PointerDeviceDriver
 		/// <param name="buttonInfo">Default button is Left, look at ButtonInfo to see available buttons</param>
 		public void SimulateButtonDown( ButtonInfo buttonInfo, string extraInfo )
 		{
+            unhook = true;
+
 			if( buttonInfo == ButtonInfo.DefaultButton )
 				Win32Wrapper.mouse_event( MouseEventFlags.LEFTDOWN, 0, 0, 0, 0 );
 
@@ -139,6 +141,8 @@ namespace PointerDeviceDriver
 			if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
 				Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEDOWN, 0, 0, 0, 0 );
 		}
+
+        bool unhook = false;
 
 		/// <summary>
 		/// Simulate a ButtonUp Event
@@ -165,6 +169,12 @@ namespace PointerDeviceDriver
 			MouseHookAction action = (MouseHookAction)e.Code;
 			LLMouseHookStruct mouseInfo = (LLMouseHookStruct)Marshal.PtrToStructure( e.lParam, typeof( LLMouseHookStruct ) );
 			MouseMessage mouseMessage = (MouseMessage)e.wParam.ToInt32();
+
+            if( unhook )
+            {
+                //Used to make windows unhook the hook.
+                //Thread.Sleep( 2000 );
+            }
 
 			// We only handle the hook if the hook proc contain informations
 			if( action == MouseHookAction.HC_ACTION )

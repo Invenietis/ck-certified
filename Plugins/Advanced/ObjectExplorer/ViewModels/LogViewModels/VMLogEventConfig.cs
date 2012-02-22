@@ -14,9 +14,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         public static VMLogEventConfig CreateFrom( VMLogServiceConfig holder, ISimpleEventInfo e )
         {
-            VMLogEventConfig result = new VMLogEventConfig(holder, e.Name, 0, true);
+            VMLogEventConfig result = new VMLogEventConfig( holder, e.Name, 0, true );
             result._holder = holder;
-            result._dataPath = result._holder.Name + "_" + result.Name;
 
             //foreach( ISimpleParameterInfo p in e.Parameters )
             //{
@@ -24,11 +23,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             //}
 
             //If there is no config, we set the default one.
-            if( result._holder.Config.User[result._dataPath + "_logoptions"] == null ) result._doLogErrors = true;
-            else result.LogOptions = (ServiceLogEventOptions)result._holder.Config.User[result._dataPath + "_logoptions"];  
-
-            if( result._holder.Config.User[result._dataPath + "_globaldolog"] == null ) result._doLog = true;
-            else result._doLog = (bool)result._holder.Config.User[result._dataPath + "_globaldolog"];
+            result.DoLog = result.Config.User.GetOrSet( result._doLogDataPath, true );
+            result.LogOptions = result.Config.User.GetOrSet( result._logOptionsDataPath, ServiceLogEventOptions.LogErrors );
 
             return result;
         }
@@ -47,6 +43,9 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         #region Properties & Variables
 
         string _dataPath;
+        string _doLogDataPath;
+        string _logOptionsDataPath;
+
         VMLogServiceConfig _holder;
         IList<ILogParameterInfo> _parameters;
         IReadOnlyList<ILogParameterInfo> _parametersEx;
@@ -70,10 +69,10 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             get { return _doLogStartRaise; }
             set { _doLogStartRaise = value; OnPropertyChanged( "DoLogStartRaise" ); OnLogConfigChanged( "DoLogStartRaise" ); }
         }
-        public bool DoLogParameters 
-        { 
+        public bool DoLogParameters
+        {
             get { return _doLogParameters; }
-            set { _doLogParameters = value; OnPropertyChanged("DoLogParameters"); OnLogConfigChanged("DoLogParameters"); } 
+            set { _doLogParameters = value; OnPropertyChanged( "DoLogParameters" ); OnLogConfigChanged( "DoLogParameters" ); }
         }
         public bool DoLogEndRaise
         {
@@ -110,31 +109,36 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         {
             get { return _parametersEx; }
         }
-        
+
         #endregion
 
         #region Constructors
 
-        public VMLogEventConfig(VMLogServiceConfig holder, string name, ServiceLogEventOptions logOptions, bool isBound )
+        public VMLogEventConfig( VMLogServiceConfig holder, string name, ServiceLogEventOptions logOptions, bool isBound )
             : this( holder, name, new List<ILogParameterInfo>(), logOptions, isBound )
         {
         }
 
-        public VMLogEventConfig(VMLogServiceConfig holder, string name, List<ILogParameterInfo> parameters, ServiceLogEventOptions logOptions, bool isBound )
+        public VMLogEventConfig( VMLogServiceConfig holder, string name, List<ILogParameterInfo> parameters, ServiceLogEventOptions logOptions, bool isBound )
             : base( name, isBound )
         {
-            _holder = holder;                 
-            
+            _holder = holder;
+            Config = _holder.Config;
+
+            _dataPath = _holder.Name + "-" + Name;
+            _doLogDataPath = _dataPath + "-EventDoLog";
+            _logOptionsDataPath = _dataPath + "-EventLogOptions";
+
             _parameters = parameters;
             _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>( _parameters );
 
-            _doLogErrors = ((logOptions & ServiceLogEventOptions.LogErrors) == ServiceLogEventOptions.LogErrors);
-            _doLogStartRaise = ((logOptions & ServiceLogEventOptions.StartRaise) == ServiceLogEventOptions.StartRaise);
-            _doLogParameters = ((logOptions & ServiceLogEventOptions.LogParameters) == ServiceLogEventOptions.LogParameters);
-            _doLogEndRaise = ((logOptions & ServiceLogEventOptions.EndRaise) == ServiceLogEventOptions.EndRaise);
-            _doCatchEventWhenServiceStopped = ((logOptions & ServiceLogEventOptions.SilentEventRunningStatusError) == ServiceLogEventOptions.SilentEventRunningStatusError);
-            _doLogCaughtEventWhenServiceStopped = ((logOptions & ServiceLogEventOptions.LogSilentEventRunningStatusError) == ServiceLogEventOptions.LogSilentEventRunningStatusError);
-            _doCatchBadEventHandling = ((logOptions & ServiceLogEventOptions.SilentEventError) == ServiceLogEventOptions.SilentEventError);
+            _doLogErrors = ( ( logOptions & ServiceLogEventOptions.LogErrors ) == ServiceLogEventOptions.LogErrors );
+            _doLogStartRaise = ( ( logOptions & ServiceLogEventOptions.StartRaise ) == ServiceLogEventOptions.StartRaise );
+            _doLogParameters = ( ( logOptions & ServiceLogEventOptions.LogParameters ) == ServiceLogEventOptions.LogParameters );
+            _doLogEndRaise = ( ( logOptions & ServiceLogEventOptions.EndRaise ) == ServiceLogEventOptions.EndRaise );
+            _doCatchEventWhenServiceStopped = ( ( logOptions & ServiceLogEventOptions.SilentEventRunningStatusError ) == ServiceLogEventOptions.SilentEventRunningStatusError );
+            _doLogCaughtEventWhenServiceStopped = ( ( logOptions & ServiceLogEventOptions.LogSilentEventRunningStatusError ) == ServiceLogEventOptions.LogSilentEventRunningStatusError );
+            _doCatchBadEventHandling = ( ( logOptions & ServiceLogEventOptions.SilentEventError ) == ServiceLogEventOptions.SilentEventError );
 
         }
         #endregion
@@ -143,21 +147,21 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         internal void UpdatePropertyBag()
         {
-            _holder.Config.User[_dataPath + "_logoptions"] = GetLogOptions();
-            _holder.Config.User[_dataPath + "_globaldolog"] = DoLog;
+            _holder.Config.User.Set( _logOptionsDataPath, GetLogOptions() );
+            _holder.Config.User.Set( _doLogDataPath, DoLog );
         }
 
-        public bool UpdateFrom(ILogEventConfig l)
+        public bool UpdateFrom( ILogEventConfig l )
         {
             bool hasChanged = false;
 
-            if (l.LogOptions != LogOptions)
+            if( l.LogOptions != LogOptions )
             {
                 ProcessLogOptions( l.LogOptions );
                 hasChanged = true;
             }
 
-            if (l.DoLog != DoLog)
+            if( l.DoLog != DoLog )
             {
                 DoLog = l.DoLog;
                 hasChanged = true;
@@ -168,7 +172,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         public void UpdateFrom( IPluginConfigAccessor config )
         {
-            string path = this.Name + "_logoptions";            
+            string path = this.Name + "_logoptions";
             if( config.User[path] != null )
             {
                 LogOptions = (ServiceLogEventOptions)config.User[path];
@@ -176,26 +180,26 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         }
         private void ProcessLogOptions( ServiceLogEventOptions e )
         {
-            DoLogErrors =                        ((e & ServiceLogEventOptions.LogErrors) == ServiceLogEventOptions.LogErrors);
-            DoLogStartRaise =                    ((e & ServiceLogEventOptions.StartRaise) == ServiceLogEventOptions.StartRaise);
-            DoLogParameters =                    ((e & ServiceLogEventOptions.LogParameters) == ServiceLogEventOptions.LogParameters);
-            DoLogEndRaise =                      ((e & ServiceLogEventOptions.EndRaise) == ServiceLogEventOptions.EndRaise);
-            DoCatchEventWhenServiceStopped =     ((e & ServiceLogEventOptions.SilentEventRunningStatusError) == ServiceLogEventOptions.SilentEventRunningStatusError);
-            DoLogCaughtEventWhenServiceStopped = ((e & ServiceLogEventOptions.LogSilentEventRunningStatusError) == ServiceLogEventOptions.LogSilentEventRunningStatusError);
-            DoCatchBadEventHandling =            ((e & ServiceLogEventOptions.SilentEventError) == ServiceLogEventOptions.SilentEventError);
+            DoLogErrors = ( ( e & ServiceLogEventOptions.LogErrors ) == ServiceLogEventOptions.LogErrors );
+            DoLogStartRaise = ( ( e & ServiceLogEventOptions.StartRaise ) == ServiceLogEventOptions.StartRaise );
+            DoLogParameters = ( ( e & ServiceLogEventOptions.LogParameters ) == ServiceLogEventOptions.LogParameters );
+            DoLogEndRaise = ( ( e & ServiceLogEventOptions.EndRaise ) == ServiceLogEventOptions.EndRaise );
+            DoCatchEventWhenServiceStopped = ( ( e & ServiceLogEventOptions.SilentEventRunningStatusError ) == ServiceLogEventOptions.SilentEventRunningStatusError );
+            DoLogCaughtEventWhenServiceStopped = ( ( e & ServiceLogEventOptions.LogSilentEventRunningStatusError ) == ServiceLogEventOptions.LogSilentEventRunningStatusError );
+            DoCatchBadEventHandling = ( ( e & ServiceLogEventOptions.SilentEventError ) == ServiceLogEventOptions.SilentEventError );
         }
 
         public ServiceLogEventOptions GetLogOptions()
         {
             ServiceLogEventOptions l = ServiceLogEventOptions.None;
-            if( _doLogErrors )                          l = l | ServiceLogEventOptions.LogErrors;            
-            if( _doLogStartRaise )                      l = l | ServiceLogEventOptions.StartRaise;
-            if( _doLogParameters )                      l = l | ServiceLogEventOptions.LogParameters;
-            if( _doLogEndRaise )                        l = l | ServiceLogEventOptions.EndRaise;
-            if( _doCatchEventWhenServiceStopped )       l = l | ServiceLogEventOptions.SilentEventRunningStatusError;
-            if( _doLogCaughtEventWhenServiceStopped )   l = l | ServiceLogEventOptions.LogSilentEventRunningStatusError;
-            if( _doCatchBadEventHandling )              l = l | ServiceLogEventOptions.SilentEventError;
-          
+            if( _doLogErrors ) l = l | ServiceLogEventOptions.LogErrors;
+            if( _doLogStartRaise ) l = l | ServiceLogEventOptions.StartRaise;
+            if( _doLogParameters ) l = l | ServiceLogEventOptions.LogParameters;
+            if( _doLogEndRaise ) l = l | ServiceLogEventOptions.EndRaise;
+            if( _doCatchEventWhenServiceStopped ) l = l | ServiceLogEventOptions.SilentEventRunningStatusError;
+            if( _doLogCaughtEventWhenServiceStopped ) l = l | ServiceLogEventOptions.LogSilentEventRunningStatusError;
+            if( _doCatchBadEventHandling ) l = l | ServiceLogEventOptions.SilentEventError;
+
             return l;
         }
 
@@ -248,8 +252,8 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             DoCatchBadEventHandling = false;
         }
 
-        #endregion              
-    
-        
+        #endregion
+
+
     }
 }

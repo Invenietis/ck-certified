@@ -97,6 +97,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.2.0\lib\Net40\System.Windows.Interactivity.dll</HintPath>
@@ -191,8 +192,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Contexts\ContextCiviKey.xml" />
-    <Resource Include="Resources\Contexts\ContextCiviKeyStandard.xml" />
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKeyStandard.xml" />
     <Resource Include="Resources\Icons\CiviKey.ico" />
     <Resource Include="Resources\Icons\logo_16x16.ico" />
     <Resource Include="Resources\Images\accept.png" />

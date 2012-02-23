@@ -106,6 +106,11 @@
             Fires for each <see cref="T:CK.Plugin.LogHostEventArgs"/>.
             </summary>
         </member>
+        <member name="P:CK.Plugin.ILogCenter.UntrackedErrors">
+            <summary>
+            Gets the list of errors that occured while there was no launched plugins to process them.
+            </summary>
+        </member>
         <member name="T:CK.Plugin.ISimplePropertyInfo">
             <summary>
              Basic Info describing a property
@@ -895,6 +900,11 @@
         <member name="F:CK.Plugin.ServiceLogMethodOptions.LogReturnValue">
             <summary>
             Log the return value of the method.
+            </summary>
+        </member>
+        <member name="F:CK.Plugin.ServiceLogMethodOptions.CreateEntryMask">
+            <summary>
+            Log when the method is called. (Info type)
             </summary>
         </member>
         <member name="T:CK.Plugin.IServiceHost">

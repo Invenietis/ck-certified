@@ -16,6 +16,7 @@ using CK.Core;
 using System.Linq;
 using System.ComponentModel;
 using CK.Plugin.Config;
+using System.Configuration;
 
 namespace Host
 {
@@ -70,7 +71,7 @@ namespace Host
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
-            LoadResult res = Instance.LoadContext();
+            LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
 
             // Initializes Services.
             {
@@ -101,9 +102,6 @@ namespace Host
             //If the user has changed, we need to load the corresponding user configuration
             if( e.PropertyName == "CurrentUserProfile" )
             {
-                //This feature should'nt be put here.
-                //bool cloneContext = MessageBox.Show( "Do you want to copy the previous user's configurations and ?", "Changing user", MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
-                bool cloneContext = false;
 
                 Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
 
@@ -113,26 +111,23 @@ namespace Host
                 Context.ConfigManager.Extended.HostUserConfig.Clear();
                 LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
 
-                if( cloneContext )
-                {
-                    //Cloning the current context
-                    string newContextAdress = Path.GetDirectoryName( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
-                                               + Path.DirectorySeparatorChar
-                                               + Path.GetFileNameWithoutExtension( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
-                                               + " - " 
-                                               + DateTime.UtcNow.ToFileTime() + ".xml";
 
-                    Uri newContextUri = new Uri( "file:///" + newContextAdress );
-                    File.Copy( previousContextAdress.AbsolutePath, newContextAdress, true );
-                    IUriHistory newContext = Context.ConfigManager.UserConfiguration.ContextProfiles.FindOrCreate( newContextUri );
-                    Context.ConfigManager.UserConfiguration.CurrentContextProfile = newContext;
-                }
-                else
-                {
-                    //otherwise, going on with the loading of the first context of the new user configuration
-                    Context.ConfigManager.Extended.Container.Clear( Context );
-                    LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
-                }
+                //Cloning the current context
+                //string newContextAdress = Path.GetDirectoryName( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
+                //                           + Path.DirectorySeparatorChar
+                //                           + Path.GetFileNameWithoutExtension( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
+                //                           + " - "
+                //                           + DateTime.UtcNow.ToFileTime() + ".xml";
+
+                //Uri newContextUri = new Uri( "file:///" + newContextAdress );
+                //File.Copy( previousContextAdress.AbsolutePath, newContextAdress, true );
+                //IUriHistory newContext = Context.ConfigManager.UserConfiguration.ContextProfiles.FindOrCreate( newContextUri );
+                //Context.ConfigManager.UserConfiguration.CurrentContextProfile = newContext;
+
+
+                Context.ConfigManager.Extended.Container.Clear( Context );
+                LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
+
 
                 Context.PluginRunner.Apply( true );
             }
@@ -180,13 +175,16 @@ namespace Host
 
         #region File paths
 
+        const string _defaultSystemConfigurationFileName = "System.config.ck";
+        const string _defaultUserConfigurationFileName = "User.config.ck";
+
         /// <summary>
         /// Gets or sets the full path of the user configuration file.
         /// Defaults to "User.config.ck" file in <see cref="ApplicationDataPath"/>.
         /// </summary>
         public virtual string DefaultUserConfigPath
         {
-            get { return applicationParameters.ApplicationDataPath + "User.config.ck"; }
+            get { return applicationParameters.ApplicationDataPath + _defaultUserConfigurationFileName; }
         }
 
         /// <summary>
@@ -195,25 +193,48 @@ namespace Host
         /// </summary>
         public virtual string DefaultSystemConfigPath
         {
-            get { return applicationParameters.CommonApplicationDataPath + "System.config.ck"; }
+            get { return applicationParameters.CommonApplicationDataPath + _defaultSystemConfigurationFileName; }
         }
 
-        protected override Uri GetSystemConfigAddress()
+        public override Uri GetSystemConfigAddress()
         {
-            return new Uri( DefaultSystemConfigPath );
+            return GetDevelopmentPath( _defaultSystemConfigurationFileName ) ?? new Uri( DefaultSystemConfigPath );
         }
 
         protected override Uri GetDefaultUserConfigAddress( bool saving )
         {
-            return new Uri( DefaultUserConfigPath );
+            return GetDevelopmentPath( _defaultUserConfigurationFileName ) ?? new Uri( DefaultUserConfigPath );
+        }
+
+        /// <summary>
+        /// If there is a civikey.exe.config file and that it contains a IsDevelopmentInstance set to true, we set the default config path to ApplicationFolder/Configurations/FileName
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns>The development Uri if IsDevelopmentInstance is true, null otherwise </returns>
+        private Uri GetDevelopmentPath( string fileName )
+        {
+            string isDevelopmentInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsDevelopmentInstance" );
+            bool isDevelopmentInstance = false;
+            if( !String.IsNullOrEmpty( isDevelopmentInstanceString ) )
+            {
+                if( Boolean.TryParse( isDevelopmentInstanceString, out isDevelopmentInstance ) && isDevelopmentInstance )
+                {
+                    string dirPath = Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), "Configurations" );
+                    if( !Directory.Exists( dirPath ) ) Directory.CreateDirectory( dirPath );
+
+                    return new Uri( Path.Combine( dirPath, fileName ) );
+                }
+            }
+            return null;
         }
 
         protected override KeyValuePair<string, Uri> GetDefaultContextProfile( bool saving )
         {
+
             var e = new ContextProfileRequiredEventArgs( Context, saving )
             {
-                Address = new Uri( Path.Combine( applicationParameters.ApplicationDataPath, "Context.xml" ) ),
-                DisplayName = String.Format( "", DateTime.Now ) // R.NewContextDisplayName
+                Address = GetDevelopmentPath( "Context.xml" ) ?? new Uri( Path.Combine( applicationParameters.ApplicationDataPath, "Context.xml" ) ),
+                DisplayName = String.Format( "Context-{0}.xml", DateTime.Now ) // R.NewContextDisplayName
             };
             var h = ContextAddressRequired;
             if( h != null )

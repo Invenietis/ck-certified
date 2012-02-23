@@ -4,16 +4,19 @@ using System.Windows.Input;
 using CK.WPF.ViewModel;
 using System.IO;
 using System.Diagnostics;
+using CK.Context;
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMApplicationInfo : VMISelectableElement, IDisposable
     {
+        IHostInformation _hostInfo;
+
         public VMApplicationInfo( VMIContextViewModel ctx )
             : base( ctx, null )
         {
-            //LEAKING
             VMIContext.Context.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationChanged );
-            VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationChanged ); 
+            VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationChanged );
+            _hostInfo = ( (IHostInformation)VMIContext.Context.ServiceContainer.GetService( typeof( IHostInformation ) ) );
         }
 
         VMCommand<string> _openFileCmd;
@@ -44,7 +47,7 @@ namespace CK.Plugins.ObjectExplorer
             if ( e.PropertyName == "CurrentContextProfile" ) OnPropertyChanged( "ContextPath" );
         }
 
-        public string SystemConfigurationPath { get { return System.IO.Path.Combine( CKApp.CurrentParameters.CommonApplicationDataPath, "System.config.ck" ); } }
+        public string SystemConfigurationPath { get { return _hostInfo != null ? _hostInfo.GetSystemConfigAddress().AbsolutePath : ""; } }
 
         public string UserConfigurationPath { get { return VMIContext.Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address.AbsolutePath; } }
 
@@ -52,10 +55,11 @@ namespace CK.Plugins.ObjectExplorer
 
         public object Data { get { return this; } }
 
-        public void Dispose()
+        public new void Dispose()
         {
             VMIContext.Context.ConfigManager.UserConfiguration.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationChanged );
-            VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationChanged ); 
+            VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationChanged );
+            base.Dispose();
         }
     }
 }

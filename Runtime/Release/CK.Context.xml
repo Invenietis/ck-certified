@@ -60,6 +60,12 @@
             Exposes standard host information.
             </summary>
         </member>
+        <member name="M:CK.Context.IHostInformation.GetSystemConfigAddress">
+            <summary>
+            Gets the System configuration's file path.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:CK.Context.IHostInformation.UserConfig">
             <summary>
             Gets the host configuration associated to the current user.

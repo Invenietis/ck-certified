@@ -75,7 +75,6 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
                 Categories.Add( new VMLogOutputCategory( this, entry.Category ) );
 
             Entries.Add( entry );
-            OnPropertyChanged( "LogEntriesContainer" );
         }
 
         public void Clear()

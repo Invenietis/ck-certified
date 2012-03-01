@@ -35,7 +35,8 @@ namespace Host
 
         public CivikeyStandardHost CivikeyHost { get { return CivikeyStandardHost.Instance; } }
 
-        public IKeyboardContext KeyboardContext { get { return CivikeyHost.Context.GetService<IKeyboardContext>(); } }
+        IKeyboardContext _keyboardContext;
+        public IKeyboardContext KeyboardContext { get { return _keyboardContext ?? CivikeyHost.Context.GetService<IKeyboardContext>(); } }
 
         public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
 

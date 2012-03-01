@@ -9,16 +9,15 @@
                     xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- TODO : Comment this code ! -->
-
     <!-- Resources used by other datatemplates. -->
     
     <!-- See : http://www.codeproject.com/Articles/36451/Organizing-Heterogeneous-Data-on-a-WPF-TreeView.aspx -->
     <!-- See also : http://www.codeproject.com/KB/WPF/TreeViewWithViewModel.aspx -->
-    <oe:NXORConverter x:Key="NXORConverter"/>
-    <oe:MultiStringFormatConverter x:Key="MultiStringFormatConverter"/>
-    <oe:SimpleStringFormatConverter x:Key="SimpleStringFormatConverter"/>
     <ckwc:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <oe:SimpleStringFormatConverter x:Key="SimpleStringFormatConverter"/>
+    <oe:MultiStringFormatConverter x:Key="MultiStringFormatConverter"/>
+    <oe:AndConverter x:Key="AndMultiValueConverter"/>
+    <oe:NXORConverter x:Key="NXORConverter"/>
     <oe:OrConverter x:Key="OrConverter"/>
 
     <oe:EnumDisplayer Type="{x:Type pm:RunningRequirement}" x:Key="RunningRequirement">

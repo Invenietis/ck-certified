@@ -11,6 +11,7 @@ using System.Diagnostics;
 using CK.Plugin.Hosting;
 using CK.Plugin.Config;
 using CommonServices;
+using System.Collections.Generic;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 {
@@ -21,132 +22,26 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         #region Variables & Properties
 
-        bool _doLog;
-        bool _isDirty;
-        ObservableCollection<OutputLogEntry> _outputTextArray;
-        int _outputTextArrayMaxWidth;
-
-        ServiceHostConfiguration _hostConfiguration;
-        VMIContextViewModel _vmiContext;
         ObservableCollection<VMLogServiceConfig> _services;
         IReadOnlyCollection<ILogServiceConfig> _servicesEx;
+        ServiceHostConfiguration _hostConfiguration;
         VMLogServiceConfig _selectedService;
+        VMIContextViewModel _vmiContext;
         PluginRunner _pluginRunner;
         ILogService _logService;
 
+        bool _doLog;
+        bool _isDirty;
+
         ICommand _applyCommand;
         ICommand _cancelCommand;
-        ICommand _clearOutputConsoleCommand;
 
         public ObservableCollection<VMLogServiceConfig> Services { get { return _services; } }
         IReadOnlyCollection<ILogServiceConfig> ILogConfig.Services { get { return _servicesEx; } }
-
-        /// <summary>
-        /// Text that can be seen in the Output Console
-        /// </summary>
-        public ObservableCollection<OutputLogEntry> OutputTextArray
-        {
-            get { return _outputTextArray; }
-            set
-            {
-                _outputTextArray = value;
-                OnPropertyChanged( "OutputTextArray" );
-            }
-        }
-
-        public bool DoLog
-        {
-            get { return _doLog; }
-            set
-            {
-                _doLog = value;
-                OnPropertyChanged( "DoLog" );
-                IsDirty = true;
-            }
-        }
-
-        public bool IsDirty
-        {
-            get
-            {
-                if( _isDirty )
-                    return true;
-                foreach( var s in Services )
-                    if( s.IsDirty ) return true;
-                return false;
-
-                // return _isDirty || Services.Any((s) => s.IsDirty);
-            }
-            set { _isDirty = value; OnPropertyChanged( "IsDirty" ); }
-        }
-
-        public bool IsEmpty
-        {
-            get
-            {
-                foreach( var s in Services )
-                    if( !s.IsEmpty ) return false;
-                return true;
-
-                // return !Services.Any((s) => !s.IsEmpty);
-            }
-        }
-        bool ILogConfig.DoLog
-        {
-            get { return _doLog; }
-        }
-
-        public ICommand ApplyCommand
-        {
-            get
-            {
-                if( _applyCommand == null )
-                {
-                    _applyCommand = new VMCommand<VMLogConfig>(
-                    ( e ) =>
-                    {
-                        Apply();
-                    } );
-                }
-                return _applyCommand;
-            }
-        }
-
-        public ICommand CancelCommand
-        {
-            get
-            {
-                if( _cancelCommand == null )
-                {
-                    _cancelCommand = new VMCommand<VMLogConfig>(
-                    ( e ) =>
-                    {
-                        CancelAllModifications();
-                    } );
-                }
-                return _cancelCommand;
-            }
-        }
-
-        public ICommand ClearOutputConsoleCommand
-        {
-            get
-            {
-                if( _clearOutputConsoleCommand == null )
-                {
-                    _clearOutputConsoleCommand = new VMCommand( () =>
-                    {
-                        OutputTextArray.Clear();
-                        _logCounter = 0;
-                    } );
-                }
-                return _clearOutputConsoleCommand;
-            }
-        }
-
         public IPluginConfigAccessor Config { get { return VMIContext.Config; } }
-        public object Data { get { return this; } }
+        public VMLogOutputContainer LogEntriesContainer { get; private set; }
         public string Icon { get { return "../LogImages/LogIcon.png"; } }
+        public object Data { get { return this; } }
 
         public VMLogServiceConfig SelectedService
         {
@@ -165,12 +60,80 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
                 }
             }
         }
-
         public int NumberOfLoggedServices
         {
             get { return Services.Count( ( s ) => { return s.DoLog; } ); }
         }
+        public ICommand CancelCommand
+        {
+            get
+            {
+                if( _cancelCommand == null )
+                {
+                    _cancelCommand = new VMCommand<VMLogConfig>(
+                    ( e ) =>
+                    {
+                        CancelAllModifications();
+                    } );
+                }
+                return _cancelCommand;
+            }
+        }
+        public ICommand ApplyCommand
+        {
+            get
+            {
+                if( _applyCommand == null )
+                {
+                    _applyCommand = new VMCommand<VMLogConfig>(
+                    ( e ) =>
+                    {
+                        Apply();
+                    } );
+                }
+                return _applyCommand;
+            }
+        }
+        bool ILogConfig.DoLog
+        {
+            get { return _doLog; }
+        }
+        public bool IsDirty
+        {
+            get
+            {
+                if( _isDirty )
+                    return true;
+                foreach( var s in Services )
+                    if( s.IsDirty ) return true;
+                return false;
 
+                // return _isDirty || Services.Any((s) => s.IsDirty);
+            }
+            set { _isDirty = value; OnPropertyChanged( "IsDirty" ); }
+        }
+        public bool IsEmpty
+        {
+            get
+            {
+                foreach( var s in Services )
+                    if( !s.IsEmpty ) return false;
+                return true;
+
+                // return !Services.Any((s) => !s.IsEmpty);
+            }
+        }
+        public bool DoLog
+        {
+            get { return _doLog; }
+            set
+            {
+                _doLog = value;
+                OnPropertyChanged( "DoLog" );
+                IsDirty = true;
+            }
+        }
+ 
         #endregion
 
         #region Constructor
@@ -187,7 +150,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             _services = new ObservableCollection<VMLogServiceConfig>();
             _servicesEx = new ReadOnlyCollectionTypeConverter<ILogServiceConfig, VMLogServiceConfig>( _services, ( c ) => { return (ILogServiceConfig)c; } );
             _logService = logService;
-            _outputTextArray = new ObservableCollection<OutputLogEntry>();
+            LogEntriesContainer = new VMLogOutputContainer();
         }
 
         #endregion
@@ -202,7 +165,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             _services.Clear();
             FillFromDiscoverer( _services );
 
-            _outputTextArrayMaxWidth = Config.User.GetOrSet( OUTPUT_MAX_COUNT, 100 );
+            LogEntriesContainer.MaxCount = Config.User.GetOrSet( OUTPUT_MAX_COUNT, 100 );
             DoLog = Config.User.GetOrSet( GLOBAL_LOGS, true );
 
             _hostConfiguration = new ServiceHostConfiguration( this );
@@ -213,21 +176,6 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
             if( _logService != null ) //The service is set as "Optional TryStart", prevent any null ref exception
                 _logService.LogTriggered += new LogTriggeredEventHandler( OnLogTriggered );
-        }
-
-        int _logCounter = 0;
-        /// <summary>
-        /// Pushes logs into the output console
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal void OnLogTriggered( object sender, LogTriggeredEventArgs e )
-        {
-            if( OutputTextArray.Count == _outputTextArrayMaxWidth )
-                OutputTextArray.RemoveAt( 0 );
-
-            OutputTextArray.Add( new OutputLogEntry( e.LogEventArgs, e.Content, ++_logCounter ) );
-            OnPropertyChanged( "OutputTextArray" );
         }
 
         /// <summary>
@@ -514,31 +462,17 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             return null;
         }
 
-        #endregion
-    }
-
-    public class OutputLogEntry
-    {
-
-        public OutputLogEntry( LogEventArgs e, string message, int index )
+        /// <summary>
+        /// Pushes logs into the output console
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal void OnLogTriggered( object sender, LogTriggeredEventArgs e )
         {
-            _logEventArgs = e;
-            _message = message;
-            _index = index;
+            LogEntriesContainer.Add( e.LogEventArgs, e.Content );
         }
 
-        public bool IsCreating { get { return _logEventArgs.IsCreating; } }
-        public string UnderlyingType { get { return _logEventArgs.EntryType.ToString(); } }
-        public int Index { get { return _index; } }
-        public string Message { get { return _message; } }
+        #endregion
 
-        public DateTime CreationTimeUtc { get { return _logEventArgs.CreationTimeUtc; } }
-        public Thickness Margin { get { return new Thickness( _logEventArgs.Depth * 2, 2, 0, 2 ); } }
-
-        public LogEventArgs LogObject { get { return _logEventArgs; } }
-
-        LogEventArgs _logEventArgs;
-        string _message;
-        int _index;
     }
 }

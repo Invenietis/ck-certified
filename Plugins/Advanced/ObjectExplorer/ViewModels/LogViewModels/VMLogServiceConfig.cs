@@ -106,7 +106,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         public event EventHandler ServiceModificationAsked;
         public event EventHandler ServiceCancelModificationsAsked;
         public event EventHandler ServiceDeletionAsked;
-        public event EventHandler ServiceApplyAsked;
+
         bool _isDirty;
         string _dataPath;
         string _doLogDataPath;
@@ -288,11 +288,6 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         #endregion
 
         #region Methods
-
-        public void OutputConsoleUpdated()
-        {
-            OnPropertyChanged( "OutputText" );
-        }
 
         internal void UpdatePropertyBag()
         {
@@ -484,6 +479,6 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             return null;
         }
 
-        #endregion       
+        #endregion
     } 
 }

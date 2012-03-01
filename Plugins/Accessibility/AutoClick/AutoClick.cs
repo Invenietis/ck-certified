@@ -138,7 +138,6 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
-
             _isPaused = true;
             bool isFirstLaunch = false;
             _selector = new StdClickTypeSelector( this );
@@ -291,6 +290,7 @@ namespace CK.Plugins.AutoClick
 
         private void OnClickAsked( object sender, EventArgs e )
         {
+            throw new Exception( "WOOOOAH" );
             OnPropertyChanged( "ProgressValue" );
             //Asking for a click, the IClickTypeSelector will respond via the ClickTypeChosenEvent
             _selector.AskClickType();

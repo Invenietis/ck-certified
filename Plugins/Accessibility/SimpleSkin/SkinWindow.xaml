@@ -5,6 +5,8 @@
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     WindowStartupLocation="Manual"
+        Background="Transparent"
+        WindowStyle="None"
     Left="{Binding Mode=TwoWay, Path=Keyboard.X}" Top="{Binding Mode=TwoWay, Path=Keyboard.Y}"
     Width="{Binding Mode=TwoWay, Path=Keyboard.ViewportWidth}" Height="{Binding Mode=TwoWay, Path=Keyboard.ViewportHeight}"
     Title="Simple skin">

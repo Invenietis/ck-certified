@@ -182,6 +182,7 @@
     <Compile Include="UI\AttachedProperties\CustomEnabling.cs" />
     <Compile Include="UI\AttachedProperties\ListBoxAttachedProperties.cs" />
     <Compile Include="UI\AttachedProperties\TypeAheadBehaviour.cs" />
+    <Compile Include="UI\Converters\AndConverter.cs" />
     <Compile Include="UI\Converters\EnumDisplayer.cs" />
     <Compile Include="UI\Converters\NXORConverter.cs" />
     <Compile Include="UI\Converters\OrConverter.cs" />
@@ -228,6 +229,9 @@
     <Compile Include="UI\VMIContextView.xaml.cs">
       <DependentUpon>VMIContextView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\LogViewModels\LogOutput\VMLogOutputCategory.cs" />
+    <Compile Include="ViewModels\LogViewModels\LogOutput\VMLogOutputContainer.cs" />
+    <Compile Include="ViewModels\LogViewModels\LogOutput\VMOutputLogEntry.cs" />
     <Compile Include="ViewModels\VMApplicationInfo.cs" />
     <Compile Include="ViewModels\VMOsInfo.cs" />
     <Compile Include="ViewModels\VMAlias.cs" />

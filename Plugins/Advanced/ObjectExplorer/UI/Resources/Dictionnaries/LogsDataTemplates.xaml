@@ -11,7 +11,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
-
+    
     <LinearGradientBrush x:Key="GreenGradientBrush" StartPoint="1,1" EndPoint="2,1">
         <LinearGradientBrush.RelativeTransform>
             <TransformGroup>
@@ -73,7 +73,14 @@
     </DataTemplate>
     <DataTemplate x:Key="CheckBoxDoLogReturnValueTemplate">
         <TextBlock TextAlignment="Center">
-            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogReturnValue}" IsEnabled="{Binding DoLog}"/>
+            <CheckBox IsChecked="{Binding Mode=TwoWay, Path=DoLogReturnValue}">
+                <CheckBox.IsEnabled>
+                    <MultiBinding Converter="{StaticResource AndMultiValueConverter}">
+                        <Binding Path="DoLog"/>
+                        <Binding Path="DoLogLeave"/>
+                    </MultiBinding>
+                </CheckBox.IsEnabled>
+            </CheckBox>
         </TextBlock>
     </DataTemplate>
     <DataTemplate x:Key="CheckBoxDoLogGetTemplate">
@@ -157,7 +164,7 @@
                             </Expander>
                         </StackPanel>
 
-                        <!-- Properties configuration, we're not sure wether where're going to use it or not -->
+                        <!-- Properties configuration, we're not sure whether where're going to use it or not -->
                         <!--<StackPanel Style="{StaticResource CollapsingPropertyStackPanel}" Margin="0 10 0 0">
                                 <Expander x:Uid="log-configuration-proporties-header" IsExpanded="True" ExpandDirection="Down" Header="Properties" HeaderTemplate="{StaticResource ExpanderHeaderTemplate}">
                                     <ListView Margin="0 5 0 0" IsEnabled="{Binding Path=(oe:CustomEnabling.IsEnabled), RelativeSource={RelativeSource Mode=TemplatedParent}}" ItemsSource="{Binding Properties}" ItemContainerStyle="{StaticResource LVIContentAlignementStyle}">
@@ -173,6 +180,7 @@
                                     </ListView>
                                 </Expander>
                             </StackPanel>-->
+                        
                     </StackPanel>
                 </ScrollViewer>
                 <StackPanel Visibility="{Binding Path=(oe:CustomEnabling.IsEnabled), RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
@@ -196,36 +204,289 @@
 
                     <!-- Log activation - Top -->
                     <StackPanel DockPanel.Dock="Right">
-                        <Button HorizontalAlignment="Center" Command="{Binding ModifyCommand}" CommandParameter="{Binding}" Style="{StaticResource TextButton}" Content="Edit this log configuration"/>
+                        <Button Style="{StaticResource TextButton}" 
+                                Command="{Binding ModifyCommand}" 
+                                CommandParameter="{Binding}" 
+                                HorizontalAlignment="Center" 
+                                Content="Edit this log configuration"/>
                         <Separator/>
                     </StackPanel>
 
                     <!-- Body -->
-                    <ContentPresenter oe:CustomEnabling.IsEnabled="False" Grid.Row="1" Content="{Binding}" ContentTemplate="{StaticResource VMLogServiceConfigTemplate}"/>
+                    <ContentPresenter Grid.Row="1" 
+                                      ContentTemplate="{StaticResource VMLogServiceConfigTemplate}"
+                                      oe:CustomEnabling.IsEnabled="False"
+                                      Content="{Binding}" />
+
 
                     <!-- DoLog Indicator -->
                     <StackPanel Grid.Row="2" HorizontalAlignment="Right" Orientation="Horizontal">
-                        <TextBlock x:Uid="log-configuration-service-logsDeactivated" Name="DoLogIndicator" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Logs Deactivated"/>
-                        <Image Width="16" Height="16" Name="LogIcon" Margin="10 0" Source="../LogImages/DeactivatedLogIcon.png"/>
+                        <TextBlock x:Uid="log-configuration-service-logsDeactivated" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" 
+                                   Text="Logs Deactivated"
+                                   Name="DoLogIndicator" />
+                        <Image Source="../LogImages/DeactivatedLogIcon.png"
+                               Name="LogIcon" 
+                               Margin="10 0" 
+                               Height="16" 
+                               Width="16" />
                     </StackPanel>
                 </Grid>
             </GroupBox>
         </StackPanel>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding DoLog}" Value="True">
-                <Setter TargetName="LogIcon" Property="Source" Value="../LogImages/ActivatedLogIcon.png"/>
-                <Setter x:Uid="log-configuration-service-logsActivated" TargetName="DoLogIndicator" Property="Text" Value="Logs Activated"/>
-                <Setter TargetName="LogConfigurationGroupBox" Property="Background" Value="{StaticResource GreenGradientBrush}"/>
+                <Setter Value="../LogImages/ActivatedLogIcon.png"
+                        TargetName="LogIcon" 
+                        Property="Source" />
+                <Setter x:Uid="log-configuration-service-logsActivated" 
+                        TargetName="DoLogIndicator" 
+                        Value="Logs Activated"
+                        Property="Text" />
+                <Setter TargetName="LogConfigurationGroupBox" 
+                        Property="Background" 
+                        Value="{StaticResource GreenGradientBrush}" />
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
 
+    <!-- Round border template -->
     <Style TargetType="Border" x:Key="roundedBorder">
         <Setter Property="CornerRadius" Value="3"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="LightGray"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
+    
+    <!-- Template of the Log console -->
+    <ControlTemplate x:Key="LogOutputConsoleTemplate">
+        <ControlTemplate.Resources>
+
+            <ControlTemplate x:Key="EventAdditionalValues">
+                <StackPanel>
+                    <TextBlock >
+                            <TextBlock.Text>
+                                <Binding Path="LogObject.Member.Name" StringFormat="Name of the event : {0}" />
+                            </TextBlock.Text>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.Parameters}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Parameters : "/>
+                        <ItemsControl ItemsSource="{Binding LogObject.Parameters}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+            </ControlTemplate>
+            <ControlTemplate x:Key="MethodAdditionalValues">
+                <StackPanel>
+                    <TextBlock >
+                            <TextBlock.Text>
+                                <Binding Path="LogObject.Member.Name" StringFormat="Name of the method : {0}" />
+                            </TextBlock.Text>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.Parameters}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Parameters : "/>
+                        <ItemsControl ItemsSource="{Binding LogObject.Parameters}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <!-- Caller -->
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.Caller}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Caller : "/>
+                        <TextBlock Text="{Binding LogObject.Caller}"/>
+                    </StackPanel>
+                    <!-- ReturnValue -->
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.ReturnValue}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Return Value : "/>
+                        <TextBlock Text="{Binding LogObject.ReturnValue}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ControlTemplate>
+            <Style TargetType="{x:Type ContentControl}" x:Key="LogAdditionalValuesStyle">
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding UnderlyingType}" Value="Method"/>
+                            <!--<Condition Value="True">
+                                    <Condition.Binding>
+                                        <MultiBinding Converter="{StaticResource OrConverter}">
+                                            <Binding Path="IsSelected" RelativeSource="{RelativeSource self}" />
+                                            <Binding Path="IsMouseOver" RelativeSource="{RelativeSource self}" />
+                                        </MultiBinding>
+                                    </Condition.Binding>
+                                </Condition>-->
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Template" Value="{StaticResource MethodAdditionalValues}" />
+                    </MultiDataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding UnderlyingType}" Value="Event"/>
+                            <!--<Condition Value="True">
+                                    <Condition.Binding>
+                                        <MultiBinding Converter="{StaticResource OrConverter}">
+                                            <Binding Path="IsSelected" RelativeSource="{RelativeSource self}" />
+                                            <Binding Path="IsMouseOver" RelativeSource="{RelativeSource self}" />
+                                        </MultiBinding>
+                                    </Condition.Binding>
+                                </Condition>-->
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Template" Value="{StaticResource EventAdditionalValues}" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ControlTemplate x:Key="SimpleLogEntry">
+                <Border HorizontalAlignment="Stretch"
+                        Name="LogEntry"
+                        Margin="{Binding Margin}"
+                        Padding="5"
+                        Style="{StaticResource roundedBorder}"
+                        Background="{TemplateBinding Background}"
+                        Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <DockPanel LastChildFill="False">
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Index, StringFormat=0\.}" />
+                                <TextBlock FontWeight="Bold" FontSize="12">
+                                    <TextBlock.Text>
+                                        <Binding Path="Category" Mode="OneTime" StringFormat=" - {0}" />
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                            <!-- Additional values (parmaeters, returnvalue, caller) -->
+                            <ContentControl Style="{StaticResource LogAdditionalValuesStyle}" />
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Right">
+                            <TextBlock HorizontalAlignment="Right" Text="Creating" Visibility="{Binding Path=IsCreating, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBlock HorizontalAlignment="Right" Text="Created" Visibility="{Binding Path=IsCreating, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}" />
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <Binding Path="LogObject.CreationTimeUtc" />
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </ControlTemplate.Resources>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" LastChildFill="False" Margin="0 0 0 5">
+                <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding Categories}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding ToggleFilterCommand}">
+                                <DockPanel LastChildFill="True">
+                                    <Label DockPanel.Dock="Left" Content="{Binding Name, Mode=OneWay}" />
+                                    <Image DockPanel.Dock="Right" Width="16" Height="16">
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsVisible}" Value="true">
+                                                        <Setter Property="Source" Value="../DetailsImages/greenIndicator.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsVisible}" Value="False">
+                                                        <Setter Property="Source" Value="../DetailsImages/redIndicator.png"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </DockPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button DockPanel.Dock="Right" Command="{Binding ClearOutputConsoleCommand}" Content="Clear Console" Margin="0 0 0 5"/>
+            </DockPanel>
+            <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding Entries}" 
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Stretch" 
+                            VerticalAlignment="Stretch"
+                            IsSynchronizedWithCurrentItem="True" oe:ListBoxAttachedProperties.AutoScrollToNewItem="True">
+                <ListBox.Resources>
+                </ListBox.Resources>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template" Value="{StaticResource SimpleLogEntry}" />
+                        <Setter Property="Background" Value="Beige"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2E8EBC"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#1C87BA"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </Grid>
+
+    </ControlTemplate>
 
     <!-- Template : LogConfig : Global -->
     <DataTemplate DataType="{x:Type loe:VMLogConfig}">
@@ -373,181 +634,7 @@
                                 </GroupBox>
                                 <!-- Output Console -->
                                 <GroupBox Header="Output Console">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"></RowDefinition>
-                                            <RowDefinition Height="*"></RowDefinition>
-                                        </Grid.RowDefinitions>
-                                        <DockPanel Grid.Row="0" LastChildFill="False">
-                                            <TextBlock DockPanel.Dock="Left" FontSize="10" Text="This console shows 'live' logs, as they are triggered." />
-                                            <Button DockPanel.Dock="Right" Command="{Binding Holder.ClearOutputConsoleCommand}" Content="Clear Console" Margin="0 0 0 5"/>
-                                        </DockPanel>
-                                        <ListBox Grid.Row="1" ItemsSource="{Binding Holder.OutputTextArray}" 
-                                                 HorizontalAlignment="Stretch" 
-                                                 HorizontalContentAlignment="Stretch" 
-                                                 VerticalAlignment="Stretch"
-                                                 IsSynchronizedWithCurrentItem="True" oe:ListBoxAttachedProperties.AutoScrollToNewItem="True">
-                                            <ListBox.Resources>
-                                                <!-- Complete Template of a log entry, should show the time, name of the plugin, name of the method/event, parameters, return value etc...-->
-                                                <ControlTemplate x:Key="CompleteLogEventEntry">
-                                                    <Border HorizontalAlignment="Stretch" 
-                                                            Name="LogEventEntry" 
-                                                            Margin="{Binding Margin}"  
-                                                            Padding="5" 
-                                                            Style="{StaticResource roundedBorder}" 
-                                                            Background="{TemplateBinding Background}">
-                                                        <StackPanel Orientation="Vertical">
-                                                            <!-- State (Opening or closing) -->
-                                                            <StackPanel>
-                                                                <TextBlock Text="{Binding Index, StringFormat=0\.}" />
-                                                                <TextBlock Text="{Binding LogObject.Member.DeclaringType.Name }"/>
-                                                                <TextBlock Text="{Binding LogObject.Member.Name }"/>
-                                                                <TextBlock Text="Creating" Visibility="{Binding IsCreating, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                                                <TextBlock Text="Created" Visibility="{Binding IsCreating, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}" />
-                                                            </StackPanel>
-                                                            <!-- Creation Date -->
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Trigger date : "/>
-                                                                <TextBlock Text="{Binding CreationTimeUtc}"/>
-                                                            </StackPanel>
-                                                            <!-- Parameters -->
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Parameters : "/>
-                                                                <ItemsControl ItemsSource="{Binding LogObject.Parameters}">
-                                                                    <ItemsControl.ItemsPanel>
-                                                                        <ItemsPanelTemplate>
-                                                                            <StackPanel />
-                                                                        </ItemsPanelTemplate>
-                                                                    </ItemsControl.ItemsPanel>
-                                                                    <ItemsControl.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <TextBlock Text="{Binding}"/>
-                                                                        </DataTemplate>
-                                                                    </ItemsControl.ItemTemplate>
-                                                                </ItemsControl>
-                                                            </StackPanel>
-                                                            <!--<TextBlock Text="{Binding Message}" />-->
-                                                        </StackPanel>
-                                                    </Border>
-                                                </ControlTemplate>
-
-                                                <!-- Complete Template of a log method entry, should show the time, name of the plugin, name of the method, parameters, caller, return value -->
-                                                <ControlTemplate x:Key="CompleteLogMethodEntry">
-                                                    <Border HorizontalAlignment="Stretch" 
-                                                            Name="LogMethodEntry" 
-                                                            Margin="{Binding Margin}"  
-                                                            Padding="5" 
-                                                            Style="{StaticResource roundedBorder}" 
-                                                            Background="{TemplateBinding Background}">
-                                                        <StackPanel Orientation="Vertical">
-                                                            <!-- State (Opening or closing) -->
-                                                            <StackPanel>
-                                                                <TextBlock Text="{Binding Index, StringFormat=0\.}" />
-                                                                <TextBlock Text="{Binding LogObject.Member.DeclaringType.Name }"/>
-                                                                <TextBlock Text="{Binding LogObject.Member.Name }"/>
-                                                                <TextBlock Text="Creating" Visibility="{Binding IsCreating, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                                                <TextBlock Text="Created" Visibility="{Binding IsCreating, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}" />
-                                                            </StackPanel>
-                                                            <!-- Creation Date -->
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Trigger date : "/>
-                                                                <TextBlock Text="{Binding CreationTimeUtc}"/>
-                                                            </StackPanel>
-                                                            <!-- Parameters -->
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Parameters : "/>
-                                                                <ItemsControl ItemsSource="{Binding LogObject.Parameters}">
-                                                                    <ItemsControl.ItemsPanel>
-                                                                        <ItemsPanelTemplate>
-                                                                            <StackPanel />
-                                                                        </ItemsPanelTemplate>
-                                                                    </ItemsControl.ItemsPanel>
-                                                                    <ItemsControl.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <TextBlock Text="{Binding}"/>
-                                                                        </DataTemplate>
-                                                                    </ItemsControl.ItemTemplate>
-                                                                </ItemsControl>
-                                                            </StackPanel>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Caller : "/>
-                                                                <TextBlock Text="{Binding LogObject.Caller}"/>
-                                                            </StackPanel>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Return Value : "/>
-                                                                <TextBlock Text="{Binding LogObject.ReturnValue}"/>
-                                                            </StackPanel>
-                                                            <!--<TextBlock Text="{Binding Message}" />-->
-                                                        </StackPanel>
-                                                    </Border>
-                                                </ControlTemplate>
-
-                                                <!-- Simple Template of a log entry, should onyl show the time, name of the plugin and name of the method/event -->
-                                                <ControlTemplate x:Key="SimpleLogEntry">
-                                                    <Border HorizontalAlignment="Stretch"
-                                                            Name="LogEntry"
-                                                            Margin="{Binding Margin}"
-                                                            Padding="5"
-                                                            Style="{StaticResource roundedBorder}"
-                                                            Background="{TemplateBinding Background}">
-                                                        <StackPanel Orientation="Vertical">
-                                                                <TextBlock Text="{Binding Index, StringFormat=0\.}" />
-                                                                <TextBlock Text="{Binding LogObject.Member.DeclaringType.Name }"/>
-                                                                <TextBlock Text="{Binding LogObject.Member.Name }"/>
-                                                                <TextBlock Text="Creating" Visibility="{Binding IsCreating, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                                                <TextBlock Text="Created" Visibility="{Binding IsCreating, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}" />
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="Trigger date : "/>
-                                                                <TextBlock Text="{Binding CreationTimeUtc}"/>
-                                                            </StackPanel>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </ListBox.Resources>
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="{x:Type ListBoxItem}">
-                                                    <Setter Property="Template" Value="{StaticResource SimpleLogEntry}" />
-                                                    <Setter Property="Background" Value="Beige"/>
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="LightBlue"/>
-                                                        </Trigger>
-                                                        <Trigger Property="IsSelected" Value="True">
-                                                            <Setter Property="Background" Value="#1C87BA"/>
-                                                        </Trigger>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding UnderlyingType}" Value="Method"/>
-                                                                <Condition Value="True">
-                                                                    <Condition.Binding>
-                                                                        <MultiBinding Converter="{StaticResource OrConverter}">
-                                                                            <Binding Path="IsSelected" RelativeSource="{RelativeSource self}" />
-                                                                            <Binding Path="IsMouseOver" RelativeSource="{RelativeSource self}" />
-                                                                        </MultiBinding>
-                                                                    </Condition.Binding>
-                                                                </Condition>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Template" Value="{StaticResource CompleteLogMethodEntry}" />
-                                                        </MultiDataTrigger>
-                                                        <MultiDataTrigger>
-                                                            <MultiDataTrigger.Conditions>
-                                                                <Condition Binding="{Binding UnderlyingType}" Value="Event"/>
-                                                                <Condition Value="True">
-                                                                    <Condition.Binding>
-                                                                        <MultiBinding Converter="{StaticResource OrConverter}">
-                                                                            <Binding Path="IsSelected" RelativeSource="{RelativeSource self}" />
-                                                                            <Binding Path="IsMouseOver" RelativeSource="{RelativeSource self}" />
-                                                                        </MultiBinding>
-                                                                    </Condition.Binding>
-                                                                </Condition>
-                                                            </MultiDataTrigger.Conditions>
-                                                            <Setter Property="Template" Value="{StaticResource CompleteLogEventEntry}" />
-                                                        </MultiDataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                        </ListBox>
-                                    </Grid>
+                                    <ContentControl Template="{DynamicResource LogOutputConsoleTemplate}" DataContext="{Binding Holder.LogEntriesContainer}"/>
                                 </GroupBox>
                             </DockPanel>
                             <DataTemplate.Triggers>
@@ -574,5 +661,5 @@
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-
+    
 </ResourceDictionary>

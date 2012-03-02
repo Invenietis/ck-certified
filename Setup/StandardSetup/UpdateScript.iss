@@ -37,10 +37,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Files]
-Source: "..\Output\Debug\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\Output\Debug\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "CiviKey.ico"; DestDir: "{app}\resources"
 Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
-Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}\\Configurations; Flags: onlyifdoesntexist; Permissions: everyone-full; 
+Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: everyone-full; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -49,14 +49,14 @@ Name: "{commondesktop}\CiviKey"; Filename: "{app}\binaries\CK-Certified.exe"; Wo
 
 [Run]
 Filename: "{tmp}\CiviKeyPostInstallScript.exe"; Parameters: """{#CKVersion}"" ""{#ApplicationName}"" ""{#DistribName}"" ""{#UpdateServerUrl}"" ""{#UpdaterRunningKey}"" ""{#OverridePreviousContext}"" ""{#IsStandAloneInstance}"" ""{code:GetOutputDir|{#IsStandAloneInstance}}"" ""{app}\binaries\CK-Certified.exe"""
-                                                                                                                                                                                                                                               ;Application directory                          ;.exe path
+                                                                                                                                                                                                                                               ;System configuration directory                          ;.exe path
 [Code]
 function GetOutputDir(Param: String): String;
 begin
     if Param = 'false' then begin
         Result := ExpandConstant('{commonappdata}\\{#ApplicationName}\\{#DistribName}\\');
     end else begin
-        Result := ExpandConstant('{app}\\');
+        Result := ExpandConstant('{app}\Configurations');
     end
 end;
 

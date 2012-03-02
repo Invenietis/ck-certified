@@ -23,7 +23,7 @@ namespace CK.Plugins.AutoClick.Views
             set { SetValue( SelectedProperty, value ); }
         }
 
-        static DependencyProperty IsPausedProperty;
+        public static DependencyProperty IsPausedProperty;
         public bool IsPaused
         {
             get { return (bool)GetValue( IsPausedProperty ); }

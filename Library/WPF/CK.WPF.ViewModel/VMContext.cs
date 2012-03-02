@@ -24,9 +24,6 @@ namespace CK.WPF.ViewModel
         PropertyChangedEventHandler _evUserConfigurationChanged;
         ObservableCollection<TB> _keyboards;
 
-        public event EventHandler KeyboardChanging;
-        public event EventHandler KeyboardChanged;
-
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
 
         public IContext Context { get { return _ctx; } }

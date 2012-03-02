@@ -219,10 +219,14 @@ namespace Host
             {
                 if( Boolean.TryParse( _isStandAloneInstanceString, out _isStandAloneInstance ) && _isStandAloneInstance )
                 {
-                    string dirPath = Path.Combine( Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), ".." ), "Configurations" );
-                    if( !Directory.Exists( dirPath ) ) Directory.CreateDirectory( dirPath );
-
-                    return new Uri( Path.Combine( dirPath, fileName ) );
+                    //string dirPath = Path.Combine( Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), ".." ), "Configurations" );
+                    //if( !Directory.Exists( dirPath ) ) Directory.CreateDirectory( dirPath );
+                    string dirPath = System.Configuration.ConfigurationManager.AppSettings.Get( "ConfigurationDirectory" );
+                    if( !String.IsNullOrEmpty( dirPath ) && Directory.Exists( dirPath ) )
+                    {
+                        string filePath = Path.Combine( dirPath, fileName );
+                        return new Uri( filePath );
+                    }
                 }
             }
             return null;

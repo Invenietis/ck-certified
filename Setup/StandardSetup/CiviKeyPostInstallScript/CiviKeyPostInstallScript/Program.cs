@@ -51,7 +51,17 @@ namespace CiviKeyPostInstallScript
         ///                    8 - ApplicationExePath</param>
         static void Main( string[] args )
         {
-            if( args == null || args.Length != 9 ) return;
+            if( args == null || args.Length != 9 )
+                OnError( @"There is not the right number of parameters, there should be 9 of them :
+                            0 - Version
+                            1 - AppName
+                            2 - DistributionName
+                            3 - AupdateServerUrl
+                            4 - UpdaterGUID
+                            5 - RemoveExistingCtx
+                            6 - IsStandAloneInstance
+                            7 - ApplicationDirectory
+                            8 - ApplicationExePath" );
 
             string systemConfPath;
             string systemConfDir;
@@ -60,19 +70,20 @@ namespace CiviKeyPostInstallScript
             string contextPath;
             string contextDir;
 
-            //Console.Out.WriteLine("Version :" + args[0]);
-            //Console.Out.WriteLine("AppName :" + args[1]);
-            //Console.Out.WriteLine("DistributionName :" + args[2]);
-            //Console.Out.WriteLine("AupdateServerUrl :" + args[3]); 
-            //Console.Out.WriteLine("UpdaterGUID :" + args[4]);
-            //Console.Out.WriteLine("RemoveExistingCtx :" + args[5]);
-            //Console.Out.WriteLine("IsStandAloneInstance :" + args[6]);
-            //Console.Out.WriteLine("ApplicationDirectory :" + args[7]);
-            //Console.Out.WriteLine("ApplicationExePath :" + args[8]);
+            Console.Out.WriteLine( "Version :" + args[0] );
+            Console.Out.WriteLine( "AppName :" + args[1] );
+            Console.Out.WriteLine( "DistributionName :" + args[2] );
+            Console.Out.WriteLine( "AupdateServerUrl :" + args[3] );
+            Console.Out.WriteLine( "UpdaterGUID :" + args[4] );
+            Console.Out.WriteLine( "RemoveExistingCtx :" + args[5] );
+            Console.Out.WriteLine( "IsStandAloneInstance :" + args[6] );
+            Console.Out.WriteLine( "standAloneConfigDir :" + args[7] );
+            Console.Out.WriteLine( "ApplicationExePath :" + args[8] );
+            Console.ReadKey();
 
             string version = args[0];
             _appName = args[1];
-            _distributionName = args[2];           
+            _distributionName = args[2];
             string updateServerUrl = args[3];
             string updaterGuid = args[4];  //"11C83441-6818-4A8B-97A0-1761E1A54251";
 
@@ -81,17 +92,16 @@ namespace CiviKeyPostInstallScript
             bool _isStandAloneInstance;
             bool.TryParse( args[6], out _isStandAloneInstance );
 
-            string applicationDirectory = args[7];
-            if( !Directory.Exists( applicationDirectory ) ) return;
+            string standAloneConfigDir = args[7];
+            if( !Directory.Exists( standAloneConfigDir ) ) return;
 
             string applicationExePath = args[8];
 
             if( _isStandAloneInstance )
             {
-                
-                systemConfDir = Path.Combine( applicationDirectory, "Configurations" );
-                userConfDir = Path.Combine( applicationDirectory, "Configurations" );
-                contextDir = Path.Combine( applicationDirectory, "Configurations" );
+                systemConfDir = standAloneConfigDir;
+                userConfDir = standAloneConfigDir;
+                contextDir = standAloneConfigDir;
             }
             else
             {
@@ -104,47 +114,70 @@ namespace CiviKeyPostInstallScript
             userConfPath = Path.Combine( userConfDir, "User.config.ck" );
             contextPath = Path.Combine( contextDir, "Context.xml" );
 
-            //Console.Out.WriteLine( "systemConfPath : " + systemConfPath );
-            //Console.Out.WriteLine( "userConfPath : " + userConfPath );
-            //Console.Out.WriteLine( "contextPath : " + contextPath );
-
             string hostGuid = "1A2DC25C-E357-488A-B2B2-CD2D7E029856";
-            string updateDoneDir = Path.Combine( Path.GetTempPath(), _appName + Path.DirectorySeparatorChar + _distributionName  );
+            string updateDoneDir = Path.Combine( Path.GetTempPath(), _appName + Path.DirectorySeparatorChar + _distributionName );
             string updateDone = Path.Combine( updateDoneDir, "UpdateDone" );
             Directory.CreateDirectory( updateDoneDir );
             File.Create( updateDone );
 
-            XmlDocument xPathDoc = new XmlDocument();
-            xPathDoc.Load( systemConfPath );
-            XPathNavigator xPathNav = xPathDoc.CreateNavigator();
-
-            AddEntryToSystemConf( "UpdateServerUrl", updateServerUrl, updaterGuid, "Update Checker", xPathNav );
-            AddEntryToSystemConf( "DistributionName", _distributionName, updaterGuid, "Update Checker", xPathNav );
-            AddEntryToSystemConf( "Version", version, hostGuid, "Host", xPathNav );
-
-            xPathDoc.Save( systemConfPath );
-            if( removeExistingCtx )
+            if( File.Exists( systemConfPath ) )
             {
-                if( File.Exists( contextPath ) )
+                XmlDocument xPathDoc = new XmlDocument();
+                xPathDoc.Load( systemConfPath );
+                XPathNavigator xPathNav = xPathDoc.CreateNavigator();
+
+                AddEntryToSystemConf( "UpdateServerUrl", updateServerUrl, updaterGuid, "Update Checker", xPathNav );
+                AddEntryToSystemConf( "DistributionName", _distributionName, updaterGuid, "Update Checker", xPathNav );
+                AddEntryToSystemConf( "Version", version, hostGuid, "Host", xPathNav );
+
+                xPathDoc.Save( systemConfPath );
+
+                if( removeExistingCtx )
                 {
-                    string renamedFilePath = Path.Combine( contextDir, "Context.RenamedBefore_" + version + ".xml" );
-                    if( !File.Exists( renamedFilePath ) ) //in case this version has already been installed, don't overwrite the saved context
+                    if( File.Exists( contextPath ) )
                     {
-                        File.Move( contextPath, renamedFilePath );
+                        string renamedFilePath = Path.Combine( contextDir, "Context.RenamedBefore_" + version + ".xml" );
+                        if( !File.Exists( renamedFilePath ) ) //in case this version has already been installed, don't overwrite the saved context
+                        {
+                            File.Move( contextPath, renamedFilePath );
+                        }
                     }
                 }
-            }
- 
-            Configuration appConf = ConfigurationManager.OpenExeConfiguration( applicationExePath );
-            if( appConf != null )
-            {
-                if( appConf.AppSettings.Settings["IsStandAloneInstance"] != null)
+
+                Configuration appConf = ConfigurationManager.OpenExeConfiguration( applicationExePath );
+                if( appConf != null )
                 {
-                    appConf.AppSettings.Settings.Remove( "IsStandAloneInstance" ); 
+                    if( appConf.AppSettings.Settings["IsStandAloneInstance"] != null )
+                    {
+                        appConf.AppSettings.Settings.Remove( "IsStandAloneInstance" );
+                    }
+                    if( appConf.AppSettings.Settings["ConfigurationDirectory"] != null )
+                    {
+                        appConf.AppSettings.Settings.Remove( "ConfigurationDirectory" );
+                    }
+
+                    appConf.AppSettings.Settings.Add( "IsStandAloneInstance", _isStandAloneInstance.ToString() );
+                    if( _isStandAloneInstance )
+                    {
+                        Debug.Assert( systemConfDir == userConfDir && systemConfDir == contextDir );
+                        appConf.AppSettings.Settings.Add( "ConfigurationDirectory", systemConfDir );
+                    }
                 }
-                appConf.AppSettings.Settings.Add( "IsStandAloneInstance", _isStandAloneInstance.ToString() );
+                appConf.Save( ConfigurationSaveMode.Full );
             }
-            appConf.Save( ConfigurationSaveMode.Full );
+            else 
+            {
+                OnError( "Problem while reading the system configuration. Path : " + systemConfPath );
+            }
+        }
+
+        public static void OnError( string message )
+        {
+            Console.Out.WriteLine( message );
+            Console.Out.WriteLine( "The installation is not complete, please try again or contact us at contact@invenietis.com" );
+            Console.Out.WriteLine( "Press any key to exit." );
+            Console.ReadKey();
+            return;
         }
 
         private static void AddEntryToSystemConf( string key, string value, string pluginId, string pluginName, XPathNavigator xPathNav )

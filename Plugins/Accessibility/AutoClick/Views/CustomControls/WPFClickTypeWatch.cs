@@ -32,12 +32,5 @@ namespace CK.Plugins.AutoClick.Views
             get { return (LinearGradientBrush)GetValue( DisabledColorProperty ); }
             set { SetValue( DisabledColorProperty, value ); }
         }
-
-        public static DependencyProperty IsPausedProperty;
-        public bool IsPaused
-        {
-            get { return (bool)GetValue( IsPausedProperty ); }
-            set { SetValue( IsPausedProperty, value ); }
-        }
     }
 }

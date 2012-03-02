@@ -15,7 +15,7 @@ namespace CiviKeyPostInstallScript
     {
         public static string _distributionName { get; set; }
         static string _appName;
-        string _systemConfPath;
+
         /// <summary>
         /// Full path of application-specific data repository, for the current roaming user.
         /// Ends with <see cref="Path.DirectorySeparatorChar"/>.
@@ -46,12 +46,11 @@ namespace CiviKeyPostInstallScript
         ///                    3 - AupdateServerUrl
         ///                    4 - UpdaterGUID
         ///                    5 - RemoveExistingCtx
-        ///                    6 - IsDevelopmentInstance
+        ///                    6 - IsStandAloneInstance
         ///                    7 - ApplicationDirectory
         ///                    8 - ApplicationExePath</param>
         static void Main( string[] args )
         {
-            Console.ReadKey();
             if( args == null || args.Length != 9 ) return;
 
             string systemConfPath;
@@ -61,15 +60,15 @@ namespace CiviKeyPostInstallScript
             string contextPath;
             string contextDir;
 
-            Console.Out.WriteLine("Version :" + args[0]);
-            Console.Out.WriteLine("AppName :" + args[1]);
-            Console.Out.WriteLine("DistributionName :" + args[2]);
-            Console.Out.WriteLine("AupdateServerUrl :" + args[3]);
-            Console.Out.WriteLine("UpdaterGUID :" + args[4]);
-            Console.Out.WriteLine("RemoveExistingCtx :" + args[5]);
-            Console.Out.WriteLine("IsDevelopmentInstance :" + args[6]);
-            Console.Out.WriteLine("ApplicationDirectory :" + args[7]);
-            Console.Out.WriteLine("ApplicationExePath :" + args[8]);
+            //Console.Out.WriteLine("Version :" + args[0]);
+            //Console.Out.WriteLine("AppName :" + args[1]);
+            //Console.Out.WriteLine("DistributionName :" + args[2]);
+            //Console.Out.WriteLine("AupdateServerUrl :" + args[3]); 
+            //Console.Out.WriteLine("UpdaterGUID :" + args[4]);
+            //Console.Out.WriteLine("RemoveExistingCtx :" + args[5]);
+            //Console.Out.WriteLine("IsStandAloneInstance :" + args[6]);
+            //Console.Out.WriteLine("ApplicationDirectory :" + args[7]);
+            //Console.Out.WriteLine("ApplicationExePath :" + args[8]);
 
             string version = args[0];
             _appName = args[1];
@@ -79,19 +78,20 @@ namespace CiviKeyPostInstallScript
 
             bool removeExistingCtx;
             bool.TryParse( args[5], out removeExistingCtx );
-            bool isDevelopmentInstance;
-            bool.TryParse( args[6], out isDevelopmentInstance );
+            bool _isStandAloneInstance;
+            bool.TryParse( args[6], out _isStandAloneInstance );
 
             string applicationDirectory = args[7];
             if( !Directory.Exists( applicationDirectory ) ) return;
 
             string applicationExePath = args[8];
 
-            if( isDevelopmentInstance )
+            if( _isStandAloneInstance )
             {
-                systemConfDir = applicationDirectory;
-                userConfDir = applicationDirectory;
-                contextDir = applicationDirectory;
+                
+                systemConfDir = Path.Combine( applicationDirectory, "Configurations" );
+                userConfDir = Path.Combine( applicationDirectory, "Configurations" );
+                contextDir = Path.Combine( applicationDirectory, "Configurations" );
             }
             else
             {
@@ -99,11 +99,15 @@ namespace CiviKeyPostInstallScript
                 userConfDir = ApplicationDataPath;
                 contextDir = ApplicationDataPath;
             }
-            Console.ReadKey();
-            systemConfPath = Path.Combine(systemConfDir, "System.config.ck");
-            userConfPath = Path.Combine(userConfDir, "User.config.ck");
-            contextPath = Path.Combine(contextDir, "Context.xml");
-            Console.ReadKey();
+
+            systemConfPath = Path.Combine( systemConfDir, "System.config.ck" );
+            userConfPath = Path.Combine( userConfDir, "User.config.ck" );
+            contextPath = Path.Combine( contextDir, "Context.xml" );
+
+            //Console.Out.WriteLine( "systemConfPath : " + systemConfPath );
+            //Console.Out.WriteLine( "userConfPath : " + userConfPath );
+            //Console.Out.WriteLine( "contextPath : " + contextPath );
+
             string hostGuid = "1A2DC25C-E357-488A-B2B2-CD2D7E029856";
             string updateDoneDir = Path.Combine( Path.GetTempPath(), _appName + Path.DirectorySeparatorChar + _distributionName  );
             string updateDone = Path.Combine( updateDoneDir, "UpdateDone" );
@@ -130,13 +134,17 @@ namespace CiviKeyPostInstallScript
                     }
                 }
             }
-            //TODO : JL - Set the IsDevelopmentInstance value in civikey.exe.config.
-            Console.ReadKey();
+ 
             Configuration appConf = ConfigurationManager.OpenExeConfiguration( applicationExePath );
-            appConf.AppSettings.Settings.Add( "IsDevelopmentInstance", isDevelopmentInstance.ToString() );
-
+            if( appConf != null )
+            {
+                if( appConf.AppSettings.Settings["IsStandAloneInstance"] != null)
+                {
+                    appConf.AppSettings.Settings.Remove( "IsStandAloneInstance" ); 
+                }
+                appConf.AppSettings.Settings.Add( "IsStandAloneInstance", _isStandAloneInstance.ToString() );
+            }
             appConf.Save( ConfigurationSaveMode.Full );
-            //Console.ReadKey();
         }
 
         private static void AddEntryToSystemConf( string key, string value, string pluginId, string pluginName, XPathNavigator xPathNav )

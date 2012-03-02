@@ -179,10 +179,10 @@ namespace Host
         const string _defaultUserConfigurationFileName = "User.config.ck";
 
         /// <summary>
-        /// Gets or sets the full path of the user configuration file.
+        /// Gets the full path of the user configuration file.
         /// Defaults to "User.config.ck" file in <see cref="ApplicationDataPath"/>.
         /// </summary>
-        public virtual string DefaultUserConfigPath
+        private string DefaultUserConfigPath
         {
             get { return applicationParameters.ApplicationDataPath + _defaultUserConfigurationFileName; }
         }
@@ -191,7 +191,7 @@ namespace Host
         /// Gets the full path of the machine configuration file.
         /// Defaults to "System.config.ck" file in <see cref="CommonApplicationDataPath"/>.
         /// </summary>
-        public virtual string DefaultSystemConfigPath
+        private string DefaultSystemConfigPath
         {
             get { return applicationParameters.CommonApplicationDataPath + _defaultSystemConfigurationFileName; }
         }
@@ -207,19 +207,19 @@ namespace Host
         }
 
         /// <summary>
-        /// If there is a civikey.exe.config file and that it contains a IsDevelopmentInstance set to true, we set the default config path to ApplicationFolder/Configurations/FileName
+        /// If there is a civikey.exe.config file and that it contains a IsStandAloneInstance set to true, we set the default config path to ApplicationFolder/Configurations/FileName
         /// </summary>
         /// <param name="fileName"></param>
-        /// <returns>The development Uri if IsDevelopmentInstance is true, null otherwise </returns>
+        /// <returns>The development Uri if IsStandAloneInstance is true, null otherwise </returns>
         private Uri GetDevelopmentPath( string fileName )
         {
-            string isDevelopmentInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsDevelopmentInstance" );
-            bool isDevelopmentInstance = false;
-            if( !String.IsNullOrEmpty( isDevelopmentInstanceString ) )
+            string _isStandAloneInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsStandAloneInstance" );
+            bool _isStandAloneInstance = false;
+            if( !String.IsNullOrEmpty( _isStandAloneInstanceString ) )
             {
-                if( Boolean.TryParse( isDevelopmentInstanceString, out isDevelopmentInstance ) && isDevelopmentInstance )
+                if( Boolean.TryParse( _isStandAloneInstanceString, out _isStandAloneInstance ) && _isStandAloneInstance )
                 {
-                    string dirPath = Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), "Configurations" );
+                    string dirPath = Path.Combine( Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), ".." ), "Configurations" );
                     if( !Directory.Exists( dirPath ) ) Directory.CreateDirectory( dirPath );
 
                     return new Uri( Path.Combine( dirPath, fileName ) );
@@ -230,7 +230,6 @@ namespace Host
 
         protected override KeyValuePair<string, Uri> GetDefaultContextProfile( bool saving )
         {
-
             var e = new ContextProfileRequiredEventArgs( Context, saving )
             {
                 Address = GetDevelopmentPath( "Context.xml" ) ?? new Uri( Path.Combine( applicationParameters.ApplicationDataPath, "Context.xml" ) ),

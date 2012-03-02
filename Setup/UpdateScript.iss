@@ -4,7 +4,7 @@
 #define CKVersion ReadIni(SourcePath + "\\BuildInfo.ini","Info","Version","0");                                  
 #define ApplicationName ReadIni(SourcePath + "\\BuildInfo.ini","Info","ApplicationName","0");
 #define DistribName ReadIni(SourcePath + "\\BuildInfo.ini","Info","DistribName","0");
-#define IsDevelopmentInstance ReadIni(SourcePath + "\\BuildInfo.ini","Info","IsDevelopmentInstance","false");
+#define IsStandAloneInstance ReadIni(SourcePath + "\\BuildInfo.ini","Info","IsStandAloneInstance","false");
 #define UpdateServerUrl ReadIni(SourcePath + "\\BuildInfo.ini","Update","UpdateServerUrl","0");
 #define UpdaterRunningKey ReadIni(SourcePath + "\\BuildInfo.ini","Update","UpdaterRunningKey","0");
 #define CiviKeyMutex ReadIni(SourcePath + "\\BuildInfo.ini","Update","CiviKeyMutex","0");
@@ -31,16 +31,16 @@ UninstallDisplayIcon={app}\resources\CiviKey.ico
 AppMutex=CiviKeyMutex
 VersionInfoVersion={#CKVersion}
 VersionInfoProductName={#ApplicationName}-{#DistribName}
-
+                               
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Files]
-Source: "..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\Output\Debug\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "CiviKey.ico"; DestDir: "{app}\resources"
 Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
-Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsDevelopmentInstance}}; Flags: onlyifdoesntexist; Permissions: everyone-full; 
+Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}\\Configurations; Flags: onlyifdoesntexist; Permissions: everyone-full; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -48,15 +48,15 @@ Name: "{group}\CiviKey"; Filename: "{app}\binaries\CK-Certified.exe"; WorkingDir
 Name: "{commondesktop}\CiviKey"; Filename: "{app}\binaries\CK-Certified.exe"; WorkingDir: "{app}"; IconFileName:"{app}\resources\CiviKey.ico"
 
 [Run]
-Filename: "{tmp}\CiviKeyPostInstallScript.exe"; Parameters: """{#CKVersion}"" ""{#ApplicationName}"" ""{#DistribName}"" ""{#UpdateServerUrl}"" ""{#UpdaterRunningKey}"" ""{#OverridePreviousContext}"" ""{#IsDevelopmentInstance}"" ""{code:GetOutputDir|{#IsDevelopmentInstance}}"" ""{app}\binaries\CK-Certified.exe"""
-
+Filename: "{tmp}\CiviKeyPostInstallScript.exe"; Parameters: """{#CKVersion}"" ""{#ApplicationName}"" ""{#DistribName}"" ""{#UpdateServerUrl}"" ""{#UpdaterRunningKey}"" ""{#OverridePreviousContext}"" ""{#IsStandAloneInstance}"" ""{code:GetOutputDir|{#IsStandAloneInstance}}"" ""{app}\binaries\CK-Certified.exe"""
+                                                                                                                                                                                                                                               ;Application directory                          ;.exe path
 [Code]
 function GetOutputDir(Param: String): String;
 begin
     if Param = 'false' then begin
         Result := ExpandConstant('{commonappdata}\\{#ApplicationName}\\{#DistribName}\\');
     end else begin
-        Result := ExpandConstant('{app}\\Configurations\\');
+        Result := ExpandConstant('{app}\\');
     end
 end;
 

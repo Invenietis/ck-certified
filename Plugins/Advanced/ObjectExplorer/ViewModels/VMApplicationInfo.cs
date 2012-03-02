@@ -30,7 +30,8 @@ namespace CK.Plugins.ObjectExplorer
                     _openFileCmd = new VMCommand<string>( ( s ) =>
                         {
                             f = new FileInfo( s );
-                            Process.Start( f.FullName );
+                            if(f.Exists)
+                                Process.Start( f.FullName );
                         } );
                 }
                 return _openFileCmd;

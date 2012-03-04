@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Runtime\Current\Plugins\</OutputPath>
+    <OutputPath>$(SolutionDir)\Runtime\Current\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\..\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>$(SolutionDir)\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+      <HintPath>$(SolutionDir)\Runtime\Current\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

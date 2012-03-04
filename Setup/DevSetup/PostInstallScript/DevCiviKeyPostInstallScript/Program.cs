@@ -70,7 +70,7 @@ namespace DevCiviKeyPostInstallScript
                     {
                         appConf.AppSettings.Settings.Remove( "ConfigurationDirectory" );
                     }
-                    Console.ReadKey();
+                    
                     appConf.AppSettings.Settings.Add( "IsStandAloneInstance", _isStandAloneInstance.ToString() );
                     if( _isStandAloneInstance )
                     {

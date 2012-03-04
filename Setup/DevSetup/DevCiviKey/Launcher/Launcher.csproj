@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <OutputPath>$(MSBuildProjectDirectory)</OutputPath>
-    <StartProgram>$(OutputPath)\..\Runtime\Current\CK-Certified.exe</StartProgram>
+    <StartProgram>$(SolutionDir)\Runtime\Current\CK-Certified.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

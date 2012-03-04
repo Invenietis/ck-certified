@@ -5,33 +5,29 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using System.Windows;
 
-namespace Plugin
+namespace DummyPlugins
 {
     /// <summary>
-    /// Class that represent a CiviKey plugin
+    /// Class that represent a CiviKey service. It is a plugin that implements a CiviKeyService (here, IDummyService)
     /// </summary>
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class Plugin : IPlugin
+    public class DummyServicePlugin : IPlugin, IDummyService
     {
         //This GUID should be re-generated to give this plugin a unique ID
-        const string PluginGuidString = "{9F01F364-008C-4f1f-831B-CD4FF7A2D1CC}";
+        const string PluginGuidString = "{8C4DA5A4-95E5-4a9e-83BF-51FFC0B43E59}";
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Name of the plugin";
+        const string PluginPublicName = "DummyServicePlugin";
 
         //Reference to the storage object that enables one to save data.
-        //This object is injected after all plugins' Setup method has been called
+        //This object is injected after all plugins' Setup method have been called
         public IPluginConfigAccessor Config { get; set; }
 
         /// <summary>
         /// Constructor of the class, all services are null
         /// </summary>
-        public Plugin()
+        public DummyServicePlugin()
         {
-            w = new Window();
-            w.Content = "This is a new plugin";
         }
-
-        Window w;
 
         /// <summary>
         /// First called method on the class, at this point, all services are null.
@@ -50,7 +46,9 @@ namespace Plugin
         /// </summary>
         public void Start()
         {
-            w.Show();
+            //Saving a value into the SharedDictionary. Note that these values are saved as XML when CiviKey is stopped.
+            if( Config.User["AnswerToLife"] == null)
+                Config.User.Add( "AnswerToLife", 42 );
         }
 
         /// <summary>
@@ -59,7 +57,7 @@ namespace Plugin
         /// </summary>
         public void Stop()
         {
-            w.Close();
+
         }
 
         /// <summary>
@@ -68,6 +66,12 @@ namespace Plugin
         /// </summary>
         public void Teardown()
         {
+        }
+
+        public int GetAnswerToLife()
+        {
+            //Retrieve values from the SharedDictionary
+            return (int)Config.User["AnswerToLife"];
         }
     }
 }

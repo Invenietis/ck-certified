@@ -25,7 +25,7 @@ VersionInfoProductName=DevCiviKey
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: ".\*"; DestDir: "{app}"; Excludes: "*.config, *.pdb, *.xml, *.ck, *vshost.exe*, *.manifest, *.iss, \Runtime, \PostInstallScript.exe, \DevCiviKeyPostInstallScript"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\*"; DestDir: "{app}"; Excludes: "*.config, *.pdb, *.xml, *.ck, *vshost.exe*, *.manifest, *.iss, DevCiviKeyPostInstallScript.exe, \DevCiviKey\Runtime, \PostInstallScript.exe, \DevCiviKeyPostInstallScript"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\..\Output\Debug\*"; DestDir: "{app}\DevCiviKey\Runtime\Current"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\Resources\CK-Certified.exe.config"; DestDir: "{app}\DevCiviKey\Runtime\Current"
 Source: "DevCiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion

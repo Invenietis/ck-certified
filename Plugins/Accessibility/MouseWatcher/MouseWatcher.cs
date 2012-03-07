@@ -89,7 +89,9 @@ namespace MouseWatcher
         public void Stop()
         {
             ResetAndStopAllWatches();
-            MouseDriver.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
+            MouseDriver.PointerMove -= new PointerDeviceEventHandler( OnPointerAction );
+            MouseDriver.PointerButtonDown -= new PointerDeviceEventHandler( OnPointerAction );
+            MouseDriver.PointerButtonUp -= new PointerDeviceEventHandler( OnPointerAction );
             _updateTimer.Tick -= new EventHandler( onTimerTick );
             _idleTimer.Tick -= new EventHandler( onIdleStopWatchTick );            
         }
@@ -130,7 +132,9 @@ namespace MouseWatcher
             _idleTimer.Interval = new TimeSpan( 0, 0, 0, 0, TimeBeforeCountDownStarts );
             _idleTimer.Tick += new EventHandler( onIdleStopWatchTick );
            
-            MouseDriver.PointerMove += new PointerDeviceEventHandler( OnPointerMove );
+            MouseDriver.PointerMove += new PointerDeviceEventHandler( OnPointerAction );
+            MouseDriver.PointerButtonDown += new PointerDeviceEventHandler( OnPointerAction );
+            MouseDriver.PointerButtonUp += new PointerDeviceEventHandler( OnPointerAction );
 
             LaunchTimers();
         }
@@ -162,7 +166,7 @@ namespace MouseWatcher
             StartProgressWatch();            
         }
 
-        private void OnPointerMove( object sender, PointerDeviceEventArgs e )
+        private void OnPointerAction( object sender, EventArgs e )
         {
             //Back to the frst state : only idle is launched
             if( !IsPaused )

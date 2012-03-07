@@ -10,29 +10,29 @@ AppName=CiviKey
 AppVersion=1.0.0
 AppPublisher=Invenietis
 AppPublisherURL=http://www.invenietis.com/
-DefaultDirName={pf}\DevCiviKey
-DefaultGroupName=DevCiviKey
+DefaultDirName={pf}\CK-Contrib
+DefaultGroupName=CK-Contrib
 AllowNoIcons=yes
 OutputDir=.\
-OutputBaseFilename=Dev-CiviKey-Installer-1.0.0
+OutputBaseFilename=Contrib-Installer-1.0.0
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=Resources\CiviKey.ico
 VersionInfoVersion=1.0.0
-VersionInfoProductName=DevCiviKey
+VersionInfoProductName=CK-Contrib
                                
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: ".\*"; DestDir: "{app}"; Excludes: "*.config, *.pdb, *.xml, *.ck, *vshost.exe*, *.manifest, *.iss, DevCiviKeyPostInstallScript.exe, \DevCiviKey\Runtime, \PostInstallScript.exe, \DevCiviKeyPostInstallScript"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\..\Output\Debug\*"; DestDir: "{app}\DevCiviKey\Runtime\Current"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\Resources\CK-Certified.exe.config"; DestDir: "{app}\DevCiviKey\Runtime\Current"
-Source: "DevCiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
+Source: ".\*"; DestDir: "{app}"; Excludes: "*.config, *.pdb, *.xml, *.ck, *vshost.exe*, *.manifest, *.iss, ContribPostInstallScript.exe, \CK-Contrib\Runtime, \PostInstallScript.exe, \CK-ContribPostInstallScript"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\Output\Debug\*"; DestDir: "{app}\CK-Contrib\Runtime\Current"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\Resources\CK-Certified.exe.config"; DestDir: "{app}\CK-Contrib\Runtime\Current"
+Source: "ContribPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
            
 [Run]
-Filename: "{tmp}\DevCiviKeyPostInstallScript.exe"; Parameters: """True"" ""{app}\DevCiviKey"" ""{app}\DevCiviKey\Configurations"" ""{app}\DevCiviKey\Runtime\Current\CK-Certified.exe"""           
+Filename: "{tmp}\ContribPostInstallScript.exe"; Parameters: """True"" ""{app}\CK-Contrib"" ""{app}\CK-Contrib\Configurations"" ""{app}\CK-Contrib\Runtime\Current\CK-Certified.exe"""           
                                                                                                                                                                                                                                              ;Application directory                          ;.exe path
 [Code]
 function IsDotNetDetected(version: string; service: cardinal): boolean;

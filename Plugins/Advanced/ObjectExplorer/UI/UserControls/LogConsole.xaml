@@ -194,11 +194,9 @@
                                         <Style TargetType="{x:Type Image}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsVisible}" Value="true">
-                                                    <!--<Setter Property="Source" Value="../DetailsImages/greenIndicator.png"/>-->
                                                     <Setter Property="Source" Value="pack://application:,,,/ObjectExplorer;component/UI/Resources/DetailsImages/greenIndicator.png"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsVisible}" Value="False">
-                                                    <!--<Setter Property="Source" Value="../DetailsImages/redIndicator.png"/>-->
                                                     <Setter Property="Source" Value="pack://application:,,,/ObjectExplorer;component/UI/Resources/DetailsImages/redIndicator.png"/>
                                                 </DataTrigger>
                                             </Style.Triggers>

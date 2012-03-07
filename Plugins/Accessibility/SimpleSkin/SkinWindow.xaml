@@ -85,7 +85,10 @@
         </DataTemplate>
         
     </Window.Resources>
-    <Viewbox Stretch="Fill" x:Name="MainContainer">
-        <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding Keyboard}" />
-    </Viewbox>
+    <Grid>
+        <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding Keyboard.BackgroundImagePath}" />
+        <Viewbox Stretch="Fill">
+            <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding Keyboard}" />
+        </Viewbox>
+    </Grid>
 </Window>

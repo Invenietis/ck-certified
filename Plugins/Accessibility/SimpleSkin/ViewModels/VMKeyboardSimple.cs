@@ -21,7 +21,7 @@ namespace SimpleSkin.ViewModels
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
             _viewportHeight = ViewportSize.Height;
             _viewportWidth = ViewportSize.Width;
-            System.Drawing.Point p =  CheckPostion();
+            System.Drawing.Point p = CheckPostion();
         }
 
         protected override void OnDispose()
@@ -46,7 +46,7 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.Obj == Layout)
+            if( e.Obj == Layout )
             {
                 switch( e.Key )
                 {
@@ -87,7 +87,7 @@ namespace SimpleSkin.ViewModels
             {
                 System.Drawing.Point p = ScreenHelper.GetCenterOfParentScreen( rect );
                 int hScreen = p.Y * 2;
-                rect.X = p.X - (s.Width / 2);
+                rect.X = p.X - ( s.Width / 2 );
                 rect.Y = hScreen - s.Height - 10;
                 rect.Width = s.Width;
                 rect.Height = s.Height;
@@ -101,7 +101,7 @@ namespace SimpleSkin.ViewModels
 
         Size ViewportSize
         {
-            get { return Context.Config[Layout].GetOrSet( "ViewPortSize", () => new Size( W, H ) ); }
+            get { return Context.Config[Layout].GetOrSet( "ViewPortSize", new Size( W, H ) ); }
             set { Context.Config[Layout]["ViewPortSize"] = value; }
         }
 
@@ -141,87 +141,24 @@ namespace SimpleSkin.ViewModels
             set { Context.Config[Layout].Set( "PositionY", value ); }
         }
 
-        public Brush InsideBorderColor 
-        { 
-            get 
+        public Brush InsideBorderColor
+        {
+            get
             {
                 if( Context.Config[Layout]["InsideBorderColor"] != null )
-                    return new SolidColorBrush((Color)Context.Config[Layout]["InsideBorderColor"]);
+                    return new SolidColorBrush( (Color)Context.Config[Layout]["InsideBorderColor"] );
                 return null;
-            } 
+            }
         }
 
+        ImageSourceConverter imsc;
         public object BackgroundImagePath
         {
             get
             {
-                if( Context.Config[Layout]["KeyboardBackground"] == null )
-                {
-                    Context.Config[Layout]["KeyboardBackground"] = "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png";
-                }
-                ImageSourceConverter imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( (string)Context.Config[Layout]["KeyboardBackground"] );
+                if( imsc == null ) imsc = new ImageSourceConverter();
+                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
             }
-        }
-
-        public Brush Background
-        {
-            get;
-            set;
-            //get
-            //{
-            //if( Context.Config[Layout]["KeyboardBackground"] == null || Context.Config[Layout]["KeyboardBackgroundType"] == null )
-            //{
-            //    Context.Config[Layout]["KeyboardBackgroundType"] = "path";
-            //    Context.Config[Layout]["KeyboardBackground"] = "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png";                    
-            //}
-
-            ////A kind of neatier way ?
-            //object data = Context.Config[Layout]["KeyboardBackground"];
-            //object dataType = Context.Config[Layout]["KeyboardBackgroundType"];
-
-            //if( dataType.ToString() == "path" )
-            //{
-            //    ImageBrush b = new ImageBrush();
-            //    ImageSourceConverter conv = new ImageSourceConverter();
-            //    BitmapImage bitmapImage = new BitmapImage( new Uri( data.ToString() ) );
-            //    b.ImageSource = bitmapImage;
-            //    return b;
-            //}
-            //else if( dataType.ToString() == "image" )
-            //    return data as ImageBrush;
-            //else if( dataType.ToString() == "color" )
-            //    return new SolidColorBrush( (Color)data );
-            //return null; 
-
-
-            //    //The blunt way :
-            //    //Checking if the data is a path to an image
-            //    //string[] splittedPath = data.ToString().Split('.');
-            //    //string extension = splittedPath[splittedPath.Length - 1];
-            //    //if( extension == "jpg" ||
-            //    //    extension == "jpeg" ||
-            //    //    extension == "jpe"  ||
-            //    //    extension == "png"  ||
-            //    //    extension == "bmp"  ||
-            //    //    extension == "svg"  )
-            //    //{
-            //    //    ImageBrush b = new ImageBrush();
-            //    //    ImageSourceConverter conv = new ImageSourceConverter();
-            //    //    ImageSource imageSource = (ImageSource)conv.ConvertFrom( data.ToString() );
-            //    //    if(imageSource != null)                        
-            //    //        b.ImageSource = imageSource;                       
-            //    //    return b;
-            //    //}
-            //    //else if( data as ImageBrush != null ) // Checking if the data is an image
-            //    //    return data as ImageBrush;
-            //    //else
-            //    //{
-            //    //    return new SolidColorBrush( (Color)data ); //then the data should be a color                        
-            //    //}
-            //}
-            //return null;
-            //}
         }
     }
 }

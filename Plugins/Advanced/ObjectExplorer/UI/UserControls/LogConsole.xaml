@@ -1,0 +1,264 @@
+﻿<UserControl x:Class="CK.Plugins.ObjectExplorer.UI.UserControls.LogConsole"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Dictionnaries/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <ControlTemplate x:Key="EventAdditionalValues">
+                <StackPanel>
+                    <TextBlock >
+                        <TextBlock.Text>
+                            <Binding Path="LogObject.Member.Name" StringFormat="Name of the event : {0}" />
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.Parameters}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Parameters : "/>
+                        <ItemsControl ItemsSource="{Binding LogObject.Parameters}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+            </ControlTemplate>
+            <ControlTemplate x:Key="MethodAdditionalValues">
+                <StackPanel>
+                    <TextBlock >
+                        <TextBlock.Text>
+                            <Binding Path="LogObject.Member.Name" StringFormat="Name of the method : {0}" />
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.Parameters}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Parameters : "/>
+                        <ItemsControl ItemsSource="{Binding LogObject.Parameters}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    <!-- Caller -->
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.Caller}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Caller : "/>
+                        <TextBlock Text="{Binding LogObject.Caller}"/>
+                    </StackPanel>
+                    <!-- ReturnValue -->
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding LogObject.ReturnValue}" Value="{x:Null}">
+                                        <Setter Property="StackPanel.Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Return Value : "/>
+                        <TextBlock Text="{Binding LogObject.ReturnValue}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ControlTemplate>
+            <Style TargetType="{x:Type ContentControl}" x:Key="LogAdditionalValuesStyle">
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding UnderlyingType}" Value="Method"/>
+                            <!--<Condition Value="True">
+                                <Condition.Binding>
+                                    <MultiBinding Converter="{StaticResource OrConverter}">
+                                        <Binding Path="IsSelected" RelativeSource="{RelativeSource self}" />
+                                        <Binding Path="IsMouseOver" RelativeSource="{RelativeSource self}" />
+                                    </MultiBinding>
+                                </Condition.Binding>
+                            </Condition>-->
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Template" Value="{StaticResource MethodAdditionalValues}" />
+                    </MultiDataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding UnderlyingType}" Value="Event"/>
+                            <!--<Condition Value="True">
+                                <Condition.Binding>
+                                    <MultiBinding Converter="{StaticResource OrConverter}">
+                                        <Binding Path="IsSelected" RelativeSource="{RelativeSource self}" />
+                                        <Binding Path="IsMouseOver" RelativeSource="{RelativeSource self}" />
+                                    </MultiBinding>
+                                </Condition.Binding>
+                            </Condition>-->
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Template" Value="{StaticResource EventAdditionalValues}" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+            <ControlTemplate x:Key="SimpleLogEntry">
+                <Border HorizontalAlignment="Stretch"
+                    Name="LogEntry"
+                    Margin="{Binding Margin}"
+                    Padding="5"
+                    Style="{StaticResource roundedBorder}"
+                    Background="{TemplateBinding Background}"
+                    Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <DockPanel LastChildFill="False">
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Index, StringFormat=0\.}" />
+                                <TextBlock FontWeight="Bold" FontSize="12">
+                                <TextBlock.Text>
+                                    <Binding Path="Category" Mode="OneTime" StringFormat=" - {0}" />
+                                </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                            <!-- Additional values (parmaeters, returnvalue, caller) -->
+                            <ContentControl Style="{StaticResource LogAdditionalValuesStyle}" />
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Right">
+                            <TextBlock HorizontalAlignment="Right" Text="Creating" Visibility="{Binding Path=IsCreating, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBlock HorizontalAlignment="Right" Text="Created" Visibility="{Binding Path=IsCreating, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}" />
+                            <TextBlock>
+                            <TextBlock.Text>
+                                <Binding Path="LogObject.CreationTimeUtc" />
+                            </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" LastChildFill="False" Margin="0 0 0 5">
+            <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding Categories}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding ToggleFilterCommand}">
+                            <DockPanel LastChildFill="True">
+                                <Label DockPanel.Dock="Left" Content="{Binding Name, Mode=OneWay}" />
+                                <Image DockPanel.Dock="Right" Width="16" Height="16">
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsVisible}" Value="true">
+                                                    <!--<Setter Property="Source" Value="../DetailsImages/greenIndicator.png"/>-->
+                                                    <Setter Property="Source" Value="pack://application:,,,/ObjectExplorer;component/UI/Resources/DetailsImages/greenIndicator.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsVisible}" Value="False">
+                                                    <!--<Setter Property="Source" Value="../DetailsImages/redIndicator.png"/>-->
+                                                    <Setter Property="Source" Value="pack://application:,,,/ObjectExplorer;component/UI/Resources/DetailsImages/redIndicator.png"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </DockPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="5">
+                <StackPanel.Resources>
+                    <Style x:Key="MaximizeButtonStyle" TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMaximized, Mode=OneWay}" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Image Width="16" Height="16" Source="pack://application:,,,/ObjectExplorer;component/UI/Resources/LogImages/Minimize.png" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ToolTip" Value="Minimize"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMaximized, Mode=OneWay}" Value="False">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Image Width="16" Height="16" Source="pack://application:,,,/ObjectExplorer;component/UI/Resources/LogImages/Maximize.png" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ToolTip" Value="Maximize"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Command="{Binding ToggleMaximizeCommand}" Style="{StaticResource MaximizeButtonStyle}" Margin="0 0 5 0"/>
+                <Button Command="{Binding ClearOutputConsoleCommand}" Content="Clear Console" Margin="0 0 5 0" />
+            </StackPanel>
+        </DockPanel>
+        <ListBox Grid.Row="1" 
+                        ItemsSource="{Binding Entries}" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
+                    IsSynchronizedWithCurrentItem="True" oe:ListBoxAttachedProperties.AutoScrollToNewItem="True">
+            <ListBox.Resources>
+            </ListBox.Resources>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Template" Value="{StaticResource SimpleLogEntry}" />
+                    <Setter Property="Background" Value="Beige"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#2E8EBC"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#1C87BA"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Grid>
+</UserControl>

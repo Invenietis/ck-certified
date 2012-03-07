@@ -15,9 +15,6 @@ namespace SimpleSkin.ViewModels
         double _viewportHeight;
         double _viewportWidth;
 
-        int _x;
-        int _y;
-
         public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
             : base( ctx, kb )
         {
@@ -30,8 +27,8 @@ namespace SimpleSkin.ViewModels
         protected override void OnDispose()
         {
             ViewportSize = new Size( _viewportWidth, _viewportHeight );
-            Context.Config[Layout]["PositionX"] = _x;
-            Context.Config[Layout]["PositionY"] = _y;
+            Context.Config[Layout]["PositionX"] = X;
+            Context.Config[Layout]["PositionY"] = Y;
 
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 

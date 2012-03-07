@@ -53,27 +53,40 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     </Style>    
     
+    <!-- Seperator -->
     <Style TargetType="Separator">
         <Setter Property="Margin" Value="0 3" />
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="LightGray"/>
     </Style>
 
+    <!-- Border -->
     <Style TargetType="Border">
         <Setter Property="CornerRadius" Value="3"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="LightGray"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
-    
+
+    <!-- Round border template -->
+    <Style TargetType="Border" x:Key="roundedBorder">
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <!-- TreeView -->
     <Style TargetType="TreeView">
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
-    
+
+    <!-- TextBlock -->
     <Style TargetType="TextBlock">
         <Setter Property="Margin" Value="0 2"/>
     </Style>
 
+    <!-- TreeViewItemFocusVisual -->
     <Style x:Key="TreeViewItemFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -83,7 +96,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <!-- ExpandCollapseToggleStyle -->
     <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Width" Value="16"/>
@@ -117,7 +131,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <!-- TreeViewItem -->
     <Style TargetType="TreeViewItem">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
@@ -175,7 +190,8 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
+    <!-- HeaderedTVI -->
     <Style TargetType="TreeViewItem" x:Key="HeaderedTVI">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
@@ -228,7 +244,8 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
+    <!-- HeaderedSelectableTVI -->
     <Style TargetType="TreeViewItem" x:Key="HeaderedSelectableTVI">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>

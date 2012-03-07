@@ -197,6 +197,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\UserControls\LogConsole.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\UserControls\LogConsoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\UserControls\SystemInformations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -223,12 +231,19 @@
     <Compile Include="UI\UserControls\ApplicationInformations.xaml.cs">
       <DependentUpon>ApplicationInformations.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\LogConsole.xaml.cs">
+      <DependentUpon>LogConsole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\LogConsoleWindow.xaml.cs">
+      <DependentUpon>LogConsoleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserControls\SystemInformations.xaml.cs">
       <DependentUpon>SystemInformations.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\VMIContextView.xaml.cs">
       <DependentUpon>VMIContextView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\LogViewModels\LogOutput\VMLogOutputContainer.Console.cs" />
     <Compile Include="ViewModels\LogViewModels\LogOutput\VMLogOutputCategory.cs" />
     <Compile Include="ViewModels\LogViewModels\LogOutput\VMLogOutputContainer.cs" />
     <Compile Include="ViewModels\LogViewModels\LogOutput\VMOutputLogEntry.cs" />
@@ -392,6 +407,10 @@
       <Name>CommonServices</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\LogImages\Maximize.png" />
+    <Resource Include="UI\Resources\LogImages\Minimize.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

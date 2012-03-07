@@ -251,18 +251,11 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
-    <!-- Round border template -->
-    <Style TargetType="Border" x:Key="roundedBorder">
-        <Setter Property="CornerRadius" Value="3"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="LightGray"/>
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-    </Style>
+   
     
     <!-- Template of the Log console -->
     <ControlTemplate x:Key="LogOutputConsoleTemplate">
         <ControlTemplate.Resources>
-
             <ControlTemplate x:Key="EventAdditionalValues">
                 <StackPanel>
                     <TextBlock >
@@ -634,7 +627,19 @@
                                 </GroupBox>
                                 <!-- Output Console -->
                                 <GroupBox Header="Output Console">
-                                    <ContentControl Template="{DynamicResource LogOutputConsoleTemplate}" DataContext="{Binding Holder.LogEntriesContainer}"/>
+                                    <GroupBox.Style>
+                                        <Style TargetType="{x:Type GroupBox}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Holder.LogEntriesContainer.IsMaximized}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Holder.LogEntriesContainer.IsMaximized}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </GroupBox.Style>
+                                    <uc:LogConsole DataContext="{Binding Holder.LogEntriesContainer}"/>
                                 </GroupBox>
                             </DockPanel>
                             <DataTemplate.Triggers>

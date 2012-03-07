@@ -6,96 +6,50 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using CK.WPF.ViewModel;
 using CK.Plugin;
+using CK.Plugins.ObjectExplorer.UI.UserControls;
+using System.ComponentModel;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 {
-    public class VMLogOutputContainer : VMBase
+    public partial class VMLogOutputContainer : VMBase
     {
-        public VMLogOutputContainer()
-        {
-            _counter = 0;
-            _maxCount = DEFAULTMAXCOUNT;
-            Entries = new ObservableCollection<VMOutputLogEntry>();
-            Categories = new ObservableCollection<VMLogOutputCategory>();
-        }
-
-        public ObservableCollection<VMOutputLogEntry> Entries { get; private set; }
-        public ObservableCollection<VMLogOutputCategory> Categories { get; private set; }
+        LogConsoleWindow _logConsoleWindow;
         ICommand _clearOutputConsoleCommand;
-        const int DEFAULTMAXCOUNT = 200;
-        int _maxCount;
-        int _counter;
+        ICommand _toggleMaximizedCommand;
+        bool _consoleWindowIsClosed = true;
+        public bool IsMaximized { get { return _logConsoleWindow.Visibility == System.Windows.Visibility.Visible; } }
 
-        /// <summary>
-        /// Gets or sets the maximum number of entries that can be displayed.
-        /// Once this number is reached, the container starts discarding the older entries
-        /// </summary>
-        public int MaxCount { get { return _maxCount; } set { _maxCount = value; } }
-
-        public void Add( LogEventArgs e, string message )
+        void OnLogConsoleWindowClosing( object sender, CancelEventArgs e )
         {
-            Add( new VMOutputLogEntry( this, e, message, ++_counter ) );
+            e.Cancel = true;
+            _logConsoleWindow.Visibility = System.Windows.Visibility.Collapsed;
+            _consoleWindowIsClosed = true;
+            OnPropertyChanged( "IsMaximized" );
         }
 
-        public bool IsCategoryFiltered( string category )
-        {
-            foreach( VMLogOutputCategory cat in Categories )
-            {
-                if( cat.Name == category )
-                    return cat.IsVisible;
-            }
-            return false;
-        }
-
-        public void PropagateVisibilityChanged( VMLogOutputCategory category )
-        {
-            foreach( VMOutputLogEntry entry in Entries )
-            {
-                if( entry.Category == category.Name )
-                    entry.NotifyVisibilityChanged();
-            }
-        }
-
-        public void Add( VMOutputLogEntry entry )
-        {
-            while( Entries.Count >= _maxCount )
-                Entries.RemoveAt( 0 );
-
-            bool exists = false;
-            foreach( VMLogOutputCategory category in Categories )
-            {
-                if( category.Name == entry.Category )
-                {
-                    exists = true;
-                    break;
-                }
-            }
-
-            if( !exists )
-                Categories.Add( new VMLogOutputCategory( this, entry.Category ) );
-
-            Entries.Add( entry );
-        }
-
-        public void Clear()
-        {
-            Entries.Clear();
-        }
-
-        public ICommand ClearOutputConsoleCommand
+        public ICommand ToggleMaximizeCommand
         {
             get
             {
-                if( _clearOutputConsoleCommand == null )
+                if( _toggleMaximizedCommand == null )
                 {
-                    _clearOutputConsoleCommand = new VMCommand( () =>
+                    _toggleMaximizedCommand = new VMCommand( () =>
                     {
-                        Clear();
+                        if( _consoleWindowIsClosed )
+                        {
+                            _logConsoleWindow.Show();
+                            _consoleWindowIsClosed = false;
+                        }
+                        else
+                        {
+                            if( _logConsoleWindow.Visibility == System.Windows.Visibility.Visible ) _logConsoleWindow.Visibility = System.Windows.Visibility.Collapsed;
+                            else _logConsoleWindow.Visibility = System.Windows.Visibility.Visible;
+                        }
+                        OnPropertyChanged( "IsMaximized" );
                     } );
                 }
-                return _clearOutputConsoleCommand;
+                return _toggleMaximizedCommand;
             }
         }
     }
-
 }

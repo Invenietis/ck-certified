@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Plugin;
-using CK.Core;
-using System.Windows.Input;
-//using CK.WPF.ViewModel;
-using System.Windows;
-using System.Windows.Forms;
-//using CK.WPF;
-
-namespace CK.Plugins.ObjectExplorer
+﻿namespace CK.Plugins.ObjectExplorer
 {
     public class VMAlias<T> : VMICoreElement
         where T : VMICoreElement

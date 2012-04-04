@@ -7,7 +7,7 @@ copy ..\..\..\..\Output\Release\Plugins\en-US\SimpleSkin.resources.dll ..\..\..\
 
 rem  ------------------------ parse with LocBaml ------------------------
 cd ..\..\..\..\Output\Release\
-LocBaml /parse en-US\SimpleSkin.resources.dll /out:..\..\Plugins\StandardPlugins\SimpleSkin\Locale\SimpleSkin.resources.Release.txt
+LocBaml /parse en-US\SimpleSkin.resources.dll /out:..\..\Plugins\Accessibility\SimpleSkin\Locale\SimpleSkin.resources.Release.txt
 
 rem  ------------------------ clean ------------------------
 del en-US\SimpleSkin.resources.dll

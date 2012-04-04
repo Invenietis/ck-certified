@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using CK.Windows.App;
+using System.Threading;
+using System.Globalization;
 
 namespace Host
 {
@@ -18,6 +20,10 @@ namespace Host
         [STAThread]
         public static void Main( string[] args )
         {
+            CultureInfo ci = new CultureInfo( "fr-FR" );
+            Thread.CurrentThread.CurrentUICulture = ci;
+            Thread.CurrentThread.CurrentCulture = ci;
+
             // Crash logs upload and updater availability is managed during this initialization.
             using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", "Standard" ) ) )
             {

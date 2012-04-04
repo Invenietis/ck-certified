@@ -4,7 +4,6 @@
                     xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
                     xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
                     xmlns:loe="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels"
-                    xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
                     xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:logs="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels">

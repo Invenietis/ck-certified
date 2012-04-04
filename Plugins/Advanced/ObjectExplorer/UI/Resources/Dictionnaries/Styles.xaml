@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
                     xmlns:ckwc="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
                     xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
                     xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
@@ -16,12 +15,14 @@
     <ckwc:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <oe:SimpleStringFormatConverter x:Key="SimpleStringFormatConverter"/>
     <oe:MultiStringFormatConverter x:Key="MultiStringFormatConverter"/>
-    <oe:AndConverter x:Key="AndMultiValueConverter"/>
+    <oe:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
     <oe:NXORConverter x:Key="NXORConverter"/>
     <oe:OrConverter x:Key="OrConverter"/>
+    <oe:NotConverter x:Key="NotConverter"/>
+    <oe:ICollectionToVisibilityConverter x:Key="ICollectionToVisibilityConverter" />
 
     <oe:EnumDisplayer Type="{x:Type pm:RunningRequirement}" x:Key="RunningRequirement">
-        <oe:EnumDisplayEntry x:Uid="RunningRequirement-optional" EnumValue="Optional" DisplayString="Optional (default)"/>
+        <oe:EnumDisplayEntry x:Uid="RunningRequirement-optional" EnumValue="Optional" DisplayString="Optional"/>
         <oe:EnumDisplayEntry x:Uid="RunningRequirement-optionaltrystart" EnumValue="OptionalTryStart" DisplayString="Optional try start"/>
         <oe:EnumDisplayEntry x:Uid="RunningRequirement-mustexist" EnumValue="MustExist" DisplayString="Must exist"/>
         <oe:EnumDisplayEntry x:Uid="RunningRequirement-mustexisttrystart" EnumValue="MustExistTryStart" DisplayString="Must exist and try start"/>

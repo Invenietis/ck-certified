@@ -28,7 +28,6 @@ using CK.Keyboard.Model;
 using CK.Context;
 using CK.Storage;
 using CK.Plugin.Config;
-using CK.Core;
 using CK.Plugin;
 
 namespace CK.Keyboard

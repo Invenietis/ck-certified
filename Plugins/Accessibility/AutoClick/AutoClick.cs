@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CK.Plugin;
 using System.Windows.Input;
 using CK.Plugins.AutoClick.Views;
 using CommonServices;
-using System.Diagnostics;
-using System.Timers;
-using System.Windows.Threading;
 using CK.Plugins.AutoClick.Model;
-using CK.Plugins.AutoClick.ViewModel;
 using CK.WPF.ViewModel;
 using System.Windows;
 using CK.Plugin.Config;
-using System.Windows.Forms;
 using CK.Core;
 using System.ComponentModel;
 
@@ -54,7 +47,7 @@ namespace CK.Plugins.AutoClick
                     {
                         //Ugly fix, waiting for me to really understand how Show/Close/Visiblity work
                         double editorWindowWidth = _editorWindow.ActualWidth == 0 ? _editorWindow.Width : _editorWindow.ActualWidth;
-
+                        
                         double editorLeft = _wpfStandardClickTypeWindow.Left - editorWindowWidth;
                         if( editorLeft > 0 && editorLeft + _editorWindow.ActualWidth < System.Windows.SystemParameters.PrimaryScreenWidth )
                             _editorWindow.Left = editorLeft;

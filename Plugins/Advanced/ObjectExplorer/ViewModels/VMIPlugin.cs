@@ -13,8 +13,8 @@ using System.ComponentModel;
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMIPlugin : VMICoreElement
-    {        
-        IPluginInfo _pluginInfo;        
+    {
+        IPluginInfo _pluginInfo;
         IList<IPluginInfo> _canEdit;
         PluginRunner _pluginRunner;
 
@@ -22,17 +22,28 @@ namespace CK.Plugins.ObjectExplorer
 
         public bool IsOldVersion { get { return _pluginInfo.IsOldVersion; } }
 
-        public bool IsRunning 
-        { 
-            get 
-            {                 
-                return _pluginRunner.IsPluginRunning( _pluginInfo );                
-            } 
+        public bool IsRunning
+        {
+            get
+            {
+                return _pluginRunner.IsPluginRunning( _pluginInfo );
+            }
         }
 
         public string Name { get { return _pluginInfo.PublicName; } }
 
-        public SolvedConfigStatus FinalRequirement { get { return _pluginRunner.RunnerRequirements.FinalRequirement( _pluginInfo.PluginId ); } }
+        public SolvedConfigStatus FinalRequirement 
+        { 
+            get 
+            {
+                int finalRes = (int)_pluginRunner.RunnerRequirements.FinalRequirement( _pluginInfo.PluginId );
+                int serviceRes = (int)ImplementedServiceStrongestRequirement;
+               
+                if( finalRes > serviceRes )
+                    return (SolvedConfigStatus)Enum.Parse( typeof( SolvedConfigStatus ), finalRes.ToString() );
+                return (SolvedConfigStatus)Enum.Parse( typeof( SolvedConfigStatus ), serviceRes.ToString() );
+            } 
+        }
 
         public string Description { get { return _pluginInfo.Description; } }
 
@@ -44,6 +55,82 @@ namespace CK.Plugins.ObjectExplorer
 
         public Uri RefUrl { get { return _pluginInfo.RefUrl; } }
 
+        /// <summary>
+        /// TODO JL : Show in OE ? May not be that useful
+        /// Result of the resolution of User + System + Live configurations
+        /// </summary>
+        public SolvedConfigStatus SolvedConfigurationStatus
+        {
+            get { return _pluginRunner.ConfigManager.SolvedPluginConfiguration.Find( Id ).Status; }
+        }
+
+        /// <summary>
+        /// Requirements of the implemented service
+        /// Shows the way other plugins require the implementedService and therefore requiring the current plugin
+        /// Returns null if there is no Implemented Service
+        /// Returns an empty collection if there are no running plugins that reference the implemented service
+        /// </summary>
+        public ICollection<KeyValuePair<VMIPlugin, RunningRequirement>> ImplementedServiceRequirements
+        {
+            get
+            {
+                if( ImplService != null ) return ImplService.AllReferencingPlugins;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Will return the strongest requirement on the implemented service (if any), regarding LAUNCHED plugins that reference it.
+        /// Be careful, will return Optional even if there are no service implemented, or if there is no plugins requiring this service.
+        /// Make sure you check these two things before showing the result to the user.
+        /// </summary>
+        public RunningRequirement ImplementedServiceStrongestRequirement
+        {
+            get
+            {
+                RunningRequirement req = RunningRequirement.Optional;
+                if( ImplementedServiceRequirements != null && !IsImplementedServiceFallbackLaunched)
+                {
+                    foreach( var item in ImplementedServiceRequirements )
+                    {
+                        if( _pluginRunner.IsPluginRunning( item.Key._pluginInfo ) && req < item.Value ) req = item.Value;
+                    }
+                }
+                return req;
+            }
+        }
+
+
+        public VMIService ImplService
+        {
+            get
+            {
+                if( _pluginInfo.Service != null )
+                {
+                    return VMIContext.FindOrCreateDynamic( _pluginInfo.Service );
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the plugin implements a service, that has another plugin implementing it, and that this other plugin is launched.
+        /// Returns false otherwise.
+        /// </summary>
+        public bool IsImplementedServiceFallbackLaunched
+        {
+            get
+            {
+                return ImplService != null
+                    && ImplService.ImplementedBy.Count > 1
+                    && ImplService.ImplementedBy.Where( ( p ) => p.AssemblyFullName != this.AssemblyFullName ).FirstOrDefault( ( p ) => { return _pluginRunner.IsPluginRunning( ( (VMIPlugin)p.Data )._pluginInfo ); } ) != null;
+            }
+        }
+
+        /// <summary>
+        /// Result of the resolution of all Layers (not user, nor system, nor live) 
+        /// that have been added throughout the execution (can be the context, the keyboard or the layout for example)
+        /// </summary>
         public RunningRequirement StrongestRequirement
         {
             get
@@ -61,9 +148,18 @@ namespace CK.Plugins.ObjectExplorer
             }
         }
 
-        public IEnumerable<RequirementLayer> RequirementLayers
+        private IEnumerable<RequirementLayer> RequirementLayers
         {
             get { return _pluginRunner.RunnerRequirements.Where( l => l.PluginRequirements.Any( r => r.PluginId == _pluginInfo.PluginId ) ); }
+        }
+
+        ICollection<VMIPluginRequirementLayer> _vmRequirementLayers;
+        public ICollection<VMIPluginRequirementLayer> VMRequirementLayers
+        {
+            get
+            {
+                return _vmRequirementLayers;
+            }
         }
 
         ConfigPluginStatus _systemPluginStatus;
@@ -82,7 +178,7 @@ namespace CK.Plugins.ObjectExplorer
         }
 
         ConfigPluginStatus _userPluginStatus;
-        public ConfigPluginStatus UserPluginStatus 
+        public ConfigPluginStatus UserPluginStatus
         {
             get { return _userPluginStatus; }
             set
@@ -107,22 +203,11 @@ namespace CK.Plugins.ObjectExplorer
 
         public ConfigUserAction ConfigUserAction
         {
-            get { return _pluginRunner.ConfigManager.UserConfiguration.LiveUserConfiguration.GetAction(_pluginInfo.PluginId); }
+            get { return _pluginRunner.ConfigManager.UserConfiguration.LiveUserConfiguration.GetAction( _pluginInfo.PluginId ); }
         }
 
         public IReadOnlyList<string> Categories { get { return _pluginInfo.Categories; } }
 
-        public VMIService ImplService
-        {
-            get
-            {
-                if( _pluginInfo.Service != null )
-                {
-                    return VMIContext.FindOrCreateDynamic( _pluginInfo.Service );
-                }
-                return null;
-            }
-        }
 
         #endregion
 
@@ -139,7 +224,7 @@ namespace CK.Plugins.ObjectExplorer
         #endregion
 
         #region Collections
-       
+
         public VMCollection<VMAlias<VMIService>, IServiceReferenceInfo> ServiceRefs { get; private set; }
         public VMCollection<VMAlias<VMIPlugin>, IPluginInfo> CanEdit { get; private set; }
         public VMCollection<VMAlias<VMIPlugin>, IPluginInfo> EditableBy { get; private set; }
@@ -151,7 +236,7 @@ namespace CK.Plugins.ObjectExplorer
         public VMIPlugin( VMIContextViewModel ctx, IPluginInfo plugin, VMIBase parent )
             : base( ctx, parent )
         {
-            _pluginInfo = plugin;            
+            _pluginInfo = plugin;
 
             Label = plugin.PublicName;
             Assembly = plugin.AssemblyInfo.AssemblyName;
@@ -179,7 +264,22 @@ namespace CK.Plugins.ObjectExplorer
             foreach( IPluginConfigAccessorInfo p in _pluginInfo.EditorsInfo )
                 _canEdit.Add( p.EditedSource );
             IList<IPluginInfo> required = new List<IPluginInfo>();
-      
+
+            //TODO JL : Remove
+            var req = new RequirementLayer( "Youpi" );
+            req.PluginRequirements.AddOrSet( _pluginInfo.PluginId, RunningRequirement.Optional );
+            _pluginRunner.Add( req );
+            req = new RequirementLayer( "Ah mais non ..." );
+            req.PluginRequirements.AddOrSet( _pluginInfo.PluginId, RunningRequirement.MustExist );
+            _pluginRunner.Add( req );
+            //
+
+            _vmRequirementLayers = new List<VMIPluginRequirementLayer>();
+            foreach( RequirementLayer layer in RequirementLayers )
+            {
+                _vmRequirementLayers.Add( new VMIPluginRequirementLayer( this, layer ) );
+            }
+
             ServiceRefs = new VMCollection<VMAlias<VMIService>, IServiceReferenceInfo>( plugin.ServiceReferences, ( info ) => { return new VMAlias<VMIService>( VMIContext.FindOrCreate( info ), this ); } );
             CanEdit = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( new ReadOnlyListOnIList<IPluginInfo>( _canEdit ), ( info ) => { return new VMAlias<VMIPlugin>( VMIContext.FindOrCreate( info ), this ); } );
             EditableBy = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( new ReadOnlyListOnIList<IPluginInfo>( editableBy ), ( info ) => { return new VMAlias<VMIPlugin>( VMIContext.FindOrCreate( info ), this ); } );
@@ -211,19 +311,19 @@ namespace CK.Plugins.ObjectExplorer
         {
             ResetUserAction = new VMCommand( () => VMIContext.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( _pluginInfo.PluginId, Plugin.Config.ConfigUserAction.None ) );
 
-            ApplyCommand = new VMCommand( () => _pluginRunner.Apply());
+            ApplyCommand = new VMCommand( () => _pluginRunner.Apply() );
 
             StartCommand = new VMCommand( Start, CanStart );
-            StopCommand = new VMCommand( Stop, CanStop );            
+            StopCommand = new VMCommand( Stop, CanStop );
         }
 
         #region User Configuration Changes
 
         void OnUserConfigurationChanged( object o, PropertyChangedEventArgs e )
-        {            
+        {
             RefreshUserPluginStatus();
         }
-        
+
         void OnUserPluginStatusChanged( object sender, PluginStatusCollectionChangedEventArgs e )
         {
             if( e.PluginID == Id ) RefreshUserPluginStatus();
@@ -268,7 +368,7 @@ namespace CK.Plugins.ObjectExplorer
             }
         }
 
-        void OnApplyDone(object sender, EventArgs e)
+        void OnApplyDone( object sender, EventArgs e )
         {
             OnPropertyChanged( "IsRunning" );
             OnPropertyChanged( "StrongestRequirement" );
@@ -291,4 +391,41 @@ namespace CK.Plugins.ObjectExplorer
         }
     }
 
+    public class VMIPluginRequirementLayer : VMBase
+    {
+        RequirementLayer _layer;
+        VMIPlugin _plugin;
+
+        /// <summary>
+        /// Gets whether this requirement layer has a requirement for the current plugin
+        /// </summary>
+        public bool HasRequirement
+        {
+            get { return _layer.PluginRequirements.FirstOrDefault( ( p ) => p.PluginId == _plugin.Id ) != null; }
+        }
+
+        /// <summary>
+        /// Name of the layer
+        /// </summary>
+        public String Name { get { return _layer.LayerName; } }
+
+        /// <summary>
+        /// Gets the requirement that can be found in the layer
+        /// Returns Optional if no requirements can be found
+        /// </summary>
+        public RunningRequirement Requirement { get { return GetRequirement(); } }
+
+        public VMIPluginRequirementLayer( VMIPlugin plugin, RequirementLayer layer )
+        {
+            _layer = layer;
+            _plugin = plugin;
+        }
+
+        private RunningRequirement GetRequirement()
+        {
+            var req = _layer.PluginRequirements.FirstOrDefault( ( p ) => p.PluginId == _plugin.Id );
+            if( req != null ) return req.Requirement;
+            return RunningRequirement.Optional;
+        }
+    }
 }

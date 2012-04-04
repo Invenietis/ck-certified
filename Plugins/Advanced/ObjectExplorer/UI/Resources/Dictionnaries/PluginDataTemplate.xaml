@@ -5,8 +5,8 @@
                     xmlns:pm="clr-namespace:CK.Plugin;assembly=CK.Plugin.Model"
                     xmlns:loe="clr-namespace:CK.Plugins.ObjectExplorer.ViewModels.LogViewModels"                    
                     xmlns:uc="clr-namespace:CK.Plugins.ObjectExplorer.UI.UserControls"
-                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:ck="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles.xaml" />
@@ -16,23 +16,23 @@
     <!-- Plugin -->
     <DataTemplate DataType="{x:Type oe:VMIPlugin}" x:Key="PluginDetails">
         <DataTemplate.Resources>
-            
+
             <oe:EnumDisplayer Type="{x:Type p:ConfigPluginStatus}" x:Key="ConfigPluginStatus">
                 <oe:EnumDisplayEntry x:Uid="ConfigPluginStatus-disabled" EnumValue="Disabled" DisplayString="Disabled"/>
-                <oe:EnumDisplayEntry x:Uid="ConfigPluginStatus-manual" EnumValue="Manual" DisplayString="Manual (default)"/>
+                <oe:EnumDisplayEntry x:Uid="ConfigPluginStatus-manual" EnumValue="Manual" DisplayString="Manual"/>
                 <oe:EnumDisplayEntry x:Uid="ConfigPluginStatus-automaticstart" EnumValue="AutomaticStart" DisplayString="Automatic start"/>
                 <oe:EnumDisplayEntry EnumValue="ConfigurationMask" DisplayString="Configuration mask" ExcludeFromDisplay="True"/>
             </oe:EnumDisplayer>
 
             <oe:EnumDisplayer Type="{x:Type pm:SolvedConfigStatus}" x:Key="SolvedConfigStatus">
-                <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-optional" EnumValue="Optional" DisplayString="Optional (default)"/>
+                <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-optional" EnumValue="Optional" DisplayString="Optional"/>
                 <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-optionaltrystart" EnumValue="OptionalTryStart" DisplayString="Optional try start"/>
                 <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-mustexist" EnumValue="MustExist" DisplayString="Must exist"/>
                 <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-mustexittrystart" EnumValue="MustExistTryStart" DisplayString="Must exist and try start"/>
                 <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-mustexistandrun" EnumValue="MustExistAndRun" DisplayString="Must exist and run"/>
                 <oe:EnumDisplayEntry x:Uid="SolvedConfigStatus-disabled" EnumValue="Disabled" DisplayString="Disabled"/>
             </oe:EnumDisplayer>
-            
+
         </DataTemplate.Resources>
         <StackPanel>
 
@@ -102,18 +102,18 @@
 
                         <Border Grid.Column="0" Margin="5" CornerRadius="3" Background="White" BorderBrush="LightGray" BorderThickness="1">
                             <StackPanel Margin="5 0">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock x:Uid="plugin-status-configuration" Margin="7" FontWeight="Bold">Configuration : </TextBlock>
-                                    <TextBlock FontWeight="DemiBold" VerticalAlignment="Center" FontStyle="Italic" Text="{Binding StrongestConfigStatus, Converter={StaticResource ConfigPluginStatus}}"/>
-                                </StackPanel>
+                                <Grid>
+                                    <TextBlock x:Uid="plugin-status-configuration" Margin="7" FontWeight="Bold">Configuration :</TextBlock>
+                                    <TextBlock FontWeight="DemiBold" HorizontalAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Text="{Binding StrongestConfigStatus, Converter={StaticResource ConfigPluginStatus}}"/>
+                                </Grid>
                                 <Separator Margin="0" />
-                                
+
                                 <!-- User configuration -->
                                 <DockPanel Margin="7">
                                     <TextBlock x:Uid="plugin-status-userconfiguration" Width="90" VerticalAlignment="Center" DockPanel.Dock="Left" Text="User layer :" ToolTip="Launching configuration for this plugin, at User level"/>
                                     <ComboBox ItemsSource="{Binding Source={StaticResource ConfigPluginStatus},Path=DisplayNames}" SelectedItem="{Binding UserPluginStatus, Converter={StaticResource ConfigPluginStatus}}" Margin="10 0 0 0"/>
                                 </DockPanel>
-                                
+
                                 <!-- System configuration -->
                                 <DockPanel Margin="7 0 7 7">
                                     <TextBlock Width="90" x:Uid="plugin-status-systemconfiguration" VerticalAlignment="Center" DockPanel.Dock="Left" Text="System layer :" ToolTip="Launching configuration for this plugin, at System level" />
@@ -148,17 +148,70 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- Requirements -->
-                        <Border Grid.Row="1" Grid.ColumnSpan="3" Margin="5" CornerRadius="3" Background="White" BorderBrush="LightGray" BorderThickness="1">
-                            <Grid Grid.Row="3" Margin="12 7">
-                                <TextBlock x:Uid="plugin-status-req-strongestreq" HorizontalAlignment="Left" Text="Strongest requirement : "/>
-                                <TextBlock HorizontalAlignment="Center" FontWeight="DemiBold" FontStyle="Italic" Text="{Binding StrongestRequirement, Converter={StaticResource RunningRequirement}}" />
+                        <!-- RequirementLayers -->
+                        <Border Grid.Row="1" Margin="5 15 5 5" CornerRadius="3" BorderBrush="LightGray" Background="White" BorderThickness="1">
+                            <Grid Margin="5 0 5 5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" >
+                                    <TextBlock x:Uid="plugin-status-req-stack" 
+                                           Margin="7"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center" 
+                                           Text="Layers : "/>
+                                    <TextBlock HorizontalAlignment="Right" 
+                                               VerticalAlignment="Center" 
+                                               FontWeight="DemiBold" 
+                                               FontStyle="Italic" 
+                                               Margin="0 0 5 0"
+                                               Text="{Binding StrongestRequirement, Converter={StaticResource RunningRequirement}}" />
+                                </Grid>
+                                <Separator Grid.Row="1" Margin="0" />
+                                <ItemsControl Grid.Row="2" 
+                                              HorizontalContentAlignment="Stretch" 
+                                              HorizontalAlignment="Stretch" 
+                                              DockPanel.Dock="Left" 
+                                              Margin="7 0 7 0" 
+                                              ItemsSource="{Binding VMRequirementLayers}" >
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0 5 0 0">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                    <TextBlock Text="{Binding Path=Name}" />
+                                                    <TextBlock Text=" : " />
+                                                </StackPanel>
+                                                <TextBlock HorizontalAlignment="Right" Text="{Binding Requirement, Converter={StaticResource RunningRequirement}}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Border>
-                        
-                        <Border Grid.Row="3" Grid.ColumnSpan="3" Margin="5 15 5 5" CornerRadius="3" Background="White" BorderBrush="LightGray" BorderThickness="1">
+
+                        <Border Grid.Row="1" Grid.Column="1" Margin="5 15 5 5" CornerRadius="3" BorderBrush="LightGray" Background="White" BorderThickness="1">
+                            <StackPanel Margin="5 0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Uid="plugin-status-service-req" 
+                                                   Margin="7" 
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Top" 
+                                                   Text="Service : "/>
+                                    <TextBlock VerticalAlignment="Top" 
+                                                   Margin="0 7 0 0"
+                                                   FontWeight="DemiBold" 
+                                                   FontStyle="Italic" 
+                                                   Text="{Binding ImplementedServiceStrongestRequirement, Converter={StaticResource RunningRequirement}}" />
+                                </StackPanel>
+                                <Separator Margin="5 0" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="2" Grid.ColumnSpan="3" Margin="5 15 5 5" CornerRadius="3" Background="White" BorderBrush="LightGray" BorderThickness="1">
                             <Grid Margin="12 7">
-                                <TextBlock x:Uid="plugin-status-req-solvedconfig" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Current solved configuration : "/>
+                                <TextBlock x:Uid="plugin-status-req-solvedconfig" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Final configuration : "/>
                                 <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="DemiBold" FontStyle="Italic" Text="{Binding FinalRequirement, Converter={StaticResource SolvedConfigStatus}}" />
                             </Grid>
                         </Border>
@@ -166,7 +219,7 @@
                     </Grid>
                 </ScrollViewer>
             </GroupBox>
-            
+
             <!-- Bottom -->
             <GroupBox HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Services" SnapsToDevicePixels="True" Background="{StaticResource FirstLayerColor}">
                 <Grid>
@@ -177,8 +230,9 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Service -->
-                    <Border Grid.Column="0" Margin="5" x:Name="ServicesPanel">
+                    <Border Grid.Column="0" Margin="5">
                         <StackPanel>
+                            <!-- Implemented Service -->
                             <StackPanel Orientation="Horizontal" x:Name="ImplTitle">
                                 <TextBlock x:Uid="plugin-services-title" FontSize="11" FontWeight="Bold" Text="Exposed service" >
                                     <TextBlock.ToolTip>
@@ -187,9 +241,68 @@
                                 </TextBlock>
                             </StackPanel>
                             <Separator Margin="0 5"/>
-                            <Border BorderBrush="LightGray" BorderThickness="1" Background="White" Padding="5 0 0 0" x:Name="ImplBorder">
-                                <ContentPresenter Content="{Binding ImplService}" ContentTemplate="{StaticResource SimpleListSelectableElement}" />
+                            <Border BorderBrush="LightGray" BorderThickness="1" Background="White" Padding="5" x:Name="ImplBorder">
+                                <StackPanel Orientation="Horizontal">
+                                    <ContentPresenter Content="{Binding ImplService}" ContentTemplate="{StaticResource SimpleListSelectableElement}" Margin="0 0 5 0" />
+                                    <TextBlock Text="("/>
+                                    <TextBlock Name="serviceStatusTextBlock" Text="{Binding ImplementedServiceStrongestRequirement, Converter={StaticResource RunningRequirement}}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsImplementedServiceFallbackLaunched}" Value="True">   
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text=")"/>
+                                </StackPanel>
                             </Border>
+
+                            <!-- Plugins using the Implemented Service -->
+                            <StackPanel Margin="10 5 0 0" Visibility="{Binding ImplementedServiceRequirements, Converter={StaticResource ICollectionToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Uid="plugin-services-details-title" 
+                                               FontSize="10" 
+                                               FontWeight="Bold" 
+                                               Text="Service Details" >
+                                        <TextBlock.ToolTip>
+                                            <ToolTip x:Uid="plugin-services-details-tooltip" Content="The list of plugins that use the service implemented by this plugin" />
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                </StackPanel>
+                                <Separator Margin="0 5"/>
+                                <ListView x:Name="ReferencingList" 
+                                          BorderBrush="LightGray" 
+                                          BorderThickness="1" ItemsSource="{Binding ImplementedServiceRequirements}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="20" Height="20" Margin="10 0" Source="pack://application:,,,/ObjectExplorer;component/UI/Resources/DetailsImages/redIndicator.png" x:Name="indicator"/>
+                                                <Button VerticalAlignment="Center" Command="{Binding Key.GoTo}" CommandParameter="{Binding Key}" Content="{Binding Key.Label}" Style="{StaticResource TextButton}" ToolTip="Click to get more information about this object" />
+                                                <ContentPresenter VerticalAlignment="Center" Margin="5 0 0 0">
+                                                    <ContentPresenter.Content>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="("/>
+                                                            <TextBlock Name="runningReqTextBox" Text="{Binding Value, Converter={StaticResource RunningRequirement}}" TextDecorations="Strikethrough" />
+                                                            <TextBlock Text=")"/>
+                                                        </StackPanel>
+                                                    </ContentPresenter.Content>
+                                                </ContentPresenter>
+                                            </StackPanel>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Key.IsRunning}" Value="True">
+                                                    <Setter TargetName="indicator" 
+                                                            Property="Source" 
+                                                            Value="pack://application:,,,/ObjectExplorer;component/UI/Resources/DetailsImages/greenIndicator.png"/>
+                                                    <Setter TargetName="runningReqTextBox" Property="TextDecorations" Value="" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
 
@@ -220,7 +333,7 @@
                 </Grid>
             </GroupBox>
         </StackPanel>
-        
+
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding ServiceRefs.Count}" Value="0">
                 <Setter TargetName="ServiceRefsList" Property="Visibility" Value="Collapsed"/>

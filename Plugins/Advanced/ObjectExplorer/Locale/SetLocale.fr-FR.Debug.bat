@@ -9,7 +9,7 @@ copy ..\..\..\..\Output\Debug\Plugins\en-US\ObjectExplorer.resources.dll ..\..\.
 echo ------------------------ generate with LocBaml ------------------------
 cd ..\..\..\..\Output\Debug\
 mkdir Plugins\fr-FR
-LocBaml /generate en-US\ObjectExplorer.resources.dll /trans:..\..\Plugins\StandardPlugins\ObjectExplorer\Locale\fr-FR.txt /cult:fr-FR /out:Plugins\fr-FR
+LocBaml /generate en-US\ObjectExplorer.resources.dll /trans:..\..\Plugins\Advanced\ObjectExplorer\Locale\fr-FR.txt /cult:fr-FR /out:Plugins\fr-FR
 
 echo ------------------------ clean ------------------------
 del en-US\ObjectExplorer.resources.dll

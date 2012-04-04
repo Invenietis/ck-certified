@@ -37,7 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Files]
-Source: "..\..\Output\Debug\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "CiviKey.ico"; DestDir: "{app}\resources"
 Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
 Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: everyone-full; 

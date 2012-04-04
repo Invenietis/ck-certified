@@ -16,7 +16,7 @@ using System.Windows.Markup;
 [assembly: AssemblyCopyright( "Copyright ©  2010" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
-[assembly: XmlnsDefinition( "http://shemas.civikey.org/StandardViews", "CK.WPF.StandardViews" )]
+[assembly: XmlnsDefinition( "http://schemas.civikey.org/StandardViews", "CK.WPF.StandardViews" )]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
 // aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 

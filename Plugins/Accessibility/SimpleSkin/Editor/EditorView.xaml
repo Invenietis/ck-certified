@@ -3,7 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:cal="http://www.caliburnproject.org"
             xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-            xmlns:cce="http://shemas.civikey.org/CustomControls/WpfToolkitExtended"
+            xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
             Background="#FFEFEFEF"
             MinWidth="350"
             MinHeight="365"

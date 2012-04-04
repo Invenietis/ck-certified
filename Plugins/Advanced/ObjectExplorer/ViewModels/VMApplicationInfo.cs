@@ -1,5 +1,4 @@
-﻿using CK.Windows.App;
-using System;
+﻿using System;
 using System.Windows.Input;
 using CK.WPF.ViewModel;
 using System.IO;
@@ -22,7 +21,7 @@ namespace CK.Plugins.ObjectExplorer
         VMCommand<string> _openFileCmd;
         public VMCommand<string> OpenFileCommand
         {
-            get 
+            get
             {
                 if( _openFileCmd == null )
                 {
@@ -30,7 +29,7 @@ namespace CK.Plugins.ObjectExplorer
                     _openFileCmd = new VMCommand<string>( ( s ) =>
                         {
                             f = new FileInfo( s );
-                            if(f.Exists)
+                            if( f.Exists )
                                 Process.Start( f.FullName );
                         } );
                 }
@@ -40,19 +39,37 @@ namespace CK.Plugins.ObjectExplorer
 
         void OnSystemConfigurationChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
-            if ( e.PropertyName == "CurrentUserProfile" ) OnPropertyChanged( "UserConfigurationPath" );
+            if( e.PropertyName == "CurrentUserProfile" ) OnPropertyChanged( "UserConfigurationPath" );
         }
 
         void OnUserConfigurationChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
-            if ( e.PropertyName == "CurrentContextProfile" ) OnPropertyChanged( "ContextPath" );
+            if( e.PropertyName == "CurrentContextProfile" ) OnPropertyChanged( "ContextPath" );
+        }
+
+        ICommand _forceGCCommand;
+        public ICommand ForceGCCommand
+        {
+            get
+            {
+                if( _forceGCCommand == null )
+                {
+                    _forceGCCommand = new VMCommand( () =>
+                        {
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
+                            GC.Collect();
+                        } );
+                }
+                return _forceGCCommand;
+            }
         }
 
         public string SystemConfigurationPath { get { return _hostInfo != null ? _hostInfo.GetSystemConfigAddress().AbsolutePath : ""; } }
 
         public string UserConfigurationPath { get { return VMIContext.Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address.AbsolutePath; } }
 
-        public string ContextPath { get { return VMIContext.Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath; } }      
+        public string ContextPath { get { return VMIContext.Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath; } }
 
         public object Data { get { return this; } }
 

@@ -1,16 +1,11 @@
 ﻿using System.Windows.Forms.Integration;
 using CK.Context;
 using CK.Plugin;
-using CK.Plugins.ObjectExplorer.UI;
-//using Host.Services;
-using System;
 using CK.Plugin.Config;
-using CK.Core;
 using Caliburn.Micro;
 using System.Windows;
 using CommonServices;
 using Host.Services;
-//using CommonServices;
 
 namespace CK.Plugins.ObjectExplorer
 {

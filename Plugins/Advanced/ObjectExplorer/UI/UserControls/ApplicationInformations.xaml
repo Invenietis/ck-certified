@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -73,5 +74,6 @@
                 </DockPanel>
             </StackPanel>
         </GroupBox>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Content="Force GC" Command="{Binding ForceGCCommand}"/>
     </Grid>
 </UserControl>

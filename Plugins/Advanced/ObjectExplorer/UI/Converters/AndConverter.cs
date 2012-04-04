@@ -6,7 +6,7 @@ using System.Windows.Data;
 
 namespace CK.Plugins.ObjectExplorer
 {
-    public class AndConverter : IMultiValueConverter
+    public class AndMultiValueConverter : IMultiValueConverter
     {
 
         public object Convert( object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture )

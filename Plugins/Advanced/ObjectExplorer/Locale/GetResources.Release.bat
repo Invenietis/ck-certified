@@ -8,7 +8,7 @@ copy ..\..\..\..\Output\Release\Plugins\en-US\ObjectExplorer.resources.dll ..\..
 
 echo ------------------------ parse with LocBaml ------------------------
 cd ..\..\..\..\Output\Release\
-LocBaml /parse en-US\ObjectExplorer.resources.dll /out:..\..\Plugins\StandardPlugins\ObjectExplorer\Locale\ObjectExplorer.resources.Release.txt
+LocBaml /parse en-US\ObjectExplorer.resources.dll /out:..\..\Plugins\Advanced\ObjectExplorer\Locale\ObjectExplorer.resources.Release.txt
 
 echo ------------------------ clean ------------------------
 del en-US\ObjectExplorer.resources.dll

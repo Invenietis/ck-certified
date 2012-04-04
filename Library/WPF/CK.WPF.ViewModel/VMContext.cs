@@ -116,6 +116,7 @@ namespace CK.WPF.ViewModel
             _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
             _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
             foreach( VMContextElement<TC, TB, TZ, TK> vm in _dic.Values ) vm.Dispose();
             _dic.Clear();
         }

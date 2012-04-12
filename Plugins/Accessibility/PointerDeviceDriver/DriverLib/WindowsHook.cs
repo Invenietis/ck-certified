@@ -80,7 +80,7 @@ namespace PointerDeviceDriver
         /// <summary>
         /// Returns true if the hook can be set, false if it can't be set.
         /// </summary>
-        static internal bool CanSetHook( HookType type, out string errorMessage )
+        static internal bool CanSetWindowsHook( HookType type, out string errorMessage )
         {
 			errorMessage = null;
 			try

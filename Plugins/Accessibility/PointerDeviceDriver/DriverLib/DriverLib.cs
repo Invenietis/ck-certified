@@ -27,6 +27,7 @@
 //****************************************************
 using System;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 
 namespace PointerDeviceDriver
@@ -37,20 +38,23 @@ namespace PointerDeviceDriver
 
     internal static class Win32Wrapper
     {
+        [DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        internal static extern bool GetCursorPos( out PointStruct point );
+
         //This is the Import for the SetWindowsHookEx function.
         //Use this function to install a thread-specific hook.
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr SetWindowsHookEx(HookType idHook, HookProc lpfn, IntPtr hInstance, int threadId);
+        [DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        internal static extern IntPtr SetWindowsHookEx( HookType idHook, HookProc lpfn, IntPtr hInstance, int threadId );
 
         //This is the Import for the UnhookWindowsHookEx function.
         //Call this function to uninstall the hook.
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        internal static extern bool UnhookWindowsHookEx(int idHook);
+        [DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        internal static extern bool UnhookWindowsHookEx( int idHook );
 
         //This is the Import for the CallNextHookEx function.
         //Use this function to pass the hook information to the next hook procedure in chain.
-        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        internal static extern int CallNextHookEx(IntPtr idHook, int nCode, IntPtr wParam, IntPtr lParam);
+        [DllImport( "user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall )]
+        internal static extern int CallNextHookEx( IntPtr idHook, int nCode, IntPtr wParam, IntPtr lParam );
 
         //This is the Import for the mouse_event function.
         //Use this function to send mouse event to system
@@ -265,7 +269,7 @@ namespace PointerDeviceDriver
 		public PointStruct( int x, int y )
 		{
 			X = x;
-			Y =  y;
+			Y = y;
 		}
     }
 

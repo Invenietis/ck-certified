@@ -8,7 +8,7 @@
     <ProjectGuid>{9001CBEA-480E-446A-A20E-EEEDDD99845D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CVK.StandardPlugins.PointerDeviceDriver</RootNamespace>
+    <RootNamespace>PointerDeviceDriver</RootNamespace>
     <AssemblyName>PointerDeviceDriver</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DriverLib\DriverLib.cs" />
@@ -66,6 +67,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MouseDriver.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SimpleDispatchTimerWrapper.cs">
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

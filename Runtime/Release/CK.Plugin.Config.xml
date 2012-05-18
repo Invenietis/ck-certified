@@ -4,26 +4,6 @@
         <name>CK.Plugin.Config</name>
     </assembly>
     <members>
-        <member name="M:CK.Plugin.Config.ISolvedPluginConfiguration.GetStatus(System.Guid)">
-            <summary>
-            Gets the plugin status of the given plugin (by its identifier). 
-            If no plugin status had been set for the plugin, returns <see cref="F:CK.Plugin.SolvedConfigStatus.Optional"/>.
-            </summary>
-            <param name="pluginID">Plugin identifier.</param>
-            <returns>The configuration status, <see cref="F:CK.Plugin.SolvedConfigStatus.Optional"/> if no configuration exists for the plugin.</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.ISolvedPluginConfiguration.Find(System.Guid)">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.Config.SolvedPluginConfigElement"/> of the given plugin (by its identifier). 
-            </summary>
-            <param name="pluginID">Plugin identifier.</param>
-            <returns>Null if no configuration exists.</returns>
-        </member>
-        <member name="E:CK.Plugin.Config.ISolvedPluginConfiguration.Changed">
-            <summary>
-            Fires whenever a configuration changed.
-            </summary>
-        </member>
         <member name="T:CK.Plugin.Config.IUriHistoryCollection">
             <summary>
             Used by the <see cref="T:CK.Plugin.Config.ISystemConfiguration"/> and <see cref="T:CK.Plugin.Config.IUserConfiguration"/> to keep an history of all user profiles 
@@ -82,9 +62,24 @@
             Changing this index changes the other indices.
             </summary>
         </member>
-        <member name="T:CK.Plugin.Config.LiveUserConfiguration">
+        <member name="M:CK.Plugin.Config.ISolvedPluginConfiguration.GetStatus(System.Guid)">
             <summary>
-            Holds the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for each plugin
+            Gets the plugin status of the given plugin (by its identifier). 
+            If no plugin status had been set for the plugin, returns <see cref="F:CK.Plugin.SolvedConfigStatus.Optional"/>.
+            </summary>
+            <param name="pluginID">Plugin identifier.</param>
+            <returns>The configuration status, <see cref="F:CK.Plugin.SolvedConfigStatus.Optional"/> if no configuration exists for the plugin.</returns>
+        </member>
+        <member name="M:CK.Plugin.Config.ISolvedPluginConfiguration.Find(System.Guid)">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.Config.SolvedPluginConfigElement"/> of the given plugin (by its identifier). 
+            </summary>
+            <param name="pluginID">Plugin identifier.</param>
+            <returns>Null if no configuration exists.</returns>
+        </member>
+        <member name="E:CK.Plugin.Config.ISolvedPluginConfiguration.Changed">
+            <summary>
+            Fires whenever a configuration changed.
             </summary>
         </member>
         <member name="T:CK.Plugin.Config.ILiveUserConfiguration">
@@ -105,52 +100,6 @@
         <member name="M:CK.Plugin.Config.ILiveUserConfiguration.ResetAction(System.Guid)">
             <summary>
             Remove the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for the given plugin.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.LiveUserConfiguration.SetAction(System.Guid,CK.Plugin.Config.ConfigUserAction)">
-            <summary>
-            Sets the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for the specified <see cref="!:IPluginLoaderInfo"/>
-            </summary>
-            <param name="pluginId">PluginId of the plugin</param>
-            <param name="actionType">Action of the Use</param>
-            <returns>The setted LiveUserAction of the plugin set as parameter</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.LiveUserConfiguration.GetAction(System.Guid)">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for the specified PluginId
-            </summary>
-            <param name="pluginId">ID of the plugin</param>
-            <returns>The UserAction for the specified PluginId</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.LiveUserConfiguration.ResetAction(System.Guid)">
-            <summary>
-            Removes the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> attached to the specified plugin
-            </summary>
-            <param name="pluginId">ID of the plugin</param>
-        </member>
-        <member name="T:CK.Plugin.Config.IPluginStatus">
-            <summary>
-            Describes what's a <see cref="T:CK.Plugin.Config.IPluginStatus"/>.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.IPluginStatus.Destroy">
-            <summary>
-            It will destroy the plugin status, and remove it from its parent collection.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.IPluginStatus.PluginId">
-            <summary>
-            Gets the unique ID of the plugin
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.IPluginStatus.Status">
-            <summary>
-            Gets ConfigPluginStatus.
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Config.ConfigurationBase">
-            <summary>
-            Base class for <see cref="T:CK.Plugin.Config.UserConfiguration"/> and <see cref="T:CK.Plugin.Config.SystemConfiguration"/>. 
             </summary>
         </member>
         <member name="T:CK.Plugin.Config.ISystemConfiguration">
@@ -187,6 +136,68 @@
             Gets the host dictionary for System wide configuration.
             </summary>
         </member>
+        <member name="T:CK.Plugin.Config.R">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.R.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.R.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.R.InvalidMergeOperation">
+            <summary>
+              Looks up a localized string similar to Merge operation failed. Only same types can be merged..
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.R.InvalidObjectsInSystemConfig">
+            <summary>
+              Looks up a localized string similar to System configuration must not contain external/unknown objects..
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.R.UriHistoryNotInCollection">
+            <summary>
+              Looks up a localized string similar to The UriHistory element must belong to the collection..
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Config.IPluginStatus">
+            <summary>
+            Describes what's a <see cref="T:CK.Plugin.Config.IPluginStatus"/>.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.IPluginStatus.Destroy">
+            <summary>
+            It will destroy the plugin status, and remove it from its parent collection.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.IPluginStatus.PluginId">
+            <summary>
+            Gets the unique ID of the plugin
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.IPluginStatus.Status">
+            <summary>
+            Gets ConfigPluginStatus.
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Config.UserConfiguration">
+            <summary>
+            Holds a <see cref="T:CK.Plugin.Config.PluginStatusCollection"/>, the <see cref="P:CK.Plugin.Config.UserConfiguration.LiveUserConfiguration"/> and the historic
+            of the contexts. 
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Config.ConfigurationBase">
+            <summary>
+            Base class for <see cref="T:CK.Plugin.Config.UserConfiguration"/> and <see cref="T:CK.Plugin.Config.SystemConfiguration"/>. 
+            </summary>
+        </member>
         <member name="T:CK.Plugin.Config.IUserConfiguration">
             <summary>
             User related configuration. 
@@ -219,77 +230,6 @@
             <summary>
             Gets the "live" configuration level. 
             Live configuration can override <see cref="P:CK.Plugin.Config.IUserConfiguration.PluginsStatus"/>.
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Config.ConfigUserAction">
-            <summary>
-            Defines the configuration made by the user for a plugin (or a service).
-            </summary>
-        </member>
-        <member name="F:CK.Plugin.Config.ConfigUserAction.None">
-            <summary>
-            User has not explictely started nor stopped the plugin.
-            </summary>
-        </member>
-        <member name="F:CK.Plugin.Config.ConfigUserAction.Started">
-            <summary>
-            User explicitely started the plugin.
-            </summary>
-        </member>
-        <member name="F:CK.Plugin.Config.ConfigUserAction.Stopped">
-            <summary>
-            User explicitely stopped the plugin.
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Config.IPluginStatusCollection">
-            <summary>
-            Can be used by all objects that whants to keep a collection of <see cref="T:CK.Plugin.Config.IPluginStatus"/>.
-            Typically system or user configuration.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.IPluginStatusCollection.SetStatus(System.Guid,CK.Plugin.Config.ConfigPluginStatus)">
-            <summary>
-            Sets the given <see cref="!:ConfiguPluginStatus"/> on the given plugin (by its ID).
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.IPluginStatusCollection.GetStatus(System.Guid,CK.Plugin.Config.ConfigPluginStatus)">
-            <summary>
-            Gets the plugin status of the given plugin (by its ID). 
-            If no plugin status had been set for the given plugin, returns the given default status.
-            </summary>
-            <param name="pluginID">Plugin identifier.</param>
-            <param name="defaultStatus">Default status if the plugin is not configured.</param>
-            <returns>The status of the plugin.</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.IPluginStatusCollection.GetPluginStatus(System.Guid)">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.Config.IPluginStatus"/> related for the given id. Can be null.
-            </summary>
-            <param name="pluginID"></param>
-            <returns></returns>
-        </member>
-        <member name="M:CK.Plugin.Config.IPluginStatusCollection.Clear(System.Guid)">
-            <summary>
-            Removes the status from the configuration.
-            </summary>
-            <param name="pluginID">Plugin identifier.</param>
-        </member>
-        <member name="M:CK.Plugin.Config.IPluginStatusCollection.Clear">
-            <summary>
-            Removes all the status from the configuration.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.PluginStatusCollection.Clear">
-            <summary>
-            Clears all plugin status configuration
-            Sends Changing and Changed
-            </summary>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:CK.Plugin.Config.PluginStatusCollection.OnDestroy(CK.Plugin.Config.PluginStatus)" -->
-        <member name="T:CK.Plugin.Config.UserConfiguration">
-            <summary>
-            Holds a <see cref="T:CK.Plugin.Config.PluginStatusCollection"/>, the <see cref="P:CK.Plugin.Config.UserConfiguration.LiveUserConfiguration"/> and the historic
-            of the contexts. 
             </summary>
         </member>
         <member name="T:CK.Plugin.Config.IConfigManager">
@@ -390,6 +330,44 @@
             Fires whenever the system needs to load System configuration.
             </summary>
         </member>
+        <member name="T:CK.Plugin.Config.IPluginStatusCollection">
+            <summary>
+            Can be used by all objects that whants to keep a collection of <see cref="T:CK.Plugin.Config.IPluginStatus"/>.
+            Typically system or user configuration.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.IPluginStatusCollection.SetStatus(System.Guid,CK.Plugin.Config.ConfigPluginStatus)">
+            <summary>
+            Sets the given <see cref="!:ConfiguPluginStatus"/> on the given plugin (by its ID).
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.IPluginStatusCollection.GetStatus(System.Guid,CK.Plugin.Config.ConfigPluginStatus)">
+            <summary>
+            Gets the plugin status of the given plugin (by its ID). 
+            If no plugin status had been set for the given plugin, returns the given default status.
+            </summary>
+            <param name="pluginID">Plugin identifier.</param>
+            <param name="defaultStatus">Default status if the plugin is not configured.</param>
+            <returns>The status of the plugin.</returns>
+        </member>
+        <member name="M:CK.Plugin.Config.IPluginStatusCollection.GetPluginStatus(System.Guid)">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.Config.IPluginStatus"/> related for the given id. Can be null.
+            </summary>
+            <param name="pluginID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CK.Plugin.Config.IPluginStatusCollection.Clear(System.Guid)">
+            <summary>
+            Removes the status from the configuration.
+            </summary>
+            <param name="pluginID">Plugin identifier.</param>
+        </member>
+        <member name="M:CK.Plugin.Config.IPluginStatusCollection.Clear">
+            <summary>
+            Removes all the status from the configuration.
+            </summary>
+        </member>
         <member name="T:CK.Plugin.Config.SolvedPluginConfigurationChangedEventArs">
             <summary>
             Event argument for <see cref="E:CK.Plugin.Config.ISolvedPluginConfiguration.Changed"/>.
@@ -421,41 +399,63 @@
             Gets the singleton instance for this <see cref="T:CK.Plugin.Config.RequirementLayerSerializer"/>.
             </summary>
         </member>
-        <member name="T:CK.Plugin.Config.R">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.R.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.R.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.R.InvalidMergeOperation">
-            <summary>
-              Looks up a localized string similar to Merge operation failed. Only same types can be merged..
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.R.InvalidObjectsInSystemConfig">
-            <summary>
-              Looks up a localized string similar to System configuration must not contain external/unknown objects..
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.R.UriHistoryNotInCollection">
-            <summary>
-              Looks up a localized string similar to The UriHistory element must belong to the collection..
-            </summary>
-        </member>
         <member name="P:CK.Plugin.Config.CollectionElementChangedEventArgs`1.Element">
             <summary>
             Gets wich element is concerned by the event.
             </summary>
         </member>
+        <member name="T:CK.Plugin.Config.ConfigUserAction">
+            <summary>
+            Defines the configuration made by the user for a plugin (or a service).
+            </summary>
+        </member>
+        <member name="F:CK.Plugin.Config.ConfigUserAction.None">
+            <summary>
+            User has not explictely started nor stopped the plugin.
+            </summary>
+        </member>
+        <member name="F:CK.Plugin.Config.ConfigUserAction.Started">
+            <summary>
+            User explicitely started the plugin.
+            </summary>
+        </member>
+        <member name="F:CK.Plugin.Config.ConfigUserAction.Stopped">
+            <summary>
+            User explicitely stopped the plugin.
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Config.LiveUserConfiguration">
+            <summary>
+            Holds the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for each plugin
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.LiveUserConfiguration.SetAction(System.Guid,CK.Plugin.Config.ConfigUserAction)">
+            <summary>
+            Sets the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for the specified <see cref="!:IPluginLoaderInfo"/>
+            </summary>
+            <param name="pluginId">PluginId of the plugin</param>
+            <param name="actionType">Action of the Use</param>
+            <returns>The setted LiveUserAction of the plugin set as parameter</returns>
+        </member>
+        <member name="M:CK.Plugin.Config.LiveUserConfiguration.GetAction(System.Guid)">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> for the specified PluginId
+            </summary>
+            <param name="pluginId">ID of the plugin</param>
+            <returns>The UserAction for the specified PluginId</returns>
+        </member>
+        <member name="M:CK.Plugin.Config.LiveUserConfiguration.ResetAction(System.Guid)">
+            <summary>
+            Removes the <see cref="T:CK.Plugin.Config.ConfigUserAction"/> attached to the specified plugin
+            </summary>
+            <param name="pluginId">ID of the plugin</param>
+        </member>
+        <member name="M:CK.Plugin.Config.PluginStatusCollection.Clear">
+            <summary>
+            Clears all plugin status configuration
+            Sends Changing and Changed
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CK.Plugin.Config.PluginStatusCollection.OnDestroy(CK.Plugin.Config.PluginStatus)" -->
     </members>
 </doc>

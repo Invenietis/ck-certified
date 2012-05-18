@@ -55,10 +55,6 @@ namespace CK.Plugins.ObjectExplorer
 
         public Uri RefUrl { get { return _pluginInfo.RefUrl; } }
 
-        /// <summary>
-        /// TODO JL : Show in OE ? May not be that useful
-        /// Result of the resolution of User + System + Live configurations
-        /// </summary>
         public SolvedConfigStatus SolvedConfigurationStatus
         {
             get { return _pluginRunner.ConfigManager.SolvedPluginConfiguration.Find( Id ).Status; }
@@ -264,15 +260,6 @@ namespace CK.Plugins.ObjectExplorer
             foreach( IPluginConfigAccessorInfo p in _pluginInfo.EditorsInfo )
                 _canEdit.Add( p.EditedSource );
             IList<IPluginInfo> required = new List<IPluginInfo>();
-
-            //TODO JL : Remove
-            var req = new RequirementLayer( "Youpi" );
-            req.PluginRequirements.AddOrSet( _pluginInfo.PluginId, RunningRequirement.Optional );
-            _pluginRunner.Add( req );
-            req = new RequirementLayer( "Ah mais non ..." );
-            req.PluginRequirements.AddOrSet( _pluginInfo.PluginId, RunningRequirement.MustExist );
-            _pluginRunner.Add( req );
-            //
 
             _vmRequirementLayers = new List<VMIPluginRequirementLayer>();
             foreach( RequirementLayer layer in RequirementLayers )

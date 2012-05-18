@@ -4,155 +4,17 @@
         <name>CK.Interop</name>
     </assembly>
     <members>
-        <member name="F:CK.Interop.Dwm.DWMNCRP_USEWINDOWSTYLE">
+        <member name="T:CK.Interop.PInvoker">
             <summary>
-            Enable/disable non-client rendering based on window style.
+            Static class that dynamically handles the <see cref="T:CK.Interop.DllImportAttribute">CK.Interop.DllImportAttribute</see>.
             </summary>
         </member>
-        <member name="F:CK.Interop.Dwm.DWMNCRP_DISABLED">
+        <member name="M:CK.Interop.PInvoker.GetInvoker``1">
             <summary>
-            Disabled non-client rendering; window style is ignored.
+            Gets an automatically generated implementation for an interface that must be marked with a <see cref="T:CK.Interop.NativeDllAttribute"/>.
             </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.DWMNCRP_ENABLED">
-            <summary>
-            Enabled non-client rendering; window style is ignored.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.DWMWA_NCRENDERING_ENABLED">
-            <summary>
-            Enable/disable non-client rendering. Use DWMNCRP_* values.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.DWMWA_NCRENDERING_POLICY">
-            <summary>
-            Non-client rendering policy. 
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.DWMWA_TRANSITIONS_FORCEDISABLED">
-            <summary>
-            Potentially enable/forcibly disable transitions 0 or 1. 
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_RECTDESTINATION">
-            <summary>
-            Indicates a value for rcDestination has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_RECTSOURCE">
-            <summary>
-            Indicates a value for rcSource has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_OPACITY">
-            <summary>
-            Indicates a value for opacity has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_VISIBLE">
-            <summary>
-            Indicates a value for fVisible has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_SOURCECLIENTAREAONLY">
-            <summary>
-            Indicates a value for fSourceClientAreaOnly has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.BlurBehindDwFlags.DWM_BB_ENABLE">
-            <summary>
-            <see cref="F:CK.Interop.Dwm.BlurBehind.Enable"/> has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.BlurBehindDwFlags.DWM_BB_BLURREGION">
-            <summary>
-            <see cref="F:CK.Interop.Dwm.BlurBehind.RgnBlur"/> has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.BlurBehindDwFlags.DWM_BB_TRANSITIONONMAXIMIZED">
-            <summary>
-            <see cref="!:TransitionOnMaximized"/> has been specified.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.rateRefresh">
-            <summary>
-            Monitor refresh rate.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.rateCompose">
-            <summary>
-            Composition rate.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.qpcVBlank">
-            <summary>
-            QPC time at VBlank.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cRefresh">
-            <summary>
-            DWM refresh counter.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.qpcCompose">
-            <summary>
-            QPC time at a compose time.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFrame">
-            <summary>
-            Frame number that was composed at qpcCompose.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cRefreshFrame">
-            <summary>
-            Refresh count of the frame that was composed at qpcCompose.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cRefreshConfirmed">
-            <summary>
-            The target refresh count of the last frame confirmed completed by the GPU.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFlipsOutstanding">
-            <summary>
-            The number of outstanding flips.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFrameCurrent">
-            <summary>
-            Last frame displayed.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesAvailable">
-            <summary>
-            Number of frames available but not displayed, used or dropped.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFrameCleared">
-            <summary>
-            Source frame number when the following statistics where last cleared.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesReceived">
-            <summary>
-            Number of new frames received.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesDisplayed">
-            <summary>
-            Number of unique frames displayed.
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesDropped">
-            <summary>
-            Number of rendered frames that were never displayed because composition occured too late
-            </summary>
-        </member>
-        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesMissed">
-            <summary>
-            Number of times an old frame was composed when a new frame should have been used but was not available.
-            </summary>
+            <typeparam name="T">Interface that must be obtained.</typeparam>
+            <returns>Implementation that can be used to call the native functions.</returns>
         </member>
         <member name="T:CK.Interop.Win.WindowLongIndex">
             <summary>
@@ -1640,18 +1502,6 @@
             Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.
             </summary>
         </member>
-        <member name="T:CK.Interop.PInvoker">
-            <summary>
-            Static class that dynamically handles the <see cref="T:CK.Interop.DllImportAttribute">CK.Interop.DllImportAttribute</see>.
-            </summary>
-        </member>
-        <member name="M:CK.Interop.PInvoker.GetInvoker``1">
-            <summary>
-            Gets an automatically generated implementation for an interface that must be marked with a <see cref="T:CK.Interop.NativeDllAttribute"/>.
-            </summary>
-            <typeparam name="T">Interface that must be obtained.</typeparam>
-            <returns>Implementation that can be used to call the native functions.</returns>
-        </member>
         <member name="T:CK.Interop.DllImportAttribute">
             <summary>
             This attribute duplicates the <see cref="T:System.Runtime.InteropServices.DllImportAttribute"/> fields and adds
@@ -1762,6 +1612,156 @@
             <summary>
             Gets or sets the name of the native default library to be used when running in 64 bits hosts for any methods
             of the interface that do not specify it in their <see cref="T:CK.Interop.DllImportAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.DWMNCRP_USEWINDOWSTYLE">
+            <summary>
+            Enable/disable non-client rendering based on window style.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.DWMNCRP_DISABLED">
+            <summary>
+            Disabled non-client rendering; window style is ignored.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.DWMNCRP_ENABLED">
+            <summary>
+            Enabled non-client rendering; window style is ignored.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.DWMWA_NCRENDERING_ENABLED">
+            <summary>
+            Enable/disable non-client rendering. Use DWMNCRP_* values.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.DWMWA_NCRENDERING_POLICY">
+            <summary>
+            Non-client rendering policy. 
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.DWMWA_TRANSITIONS_FORCEDISABLED">
+            <summary>
+            Potentially enable/forcibly disable transitions 0 or 1. 
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_RECTDESTINATION">
+            <summary>
+            Indicates a value for rcDestination has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_RECTSOURCE">
+            <summary>
+            Indicates a value for rcSource has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_OPACITY">
+            <summary>
+            Indicates a value for opacity has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_VISIBLE">
+            <summary>
+            Indicates a value for fVisible has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.ThumbnailFlags.DWM_TNP_SOURCECLIENTAREAONLY">
+            <summary>
+            Indicates a value for fSourceClientAreaOnly has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.BlurBehindDwFlags.DWM_BB_ENABLE">
+            <summary>
+            <see cref="F:CK.Interop.Dwm.BlurBehind.Enable"/> has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.BlurBehindDwFlags.DWM_BB_BLURREGION">
+            <summary>
+            <see cref="F:CK.Interop.Dwm.BlurBehind.RgnBlur"/> has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.BlurBehindDwFlags.DWM_BB_TRANSITIONONMAXIMIZED">
+            <summary>
+            <see cref="!:TransitionOnMaximized"/> has been specified.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.rateRefresh">
+            <summary>
+            Monitor refresh rate.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.rateCompose">
+            <summary>
+            Composition rate.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.qpcVBlank">
+            <summary>
+            QPC time at VBlank.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cRefresh">
+            <summary>
+            DWM refresh counter.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.qpcCompose">
+            <summary>
+            QPC time at a compose time.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFrame">
+            <summary>
+            Frame number that was composed at qpcCompose.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cRefreshFrame">
+            <summary>
+            Refresh count of the frame that was composed at qpcCompose.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cRefreshConfirmed">
+            <summary>
+            The target refresh count of the last frame confirmed completed by the GPU.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFlipsOutstanding">
+            <summary>
+            The number of outstanding flips.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFrameCurrent">
+            <summary>
+            Last frame displayed.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesAvailable">
+            <summary>
+            Number of frames available but not displayed, used or dropped.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFrameCleared">
+            <summary>
+            Source frame number when the following statistics where last cleared.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesReceived">
+            <summary>
+            Number of new frames received.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesDisplayed">
+            <summary>
+            Number of unique frames displayed.
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesDropped">
+            <summary>
+            Number of rendered frames that were never displayed because composition occured too late
+            </summary>
+        </member>
+        <member name="F:CK.Interop.Dwm.TimingInfo.cFramesMissed">
+            <summary>
+            Number of times an old frame was composed when a new frame should have been used but was not available.
             </summary>
         </member>
     </members>

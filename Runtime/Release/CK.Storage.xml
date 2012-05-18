@@ -4,271 +4,9 @@
         <name>CK.Storage</name>
     </assembly>
     <members>
-        <member name="T:CK.Storage.IStructuredReaderBookmark">
+        <member name="T:CK.Storage.ReaderImpl">
             <summary>
-            Defines a bookmark inside a structured content.
-            A bookmark encapsulates a content fragment in order to delay the actual read process.
-            </summary>
-        </member>
-        <member name="M:CK.Storage.IStructuredReaderBookmark.Restore(System.IServiceProvider)">
-            <summary>
-            Restores the state of a reader.
-            </summary>
-            <param name="baseServiceProvider">The <see cref="T:System.IServiceProvider"/> to use to obtain ambiant services.</param>
-            <returns>A ready-to-use <see cref="T:CK.Storage.IStructuredReader"/> on the bookmark.</returns>
-        </member>
-        <member name="M:CK.Storage.IStructuredReaderBookmark.WriteBack(CK.Storage.IStructuredWriter)">
-            <summary>
-            Writes the bookmark back into a <see cref="T:CK.Storage.IStructuredWriter"/>.
-            </summary>
-            <param name="w">The <see cref="T:CK.Storage.IStructuredWriter"/> to write to.</param>
-        </member>
-        <member name="T:CK.Storage.SimpleStructuredReader">
-            <summary>
-            Factory for <see cref="T:CK.Storage.IStructuredReader"/> implementation.
-            </summary>
-        </member>
-        <member name="M:CK.Storage.SimpleStructuredReader.CreateReader(System.IO.Stream,System.IServiceProvider)">
-            <summary>
-            Creates a simple (full xml based) <see cref="T:CK.Storage.IStructuredReader"/> instance.
-            The inner stream will be closed whenever the reader will be disposed.
-            </summary>
-            <param name="stream">The stream.</param>
-            <param name="serviceProvider">The <see cref="T:System.IServiceProvider"/> to use.</param>
-            <returns>A reader bound to the <paramref name="stream"/>.</returns>
-        </member>
-        <member name="M:CK.Storage.SimpleStructuredReader.CreateReader(System.IO.Stream,System.IServiceProvider,System.Boolean)">
-            <summary>
-            Creates a simple (full xml based) <see cref="T:CK.Storage.IStructuredReader"/> instance.
-            The inner stream will be closed whenever the reader will be disposed.
-            </summary>
-            <param name="stream">The stream.</param>
-            <param name="serviceProvider">The <see cref="T:System.IServiceProvider"/> to use.</param>
-            <param name="throwErrorOnMissingFile">True to throw an exception when the <paramref name="stream"/> parameter is null.</param>
-            <returns>A reader bound to the <paramref name="stream"/> or null.</returns>
-        </member>
-        <member name="T:CK.Storage.R">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.AtLeastTypeOrObjectMustBeSpecified">
-            <summary>
-              Looks up a localized string similar to The type and object parameter can not be both null..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.DeserializeError">
-            <summary>
-              Looks up a localized string similar to Error while deserializing..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.DuplicateReferenceObjectRegistration">
-            <summary>
-              Looks up a localized string similar to Object reference &apos;{0}&apos; is already registered. An object can be deserialized only once..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.FileNotFound">
-            <summary>
-              Looks up a localized string similar to File not found..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.InvalidCallToSimpleStructuredWriterCloseFile">
-            <summary>
-              Looks up a localized string similar to SimpleStructuredWriter.CloseFile must be used only with writer obtained by OpenFile..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.InvalidFileManifest">
-            <summary>
-              Looks up a localized string similar to Unable to read file: manifest file can not be read..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.InvalidFileManifestVersion">
-            <summary>
-              Looks up a localized string similar to Unable to read file: version information is missing in manifest file..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.InvalidXml">
-            <summary>
-              Looks up a localized string similar to Error while reading Xml..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.MissingReferenceAttribute">
-            <summary>
-              Looks up a localized string similar to Missing object reference attribute &apos;{0}&apos;..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.NotWritableStructuredObject">
-            <summary>
-              Looks up a localized string similar to Unable to use structured serialization. The object does not implement IStructuredSerializable and no IStructuredSerializer service exists for the type {0}..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.SizeDifferError">
-            <summary>
-              Looks up a localized string similar to Incorrect binary data. Size differ. Expected {0}, was {1}..
-            </summary>
-        </member>
-        <member name="P:CK.Storage.R.UnableToReadInlineObject">
-            <summary>
-              Looks up a localized string similar to Unable to read inline object from Xml..
-            </summary>
-        </member>
-        <member name="T:CK.Storage.ReaderBookmark">
-            <summary>
-            Implementation of <see cref="T:CK.Storage.IStructuredReaderBookmark"/> for <see cref="T:CK.Storage.SimpleStructuredReader"/>.
-            </summary>
-        </member>
-        <member name="T:CK.Storage.SimpleStructuredWriter">
-            <summary>
-            Factory for <see cref="T:CK.Storage.IStructuredWriter"/> implementation.
-            </summary>
-        </member>
-        <member name="M:CK.Storage.SimpleStructuredWriter.CreateWriter(System.IO.Stream,System.IServiceProvider)">
-            <summary>
-            Creates an opened standard <see cref="T:CK.Storage.SimpleStructuredWriter"/>.
-            The inner stream will be closed whenever the writer will be disposed.
-            </summary>
-            <param name="stream">Underlying stream.</param>
-            <param name="baseServiceProvider">Optional <see cref="T:System.IServiceProvider"/>.</param>
-            <returns>An opened, ready to use, <see cref="T:CK.Storage.SimpleStructuredWriter"/> (that must be disposed once done).</returns>
-        </member>
-        <member name="T:CK.Storage.WriterBase">
-            <summary>
-            Simple implementation of <see cref="T:CK.Storage.IStructuredWriter"/>.
-            </summary>
-        </member>
-        <member name="T:CK.Storage.IStructuredWriter">
-            <summary>
-            The interface to write information into a very simple, potentially hybrid, structured storage. 
-            The heart of the storage is an Xml stream exposed here as the <see cref="P:XmlWriter"/> property. 
-            It can be easily extended since it implements <see cref="T:System.IServiceProvider"/> and contains a <see cref="P:ServiceContainer"/>.
-            </summary>
-            <remarks>
-            Since <see cref="T:System.IDisposable"/> is implemented, you must call <see cref="M:System.IDisposable.Dispose"/> when
-            you are finished writing.
-            </remarks>
-        </member>
-        <member name="M:CK.Storage.IStructuredWriter.OpenSubWriter">
-            <summary>
-            Returns a <see cref="T:CK.Storage.ISubStructuredWriter"/> that scopes the writer. 
-            </summary>
-            <returns>A writer that becomes the <see cref="P:CK.Storage.IStructuredWriter.Current"/> one and must be disposed once its scope must be closed.</returns>
-        </member>
-        <member name="M:CK.Storage.IStructuredWriter.WriteInlineObject(System.Object)">
-            <summary>
-            Writes the given object into the structured output. Type information required to restore 
-            the object with <see cref="M:CK.Storage.IStructuredReader.ReadInlineObject(CK.Storage.StandardReadStatus@)"/> are injected.
-            The current Xml element must be opened and it will be closed by this method.
-            </summary>
-            <param name="o">The object to write. May be null.</param>
-        </member>
-        <member name="M:CK.Storage.IStructuredWriter.WriteInlineObjectStructured(System.Object)">
-            <summary>
-            Writes the given object either via its <see cref="T:CK.Storage.IStructuredSerializable"/> implementation
-            or thanks to a <see cref="T:CK.Storage.IStructuredSerializer`1"/> into the structured output.
-            </summary>
-            <param name="o">The object to write. May be null.</param>
-            <remarks>
-            This method does not write any type information. Since its type name is not written, it can not be read
-            back with <see cref="M:CK.Storage.IStructuredReader.ReadInlineObject(CK.Storage.StandardReadStatus@)"/> method but only
-            with <see cref="M:CK.Storage.IStructuredReader.ReadInlineObjectStructured(System.Type,System.Object)"/>
-            </remarks>
-        </member>
-        <member name="E:CK.Storage.IStructuredWriter.ObjectWriteExData">
-            <summary>
-            Fires each time an object has been written.
-            </summary>
-        </member>
-        <member name="P:CK.Storage.IStructuredWriter.Current">
-            <summary>
-            Gets the current <see cref="T:CK.Storage.IStructuredWriter"/>. 
-            It may be this writer or any subordinated writer created by <see cref="M:CK.Storage.IStructuredWriter.OpenSubWriter"/>.
-            </summary>
-            <returns>The current writer.</returns>
-        </member>
-        <member name="P:CK.Storage.IStructuredWriter.Xml">
-            <summary>
-            The associated <see cref="T:System.Xml.XmlWriter"/> wrapped by this <see cref="T:CK.Storage.IStructuredWriter"/>.
-            </summary>
-        </member>
-        <member name="P:CK.Storage.IStructuredWriter.BaseServiceProvider">
-            <summary>
-            Gets the <see cref="T:System.IServiceProvider"/> to which this reader is ultimately bound.
-            </summary>
-            <remarks>
-            This is the root provider: any <see cref="T:CK.Storage.ISubStructuredReader"/> subordinated
-            to a <see cref="T:CK.Storage.IStructuredReader"/> are bound to the same base service provider.
-            </remarks>
-        </member>
-        <member name="P:CK.Storage.IStructuredWriter.ServiceContainer">
-            <summary>
-            Gets the <see cref="T:CK.Core.ISimpleServiceContainer"/> for this writer.
-            </summary>
-        </member>
-        <member name="T:CK.Storage.ISubStructuredWriter">
-            <summary>
-            Specialized <see cref="T:CK.Storage.IStructuredWriter"/>. Such subordinate writers
-            are obtained through <see cref="M:CK.Storage.IStructuredWriter.OpenSubWriter"/>.
-            They must be disposed by the caller when leaving the subordinate scope.
-            </summary>
-        </member>
-        <member name="T:CK.Storage.IStructuredSerializable">
-            <summary>
-            Provides custom serialization to <see cref="T:CK.Storage.IStructuredWriter"/> and deserialization from <see cref="T:CK.Storage.IStructuredReader"/>.
-            </summary>
-        </member>
-        <member name="M:CK.Storage.IStructuredSerializable.ReadContent(CK.Storage.IStructuredReader)">
-            <summary>
-            Restores this object from the given structured storage.
-            The current Xml element is already opened and will be closed by the framework: this method must not skip any 
-            unknown element nor read the current end element.
-            </summary>
-            <param name="sr">The reader from which the object is deserialized.</param>
-        </member>
-        <member name="M:CK.Storage.IStructuredSerializable.WriteContent(CK.Storage.IStructuredWriter)">
-            <summary>
-            Persists an object into the given <see cref="T:CK.Storage.IStructuredWriter"/>.
-            The current Xml element is already opened and will be closed by the framework: this method must not write the end of the current element.
-            </summary>
-            <param name="sw">The writer to which the object is serialized.</param>
-        </member>
-        <member name="T:CK.Storage.ObjectWriteExDataEventArgs">
-            <summary>
-            Provides data for <see cref="E:CK.Storage.IStructuredWriter.ObjectWriteExData"/> event.
-            </summary>
-        </member>
-        <member name="F:CK.Storage.ObjectWriteExDataEventArgs.Obj">
-            <summary>
-            Gets the object written.
-            </summary>
-        </member>
-        <member name="F:CK.Storage.ObjectWriteExDataEventArgs.Writer">
-            <summary>
-            Gets the structured writer.
-            </summary>
-        </member>
-        <member name="M:CK.Storage.ObjectWriteExDataEventArgs.#ctor(CK.Storage.IStructuredWriter,System.Object)">
-            <summary>
-            Initializes a new <see cref="T:CK.Storage.ObjectWriteExDataEventArgs"/>.
-            </summary>
-            <param name="w">Structured writer.</param>
-            <param name="o">Object written.</param>
-        </member>
-        <member name="T:CK.Storage.ISubStructuredReader">
-            <summary>
-            Specialized <see cref="T:CK.Storage.IStructuredReader"/>. Such subordinate readers
-            are obtained through <see cref="M:CK.Storage.IStructuredReader.OpenSubReader"/>.
-            As specialized IStructuredReader, they must be disposed by the caller.
+            Simple implementation of <see cref="T:CK.Storage.IStructuredReader"/>.
             </summary>
         </member>
         <member name="T:CK.Storage.IStructuredReader">
@@ -375,10 +113,160 @@
             Gets the main <see cref="T:System.Xml.XmlReader"/> object.
             </summary>
         </member>
-        <member name="P:CK.Storage.ISubStructuredReader.RootDeserializationActions">
+        <member name="T:CK.Storage.R">
             <summary>
-            Gets the <see cref="P:CK.Storage.IStructuredReader.DeserializationActions"/> property of the root
-            reader. Actions added to this sequence are executed at the end of the global read operation.
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.AtLeastTypeOrObjectMustBeSpecified">
+            <summary>
+              Looks up a localized string similar to The type and object parameter can not be both null..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.DeserializeError">
+            <summary>
+              Looks up a localized string similar to Error while deserializing..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.DuplicateReferenceObjectRegistration">
+            <summary>
+              Looks up a localized string similar to Object reference &apos;{0}&apos; is already registered. An object can be deserialized only once..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.FileNotFound">
+            <summary>
+              Looks up a localized string similar to File not found..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.InvalidCallToSimpleStructuredWriterCloseFile">
+            <summary>
+              Looks up a localized string similar to SimpleStructuredWriter.CloseFile must be used only with writer obtained by OpenFile..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.InvalidFileManifest">
+            <summary>
+              Looks up a localized string similar to Unable to read file: manifest file can not be read..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.InvalidFileManifestVersion">
+            <summary>
+              Looks up a localized string similar to Unable to read file: version information is missing in manifest file..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.InvalidXml">
+            <summary>
+              Looks up a localized string similar to Error while reading Xml..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.MissingReferenceAttribute">
+            <summary>
+              Looks up a localized string similar to Missing object reference attribute &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.NotWritableStructuredObject">
+            <summary>
+              Looks up a localized string similar to Unable to use structured serialization. The object does not implement IStructuredSerializable and no IStructuredSerializer service exists for the type {0}..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.SizeDifferError">
+            <summary>
+              Looks up a localized string similar to Incorrect binary data. Size differ. Expected {0}, was {1}..
+            </summary>
+        </member>
+        <member name="P:CK.Storage.R.UnableToReadInlineObject">
+            <summary>
+              Looks up a localized string similar to Unable to read inline object from Xml..
+            </summary>
+        </member>
+        <member name="T:CK.Storage.WriterBase">
+            <summary>
+            Simple implementation of <see cref="T:CK.Storage.IStructuredWriter"/>.
+            </summary>
+        </member>
+        <member name="T:CK.Storage.IStructuredWriter">
+            <summary>
+            The interface to write information into a very simple, potentially hybrid, structured storage. 
+            The heart of the storage is an Xml stream exposed here as the <see cref="P:XmlWriter"/> property. 
+            It can be easily extended since it implements <see cref="T:System.IServiceProvider"/> and contains a <see cref="P:ServiceContainer"/>.
+            </summary>
+            <remarks>
+            Since <see cref="T:System.IDisposable"/> is implemented, you must call <see cref="M:System.IDisposable.Dispose"/> when
+            you are finished writing.
+            </remarks>
+        </member>
+        <member name="M:CK.Storage.IStructuredWriter.OpenSubWriter">
+            <summary>
+            Returns a <see cref="T:CK.Storage.ISubStructuredWriter"/> that scopes the writer. 
+            </summary>
+            <returns>A writer that becomes the <see cref="P:CK.Storage.IStructuredWriter.Current"/> one and must be disposed once its scope must be closed.</returns>
+        </member>
+        <member name="M:CK.Storage.IStructuredWriter.WriteInlineObject(System.Object)">
+            <summary>
+            Writes the given object into the structured output. Type information required to restore 
+            the object with <see cref="M:CK.Storage.IStructuredReader.ReadInlineObject(CK.Storage.StandardReadStatus@)"/> are injected.
+            The current Xml element must be opened and it will be closed by this method.
+            </summary>
+            <param name="o">The object to write. May be null.</param>
+        </member>
+        <member name="M:CK.Storage.IStructuredWriter.WriteInlineObjectStructured(System.Object)">
+            <summary>
+            Writes the given object either via its <see cref="T:CK.Storage.IStructuredSerializable"/> implementation
+            or thanks to a <see cref="T:CK.Storage.IStructuredSerializer`1"/> into the structured output.
+            </summary>
+            <param name="o">The object to write. May be null.</param>
+            <remarks>
+            This method does not write any type information. Since its type name is not written, it can not be read
+            back with <see cref="M:CK.Storage.IStructuredReader.ReadInlineObject(CK.Storage.StandardReadStatus@)"/> method but only
+            with <see cref="M:CK.Storage.IStructuredReader.ReadInlineObjectStructured(System.Type,System.Object)"/>
+            </remarks>
+        </member>
+        <member name="E:CK.Storage.IStructuredWriter.ObjectWriteExData">
+            <summary>
+            Fires each time an object has been written.
+            </summary>
+        </member>
+        <member name="P:CK.Storage.IStructuredWriter.Current">
+            <summary>
+            Gets the current <see cref="T:CK.Storage.IStructuredWriter"/>. 
+            It may be this writer or any subordinated writer created by <see cref="M:CK.Storage.IStructuredWriter.OpenSubWriter"/>.
+            </summary>
+            <returns>The current writer.</returns>
+        </member>
+        <member name="P:CK.Storage.IStructuredWriter.Xml">
+            <summary>
+            The associated <see cref="T:System.Xml.XmlWriter"/> wrapped by this <see cref="T:CK.Storage.IStructuredWriter"/>.
+            </summary>
+        </member>
+        <member name="P:CK.Storage.IStructuredWriter.BaseServiceProvider">
+            <summary>
+            Gets the <see cref="T:System.IServiceProvider"/> to which this reader is ultimately bound.
+            </summary>
+            <remarks>
+            This is the root provider: any <see cref="T:CK.Storage.ISubStructuredReader"/> subordinated
+            to a <see cref="T:CK.Storage.IStructuredReader"/> are bound to the same base service provider.
+            </remarks>
+        </member>
+        <member name="P:CK.Storage.IStructuredWriter.ServiceContainer">
+            <summary>
+            Gets the <see cref="T:CK.Core.ISimpleServiceContainer"/> for this writer.
+            </summary>
+        </member>
+        <member name="T:CK.Storage.ISubStructuredWriter">
+            <summary>
+            Specialized <see cref="T:CK.Storage.IStructuredWriter"/>. Such subordinate writers
+            are obtained through <see cref="M:CK.Storage.IStructuredWriter.OpenSubWriter"/>.
+            They must be disposed by the caller when leaving the subordinate scope.
             </summary>
         </member>
         <member name="T:CK.Storage.StandardReadStatus">
@@ -446,10 +334,76 @@
             Mask that covers all the errors.
             </summary>
         </member>
-        <member name="T:CK.Storage.ReaderImpl">
+        <member name="T:CK.Storage.ISubStructuredReader">
             <summary>
-            Simple implementation of <see cref="T:CK.Storage.IStructuredReader"/>.
+            Specialized <see cref="T:CK.Storage.IStructuredReader"/>. Such subordinate readers
+            are obtained through <see cref="M:CK.Storage.IStructuredReader.OpenSubReader"/>.
+            As specialized IStructuredReader, they must be disposed by the caller.
             </summary>
+        </member>
+        <member name="P:CK.Storage.ISubStructuredReader.RootDeserializationActions">
+            <summary>
+            Gets the <see cref="P:CK.Storage.IStructuredReader.DeserializationActions"/> property of the root
+            reader. Actions added to this sequence are executed at the end of the global read operation.
+            </summary>
+        </member>
+        <member name="T:CK.Storage.SimpleStructuredReader">
+            <summary>
+            Factory for <see cref="T:CK.Storage.IStructuredReader"/> implementation.
+            </summary>
+        </member>
+        <member name="M:CK.Storage.SimpleStructuredReader.CreateReader(System.IO.Stream,System.IServiceProvider)">
+            <summary>
+            Creates a simple (full xml based) <see cref="T:CK.Storage.IStructuredReader"/> instance.
+            The inner stream will be closed whenever the reader will be disposed.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="serviceProvider">The <see cref="T:System.IServiceProvider"/> to use.</param>
+            <returns>A reader bound to the <paramref name="stream"/>.</returns>
+        </member>
+        <member name="M:CK.Storage.SimpleStructuredReader.CreateReader(System.IO.Stream,System.IServiceProvider,System.Boolean)">
+            <summary>
+            Creates a simple (full xml based) <see cref="T:CK.Storage.IStructuredReader"/> instance.
+            The inner stream will be closed whenever the reader will be disposed.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="serviceProvider">The <see cref="T:System.IServiceProvider"/> to use.</param>
+            <param name="throwErrorOnMissingFile">True to throw an exception when the <paramref name="stream"/> parameter is null.</param>
+            <returns>A reader bound to the <paramref name="stream"/> or null.</returns>
+        </member>
+        <member name="T:CK.Storage.IStructuredSerializable">
+            <summary>
+            Provides custom serialization to <see cref="T:CK.Storage.IStructuredWriter"/> and deserialization from <see cref="T:CK.Storage.IStructuredReader"/>.
+            </summary>
+        </member>
+        <member name="M:CK.Storage.IStructuredSerializable.ReadContent(CK.Storage.IStructuredReader)">
+            <summary>
+            Restores this object from the given structured storage.
+            The current Xml element is already opened and will be closed by the framework: this method must not skip any 
+            unknown element nor read the current end element.
+            </summary>
+            <param name="sr">The reader from which the object is deserialized.</param>
+        </member>
+        <member name="M:CK.Storage.IStructuredSerializable.WriteContent(CK.Storage.IStructuredWriter)">
+            <summary>
+            Persists an object into the given <see cref="T:CK.Storage.IStructuredWriter"/>.
+            The current Xml element is already opened and will be closed by the framework: this method must not write the end of the current element.
+            </summary>
+            <param name="sw">The writer to which the object is serialized.</param>
+        </member>
+        <member name="T:CK.Storage.SimpleStructuredWriter">
+            <summary>
+            Factory for <see cref="T:CK.Storage.IStructuredWriter"/> implementation.
+            </summary>
+        </member>
+        <member name="M:CK.Storage.SimpleStructuredWriter.CreateWriter(System.IO.Stream,System.IServiceProvider)">
+            <summary>
+            Creates an opened standard <see cref="T:CK.Storage.SimpleStructuredWriter"/>.
+            The inner stream will be closed whenever the writer will be disposed.
+            </summary>
+            <param name="stream">Underlying stream.</param>
+            <param name="baseServiceProvider">Optional <see cref="T:System.IServiceProvider"/>.</param>
+            <returns>An opened, ready to use, <see cref="T:CK.Storage.SimpleStructuredWriter"/> (that must be disposed once done).</returns>
         </member>
         <member name="T:CK.Storage.IStructuredSerializer`1">
             <summary>
@@ -485,6 +439,36 @@
             <param name="sw">The writer to which the object is serialized.</param>
             <param name="o">The object to write.</param>
             <remarks>You can still write attributes on the startElement</remarks>
+        </member>
+        <member name="T:CK.Storage.ObjectReadExDataEventArgs">
+            <summary>
+            Provides data for <see cref="E:CK.Storage.IStructuredReader.ObjectReadExData"/> event.
+            </summary>
+        </member>
+        <member name="F:CK.Storage.ObjectReadExDataEventArgs.Obj">
+            <summary>
+            Gets the object read.
+            </summary>
+        </member>
+        <member name="F:CK.Storage.ObjectReadExDataEventArgs.Reader">
+            <summary>
+            Gets the structured reader. The reader is postionned on
+            the element.
+            </summary>
+        </member>
+        <member name="M:CK.Storage.ObjectReadExDataEventArgs.#ctor(CK.Storage.IStructuredReader,System.Object)">
+            <summary>
+            Initializes a new <see cref="T:CK.Storage.ObjectWriteExDataEventArgs"/>.
+            </summary>
+            <param name="r">Structured reader.</param>
+            <param name="o">Object read.</param>
+        </member>
+        <member name="P:CK.Storage.ObjectReadExDataEventArgs.Handled">
+            <summary>
+            Gets or sets whether the extra element has been read.
+            It must be set to true as soon as the <see cref="P:CK.Storage.IStructuredReader.Xml"/> reader
+            has been forwarded.
+            </summary>
         </member>
         <member name="T:CK.Storage.StructuredReaderAndWriterExtension">
             <summary>
@@ -561,35 +545,27 @@
             it will be used. Otherwise, the object must implement <see cref="T:CK.Storage.IStructuredSerializable"/>.
             </remarks>
         </member>
-        <member name="T:CK.Storage.ObjectReadExDataEventArgs">
+        <member name="T:CK.Storage.ObjectWriteExDataEventArgs">
             <summary>
-            Provides data for <see cref="E:CK.Storage.IStructuredReader.ObjectReadExData"/> event.
+            Provides data for <see cref="E:CK.Storage.IStructuredWriter.ObjectWriteExData"/> event.
             </summary>
         </member>
-        <member name="F:CK.Storage.ObjectReadExDataEventArgs.Obj">
+        <member name="F:CK.Storage.ObjectWriteExDataEventArgs.Obj">
             <summary>
-            Gets the object read.
+            Gets the object written.
             </summary>
         </member>
-        <member name="F:CK.Storage.ObjectReadExDataEventArgs.Reader">
+        <member name="F:CK.Storage.ObjectWriteExDataEventArgs.Writer">
             <summary>
-            Gets the structured reader. The reader is postionned on
-            the element.
+            Gets the structured writer.
             </summary>
         </member>
-        <member name="M:CK.Storage.ObjectReadExDataEventArgs.#ctor(CK.Storage.IStructuredReader,System.Object)">
+        <member name="M:CK.Storage.ObjectWriteExDataEventArgs.#ctor(CK.Storage.IStructuredWriter,System.Object)">
             <summary>
             Initializes a new <see cref="T:CK.Storage.ObjectWriteExDataEventArgs"/>.
             </summary>
-            <param name="r">Structured reader.</param>
-            <param name="o">Object read.</param>
-        </member>
-        <member name="P:CK.Storage.ObjectReadExDataEventArgs.Handled">
-            <summary>
-            Gets or sets whether the extra element has been read.
-            It must be set to true as soon as the <see cref="P:CK.Storage.IStructuredReader.Xml"/> reader
-            has been forwarded.
-            </summary>
+            <param name="w">Structured writer.</param>
+            <param name="o">Object written.</param>
         </member>
         <member name="T:CK.Storage.WriterImpl">
             <summary>
@@ -601,6 +577,30 @@
             Flushes the inner <see cref="P:XmlWriter"/> and depending on the way this <see cref="T:CK.Storage.SimpleStructuredWriter"/>
             has been created, writes the closing tag before and/or closes the inner writer itself.
             </summary>
+        </member>
+        <member name="T:CK.Storage.ReaderBookmark">
+            <summary>
+            Implementation of <see cref="T:CK.Storage.IStructuredReaderBookmark"/> for <see cref="T:CK.Storage.SimpleStructuredReader"/>.
+            </summary>
+        </member>
+        <member name="T:CK.Storage.IStructuredReaderBookmark">
+            <summary>
+            Defines a bookmark inside a structured content.
+            A bookmark encapsulates a content fragment in order to delay the actual read process.
+            </summary>
+        </member>
+        <member name="M:CK.Storage.IStructuredReaderBookmark.Restore(System.IServiceProvider)">
+            <summary>
+            Restores the state of a reader.
+            </summary>
+            <param name="baseServiceProvider">The <see cref="T:System.IServiceProvider"/> to use to obtain ambiant services.</param>
+            <returns>A ready-to-use <see cref="T:CK.Storage.IStructuredReader"/> on the bookmark.</returns>
+        </member>
+        <member name="M:CK.Storage.IStructuredReaderBookmark.WriteBack(CK.Storage.IStructuredWriter)">
+            <summary>
+            Writes the bookmark back into a <see cref="T:CK.Storage.IStructuredWriter"/>.
+            </summary>
+            <param name="w">The <see cref="T:CK.Storage.IStructuredWriter"/> to write to.</param>
         </member>
     </members>
 </doc>

@@ -43,18 +43,21 @@ Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
 Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: everyone-full; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
+[InstallDelete]
+Type: files; Name: "{app}\binaries\*"
+
 [Icons]
-Name: "{group}\CiviKey"; Filename: "{app}\binaries\CK-Certified.exe"; WorkingDir: "{app}"; IconFileName:"{app}\resources\CiviKey.ico";
-Name: "{commondesktop}\CiviKey"; Filename: "{app}\binaries\CK-Certified.exe"; WorkingDir: "{app}"; IconFileName:"{app}\resources\CiviKey.ico"
+Name: "{group}\CiviKey"; Filename: "{app}\binaries\CiviKey.exe"; WorkingDir: "{app}"; IconFileName:"{app}\resources\CiviKey.ico";
+Name: "{commondesktop}\CiviKey"; Filename: "{app}\binaries\CiviKey.exe"; WorkingDir: "{app}"; IconFileName:"{app}\resources\CiviKey.ico"
 
 [Run]
-Filename: "{tmp}\CiviKeyPostInstallScript.exe"; Parameters: """{#CKVersion}"" ""{#ApplicationName}"" ""{#DistribName}"" ""{#UpdateServerUrl}"" ""{#UpdaterRunningKey}"" ""{#OverridePreviousContext}"" ""{#IsStandAloneInstance}"" ""{code:GetOutputDir|{#IsStandAloneInstance}}"" ""{app}\binaries\CK-Certified.exe"""
+Filename: "{tmp}\CiviKeyPostInstallScript.exe"; Parameters: """{#CKVersion}"" ""{#ApplicationName}"" ""{#DistribName}"" ""{#UpdateServerUrl}"" ""{#UpdaterRunningKey}"" ""{#OverridePreviousContext}"" ""{#IsStandAloneInstance}"" ""{code:GetOutputDir|{#IsStandAloneInstance}}"" ""{app}\binaries\CiviKey.exe"""
                                                                                                                                                                                                                                                ;System configuration directory                          ;.exe path
 [Code]
 function GetOutputDir(Param: String): String;
 begin
     if Param = 'false' then begin
-        Result := ExpandConstant('{commonappdata}\\{#ApplicationName}\\{#DistribName}\\');
+        Result := ExpandConstant('{commonappdata}\{#ApplicationName}\{#DistribName}\\');
     end else begin
         Result := ExpandConstant('{app}\Configurations');
     end
@@ -98,7 +101,7 @@ end;
 function InitializeSetup(): Boolean;
 begin
     if not IsDotNetDetected('v4\Client', 0) then begin
-        MsgBox('CiviKey requires Microsoft .NET Framework 4.0.'#13#13
+        MsgBox('CiviKey requires Microsoft .NET Framework 4.0 Client Profile.'#13#13
             'Please use Windows Update to install this version,'#13
             'and then re-run the CiviKey setup program.', mbInformation, MB_OK);
         result := false;

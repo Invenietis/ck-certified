@@ -16,8 +16,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <UICulture>en-US</UICulture>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -108,7 +107,6 @@
     <Compile Include="Editor\EditorViewModel.FontProperties.cs" />
     <Compile Include="Editor\SimpleSkinEditor.cs" />
     <Compile Include="Helpers\PropertyLookupExtentions.cs" />
-    <Compile Include="Helpers\ScreenHelper.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>

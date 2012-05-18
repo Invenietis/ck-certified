@@ -12,6 +12,7 @@ using CK.Plugin;
 using CK.Core;
 using System.Windows.Input;
 using System.Diagnostics;
+using CK.WPF.ViewModel;
 
 namespace Host
 {
@@ -22,21 +23,31 @@ namespace Host
 
         public AppViewModel()
         {
+            
             DisplayName = "CiviKey";//R.CiviKey
-            //EnsureMainWindowVisibleCommand = new VMCommand( EnsureMainWindowVisible, null );
             ConfigManager = new ConfigManager();
             ConfigManager.ActivateItem( new RootConfigViewModel( this ) );
             ActivateItem( ConfigManager );
 
+            IsMinimized = true;
 
             CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );
+
         }
 
         public CivikeyStandardHost CivikeyHost { get { return CivikeyStandardHost.Instance; } }
 
         IKeyboardContext _keyboardContext;
-        public IKeyboardContext KeyboardContext { get { return _keyboardContext ?? CivikeyHost.Context.GetService<IKeyboardContext>(); } }
+        public IKeyboardContext KeyboardContext
+        {
+            get
+            {
+                if( _keyboardContext == null )
+                    _keyboardContext = CivikeyHost.Context.GetService<IKeyboardContext>();
+                return _keyboardContext;
+            }
+        }
 
         public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
 
@@ -61,6 +72,17 @@ namespace Host
             }
         }
 
+        bool _isMinimized;
+        public bool IsMinimized 
+        {
+            get { return _isMinimized; }
+            set 
+            { 
+                _isMinimized = value; 
+                NotifyOfPropertyChange( "IsMinimized" ); 
+            }
+        }
+
         public bool ShowSystrayIcon
         {
             get { return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true ); }
@@ -81,7 +103,6 @@ namespace Host
             // closing the window exits the application.
             App.Current.MainWindow = (Window)view;
             base.OnViewLoaded( view );
-            //CivikeyHost.Initialize();
         }
 
         public override void CanClose( Action<bool> callback )
@@ -115,7 +136,7 @@ namespace Host
                 _closing = true;
                 Window thisView = GetView( null ) as Window;
                 Window bestParent = App.Current.GetTopWindow();
-                e.Cancel = System.Windows.MessageBox.Show( bestParent, "Are you sure to exit application ?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question ) != MessageBoxResult.Yes;
+                //e.Cancel = System.Windows.MessageBox.Show( bestParent, "Are you sure to exit application ?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question ) != MessageBoxResult.Yes;
                 if( bestParent != thisView ) thisView.Activate();
                 _closing = !e.Cancel;
             }
@@ -123,11 +144,23 @@ namespace Host
                 e.Cancel = true;
         }
 
-        public ICommand EnsureMainWindowVisibleCommand { get; private set; }
+        ICommand _ensureMainWindowVisibleCommand;
+        public ICommand EnsureMainWindowVisibleCommand
+        {
+            get
+            {
+                if( _ensureMainWindowVisibleCommand == null )
+                    _ensureMainWindowVisibleCommand = new VMCommand( EnsureMainWindowVisible );
+                return _ensureMainWindowVisibleCommand;
+            }
+        }
 
         void EnsureMainWindowVisible()
         {
-            App.Current.MainWindow.WindowState = WindowState.Normal;
+            //App.Current.MainWindow.Show();
+            IsMinimized = false;
+            //App.Current.MainWindow.Visibility = Visibility.Visible;
+            //App.Current.MainWindow.WindowState = WindowState.Normal;
             App.Current.MainWindow.Activate();
         }
 

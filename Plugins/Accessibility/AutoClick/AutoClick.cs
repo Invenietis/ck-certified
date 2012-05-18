@@ -10,6 +10,10 @@ using System.Windows;
 using CK.Plugin.Config;
 using CK.Core;
 using System.ComponentModel;
+using System.Windows.Forms;
+using CK.Windows;
+using System.Runtime.InteropServices;
+using CK.Windows.Helper;
 
 namespace CK.Plugins.AutoClick
 {
@@ -47,7 +51,7 @@ namespace CK.Plugins.AutoClick
                     {
                         //Ugly fix, waiting for me to really understand how Show/Close/Visiblity work
                         double editorWindowWidth = _editorWindow.ActualWidth == 0 ? _editorWindow.Width : _editorWindow.ActualWidth;
-                        
+
                         double editorLeft = _wpfStandardClickTypeWindow.Left - editorWindowWidth;
                         if( editorLeft > 0 && editorLeft + _editorWindow.ActualWidth < System.Windows.SystemParameters.PrimaryScreenWidth )
                             _editorWindow.Left = editorLeft;
@@ -132,25 +136,21 @@ namespace CK.Plugins.AutoClick
         public void Start()
         {
             _isPaused = true;
-            bool isFirstLaunch = false;
             _selector = new StdClickTypeSelector( this );
             _wpfStandardClickTypeWindow = new WPFStdClickTypeWindow() { DataContext = this };
 
-            if( Config.User["ShowMousePanelOption"] == null )
-                Config.User["ShowMousePanelOption"] = true;
+            _showMousePanelOption = Config.User.GetOrSet<bool>( "ShowMousePanelOption", true );
+            int defaultWidth = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 20;
+            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
 
-            if( Config.User["AutoClickWindowLeft"] == null || Config.User["AutoClickWindowLeft"] == null )
-                isFirstLaunch = true;
-
-            if( Config.User["AutoClickWindowWidth"] == null )
-                Config.User["AutoClickWindowWidth"] = 100;
-            if( Config.User["AutoClickWindowHeight"] == null )
-                Config.User["AutoClickWindowHeight"] = 420;
-
-            _showMousePanelOption = (bool)Config.User["ShowMousePanelOption"];
-
-            _wpfStandardClickTypeWindow.Width = (int)Config.User["AutoClickWindowWidth"];
-            _wpfStandardClickTypeWindow.Height = (int)Config.User["AutoClickWindowHeight"];
+            if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
+            {
+                SetDefaultWindowPosition( defaultWidth, defaultHeight );
+            }
+            else
+            {
+                _wpfStandardClickTypeWindow.Width = _wpfStandardClickTypeWindow.Height = 0;
+            }
 
             _mouseWindow = new MouseProgressPieWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
@@ -160,44 +160,42 @@ namespace CK.Plugins.AutoClick
             RegisterEvents();
 
             _mouseWindow.Show();
+            _wpfStandardClickTypeWindow.Show();
 
-            if( isFirstLaunch )
+            //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
+            if( !Config.User.Contains( "AutoClickWindowPlacement" ) ) Config.User.Set( "AutoClickWindowPlacement", _wpfStandardClickTypeWindow.GetPlacement() );
+            _wpfStandardClickTypeWindow.SetPlacement( (WINDOWPLACEMENT)Config.User["AutoClickWindowPlacement"] );
+
+            //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
+            if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_wpfStandardClickTypeWindow.Left, (int)_wpfStandardClickTypeWindow.Top ) ) 
+                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_wpfStandardClickTypeWindow.Left + _wpfStandardClickTypeWindow.ActualWidth), (int)_wpfStandardClickTypeWindow.Top )))
             {
-                Config.User["AutoClickWindowLeft"] = (int)_wpfStandardClickTypeWindow.Left;
-                Config.User["AutoClickWindowTop"] = (int)_wpfStandardClickTypeWindow.Top;
-
-                _wpfStandardClickTypeWindow.Left = System.Windows.SystemParameters.PrimaryScreenWidth - _wpfStandardClickTypeWindow.Width;
-                _wpfStandardClickTypeWindow.Top = ( System.Windows.SystemParameters.PrimaryScreenHeight - _wpfStandardClickTypeWindow.Height ) / 4;
-
-                _wpfStandardClickTypeWindow.Show();
-
+                SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
-            else
-            {
-                _wpfStandardClickTypeWindow.Left = (int)Config.User["AutoClickWindowLeft"];
-                _wpfStandardClickTypeWindow.Top = (int)Config.User["AutoClickWindowTop"];
-                _wpfStandardClickTypeWindow.Show();
-            }
-
             Pause( this );
+        }
+
+        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
+        {
+            _wpfStandardClickTypeWindow.Top = 0;
+            _wpfStandardClickTypeWindow.Left = (int)System.Windows.SystemParameters.WorkArea.Width - defaultWidth;
+            _wpfStandardClickTypeWindow.Width = defaultWidth;
+            _wpfStandardClickTypeWindow.Height = defaultHeight;
         }
 
         public void Stop()
         {
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             UnregisterEvents();
-            Config.User["AutoClickWindowWidth"] = (int)_wpfStandardClickTypeWindow.Width;
-            Config.User["AutoClickWindowHeight"] = (int)_wpfStandardClickTypeWindow.Height;
-            Config.User["AutoClickWindowLeft"] = (int)_wpfStandardClickTypeWindow.Left;
-            Config.User["AutoClickWindowTop"] = (int)_wpfStandardClickTypeWindow.Top;
+            Config.User.Set( "AutoClickWindowPlacement", _wpfStandardClickTypeWindow.GetPlacement() );
         }
 
         public void Teardown()
         {
             if( _mouseWindow != null )
             {
-                if( _mouseWindow.IsVisible ) _mouseWindow.Close();
-                if( _editorWindow.IsVisible ) _editorWindow.Close();
+                _mouseWindow.Close();
+                _editorWindow.Close();
             }
 
             if( _wpfStandardClickTypeWindow != null )
@@ -206,6 +204,8 @@ namespace CK.Plugins.AutoClick
             }
 
             _selector = null;
+            _editorWindow = null;
+            _mouseWindow = null;
             _wpfStandardClickTypeWindow = null;
         }
 

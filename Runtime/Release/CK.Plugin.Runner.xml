@@ -60,51 +60,10 @@
             that is not impossible
             </summary>
         </member>
-        <member name="M:CK.Plugin.Config.PluginConfigAccessor.RaiseConfigChanged(CK.Plugin.Config.ConfigChangedEventArgs)">
-            <summary>
-            Change detection is made by the runner itself (one event subscription) since
-            it use its dictionnary to route the event: this is far more efficient than 
-            if each PluginConfigAccessor had to subscribe and filter the event for its plugin identifier.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="T:CK.Plugin.Runner.R">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Runner.R.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Runner.R.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Runner.R.InitializeRequired">
-            <summary>
-              Looks up a localized string similar to PluginRunner.Initialize method must be called first..
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Runner.R.ReentrantApplyCall">
-            <summary>
-              Looks up a localized string similar to Apply is not reentrant..
-            </summary>
-        </member>
         <member name="E:CK.Plugin.Hosting.SolvedPluginConfigurationSnapshot.Changed">
             <summary>
             Unused by this implementation (snapshot).
             </summary>
-        </member>
-        <member name="M:CK.Plugin.Hosting.PluginRunner.Apply(System.Boolean)">
-            <summary>
-            
-            </summary>
-            <param name="keepRunningLaunchedOptionals">if false, all plugins that are "optional" but are already launched will be stopped</param>
-            <returns></returns>
         </member>
         <member name="T:CK.Plugin.Hosting.RequirementLayerSnapshot">
             <summary>
@@ -158,6 +117,47 @@
             Gets whether the execution is not possible (no running configuration that satisfy
             the requirements can be found).
             </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.PluginConfigAccessor.RaiseConfigChanged(CK.Plugin.Config.ConfigChangedEventArgs)">
+            <summary>
+            Change detection is made by the runner itself (one event subscription) since
+            it use its dictionnary to route the event: this is far more efficient than 
+            if each PluginConfigAccessor had to subscribe and filter the event for its plugin identifier.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:CK.Plugin.Runner.R">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.InitializeRequired">
+            <summary>
+              Looks up a localized string similar to PluginRunner.Initialize method must be called first..
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Runner.R.ReentrantApplyCall">
+            <summary>
+              Looks up a localized string similar to Apply is not reentrant..
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PluginRunner.Apply(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="keepRunningLaunchedOptionals">if false, all plugins that are "optional" but are already launched will be stopped</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

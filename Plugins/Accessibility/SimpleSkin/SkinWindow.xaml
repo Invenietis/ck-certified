@@ -1,28 +1,25 @@
-﻿<Window x:Class="SimpleSkin.SkinWindow"
+﻿<ckwincore:NoFocusWindow x:Class="SimpleSkin.SkinWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="http://schemas.civikey.org/StandardViews"
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+    xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     WindowStartupLocation="Manual"
     Background="Transparent"
     WindowStyle="None"
     Topmost="True"
-    Left="{Binding Mode=TwoWay, Path=Keyboard.X}" Top="{Binding Mode=TwoWay, Path=Keyboard.Y}"
-    Width="{Binding Mode=TwoWay, Path=Keyboard.ViewportWidth}" Height="{Binding Mode=TwoWay, Path=Keyboard.ViewportHeight}"
     Title="Simple skin">
     <Window.Resources>
-        
         <ctrls:NotNullConverter x:Key="notnull"/>
-
         <Style TargetType="{x:Type view:StdKeyboardView}">
             <Setter Property="Width" Value="{Binding W}" />
             <Setter Property="Height" Value="{Binding H}" />
             <Setter Property="Keys" Value="{Binding Keys}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=Background, Converter={StaticResource notnull}}" Value="true">
+                <!--<DataTrigger Binding="{Binding Path=Background, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="Background" Value="{Binding Background}"/>
-                </DataTrigger>
+                </DataTrigger>-->
                 <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
                 </DataTrigger>
@@ -92,4 +89,4 @@
             <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding Keyboard}" />
         </Viewbox>
     </Grid>
-</Window>
+</ckwincore:NoFocusWindow>

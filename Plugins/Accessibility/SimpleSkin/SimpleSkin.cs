@@ -9,31 +9,32 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 using Host.Services;
-using SimpleSkin.Helper;
 using SimpleSkin.ViewModels;
 using System.Diagnostics;
+using CK.Windows;
+using CK.Windows.Helper;
 
 namespace SimpleSkin
 {
-    [Plugin(SimpleSkin.PluginIdString,
-        PublicName=PluginPublicName,
-        Version=SimpleSkin.PluginIdVersion,
-        Categories=new string[]{"Visual","Accessibility"})]
+    [Plugin( SimpleSkin.PluginIdString,
+        PublicName = PluginPublicName,
+        Version = SimpleSkin.PluginIdVersion,
+        Categories = new string[] { "Visual", "Accessibility" } )]
     public class SimpleSkin : IPlugin, ISkinService
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "SimpleSkin";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId ( PluginIdString, PluginIdVersion, PluginPublicName );
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         bool _viewHidden;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IKeyboardContext KeyboardContext { get; set; }
+        public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         [RequiredService]
         public IContext Context { get; set; }
-        
+
         VMContextSimple _ctxVm;
         SkinWindow _skinWindow;
         MiniView _miniView;
@@ -55,53 +56,103 @@ namespace SimpleSkin
             return true;
         }
 
-       // void OnTimerTick( object sender, EventArgs e )
-       // {
-       //     this._ctxVm.Keyboard.Layout.W = this._ctxVm.Keyboard.Layout.W - 5;
-
-        //}
+        private string PlacementString { get { return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement"; } }
 
         public void Start()
         {
-            if( KeyboardContext.Keyboards.Count > 0 )
+            if( KeyboardContext.Status == RunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 Context.ServiceContainer.Add( Config );
 
                 _isStarted = true;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext );
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service );
                 _skinWindow = new SkinWindow( _ctxVm );
+
+                int defaultWidth = _ctxVm.Keyboard.W;
+                int defaultHeight = _ctxVm.Keyboard.H;
+
+                if( !Config.User.Contains( PlacementString ) ) SetDefaultWindowPosition( defaultWidth, defaultHeight ); //first launch : places the skin in the default position
+                else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
+
                 _skinWindow.Show();
 
-                //DispatcherTimer t = new DispatcherTimer( new TimeSpan( 0, 0, 0, 1, 0 ), DispatcherPriority.Normal, OnTimerTick, _skinWindow.Dispatcher );
-                //t.Start();
+                if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
 
-                _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
-                
+                //Placing the skin at the same location as the last launch.
+                _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User[PlacementString] );
+
                 //autohide
                 UpdateAutoHideConfig();
 
                 Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
 
-                _skinWindow.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-                _skinWindow.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-                _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
+                RegisterEvents();
             }
             else
             {
                 _isStarted = false;
-                Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible", 
+                Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
             }
         }
 
+
+
+        private void RegisterEvents()
+        {
+            _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
+            _skinWindow.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
+            _skinWindow.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
+            _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanging += new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
+        }
+
+        void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
+        {
+            if(_skinWindow != null) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+        }
+
+        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        {
+            if( _skinWindow != null)
+            {
+                
+                if( Config.User[PlacementString] != null )
+                {
+                    WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];
+                    if( _viewHidden ) placement.showCmd = 0;
+                    else placement.showCmd = 8; //Show without taking focus
+                    _skinWindow.SetPlacement( placement );
+                }
+                else SetDefaultWindowPosition( _ctxVm.Keyboard.W, _ctxVm.Keyboard.H );
+            }
+        }
+
+        private void UnregisterEvents()
+        {
+            _ctxVm.KeyboardContext.CurrentKeyboardChanging -= new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanged -= new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
+            _skinWindow.Closing -= new CancelEventHandler( OnWindowClosing );
+            _skinWindow.MouseLeave -= new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
+            _skinWindow.MouseEnter -= new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
+            _skinWindow.SizeChanged -= new SizeChangedEventHandler( OnWindowResized );
+        }
+
+        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
+        {
+            _skinWindow.Top = 0;
+            _skinWindow.Left = 0;
+            _skinWindow.Width = defaultWidth;
+            _skinWindow.Height = defaultHeight;
+        }
+
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-
-            if ( e.MultiPluginId.Contains( PluginId ) )
+            if( e.MultiPluginId.Contains( PluginId ) )
             {
-                if (e.Key == "autohide" || e.Key == "autohide-timeout") UpdateAutoHideConfig();
+                if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
             }
-
         }
 
         void UpdateAutoHideConfig()
@@ -159,26 +210,27 @@ namespace SimpleSkin
             {
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
-                _skinWindow.Closing -= new CancelEventHandler( OnWindowClosing );
+                UnregisterEvents();
 
-                _skinWindow.MouseLeave -= new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-                _skinWindow.MouseEnter -= new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-                _skinWindow.SizeChanged -= new SizeChangedEventHandler( OnWindowResized );
+                Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
 
                 _forceClose = true;
                 _skinWindow.Close();
 
-                if( _miniView != null ) 
-                { 
-                    _miniView.Close(); 
+                if( _miniView != null )
+                {
+                    _miniView.Close();
                     _miniView = null;
                     _viewHidden = false;
                 }
 
                 _ctxVm.Dispose();
+                _ctxVm = null;
                 _isStarted = false;
             }
         }
+
+
 
         public void Teardown()
         {

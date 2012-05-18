@@ -4,109 +4,6 @@
         <name>CK.Context</name>
     </assembly>
     <members>
-        <member name="T:CK.Context.Res.R">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.ConfigSupportTypeFileOnly">
-            <summary>
-              Looks up a localized string similar to Only File type supported..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.ContextAddressRequired">
-            <summary>
-              Looks up a localized string similar to An address for the context is required..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.HostAlreadyOwnsContext">
-            <summary>
-              Looks up a localized string similar to CreateContext can be called only once per Host..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.LoadContextFail">
-            <summary>
-              Looks up a localized string similar to Unable to load context..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.NewContextDisplayName">
-            <summary>
-              Looks up a localized string similar to Created on {0:D}.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.UnableToFind">
-            <summary>
-              Looks up a localized string similar to Unable to find &apos;{0}&apos;..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.XmlInvalidFormatVersion">
-            <summary>
-              Looks up a localized string similar to Xml version must exist and be at least 2.5.1..
-            </summary>
-        </member>
-        <member name="T:CK.Context.IHostInformation">
-            <summary>
-            Exposes standard host information.
-            </summary>
-        </member>
-        <member name="M:CK.Context.IHostInformation.GetSystemConfigAddress">
-            <summary>
-            Gets the System configuration's file path.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:CK.Context.IHostInformation.UserConfig">
-            <summary>
-            Gets the host configuration associated to the current user.
-            </summary>
-        </member>
-        <!-- Badly formed XML comment ignored for member "P:CK.Context.IHostInformation.SystemConfig" -->
-        <member name="P:CK.Context.IHostInformation.AppName">
-            <summary>
-            Gets the name of the application. Civikey-Standard for instance for the Civikey Standard application. 
-            It is an identifier (no /, \ or other special characters in it: see <see cref="M:System.IO.Path.GetInvalidPathChars"/>).
-            </summary>
-        </member>
-        <member name="P:CK.Context.IHostInformation.SubAppName">
-            <summary>
-            Gets an optional second name (can be null).
-            When not null, it is an identifier just like <see cref="P:CK.Context.IHostInformation.AppName"/>.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IHostInformation.AppVersion">
-            <summary>
-            Gets the current application version.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IHostInformation.ApplicationDataPath">
-            <summary>
-            Gets the full path of application-specific data repository for the current user if 
-            the host handles it. Null otherwise.
-            When not null, it ends with <see cref="F:System.IO.Path.DirectorySeparatorChar"/> and the directory exists.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IHostInformation.CommonApplicationDataPath">
-            <summary>
-            Gets the full path of application-specific data repository for all users if 
-            the host handles it. Null otherwise.
-            When not null, it ends with <see cref="F:System.IO.Path.DirectorySeparatorChar"/> and the directory exists.
-            </summary>
-        </member>
-        <member name="T:CK.Context.ContextProfileRequiredEventArgs">
-            <summary>
-            </summary>
-        </member>
         <member name="T:CK.Context.ContextEventArgs">
             <summary>
             Defines a context event: it simply offers an access to the context.
@@ -123,14 +20,69 @@
             Gets the <see cref="T:CK.Context.IContext"/> to which this event is related.
             </summary>
         </member>
-        <member name="P:CK.Context.ContextProfileRequiredEventArgs.DisplayName">
+        <member name="M:CK.Context.IContext.SaveContext(CK.Storage.IStructuredWriter)">
             <summary>
-            Gets or sets the display name for the default context.
+            Writes this <see cref="T:CK.Context.IContext">context</see> as in a stream.
+            </summary>
+            <param name="stream">Stream to the saved document.</param>
+        </member>
+        <member name="M:CK.Context.IContext.LoadContext(CK.Storage.IStructuredReader)">
+            <summary>
+            Loads this <see cref="T:CK.Context.IContext">context</see> from a file.
+            </summary>
+            <param name="filePath">Path to the file.</param>
+            <returns>A list (possibly empty) of <see cref="T:CK.Core.ISimpleErrorMessage"/> describing read errors.</returns>
+        </member>
+        <member name="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)">
+            <summary>
+            Raises the <see cref="E:CK.Context.IContext.ApplicationExiting"/> (any persistence of information/configuration should be done during this phasis), 
+            and <see cref="E:CK.Context.IContext.ApplicationExited"/> event.
+            </summary>
+            <param name="hostShouldExit">When true, the application host should exit: this is typically used by a plugin to
+            trigger the end of the current application (ie. the "Exit" button). 
+            A host would better use false to warn any services and plugins to do what they have to do before leaving and manage to exit the way it wants.</param>
+        </member>
+        <member name="P:CK.Context.IContext.ConfigManager">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.Config.IConfigManager"/> that can be used to read and save the configuration.
             </summary>
         </member>
-        <member name="P:CK.Context.ContextProfileRequiredEventArgs.Address">
+        <member name="P:CK.Context.IContext.BaseServiceProvider">
             <summary>
-            Gets or sets the <see cref="T:System.Uri"/> of the default context to use.
+            Gets or sets a fallback <see cref="T:System.IServiceProvider"/> that will be queried for a service
+            if it is not found at this level.
+            </summary>
+        </member>
+        <member name="P:CK.Context.IContext.ServiceContainer">
+            <summary>
+            Gets the service container for this context.
+            </summary>
+        </member>
+        <member name="P:CK.Context.IContext.RequirementLayer">
+            <summary>
+            Gets the <see cref="P:CK.Context.IContext.RequirementLayer"/> of this context.
+            </summary>
+        </member>
+        <member name="P:CK.Context.IContext.PluginRunner">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.ISimplePluginRunner"/>
+            </summary>
+        </member>
+        <member name="P:CK.Context.IContext.LogCenter">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.ILogCenter"/>
+            </summary>
+        </member>
+        <member name="E:CK.Context.IContext.ApplicationExiting">
+            <summary>
+            Fired by <see cref="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)"/> to signal the end of the application (this is a cancelable event). 
+            If it is not cancelled, runner is disabled and then <see cref="E:CK.Context.IContext.ApplicationExited"/> event is fired.
+            </summary>
+        </member>
+        <member name="E:CK.Context.IContext.ApplicationExited">
+            <summary>
+            Fired by <see cref="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)"/> to signal the very end of the application. 
+            Once this event has fired, this <see cref="T:CK.Context.IContext"/> is no more functionnal.
             </summary>
         </member>
         <member name="T:CK.Context.AbstractContextHost">
@@ -206,9 +158,66 @@
             This is a shortcut to the <see cref="P:CK.Plugin.Config.ISystemConfiguration.HostConfig"/>.
             </remarks>
         </member>
-        <member name="T:CK.Context.ApplicationExitingEventArgs">
+        <member name="T:CK.Context.ContextProfileRequiredEventArgs">
             <summary>
-            The argument of <see cref="E:CK.Context.IContext.ApplicationExiting"/> event.
+            </summary>
+        </member>
+        <member name="P:CK.Context.ContextProfileRequiredEventArgs.DisplayName">
+            <summary>
+            Gets or sets the display name for the default context.
+            </summary>
+        </member>
+        <member name="P:CK.Context.ContextProfileRequiredEventArgs.Address">
+            <summary>
+            Gets or sets the <see cref="T:System.Uri"/> of the default context to use.
+            </summary>
+        </member>
+        <member name="T:CK.Context.IHostInformation">
+            <summary>
+            Exposes standard host information.
+            </summary>
+        </member>
+        <member name="M:CK.Context.IHostInformation.GetSystemConfigAddress">
+            <summary>
+            Gets the System configuration's file path.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:CK.Context.IHostInformation.UserConfig">
+            <summary>
+            Gets the host configuration associated to the current user.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:CK.Context.IHostInformation.SystemConfig" -->
+        <member name="P:CK.Context.IHostInformation.AppName">
+            <summary>
+            Gets the name of the application. Civikey-Standard for instance for the Civikey Standard application. 
+            It is an identifier (no /, \ or other special characters in it: see <see cref="M:System.IO.Path.GetInvalidPathChars"/>).
+            </summary>
+        </member>
+        <member name="P:CK.Context.IHostInformation.SubAppName">
+            <summary>
+            Gets an optional second name (can be null).
+            When not null, it is an identifier just like <see cref="P:CK.Context.IHostInformation.AppName"/>.
+            </summary>
+        </member>
+        <member name="P:CK.Context.IHostInformation.AppVersion">
+            <summary>
+            Gets the current application version.
+            </summary>
+        </member>
+        <member name="P:CK.Context.IHostInformation.ApplicationDataPath">
+            <summary>
+            Gets the full path of application-specific data repository for the current user if 
+            the host handles it. Null otherwise.
+            When not null, it ends with <see cref="F:System.IO.Path.DirectorySeparatorChar"/> and the directory exists.
+            </summary>
+        </member>
+        <member name="P:CK.Context.IHostInformation.CommonApplicationDataPath">
+            <summary>
+            Gets the full path of application-specific data repository for all users if 
+            the host handles it. Null otherwise.
+            When not null, it ends with <see cref="F:System.IO.Path.DirectorySeparatorChar"/> and the directory exists.
             </summary>
         </member>
         <member name="T:CK.Context.ApplicationExitedEventArgs">
@@ -231,6 +240,72 @@
             When true, the host should leave: this is typically triggered by an "Exit" button in a plugin.
             </summary>
         </member>
+        <member name="M:CK.Context.Context.CreateInstance">
+            <summary>
+            Initializes a new context that is proxified by default.
+            </summary>
+        </member>
+        <member name="M:CK.Context.Context.CreateInstance(System.Boolean)">
+            <summary>
+            Initializes a new context.
+            </summary>
+        </member>
+        <member name="T:CK.Context.Res.R">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.ConfigSupportTypeFileOnly">
+            <summary>
+              Looks up a localized string similar to Only File type supported..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.ContextAddressRequired">
+            <summary>
+              Looks up a localized string similar to An address for the context is required..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.HostAlreadyOwnsContext">
+            <summary>
+              Looks up a localized string similar to CreateContext can be called only once per Host..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.LoadContextFail">
+            <summary>
+              Looks up a localized string similar to Unable to load context..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.NewContextDisplayName">
+            <summary>
+              Looks up a localized string similar to Created on {0:D}.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.UnableToFind">
+            <summary>
+              Looks up a localized string similar to Unable to find &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.XmlInvalidFormatVersion">
+            <summary>
+              Looks up a localized string similar to Xml version must exist and be at least 2.5.1..
+            </summary>
+        </member>
+        <member name="T:CK.Context.ApplicationExitingEventArgs">
+            <summary>
+            The argument of <see cref="E:CK.Context.IContext.ApplicationExiting"/> event.
+            </summary>
+        </member>
         <member name="M:CK.Context.ApplicationExitingEventArgs.#ctor(CK.Context.IContext,System.Boolean)">
             <summary>
             Initializes a new instance of <see cref="T:CK.Context.ApplicationExitedEventArgs"/>.
@@ -241,81 +316,6 @@
         <member name="P:CK.Context.ApplicationExitingEventArgs.Cancel">
             <summary>
             Gets or sets whether this closing request should be canceled or not.
-            </summary>
-        </member>
-        <member name="M:CK.Context.IContext.SaveContext(CK.Storage.IStructuredWriter)">
-            <summary>
-            Writes this <see cref="T:CK.Context.IContext">context</see> as in a stream.
-            </summary>
-            <param name="stream">Stream to the saved document.</param>
-        </member>
-        <member name="M:CK.Context.IContext.LoadContext(CK.Storage.IStructuredReader)">
-            <summary>
-            Loads this <see cref="T:CK.Context.IContext">context</see> from a file.
-            </summary>
-            <param name="filePath">Path to the file.</param>
-            <returns>A list (possibly empty) of <see cref="T:CK.Core.ISimpleErrorMessage"/> describing read errors.</returns>
-        </member>
-        <member name="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)">
-            <summary>
-            Raises the <see cref="E:CK.Context.IContext.ApplicationExiting"/> (any persistence of information/configuration should be done during this phasis), 
-            and <see cref="E:CK.Context.IContext.ApplicationExited"/> event.
-            </summary>
-            <param name="hostShouldExit">When true, the application host should exit: this is typically used by a plugin to
-            trigger the end of the current application (ie. the "Exit" button). 
-            A host would better use false to warn any services and plugins to do what they have to do before leaving and manage to exit the way it wants.</param>
-        </member>
-        <member name="P:CK.Context.IContext.ConfigManager">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.Config.IConfigManager"/> that can be used to read and save the configuration.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IContext.BaseServiceProvider">
-            <summary>
-            Gets or sets a fallback <see cref="T:System.IServiceProvider"/> that will be queried for a service
-            if it is not found at this level.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IContext.ServiceContainer">
-            <summary>
-            Gets the service container for this context.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IContext.RequirementLayer">
-            <summary>
-            Gets the <see cref="P:CK.Context.IContext.RequirementLayer"/> of this context.
-            </summary>
-        </member>
-        <member name="P:CK.Context.IContext.PluginRunner">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.ISimplePluginRunner"/>
-            </summary>
-        </member>
-        <member name="P:CK.Context.IContext.LogCenter">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.ILogCenter"/>
-            </summary>
-        </member>
-        <member name="E:CK.Context.IContext.ApplicationExiting">
-            <summary>
-            Fired by <see cref="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)"/> to signal the end of the application (this is a cancelable event). 
-            If it is not cancelled, runner is disabled and then <see cref="E:CK.Context.IContext.ApplicationExited"/> event is fired.
-            </summary>
-        </member>
-        <member name="E:CK.Context.IContext.ApplicationExited">
-            <summary>
-            Fired by <see cref="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)"/> to signal the very end of the application. 
-            Once this event has fired, this <see cref="T:CK.Context.IContext"/> is no more functionnal.
-            </summary>
-        </member>
-        <member name="M:CK.Context.Context.CreateInstance">
-            <summary>
-            Initializes a new context that is proxified by default.
-            </summary>
-        </member>
-        <member name="M:CK.Context.Context.CreateInstance(System.Boolean)">
-            <summary>
-            Initializes a new context.
             </summary>
         </member>
     </members>

@@ -79,7 +79,7 @@ namespace CiviKeyPostInstallScript
             Console.Out.WriteLine( "IsStandAloneInstance :" + args[6] );
             Console.Out.WriteLine( "standAloneConfigDir :" + args[7] );
             Console.Out.WriteLine( "ApplicationExePath :" + args[8] );
-            Console.ReadKey();
+            //Console.Read();
 
             string version = args[0];
             _appName = args[1];
@@ -114,6 +114,10 @@ namespace CiviKeyPostInstallScript
             userConfPath = Path.Combine( userConfDir, "User.config.ck" );
             contextPath = Path.Combine( contextDir, "Context.xml" );
 
+            Console.Out.WriteLine( "systemConfPath :" + systemConfPath );
+            Console.Out.WriteLine( "userConfPath :" + userConfPath );
+            Console.Out.WriteLine( "contextPath :" + contextPath );
+
             string hostGuid = "1A2DC25C-E357-488A-B2B2-CD2D7E029856";
             string updateDoneDir = Path.Combine( Path.GetTempPath(), _appName + Path.DirectorySeparatorChar + _distributionName );
             string updateDone = Path.Combine( updateDoneDir, "UpdateDone" );
@@ -131,6 +135,8 @@ namespace CiviKeyPostInstallScript
                 AddEntryToSystemConf( "Version", version, hostGuid, "Host", xPathNav );
 
                 xPathDoc.Save( systemConfPath );
+
+                UpgradeUser35To40( xPathNav );
 
                 if( removeExistingCtx )
                 {
@@ -171,6 +177,76 @@ namespace CiviKeyPostInstallScript
             }
         }
 
+        /// <summary>
+        /// Upgrades the user configuration (from .NET 3.5 to .NET 4.0 and its breaking change - we now need a ContextProfileCollection in the UserConf)
+        /// If the userConf, is in a 4.0 version, this method won't do anything
+        /// It returns the contextpath found via the userconf, in case the context has been moved or renamed.
+        /// Return String.Empty if a contextpath can't be found.
+        /// </summary>
+        /// <param name="xPathSystemNav"></param>
+        /// <returns></returns>
+        private static string UpgradeUser35To40( XPathNavigator xPathSystemNav )
+        {
+            string xPathExp = "//UserProfile";
+            XmlDocument xPathDoc;
+            XPathNavigator xPathUserNav;
+            
+            string userConfPath = String.Empty;
+            string contextPath = String.Empty;
+
+            XPathNodeIterator iterator = xPathSystemNav.Select( xPathSystemNav.Compile( xPathExp ) );
+            if( iterator.Count > 0 ) //if there is a path to a userConf
+            {
+                iterator.MoveNext();
+
+                if(iterator.Count > 1) //if there are more than one userProfile, find the last one.
+                {
+                    while( iterator.Current.GetAttribute( "IsLast", "" ) != "True" ) iterator.MoveNext();
+                }
+
+                userConfPath = iterator.Current.GetAttribute( "Address", "" );
+                if(!String.IsNullOrEmpty(userConfPath) && File.Exists(userConfPath)) //and it exists
+                {
+                    xPathDoc = new XmlDocument();
+                    xPathDoc.Load( userConfPath );
+                    xPathUserNav = xPathDoc.CreateNavigator();
+                    xPathExp = "//data[@key='LastContextPath']";
+                    XPathNodeIterator userConfIterator = xPathUserNav.Select( xPathUserNav.Compile( xPathExp ) );
+                    if( userConfIterator.Count == 1 ) // and we can find a LastContextPath ( -> this is a v3.5 userConf)
+                    {
+                        userConfIterator.MoveNext();
+
+                        string contextPathTemp = userConfIterator.Current.Value;
+                        Uri uri = new Uri( contextPathTemp );
+                        
+                        if( !String.IsNullOrEmpty( contextPathTemp ) && File.Exists( contextPathTemp ) ) //and that lastContextPath is reachable
+                        {
+                            contextPath = contextPathTemp; //Return the contextPath.
+                            //Remove the LastContextPath tag 
+                            userConfIterator.Current.DeleteSelf();
+
+                            //and add a ContextProfileCollection ( -> upgrade to v4)
+                            xPathUserNav = xPathDoc.CreateNavigator();
+                            xPathExp = "//PluginStatusCollection";
+                            userConfIterator = xPathUserNav.Select( xPathUserNav.Compile( xPathExp ) );
+                            
+                            userConfIterator.MoveNext();
+
+                            userConfIterator.Current.InsertElementAfter("", "ContextProfileCollection","","" );
+                            userConfIterator.Current.MoveToFollowing( "ContextProfileCollection", "" );
+                            userConfIterator.Current.AppendChildElement( "", "ContextProfile", "", "" );
+                            userConfIterator.Current.MoveToChild( "ContextProfile", "" );
+                            userConfIterator.Current.CreateAttribute( "", "DisplayName", "", "Context" );
+                            userConfIterator.Current.CreateAttribute( "", "Uri", "", @"file://" + contextPath.Replace("\\","/") );
+
+                            xPathDoc.Save( userConfPath );
+                        }
+                    }
+                }
+            }
+            return contextPath;
+        }
+
         public static void OnError( string message )
         {
             Console.Out.WriteLine( message );
@@ -180,107 +256,129 @@ namespace CiviKeyPostInstallScript
             return;
         }
 
+
+
         private static void AddEntryToSystemConf( string key, string value, string pluginId, string pluginName, XPathNavigator xPathNav )
         {
             bool updateServerUrlSet = false;
 
-            string xPathExp = "//p[@guid='" + pluginId + "']";
+            string xPathExp = "//p[@guid='" + pluginId.ToUpper() + "']";
             XPathNodeIterator iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
             if( iterator.Count == 1 )
             {
+                updateServerUrlSet = DoUpdateEntryToSystemConf( key, value, updateServerUrlSet, iterator );
+            }//At the end of this if statement, we are either on the right data element, or a the end of the pluginsdata
+            else
+            {
+                xPathExp = "//p[@guid='" + pluginId.ToLower() + "']";
+                iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
+                if( iterator.Count == 1 )
+                {
+                    updateServerUrlSet = DoUpdateEntryToSystemConf( key, value, updateServerUrlSet, iterator );
+                }
+                else //if the updater entry does not exist, create it
+                {
+                    CreateEntryToSystemConf( key, value, pluginId, pluginName, xPathNav, ref xPathExp, ref iterator );
+                }
+            }
+        }
+
+        private static void CreateEntryToSystemConf( string key, string value, string pluginId, string pluginName, XPathNavigator xPathNav, ref string xPathExp, ref XPathNodeIterator iterator )
+        {
+            xPathExp = "//System/Plugins";
+            iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
+
+            if( iterator.Count == 0 ) //if there is no pluginsData child
+            {
+                xPathExp = "//System";
+                iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
                 iterator.MoveNext();
 
-                if( !iterator.Current.MoveToFirstChild() )
-                {
-                    InsertUpdateElementAfter( iterator, value, key );
-                }
-                else
-                {
-                    do
-                    {
-                        if( iterator.Current.GetAttribute( "key", String.Empty ) == key )
-                        {
-                            iterator.Current.SetValue( value );
-                            updateServerUrlSet = true;
-                            break;
-                        }
-                    } while( iterator.Current.MoveToNext() );
+                iterator.Current.AppendChildElement( null, "Plugins", null, null );
+                iterator.Current.MoveToFirstChild();
 
-                    if( !updateServerUrlSet )
-                    {
-                        InsertUpdateElementAfter( iterator, value, key );
-                    }
-                }
-            }//At the end of this if statement, we are either on the right data element, or a the end of the pluginsdata
-            else //if the updater entry does not exist, create it
+                while( iterator.Current.Name != "Plugins" ) iterator.Current.MoveToNext();
+            }
+            else
             {
-                xPathExp = "//System/Plugins";
-                iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
+                iterator.MoveNext();
+            }
 
-                if( iterator.Count == 0 ) //if there is no pluginsData child
+            bool pFound = false;
+            //Adding the <p>
+            if( iterator.Current.MoveToFirstChild() )
+            {
+                //at least one "<p>" exists
+                do
                 {
-                    xPathExp = "//System";
-                    iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
-                    iterator.MoveNext();
-
-                    iterator.Current.AppendChildElement( null, "Plugins", null, null );
-                    iterator.Current.MoveToFirstChild();
-
-                    while( iterator.Current.Name != "Plugins" ) iterator.Current.MoveToNext();
-                }
-                else
-                {
-                    iterator.MoveNext();
-                }
-
-                bool pFound = false;
-                //Adding the <p>
-                if( iterator.Current.MoveToFirstChild() )
-                {
-                    //at least one "<p>" exists
-                    do
+                    if( iterator.Current.GetAttribute( "guid", String.Empty ) == pluginId )
                     {
-                        if( iterator.Current.GetAttribute( "guid", String.Empty ) == pluginId )
-                        {
-                            //if the <p> corresponds to the updater data
-                            pFound = true;
-                            break;
-                            //We are on the right <p>
-                        }
-                    } while( iterator.Current.MoveToNext() );
-
-                    if( !pFound )
-                    {
-                        iterator.Current.InsertElementAfter( null, "p", null, null );
-                        iterator.Current.MoveToNext();
-                        iterator.Current.CreateAttribute( null, "guid", null, pluginId );
-                        iterator.Current.CreateAttribute( null, "version", null, "1.0.0" );
-                        iterator.Current.CreateAttribute( null, "name", null, pluginName );
+                        //if the <p> corresponds to the updater data
+                        pFound = true;
+                        break;
+                        //We are on the right <p>
                     }
-                }
-                else
-                {
-                    //There is nothing in PluginsData, we add the updater's <p>
+                } while( iterator.Current.MoveToNext() );
 
-                    iterator.Current.AppendChildElement( null, "p", null, null );
-                    iterator.Current.MoveToFirstChild();
+                if( !pFound )
+                {
+                    iterator.Current.InsertElementAfter( null, "p", null, null );
+                    iterator.Current.MoveToNext();
                     iterator.Current.CreateAttribute( null, "guid", null, pluginId );
                     iterator.Current.CreateAttribute( null, "version", null, "1.0.0" );
                     iterator.Current.CreateAttribute( null, "name", null, pluginName );
-                    //We are on the right <p>
                 }
+            }
+            else
+            {
+                //There is nothing in PluginsData, we add the updater's <p>
 
-                //Last step : adding the <data>
-                if( iterator.Current.MoveToFirstChild() )
+                iterator.Current.AppendChildElement( null, "p", null, null );
+                iterator.Current.MoveToFirstChild();
+                iterator.Current.CreateAttribute( null, "guid", null, pluginId );
+                iterator.Current.CreateAttribute( null, "version", null, "1.0.0" );
+                iterator.Current.CreateAttribute( null, "name", null, pluginName );
+                //We are on the right <p>
+            }
+
+            //Last step : adding the <data>
+            if( iterator.Current.MoveToFirstChild() )
+            {
+                InsertUpdateElementAfter( iterator, value, key );
+            }
+            else
+            {
+                //There are no children yet
+                AppendChildUpdateElement( iterator, value, key );
+            }
+        }
+
+        private static bool DoUpdateEntryToSystemConf( string key, string value, bool updateServerUrlSet, XPathNodeIterator iterator )
+        {
+            iterator.MoveNext();
+
+            if( !iterator.Current.MoveToFirstChild() )
+            {
+                InsertUpdateElementAfter( iterator, value, key );
+            }
+            else
+            {
+                do
+                {
+                    if( iterator.Current.GetAttribute( "key", String.Empty ) == key )
+                    {
+                        iterator.Current.SetValue( value );
+                        updateServerUrlSet = true;
+                        break;
+                    }
+                } while( iterator.Current.MoveToNext() );
+
+                if( !updateServerUrlSet )
                 {
                     InsertUpdateElementAfter( iterator, value, key );
                 }
-                else
-                {
-                    //There are no children yet
-                    AppendChildUpdateElement( iterator, value, key );
-                }
             }
+            return updateServerUrlSet;
         }
 
         static void InsertUpdateElementAfter( XPathNodeIterator iterator, string value, string key )

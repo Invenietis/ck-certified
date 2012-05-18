@@ -4,6 +4,158 @@
         <name>CK.Reflection</name>
     </assembly>
     <members>
+        <member name="T:CK.Reflection.ObjectAndTypeExtension">
+            <summary>
+            Utility methods for common reflection tasks.
+            Adapted from http://kennethxublogsource.googlecode.com/svn/trunk/CommonReflection/src/Common.Reflection/Reflections.cs
+            by Kenneth Xu.
+            </summary>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetStaticInvoker``1(System.Type,System.String)">
+            <summary>
+            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
+            static method with given method <paramref name="name"/> from given <paramref name="type"/>. The method signature must be compatible
+            with the parameter and return type of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="type">The type to locate the compatible method.</param>
+            <param name="name">The name of the method.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetStaticInvoker``1(System.Type,System.String,System.Boolean)">
+            <summary>
+            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
+            static method with given method <paramref name="name"/> from given <paramref name="type"/>. The method signature must be compatible  
+            with the parameter and return type of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="type">The type to locate the compatible method.</param>
+            <param name="name">The name of the method.</param>
+            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null if the method has not been found and <paramref name="throwOnError"/> is false.</returns>
+            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Type,System.String)">
+            <summary>
+            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
+            instance method with given method <paramref name="name"/> from given <paramref name="type"/>. The first parameter type of <c>TDelegate</c> 
+            must be assignable to the given <paramref name="type"/>. The rest parameters and return type of <c>TDelegate</c> must be compatible with 
+            the signature of the method.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="type">The type to locate the compatible method.</param>
+            <param name="name">The name of the method.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Type,System.String,System.Boolean)">
+            <summary>
+            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
+            instance method with given method <paramref name="name"/> from given <paramref name="type"/>. The first parameter type of <c>TDelegate</c> 
+            must be assignable to the given <paramref name="type"/>. The rest parameters and return type of <c>TDelegate</c> must be compatible with 
+            the signature of the method.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="type">The type to locate the compatible method.</param>
+            <param name="name">The name of the method.</param>
+            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
+            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Object,System.String)">
+            <summary>
+            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
+            instance method with given method <paramref name="name"/> on specific <paramref name="obj">object</paramref>. 
+            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="obj">The object instance to find the method.</param>
+            <param name="name">The name of the method.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Object,System.String,System.Boolean)">
+            <summary>
+            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
+            instance method with given method <paramref name="name"/> on specific <paramref name="obj">object</paramref>. 
+            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="obj">The object instance to find the method.</param>
+            <param name="name">The name of the method.</param>
+            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
+            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Type,System.String)">
+            <summary>
+            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
+            call to instance method with given method <paramref name="name"/> on given <paramref name="type"/>.
+            The first parameter type of <c>TDelegate</c> must be assignable to the given <paramref name="type"/>.
+            Remaining parameters and return type of <c>TDelegate</c> must be compatible with the signature of the method.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="type">The type to locate the compatible method.</param>
+            <param name="name">The name of the method.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Type,System.String,System.Boolean)">
+            <summary>
+            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
+            call to instance method with given method <paramref name="name"/> on given <paramref name="type"/>.
+            The first parameter type of <c>TDelegate</c> must be assignable to the given <paramref name="type"/>.
+            Remaining parameters and return type of <c>TDelegate</c> must be compatible with the signature of the method.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="type">The type to locate the compatible method.</param>
+            <param name="name">The name of the method.</param>
+            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
+            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Object,System.Type,System.String)">
+            <summary>
+            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
+            call on the specific <paramref name="obj">object</paramref> to the instance method of given <paramref name="name"/> defined in the 
+            given <paramref name="type"/> or its ancestor.
+            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="obj">The object instance to invoke the method.</param>
+            <param name="type">The type to find the method.</param>
+            <param name="name">The name of the method.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Object,System.Type,System.String,System.Boolean)">
+            <summary>
+            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
+            call on the specific <paramref name="obj">object</paramref> to the instance method of given <paramref name="name"/> defined in the 
+            given <paramref name="type"/> or its ancestor.
+            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="obj">The object instance to invoke the method.</param>
+            <param name="type">The type to find the method.</param>
+            <param name="name">The name of the method.</param>
+            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
+            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
+        </member>
+        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInvoker``1(System.Object,System.Type,System.String,System.Reflection.BindingFlags,System.Predicate{System.Reflection.MethodInfo},System.String,System.Boolean)">
+            <summary>
+            This is a more general purpose method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can 
+            be used to call on the specific <paramref name="obj">object</paramref> to the method of given <paramref name="name"/> defined in the given 
+            <paramref name="type"/> or its ancestor. The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
+            </summary>
+            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
+            <param name="obj">The object instance to invoke the method or null for static methods and open instance methods.</param>
+            <param name="type">The type to find the method.</param>
+            <param name="name">The name of the method.</param>
+            <param name="bindingAttr">A bitmask comprised of one or more <see cref="T:System.Reflection.BindingFlags"/> that specify how the search is conducted. -or- Zero, to return null.</param>
+            <param name="filter">The additional filter to include/exclude methods.</param>
+            <param name="filterMessage">The description of the additional filter criteria that will be included in the exception message when no matching method found.</param>
+            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
+            <returns>A delegate of type <typeparamref name="TDelegate"/>.</returns>
+            <exception name="MissingMethodException">When there is no matching method found.</exception>
+        </member>
         <member name="T:CK.Reflection.R">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -179,158 +331,6 @@
             <summary>
             Returns a void action (an action that does nothing).
             </summary>
-        </member>
-        <member name="T:CK.Reflection.ObjectAndTypeExtension">
-            <summary>
-            Utility methods for common reflection tasks.
-            Adapted from http://kennethxublogsource.googlecode.com/svn/trunk/CommonReflection/src/Common.Reflection/Reflections.cs
-            by Kenneth Xu.
-            </summary>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetStaticInvoker``1(System.Type,System.String)">
-            <summary>
-            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
-            static method with given method <paramref name="name"/> from given <paramref name="type"/>. The method signature must be compatible
-            with the parameter and return type of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="type">The type to locate the compatible method.</param>
-            <param name="name">The name of the method.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetStaticInvoker``1(System.Type,System.String,System.Boolean)">
-            <summary>
-            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
-            static method with given method <paramref name="name"/> from given <paramref name="type"/>. The method signature must be compatible  
-            with the parameter and return type of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="type">The type to locate the compatible method.</param>
-            <param name="name">The name of the method.</param>
-            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null if the method has not been found and <paramref name="throwOnError"/> is false.</returns>
-            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Type,System.String)">
-            <summary>
-            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
-            instance method with given method <paramref name="name"/> from given <paramref name="type"/>. The first parameter type of <c>TDelegate</c> 
-            must be assignable to the given <paramref name="type"/>. The rest parameters and return type of <c>TDelegate</c> must be compatible with 
-            the signature of the method.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="type">The type to locate the compatible method.</param>
-            <param name="name">The name of the method.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Type,System.String,System.Boolean)">
-            <summary>
-            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
-            instance method with given method <paramref name="name"/> from given <paramref name="type"/>. The first parameter type of <c>TDelegate</c> 
-            must be assignable to the given <paramref name="type"/>. The rest parameters and return type of <c>TDelegate</c> must be compatible with 
-            the signature of the method.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="type">The type to locate the compatible method.</param>
-            <param name="name">The name of the method.</param>
-            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
-            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Object,System.String)">
-            <summary>
-            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
-            instance method with given method <paramref name="name"/> on specific <paramref name="obj">object</paramref>. 
-            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="obj">The object instance to find the method.</param>
-            <param name="name">The name of the method.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInstanceInvoker``1(System.Object,System.String,System.Boolean)">
-            <summary>
-            Extension method to obtain a delegate of type <typeparamref name="TDelegate"/> that can be used to call the 
-            instance method with given method <paramref name="name"/> on specific <paramref name="obj">object</paramref>. 
-            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="obj">The object instance to find the method.</param>
-            <param name="name">The name of the method.</param>
-            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
-            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Type,System.String)">
-            <summary>
-            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
-            call to instance method with given method <paramref name="name"/> on given <paramref name="type"/>.
-            The first parameter type of <c>TDelegate</c> must be assignable to the given <paramref name="type"/>.
-            Remaining parameters and return type of <c>TDelegate</c> must be compatible with the signature of the method.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="type">The type to locate the compatible method.</param>
-            <param name="name">The name of the method.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Type,System.String,System.Boolean)">
-            <summary>
-            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
-            call to instance method with given method <paramref name="name"/> on given <paramref name="type"/>.
-            The first parameter type of <c>TDelegate</c> must be assignable to the given <paramref name="type"/>.
-            Remaining parameters and return type of <c>TDelegate</c> must be compatible with the signature of the method.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="type">The type to locate the compatible method.</param>
-            <param name="name">The name of the method.</param>
-            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
-            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Object,System.Type,System.String)">
-            <summary>
-            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
-            call on the specific <paramref name="obj">object</paramref> to the instance method of given <paramref name="name"/> defined in the 
-            given <paramref name="type"/> or its ancestor.
-            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="obj">The object instance to invoke the method.</param>
-            <param name="type">The type to find the method.</param>
-            <param name="name">The name of the method.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found.</returns>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetNonVirtualInvoker``1(System.Object,System.Type,System.String,System.Boolean)">
-            <summary>
-            Extension method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can be used to make non virtual
-            call on the specific <paramref name="obj">object</paramref> to the instance method of given <paramref name="name"/> defined in the 
-            given <paramref name="type"/> or its ancestor.
-            The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="obj">The object instance to invoke the method.</param>
-            <param name="type">The type to find the method.</param>
-            <param name="name">The name of the method.</param>
-            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/> or null when no matching method if found and <paramref name="throwOnError"/> is false.</returns>
-            <exception name="MissingMethodException">When there is no matching method found and <paramref name="throwOnError"/> is true.</exception>
-        </member>
-        <member name="M:CK.Reflection.ObjectAndTypeExtension.GetInvoker``1(System.Object,System.Type,System.String,System.Reflection.BindingFlags,System.Predicate{System.Reflection.MethodInfo},System.String,System.Boolean)">
-            <summary>
-            This is a more general purpose method to obtain a delegate of type specified by parameter <typeparamref name="TDelegate"/> that can 
-            be used to call on the specific <paramref name="obj">object</paramref> to the method of given <paramref name="name"/> defined in the given 
-            <paramref name="type"/> or its ancestor. The method signature must be compatible with the signature of <typeparamref name="TDelegate"/>.
-            </summary>
-            <typeparam name="TDelegate">Type of a .Net delegate.</typeparam>
-            <param name="obj">The object instance to invoke the method or null for static methods and open instance methods.</param>
-            <param name="type">The type to find the method.</param>
-            <param name="name">The name of the method.</param>
-            <param name="bindingAttr">A bitmask comprised of one or more <see cref="T:System.Reflection.BindingFlags"/> that specify how the search is conducted. -or- Zero, to return null.</param>
-            <param name="filter">The additional filter to include/exclude methods.</param>
-            <param name="filterMessage">The description of the additional filter criteria that will be included in the exception message when no matching method found.</param>
-            <param name="throwOnError">True to raise a <see cref="T:System.MissingMethodException"/> when not found.</param>
-            <returns>A delegate of type <typeparamref name="TDelegate"/>.</returns>
-            <exception name="MissingMethodException">When there is no matching method found.</exception>
         </member>
         <member name="T:CK.Reflection.ILGeneratorExtension">
             <summary>

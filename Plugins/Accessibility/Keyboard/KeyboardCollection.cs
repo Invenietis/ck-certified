@@ -141,6 +141,7 @@ namespace CK.Keyboard
         }
 
         public event EventHandler<CurrentKeyboardChangedEventArgs> CurrentChanged;
+        public event EventHandler<CurrentKeyboardChangingEventArgs> CurrentChanging;
 
         public event EventHandler<KeyboardEventArgs>  KeyboardCreated;
 
@@ -183,6 +184,11 @@ namespace CK.Keyboard
             {
                 if( value != _current )
                 {
+                    if( CurrentChanging != null )
+                    {
+                        CurrentChanging( this, new CurrentKeyboardChangingEventArgs( _context, _current, value ) );
+                    }
+
                     Keyboard previous = _current;
                     if( value != null && value.Context != _context ) throw new ApplicationException( R.KeyboardErrorUnknown );
 

@@ -73,6 +73,12 @@ namespace CK.Keyboard
             remove { _keyboards.CurrentChanged -= value; }
         }
 
+        public event EventHandler<CurrentKeyboardChangingEventArgs> CurrentKeyboardChanging
+        {
+            add { _keyboards.CurrentChanging += value; }
+            remove { _keyboards.CurrentChanging -= value; }
+        }
+
         public bool IsDirty
         {
             get { return _isKeyboardContextDirty; }

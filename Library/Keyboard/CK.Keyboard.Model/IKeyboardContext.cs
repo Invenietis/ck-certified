@@ -48,6 +48,12 @@ namespace CK.Keyboard.Model
         IKeyboard CurrentKeyboard { get; set; }
 
         /// <summary>
+        /// Fires whenever the <see cref="CurrentKeyboard"/> is about to change.
+        /// Not cancellable
+        /// </summary>
+        event EventHandler<CurrentKeyboardChangingEventArgs> CurrentKeyboardChanging;
+
+        /// <summary>
         /// Fires whenever the <see cref="CurrentKeyboard"/> has changed.
         /// </summary>
         event EventHandler<CurrentKeyboardChangedEventArgs> CurrentKeyboardChanged;

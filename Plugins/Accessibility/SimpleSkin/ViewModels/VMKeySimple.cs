@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.WPF.ViewModel;
-using SimpleSkin.Helper;
 using CK.Keyboard.Model;
 using System.Windows.Controls;
 using System.Windows;

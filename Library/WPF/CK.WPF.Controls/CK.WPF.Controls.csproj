@@ -15,7 +15,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <UICulture>en-US</UICulture>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -68,6 +68,7 @@
     <Compile Include="ColorCanvas\Implementation\ColorSpectrumSlider.cs" />
     <Compile Include="ColorPicker\Implementation\ColorItem.cs" />
     <Compile Include="ColorPicker\Implementation\ColorPicker.cs" />
+    <Compile Include="Converters\BooleanToIsMinimizedConverter.cs" />
     <Compile Include="Converters\NotNullConverter.cs" />
     <Compile Include="Core\Converters\CalculatorMemoryToVisibilityConverter.cs" />
     <Compile Include="Core\Converters\ColorToSolidColorBrushConverter.cs" />

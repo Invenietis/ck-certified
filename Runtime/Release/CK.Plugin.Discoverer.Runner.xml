@@ -9,6 +9,16 @@
             Contains a parameter's basic info
             </summary>
         </member>
+        <member name="T:CK.Plugin.Discoverer.Runner.SimplePropertyInfo">
+            <summary>
+             Contains property's basic info.
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Discoverer.Runner.SimpleMethodInfo">
+            <summary>
+             Contains a method's basic info
+            </summary>
+        </member>
         <member name="T:CK.Plugin.Discoverer.Runner.DiscoveredInfo">
             <summary>
             Base class for all discovered object.
@@ -24,59 +34,12 @@
             Gets the error message related to the discovering of the object.
             </summary>
         </member>
-        <member name="T:CK.Plugin.Discoverer.Runner.SimplePropertyInfo">
-            <summary>
-             Contains property's basic info.
-            </summary>
-        </member>
         <member name="M:CK.Plugin.Discoverer.Runner.PluginAssemblyInfo.ReadAllTypes(System.Func{CK.Plugin.Discoverer.Runner.PluginAssemblyInfo,System.Type,CK.Plugin.Discoverer.Runner.ServiceInfo},System.Func{System.Type,System.Boolean,CK.Plugin.Discoverer.Runner.ServiceRefInfo})">
             <summary>
             Read all Type in the assembly.
             </summary>
             <param name="RegisterServiceInfo">Will be called for each discovered service interface.</param>
             <param name="RegisterUseServiceInfo">Will be called for each discovered service reference.</param>
-        </member>
-        <member name="M:CK.Plugin.Discoverer.Runner.PluginDiscoverer.Discover(System.Collections.Generic.IEnumerable{System.IO.FileInfo})">
-            <summary>
-            For each FileInfo in _currentFiles, Process will try to create a new PluginAssemblyInfo
-            based on the FileInfo (that is currently processed).
-            After that, this method fill properties collections with IPluginInfo or IServiceInfo.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Discoverer.Runner.PluginDiscoverer.RegisterUseServiceInfo(System.Type,System.Boolean)">
-            <summary>
-            Called when a reference to a service is found (ex: CommonTimerWindow needs ICommonTimer service).
-            The resulting <see cref="F:CK.Plugin.Discoverer.Runner.ServiceRefInfo.Reference"/> is null 
-            (if the type is a generic interface other than IService&lt;&gt;)
-            OR
-            (the type is not a IDynamicService and registerOnlyIDynamicService is true)
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Discoverer.Runner.PluginDiscoverer.IsIDynamicService(System.Type)">
-            <summary>
-            The Type.IsAssignableFrom method can not work between types loaded in ReflectionOnly and types loaded normally.
-            Since we are referencing CK.Plugin.Model assembly, its types are not loaded in the ReflectionOnly space.
-            This methods returns false if the type is the IDynamicService itself.
-            </summary>
-            <param name="t"></param>
-            <returns></returns>
-        </member>
-        <member name="T:CK.Plugin.Discoverer.Runner.SimpleEventInfo">
-            <summary>
-            Contains an event's basic info
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Discoverer.Runner.SimpleEventInfo.CompareTo(CK.Plugin.Discoverer.Runner.SimpleEventInfo)">
-            <summary>
-            Compares the names of the events
-            </summary>
-            <param name="other"></param>
-            <returns>1 if other is "less" than the current object, 0 if the two have the same name, -1 otherwise</returns>
-        </member>
-        <member name="T:CK.Plugin.Discoverer.Runner.SimpleMethodInfo">
-            <summary>
-             Contains a method's basic info
-            </summary>
         </member>
         <member name="T:CK.Plugin.Discoverer.Runner.R">
             <summary>
@@ -148,6 +111,43 @@
             <summary>
             Initializes a new PluginInfo based on the <see cref="T:CK.Plugin.PluginAttribute"/> configuration.
             </summary>
+        </member>
+        <member name="T:CK.Plugin.Discoverer.Runner.SimpleEventInfo">
+            <summary>
+            Contains an event's basic info
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Discoverer.Runner.SimpleEventInfo.CompareTo(CK.Plugin.Discoverer.Runner.SimpleEventInfo)">
+            <summary>
+            Compares the names of the events
+            </summary>
+            <param name="other"></param>
+            <returns>1 if other is "less" than the current object, 0 if the two have the same name, -1 otherwise</returns>
+        </member>
+        <member name="M:CK.Plugin.Discoverer.Runner.PluginDiscoverer.Discover(System.Collections.Generic.IEnumerable{System.IO.FileInfo})">
+            <summary>
+            For each FileInfo in _currentFiles, Process will try to create a new PluginAssemblyInfo
+            based on the FileInfo (that is currently processed).
+            After that, this method fill properties collections with IPluginInfo or IServiceInfo.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Discoverer.Runner.PluginDiscoverer.RegisterUseServiceInfo(System.Type,System.Boolean)">
+            <summary>
+            Called when a reference to a service is found (ex: CommonTimerWindow needs ICommonTimer service).
+            The resulting <see cref="F:CK.Plugin.Discoverer.Runner.ServiceRefInfo.Reference"/> is null 
+            (if the type is a generic interface other than IService&lt;&gt;)
+            OR
+            (the type is not a IDynamicService and registerOnlyIDynamicService is true)
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Discoverer.Runner.PluginDiscoverer.IsIDynamicService(System.Type)">
+            <summary>
+            The Type.IsAssignableFrom method can not work between types loaded in ReflectionOnly and types loaded normally.
+            Since we are referencing CK.Plugin.Model assembly, its types are not loaded in the ReflectionOnly space.
+            This methods returns false if the type is the IDynamicService itself.
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

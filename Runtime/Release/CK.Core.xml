@@ -1848,26 +1848,18 @@
             Types mapping is an option that should be used with care.    
             </remarks>
         </member>
-        <member name="M:CK.Core.ISimpleTypeFinder.MapType(System.String)">
-            <summary>
-            Gets an (optionnal) mapping from any name of a type to the actual
-            assembly qualified name that must be used for it.
-            This function MUST be idempotent (ie. MapType( MapType(x) ) == MapType(x) whatever x is).
-            You should use the <see cref="F:CK.Core.SimpleTypeFinder.Default"/> or <see cref="F:CK.Core.SimpleTypeFinder.WeakDefault"/> standard
-            implementations.
-            </summary>
-            <param name="externalName">The assembly qualified name of a type.</param>
-            <returns>The assembly qualified name (that <see cref="M:CK.Core.ISimpleTypeFinder.ResolveType(System.String,System.Boolean)"/> can use) of the type to use.</returns>
-        </member>
         <member name="M:CK.Core.ISimpleTypeFinder.ResolveType(System.String,System.Boolean)">
             <summary>
-            First calls <see cref="M:CK.Core.ISimpleTypeFinder.MapType(System.String)"/> and then resolves the <see cref="T:System.Type"/> from the mapped string.
+            Maps and resolves the <see cref="T:System.Type"/> from the assembly qualified name set as parameter.
+            You should use the <see cref="F:CK.Core.SimpleTypeFinder.Default"/> or <see cref="F:CK.Core.SimpleTypeFinder.WeakDefault"/> standard
+            implementations.
             If <paramref name="throwOnError"/> is true, a <see cref="T:System.TypeLoadException"/> will be fired if the resolution fails.
             </summary>
             <param name="externalName">Assembly qualified name of the type</param>
             <param name="throwOnError">
-            True to ALWAYS throw a <see cref="T:System.TypeLoadException"/> if the type is not found.
-            False prevents any exception to be thrown and simply returns null.
+            True to ALWAYS throw a <see cref="T:System.TypeLoadException"/> if the type is not found. 
+            It may also throw <see cref="T:System.ArgumentNullException"/> and <see cref="T:System.ArgumentException"/> when the assembly qualified name is not valid
+            False prevents any exception from being thrown and simply returns null.
             </param>
             <returns>The type or null if not found and <paramref name="throwOnError"/> is false.</returns>
             <exception cref="T:System.TypeLoadException">
@@ -4440,23 +4432,15 @@
             The type name used is in the following format: "TypeNamespace.TypeName, AssemblyName".
             </remarks>
         </member>
-        <member name="M:CK.Core.SimpleTypeFinder.MapType(System.String)">
-            <summary>
-            Default implementation returns exactly its <paramref name="assemblyQualifiedName"/> parameter.
-            Throws an <see cref="T:System.ArgumentNullException"/> if <paramref name="assemblyQualifiedName"/> is null.
-            Throws an <see cref="T:System.ArgumentException"/> if <paramref name="assemblyQualifiedName"/> is empty or has no commas (an AQN should aways have at least one).
-            </summary>
-            <param name="assemblyQualifiedName">The assembly qualified name of a type.</param>
-            <returns>The assembly qualified name to use.</returns>
-        </member>
         <member name="M:CK.Core.SimpleTypeFinder.ResolveType(System.String,System.Boolean)">
             <summary>
-            Simple implementation that calls <see cref="M:CK.Core.SimpleTypeFinder.MapType(System.String)"/> and then <see cref="M:System.Type.GetType(System.String,System.Boolean)"/>.
+            Simple implementation that checks that the assembly qualified name set as parameter is valid, then calls <see cref="M:System.Type.GetType(System.String,System.Boolean)"/>.
             </summary>
             <param name="assemblyQualifiedName">The assembly qualified name of a type.</param>
             <param name="throwOnError">
             True to ALWAYS throw a <see cref="T:System.TypeLoadException"/> if the type is not found.
-            False prevents any exception to be thrown and simply returns null.
+            It may also throw <see cref="T:System.ArgumentNullException"/> and <see cref="T:System.ArgumentException"/> when the assembly qualified name is not valid
+            False prevents any exception from being thrown and simply returns null.
             </param>
             <returns>The type or null if not found and <paramref name="throwOnError"/> is false.</returns>
             <exception cref="T:System.TypeLoadException">

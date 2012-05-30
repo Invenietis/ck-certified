@@ -75,7 +75,7 @@ namespace CK.StandardPlugins.CommandManager
             bool isRunning = _runningCommands.Count > 0;
 
             foreach( string cmd in commands )
-                _runningCommands.Enqueue( new DictionaryEntry( sender, cmd.Trim() ) );
+                _runningCommands.Enqueue( new DictionaryEntry( sender, cmd ) );
 
             if( !isRunning )
             {

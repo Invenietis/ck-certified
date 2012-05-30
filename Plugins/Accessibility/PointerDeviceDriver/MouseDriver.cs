@@ -46,27 +46,54 @@ namespace PointerDeviceDriver
         readonly SynchronizationContext _syncCtx;
         PointStruct _lastPointerPosition;
         WindowsHook _windowsHook;
+        bool _pointerPositionViaTimer;
 
         public event PointerDeviceEventHandler InternalPointerMove;
         public event PointerDeviceEventHandler PointerButtonDown;
         public event PointerDeviceEventHandler PointerButtonUp;
         public event PointerDeviceEventHandler PointerMove
         {
-            add 
-            { 
-                InternalPointerMove += value; 
-                if(_pointerPosGetter != null) _pointerPosGetter.StartMonitoring(); 
+            add
+            {
+                InternalPointerMove += value;
+                if( _pointerPosGetter != null ) _pointerPosGetter.StartMonitoring();
             }
-            remove 
-            { 
-                InternalPointerMove -= value; 
-                if( _pointerPosGetter != null ) _pointerPosGetter.StopMonitoring(); 
+            remove
+            {
+                InternalPointerMove -= value;
+                if( _pointerPosGetter != null ) _pointerPosGetter.StopMonitoring();
             }
         }
 
-        public int CurrentPointerXLocation { get { return _lastPointerPosition.X; } }
+        public int CurrentPointerXLocation
+        {
+            get
+            {
+                EnsurePositionRetrieval();
+                return _lastPointerPosition.X;
+            }
+        }
 
-        public int CurrentPointerYLocation { get { return _lastPointerPosition.Y; } }
+        private void EnsurePositionRetrieval()
+        {
+            if( _pointerPositionViaTimer && _pointerPosGetter != null && !_pointerPosGetter.IsRunning )
+            {
+                PointStruct p;
+                if( Win32Wrapper.GetCursorPos( out p ) )
+                {
+                    _lastPointerPosition = p;
+                }
+            }
+        }
+
+        public int CurrentPointerYLocation 
+        { 
+            get 
+            {
+                EnsurePositionRetrieval();
+                return _lastPointerPosition.Y; 
+            } 
+        }
 
         // Definition of the ExtraInfo used by this implementation
         public class ButtonExtraInfo
@@ -99,8 +126,8 @@ namespace PointerDeviceDriver
             //We still use the mousehook to process the mouse clicks, which are less heavy to process
             if( CK.Core.OSVersionInfo.IsWindowsVistaOrGreater )
             {
+                _pointerPositionViaTimer = true;
                 _pointerPosGetter = new SimpleDispatchTimerWrapper( new TimeSpan( 150000 ), GetCurrentPointerPos );
-                if( _pointerPosGetter == null ) return false;
             }
 
             // We look if we can set the Low Level Mouse Hook 

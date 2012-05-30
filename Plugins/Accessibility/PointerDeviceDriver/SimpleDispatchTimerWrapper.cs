@@ -21,16 +21,23 @@ namespace PointerDeviceDriver
             _timer = new DispatcherTimer();
             _timer.Interval = timeCounter;
             _timer.Tick += _onTimerTick;
+
+            _isRunning = false;
         }
+
+        bool _isRunning;
+        public bool IsRunning { get { return _isRunning; } }
 
         public void StopMonitoring()
         {
             _timer.Stop();
+            _isRunning = false;
         }
 
         public void StartMonitoring()
         {
             _timer.Start();
+            _isRunning = true;
         }
 
         public void Dispose()

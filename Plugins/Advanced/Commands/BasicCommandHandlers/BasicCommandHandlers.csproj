@@ -102,6 +102,7 @@
     <ProjectReference Include="..\..\..\..\Host.Services\Host.Services.csproj">
       <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
       <Name>Host.Services</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>

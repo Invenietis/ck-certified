@@ -77,10 +77,12 @@
     <ProjectReference Include="..\..\..\Host.Services\Host.Services.csproj">
       <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
       <Name>Host.Services</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>
       <Name>CommonServices</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

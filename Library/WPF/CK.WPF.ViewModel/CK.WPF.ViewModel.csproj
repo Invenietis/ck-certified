@@ -49,10 +49,12 @@
     <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Runtime\Current\CK.Plugin.Config.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

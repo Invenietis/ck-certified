@@ -4,6 +4,31 @@
         <name>CK.Plugin.Discoverer</name>
     </assembly>
     <members>
+        <member name="T:CK.Plugin.SimpleParameterInfo">
+            <summary>
+            Contains a parameter's basic info
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Discoverer.PluginDiscoverer.Merger.GenericMergeLists``2(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``1},System.Func{``1,``0},System.Action{``0},System.Collections.Generic.IList{``0})">
+            <summary>
+            This method takes two collections as parameter, the objects in these collections have to be comparable. This method will have all the objects in the right collection replace the objects in the left one.
+            but will not recreate object that already are in the left collection.
+            Will return a bool to know it there were any changes.
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <param name="left"></param>
+            <param name="right"></param>
+            <param name="findOrCreate"></param>
+            <param name="onDelete"></param>
+            <param name="deletedElements"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CK.Plugin.SimplePropertyInfo">
+            <summary>
+             Contains a property's basic info
+            </summary>
+        </member>
         <member name="M:CK.Plugin.Discoverer.ServiceInfo.FindOrCreate(CK.Plugin.Discoverer.Runner.SimpleMethodInfo)">
             <summary>
             Called by the GenericMergeList method
@@ -38,31 +63,6 @@
             Gets a collection containing infos about the events exposed by the service
             </summary>
         </member>
-        <member name="T:CK.Plugin.Discoverer.PluginInfo">
-            <summary>
-            Defines the basic information of a plugin.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Discoverer.PluginDiscoverer.Merger.GenericMergeLists``2(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``1},System.Func{``1,``0},System.Action{``0},System.Collections.Generic.IList{``0})">
-            <summary>
-            This method takes two collections as parameter, the objects in these collections have to be comparable. This method will have all the objects in the right collection replace the objects in the left one.
-            but will not recreate object that already are in the left collection.
-            Will return a bool to know it there were any changes.
-            </summary>
-            <typeparam name="T1"></typeparam>
-            <typeparam name="T2"></typeparam>
-            <param name="left"></param>
-            <param name="right"></param>
-            <param name="findOrCreate"></param>
-            <param name="onDelete"></param>
-            <param name="deletedElements"></param>
-            <returns></returns>
-        </member>
-        <member name="T:CK.Plugin.SimplePropertyInfo">
-            <summary>
-             Contains a property's basic info
-            </summary>
-        </member>
         <member name="T:CK.Plugin.SimpleMethodInfo">
             <summary>
              Contains a method's basic info
@@ -73,9 +73,9 @@
             Contains an event's basic info.
             </summary>
         </member>
-        <member name="T:CK.Plugin.SimpleParameterInfo">
+        <member name="T:CK.Plugin.Discoverer.PluginInfo">
             <summary>
-            Contains a parameter's basic info
+            Defines the basic information of a plugin.
             </summary>
         </member>
     </members>

@@ -4,22 +4,6 @@
         <name>CK.Context</name>
     </assembly>
     <members>
-        <member name="T:CK.Context.ContextEventArgs">
-            <summary>
-            Defines a context event: it simply offers an access to the context.
-            </summary>
-        </member>
-        <member name="M:CK.Context.ContextEventArgs.#ctor(CK.Context.IContext)">
-            <summary>
-            Initializes a new <see cref="T:CK.Context.ContextEventArgs"/> boud to a <see cref="P:CK.Context.ContextEventArgs.Context"/>.
-            </summary>
-            <param name="ctx"></param>
-        </member>
-        <member name="P:CK.Context.ContextEventArgs.Context">
-            <summary>
-            Gets the <see cref="T:CK.Context.IContext"/> to which this event is related.
-            </summary>
-        </member>
         <member name="M:CK.Context.IContext.SaveContext(CK.Storage.IStructuredWriter)">
             <summary>
             Writes this <see cref="T:CK.Context.IContext">context</see> as in a stream.
@@ -83,6 +67,73 @@
             <summary>
             Fired by <see cref="M:CK.Context.IContext.RaiseExitApplication(System.Boolean)"/> to signal the very end of the application. 
             Once this event has fired, this <see cref="T:CK.Context.IContext"/> is no more functionnal.
+            </summary>
+        </member>
+        <member name="T:CK.Context.ContextEventArgs">
+            <summary>
+            Defines a context event: it simply offers an access to the context.
+            </summary>
+        </member>
+        <member name="M:CK.Context.ContextEventArgs.#ctor(CK.Context.IContext)">
+            <summary>
+            Initializes a new <see cref="T:CK.Context.ContextEventArgs"/> boud to a <see cref="P:CK.Context.ContextEventArgs.Context"/>.
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="P:CK.Context.ContextEventArgs.Context">
+            <summary>
+            Gets the <see cref="T:CK.Context.IContext"/> to which this event is related.
+            </summary>
+        </member>
+        <member name="T:CK.Context.Res.R">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.ConfigSupportTypeFileOnly">
+            <summary>
+              Looks up a localized string similar to Only File type supported..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.ContextAddressRequired">
+            <summary>
+              Looks up a localized string similar to An address for the context is required..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.HostAlreadyOwnsContext">
+            <summary>
+              Looks up a localized string similar to CreateContext can be called only once per Host..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.LoadContextFail">
+            <summary>
+              Looks up a localized string similar to Unable to load context..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.NewContextDisplayName">
+            <summary>
+              Looks up a localized string similar to Created on {0:D}.
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.UnableToFind">
+            <summary>
+              Looks up a localized string similar to Unable to find &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:CK.Context.Res.R.XmlInvalidFormatVersion">
+            <summary>
+              Looks up a localized string similar to Xml version must exist and be at least 2.5.1..
             </summary>
         </member>
         <member name="T:CK.Context.AbstractContextHost">
@@ -158,6 +209,43 @@
             This is a shortcut to the <see cref="P:CK.Plugin.Config.ISystemConfiguration.HostConfig"/>.
             </remarks>
         </member>
+        <member name="T:CK.Context.ApplicationExitingEventArgs">
+            <summary>
+            The argument of <see cref="E:CK.Context.IContext.ApplicationExiting"/> event.
+            </summary>
+        </member>
+        <member name="T:CK.Context.ApplicationExitedEventArgs">
+            <summary>
+            The argument of <see cref="E:CK.Context.IContext.ApplicationExited"/> event.
+            Whatever the <see cref="P:CK.Context.ApplicationExitedEventArgs.HostShouldExit"/> value is, this event indicates the death of the <see cref="T:CK.Context.IContext"/> that emits it:
+            any reference to the context should be released.
+            </summary>
+        </member>
+        <member name="M:CK.Context.ApplicationExitedEventArgs.#ctor(CK.Context.IContext,System.Boolean)">
+            <summary>
+            Initializes a new instance of <see cref="T:CK.Context.ApplicationExitedEventArgs"/>.
+            </summary>
+            <param name="ctx">The source context.</param>
+            <param name="hostShouldExit">See <see cref="P:CK.Context.ApplicationExitedEventArgs.HostShouldExit"/>.</param>
+        </member>
+        <member name="P:CK.Context.ApplicationExitedEventArgs.HostShouldExit">
+            <summary>
+            This parameter actually concerns the application host: plugins have no real reasons to take it into account.
+            When true, the host should leave: this is typically triggered by an "Exit" button in a plugin.
+            </summary>
+        </member>
+        <member name="M:CK.Context.ApplicationExitingEventArgs.#ctor(CK.Context.IContext,System.Boolean)">
+            <summary>
+            Initializes a new instance of <see cref="T:CK.Context.ApplicationExitedEventArgs"/>.
+            </summary>
+            <param name="ctx">The source context.</param>
+            <param name="hostShouldExit">See <see cref="!:HostShouldExit"/>.</param>
+        </member>
+        <member name="P:CK.Context.ApplicationExitingEventArgs.Cancel">
+            <summary>
+            Gets or sets whether this closing request should be canceled or not.
+            </summary>
+        </member>
         <member name="T:CK.Context.ContextProfileRequiredEventArgs">
             <summary>
             </summary>
@@ -170,6 +258,16 @@
         <member name="P:CK.Context.ContextProfileRequiredEventArgs.Address">
             <summary>
             Gets or sets the <see cref="T:System.Uri"/> of the default context to use.
+            </summary>
+        </member>
+        <member name="M:CK.Context.Context.CreateInstance">
+            <summary>
+            Initializes a new context that is proxified by default.
+            </summary>
+        </member>
+        <member name="M:CK.Context.Context.CreateInstance(System.Boolean)">
+            <summary>
+            Initializes a new context.
             </summary>
         </member>
         <member name="T:CK.Context.IHostInformation">
@@ -218,104 +316,6 @@
             Gets the full path of application-specific data repository for all users if 
             the host handles it. Null otherwise.
             When not null, it ends with <see cref="F:System.IO.Path.DirectorySeparatorChar"/> and the directory exists.
-            </summary>
-        </member>
-        <member name="T:CK.Context.ApplicationExitedEventArgs">
-            <summary>
-            The argument of <see cref="E:CK.Context.IContext.ApplicationExited"/> event.
-            Whatever the <see cref="P:CK.Context.ApplicationExitedEventArgs.HostShouldExit"/> value is, this event indicates the death of the <see cref="T:CK.Context.IContext"/> that emits it:
-            any reference to the context should be released.
-            </summary>
-        </member>
-        <member name="M:CK.Context.ApplicationExitedEventArgs.#ctor(CK.Context.IContext,System.Boolean)">
-            <summary>
-            Initializes a new instance of <see cref="T:CK.Context.ApplicationExitedEventArgs"/>.
-            </summary>
-            <param name="ctx">The source context.</param>
-            <param name="hostShouldExit">See <see cref="P:CK.Context.ApplicationExitedEventArgs.HostShouldExit"/>.</param>
-        </member>
-        <member name="P:CK.Context.ApplicationExitedEventArgs.HostShouldExit">
-            <summary>
-            This parameter actually concerns the application host: plugins have no real reasons to take it into account.
-            When true, the host should leave: this is typically triggered by an "Exit" button in a plugin.
-            </summary>
-        </member>
-        <member name="M:CK.Context.Context.CreateInstance">
-            <summary>
-            Initializes a new context that is proxified by default.
-            </summary>
-        </member>
-        <member name="M:CK.Context.Context.CreateInstance(System.Boolean)">
-            <summary>
-            Initializes a new context.
-            </summary>
-        </member>
-        <member name="T:CK.Context.Res.R">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.ConfigSupportTypeFileOnly">
-            <summary>
-              Looks up a localized string similar to Only File type supported..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.ContextAddressRequired">
-            <summary>
-              Looks up a localized string similar to An address for the context is required..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.HostAlreadyOwnsContext">
-            <summary>
-              Looks up a localized string similar to CreateContext can be called only once per Host..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.LoadContextFail">
-            <summary>
-              Looks up a localized string similar to Unable to load context..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.NewContextDisplayName">
-            <summary>
-              Looks up a localized string similar to Created on {0:D}.
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.UnableToFind">
-            <summary>
-              Looks up a localized string similar to Unable to find &apos;{0}&apos;..
-            </summary>
-        </member>
-        <member name="P:CK.Context.Res.R.XmlInvalidFormatVersion">
-            <summary>
-              Looks up a localized string similar to Xml version must exist and be at least 2.5.1..
-            </summary>
-        </member>
-        <member name="T:CK.Context.ApplicationExitingEventArgs">
-            <summary>
-            The argument of <see cref="E:CK.Context.IContext.ApplicationExiting"/> event.
-            </summary>
-        </member>
-        <member name="M:CK.Context.ApplicationExitingEventArgs.#ctor(CK.Context.IContext,System.Boolean)">
-            <summary>
-            Initializes a new instance of <see cref="T:CK.Context.ApplicationExitedEventArgs"/>.
-            </summary>
-            <param name="ctx">The source context.</param>
-            <param name="hostShouldExit">See <see cref="!:HostShouldExit"/>.</param>
-        </member>
-        <member name="P:CK.Context.ApplicationExitingEventArgs.Cancel">
-            <summary>
-            Gets or sets whether this closing request should be canceled or not.
             </summary>
         </member>
     </members>

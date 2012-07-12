@@ -4,6 +4,148 @@
         <name>CK.SharedDic</name>
     </assembly>
     <members>
+        <member name="M:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginsDataElement(System.String,System.Object)">
+            <summary>
+            Read object data from the reader. 
+            If the current element name does not match the name provided, false is returned.
+            </summary>
+            <param name="elementName">Name of the element.</param>
+            <param name="o">The object for which data must be read.</param>
+            <returns>True if the element has been found and read. Errors (if any) are stored in the <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ErrorCollector"/>.</returns>
+        </member>
+        <member name="M:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginsData(System.Object)">
+            <summary>
+            Reads plugins data for an object: the reader is already positionned on the data. 
+            Errors (if any) are stored in the <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ErrorCollector"/>.
+            Use <see cref="M:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginsDataElement(System.String,System.Object)"/> to read an element.
+            </summary>
+            <param name="o">The object for which data must be read.</param>
+        </member>
+        <member name="M:CK.Plugin.Config.ISharedDictionaryReader.PreProcessReadInfo(System.Object,CK.Core.INamedVersionedUniqueId,CK.SharedDic.ReadElementObjectInfo)">
+            <summary>
+            Hook that enables this <see cref="T:CK.Plugin.Config.ISharedDictionaryReader"/> implementation
+            to filter every read information.
+            </summary>
+            <param name="o">Object for which information has been read.</param>
+            <param name="pluginId">Plugin identifier for which information has been read.</param>
+            <param name="info">The information read from the stream.</param>
+            <returns>
+            Simple implementation should return the <paramref name="info"/> unchanged (this is what does the default implementation).
+            It may also returns null to ignore (skip) this piece of information. 
+            More complex implementation can use this hook to transform the data (by changing the <see cref="!:ReadElementObjectInfo.ReadInfo"/> of the <paramref name="info"/>)
+            or return a brand new <see cref="T:CK.SharedDic.ReadElementObjectInfo"/>.
+            </returns>
+        </member>
+        <member name="E:CK.Plugin.Config.ISharedDictionaryReader.BeforePluginsData">
+            <summary>
+            Fires whenever a plugin/object data is about to be read and the plugin is registered.
+            The <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginInfo"/> property is available and <see cref="T:CK.Plugin.Config.SharedDictionaryReaderEventArgs"/>
+            exposes the <see cref="T:CK.Plugin.Config.IObjectPluginAssociation"/>.
+            </summary>
+        </member>
+        <member name="E:CK.Plugin.Config.ISharedDictionaryReader.AfterPluginsData">
+            <summary>
+            Fires whenever a plugin/object data has been read (the plugin is registered).
+            The <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginInfo"/> property is available and <see cref="T:CK.Plugin.Config.SharedDictionaryReaderEventArgs"/>
+            exposes the <see cref="T:CK.Plugin.Config.IObjectPluginAssociation"/>.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginInfo">
+            <summary>
+            Gets the currently read plugin <see cref="T:CK.Core.INamedVersionedUniqueId"/>: the version
+            exposed here is the one of the data, it may differ from the actual plugin's version.
+            Null when the reader is not reading any plugin data.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:CK.Plugin.Config.ISharedDictionaryReader.MergeMode" -->
+        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.StructuredReader">
+            <summary>
+            Gets the <see cref="T:CK.Storage.IStructuredReader"/> from which this reader reads data.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.SharedDictionary">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.Config.ISharedDictionary"/> to which this reader is associated.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.ErrorCollector">
+            <summary>
+            Gets a writeable collection of <see cref="T:CK.SharedDic.ReadElementObjectInfo"/> that must contains
+            only read errors.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.ISharedDictionaryWriter.WritePluginsDataElement(System.String,System.Object,System.Boolean)">
+            <summary>
+            Writes plugins data for an object in a named element. 
+            Element is written only if required: if there is no data to write, nothing is written.
+            </summary>
+            <param name="elementName">Name of the element that will contain the configuration.</param>
+            <param name="o">Object for which configuration must be written.</param>
+            <param name="writeEmptyElement">True to force an empty &lt;<paramref name="elemenName"/> /&gt; element to be written even 
+            if there is no data. Defaults to false.
+            </param>
+            <returns>The number of plugins for which data has been written.</returns>
+        </member>
+        <member name="M:CK.Plugin.Config.ISharedDictionaryWriter.WritePluginsData(System.Object)">
+            <summary>
+            Writes plugins data for an object: data element is already opened.
+            Use <see cref="M:CK.Plugin.Config.ISharedDictionaryWriter.WritePluginsDataElement(System.String,System.Object,System.Boolean)"/> to write a named element.
+            </summary>
+            <param name="o">The object for which data must be written.</param>
+            <returns>The number of plugins for which data has been written.</returns>
+        </member>
+        <member name="E:CK.Plugin.Config.ISharedDictionaryWriter.BeforePluginsData">
+            <summary>
+            Fires whenever a plugin/object data is about to be written.
+            </summary>
+        </member>
+        <member name="E:CK.Plugin.Config.ISharedDictionaryWriter.AfterPluginsData">
+            <summary>
+            Fires whenever a plugin/object data has been written.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.ISharedDictionaryWriter.StructuredWriter">
+            <summary>
+            Gets the <see cref="T:CK.Storage.IStructuredWriter"/> into which this writer writes data.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Config.ISharedDictionaryWriter.SharedDictionary">
+            <summary>
+            Gets the <see cref="T:CK.Plugin.Config.ISharedDictionary"/> to which this writer is associated.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.ISharedDictionary.RegisterReader(CK.Storage.IStructuredReader,CK.SharedDic.MergeMode)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <param name="mergeMode"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CK.Plugin.Config.ISharedDictionary.ServiceProvider">
+            <summary>
+            Gets or sets the <see cref="T:System.IServiceProvider"/> that will be used
+            while persisting/restoring data.
+            </summary>
+        </member>
+        <member name="M:CK.SharedDic.SharedDictionaryImpl.ClearFragments(System.Predicate{CK.SharedDic.SkippedFragment})">
+            <summary>
+            Clears values matching the filter parameter.     
+            </summary>
+            <param name="filter"></param>
+            <remarks>If the entry has no values anymore, the entry is removed from the skippedFragments dictionary</remarks>
+        </member>
+        <member name="M:CK.SharedDic.SharedDictionaryImpl.CreatePluginConfigByPlugin(CK.Core.INamedVersionedUniqueId)">
+            <summary>
+            Throws an ArgumentException if the Guid is already associated to 
+            another IVersionedUniqueId.
+            </summary>
+        </member>
+        <member name="M:CK.SharedDic.SharedDictionaryImpl.TryGetPluginConfigByObject(System.Object,CK.SharedDic.PluginConfigByObject@)">
+            <summary>
+            Used by SharedDictionaryWriter.
+            </summary>
+        </member>
         <member name="F:CK.SharedDic.MergeMode.None">
             <summary>
             No merge: existing data is lost.
@@ -30,20 +172,6 @@
             <summary>
             No duplicate should exist: any attempt to add data for an existing object/plugin key
             raises an exception.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.ISharedDictionary.RegisterReader(CK.Storage.IStructuredReader,CK.SharedDic.MergeMode)">
-            <summary>
-            
-            </summary>
-            <param name="reader"></param>
-            <param name="mergeMode"></param>
-            <returns></returns>
-        </member>
-        <member name="P:CK.Plugin.Config.ISharedDictionary.ServiceProvider">
-            <summary>
-            Gets or sets the <see cref="T:System.IServiceProvider"/> that will be used
-            while persisting/restoring data.
             </summary>
         </member>
         <member name="T:CK.SharedDic.ReadElementObjectInfo">
@@ -180,21 +308,6 @@
             Mask that covers all the errors.
             </summary>
         </member>
-        <member name="T:CK.Plugin.Config.SharedDictionaryExtension">
-            <summary>
-            Extension methods for shared dictionary objects and interfaces.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.SharedDictionaryExtension.WritePluginsDataElement(CK.Plugin.Config.ISharedDictionaryWriter,System.String,System.Object)">
-            <summary>
-            Writes plugins data for an object.
-            Even if no data exists, the element is written as an empty &lt;<paramref name="elemenName"/> /&gt; element.
-            </summary>
-            <param name="w">This <see cref="T:CK.Plugin.Config.ISharedDictionaryWriter"/> object.</param>
-            <param name="elementName">Name of the element that will contain the configuration.</param>
-            <param name="o">Object for which configuration must be written.</param>
-            <returns>The number of plugins for which data has been written.</returns>
-        </member>
         <member name="T:CK.SharedDic.SkippedFragment">
             <summary>
             Holds skipped fragments during read of Xml document.
@@ -217,23 +330,20 @@
             for example).
             </summary>
         </member>
-        <member name="M:CK.SharedDic.SharedDictionaryImpl.ClearFragments(System.Predicate{CK.SharedDic.SkippedFragment})">
+        <member name="T:CK.Plugin.Config.SharedDictionaryExtension">
             <summary>
-            Clears values matching the filter parameter.     
-            </summary>
-            <param name="filter"></param>
-            <remarks>If the entry has no values anymore, the entry is removed from the skippedFragments dictionary</remarks>
-        </member>
-        <member name="M:CK.SharedDic.SharedDictionaryImpl.CreatePluginConfigByPlugin(CK.Core.INamedVersionedUniqueId)">
-            <summary>
-            Throws an ArgumentException if the Guid is already associated to 
-            another IVersionedUniqueId.
+            Extension methods for shared dictionary objects and interfaces.
             </summary>
         </member>
-        <member name="M:CK.SharedDic.SharedDictionaryImpl.TryGetPluginConfigByObject(System.Object,CK.SharedDic.PluginConfigByObject@)">
+        <member name="M:CK.Plugin.Config.SharedDictionaryExtension.WritePluginsDataElement(CK.Plugin.Config.ISharedDictionaryWriter,System.String,System.Object)">
             <summary>
-            Used by SharedDictionaryWriter.
+            Writes plugins data for an object.
+            Even if no data exists, the element is written as an empty &lt;<paramref name="elemenName"/> /&gt; element.
             </summary>
+            <param name="w">This <see cref="T:CK.Plugin.Config.ISharedDictionaryWriter"/> object.</param>
+            <param name="elementName">Name of the element that will contain the configuration.</param>
+            <param name="o">Object for which configuration must be written.</param>
+            <returns>The number of plugins for which data has been written.</returns>
         </member>
         <member name="T:CK.SharedDic.SharedDictionary">
             <summary>
@@ -246,116 +356,6 @@
             </summary>
             <param name="serviceProvider">Optional service provider.</param>
             <returns>An implementation of a <see cref="T:CK.Plugin.Config.ISharedDictionary"/>.</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.ISharedDictionaryWriter.WritePluginsDataElement(System.String,System.Object,System.Boolean)">
-            <summary>
-            Writes plugins data for an object in a named element. 
-            Element is written only if required: if there is no data to write, nothing is written.
-            </summary>
-            <param name="elementName">Name of the element that will contain the configuration.</param>
-            <param name="o">Object for which configuration must be written.</param>
-            <param name="writeEmptyElement">True to force an empty &lt;<paramref name="elemenName"/> /&gt; element to be written even 
-            if there is no data. Defaults to false.
-            </param>
-            <returns>The number of plugins for which data has been written.</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.ISharedDictionaryWriter.WritePluginsData(System.Object)">
-            <summary>
-            Writes plugins data for an object: data element is already opened.
-            Use <see cref="M:CK.Plugin.Config.ISharedDictionaryWriter.WritePluginsDataElement(System.String,System.Object,System.Boolean)"/> to write a named element.
-            </summary>
-            <param name="o">The object for which data must be written.</param>
-            <returns>The number of plugins for which data has been written.</returns>
-        </member>
-        <member name="E:CK.Plugin.Config.ISharedDictionaryWriter.BeforePluginsData">
-            <summary>
-            Fires whenever a plugin/object data is about to be written.
-            </summary>
-        </member>
-        <member name="E:CK.Plugin.Config.ISharedDictionaryWriter.AfterPluginsData">
-            <summary>
-            Fires whenever a plugin/object data has been written.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.ISharedDictionaryWriter.StructuredWriter">
-            <summary>
-            Gets the <see cref="T:CK.Storage.IStructuredWriter"/> into which this writer writes data.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.ISharedDictionaryWriter.SharedDictionary">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.Config.ISharedDictionary"/> to which this writer is associated.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginsDataElement(System.String,System.Object)">
-            <summary>
-            Read object data from the reader. 
-            If the current element name does not match the name provided, false is returned.
-            </summary>
-            <param name="elementName">Name of the element.</param>
-            <param name="o">The object for which data must be read.</param>
-            <returns>True if the element has been found and read. Errors (if any) are stored in the <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ErrorCollector"/>.</returns>
-        </member>
-        <member name="M:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginsData(System.Object)">
-            <summary>
-            Reads plugins data for an object: the reader is already positionned on the data. 
-            Errors (if any) are stored in the <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ErrorCollector"/>.
-            Use <see cref="M:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginsDataElement(System.String,System.Object)"/> to read an element.
-            </summary>
-            <param name="o">The object for which data must be read.</param>
-        </member>
-        <member name="M:CK.Plugin.Config.ISharedDictionaryReader.PreProcessReadInfo(System.Object,CK.Core.INamedVersionedUniqueId,CK.SharedDic.ReadElementObjectInfo)">
-            <summary>
-            Hook that enables this <see cref="T:CK.Plugin.Config.ISharedDictionaryReader"/> implementation
-            to filter every read information.
-            </summary>
-            <param name="o">Object for which information has been read.</param>
-            <param name="pluginId">Plugin identifier for which information has been read.</param>
-            <param name="info">The information read from the stream.</param>
-            <returns>
-            Simple implementation should return the <paramref name="info"/> unchanged (this is what does the default implementation).
-            It may also returns null to ignore (skip) this piece of information. 
-            More complex implementation can use this hook to transform the data (by changing the <see cref="!:ReadElementObjectInfo.ReadInfo"/> of the <paramref name="info"/>)
-            or return a brand new <see cref="T:CK.SharedDic.ReadElementObjectInfo"/>.
-            </returns>
-        </member>
-        <member name="E:CK.Plugin.Config.ISharedDictionaryReader.BeforePluginsData">
-            <summary>
-            Fires whenever a plugin/object data is about to be read and the plugin is registered.
-            The <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginInfo"/> property is available and <see cref="T:CK.Plugin.Config.SharedDictionaryReaderEventArgs"/>
-            exposes the <see cref="T:CK.Plugin.Config.IObjectPluginAssociation"/>.
-            </summary>
-        </member>
-        <member name="E:CK.Plugin.Config.ISharedDictionaryReader.AfterPluginsData">
-            <summary>
-            Fires whenever a plugin/object data has been read (the plugin is registered).
-            The <see cref="P:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginInfo"/> property is available and <see cref="T:CK.Plugin.Config.SharedDictionaryReaderEventArgs"/>
-            exposes the <see cref="T:CK.Plugin.Config.IObjectPluginAssociation"/>.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.ReadPluginInfo">
-            <summary>
-            Gets the currently read plugin <see cref="T:CK.Core.INamedVersionedUniqueId"/>: the version
-            exposed here is the one of the data, it may differ from the actual plugin's version.
-            Null when the reader is not reading any plugin data.
-            </summary>
-        </member>
-        <!-- Badly formed XML comment ignored for member "P:CK.Plugin.Config.ISharedDictionaryReader.MergeMode" -->
-        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.StructuredReader">
-            <summary>
-            Gets the <see cref="T:CK.Storage.IStructuredReader"/> from which this reader reads data.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.SharedDictionary">
-            <summary>
-            Gets the <see cref="T:CK.Plugin.Config.ISharedDictionary"/> to which this reader is associated.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Config.ISharedDictionaryReader.ErrorCollector">
-            <summary>
-            Gets a writeable collection of <see cref="T:CK.SharedDic.ReadElementObjectInfo"/> that must contains
-            only read errors.
-            </summary>
         </member>
     </members>
 </doc>

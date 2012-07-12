@@ -4,6 +4,67 @@
         <name>CK.Plugin.Host</name>
     </assembly>
     <members>
+        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.SetExternalImplementation(System.Object)">
+            <summary>
+            Currently, injection of external services must be totally independant of
+            any Dynamic services: a Service is either a dynamic one, implemented by one (or more) plugin, 
+            or an external one that is considered to be persistent and available.
+            </summary>
+            <param name="implementation"></param>
+        </member>
+        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForRunningCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)">
+            <summary>
+            This method is called whenever a method not marked with <see cref="T:CK.Plugin.IgnoreServiceStoppedAttribute"/>
+            is called. It throws a <see cref="T:CK.Plugin.ServiceStoppedException"/> if the service is stopped or disabled otherwise
+            it returns the appropriate log configuration.
+            </summary>
+            <returns>The log configuration that must be used.</returns>
+        </member>
+        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForNotDisabledCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)">
+            <summary>
+            Returns the appropriate log configuration after having checked that the dynamic service is not disabled.
+            </summary>
+            <returns>The log configuration that must be used.</returns>
+        </member>
+        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForAnyCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)">
+            <summary>
+            Returns the appropriate log configuration without any runtime status checks.
+            </summary>
+            <returns>The log configuration that must be used.</returns>
+        </member>
+        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerEventForRunningCall(System.Int32,CK.Plugin.Hosting.LogEventEntry@,CK.Plugin.ServiceLogEventOptions@)">
+            <summary>
+            This method is called whenever an event not marked with <see cref="T:CK.Plugin.IgnoreServiceStoppedAttribute"/>
+            is raised. If the service is actually running, it does nothing and returns true.
+            If the service is stopped or disabled it throws a <see cref="T:CK.Plugin.ServiceStoppedException"/> or returns false
+            if <see cref="F:CK.Plugin.ServiceLogEventOptions.SilentEventRunningStatusError"/> is set: the event will not be raised and no exceptions will be
+            thrown back to the buggy service.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.OnEventHandlingException(System.Int32,System.Reflection.MethodInfo,System.Exception,CK.Plugin.Hosting.LogEventEntry@)">
+            <summary>
+            This method is called when an event subscriber raises an exception while receiving the notification.
+            By returning true, this methods silently swallow the exception. By returning false, the event dispatching
+            is stoppped (remaining subscribers will not receive the event) and the plugin receives the exception (this
+            corresponds to the standard behavior).
+            </summary>
+            <param name="iEventMRef">The index of the event info.</param>
+            <param name="target">The called method that raised the exception.</param>
+            <param name="ex">The exception.</param>
+            <param name="ee">The log entry if it has been created. Will be created if needed.</param>
+            <returns>True to silently swallow the exception.</returns>
+        </member>
+        <member name="T:CK.Plugin.Hosting.LogMethodEntryError">
+            <summary>
+            Used for error that occured in a logged method: the <see cref="T:CK.Plugin.Hosting.LogMethodEntry"/> already exists.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.LogMethodEntry.SetError(CK.Plugin.Hosting.LogMethodEntryError)">
+            <summary>
+            Setting the error closes the entry if it was opened.
+            True is returned if the entry has been closed.
+            </summary>
+        </member>
         <member name="M:CK.Plugin.Hosting.ServiceHost.SetManualProxy(System.Type,CK.Plugin.Hosting.ServiceProxyBase)">
             <summary>
             For tests only.
@@ -136,52 +197,24 @@
               Looks up a localized string similar to Stopped and Running list share {0} plugin(s)..
             </summary>
         </member>
-        <member name="M:CK.Plugin.Hosting.LogMethodEntry.SetError(CK.Plugin.Hosting.LogMethodEntryError)">
+        <member name="T:CK.Plugin.Hosting.SimpleServiceHostConfiguration">
             <summary>
-            Setting the error closes the entry if it was opened.
-            True is returned if the entry has been closed.
+            Simple dictionary based implementation of <see cref="T:CK.Plugin.IServiceHostConfiguration"/>.
             </summary>
         </member>
-        <member name="M:CK.Plugin.Hosting.PluginHost.FindPluginProxy(CK.Plugin.IPluginInfo)">
+        <member name="M:CK.Plugin.Hosting.SimpleServiceHostConfiguration.GetOptions(System.Reflection.MethodInfo)">
             <summary>
-            Used for white tests only.
+            Returns the <see cref="T:CK.Plugin.ServiceLogMethodOptions"/> for the given method.
             </summary>
+            <param name="m">Method for which options should be obtained.</param>
+            <returns>Configuration for the method.</returns>
         </member>
-        <member name="M:CK.Plugin.Hosting.PluginHost.Execute(System.Collections.Generic.IEnumerable{CK.Plugin.IPluginInfo},System.Collections.Generic.IEnumerable{CK.Plugin.IPluginInfo},System.Collections.Generic.IEnumerable{CK.Plugin.IPluginInfo})">
+        <member name="M:CK.Plugin.Hosting.SimpleServiceHostConfiguration.GetOptions(System.Reflection.EventInfo)">
             <summary>
-            Attempts to execute a plan.
+            Returns the <see cref="T:CK.Plugin.ServiceLogEventOptions"/> for the given event.
             </summary>
-            <param name="disabledPluginKeys">Plugins that must be disabled.</param>
-            <param name="stoppedPluginKeys">Plugins that must be stopped.</param>
-            <param name="runningPluginKeys">Plugins that must be running.</param>
-            <returns>A <see cref="!:IExecutionPlanError"/> that details the error if any.</returns>
-        </member>
-        <member name="P:CK.Plugin.Hosting.PluginHost.PluginCreator">
-            <summary>
-            Gets or sets a function that is in charge of obtaining concrete plugin instances.
-            Only the default constructor of the plugin must be called by this action.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.PluginHost.PluginConfigurator">
-            <summary>
-            Gets or sets a function called before the setup of each plugins to fill their edition properties.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.PluginHost.ServiceReferencesBinder">
-            <summary>
-            Gets or sets a function called after plugins that must stop or be disabled have actually been stopped or disabled
-            and before start of (potentially newly loaded) plugins.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.PluginHost.LoadedPlugins">
-            <summary>
-            Gets the loaded plugins. This contains also the plugins that are currently disabled but have been loaded at least once.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.PluginHost.EventSender">
-            <summary>
-            Gets or sets the object that sends <see cref="!:IServiceHost.EventCreating"/> and <see cref="!:IServiceHost.EventCreated"/>.
-            </summary>
+            <param name="e">Event for which options should be obtained.</param>
+            <returns>Configuration for the event.</returns>
         </member>
         <member name="T:CK.Plugin.Hosting.UseTheProxyBase">
             <summary>
@@ -190,66 +223,9 @@
             the ServiceProxyBase is used as the base class by dynamic proxies.
             </summary>
         </member>
-        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.SetExternalImplementation(System.Object)">
+        <member name="T:CK.Plugin.Hosting.LogMethodError">
             <summary>
-            Currently, injection of external services must be totally independant of
-            any Dynamic services: a Service is either a dynamic one, implemented by one (or more) plugin, 
-            or an external one that is considered to be persistent and available.
-            </summary>
-            <param name="implementation"></param>
-        </member>
-        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForRunningCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)">
-            <summary>
-            This method is called whenever a method not marked with <see cref="T:CK.Plugin.IgnoreServiceStoppedAttribute"/>
-            is called. It throws a <see cref="T:CK.Plugin.ServiceStoppedException"/> if the service is stopped or disabled otherwise
-            it returns the appropriate log configuration.
-            </summary>
-            <returns>The log configuration that must be used.</returns>
-        </member>
-        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForNotDisabledCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)">
-            <summary>
-            Returns the appropriate log configuration after having checked that the dynamic service is not disabled.
-            </summary>
-            <returns>The log configuration that must be used.</returns>
-        </member>
-        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForAnyCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)">
-            <summary>
-            Returns the appropriate log configuration without any runtime status checks.
-            </summary>
-            <returns>The log configuration that must be used.</returns>
-        </member>
-        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerEventForRunningCall(System.Int32,CK.Plugin.Hosting.LogEventEntry@,CK.Plugin.ServiceLogEventOptions@)">
-            <summary>
-            This method is called whenever an event not marked with <see cref="T:CK.Plugin.IgnoreServiceStoppedAttribute"/>
-            is raised. If the service is actually running, it does nothing and returns true.
-            If the service is stopped or disabled it throws a <see cref="T:CK.Plugin.ServiceStoppedException"/> or returns false
-            if <see cref="F:CK.Plugin.ServiceLogEventOptions.SilentEventRunningStatusError"/> is set: the event will not be raised and no exceptions will be
-            thrown back to the buggy service.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Hosting.ServiceProxyBase.OnEventHandlingException(System.Int32,System.Reflection.MethodInfo,System.Exception,CK.Plugin.Hosting.LogEventEntry@)">
-            <summary>
-            This method is called when an event subscriber raises an exception while receiving the notification.
-            By returning true, this methods silently swallow the exception. By returning false, the event dispatching
-            is stoppped (remaining subscribers will not receive the event) and the plugin receives the exception (this
-            corresponds to the standard behavior).
-            </summary>
-            <param name="iEventMRef">The index of the event info.</param>
-            <param name="target">The called method that raised the exception.</param>
-            <param name="ex">The exception.</param>
-            <param name="ee">The log entry if it has been created. Will be created if needed.</param>
-            <returns>True to silently swallow the exception.</returns>
-        </member>
-        <member name="F:CK.Plugin.Hosting.ProxyOptions.CatchExceptions">
-            <summary>
-            The proxified method traps any exception and routes it to <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.OnCallException(System.Int32,System.Exception,CK.Plugin.Hosting.LogMethodEntry)"/>
-            (or <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.OnEventHandlingException(System.Int32,System.Reflection.MethodInfo,System.Exception,CK.Plugin.Hosting.LogEventEntry@)"/> during events raising).
-            </summary>
-        </member>
-        <member name="F:CK.Plugin.Hosting.ProxyOptions.RuntimeCheckStatus">
-            <summary>
-            The proxified method will call <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForRunningCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)"/>, <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForNotDisabledCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)"/> 
-            or <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForAnyCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)"/> (or the 3 similar ones for events).
+            Used for error that occured in a non-logged method.
             </summary>
         </member>
         <member name="T:CK.Plugin.Hosting.IProxyDefinition">
@@ -294,6 +270,59 @@
             Gets whether the interface is a <see cref="T:CK.Plugin.IDynamicService"/> or not.
             </summary>
         </member>
+        <member name="F:CK.Plugin.Hosting.ProxyOptions.CatchExceptions">
+            <summary>
+            The proxified method traps any exception and routes it to <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.OnCallException(System.Int32,System.Exception,CK.Plugin.Hosting.LogMethodEntry)"/>
+            (or <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.OnEventHandlingException(System.Int32,System.Reflection.MethodInfo,System.Exception,CK.Plugin.Hosting.LogEventEntry@)"/> during events raising).
+            </summary>
+        </member>
+        <member name="F:CK.Plugin.Hosting.ProxyOptions.RuntimeCheckStatus">
+            <summary>
+            The proxified method will call <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForRunningCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)"/>, <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForNotDisabledCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)"/> 
+            or <see cref="M:CK.Plugin.Hosting.ServiceProxyBase.GetLoggerForAnyCall(System.Int32,CK.Plugin.Hosting.LogMethodEntry@)"/> (or the 3 similar ones for events).
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PluginHost.FindPluginProxy(CK.Plugin.IPluginInfo)">
+            <summary>
+            Used for white tests only.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.PluginHost.Execute(System.Collections.Generic.IEnumerable{CK.Plugin.IPluginInfo},System.Collections.Generic.IEnumerable{CK.Plugin.IPluginInfo},System.Collections.Generic.IEnumerable{CK.Plugin.IPluginInfo})">
+            <summary>
+            Attempts to execute a plan.
+            </summary>
+            <param name="disabledPluginKeys">Plugins that must be disabled.</param>
+            <param name="stoppedPluginKeys">Plugins that must be stopped.</param>
+            <param name="runningPluginKeys">Plugins that must be running.</param>
+            <returns>A <see cref="!:IExecutionPlanError"/> that details the error if any.</returns>
+        </member>
+        <member name="P:CK.Plugin.Hosting.PluginHost.PluginCreator">
+            <summary>
+            Gets or sets a function that is in charge of obtaining concrete plugin instances.
+            Only the default constructor of the plugin must be called by this action.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.PluginHost.PluginConfigurator">
+            <summary>
+            Gets or sets a function called before the setup of each plugins to fill their edition properties.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.PluginHost.ServiceReferencesBinder">
+            <summary>
+            Gets or sets a function called after plugins that must stop or be disabled have actually been stopped or disabled
+            and before start of (potentially newly loaded) plugins.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.PluginHost.LoadedPlugins">
+            <summary>
+            Gets the loaded plugins. This contains also the plugins that are currently disabled but have been loaded at least once.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.PluginHost.EventSender">
+            <summary>
+            Gets or sets the object that sends <see cref="!:IServiceHost.EventCreating"/> and <see cref="!:IServiceHost.EventCreated"/>.
+            </summary>
+        </member>
         <member name="M:CK.Plugin.Hosting.PluginProxyBase.DisposeIfDisposable">
             <summary>
             Supports <see cref="T:System.IDisposable"/> implementation. If the real plugin does not implement it, nothing is done and 
@@ -305,16 +334,6 @@
         <member name="P:CK.Plugin.Hosting.PluginProxyBase.Service">
             <summary>
             Gets the implemented service.
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Hosting.LogMethodEntryError">
-            <summary>
-            Used for error that occured in a logged method: the <see cref="T:CK.Plugin.Hosting.LogMethodEntry"/> already exists.
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Hosting.LogMethodError">
-            <summary>
-            Used for error that occured in a non-logged method.
             </summary>
         </member>
         <member name="M:CK.Plugin.Hosting.ProxyFactory.CreateProxy(CK.Plugin.Hosting.IProxyDefinition)">
@@ -356,25 +375,6 @@
             <param name="depth"></param>
             <param name="e"></param>
             <param name="firstOne"></param>
-        </member>
-        <member name="T:CK.Plugin.Hosting.SimpleServiceHostConfiguration">
-            <summary>
-            Simple dictionary based implementation of <see cref="T:CK.Plugin.IServiceHostConfiguration"/>.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Hosting.SimpleServiceHostConfiguration.GetOptions(System.Reflection.MethodInfo)">
-            <summary>
-            Returns the <see cref="T:CK.Plugin.ServiceLogMethodOptions"/> for the given method.
-            </summary>
-            <param name="m">Method for which options should be obtained.</param>
-            <returns>Configuration for the method.</returns>
-        </member>
-        <member name="M:CK.Plugin.Hosting.SimpleServiceHostConfiguration.GetOptions(System.Reflection.EventInfo)">
-            <summary>
-            Returns the <see cref="T:CK.Plugin.ServiceLogEventOptions"/> for the given event.
-            </summary>
-            <param name="e">Event for which options should be obtained.</param>
-            <returns>Configuration for the event.</returns>
         </member>
     </members>
 </doc>

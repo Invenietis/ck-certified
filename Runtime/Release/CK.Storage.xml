@@ -334,6 +334,22 @@
             Mask that covers all the errors.
             </summary>
         </member>
+        <member name="T:CK.Storage.IProtectedStructuredWriter">
+            <summary>
+            Protects a <see cref="T:CK.Storage.IStructuredWriter"/> write: changes are effective only 
+            when <see cref="M:CK.Storage.IProtectedStructuredWriter.SaveChanges"/> is called.
+            </summary>
+        </member>
+        <member name="M:CK.Storage.IProtectedStructuredWriter.SaveChanges">
+            <summary>
+            Do save the changes.
+            </summary>
+        </member>
+        <member name="P:CK.Storage.IProtectedStructuredWriter.StructuredWriter">
+            <summary>
+            Gets the <see cref="T:CK.Storage.IStructuredWriter"/> to write to.
+            </summary>
+        </member>
         <member name="T:CK.Storage.ISubStructuredReader">
             <summary>
             Specialized <see cref="T:CK.Storage.IStructuredReader"/>. Such subordinate readers
@@ -601,6 +617,11 @@
             Writes the bookmark back into a <see cref="T:CK.Storage.IStructuredWriter"/>.
             </summary>
             <param name="w">The <see cref="T:CK.Storage.IStructuredWriter"/> to write to.</param>
+        </member>
+        <member name="T:CK.Storage.FileProtectedStructuredWriter">
+            <summary>
+            Implementation of <see cref="T:CK.Storage.IProtectedStructuredWriter"/> for files.
+            </summary>
         </member>
     </members>
 </doc>

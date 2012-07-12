@@ -4,6 +4,79 @@
         <name>CK.Plugin.Runner</name>
     </assembly>
     <members>
+        <member name="M:CK.Plugin.Hosting.PluginRunner.Apply(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="keepRunningLaunchedOptionals">if false, all plugins that are "optional" but are already launched will be stopped</param>
+            <returns></returns>
+        </member>
+        <member name="E:CK.Plugin.Hosting.SolvedPluginConfigurationSnapshot.Changed">
+            <summary>
+            Unused by this implementation (snapshot).
+            </summary>
+        </member>
+        <member name="T:CK.Plugin.Hosting.RequirementLayerSnapshot">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.RunnerRequirements.Initialize">
+            <summary>
+            Initialize the internal count of differences and set RunningConfiguration.IsDirty accordingly.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Hosting.RunnerRequirements.FinalResult.#ctor">
+            <summary>
+            A new FinalResult is created the first time the PluginId is met.
+            Since we do not even know if it exists in the discoverer, we set its 
+            status to "unknown" (-1). 
+            If it is not here, nothing changed if the status is Disabled.
+            If it is available, nothing changed if the status is Optional.
+            </summary>
+        </member>
+        <member name="M:CK.Plugin.Config.PluginConfigAccessor.RaiseConfigChanged(CK.Plugin.Config.ConfigChangedEventArgs)">
+            <summary>
+            Change detection is made by the runner itself (one event subscription) since
+            it use its dictionnary to route the event: this is far more efficient than 
+            if each PluginConfigAccessor had to subscribe and filter the event for its plugin identifier.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:CK.Plugin.Hosting.ExecutionPlan">
+            <summary>
+            Describes the final state that must be reached to satisfy 
+            a new plugins and service requirements description.
+            </summary>
+            <remarks>
+            The current running status of the plugins can be used to compute the best execution plan but does not change the content 
+            of the <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStart"/>, <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStop"/> and <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToDisable"/>.
+            </remarks>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStart">
+            <summary>
+            Gets the collection of plugins that must be started.
+            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStop">
+            <summary>
+            Gets the collection of plugins that must be stopped.
+            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToDisable">
+            <summary>
+            Gets the collection of plugins that must be disabled. 
+            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
+            </summary>
+        </member>
+        <member name="P:CK.Plugin.Hosting.ExecutionPlan.Impossible">
+            <summary>
+            Gets whether the execution is not possible (no running configuration that satisfy
+            the requirements can be found).
+            </summary>
+        </member>
         <member name="T:CK.Plugin.Hosting.PlanCalculator">
             <summary>
             This class calculates and returns the best <see cref="T:CK.Plugin.Hosting.ExecutionPlan"/> for a given configuration context.
@@ -60,72 +133,6 @@
             that is not impossible
             </summary>
         </member>
-        <member name="E:CK.Plugin.Hosting.SolvedPluginConfigurationSnapshot.Changed">
-            <summary>
-            Unused by this implementation (snapshot).
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Hosting.RequirementLayerSnapshot">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Hosting.RunnerRequirements.Initialize">
-            <summary>
-            Initialize the internal count of differences and set RunningConfiguration.IsDirty accordingly.
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Hosting.RunnerRequirements.FinalResult.#ctor">
-            <summary>
-            A new FinalResult is created the first time the PluginId is met.
-            Since we do not even know if it exists in the discoverer, we set its 
-            status to "unknown" (-1). 
-            If it is not here, nothing changed if the status is Disabled.
-            If it is available, nothing changed if the status is Optional.
-            </summary>
-        </member>
-        <member name="T:CK.Plugin.Hosting.ExecutionPlan">
-            <summary>
-            Describes the final state that must be reached to satisfy 
-            a new plugins and service requirements description.
-            </summary>
-            <remarks>
-            The current running status of the plugins can be used to compute the best execution plan but does not change the content 
-            of the <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStart"/>, <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStop"/> and <see cref="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToDisable"/>.
-            </remarks>
-        </member>
-        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStart">
-            <summary>
-            Gets the collection of plugins that must be started.
-            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToStop">
-            <summary>
-            Gets the collection of plugins that must be stopped.
-            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.ExecutionPlan.PluginsToDisable">
-            <summary>
-            Gets the collection of plugins that must be disabled. 
-            Null when <see cref="P:CK.Plugin.Hosting.ExecutionPlan.Impossible"/> is true.
-            </summary>
-        </member>
-        <member name="P:CK.Plugin.Hosting.ExecutionPlan.Impossible">
-            <summary>
-            Gets whether the execution is not possible (no running configuration that satisfy
-            the requirements can be found).
-            </summary>
-        </member>
-        <member name="M:CK.Plugin.Config.PluginConfigAccessor.RaiseConfigChanged(CK.Plugin.Config.ConfigChangedEventArgs)">
-            <summary>
-            Change detection is made by the runner itself (one event subscription) since
-            it use its dictionnary to route the event: this is far more efficient than 
-            if each PluginConfigAccessor had to subscribe and filter the event for its plugin identifier.
-            </summary>
-            <param name="e"></param>
-        </member>
         <member name="T:CK.Plugin.Runner.R">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -151,13 +158,6 @@
             <summary>
               Looks up a localized string similar to Apply is not reentrant..
             </summary>
-        </member>
-        <member name="M:CK.Plugin.Hosting.PluginRunner.Apply(System.Boolean)">
-            <summary>
-            
-            </summary>
-            <param name="keepRunningLaunchedOptionals">if false, all plugins that are "optional" but are already launched will be stopped</param>
-            <returns></returns>
         </member>
     </members>
 </doc>

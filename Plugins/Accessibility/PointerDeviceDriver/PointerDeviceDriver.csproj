@@ -17,6 +17,8 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,12 +39,16 @@
     <DocumentationFile>..\..\..\Output\Release\Plugins\PointerDeviceDriver.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\..\..\Runtime\Current\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CK.Core.2.7.3\lib\net40\CK.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CK-Plugin.2.7.13-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CK-Plugin.2.7.13-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -103,4 +109,5 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

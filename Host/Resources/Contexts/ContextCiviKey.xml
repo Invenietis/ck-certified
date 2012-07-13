@@ -25,7 +25,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="space" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey" "</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -37,7 +37,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="0" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{0}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -49,7 +49,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="1" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{1}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -61,7 +61,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="2" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{2}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -73,7 +73,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="3" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{3}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -85,7 +85,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="4" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{4}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -97,7 +97,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="5" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{5}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -109,7 +109,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="6" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{6}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -121,7 +121,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="7" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{7}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -133,7 +133,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="8" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{8}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -145,7 +145,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="9" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{9}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -157,7 +157,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="+" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{+}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -169,7 +169,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="-" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{-}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -185,7 +185,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="A" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{A}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -193,7 +193,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="a" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{a}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -205,7 +205,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="Z" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{Z}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -213,7 +213,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="z" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{z}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -225,7 +225,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="E" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{E}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -233,7 +233,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="e" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{e}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -245,7 +245,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="R" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{R}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -253,7 +253,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="r" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{r}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -265,7 +265,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="T" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{T}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -273,7 +273,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="t" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{t}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -285,7 +285,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="Y" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{Y}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -293,7 +293,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="y" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{y}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -305,7 +305,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="U" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{U}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -313,7 +313,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="u" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{u}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -325,7 +325,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="I" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{I}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -333,7 +333,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="i" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{i}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -345,7 +345,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="O" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{O}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -353,7 +353,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="o" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{o}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -365,7 +365,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="P" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{P}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -373,7 +373,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="p" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{p}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -385,7 +385,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="back" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{Bs}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -401,7 +401,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="back" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{Bs}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -413,7 +413,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="Q" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{Q}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -421,7 +421,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="q" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{q}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -433,7 +433,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="S" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{S}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -441,7 +441,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="s" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{s}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -453,7 +453,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="D" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{D}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -461,7 +461,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="d" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{d}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -473,7 +473,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="F" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -481,7 +481,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="f" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{f}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -493,7 +493,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="G" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{G}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -501,7 +501,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="g" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{g}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -513,7 +513,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="H" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{H}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -521,7 +521,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="h" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{h}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -533,7 +533,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="J" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{J}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -541,7 +541,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="j" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{j}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -553,7 +553,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="K" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{K}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -561,7 +561,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="k" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{k}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -573,7 +573,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="L" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{L}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -581,7 +581,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="l" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{l}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -593,7 +593,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="M" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{M}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -601,7 +601,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="m" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{m}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -613,7 +613,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="enter" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{enter}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -629,7 +629,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="W" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{W}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -637,7 +637,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="w" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{w}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -649,7 +649,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="X" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{X}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -657,7 +657,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="x" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{x}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -669,7 +669,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="C" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{C}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -677,7 +677,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="c" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{c}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -689,7 +689,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="V" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{V}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -697,7 +697,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="v" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{v}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -709,7 +709,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="B" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{B}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -717,7 +717,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="b" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{b}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -729,7 +729,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="N" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{N}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -737,7 +737,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="n" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{n}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -749,7 +749,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="?" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{?}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -757,7 +757,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="," />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{,}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -769,7 +769,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="." />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{.}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -777,7 +777,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label=";" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{;}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -789,7 +789,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="/" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{/}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -797,7 +797,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label=":" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{:}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -809,7 +809,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="§" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{§}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -817,7 +817,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="!" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{!}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -829,7 +829,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="shift" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("shift")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-shift"):Mode.Remove("shift")</Cmd>
                           </KeyProgram>
@@ -846,7 +846,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="shift" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("shift")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-shift"):Mode.Remove("shift")</Cmd>
                           </KeyProgram>
@@ -859,7 +859,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="space" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey" "</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -871,7 +871,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="back" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{Bs}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -883,7 +883,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="enter" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{enter}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1081,10 +1081,10 @@
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                     <data key="PositionX" type="Int32">561</data>
                     <data key="PositionY" type="Int32">735</data>
-                    <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                    <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">319,115</Size>
                     </data>
-                    <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                    <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFD3D3D3</Color>
                     </data>
                   </p>
@@ -1119,9 +1119,9 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Ech" />
+                        <KeyUp Label="Échap" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{ESC}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1133,7 +1133,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="²" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"²"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1145,7 +1145,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F1" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F1}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1153,7 +1153,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F1" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F1}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1161,7 +1161,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F1" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F1}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1169,7 +1169,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="1" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"1"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1177,7 +1177,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="&amp;" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"&amp;"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1189,7 +1189,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F2" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F2}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1197,7 +1197,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F2" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F2}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1205,7 +1205,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="~" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("tilde")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-tilde"):Mode.Remove("tilde")</Cmd>
                           </KeyProgram>
@@ -1214,7 +1214,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F2" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F2}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1222,7 +1222,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="2" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"2"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1230,7 +1230,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="é" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"é"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1242,7 +1242,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F3" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F3}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1250,7 +1250,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F3" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F3}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1258,15 +1258,15 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="#" />
                         <KeyDown>
-                          <KeyProgram>
-                            <Cmd>sendKey"#"</Cmd>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendString:#</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F3" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F3}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1274,7 +1274,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="3" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"3"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1282,7 +1282,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="&quot;" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{dbquote}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1294,7 +1294,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F4" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F4}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1302,7 +1302,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F4" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F4}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1310,7 +1310,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="{" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1318,7 +1318,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F4" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F4}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1326,7 +1326,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="4" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"4"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1334,7 +1334,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="'" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"'"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1346,7 +1346,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F5" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F5}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1354,7 +1354,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F5" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F5}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1362,15 +1362,15 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="[" />
                         <KeyDown>
-                          <KeyProgram>
-                            <Cmd>sendKey"["</Cmd>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendString:[</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F5" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F5}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1378,7 +1378,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="5" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"5"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1386,7 +1386,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="(" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"("</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1398,7 +1398,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F6" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F6}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1406,7 +1406,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F6" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F6}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1414,7 +1414,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="|" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"|"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1422,7 +1422,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F6" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F6}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1430,7 +1430,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="6" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"6"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1438,7 +1438,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="-" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"-"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1450,7 +1450,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F7" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F7}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1458,7 +1458,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F7" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F7}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1466,7 +1466,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="`" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("agrave")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-agrave"):Mode.Remove("agrave")</Cmd>
                           </KeyProgram>
@@ -1475,7 +1475,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F7" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F7}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1483,7 +1483,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="7" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"7"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1491,7 +1491,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="è" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"è"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1503,7 +1503,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F8" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F8}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1511,7 +1511,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F8" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F8}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1519,15 +1519,15 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="\" />
                         <KeyDown>
-                          <KeyProgram>
-                            <Cmd>sendKey"{BACKSLASH}"</Cmd>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendString:\</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F8" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F8}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1535,7 +1535,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="8" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"8"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1543,7 +1543,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="_" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"_"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1555,7 +1555,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F9" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F9}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1563,7 +1563,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F9" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F9}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1571,7 +1571,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="^" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1579,7 +1579,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F9" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F9}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1587,7 +1587,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="9" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"9"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1595,7 +1595,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="ç" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ç"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1607,7 +1607,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F10" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F10}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1615,7 +1615,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F10" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F10}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1623,15 +1623,15 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="@" />
                         <KeyDown>
-                          <KeyProgram>
-                            <Cmd>sendKey"@"</Cmd>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendString:@</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F10" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F10}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1639,7 +1639,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="0" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"0"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1647,7 +1647,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="à" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"à"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1659,7 +1659,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F11" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F11}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1667,7 +1667,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F11" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F11}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1675,15 +1675,15 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="]" />
                         <KeyDown>
-                          <KeyProgram>
-                            <Cmd>sendKey"]"</Cmd>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendString:]</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F11" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F11}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1691,7 +1691,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="°" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"°"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1699,7 +1699,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label=")" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey")"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1711,7 +1711,7 @@
                       <KeyMode Mode="alt+fn" Enabled="true" Description="">
                         <KeyUp Label="F12" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%{F12}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1719,7 +1719,7 @@
                       <KeyMode Mode="fn+shift" Enabled="true" Description="">
                         <KeyUp Label="F12" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{F12}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1727,7 +1727,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="}" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1735,7 +1735,7 @@
                       <KeyMode Mode="fn" Enabled="true" Description="">
                         <KeyUp Label="F12" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{F12}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1743,7 +1743,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="+" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1751,7 +1751,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="=" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"="</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1763,7 +1763,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="RetArr" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{BACKSPACE}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1779,7 +1779,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Tab" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{TAB}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1791,7 +1791,7 @@
                       <KeyMode Mode="agrave+shift" Enabled="true" Description="">
                         <KeyUp Label="À" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"À"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1799,7 +1799,7 @@
                       <KeyMode Mode="papo+shift" Enabled="true" Description="">
                         <KeyUp Label="Â" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Â"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1807,7 +1807,7 @@
                       <KeyMode Mode="shift+tilde" Enabled="true" Description="">
                         <KeyUp Label="Ã" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ã"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1815,7 +1815,7 @@
                       <KeyMode Mode="shift+trema" Enabled="true" Description="">
                         <KeyUp Label="Ä" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ä"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1823,7 +1823,7 @@
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyUp Label="à" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"à"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1831,7 +1831,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="a" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^a"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1839,7 +1839,7 @@
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyUp Label="â" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"â"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1847,7 +1847,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="A" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"A"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1855,7 +1855,7 @@
                       <KeyMode Mode="tilde" Enabled="true" Description="">
                         <KeyUp Label="ã" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ã"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1863,7 +1863,7 @@
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ä" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ä"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1871,7 +1871,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="a" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"a"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1883,7 +1883,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="z" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^z"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1891,7 +1891,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="Z" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Z"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1899,7 +1899,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="z" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"z"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1911,7 +1911,7 @@
                       <KeyMode Mode="agrave+shift" Enabled="true" Description="">
                         <KeyUp Label="È" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"È"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1919,7 +1919,7 @@
                       <KeyMode Mode="alt+papo" Enabled="true" Description="">
                         <KeyUp Label="ê" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ê"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1927,7 +1927,7 @@
                       <KeyMode Mode="papo+shift" Enabled="true" Description="">
                         <KeyUp Label="Ê" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ê"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1935,7 +1935,7 @@
                       <KeyMode Mode="shift+trema" Enabled="true" Description="">
                         <KeyUp Label="Ë" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ë"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1943,7 +1943,7 @@
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyUp Label="è" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"è"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1951,7 +1951,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="€" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"€"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1959,7 +1959,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="e" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^e"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1967,7 +1967,7 @@
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyUp Label="ê" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ê"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1975,7 +1975,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="E" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"E"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1983,7 +1983,7 @@
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ë" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ë"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -1991,7 +1991,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="e" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"e"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2003,7 +2003,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="r" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^r"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2011,7 +2011,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="R" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"R"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2019,7 +2019,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="r" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"r"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2031,7 +2031,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="t" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^t"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2039,7 +2039,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="T" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"T"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2047,7 +2047,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="t" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"t"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2059,7 +2059,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="y" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^y"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2067,7 +2067,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="Y" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Y"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2075,7 +2075,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="y" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"y"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2087,7 +2087,7 @@
                       <KeyMode Mode="agrave+shift" Enabled="true" Description="">
                         <KeyUp Label="Ù" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ù"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2095,7 +2095,7 @@
                       <KeyMode Mode="papo+shift" Enabled="true" Description="">
                         <KeyUp Label="Û" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Û"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2103,7 +2103,7 @@
                       <KeyMode Mode="shift+trema" Enabled="true" Description="">
                         <KeyUp Label="Ü" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ü"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2111,7 +2111,7 @@
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyUp Label="ù" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ù"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2119,7 +2119,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="u" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^u"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2127,7 +2127,7 @@
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyUp Label="û" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"û"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2135,7 +2135,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="U" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"U"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2143,7 +2143,7 @@
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ü" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ü"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2151,7 +2151,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="u" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"u"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2163,7 +2163,7 @@
                       <KeyMode Mode="agrave+shift" Enabled="true" Description="">
                         <KeyUp Label="Ì" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ì"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2171,7 +2171,7 @@
                       <KeyMode Mode="papo+shift" Enabled="true" Description="">
                         <KeyUp Label="Î" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Î"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2179,7 +2179,7 @@
                       <KeyMode Mode="shift+trema" Enabled="true" Description="">
                         <KeyUp Label="Ï" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ï"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2187,7 +2187,7 @@
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyUp Label="ì" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ì"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2195,7 +2195,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="i" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^i"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2203,7 +2203,7 @@
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyUp Label="î" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"î"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2211,7 +2211,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="I" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"I"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2219,7 +2219,7 @@
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ï" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ï"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2227,7 +2227,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="i" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"i"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2239,7 +2239,7 @@
                       <KeyMode Mode="agrave+shift" Enabled="true" Description="">
                         <KeyUp Label="Ò" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ò"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2247,7 +2247,7 @@
                       <KeyMode Mode="papo+shift" Enabled="true" Description="">
                         <KeyUp Label="Ô" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ô"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2255,7 +2255,7 @@
                       <KeyMode Mode="shift+tilde" Enabled="true" Description="">
                         <KeyUp Label="Õ" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Õ"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2263,7 +2263,7 @@
                       <KeyMode Mode="shift+trema" Enabled="true" Description="">
                         <KeyUp Label="Ö" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ö"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2271,7 +2271,7 @@
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyUp Label="ò" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ò"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2279,7 +2279,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="o" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^o"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2287,7 +2287,7 @@
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyUp Label="ô" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ô"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2295,7 +2295,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="O" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"O"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2303,7 +2303,7 @@
                       <KeyMode Mode="tilde" Enabled="true" Description="">
                         <KeyUp Label="õ" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"õ"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2311,7 +2311,7 @@
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ö" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ö"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2319,7 +2319,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="o" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"o"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2331,7 +2331,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="p" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^p"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2339,7 +2339,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="P" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"P"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2347,7 +2347,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="p" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"p"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2359,7 +2359,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="¨" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Remove("shift")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-shift"):Mode.Remove("shiftÑ")</Cmd>
                             <Cmd>Mode.Toggle("trema")</Cmd>
@@ -2370,7 +2370,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="^" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("papo")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-papo"):Mode.Remove("papo")</Cmd>
                           </KeyProgram>
@@ -2383,7 +2383,7 @@
                       <KeyMode Mode="alt" Enabled="true" Description="">
                         <KeyUp Label="¤" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"¤"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2391,7 +2391,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="£" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"£"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2399,7 +2399,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="$" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"$"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2411,7 +2411,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Entrée" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{ENTER}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2427,7 +2427,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Verr. maj" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("shift")</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2439,7 +2439,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="q" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^q"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2447,7 +2447,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="Q" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Q"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2455,7 +2455,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="q" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"q"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2467,7 +2467,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="s" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^s"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2475,7 +2475,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="S" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"S"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2483,7 +2483,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="s" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"s"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2495,7 +2495,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="d" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^d"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2503,7 +2503,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="D" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"D"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2511,7 +2511,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="d" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"d"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2523,7 +2523,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="f" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^f"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2531,7 +2531,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="F" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"F"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2539,7 +2539,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="f" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"f"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2551,7 +2551,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="g" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^g"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2559,7 +2559,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="G" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"G"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2567,7 +2567,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="g" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"g"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2579,7 +2579,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="h" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^j"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2587,7 +2587,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="H" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"H"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2595,7 +2595,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="h" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"h"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2607,7 +2607,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="j" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^j"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2615,7 +2615,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="J" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"J"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2623,7 +2623,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="j" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"j"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2635,7 +2635,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="k" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^k"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2643,7 +2643,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="K" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"K"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2651,7 +2651,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="k" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"k"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2663,7 +2663,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="l" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^l"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2671,7 +2671,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="L" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"L"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2679,7 +2679,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="l" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"l"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2691,7 +2691,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="m" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^m"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2699,7 +2699,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="M" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"M"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2707,7 +2707,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="m" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"m"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2719,7 +2719,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="%" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"%"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2727,7 +2727,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="ù" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ù"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2739,7 +2739,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="µ" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"µ"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2747,7 +2747,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="*" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"*"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2763,7 +2763,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Maj" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("shift")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-shift"):Mode.Remove("shift")</Cmd>
                           </KeyProgram>
@@ -2776,7 +2776,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="&gt;" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"&gt;"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2788,7 +2788,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="&lt;" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"&lt;"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2800,7 +2800,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="w" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^w"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2808,7 +2808,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="W" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"W"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2816,7 +2816,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="w" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"w"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2828,7 +2828,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="x" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^x"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2836,7 +2836,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="X" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"X"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2844,7 +2844,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="x" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"x"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2856,7 +2856,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="c" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^c"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2864,7 +2864,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="C" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"C"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2872,7 +2872,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="c" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"c"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2884,7 +2884,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="v" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^v"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2892,7 +2892,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="V" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"V"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2900,7 +2900,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="v" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"v"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2912,7 +2912,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="b" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^b"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2920,7 +2920,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="B" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"B"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2928,7 +2928,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="b" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"b"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2940,7 +2940,7 @@
                       <KeyMode Mode="shift+tilde" Enabled="true" Description="">
                         <KeyUp Label="Ñ" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"Ñ"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2948,7 +2948,7 @@
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyUp Label="n" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^n"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2956,7 +2956,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="N" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"N"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2964,7 +2964,7 @@
                       <KeyMode Mode="tilde" Enabled="true" Description="">
                         <KeyUp Label="ñ" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"ñ"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2972,7 +2972,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="n" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"n"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2984,7 +2984,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="?" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"?"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -2992,7 +2992,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="," />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey","</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3004,7 +3004,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="." />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"."</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3012,7 +3012,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label=";" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey";"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3024,7 +3024,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="/" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"/"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3032,7 +3032,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label=":" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey":"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3044,7 +3044,7 @@
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyUp Label="§" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"§"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3052,7 +3052,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="!" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"!"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3064,7 +3064,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Maj" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("shift")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-shift"):Mode.Remove("shift")</Cmd>
                           </KeyProgram>
@@ -3077,7 +3077,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Suppr" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{DELETE}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3092,28 +3092,28 @@
                     <KeyModes>
                       <KeyMode Mode="ctrl+shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^+{UP}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^{UP}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{UP}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{UP}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3124,28 +3124,28 @@
                     <KeyModes>
                       <KeyMode Mode="ctrl+shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^+{LEFT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^{LEFT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{LEFT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{LEFT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3156,28 +3156,28 @@
                     <KeyModes>
                       <KeyMode Mode="ctrl+shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^+{DOWN}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^{DOWN}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{DOWN}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{DOWN}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3188,28 +3188,28 @@
                     <KeyModes>
                       <KeyMode Mode="ctrl+shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^+{RIGHT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="ctrl" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^{RIGHT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="shift" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"+{RIGHT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"{RIGHT}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3225,7 +3225,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Ctrl" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("ctrl")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
                           </KeyProgram>
@@ -3238,7 +3238,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Win" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>DynCommand("WindowsKey")</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3250,7 +3250,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Alt" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("alt")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
                           </KeyProgram>
@@ -3262,35 +3262,35 @@
                     <KeyModes>
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"`"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"^"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="tilde" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"~"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey"¨"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>sendKey" "</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3302,7 +3302,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="CtxMenu" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>DynCommand("ContextMenu")</Cmd>
                           </KeyProgram>
                         </KeyDown>
@@ -3314,7 +3314,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Alt" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("alt")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
                           </KeyProgram>
@@ -3327,7 +3327,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Ctrl" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("ctrl")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
                           </KeyProgram>
@@ -3344,7 +3344,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Fn" />
                         <KeyDown>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>Mode.Toggle("fn")</Cmd>
                             <Cmd>MonitorOnce.SendKey("autoclose-fn"):Mode.Remove("fn")</Cmd>
                           </KeyProgram>
@@ -3357,7 +3357,7 @@
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Hide" />
                         <KeyPressed>
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>DynCommand("HideSkin")</Cmd>
                           </KeyProgram>
                         </KeyPressed>
@@ -3368,7 +3368,7 @@
                     <KeyModes>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Exit">
-                          <KeyProgram>
+                          <KeyProgram xml:space="preserve">
                             <Cmd>DynCommand("ShutDown")</Cmd>
                           </KeyProgram>
                         </KeyUp>
@@ -3433,20 +3433,36 @@
                         <LayoutKeyMode Mode="" X="740" Y="50" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="14">
-                        <LayoutKeyMode Mode="" X="795" Y="50" W="75" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="795" Y="50" W="75" H="50" Visible="true">
+						  <PluginsData>
+							<p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+							<data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+							  <Image Source="pack://application:,,,/SimpleSkin;component/Images/retarr.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />
+							</data>
+							</p>
+						   </PluginsData>
+						</LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
                   <Zone Name="{Tab}azertyuiop{enter}">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="2" Y="105" W="100" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="2" Y="105" W="100" H="50" Visible="true">
+						  <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/tab.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+						</LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="agrave" X="105" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3455,7 +3471,7 @@
                         <LayoutKeyMode Mode="papo" X="105" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3464,7 +3480,7 @@
                         <LayoutKeyMode Mode="tilde" X="105" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3473,7 +3489,7 @@
                         <LayoutKeyMode Mode="trema" X="105" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3488,7 +3504,7 @@
                         <LayoutKeyMode Mode="agrave" X="215" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3497,7 +3513,7 @@
                         <LayoutKeyMode Mode="papo" X="215" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3506,7 +3522,7 @@
                         <LayoutKeyMode Mode="trema" X="215" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3524,10 +3540,10 @@
                         <LayoutKeyMode Mode="" X="380" Y="105" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="agrave" X="435" Y="155" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="agrave" X="435" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3536,7 +3552,7 @@
                         <LayoutKeyMode Mode="papo" X="435" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3545,7 +3561,7 @@
                         <LayoutKeyMode Mode="trema" X="435" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3557,7 +3573,7 @@
                         <LayoutKeyMode Mode="agrave" X="490" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3566,7 +3582,7 @@
                         <LayoutKeyMode Mode="papo" X="490" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3575,7 +3591,7 @@
                         <LayoutKeyMode Mode="trema" X="490" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3587,7 +3603,7 @@
                         <LayoutKeyMode Mode="agrave" X="545" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3596,7 +3612,7 @@
                         <LayoutKeyMode Mode="papo" X="545" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3605,7 +3621,7 @@
                         <LayoutKeyMode Mode="tilde" X="545" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3614,7 +3630,7 @@
                         <LayoutKeyMode Mode="trema" X="545" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3632,7 +3648,15 @@
                         <LayoutKeyMode Mode="" X="710" Y="105" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
-                        <LayoutKeyMode Mode="" X="785" Y="105" W="85" H="105" Visible="true" />
+                        <LayoutKeyMode Mode="" X="785" Y="105" W="85" H="105" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/enter.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -3642,16 +3666,27 @@
                         <LayoutKeyMode Mode="shift" X="2" Y="160" W="120" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
+                              </data>
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/padlock.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="160" W="120" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="2" Y="160" W="120" H="50" Visible="true">
+						<PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/padlock.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+						</LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="125" Y="160" W="50" H="50" Visible="true" />
@@ -3697,16 +3732,24 @@
                         <LayoutKeyMode Mode="shift" X="2" Y="215" W="100" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/maj.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
+							  <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="215" W="100" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="2" Y="215" W="100" H="50" Visible="true">
+							<PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/maj.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />
+                              </data>
+                            </p>
+                          </PluginsData>
+						</LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="105" Y="215" W="50" H="25" Visible="true" />
@@ -3733,7 +3776,7 @@
                         <LayoutKeyMode Mode="tilde" X="435" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
@@ -3757,16 +3800,24 @@
                         <LayoutKeyMode Mode="shift" X="710" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/maj.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
+							  <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="710" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="710" Y="215" W="50" H="50" Visible="true">
+						  <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/maj.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" />
+                              </data>
+							</p>
+                          </PluginsData>
+						</LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="14">
                         <LayoutKeyMode Mode="" X="820" Y="215" W="50" H="50" Visible="true" />
@@ -3779,7 +3830,7 @@
                         <LayoutKeyMode Mode="" X="765" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/toparrow.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3790,7 +3841,7 @@
                         <LayoutKeyMode Mode="" X="710" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/leftarrow.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3801,7 +3852,7 @@
                         <LayoutKeyMode Mode="" X="765" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/downarrow.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3812,7 +3863,7 @@
                         <LayoutKeyMode Mode="" X="820" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/rightarrow.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3827,10 +3878,10 @@
                         <LayoutKeyMode Mode="ctrl" X="2" Y="270" W="75" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
                               </data>
                             </p>
@@ -3842,7 +3893,7 @@
                         <LayoutKeyMode Mode="" X="80" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/windows.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3853,10 +3904,10 @@
                         <LayoutKeyMode Mode="alt" X="135" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
                               </data>
                             </p>
@@ -3871,7 +3922,7 @@
                         <LayoutKeyMode Mode="" X="545" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/menu.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3882,10 +3933,10 @@
                         <LayoutKeyMode Mode="alt" X="600" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
                               </data>
                             </p>
@@ -3897,10 +3948,10 @@
                         <LayoutKeyMode Mode="ctrl" X="655" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
                               </data>
                             </p>
@@ -3916,10 +3967,10 @@
                         <LayoutKeyMode Mode="fn" X="880" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF7A7A7A</Color>
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
                               </data>
-                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="LetterColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFFFFFFF</Color>
                               </data>
                             </p>
@@ -3931,7 +3982,7 @@
                         <LayoutKeyMode Mode="" X="880" Y="160" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/eye.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3942,7 +3993,7 @@
                         <LayoutKeyMode Mode="" X="880" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/exit.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
@@ -3954,10 +4005,10 @@
                 </Zones>
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                    <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                    <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">1048,310</Size>
                     </data>
-                    <data key="InsideBorderColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                    <data key="InsideBorderColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF66AC1B</Color>
                     </data>
                     <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>

@@ -11,7 +11,7 @@
             MaxWidth="800"
             MinWidth="400"  
             MinHeight="302"
-            Icon="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico"
+            Icon="pack://application:,,,/CiviKey;component/Resources/Icons/CiviKey.ico"
             ShowInTaskbar="{Binding ShowTaskbarIcon}"
             SizeToContent="WidthAndHeight">
     <Window.Resources>

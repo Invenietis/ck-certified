@@ -1,36 +1,22 @@
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.Grid.Row	None	False	True		0
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:CK.Plugins.ObjectExplorer.TypeAheadBehaviour.IsEnabled	Text	True	True		True
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.Primitives.TextBoxBase.IsReadOnly	None	False	True		False
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.Text	Text	True	True		Rechercher
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.MaxLength	None	True	False		10
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.FrameworkElement.Margin	None	False	True		0,0,0,10
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		#Logs-treenode;#SystemInfos-treenode;#ApplicationInfos-treenode;
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		General
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/general.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/LogImages/LogIcon.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		WAAAAAAAAAAAAAAAAAAAAAH
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/osinfo.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		System informations
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	ApplicationInfos-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	ApplicationInfos-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/assembly.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	ApplicationInfos-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Application informations
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Assemblies
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/assembly.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Plugins
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:CK.Plugins.ObjectExplorer.AutoExpand.IsEnabled	Menu	True	True		True
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/plugin.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Services
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:CK.Plugins.ObjectExplorer.AutoExpand.IsEnabled	Menu	True	True		True
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/service.png
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Categories
-ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/category.png
+﻿ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-definitionheader:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Definition informations
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-definitionheader:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyfullname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyfullname:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly full name :
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyversion:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyversion:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly version :
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblypath:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblypath:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly path :
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.ColumnSpan	None	False	True		3
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.Row	None	False	True		3
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Assembly content
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.Text	Text	True	True		Services
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins
 ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
 ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
 ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		17
@@ -77,31 +63,78 @@ ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-osbits:Sys
 ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-hardbits:System.Windows.Controls.Label.$Content	Label	True	True		Machine bits
 ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-hardbits:System.Windows.Controls.Grid.Column	None	False	True		0
 ObjectExplorer.g.en-US.resources:systeminformations.baml	sysinfo-hard-hardbits:System.Windows.Controls.Grid.Row	None	False	True		8
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-definitionheader:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Definition informations
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-definitionheader:System.Windows.Controls.Grid.Row	None	False	True		1
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyfullname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyfullname:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly full name :
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyversion:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblyversion:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly version :
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblypath:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-assemblypath:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly path :
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.Column	None	False	True		0
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.ColumnSpan	None	False	True		3
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.Grid.Row	None	False	True		3
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Assembly content
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-servicestitle:System.Windows.Controls.TextBlock.Text	Text	True	True		Services
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
-ObjectExplorer.g.en-US.resources:assemblydatatemplate.baml	assembly-content-pluginstitle:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.Grid.Row	None	False	True		0
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:CK.Plugins.ObjectExplorer.TypeAheadBehaviour.IsEnabled	Text	True	True		True
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.Primitives.TextBoxBase.IsReadOnly	None	False	True		False
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.Text	Text	True	True		Search
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.Controls.TextBox.MaxLength	None	True	False		10
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Search-treenode:System.Windows.FrameworkElement.Margin	None	False	True		0,0,0,10
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		#Logs-treenode;#SystemInfos-treenode;#ApplicationInfos-treenode;
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		General
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	General-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/general.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/LogImages/LogIcon.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Logs-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Logs
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/osinfo.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	SystemInfos-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		System informations
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	ApplicationInfos-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	ApplicationInfos-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/assembly.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	ApplicationInfos-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Application informations
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Assemblies
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Assemblies-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/assembly.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Plugins
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:CK.Plugins.ObjectExplorer.AutoExpand.IsEnabled	Menu	True	True		True
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Plugins-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/plugin.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Services
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:CK.Plugins.ObjectExplorer.AutoExpand.IsEnabled	Menu	True	True		True
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Services-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/service.png
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:System.Windows.Controls.TreeViewItem.$Content	Menu	True	True		
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:System.Windows.Controls.HeaderedItemsControl.Header	Menu	True	True		Categories
+ObjectExplorer.g.en-US.resources:vmicontextview.baml	Categories-treenode:CK.Plugins.ObjectExplorer.TreeViewItemImage.Image	Menu	True	True		Resources/TreeImages/category.png
 ObjectExplorer.g.en-US.resources:applicationinformations.baml	appinfo-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
 ObjectExplorer.g.en-US.resources:applicationinformations.baml	appinfo-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
 ObjectExplorer.g.en-US.resources:applicationinformations.baml	appinfo-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		17
 ObjectExplorer.g.en-US.resources:applicationinformations.baml	appinfo-title:System.Windows.FrameworkElement.Margin	None	False	True		10 0 0 0
 ObjectExplorer.g.en-US.resources:applicationinformations.baml	appinfo-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Application informations
 ObjectExplorer.g.en-US.resources:applicationinformations.baml	appinfo-title:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.FontSize	None	True	True		14
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.FontWeight	None	True	True		DemiBold
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.Text	Text	True	True		Available
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Definition informations
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.Grid.Row	None	False	True		1
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyname:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly name : 
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyinfo:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyinfo:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly info : 
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFFF0000
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.UIElement.Visibility	None	False	True		Collapsed
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.Text	Text	True	True		Error message : 
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.Grid.Column	None	False	True		0
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.Grid.ColumnSpan	None	False	True		3
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.Grid.Row	None	False	True		4
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Linked plugins
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins that implement this service
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		All the plugins that implement this service (there can only be one launched at a given time)
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins that reference this service
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		All the plugins that use this service
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-unavailable:System.Windows.Setter.Property	None	False	False		TextBlock.Text
+ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-unavailable:System.Windows.Setter.Value	None	False	True		Service unavailable
 ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-disabled:CK.Plugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
 ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-disabled:CK.Plugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		Disabled
 ObjectExplorer.g.en-US.resources:plugindatatemplate.baml	ConfigPluginStatus-disabled:CK.Plugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Disabled
@@ -231,39 +264,6 @@ ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexisttrystar
 ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexistandrun:CK.Plugins.ObjectExplorer.EnumDisplayEntry.$Content	None	True	True		
 ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexistandrun:CK.Plugins.ObjectExplorer.EnumDisplayEntry.EnumValue	None	True	True		MustExistAndRun
 ObjectExplorer.g.en-US.resources:styles.baml	RunningRequirement-mustexistandrun:CK.Plugins.ObjectExplorer.EnumDisplayEntry.DisplayString	None	True	True		Must exist and run
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.FontSize	None	True	True		14
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.FontWeight	None	True	True		DemiBold
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.Controls.TextBlock.Text	Text	True	True		Available
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-available:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Definition informations
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.Grid.Row	None	False	True		1
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations:System.Windows.Controls.Grid.Column	None	False	True		0
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyname:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyname:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly name : 
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyinfo:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-assemblyinfo:System.Windows.Controls.TextBlock.Text	Text	True	True		Assembly info : 
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFFF0000
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.UIElement.Visibility	None	False	True		Collapsed
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-informations-errormessage:System.Windows.Controls.TextBlock.Text	Text	True	True		Error message : 
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.Grid.Column	None	False	True		0
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.Grid.ColumnSpan	None	False	True		3
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.Grid.Row	None	False	True		4
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Linked plugins
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations:System.Windows.UIElement.SnapsToDevicePixels	None	False	True		True
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins that implement this service
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-implementations-title:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		All the plugins that implement this service (there can only be one launched at a given time)
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.FontSize	None	True	True		11
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Plugins that reference this service
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-references-title:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		All the plugins that use this service
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-unavailable:System.Windows.Setter.Property	None	False	False		TextBlock.Text
-ObjectExplorer.g.en-US.resources:servicedatatemplate.baml	service-unavailable:System.Windows.Setter.Value	None	False	True		Service unavailable
 ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header:System.Windows.Controls.Expander.IsExpanded	None	False	True		True
 ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header:System.Windows.Controls.Expander.ExpandDirection	None	True	False		Down
 ObjectExplorer.g.en-US.resources:logsdatatemplates.baml	log-configuration-methods-header:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Methods

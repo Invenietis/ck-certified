@@ -110,14 +110,14 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
-            if(_skinWindow != null) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+            if( _skinWindow != null ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
         }
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( _skinWindow != null)
+            if( _skinWindow != null )
             {
-                
+
                 if( Config.User[PlacementString] != null )
                 {
                     WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];

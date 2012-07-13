@@ -30,9 +30,11 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -78,74 +80,86 @@
     <Reference Include="Accessibility">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Caliburn.Micro, Version=1.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=1.3.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
     <Reference Include="CK.Context">
-      <HintPath>..\Runtime\Current\CK.Context.dll</HintPath>
+      <HintPath>..\packages\CK.Context.2.7.13-develop\lib\net40\CK.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Core.2.7.3\lib\net40\CK.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CK.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CK.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="CK.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Interop.dll</HintPath>
+      <HintPath>..\packages\CK.Interop.2.7.5-develop\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config">
-      <HintPath>..\Runtime\Current\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\packages\CK.Plugin.Config.2.7.13-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\Runtime\Current\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\packages\CK-Plugin.2.7.13-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Discoverer">
+      <HintPath>..\packages\CK-Runner.2.7.13-develop\lib\net40\CK.Plugin.Discoverer.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Discoverer.Runner">
+      <HintPath>..\packages\CK-Runner.2.7.13-develop\lib\net40\CK.Plugin.Discoverer.Runner.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Host">
+      <HintPath>..\packages\CK-Runner.2.7.13-develop\lib\net40\CK.Plugin.Host.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\Runtime\Current\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\packages\CK-Plugin.2.7.13-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Runner">
-      <HintPath>..\Runtime\Current\CK.Plugin.Runner.dll</HintPath>
+      <HintPath>..\packages\CK-Runner.2.7.13-develop\lib\net40\CK.Plugin.Runner.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Reflection.2.7.5-develop\lib\net40\CK.Reflection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CK.SharedDic">
+      <HintPath>..\packages\CK.SharedDic.2.7.13-develop\lib\net40\CK.SharedDic.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Reflection.dll</HintPath>
+      <HintPath>..\packages\CK.Storage.2.7.5-develop\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage">
-      <HintPath>..\Runtime\Current\CK.Storage.dll</HintPath>
+    <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Windows.App.2.7.13-develop\lib\net40\CK.Windows.App.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.App">
-      <HintPath>..\Runtime\Current\CK.Windows.App.dll</HintPath>
+    <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Windows.Config.2.7.13-develop\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8692c11e1bce2429, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Windows.Core.2.7.13-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CK.Windows.Interop.2.7.13-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=2.1.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Windows.Config.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8692c11e1bce2429, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\CK.Windows.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\Common.Logging.dll</HintPath>
+      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Common.Logging.Log4Net1211">
-      <HintPath>..\Runtime\Current\Common.Logging.Log4Net1211.dll</HintPath>
+      <HintPath>..\packages\Common.Logging.Log4Net1211.2.1.1\lib\net40\Common.Logging.Log4Net1211.dll</HintPath>
     </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.3.0, Culture=neutral, PublicKeyToken=8692c11e1bce2429, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Runtime\Current\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\log4net.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-client\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.1.2.0\lib\Net40\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -172,8 +186,16 @@
     </Compile>
     <Compile Include="CiviKeyStandardHost.cs" />
     <Compile Include="CommonLogger.cs" />
-    <Compile Include="Resources\R.Designer.cs" />
-    <Compile Include="Resources\R.fr.Designer.cs" />
+    <Compile Include="Resources\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\R.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppConfigViewModel.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
@@ -237,23 +259,26 @@
     <ProjectReference Include="..\Host.Services\Host.Services.csproj">
       <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
       <Name>Host.Services</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
       <Name>CK.Keyboard.Model</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
-    <EmbeddedResource Include="Resources\Contexts\ContextCiviKeyStandard.xml" />
+    <None Include="Resources\Contexts\ContextCiviKey.xml.old.old" />
     <Resource Include="Resources\Icons\CiviKey.ico" />
     <Resource Include="Resources\Icons\logo_16x16.ico" />
     <Resource Include="Resources\Images\accept.png" />
@@ -301,9 +326,13 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

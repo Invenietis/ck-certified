@@ -167,8 +167,8 @@ namespace CK.Plugins.AutoClick
             _wpfStandardClickTypeWindow.SetPlacement( (WINDOWPLACEMENT)Config.User["AutoClickWindowPlacement"] );
 
             //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
-            if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_wpfStandardClickTypeWindow.Left, (int)_wpfStandardClickTypeWindow.Top ) ) 
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_wpfStandardClickTypeWindow.Left + _wpfStandardClickTypeWindow.ActualWidth), (int)_wpfStandardClickTypeWindow.Top )))
+            if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_wpfStandardClickTypeWindow.Left, (int)_wpfStandardClickTypeWindow.Top ) )
+                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _wpfStandardClickTypeWindow.Left + _wpfStandardClickTypeWindow.ActualWidth ), (int)_wpfStandardClickTypeWindow.Top ) ) )
             {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }

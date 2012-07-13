@@ -70,15 +70,15 @@ namespace CiviKeyPostInstallScript
             string contextPath;
             string contextDir;
 
-            Console.Out.WriteLine( "Version :" + args[0] );
-            Console.Out.WriteLine( "AppName :" + args[1] );
-            Console.Out.WriteLine( "DistributionName :" + args[2] );
-            Console.Out.WriteLine( "AupdateServerUrl :" + args[3] );
-            Console.Out.WriteLine( "UpdaterGUID :" + args[4] );
-            Console.Out.WriteLine( "RemoveExistingCtx :" + args[5] );
-            Console.Out.WriteLine( "IsStandAloneInstance :" + args[6] );
-            Console.Out.WriteLine( "standAloneConfigDir :" + args[7] );
-            Console.Out.WriteLine( "ApplicationExePath :" + args[8] );
+            //Console.Out.WriteLine( "Version :" + args[0] );
+            //Console.Out.WriteLine( "AppName :" + args[1] );
+            //Console.Out.WriteLine( "DistributionName :" + args[2] );
+            //Console.Out.WriteLine( "AupdateServerUrl :" + args[3] );
+            //Console.Out.WriteLine( "UpdaterGUID :" + args[4] );
+            //Console.Out.WriteLine( "RemoveExistingCtx :" + args[5] );
+            //Console.Out.WriteLine( "IsStandAloneInstance :" + args[6] );
+            //Console.Out.WriteLine( "standAloneConfigDir :" + args[7] );
+            //Console.Out.WriteLine( "ApplicationExePath :" + args[8] );
             //Console.Read();
 
             string version = args[0];
@@ -114,9 +114,9 @@ namespace CiviKeyPostInstallScript
             userConfPath = Path.Combine( userConfDir, "User.config.ck" );
             contextPath = Path.Combine( contextDir, "Context.xml" );
 
-            Console.Out.WriteLine( "systemConfPath :" + systemConfPath );
-            Console.Out.WriteLine( "userConfPath :" + userConfPath );
-            Console.Out.WriteLine( "contextPath :" + contextPath );
+            //Console.Out.WriteLine( "systemConfPath :" + systemConfPath );
+            //Console.Out.WriteLine( "userConfPath :" + userConfPath );
+            //Console.Out.WriteLine( "contextPath :" + contextPath );
 
             string hostGuid = "1A2DC25C-E357-488A-B2B2-CD2D7E029856";
             string updateDoneDir = Path.Combine( Path.GetTempPath(), _appName + Path.DirectorySeparatorChar + _distributionName );
@@ -136,7 +136,7 @@ namespace CiviKeyPostInstallScript
 
                 xPathDoc.Save( systemConfPath );
 
-                UpgradeUser35To40( xPathNav );
+                //UpgradeUser35To40( xPathNav );
 
                 if( removeExistingCtx )
                 {

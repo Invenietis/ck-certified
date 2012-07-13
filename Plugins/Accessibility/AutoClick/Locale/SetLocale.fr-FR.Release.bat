@@ -9,11 +9,10 @@ copy ..\..\..\..\Output\Release\Plugins\en-US\AutoClick.resources.dll ..\..\..\.
 echo ------------------------ generate with LocBaml ------------------------
 cd ..\..\..\..\Output\Release\
 mkdir Plugins\fr-FR
-LocBaml /generate en-US\AutoClick.resources.dll /trans:..\..\Plugins\Accessibility\AutoClick\Locale\fr-FR.txt /cult:fr-FR /out:Plugins\fr-FR
+LocBaml /generate Plugins\en-US\AutoClick.resources.dll /trans:..\..\Plugins\Accessibility\AutoClick\Locale\fr-FR.txt /cult:fr-FR /out:Plugins\fr-FR
 
 echo ------------------------ clean ------------------------
 del en-US\AutoClick.resources.dll
 del LocBaml.exe
 del AutoClick.dll
-
 pause

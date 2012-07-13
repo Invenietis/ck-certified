@@ -267,4 +267,7 @@
   <data name="NewContextDisplayName" xml:space="preserve">
     <value>Created on {0:D}</value>
   </data>
+  <data name="FeatureEnable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
 </root>

@@ -68,7 +68,18 @@ namespace Host.Resources {
                 return ResourceManager.GetString("AdvancedUserNotice", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Enable.
+        /// </summary>
+        public static string FeatureEnable
+        {
+            get
+            {
+                return ResourceManager.GetString( "FeatureEnable", resourceCulture );
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Application Configuration.
         /// </summary>

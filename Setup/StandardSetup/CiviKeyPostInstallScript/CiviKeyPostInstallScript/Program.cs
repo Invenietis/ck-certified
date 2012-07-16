@@ -136,7 +136,7 @@ namespace CiviKeyPostInstallScript
 
                 xPathDoc.Save( systemConfPath );
 
-                //UpgradeUser35To40( xPathNav );
+                UpgradeUser35To40( xPathNav );
 
                 if( removeExistingCtx )
                 {

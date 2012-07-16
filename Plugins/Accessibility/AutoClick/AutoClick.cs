@@ -140,8 +140,8 @@ namespace CK.Plugins.AutoClick
             _wpfStandardClickTypeWindow = new WPFStdClickTypeWindow() { DataContext = this };
 
             _showMousePanelOption = Config.User.GetOrSet<bool>( "ShowMousePanelOption", true );
-            int defaultWidth = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 20;
             int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
+            int defaultWidth = defaultHeight / 4;
 
             if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
             {

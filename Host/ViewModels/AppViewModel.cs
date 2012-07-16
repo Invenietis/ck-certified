@@ -136,7 +136,7 @@ namespace Host
                 _closing = true;
                 Window thisView = GetView( null ) as Window;
                 Window bestParent = App.Current.GetTopWindow();
-                e.Cancel = System.Windows.MessageBox.Show( bestParent, "Are you sure to exit application ?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question ) != MessageBoxResult.Yes;
+                //e.Cancel = System.Windows.MessageBox.Show( bestParent, "Are you sure to exit application ?", "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question ) != MessageBoxResult.Yes;
                 if( bestParent != thisView ) thisView.Activate();
                 _closing = !e.Cancel;
             }

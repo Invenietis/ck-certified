@@ -300,7 +300,8 @@ namespace SimpleSkin
 
                 _miniView.Show();
 
-                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( MiniViewPositionX + (int)_miniView.ActualWidth / 2 ), (int)MiniViewPositionY + (int)_miniView.ActualHeight / 2 ) ) )
+                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( MiniViewPositionX + (int)_miniView.ActualWidth / 2 ), (int)MiniViewPositionY + (int)_miniView.ActualHeight / 2 ) ) ||
+                    !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( MiniViewPositionX + (int)_miniView.ActualWidth ), (int)MiniViewPositionY + (int)_miniView.ActualHeight ) ) )
                 {
                     _miniView.Left = 0;
                     _miniView.Top = 0;

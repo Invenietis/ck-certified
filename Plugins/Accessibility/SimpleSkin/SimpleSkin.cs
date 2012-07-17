@@ -10,7 +10,6 @@ using CK.Plugin.Config;
 using CommonServices;
 using Host.Services;
 using SimpleSkin.ViewModels;
-using System.Diagnostics;
 using CK.Windows;
 using CK.Windows.Helper;
 
@@ -75,6 +74,8 @@ namespace SimpleSkin
                 else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
 
                 _skinWindow.Show();
+
+
 
                 if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
 
@@ -262,8 +263,8 @@ namespace SimpleSkin
         {
             get
             {
-                var postion = Config.Context["MiniViewPositionX"];
-                if( postion == null )
+                var position = Config.Context["MiniViewPositionX"];
+                if( position == null )
                 {
                     System.Drawing.Rectangle rect = new System.Drawing.Rectangle();
                     System.Drawing.Point p = ScreenHelper.GetCenterOfParentScreen( rect );
@@ -271,7 +272,7 @@ namespace SimpleSkin
                     return p.X;
                 }
                 else
-                    return (double)postion;
+                    return (double)position;
             }
             set { Config.Context["MiniViewPositionX"] = value; }
         }
@@ -280,11 +281,12 @@ namespace SimpleSkin
         {
             get
             {
-                var postion = Config.Context["MiniViewPositionY"];
-                if( postion == null )
+                var position = Config.Context["MiniViewPositionY"];
+                if( position == null )
                     return 0;
                 else
-                    return (double)postion;
+                    return (double)position;
+
             }
             set { Config.Context["MiniViewPositionY"] = value; }
         }
@@ -295,9 +297,17 @@ namespace SimpleSkin
             {
                 _miniView = new MiniView( RestoreSkin ) { DataContext = this };
                 _miniView.Closing += new CancelEventHandler( OnWindowClosing );
-            }
 
-            _miniView.Show();
+                _miniView.Show();
+
+                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( MiniViewPositionX + (int)_miniView.ActualWidth / 2 ), (int)MiniViewPositionY + (int)_miniView.ActualHeight / 2 ) ) )
+                {
+                    _miniView.Left = 0;
+                    _miniView.Top = 0;
+                }
+            }
+            else
+                _miniView.Show();
         }
     }
 }

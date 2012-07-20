@@ -9,10 +9,10 @@ using CK.Plugin.Hosting;
 using CK.Core;
 using System.Collections;
 using System.IO;
-using CK.AppRecovery;
 using System.Diagnostics;
 using CommonServices;
 using ServiceLogs;
+using CK.Windows.App;
 
 namespace LogPlugin
 {

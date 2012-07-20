@@ -67,11 +67,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Core">
-      <HintPath>..\..\..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.2.7.26\lib\net40\CK.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Interop">
-      <HintPath>..\..\..\packages\CK.Interop.2.7.13\lib\net40\CK.Interop.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Interop.2.7.26\lib\net40\CK.Interop.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Config">
@@ -103,7 +103,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Reflection">
-      <HintPath>..\..\..\packages\CK.Reflection.2.7.13\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Reflection.2.7.26\lib\net40\CK.Reflection.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.SharedDic">
@@ -114,8 +114,8 @@
       <HintPath>..\..\..\packages\CK.Storage.2.7.13\lib\net40\CK.Storage.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Windows.App">
-      <HintPath>..\..\..\packages\CK.Windows.App.2.7.13\lib\net40\CK.Windows.App.dll</HintPath>
+    <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CK.Windows.App.2.8.16\lib\net40\CK.Windows.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.Core">

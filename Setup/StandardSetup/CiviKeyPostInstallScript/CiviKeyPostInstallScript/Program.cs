@@ -8,6 +8,7 @@ using System.Xml;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Configuration;
+using System.Security.Principal;
 
 namespace CiviKeyPostInstallScript
 {
@@ -37,6 +38,13 @@ namespace CiviKeyPostInstallScript
             get { return _appDataPath ?? GetFilePath( Environment.SpecialFolder.ApplicationData, out _appDataPath ); }
         }
 
+
+        public static void CurrentDomain_UnhandledException( object sender, UnhandledExceptionEventArgs e )
+        {
+            OnError( "Unhandled exception.\n\r" + e.ExceptionObject.ToString() );
+        }
+        
+
         /// <summary>
         /// 
         /// </summary>
@@ -51,6 +59,8 @@ namespace CiviKeyPostInstallScript
         ///                    8 - ApplicationExePath</param>
         static void Main( string[] args )
         {
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
+
             if( args == null || args.Length != 9 )
                 OnError( @"There is not the right number of parameters, there should be 9 of them :
                             0 - Version
@@ -119,10 +129,18 @@ namespace CiviKeyPostInstallScript
             //Console.Out.WriteLine( "contextPath :" + contextPath );
 
             string hostGuid = "1A2DC25C-E357-488A-B2B2-CD2D7E029856";
-            string updateDoneDir = Path.Combine( Path.GetTempPath(), _appName + Path.DirectorySeparatorChar + _distributionName );
+            string updateDoneDir = Path.Combine( CommonApplicationDataPath, "Updates" ); //AppNam//DistribName//Updates//UpdateDone
             string updateDone = Path.Combine( updateDoneDir, "UpdateDone" );
             Directory.CreateDirectory( updateDoneDir );
             File.Create( updateDone );
+
+            //Giving read/write/execute rights to any user on UpdateDone
+            FileSecurity f = File.GetAccessControl( updateDone );
+            var sid = new SecurityIdentifier( WellKnownSidType.BuiltinUsersSid, null );
+            NTAccount account = (NTAccount)sid.Translate( typeof( NTAccount ) );
+            f.AddAccessRule( new FileSystemAccessRule( account, FileSystemRights.Modify, AccessControlType.Allow ) );
+            File.SetAccessControl( updateDone, f );
+
 
             if( File.Exists( systemConfPath ) )
             {
@@ -250,6 +268,7 @@ namespace CiviKeyPostInstallScript
         public static void OnError( string message )
         {
             Console.Out.WriteLine( message );
+            Console.Out.WriteLine( "" );
             Console.Out.WriteLine( "The installation is not complete, please try again or contact us at contact@invenietis.com" );
             Console.Out.WriteLine( "Press any key to exit." );
             Console.ReadKey();

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using CK.Interop;
+using CK.Windows.Interop;
 
 namespace SimpleSkin
 {

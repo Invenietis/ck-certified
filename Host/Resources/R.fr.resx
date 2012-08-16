@@ -151,7 +151,7 @@
     <value>Coming soon !</value>
   </data>
   <data name="ComingSoonContent" xml:space="preserve">
-    <value>Cette fonctionnalité n'est pas encore implementé Nous y travaillons ! </value>
+    <value>Cette fonctionnalité n'est pas encore implementée Nous y travaillons ! </value>
   </data>
   <data name="Configuration" xml:space="preserve">
     <value>Configuration</value>
@@ -217,7 +217,7 @@
     <value>Oups !</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil</value>
   </data>
   <data name="ShowSystrayIcon" xml:space="preserve">
     <value>Montrer l'icône dans la mini-barre des applications</value>
@@ -275,5 +275,11 @@
   </data>
   <data name="RemindMeOfNewUpdates" xml:space="preserve">
     <value>Me prévenir quand une nouvelle mise à jour est disponible.</value>
+  </data>
+  <data name="ExitConfirmation" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir quitter CiviKey ?</value>
+  </data>
+  <data name="FeatureDisable" xml:space="preserve">
+    <value>Arrêter</value>
   </data>
 </root>

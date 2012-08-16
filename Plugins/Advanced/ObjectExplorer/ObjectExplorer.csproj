@@ -111,7 +111,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Storage">
-      <HintPath>..\..\..\packages\CK.Storage.2.7.13\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Storage.2.7.26\lib\net40\CK.Storage.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

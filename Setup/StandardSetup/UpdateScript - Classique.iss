@@ -31,10 +31,6 @@ UninstallDisplayIcon={app}\resources\CiviKey.ico
 AppMutex=CiviKeyMutex
 VersionInfoVersion={#CKVersion}
 VersionInfoProductName={#ApplicationName}-{#DistribName}
-                               
-[Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Files]
 Source: "..\..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -110,17 +106,15 @@ begin
     if not IsDotNetDetected('v4\Client', 0) 
     then begin
      
-        if(MsgBox('CiviKey nécessite le Framework .NET 4.0 Client Profile.'#13#13'Cliquez sur "Non" pour annuler l''installation ou "Oui" pour télécharger le Framework .NET 4.0 Client Profile automatiquement sur le site de Microsoft.', mbConfirmation, MB_YESNO) = IDYES) 
+        if(MsgBox('CiviKey nÃ©cessite le Framework .NET 4.0 Client Profile.'#13#13'Cliquez sur "Non" pour annuler l''installation ou "Oui" pour tÃ©lÃ©charger le Framework .NET 4.0 Client Profile automatiquement sur le site de Microsoft.', mbConfirmation, MB_YESNO) = IDYES) 
         then begin 
           ExtractTemporaryFile('dotNetFx40_Client_setup.exe');
           ShellExec('', ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe'), '', '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
           result := true;
         end else begin
-          MsgBox('Installation annulée.', mbInformation, MB_OK);
+          MsgBox('Installation annulÃ©e.', mbInformation, MB_OK);
           Abort;
         end;
 	end;
 	result := true;
 end;
-
-

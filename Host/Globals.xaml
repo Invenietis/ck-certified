@@ -63,8 +63,8 @@
                     <!--<ToggleButton DockPanel.Dock="Right">
                         <ContentPresenter Name="statename" Margin="5 0" Content="Stopped"/>
                     </ToggleButton>-->
-                    <Button x:Uid="configfeatureselector-disable" Name="disable" Content="Disable" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
-                    <Button x:Uid="configfeatureselector-enable" Name="enable" Content="Enable" DockPanel.Dock="Right" Padding="5 2" Margin="3 0" Command="{Binding Start}" />
+                    <Button x:Uid="configfeatureselector-disable" Name="disable" Content="{x:Static res:R.FeatureDisable}" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
+                    <Button x:Uid="configfeatureselector-enable" Name="enable" Content="{x:Static res:R.FeatureEnable}" DockPanel.Dock="Right" Padding="5 2" Margin="3 0" Command="{Binding Start}" />
                     <TextBlock x:Uid="configfeatureselector-featurename" DockPanel.Dock="Left" Text="{x:Static res:R.FeatureEnable}" VerticalAlignment="Center"/>
                     <TextBlock FontWeight="Bold" DockPanel.Dock="Left" Margin="2 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
                     <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />

@@ -277,6 +277,24 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to exit CiviKey ?.
+        /// </summary>
+        public static string ExitConfirmation {
+            get {
+                return ResourceManager.GetString("ExitConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable.
+        /// </summary>
+        public static string FeatureDisable {
+            get {
+                return ResourceManager.GetString("FeatureDisable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable.
         /// </summary>
         public static string FeatureEnable {

@@ -41,14 +41,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\..\..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.2.7.26\lib\net40\CK.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Config.Model">
       <HintPath>..\..\..\packages\CK-Plugin.2.7.13\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Model">
       <HintPath>..\..\..\packages\CK-Plugin.2.7.13\lib\net40\CK.Plugin.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>

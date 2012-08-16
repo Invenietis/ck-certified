@@ -133,8 +133,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="CK.Storage, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <HintPath>..\packages\CK.Storage.2.7.13\lib\net40\CK.Storage.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CK.Storage.2.7.26\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CK.Windows.App.2.8.16\lib\net40\CK.Windows.App.dll</HintPath>

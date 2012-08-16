@@ -150,12 +150,17 @@ namespace UpdateChecker
                 {
                     string version = Encoding.UTF8.GetString( e.Result );
                     NewVersion = new Version( version );
-                    if( NewVersion > HostInformation.AppVersion //If the version retrieved from the server is greater than the currently installed one
-                        && Configuration.System.GetOrSet<Version>( "LastDownloadedVersion", new Version( "0.0.0" ) ) < NewVersion ) //If the version retrived from the server is greater than the one that has been downloaded last
+                    if( NewVersion > HostInformation.AppVersion )//If the version retrieved from the server is greater than the currently installed one
                     {
-                        VersionState = UpdateVersionState.NewerVersionAvailable;
-                        // Ask the user to download it.
-                        OnNewerVersionAvailable();
+                         //If the version retrived from the server is greater than the one that has been downloaded last
+                        string retrievedVersionString = Configuration.System.GetOrSet<string>( "LastDownloadedVersion", "0.0.0" );
+                        Version retrievedVersion;
+                        if( Version.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
+                        {
+                            VersionState = UpdateVersionState.NewerVersionAvailable;
+                            // Ask the user to download it.
+                            OnNewerVersionAvailable();
+                        }
                     }
 
                     VersionState = UpdateVersionState.NoNewerVersion;
@@ -211,7 +216,7 @@ namespace UpdateChecker
                     File.SetAccessControl( updateFilePath, f );
 
                     //Setting the version of the downloaded file in the User Configuration, so that we do not have to download it again during the next launch
-                    Configuration.System.Set( "LastDownloadedVersion", NewVersion );
+                    Configuration.System.Set( "LastDownloadedVersion", NewVersion.ToString() );
 
                     _downloading.Dispose();
                     _downloading = null;

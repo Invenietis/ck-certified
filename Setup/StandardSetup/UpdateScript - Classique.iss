@@ -31,20 +31,16 @@ UninstallDisplayIcon={app}\resources\CiviKey.ico
 AppMutex=CiviKeyMutex
 VersionInfoVersion={#CKVersion}
 VersionInfoProductName={#ApplicationName}-{#DistribName}
-                               
-[Languages]
-Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Files]
 Source: "..\..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "CiviKey.ico"; DestDir: "{app}\resources"
-Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion
-Source: System.config.ck; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: everyone-full; 
+Source: "CiviKey.ico"; DestDir: "{app}\resources"; Permissions: users-modify;
+Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion ; Permissions: users-modify;
+Source: "System.config.ck"; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: users-modify; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [InstallDelete]
-Type: files; Name: "{app}\binaries\*"
+Type: filesandordirs; Name: "{app}\binaries\*"
 
 [Icons]
 Name: "{group}\CiviKey"; Filename: "{app}\binaries\CiviKey.exe"; WorkingDir: "{app}"; IconFileName:"{app}\resources\CiviKey.ico";
@@ -98,15 +94,27 @@ begin
     result := success and (install = 1) and (serviceCount >= service);
 end;
 
-function InitializeSetup(): Boolean;
+function IsRegularUser(): Boolean;
 begin
-    if not IsDotNetDetected('v4\Client', 0) then begin
-        MsgBox('CiviKey requires Microsoft .NET Framework 4.0 Client Profile.'#13#13
-            'Please use Windows Update to install this version,'#13
-            'and then re-run the CiviKey setup program.', mbInformation, MB_OK);
-        result := false;
-    end else
-        result := true;
+Result := not (IsAdminLoggedOn or IsPowerUserLoggedOn);
 end;
 
-
+function InitializeSetup(): Boolean;
+var 
+	ResultCode: Integer;
+begin
+    if not IsDotNetDetected('v4\Client', 0) 
+    then begin
+     
+        if(MsgBox('CiviKey nécessite le Framework .NET 4.0 Client Profile.'#13#13'Cliquez sur "Non" pour annuler l''installation ou "Oui" pour télécharger le Framework .NET 4.0 Client Profile automatiquement sur le site de Microsoft.', mbConfirmation, MB_YESNO) = IDYES) 
+        then begin 
+          ExtractTemporaryFile('dotNetFx40_Client_setup.exe');
+          ShellExec('', ExpandConstant('{tmp}\dotNetFx40_Client_setup.exe'), '', '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
+          result := true;
+        end else begin
+          MsgBox('Installation annulée.', mbInformation, MB_OK);
+          Abort;
+        end;
+	end;
+	result := true;
+end;

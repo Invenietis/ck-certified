@@ -43,8 +43,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Core">
-      <HintPath>..\..\..\..\packages\CK.Core.2.7.13\lib\net40\CK.Core.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\packages\CK.Core.2.7.26\lib\net40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config">
       <HintPath>..\..\..\..\packages\CK.Plugin.Config.2.7.13\lib\net40\CK.Plugin.Config.dll</HintPath>
@@ -58,17 +57,15 @@
       <HintPath>..\..\..\..\packages\CK-Plugin.2.7.13\lib\net40\CK.Plugin.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Reflection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\CK.Reflection.2.7.13\lib\net40\CK.Reflection.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Reflection">
+      <HintPath>..\..\..\..\packages\CK.Reflection.2.7.26\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\CK.SharedDic.2.7.13\lib\net40\CK.SharedDic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Storage">
-      <HintPath>..\..\..\..\packages\CK.Storage.2.7.13\lib\net40\CK.Storage.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\packages\CK.Storage.2.7.26\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\..\..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>

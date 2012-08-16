@@ -270,4 +270,16 @@
   <data name="FeatureEnable" xml:space="preserve">
     <value>Enable</value>
   </data>
+  <data name="LaunchUpdate" xml:space="preserve">
+    <value>Update CiviKey</value>
+  </data>
+  <data name="RemindMeOfNewUpdates" xml:space="preserve">
+    <value>Remind me when new updates are available</value>
+  </data>
+  <data name="ExitConfirmation" xml:space="preserve">
+    <value>Do you really want to exit CiviKey ?</value>
+  </data>
+  <data name="FeatureDisable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
 </root>

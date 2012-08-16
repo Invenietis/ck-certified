@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using CK.Core;
 using CK.Interop;
+using CK.Windows.Interop;
 
 namespace CK.Plugins.AutoClick.Views
 {

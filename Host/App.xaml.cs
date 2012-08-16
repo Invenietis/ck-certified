@@ -25,9 +25,10 @@ namespace Host
             Thread.CurrentThread.CurrentCulture = ci;
 
             // Crash logs upload and updater availability is managed during this initialization.
-            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", "Standard" ) ) )
+            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", "Std" ) ) )
             {
-                // Common logger is actually bound to log4net.
+                // Common logger is actually bound to log4net.UpdateDone
+
                 // CK-Windows must not depend on log4Net: its initialization must be done here.
                 CommonLogger.Initialize( CKApp.CurrentParameters.ApplicationDataPath + @"AppLogs\", false );
                 if( init != null )

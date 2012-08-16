@@ -13,6 +13,8 @@ using CK.Plugin.Config;
 using System.Collections.Generic;
 using Host;
 using System.Text;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace UpdateChecker
 {
@@ -42,7 +44,7 @@ namespace UpdateChecker
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public Version NewVersion  { get; private set; }
+        public Version NewVersion { get; private set; }
 
         public UpdateVersionState VersionState
         {
@@ -125,13 +127,14 @@ namespace UpdateChecker
             _distributionName = (string)Configuration.System["DistributionName"] ?? HostInformation.SubAppName;
 
             UpdateVersionState savedState = _versionState;
-            VersionState = UpdateVersionState.CheckingForNewVersion;           
-            _webClient.DownloadDataAsync( new Uri( GetServerUrl() + "version/updated/currentversion/" + HostInformation.AppName + "-" + _distributionName ), savedState );//gets the new version from its package repository
+            VersionState = UpdateVersionState.CheckingForNewVersion;
+            string httpRequest = GetServerUrl() + "version/updated/currentversion/" + HostInformation.AppName + @"-" + _distributionName + "/" + HostInformation.AppVersion.ToString();
+            _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );//gets the new version from its package repository
         }
 
         void _webClient_DownloadDataCompleted( object sender, DownloadDataCompletedEventArgs e )
         {
-            if( e.Cancelled ) 
+            if( e.Cancelled )
             {
                 VersionState = (UpdateVersionState)e.UserState;
             }
@@ -140,23 +143,22 @@ namespace UpdateChecker
                 _log.Error( "Error while checking version", e.Error );
                 VersionState = UpdateVersionState.ErrorWhileCheckingVersion;
             }
-            else 
+            else
             {
                 Debug.Assert( _versionState == UpdateVersionState.CheckingForNewVersion );
                 try
                 {
                     string version = Encoding.UTF8.GetString( e.Result );
                     NewVersion = new Version( version );
-                    if( NewVersion > HostInformation.AppVersion )
+                    if( NewVersion > HostInformation.AppVersion //If the version retrieved from the server is greater than the currently installed one
+                        && Configuration.System.GetOrSet<Version>( "LastDownloadedVersion", new Version( "0.0.0" ) ) < NewVersion ) //If the version retrived from the server is greater than the one that has been downloaded last
                     {
                         VersionState = UpdateVersionState.NewerVersionAvailable;
                         // Ask the user to download it.
                         OnNewerVersionAvailable();
                     }
-                    else
-                    {
-                        VersionState = UpdateVersionState.NoNewerVersion;
-                    }
+
+                    VersionState = UpdateVersionState.NoNewerVersion;
                 }
                 catch( Exception ex )
                 {
@@ -172,7 +174,8 @@ namespace UpdateChecker
             UpdateDownloadState savedState = _downloadState;
             _downloading = new TemporaryFile();
             DownloadState = UpdateDownloadState.Downloading;
-            _webClient.DownloadFileAsync( new Uri( GetServerUrl() + "version/updated/download/" + HostInformation.AppName + "-" + _distributionName ), _downloading.Path, savedState );
+            string httpRequest = GetServerUrl() + "version/updated/download/" + Path.Combine( HostInformation.AppName + @"-" + _distributionName, HostInformation.AppVersion.ToString() );
+            _webClient.DownloadFileAsync( new Uri( httpRequest ), _downloading.Path, savedState );
             _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
         }
 
@@ -194,10 +197,22 @@ namespace UpdateChecker
             {
                 Debug.Assert( _downloadState == UpdateDownloadState.Downloading );
                 try
-                {                   
-                    string newVersionDir = Path.Combine( Path.GetTempPath(), HostInformation.AppName + Path.DirectorySeparatorChar + _distributionName + @"\Updates\" ); //puts the exe in Temp/CiviKey/Standard/Updates
+                {
+                    string newVersionDir = Path.Combine( HostInformation.CommonApplicationDataPath, "Updates" ); //puts the exe in ProgramData/Appname/DistributionName/Updates
                     Directory.CreateDirectory( newVersionDir );
-                    File.Move( _downloading.Path, Path.Combine( newVersionDir, "Update.exe" ) );
+                    string updateFilePath = Path.Combine( newVersionDir, "Update.exe" );
+                    File.Move( _downloading.Path, updateFilePath );
+
+                    //Giving read/write/execute rights to any user on the Update.exe file.
+                    FileSecurity f = File.GetAccessControl( updateFilePath );
+                    var sid = new SecurityIdentifier( WellKnownSidType.BuiltinUsersSid, null );
+                    NTAccount account = (NTAccount)sid.Translate( typeof( NTAccount ) );
+                    f.AddAccessRule( new FileSystemAccessRule( account, FileSystemRights.Modify, AccessControlType.Allow ) );
+                    File.SetAccessControl( updateFilePath, f );
+
+                    //Setting the version of the downloaded file in the User Configuration, so that we do not have to download it again during the next launch
+                    Configuration.System.Set( "LastDownloadedVersion", NewVersion );
+
                     _downloading.Dispose();
                     _downloading = null;
                     DownloadState = UpdateDownloadState.Downloaded;
@@ -222,7 +237,7 @@ namespace UpdateChecker
 
         private void OnNewerVersionDownloaded()
         {
-            MessageBox.Show( "Une mise à jour est prète à être installée.\nElle vous sera proposée au prochain lancement de Civikey.", "Mise à jour" );
+            MessageBox.Show( "Une mise à jour est prête à être installée.\nElle vous sera proposée au prochain lancement de Civikey.", "Mise à jour" );
         }
     }
 }

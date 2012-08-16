@@ -40,15 +40,15 @@ namespace CK.WPF.Controls
                 if( ExactTypeMatch )
                 {
                     success = Type.IsAssignableFrom( itemType );
-                    RuleBasedTemplateSelector.Log.Debug( log => log( "Exact type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
+                    //RuleBasedTemplateSelector.Log.Debug( log => log( "Exact type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
                 }
                 else
                 {
                     success = CK.Reflection.ReflectionHelper.CovariantMatch( Type, itemType );
-                    RuleBasedTemplateSelector.Log.Debug( log => log( "Covariant type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
+                    //RuleBasedTemplateSelector.Log.Debug( log => log( "Covariant type {0} match: {1} for type {2}.", Type.Name, success, itemType ) );
                 }
             }
-            else RuleBasedTemplateSelector.Log.Debug( log => log( "Unitialized rule (no Type nor TypeDescriptor set). Rule failed." ) );
+            //else RuleBasedTemplateSelector.Log.Debug( log => log( "Unitialized rule (no Type nor TypeDescriptor set). Rule failed." ) );
             return success;
         }
     }

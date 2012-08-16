@@ -270,4 +270,10 @@
   <data name="FeatureEnable" xml:space="preserve">
     <value>Démarrer</value>
   </data>
+  <data name="LaunchUpdate" xml:space="preserve">
+    <value>Mettre CiviKey à jour</value>
+  </data>
+  <data name="RemindMeOfNewUpdates" xml:space="preserve">
+    <value>Me prévenir quand une nouvelle mise à jour est disponible.</value>
+  </data>
 </root>

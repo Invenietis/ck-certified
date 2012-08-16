@@ -92,16 +92,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppRecovery\ApplicationCrashedEventArgs.cs" />
-    <Compile Include="AppRecovery\ApplicationRecovery.cs" />
-    <Compile Include="AppRecovery\IRecoveryFunctions.cs" />
-    <Compile Include="CrashLog\CrashLogManager.cs" />
-    <Compile Include="CrashLog\CrashLogWindowViewModel.cs" />
-    <Compile Include="CrashLog\CrashLogWriter.cs" />
-    <Compile Include="CrashLog\Views\CrashLogWindow.xaml.cs">
-      <DependentUpon>CrashLogWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="INotifierContext.cs" />
     <Compile Include="Helpers\XamlSerializer.cs" />
     <Compile Include="Impl\Notifications\CKNotification.cs">
@@ -125,10 +115,6 @@
     <Compile Include="ShowNotificationBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CrashLog\Views\CrashLogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Impl\Notifications\Views\Contents\DefaultContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,9 +129,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="CrashLog\Views\error.png" />
-    <Resource Include="CrashLog\Views\magnifier.png" />
-    <Resource Include="CrashLog\Views\warning.png" />
     <Resource Include="Images\cross.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

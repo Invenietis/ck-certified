@@ -13,6 +13,9 @@ using CK.Core;
 using System.Windows.Input;
 using System.Diagnostics;
 using CK.WPF.ViewModel;
+using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Host
 {
@@ -23,7 +26,7 @@ namespace Host
 
         public AppViewModel()
         {
-            
+
             DisplayName = "CiviKey";//R.CiviKey
             ConfigManager = new ConfigManager();
             ConfigManager.ActivateItem( new RootConfigViewModel( this ) );
@@ -188,6 +191,7 @@ namespace Host
         {
             return new WaitHandle( GetView( null ) as Window );
         }
+
     }
     public class WaitHandle : IDisposable
     {

@@ -17,6 +17,7 @@ namespace Host
         AppViewModel _app;
         AppConfigViewModel _appConfigVm;
         Guid _autoclicId;
+        Guid _skinId;
 
         public RootConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -24,6 +25,7 @@ namespace Host
             DisplayName = Resources.R.Home;
             _app = app;
             _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
+            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
         }
 
         protected override void OnInitialize()
@@ -37,10 +39,12 @@ namespace Host
                 _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) => { keyboards.RefreshValues( s, e ); };
                 _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) => { keyboards.RefreshValues( s, e ); };
                 _app.KeyboardContext.Keyboards.CurrentChanged += ( s, e ) => { keyboards.RefreshCurrent( s, e ); };
-
             }
+
             var g = this.AddGroup();
+            var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var i = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
+            g.Items.Add( skinStarter );
             g.Items.Add( i );
 
             this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );

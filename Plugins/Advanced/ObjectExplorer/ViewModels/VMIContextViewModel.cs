@@ -29,8 +29,6 @@ namespace CK.Plugins.ObjectExplorer
         Dictionary<IServiceReferenceInfo, VMIService> _serviceRefs;
         Dictionary<IAssemblyInfo, VMIAssembly> _assemblies;
         
-        VMIContextView v = new VMIContextView();
-
         VMLogConfig _vmLogConfig;
  
         ISelectableElement _selectedElement;

@@ -38,12 +38,17 @@ namespace CK.Plugins.ObjectExplorer
         public void Start()
         {
             VMIContext = new VMIContextViewModel( Context, Config, LogService );
-            
-            _wnd = new WindowManager();
-            _wnd.ShowWindow( VMIContext );
 
-            _mainWindow = VMIContext.GetView( null ) as Window;
-            ElementHost.EnableModelessKeyboardInterop( _mainWindow );
+            VMIContextView view = new VMIContextView();
+            view.DataContext = VMIContext;
+            view.Show();
+
+            //Using Caliburn.micro enslaves this window, so when the host is hidden, the object explorer is hidden as well.
+            //_wnd = new WindowManager();
+            //_wnd.ShowWindow( VMIContext );
+            
+            //_mainWindow = VMIContext.GetView( null ) as Window;
+            //ElementHost.EnableModelessKeyboardInterop( _mainWindow );
         }
 
         public void Stop()

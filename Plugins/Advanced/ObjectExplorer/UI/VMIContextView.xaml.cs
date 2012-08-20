@@ -17,7 +17,7 @@ namespace CK.Plugins.ObjectExplorer
     /// <summary>
     /// Interaction logic for VMIContextViewModel.xaml
     /// </summary>
-    public partial class VMIContextView : UserControl
+    public partial class VMIContextView : Window
     {
         public VMIContextView()
         {

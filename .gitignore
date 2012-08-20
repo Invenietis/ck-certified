@@ -4,3 +4,4 @@ obj/
 Output/
 packages/
 Setup/StandardSetup/CiviKeyPostInstallScript.*
+*user

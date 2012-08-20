@@ -20,14 +20,13 @@ using Host.Resources;
 
 namespace Host
 {
-    public class AppViewModel : Conductor<IScreen>
+    public class AppViewModel : Conductor<IScreen>, IHostManipulator
     {
         bool _forceClose;
         bool _closing;
 
         public AppViewModel()
         {
-
             DisplayName = "CiviKey";//R.CiviKey
             ConfigManager = new ConfigManager();
             ConfigManager.ActivateItem( new RootConfigViewModel( this ) );
@@ -38,6 +37,12 @@ namespace Host
             CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );
 
+            CivikeyHost.Context.ServiceContainer.Add<IHostManipulator>( this );
+        }
+
+        public void ToggleMinimize()
+        {
+            IsMinimized = !IsMinimized;
         }
 
         public CivikeyStandardHost CivikeyHost { get { return CivikeyStandardHost.Instance; } }
@@ -77,13 +82,14 @@ namespace Host
         }
 
         bool _isMinimized;
-        public bool IsMinimized 
+        public bool IsMinimized
         {
             get { return _isMinimized; }
-            set 
-            { 
-                _isMinimized = value; 
-                NotifyOfPropertyChange( "IsMinimized" ); 
+            set
+            {
+                _isMinimized = value;
+                if( !_isMinimized ) this.EnsureMainWindowVisible();
+                NotifyOfPropertyChange( "IsMinimized" );
             }
         }
 
@@ -161,10 +167,7 @@ namespace Host
 
         void EnsureMainWindowVisible()
         {
-            //App.Current.MainWindow.Show();
-            IsMinimized = false;
-            //App.Current.MainWindow.Visibility = Visibility.Visible;
-            //App.Current.MainWindow.WindowState = WindowState.Normal;
+            if( IsMinimized ) IsMinimized = false;
             App.Current.MainWindow.Activate();
         }
 
@@ -181,8 +184,7 @@ namespace Host
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Stopped );
             runner.Apply();
         }
-
-        internal bool IsPluginRunning( IPluginInfo plugin )
+                internal bool IsPluginRunning( IPluginInfo plugin )
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             return runner.PluginHost.IsPluginRunning( plugin );

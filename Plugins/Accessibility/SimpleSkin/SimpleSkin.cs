@@ -51,6 +51,9 @@ namespace SimpleSkin
         [RequiredService]
         public INotificationService Notification { get; set; }
 
+        IHostManipulator _hostManipulator;
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
+
         public IPluginConfigAccessor Config { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
@@ -78,8 +81,6 @@ namespace SimpleSkin
 
                 _skinWindow.Show();
 
-
-
                 if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
 
                 //Placing the skin at the same location as the last launch.
@@ -99,8 +100,6 @@ namespace SimpleSkin
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
             }
         }
-
-
 
         private void RegisterEvents()
         {
@@ -234,11 +233,22 @@ namespace SimpleSkin
             }
         }
 
-
-
         public void Teardown()
         {
         }
+
+        /// <summary>
+        /// Toggles minimization of the application's host, the configuration window.
+        /// </summary>
+        public void ToggleHostMinimized()
+        {
+            HostManipulator.ToggleMinimize();
+        }
+
+        /// <summary>
+        /// Gets whether the application's host's window is minimized.
+        /// </summary>
+        public bool IsHostMinimized { get { return HostManipulator.IsMinimized; } }
 
         public void Hide()
         {

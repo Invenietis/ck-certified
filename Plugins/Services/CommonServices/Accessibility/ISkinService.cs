@@ -18,5 +18,10 @@ namespace CommonServices
         /// Restores the skin window.
         /// </summary>
         void RestoreSkin();
+
+        /// <summary>
+        /// Toggles minimization of the host's window
+        /// </summary>
+        void ToggleHostMinimized();
     }
 }

@@ -92,6 +92,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IHostManipulator.cs" />
+    <Compile Include="IMinimizable.cs" />
     <Compile Include="INotifierContext.cs" />
     <Compile Include="Helpers\XamlSerializer.cs" />
     <Compile Include="Impl\Notifications\CKNotification.cs">

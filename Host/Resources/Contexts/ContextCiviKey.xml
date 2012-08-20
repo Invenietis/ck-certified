@@ -3354,7 +3354,7 @@
                   </Key>
                   <Key>
                     <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
+                      <KeyMode Mode="" Enabled="true" Description="Minimiser le clavier">
                         <KeyUp Label="Hide" />
                         <KeyPressed>
                           <KeyProgram xml:space="preserve">
@@ -3366,7 +3366,7 @@
                   </Key>
                   <Key>
                     <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
+                      <KeyMode Mode="" Enabled="true" Description="Fermer CiviKey">
                         <KeyUp Label="Exit">
                           <KeyProgram xml:space="preserve">
                             <Cmd>DynCommand("ShutDown")</Cmd>
@@ -3377,7 +3377,7 @@
                   </Key>
                   <Key>
                     <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
+                      <KeyMode Mode="" Enabled="true" Description="Afficher la fenêtre de configuration">
                         <KeyUp Label="MinimizeHost" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">

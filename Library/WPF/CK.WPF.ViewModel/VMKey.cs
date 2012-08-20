@@ -97,6 +97,14 @@ namespace CK.WPF.ViewModel
         }
 
         /// <summary>
+        /// Gets the description of the key
+        /// </summary>
+        public string Description
+        {
+            get { return _key.Current.Description; }
+        }
+
+        /// <summary>
         /// Gets if the current keymode is a fallback or not.
         /// </summary>
         public bool IsFallback { get { return _key.Current.IsFallBack; } }

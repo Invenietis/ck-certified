@@ -98,6 +98,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
+      <Name>CK.WPF.Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

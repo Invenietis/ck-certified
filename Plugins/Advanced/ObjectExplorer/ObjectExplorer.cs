@@ -14,8 +14,9 @@ namespace CK.Plugins.ObjectExplorer
     public class ObjectExplorer : IPlugin
     {
         public const string StrPluginID = "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}";
-        WindowManager _wnd;
-        Window _mainWindow;
+        //WindowManager _wnd;
+        //Window _mainWindow;
+        VMIContextView _view;
 
         public VMIContextViewModel VMIContext { get; private set; }
 
@@ -39,9 +40,9 @@ namespace CK.Plugins.ObjectExplorer
         {
             VMIContext = new VMIContextViewModel( Context, Config, LogService );
 
-            VMIContextView view = new VMIContextView();
-            view.DataContext = VMIContext;
-            view.Show();
+            _view = new VMIContextView();
+            _view.DataContext = VMIContext;
+            _view.Show();
 
             //Using Caliburn.micro enslaves this window, so when the host is hidden, the object explorer is hidden as well.
             //_wnd = new WindowManager();
@@ -53,11 +54,12 @@ namespace CK.Plugins.ObjectExplorer
 
         public void Stop()
         {
-            if( !VMIContext.Closing )
-            {
-                VMIContext.ManualStop = true;
-                VMIContext.TryClose();
-            }
+            _view.Close();
+            //if( !VMIContext.Closing )
+            //{
+            //    VMIContext.ManualStop = true;
+            //    VMIContext.TryClose();
+            //}
         }
 
         public void Teardown()

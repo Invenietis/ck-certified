@@ -17,6 +17,7 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using Host.Resources;
+using CK.Windows.App;
 
 namespace Host
 {
@@ -146,7 +147,15 @@ namespace Host
                 _closing = true;
                 Window thisView = GetView( null ) as Window;
                 Window bestParent = App.Current.GetTopWindow();
-                e.Cancel = System.Windows.MessageBox.Show( bestParent, R.ExitConfirmation, R.Exit, MessageBoxButton.YesNo, MessageBoxImage.Question ) != MessageBoxResult.Yes;
+
+                ModalViewModel mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
+                mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+                mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+
+                CustomMsgBox customMessageBox = new CustomMsgBox( ref mvm );
+                customMessageBox.ShowDialog();
+                e.Cancel = mvm.ModalResult != ModalResult.Yes;
+                
                 if( bestParent != thisView ) thisView.Activate();
                 _closing = !e.Cancel;
             }
@@ -160,7 +169,7 @@ namespace Host
             get
             {
                 if( _ensureMainWindowVisibleCommand == null )
-                    _ensureMainWindowVisibleCommand = new VMCommand( EnsureMainWindowVisible );
+                    _ensureMainWindowVisibleCommand = new CK.WPF.ViewModel.VMCommand( EnsureMainWindowVisible );
                 return _ensureMainWindowVisibleCommand;
             }
         }

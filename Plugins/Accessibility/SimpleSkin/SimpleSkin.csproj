@@ -81,9 +81,8 @@
       <HintPath>..\..\..\packages\CK.Storage.2.7.26\lib\net40\CK.Storage.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.7.13\lib\net40\CK.Windows.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Windows.Core">
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.8.23\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\CK.Windows.Interop.2.7.13\lib\net40\CK.Windows.Interop.dll</HintPath>

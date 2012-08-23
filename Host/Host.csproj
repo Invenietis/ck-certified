@@ -136,16 +136,16 @@
       <HintPath>..\packages\CK.Storage.2.7.26\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CK.Windows.App.2.8.16\lib\net40\CK.Windows.App.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.App.2.8.23\lib\net40\CK.Windows.App.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CK.Windows.Config.2.7.13\lib\net40\CK.Windows.Config.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.Config.2.8.23\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CK.Windows.Core.2.7.13\lib\net40\CK.Windows.Core.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.Core.2.8.23\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CK.Windows.Interop.2.7.13\lib\net40\CK.Windows.Interop.dll</HintPath>
@@ -267,7 +267,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\Contexts\ContextCiviKey.xml.old" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AppView.xaml">
@@ -298,7 +297,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Contexts\ContextCiviKey.xml.old.old" />
     <Resource Include="Resources\Icons\CiviKey.ico" />
     <Resource Include="Resources\Icons\logo_16x16.ico" />
     <Resource Include="Resources\Images\accept.png" />

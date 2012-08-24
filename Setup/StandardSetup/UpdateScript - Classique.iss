@@ -36,6 +36,7 @@ VersionInfoProductName={#ApplicationName}-{#DistribName}
 Source: "..\..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "CiviKey.ico"; DestDir: "{app}\resources"; Permissions: users-modify;
 Source: "CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion ; Permissions: users-modify;
+Source: "dotNetFx40_Client_setup.exe"; DestDir: "{tmp}";
 Source: "System.config.ck"; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: users-modify; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

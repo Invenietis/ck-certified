@@ -27,20 +27,20 @@
         </Style>
 
         <Style TargetType="{x:Type view:StdKeyView}">
-            <Setter Property="Width" Value="{Binding Width}"/>
-            <Setter Property="Height" Value="{Binding Height}"/>
-            <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
-            <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
-            <Setter Property="Visibility" Value="{Binding Visible}"/>
-            <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
+            <Setter Property="KeyPressedCommand" Value="{Binding KeyPressedCommand}"/>
+            <Setter Property="TextDecorations" Value="{Binding TextDecorations}"/>
             <Setter Property="KeyDownCommand" Value="{Binding KeyDownCommand}"/>
             <Setter Property="KeyUpCommand" Value="{Binding KeyUpCommand}"/>
-            <Setter Property="KeyPressedCommand" Value="{Binding KeyPressedCommand}"/>
-            <Setter Property="Opacity" Value="{Binding Opacity}"/>
-            <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
             <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
+            <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
+            <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
+            <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
+            <Setter Property="Visibility" Value="{Binding Visible}"/>
             <Setter Property="FontSize" Value="{Binding FontSize}"/>
-            <Setter Property="TextDecorations" Value="{Binding TextDecorations}" />
+            <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
+            <Setter Property="Opacity" Value="{Binding Opacity}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Width" Value="{Binding Width}"/>
         </Style>
 
         <DataTemplate DataType="{x:Type vm:VMKeySimple}">

@@ -1,0 +1,38 @@
+﻿SimpleSkin.g.en-US.resources:editorview.baml	target:System.Windows.Controls.TextBlock.$Content	Text	True	True		Target :
+SimpleSkin.g.en-US.resources:editorview.baml	target:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+SimpleSkin.g.en-US.resources:editorview.baml	target:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	target:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+SimpleSkin.g.en-US.resources:editorview.baml	select-keyboard:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		All keys of the keyboard
+SimpleSkin.g.en-US.resources:editorview.baml	select-keyboard:System.Windows.Controls.Primitives.ToggleButton.IsChecked	None	False	True		True
+SimpleSkin.g.en-US.resources:editorview.baml	select-zone:System.Windows.Controls.TextBlock.$Content	Text	True	True		Or select a zone :
+SimpleSkin.g.en-US.resources:editorview.baml	select-zone:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+SimpleSkin.g.en-US.resources:editorview.baml	select-zone:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	select-zone:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+SimpleSkin.g.en-US.resources:editorview.baml	normal-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Normal background color
+SimpleSkin.g.en-US.resources:editorview.baml	normal-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	hover-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Hover background color
+SimpleSkin.g.en-US.resources:editorview.baml	hover-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	pressed-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Pressed background color
+SimpleSkin.g.en-US.resources:editorview.baml	pressed-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	font-size:System.Windows.Controls.TextBlock.$Content	Text	True	True		Font size :
+SimpleSkin.g.en-US.resources:editorview.baml	font-size:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	font-size:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+SimpleSkin.g.en-US.resources:editorview.baml	font-styles:System.Windows.Controls.TextBlock.$Content	Text	True	True		Font styles :
+SimpleSkin.g.en-US.resources:editorview.baml	font-styles:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	font-styles:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+SimpleSkin.g.en-US.resources:editorview.baml	bold:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Bold
+SimpleSkin.g.en-US.resources:editorview.baml	bold:System.Windows.Controls.Control.Padding	None	False	True		3 2
+SimpleSkin.g.en-US.resources:editorview.baml	Italic:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Italic
+SimpleSkin.g.en-US.resources:editorview.baml	Italic:System.Windows.Controls.Control.Padding	None	False	True		3 2
+SimpleSkin.g.en-US.resources:editorview.baml	underline:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Underline
+SimpleSkin.g.en-US.resources:editorview.baml	underline:System.Windows.Controls.Control.Padding	None	False	True		3 2
+SimpleSkin.g.en-US.resources:editorview.baml	font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Font color
+SimpleSkin.g.en-US.resources:editorview.baml	font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.WindowStyle	None	True	False		None
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.AllowsTransparency	None	False	True		True
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Controls.Control.Background	None	False	True		\#00FFFFFF
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.FrameworkElement.Width	None	False	True		150
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.FrameworkElement.Height	None	False	True		150
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.ResizeMode	None	False	True		NoResize
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Double click to display the keyboard
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.Topmost	None	False	True		True

@@ -28,3 +28,11 @@ SimpleSkin.g.en-US.resources:editorview.baml	underline:System.Windows.Controls.P
 SimpleSkin.g.en-US.resources:editorview.baml	underline:System.Windows.Controls.Control.Padding	None	False	True		3 2
 SimpleSkin.g.en-US.resources:editorview.baml	font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la police
 SimpleSkin.g.en-US.resources:editorview.baml	font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.WindowStyle	None	True	False		None
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.AllowsTransparency	None	False	True		True
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Controls.Control.Background	None	False	True		\#00FFFFFF
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.FrameworkElement.Width	None	False	True		150
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.FrameworkElement.Height	None	False	True		150
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.ResizeMode	None	False	True		NoResize
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Double cliquez pour afficher le clavier à nouveau
+SimpleSkin.g.en-US.resources:miniview.baml	miniview-window:System.Windows.Window.Topmost	None	False	True		True

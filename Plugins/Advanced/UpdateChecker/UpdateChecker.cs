@@ -38,6 +38,7 @@ using Host;
 using System.Text;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using CK.Windows.App;
 
 namespace UpdateChecker
 {
@@ -175,7 +176,7 @@ namespace UpdateChecker
                     NewVersion = new Version( version );
                     if( NewVersion > HostInformation.AppVersion )//If the version retrieved from the server is greater than the currently installed one
                     {
-                         //If the version retrived from the server is greater than the one that has been downloaded last
+                        //If the version retrived from the server is greater than the one that has been downloaded last
                         string retrievedVersionString = Configuration.System.GetOrSet<string>( "LastDownloadedVersion", "0.0.0" );
                         Version retrievedVersion;
                         if( Version.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
@@ -257,15 +258,34 @@ namespace UpdateChecker
 
         private void OnNewerVersionAvailable()
         {
-            if( MessageBox.Show( String.Format( "Une mise à jour est disponible (version {0}).\nVoulez-vous la télécharger ?", NewVersion ), "Mise à jour", MessageBoxButton.YesNo ) == MessageBoxResult.Yes )
+            ModalViewModel mvm = new ModalViewModel( R.UpdateAvailableTitle, String.Format( R.UpdateAvailableContent, NewVersion.ToString() ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+
+            Application.Current.Dispatcher.Invoke( new Action( () =>
             {
-                StartDownload();
-            }
+                CustomMsgBox msg = new CustomMsgBox( ref mvm );
+                msg.ShowDialog();
+
+                if( mvm.ModalResult == ModalResult.Yes )
+                {
+                    StartDownload();
+                }
+            } ) );
         }
 
         private void OnNewerVersionDownloaded()
         {
-            MessageBox.Show( "Une mise à jour est prête à être installée.\nElle vous sera proposée au prochain lancement de Civikey.", "Mise à jour" );
+            ModalViewModel mvm = new ModalViewModel( R.UpdateDownloadedTitle, R.UpdateDownloadedContent );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Ok, null, ModalResult.Ok ) );
+
+            Application.Current.Dispatcher.Invoke( new Action( () =>
+            {
+                CustomMsgBox msg = new CustomMsgBox( ref mvm );
+                msg.ShowDialog();
+            } ) );
+
+
         }
     }
 }

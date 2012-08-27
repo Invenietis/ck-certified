@@ -36,7 +36,6 @@ namespace CK.Plugins.ObjectExplorer.ViewModels
     {
         RequirementLayer _layer;
         VMICoreElement _element;
-        RunningRequirement _requirement;
         CoreElementType _type;
 
         private enum CoreElementType

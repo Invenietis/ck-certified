@@ -144,12 +144,6 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         #endregion
 
-        #region Events
-
-        public event SelectedClickEmbedderEventHandler ChangeSelectedClickEmbedder;
-
-        #endregion
-
         #region VMBase Methods
         static bool _throwException;
 

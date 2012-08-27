@@ -92,6 +92,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\DistributionAttribute.cs" />
     <Compile Include="IHostManipulator.cs" />
     <Compile Include="IMinimizable.cs" />
     <Compile Include="INotifierContext.cs" />

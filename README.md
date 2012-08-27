@@ -12,7 +12,7 @@ Contains CiviKey's host and plugins.
 For more information on the plugins, see the documentation attached to this repository.
 
 ##Web site##
-CiviKey's website can be found here : [www.civikey.fr](www.civikey.fr)
+CiviKey's website can be found here : [www.civikey.fr](http://www.civikey.fr)
 
 ##Bug Tracker##
 If you find any bug, feel free to report it on : [http://civikey.invenietis.com/](http://civikey.invenietis.com/)

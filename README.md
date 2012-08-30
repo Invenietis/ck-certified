@@ -6,7 +6,7 @@ It is based on a plugin architecture, each functionnality being a set of plugins
 The project is developed by Invenietis, with the help of the Raymond Poincarré Hospital in Paris, IN'TECH INFO, Alcatel-Lucent, the Garches Foundation and the Steria Foundation
 
 This project is based on the CK-Core and CK-Desktop repositories, also hosted on Github.
-References to these projects are handled through Nuget packages, available via this link : [nuget link](http://packages.invenietis.com/CiviKey/JGHRN6ACE2MXNXGRMMMTYXFXUJYRWXGRHJHNN7GVU2BRN2SF4JBMWRA3D4LES8TFSCMRN4JE76LCHHTD6DBZSJUVFCJYHZSVGAHMNMKRJBTRS2FFH4VCX2ADWZJE6UYRYD9CYQHXT69RNZFDY2KV2C9FH6UR7QGVCZMCH8YXHM6LB3SXHZHYXEGRTG9WSBJED8JMYBDFFCVNW/api/v2)
+References to these projects are handled through Nuget packages, available via this link : [nuget link](https://get-package.net/CiviKey/JGHRN6ACE2MXNXGRMMMTYXFXUJYRWXGRHJHNN7GVU2BRN2SF4JBMWRA3D4LES8TFSCMRN4JE76LCHHTD6DBZSJUVFCJYHZSVGAHMNMKRJBTRS2FFH4VCX2ADWZJE6UYRYD9CYQHXT69RNZFDY2KV2C9FH6UR7QGVCZMCH8YXHM6LB3SXHZHYXEGRTG9WSBJED8JMYBDFFCVNW/api/v2)
 ##Content##
 Contains CiviKey's host and plugins.
 For more information on the plugins, see the documentation attached to this repository.

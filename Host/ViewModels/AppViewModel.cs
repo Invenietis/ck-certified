@@ -22,9 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Caliburn.Micro;
 using System.Windows;
 using CK.Windows.Config;
@@ -35,10 +32,6 @@ using CK.Plugin;
 using CK.Core;
 using System.Windows.Input;
 using System.Diagnostics;
-using CK.WPF.ViewModel;
-using System.IO;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using Host.Resources;
 using CK.Windows.App;
 

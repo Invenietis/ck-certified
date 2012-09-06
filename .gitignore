@@ -5,3 +5,5 @@ Output/
 packages/
 Setup/StandardSetup/CiviKeyPostInstallScript.*
 *user
+Setup/StandardSetup/Civikey*.exe
+Setup/StandardSetup/Resources/CiviKey*.exe

@@ -347,6 +347,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\SplashTransparent.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
   </PropertyGroup>

@@ -58,8 +58,8 @@ namespace Host
                 {
                     CKApp.Run( () =>
                     {
-                        CivikeyStandardHost.Instance.CreateContext();
                         App app = new App();
+                        CivikeyStandardHost.Instance.CreateContext();
                         app.InitializeComponent();
                         return app;
                     } );

@@ -38,7 +38,7 @@
                     <RowDefinition Height="100"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Height="100" Source="Splash.png"></Image>
+                <Image Grid.Row="0" Height="100" Source="SplashTransparent.png"></Image>
                 <Label Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding AppVersion}"></Label>
                 <ContentControl  Grid.Row="1" Content="{Binding ConfigManager}"/>
             </Grid>

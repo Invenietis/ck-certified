@@ -53,8 +53,8 @@ namespace SimpleSkin
 
         bool _viewHidden;
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
+        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        //public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }

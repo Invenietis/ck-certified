@@ -29,6 +29,7 @@ using Caliburn.Micro;
 using System.Windows;
 using CommonServices;
 using Host.Services;
+using System;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -54,6 +55,8 @@ namespace CK.Plugins.ObjectExplorer
 
         public IPluginConfigAccessor Config { get; set; }
 
+        bool _isClosing;
+
         public bool Setup( IPluginSetupInfo info )
         {
             return true;
@@ -65,24 +68,38 @@ namespace CK.Plugins.ObjectExplorer
 
             _view = new VMIContextView();
             _view.DataContext = VMIContext;
+            _view.Closing += OnViewClosing;
             _view.Show();
+        }
 
-            //Using Caliburn.micro enslaves this window, so when the host is hidden, the object explorer is hidden as well.
-            //_wnd = new WindowManager();
-            //_wnd.ShowWindow( VMIContext );
-            
-            //_mainWindow = VMIContext.GetView( null ) as Window;
-            //ElementHost.EnableModelessKeyboardInterop( _mainWindow );
+        void OnViewClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            if( !_isClosing )
+            {
+                _isClosing = true;
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( StrPluginID ), ConfigUserAction.Stopped );
+                Context.PluginRunner.Apply();
+                return;
+            }
+            else
+            {
+                _isClosing = false;
+                VMIContext = null;
+            }
         }
 
         public void Stop()
         {
-            _view.Close();
-            //if( !VMIContext.Closing )
-            //{
-            //    VMIContext.ManualStop = true;
-            //    VMIContext.TryClose();
-            //}
+            if( !_isClosing )
+            {
+                _isClosing = true;
+                _view.Close();
+            }
+            else
+            {
+                _isClosing = false;
+                VMIContext = null;
+            }
         }
 
         public void Teardown()

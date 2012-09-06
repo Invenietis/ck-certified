@@ -35,6 +35,7 @@ using Host.Services;
 using SimpleSkin.ViewModels;
 using CK.Windows;
 using CK.Windows.Helper;
+using System.Linq;
 
 namespace SimpleSkin
 {
@@ -45,6 +46,7 @@ namespace SimpleSkin
     public class SimpleSkin : IPlugin, ISkinService
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
+        Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
@@ -175,7 +177,7 @@ namespace SimpleSkin
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Contains( PluginId ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
             }

@@ -46,5 +46,16 @@ namespace Host
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Used to launch WPF UI Thread when the window goes from the minimized state to th enormal state, in XP.
+        /// Without that, half the window remains black until it is resized.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnActivated( EventArgs e )
+        {
+            this.Show();
+            base.OnActivated( e );
+        }
     }
 }

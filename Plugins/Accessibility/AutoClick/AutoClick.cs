@@ -243,7 +243,7 @@ namespace CK.Plugins.AutoClick
         /// <param name="e"></param>
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => String.Compare( "989BE0E6-D710-489e-918F-FBB8700E2BB2", c.UniqueId.ToString(), true ) == 0 ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 switch( e.Key )
                 {

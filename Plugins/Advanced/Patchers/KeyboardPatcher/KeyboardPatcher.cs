@@ -119,8 +119,6 @@ namespace KeyboardPatcher
             IKeyboard keyboard = KeyboardContext.Service.Keyboards[keyboardName];
 
             #region Adding descriptions
-
-            #endregion
             {
                 IKeyCollection keys = keyboard.Zones[zoneName].Keys;
                 IKeyMode keyMode = keys.Select( k => k.KeyModes.FindBest( KeyboardContext.Service.EmptyMode ) ).Where( km => km.UpLabel == "Exit" ).FirstOrDefault();
@@ -135,6 +133,8 @@ namespace KeyboardPatcher
                     keyMode.Description = R.Patch1Hide;
                 }
             }
+            #endregion
+
             #region Adding MinimizeHost
             {
                 //Adding the Key

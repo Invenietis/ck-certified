@@ -39,7 +39,7 @@ namespace KeyboardPatcher
         public bool Setup( IPluginSetupInfo info )
         {
             _patchs = new List<CKPatch>();
-            _patchs.Add( new CKPatch( "KeyboardPatch", 1,  CanExecutePatchV1, ApplyPatchV1, true ) );
+            _patchs.Add( new CKPatch( "KeyboardPatch", 1, R.Patch1Desc, CanExecutePatchV1, ApplyPatchV1, true ) );
 
             //There shouldn't be two patches with the same name
             Debug.Assert( _patchs.Select( x => x.Info.PatchNumber ).Distinct().ToArray().Length == _patchs.Count );
@@ -118,29 +118,50 @@ namespace KeyboardPatcher
 
             IKeyboard keyboard = KeyboardContext.Service.Keyboards[keyboardName];
 
-            //Adding the Key
-            IKeyCollection keys = keyboard.Zones[zoneName].Keys;
-            IKey newKey = keys.Create( keys.Count );
-            IKeyMode newKeyEmptyMode = newKey.KeyModes.Create( KeyboardContext.Service.EmptyMode );
-            newKeyEmptyMode.UpLabel = "MinimizeHost";
-            newKeyEmptyMode.Description = R.DisplayConfigWindow;
-            newKeyEmptyMode.Enabled = true;
-            newKeyEmptyMode.OnKeyDownCommands.Commands.Add( "DynCommand(\"ToggleHostMinimized\")" );
+            #region Adding descriptions
 
-            //Adding the layoutKey
-            ILayoutKeyCollection layoutKeys = keyboard.CurrentLayout.LayoutZones[zoneName].LayoutKeys;
-            ILayoutKey newLayoutKey = newKey.CurrentLayout;
-            newLayoutKey.Current.X = 880;
-            newLayoutKey.Current.Y = 270;
-            newLayoutKey.Current.Width = 50;
-            newLayoutKey.Current.Height = 50;
-            newLayoutKey.Current.Visible = true;
+            #endregion
+            {
+                IKeyCollection keys = keyboard.Zones[zoneName].Keys;
+                IKeyMode keyMode = keys.Select( k => k.KeyModes.FindBest( KeyboardContext.Service.EmptyMode ) ).Where( km => km.UpLabel == "Exit" ).FirstOrDefault();
+                if( keyMode != null )
+                {
+                    keyMode.Description = R.Patch1CloseCiviKey;
+                }
 
-            //Adding the image
-            Image image = new Image();
-            Uri src = new Uri( @"/SimpleSkin;component/Images/EditorLogo.png", UriKind.Relative );
-            image.Source = new BitmapImage( src );
-            EditedConfiguration[newLayoutKey].Add( "Image", image );
+                keyMode = keys.Select( k => k.KeyModes.FindBest( KeyboardContext.Service.EmptyMode ) ).Where( km => km.UpLabel == "Hide" ).FirstOrDefault();
+                if( keyMode != null )
+                {
+                    keyMode.Description = R.Patch1Hide;
+                }
+            }
+            #region Adding MinimizeHost
+            {
+                //Adding the Key
+                IKeyCollection keys = keyboard.Zones[zoneName].Keys;
+                IKey newKey = keys.Create( keys.Count );
+                IKeyMode newKeyEmptyMode = newKey.KeyModes.Create( KeyboardContext.Service.EmptyMode );
+                newKeyEmptyMode.UpLabel = "MinimizeHost";
+                newKeyEmptyMode.Description = R.DisplayConfigWindow;
+                newKeyEmptyMode.Enabled = true;
+                newKeyEmptyMode.OnKeyDownCommands.Commands.Add( "DynCommand(\"ToggleHostMinimized\")" );
+
+                //Adding the layoutKey
+                ILayoutKeyCollection layoutKeys = keyboard.CurrentLayout.LayoutZones[zoneName].LayoutKeys;
+                ILayoutKey newLayoutKey = newKey.CurrentLayout;
+                newLayoutKey.Current.X = 880;
+                newLayoutKey.Current.Y = 270;
+                newLayoutKey.Current.Width = 50;
+                newLayoutKey.Current.Height = 50;
+                newLayoutKey.Current.Visible = true;
+
+                //Adding the image
+                Image image = new Image();
+                Uri src = new Uri( @"/SimpleSkin;component/Images/EditorLogo.png", UriKind.Relative );
+                image.Source = new BitmapImage( src );
+                EditedConfiguration[newLayoutKey].Add( "Image", image );
+            }
+            #endregion
         }
 
         #endregion

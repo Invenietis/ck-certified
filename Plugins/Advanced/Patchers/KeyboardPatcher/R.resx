@@ -139,10 +139,16 @@ would you like to install it ? </value>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="Patch1CloseCiviKey" xml:space="preserve">
+    <value>Close CiviKey</value>
+  </data>
   <data name="Patch1Desc" xml:space="preserve">
     <value>An update is available for the "Azerty" keyboard. It adds a button that show and hide the configuration window. This update does not require restarting the application.
 
 Would you like to install it ?</value>
+  </data>
+  <data name="Patch1Hide" xml:space="preserve">
+    <value>Minimize the keyboard</value>
   </data>
   <data name="RememberMyDecision" xml:space="preserve">
     <value>Remember my decision</value>

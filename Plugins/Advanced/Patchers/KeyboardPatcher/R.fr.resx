@@ -141,12 +141,18 @@ Voules-vous l'installer ?</value>
   <data name="No" xml:space="preserve">
     <value>Non</value>
   </data>
+  <data name="Patch1CloseCiviKey" xml:space="preserve">
+    <value>Fermer CiviKey</value>
+  </data>
   <data name="Patch1Desc" xml:space="preserve">
     <value>Une mise à jour est disponible pour le clavier Azerty. 
 Elle ajoute un bouton permettant d'afficher ou de cacher la fenêtre de CiviKey. 
 
 Cette mise à jour ne nécessite pas de redémarrage.
 Voulez-vous l'installer ?</value>
+  </data>
+  <data name="Patch1Hide" xml:space="preserve">
+    <value>Minimiser le clavier</value>
   </data>
   <data name="RememberMyDecision" xml:space="preserve">
     <value>Enregistrer mon choix</value>

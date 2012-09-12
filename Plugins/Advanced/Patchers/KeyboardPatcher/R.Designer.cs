@@ -125,6 +125,15 @@ namespace KeyboardPatcher {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close CiviKey.
+        /// </summary>
+        internal static string Patch1CloseCiviKey {
+            get {
+                return ResourceManager.GetString("Patch1CloseCiviKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An update is available for the &quot;Azerty&quot; keyboard. It adds a button that show and hide the configuration window. This update does not require restarting the application.
         ///
         ///Would you like to install it ?.
@@ -132,6 +141,15 @@ namespace KeyboardPatcher {
         internal static string Patch1Desc {
             get {
                 return ResourceManager.GetString("Patch1Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimize the keyboard.
+        /// </summary>
+        internal static string Patch1Hide {
+            get {
+                return ResourceManager.GetString("Patch1Hide", resourceCulture);
             }
         }
         

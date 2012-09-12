@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +15,12 @@ using CK.Windows.App;
 
 namespace KeyboardPatcher
 {
-    public delegate T CKFunc<T, O>( out O errorMessage );
+    public delegate T CKFunc<T, O, N>( out O errorMessage, out N noRetry );
 
     /// <summary>
     /// This plugin hosts keyboard updates.
+    /// Each patch's state is saved in the User configuration, so it will be applied on each user individually.
+    /// 
     /// </summary>
     [Plugin( StrPluginID, PublicName = "Keyboard Patcher", Version = "1.0.0", Categories = new string[] { "Patcher" } )]
     public class KeyboardPatcher : IPlugin
@@ -37,6 +40,10 @@ namespace KeyboardPatcher
         {
             _patchs = new List<CKPatch>();
             _patchs.Add( new CKPatch( "KeyboardPatch", 1, CanExecutePatchV1, ApplyPatchV1, true ) );
+
+            //There shouldn't be two patches with the same name
+            Debug.Assert( _patchs.Select( x => x.Info.PatchNumber ).Distinct().ToArray().Length == _patchs.Count );
+            
             return true;
         }
 
@@ -56,10 +63,10 @@ namespace KeyboardPatcher
                 {
                     if( patch.TryApplyPatch( out errorMessage, out stopReminder ) )
                     {
-                        if( patch.IsCorrectlyApplied == null || patch.IsCorrectlyApplied() )
-                            Config.User.Set( patch.Info.ConfPathString, CKPatchStatus.Installed );
+                        Config.User.Set( patch.Info.ConfPathString, CKPatchStatus.Installed );
                     }
-                    else if( stopReminder )
+
+                    if( stopReminder )
                     {
                         Config.User.Set( patch.Info.ConfPathString, CKPatchStatus.Error );
                         Config.User.Set( patch.Info.ConfPathErrorString, errorMessage );
@@ -70,19 +77,20 @@ namespace KeyboardPatcher
 
         public void Stop()
         {
-            _patchs = null;
+
         }
 
         public void Teardown()
         {
-
+            _patchs = null;
         }
 
         //PatchV1 adds a button designed to toggle the host's window's visibility.
         #region PatchV1
 
-        public bool CanExecutePatchV1( out string errorMessage )
+        public bool CanExecutePatchV1( out string errorMessage, out bool noRetry )
         {
+            noRetry = false;
             errorMessage = String.Empty;
             if( KeyboardContext != null )
             {
@@ -99,6 +107,7 @@ namespace KeyboardPatcher
                 }
                 else errorMessage = String.Format( R.AzertyKeyboardNotFound, DateTime.Now );
             }
+            noRetry = true;
             return false;
         }
 
@@ -138,18 +147,30 @@ namespace KeyboardPatcher
 
     }
 
+    /// <summary>
+    /// Represents a CiviKey patch. (for example used to update the Keyboard Context)
+    /// </summary>
     public class CKPatch
     {
-        public CKFunc<bool, string> CanExecute { get; private set; }
+        public CKFunc<bool, string, bool> CanExecute { get; private set; }
         public Func<bool> IsCorrectlyApplied { get; private set; }
         public bool ShouldAskUser { get; private set; }
         public CKPatchInfo Info { get; private set; }
         public Action Action { get; private set; }
 
-        public bool TryApplyPatch( out string errorMessage, out bool stopReminder )
+        /// <summary>
+        /// This method asks the user is he wants to apply the patch (if <see cref="ShouldAskUser"/> is set to True)
+        /// It then launches the CanExecute method, to check whether the system is in the right state to apply this patch.
+        /// If so, launched the Action method, that applies the patch.
+        /// At the end, launched IsCorrectlyApplied to check whether the patch has been correctly applied (optional).
+        /// </summary>
+        /// <param name="errorMessage">the errormessage if there are errors</param>
+        /// <param name="noRetry">gets whether something heappened in this method, that asks not to retry applying this patch</param>
+        /// <returns></returns>
+        public bool TryApplyPatch( out string errorMessage, out bool noRetry )
         {
             errorMessage = String.Empty;
-            stopReminder = false;
+            noRetry = false;
             ModalViewModel mvm = new ModalViewModel( R.KeyboardUpdateTitle, R.KeyboardUpdateDescription, true, R.RememberMyDecision );
             mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
             mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
@@ -161,26 +182,32 @@ namespace KeyboardPatcher
 
             if( !ShouldAskUser || mvm.ModalResult == ModalResult.Yes )
             {
-                if( CanExecute( out errorMessage ) )
+                if( CanExecute == null || CanExecute( out errorMessage, out noRetry ) )
                 {
-                    Action.Invoke();
-                    return true;
+                    if( Action != null )
+                        Action.Invoke();
+
+                    if( IsCorrectlyApplied == null || IsCorrectlyApplied() )
+                        return true;
                 }
             }
-            else if( mvm.IsCheckboxChecked )
+            else
             {
                 errorMessage = String.Format( R.UserCancelled, DateTime.Now );
-                stopReminder = true;
             }
+
+            if( mvm.IsCheckboxChecked )
+                noRetry = true;
+
             return false;
         }
 
-        public CKPatch( string name, int patchNumber, CKFunc<bool, string> canExecute, Action action, bool shouldAskUser )
+        public CKPatch( string name, int patchNumber, CKFunc<bool, string, bool> canExecute, Action action, bool shouldAskUser )
             : this( name, patchNumber, canExecute, action, null, shouldAskUser )
         {
         }
 
-        public CKPatch( string name, int patchNumber, CKFunc<bool, string> canExecute, Action action, Func<bool> isCorrectlyApplied, bool shouldAskUser )
+        public CKPatch( string name, int patchNumber, CKFunc<bool, string, bool> canExecute, Action action, Func<bool> isCorrectlyApplied, bool shouldAskUser )
         {
             Info = new CKPatchInfo( name, patchNumber );
             IsCorrectlyApplied = isCorrectlyApplied;
@@ -190,7 +217,7 @@ namespace KeyboardPatcher
         }
     }
 
-    public class CKPatchInfo
+    public class CKPatchInfo : IComparable<CKPatchInfo>
     {
         public string ConfPathString { get { return Name + PatchNumber; } }
         public string ConfPathErrorString { get { return Name + PatchNumber + "ErrorMsg"; } }
@@ -201,6 +228,13 @@ namespace KeyboardPatcher
         {
             PatchNumber = patchNumber;
             Name = name;
+        }
+
+        public int CompareTo( CKPatchInfo other )
+        {
+            if( this.PatchNumber > other.PatchNumber ) return 1;
+            else if( this.PatchNumber == other.PatchNumber ) return 0;
+            return -1;
         }
     }
 

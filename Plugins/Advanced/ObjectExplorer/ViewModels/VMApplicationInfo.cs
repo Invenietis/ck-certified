@@ -88,6 +88,8 @@ namespace CK.Plugins.ObjectExplorer
             }
         }
 
+        public string DistributionName { get { return _hostInfo.SubAppName; } }
+
         public string SystemConfigurationPath { get { return _hostInfo != null ? _hostInfo.GetSystemConfigAddress().AbsolutePath : ""; } }
 
         public string UserConfigurationPath { get { return VMIContext.Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address.AbsolutePath; } }

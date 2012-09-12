@@ -127,7 +127,9 @@
     <value>Non, ne pas réessayer</value>
   </data>
   <data name="KeyboardUpdateDescription" xml:space="preserve">
-    <value>Une mise à jour est disponible pour ce clavier.
+    <value>Une mise à jour est disponible pour l'un des claviers de CiviKey. 
+Cela ne nécessite pas le redémarrage de l'application.
+
 Voules-vous l'installer ?</value>
   </data>
   <data name="KeyboardUpdateTitle" xml:space="preserve">
@@ -138,6 +140,13 @@ Voules-vous l'installer ?</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Non</value>
+  </data>
+  <data name="Patch1Desc" xml:space="preserve">
+    <value>Une mise à jour est disponible pour le clavier Azerty. 
+Elle ajoute un bouton permettant d'afficher ou de cacher la fenêtre de CiviKey. 
+
+Cette mise à jour ne nécessite pas de redémarrage.
+Voulez-vous l'installer ?</value>
   </data>
   <data name="RememberMyDecision" xml:space="preserve">
     <value>Enregistrer mon choix</value>

@@ -39,7 +39,7 @@ namespace KeyboardPatcher
         public bool Setup( IPluginSetupInfo info )
         {
             _patchs = new List<CKPatch>();
-            _patchs.Add( new CKPatch( "KeyboardPatch", 1, CanExecutePatchV1, ApplyPatchV1, true ) );
+            _patchs.Add( new CKPatch( "KeyboardPatch", 1,  CanExecutePatchV1, ApplyPatchV1, true ) );
 
             //There shouldn't be two patches with the same name
             Debug.Assert( _patchs.Select( x => x.Info.PatchNumber ).Distinct().ToArray().Length == _patchs.Count );
@@ -159,6 +159,12 @@ namespace KeyboardPatcher
         public Action Action { get; private set; }
 
         /// <summary>
+        /// Gets the message prompted tp the user when he is proposed the patch.
+        /// The dialog will propose Yes & No as possible answers.
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// This method asks the user is he wants to apply the patch (if <see cref="ShouldAskUser"/> is set to True)
         /// It then launches the CanExecute method, to check whether the system is in the right state to apply this patch.
         /// If so, launched the Action method, that applies the patch.
@@ -171,7 +177,9 @@ namespace KeyboardPatcher
         {
             errorMessage = String.Empty;
             noRetry = false;
-            ModalViewModel mvm = new ModalViewModel( R.KeyboardUpdateTitle, R.KeyboardUpdateDescription, true, R.RememberMyDecision );
+            string desc = String.IsNullOrWhiteSpace( Description ) ? R.KeyboardUpdateDescription : Description;
+
+            ModalViewModel mvm = new ModalViewModel( R.KeyboardUpdateTitle, desc, true, R.RememberMyDecision );
             mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
             mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
             if( ShouldAskUser )
@@ -207,11 +215,22 @@ namespace KeyboardPatcher
         {
         }
 
+        public CKPatch( string name, int patchNumber, string description, CKFunc<bool, string, bool> canExecute, Action action, bool shouldAskUser )
+            : this( name, patchNumber, description, canExecute, action, null, shouldAskUser )
+        {
+        }
+
         public CKPatch( string name, int patchNumber, CKFunc<bool, string, bool> canExecute, Action action, Func<bool> isCorrectlyApplied, bool shouldAskUser )
+            : this( name, patchNumber, "", canExecute, action, null, shouldAskUser )
+        {
+        }
+
+        public CKPatch( string name, int patchNumber, string description, CKFunc<bool, string, bool> canExecute, Action action, Func<bool> isCorrectlyApplied, bool shouldAskUser )
         {
             Info = new CKPatchInfo( name, patchNumber );
             IsCorrectlyApplied = isCorrectlyApplied;
             ShouldAskUser = shouldAskUser;
+            Description = description;
             CanExecute = canExecute;
             Action = action;
         }

@@ -127,7 +127,7 @@
     <value>No, don't try again</value>
   </data>
   <data name="KeyboardUpdateDescription" xml:space="preserve">
-    <value>A keyboard update is available. 
+    <value>A keyboard update is available. (does not require restarting the application)
 would you like to install it ? </value>
   </data>
   <data name="KeyboardUpdateTitle" xml:space="preserve">
@@ -138,6 +138,11 @@ would you like to install it ? </value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Patch1Desc" xml:space="preserve">
+    <value>An update is available for the "Azerty" keyboard. It adds a button that show and hide the configuration window. This update does not require restarting the application.
+
+Would you like to install it ?</value>
   </data>
   <data name="RememberMyDecision" xml:space="preserve">
     <value>Remember my decision</value>

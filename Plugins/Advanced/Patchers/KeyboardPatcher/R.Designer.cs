@@ -88,7 +88,7 @@ namespace KeyboardPatcher {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A keyboard update is available. 
+        ///   Looks up a localized string similar to A keyboard update is available. (does not require restarting the application)
         ///would you like to install it ? .
         /// </summary>
         internal static string KeyboardUpdateDescription {
@@ -121,6 +121,17 @@ namespace KeyboardPatcher {
         internal static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An update is available for the &quot;Azerty&quot; keyboard. It adds a button that show and hide the configuration window. This update does not require restarting the application.
+        ///
+        ///Would you like to install it ?.
+        /// </summary>
+        internal static string Patch1Desc {
+            get {
+                return ResourceManager.GetString("Patch1Desc", resourceCulture);
             }
         }
         

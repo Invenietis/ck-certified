@@ -54,7 +54,7 @@ namespace Host
             var attribute = Assembly.GetExecutingAssembly()
                                         .GetCustomAttributes( typeof( DistributionAttribute ), false )
                                         .Cast<DistributionAttribute>().SingleOrDefault();
-            if( attribute != null ) distributionName = attribute.DistributionName; 
+            if( attribute != null && !String.IsNullOrWhiteSpace(attribute.DistributionName) ) distributionName = attribute.DistributionName; 
             
 
             // Crash logs upload and updater availability is managed during this initialization.

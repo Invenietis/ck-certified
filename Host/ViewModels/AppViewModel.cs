@@ -34,6 +34,7 @@ using System.Windows.Input;
 using System.Diagnostics;
 using Host.Resources;
 using CK.Windows.App;
+using System.Threading;
 
 namespace Host
 {
@@ -167,13 +168,13 @@ namespace Host
                 ModalViewModel mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
                 mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
                 mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-
                 CustomMsgBox customMessageBox = new CustomMsgBox( ref mvm );
                 customMessageBox.ShowDialog();
+
                 e.Cancel = mvm.ModalResult != ModalResult.Yes;
-                
-                if( bestParent != thisView ) thisView.Activate();
+
                 _closing = !e.Cancel;
+                if( !_closing && bestParent != thisView ) thisView.Activate();
             }
             else
                 e.Cancel = true;

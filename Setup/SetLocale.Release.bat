@@ -9,4 +9,3 @@ FOR /D /r %%G IN ("Locale*") DO (
 		call %%F
 	)
 )
-pause

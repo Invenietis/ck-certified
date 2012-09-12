@@ -148,7 +148,7 @@ namespace UpdateChecker
         public void CheckForUpdate()
         {
             CheckNotBusy();
-            _distributionName = (string)Configuration.System["DistributionName"] ?? HostInformation.SubAppName;
+            _distributionName = HostInformation.SubAppName;
 
             UpdateVersionState savedState = _versionState;
             VersionState = UpdateVersionState.CheckingForNewVersion;

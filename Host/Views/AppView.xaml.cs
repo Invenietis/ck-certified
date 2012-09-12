@@ -54,7 +54,7 @@ namespace Host
         /// <param name="e"></param>
         protected override void OnActivated( EventArgs e )
         {
-            this.Show();
+            this.UpdateLayout();
             base.OnActivated( e );
         }
     }

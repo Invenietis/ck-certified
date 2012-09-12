@@ -30,6 +30,8 @@ using System.Windows;
 using CK.Windows.App;
 using System.Threading;
 using System.Globalization;
+using System.Reflection;
+using Host.Services.Helpers;
 
 namespace Host
 {
@@ -47,8 +49,17 @@ namespace Host
             Thread.CurrentThread.CurrentUICulture = ci;
             Thread.CurrentThread.CurrentCulture = ci;
 
+            //Getting the distributionname from AssemblyInfo
+            string distributionName = "Std";
+            var attribute = Assembly.GetExecutingAssembly()
+                                        .GetCustomAttributes( typeof( DistributionAttribute ), false )
+                                        .Cast<DistributionAttribute>().SingleOrDefault();
+            if( attribute != null && !String.IsNullOrWhiteSpace(attribute.DistributionName) ) distributionName = attribute.DistributionName; 
+            
+
             // Crash logs upload and updater availability is managed during this initialization.
-            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", "Std" ) ) )
+             
+            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", distributionName ) ) )
             {
                 // Common logger is actually bound to log4net.UpdateDone
 
@@ -58,8 +69,8 @@ namespace Host
                 {
                     CKApp.Run( () =>
                     {
-                        CivikeyStandardHost.Instance.CreateContext();
                         App app = new App();
+                        CivikeyStandardHost.Instance.CreateContext();
                         app.InitializeComponent();
                         return app;
                     } );

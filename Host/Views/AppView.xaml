@@ -7,13 +7,9 @@
             xmlns:ckwc="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
             xmlns:ckcontrols="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
             xmlns:ser="clr-namespace:Host.Services;assembly=Host.Services"
-            mc:Ignorable="d" 
-            MaxHeight="800"
-            MaxWidth="800"
-            MinWidth="400"  
-            MinHeight="302"
-            Icon="pack://application:,,,/CiviKey;component/Resources/Icons/CiviKey.ico"
-            ShowInTaskbar="{Binding ShowTaskbarIcon}"
+            Icon="pack://application:,,,/CiviKey;component/Resources/Icons/CiviKey.ico"    
+            ShowInTaskbar="{Binding ShowTaskbarIcon}" mc:Ignorable="d" 
+            MaxHeight="800" MaxWidth="800" MinWidth="400" MinHeight="302"
             SizeToContent="WidthAndHeight">
     <Window.Resources>
         <ckwc:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -22,6 +18,9 @@
     <Window.WindowState>
         <Binding Path="IsMinimized" Mode="TwoWay" Converter="{StaticResource BooleanToIsMinimizedConverter}"/>
     </Window.WindowState>
+    <Window.Visibility>
+        <Binding Path="IsVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibilityConverter}" ConverterParameter="Hidden"/>
+    </Window.Visibility>
     <Grid>
         <StackPanel>
             <tb:TaskbarIcon 

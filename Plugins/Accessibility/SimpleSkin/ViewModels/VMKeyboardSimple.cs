@@ -29,7 +29,7 @@ using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using CK.Windows.Helper;
+using CK.Windows.Helpers;
 
 namespace SimpleSkin.ViewModels
 {

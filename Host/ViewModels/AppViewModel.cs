@@ -35,6 +35,11 @@ using System.Diagnostics;
 using Host.Resources;
 using CK.Windows.App;
 using System.Threading;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace Host
 {
@@ -50,17 +55,14 @@ namespace Host
             ConfigManager.ActivateItem( new RootConfigViewModel( this ) );
             ActivateItem( ConfigManager );
 
+            IsVisible = true;
             IsMinimized = true;
+            
 
             CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );
 
             CivikeyHost.Context.ServiceContainer.Add<IHostManipulator>( this );
-        }
-
-        public void ToggleMinimize()
-        {
-            IsMinimized = !IsMinimized;
         }
 
         public CivikeyStandardHost CivikeyHost { get { return CivikeyStandardHost.Instance; } }
@@ -99,17 +101,7 @@ namespace Host
             }
         }
 
-        bool _isMinimized;
-        public bool IsMinimized
-        {
-            get { return _isMinimized; }
-            set
-            {
-                _isMinimized = value;
-                if( !_isMinimized ) this.EnsureMainWindowVisible();
-                NotifyOfPropertyChange( "IsMinimized" );
-            }
-        }
+
 
         public bool ShowSystrayIcon
         {
@@ -157,6 +149,17 @@ namespace Host
             }
         }
 
+        /// <summary>
+        /// Gets whether another window overlays the window set as parameter
+        /// </summary>
+        /// <returns></returns>
+        public bool IsOverlayed()
+        {
+            Window view = GetView( null ) as Window;
+            bool result = CK.Windows.Helpers.WindowHelper.IsOverLayed( view );
+            return result;
+        }
+
         void OnBeforeExitApplication( object sender, CK.Context.ApplicationExitingEventArgs e )
         {
             if( !_closing )
@@ -191,10 +194,58 @@ namespace Host
             }
         }
 
+        bool _isVisible;
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value;
+                NotifyOfPropertyChange( "IsVisible" );
+            }
+        }
+
         void EnsureMainWindowVisible()
         {
             if( IsMinimized ) IsMinimized = false;
             App.Current.MainWindow.Activate();
+        }
+
+        public void ToggleMinimize()
+        {
+            if( !ShowTaskbarIcon )
+            {
+                IsVisible = !IsVisible;
+            }
+
+            Application.Current.Dispatcher.BeginInvoke( DispatcherPriority.Background,
+                new System.Action( delegate()
+                {
+                    IsMinimized = !IsMinimized;
+                } )
+            );
+        }
+
+        bool _isMinimized;
+        public bool IsMinimized
+        {
+            get { return _isMinimized; }
+            set
+            {
+                if( !ShowTaskbarIcon )
+                {
+                    IsVisible = !value;
+                }
+
+                Application.Current.Dispatcher.BeginInvoke( DispatcherPriority.Background,
+                    new System.Action( delegate()
+                    {
+                        _isMinimized = value;
+                        NotifyOfPropertyChange( "IsMinimized" );
+                        App.Current.MainWindow.Activate();
+                    } )
+                );
+            }
         }
 
         internal void StartPlugin( Guid pluginId )
@@ -210,7 +261,7 @@ namespace Host
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Stopped );
             runner.Apply();
         }
-                internal bool IsPluginRunning( IPluginInfo plugin )
+        internal bool IsPluginRunning( IPluginInfo plugin )
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             return runner.PluginHost.IsPluginRunning( plugin );
@@ -220,8 +271,8 @@ namespace Host
         {
             return new WaitHandle( GetView( null ) as Window );
         }
-
     }
+
     public class WaitHandle : IDisposable
     {
         Window _owner;

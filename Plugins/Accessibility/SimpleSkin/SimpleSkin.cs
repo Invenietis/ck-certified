@@ -34,7 +34,7 @@ using CommonServices;
 using Host.Services;
 using SimpleSkin.ViewModels;
 using CK.Windows;
-using CK.Windows.Helper;
+using CK.Windows.Helpers;
 using System.Linq;
 
 namespace SimpleSkin

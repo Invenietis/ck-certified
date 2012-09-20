@@ -37,7 +37,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Context">
-      <HintPath>..\..\..\..\packages\CK.Context.2.8.43\lib\net40\CK.Context.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.Context.2.8.44\lib\net40\CK.Context.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Core">
@@ -49,15 +49,15 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Config">
-      <HintPath>..\..\..\..\packages\CK.Plugin.Config.2.8.43\lib\net40\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.Plugin.Config.2.8.44\lib\net40\CK.Plugin.Config.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\..\..\..\packages\CK-Plugin.2.8.43\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\..\..\packages\CK-Plugin.2.8.43\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Reflection">
@@ -65,7 +65,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.SharedDic">
-      <HintPath>..\..\..\..\packages\CK.SharedDic.2.8.43\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.SharedDic.2.8.44\lib\net40\CK.SharedDic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Storage">
@@ -73,15 +73,15 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.App">
-      <HintPath>..\..\..\..\packages\CK.Windows.App.2.8.43\lib\net40\CK.Windows.App.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.Windows.App.2.8.44\lib\net40\CK.Windows.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.Core">
-      <HintPath>..\..\..\..\packages\CK.Windows.Core.2.8.43\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.Windows.Core.2.8.44\lib\net40\CK.Windows.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.Interop">
-      <HintPath>..\..\..\..\packages\CK.Windows.Interop.2.8.43\lib\net40\CK.Windows.Interop.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.Windows.Interop.2.8.44\lib\net40\CK.Windows.Interop.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Common.Logging">

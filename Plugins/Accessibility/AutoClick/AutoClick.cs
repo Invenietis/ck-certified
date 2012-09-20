@@ -36,7 +36,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using CK.Windows;
 using System.Runtime.InteropServices;
-using CK.Windows.Helper;
+using CK.Windows.Helpers;
 
 namespace CK.Plugins.AutoClick
 {

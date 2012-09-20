@@ -34,6 +34,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Host
 {
@@ -48,7 +49,7 @@ namespace Host
         }
 
         /// <summary>
-        /// Used to launch WPF UI Thread when the window goes from the minimized state to th enormal state, in XP.
+        /// Used to launch WPF UI Thread when the window goes from the minimized state to the normal state, in XP.
         /// Without that, half the window remains black until it is resized.
         /// </summary>
         /// <param name="e"></param>

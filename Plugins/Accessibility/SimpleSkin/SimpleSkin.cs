@@ -267,7 +267,7 @@ namespace SimpleSkin
         /// </summary>
         public void ToggleHostMinimized()
         {
-            HostManipulator.ToggleMinimize();
+            HostManipulator.ToggleMinimize( _skinWindow.LastFocusedWindowHandle );
         }
 
         /// <summary>
@@ -275,6 +275,9 @@ namespace SimpleSkin
         /// </summary>
         public bool IsHostMinimized { get { return HostManipulator.IsMinimized; } }
 
+        /// <summary>
+        /// Hides the skin and shows the keyboard's MiniView
+        /// </summary>
         public void Hide()
         {
             if( !_viewHidden )
@@ -287,6 +290,9 @@ namespace SimpleSkin
             }
         }
 
+        /// <summary>
+        /// Hides the keyboard's MiniView and shows the keyboard
+        /// </summary>
         public void RestoreSkin()
         {
             if( _viewHidden )
@@ -297,6 +303,9 @@ namespace SimpleSkin
             }
         }
 
+        /// <summary>
+        /// Gets or sets the MiniView's X position
+        /// </summary>
         public double MiniViewPositionX
         {
             get
@@ -315,6 +324,9 @@ namespace SimpleSkin
             set { Config.Context["MiniViewPositionX"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the MiniView's Y position
+        /// </summary>
         public double MiniViewPositionY
         {
             get

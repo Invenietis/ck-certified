@@ -47,17 +47,18 @@ namespace Host
     {
         bool _forceClose;
         bool _closing;
+        bool _isVisible;
 
         public AppViewModel()
         {
-            DisplayName = "CiviKey";//R.CiviKey
+            DisplayName = "CiviKey";
             ConfigManager = new ConfigManager();
             ConfigManager.ActivateItem( new RootConfigViewModel( this ) );
             ActivateItem( ConfigManager );
 
             IsVisible = true;
             IsMinimized = true;
-            
+
 
             CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );
@@ -88,6 +89,9 @@ namespace Host
 
         public string AppVersion { get { return CivikeyHost.AppVersion.ToString(); } }
 
+        /// <summary>
+        /// Gets whether the application should be visible in the TaskBar.
+        /// </summary>
         public bool ShowTaskbarIcon
         {
             get { return CivikeyHost.UserConfig.GetOrSet( "ShowTaskbarIcon", true ); }
@@ -101,8 +105,9 @@ namespace Host
             }
         }
 
-
-
+        /// <summary>
+        ///  Gets whether the application should be visible in the Systray.
+        /// </summary>
         public bool ShowSystrayIcon
         {
             get { return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true ); }
@@ -194,7 +199,11 @@ namespace Host
             }
         }
 
-        bool _isVisible;
+        
+        /// <summary>
+        /// Gets whether the window is visible or not.
+        /// This boolean is only valid when <see cref="Host.AppViewModel.ShowTaskbarIcon"/> is set to false, otherwise it doesn't track the actual visibility of the window.
+        /// </summary>
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -211,19 +220,23 @@ namespace Host
             App.Current.MainWindow.Activate();
         }
 
-        public void ToggleMinimize()
+        /// <summary>
+        /// Toggle the Minimized state of the MainApplicationWindow.
+        /// If the window should not appear in the Taskbar, it is hidden instead of minimized.
+        /// </summary>
+        /// <param name="lastFocusedWindowsHandle"></param>
+        public void ToggleMinimize( IntPtr lastFocusedWindowsHandle )
         {
-            if( !ShowTaskbarIcon )
+            if( !IsMinimized && new WindowInteropHelper( (Window)this.GetView( null ) ).Handle != lastFocusedWindowsHandle )
             {
-                IsVisible = !IsVisible;
+                //If the window is not minimized but doesn't have the focus, it is activated.
+                App.Current.MainWindow.Activate();
             }
-
-            Application.Current.Dispatcher.BeginInvoke( DispatcherPriority.Background,
-                new System.Action( delegate()
-                {
-                    IsMinimized = !IsMinimized;
-                } )
-            );
+            else
+            {
+                if( !ShowTaskbarIcon ) IsVisible = !IsVisible;
+                IsMinimized = !IsMinimized;
+            }
         }
 
         bool _isMinimized;
@@ -232,11 +245,9 @@ namespace Host
             get { return _isMinimized; }
             set
             {
-                if( !ShowTaskbarIcon )
-                {
-                    IsVisible = !value;
-                }
+                if( !ShowTaskbarIcon ) IsVisible = !value;
 
+                //We have to push this delegate on the dispatcher queue to have the different changes processed correctly
                 Application.Current.Dispatcher.BeginInvoke( DispatcherPriority.Background,
                     new System.Action( delegate()
                     {

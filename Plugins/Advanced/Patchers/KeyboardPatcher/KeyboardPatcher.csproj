@@ -76,8 +76,9 @@
       <HintPath>..\..\..\..\packages\CK.Windows.App.2.8.44\lib\net40\CK.Windows.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Windows.Core">
-      <HintPath>..\..\..\..\packages\CK.Windows.Core.2.8.44\lib\net40\CK.Windows.Core.dll</HintPath>
+    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\CK.Windows.Core.2.8.45\lib\net40\CK.Windows.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Windows.Interop">

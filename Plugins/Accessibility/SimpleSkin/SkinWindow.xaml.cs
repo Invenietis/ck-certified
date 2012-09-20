@@ -21,6 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
+using System.Windows;
 using CK.Windows;
 
 namespace SimpleSkin
@@ -34,7 +36,6 @@ namespace SimpleSkin
         {
             this.DataContext = dc;
             InitializeComponent();
-        } 
-        
+        }
     }
 }

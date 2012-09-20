@@ -30,7 +30,7 @@ namespace Host.Services
 {
     public interface IMinimizable
     {
-        void ToggleMinimize();
+        void ToggleMinimize(IntPtr lastFocusedWindowHandle);
         bool IsMinimized { get; }
     }
 }

@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CK-Structured version="2.5.5">
+  <CKContext>
+    <RequirementLayer Name="Context">
+      <PluginRequirements></PluginRequirements>
+      <ServiceRequirements></ServiceRequirements>
+    </RequirementLayer>
+    <PluginData>
+      <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
+        <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Keyboard Name="Ergonomic">
+            <RequirementLayer Name="Keyboard">
+              <PluginRequirements></PluginRequirements>
+              <ServiceRequirements></ServiceRequirements>
+            </RequirementLayer>
+            <Modes Current="">
+              <Mode>shift</Mode>
+            </Modes>
+            <Zones>
+              <Zone Name="">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="shift" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("shift")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-shift"):Mode.Remove("shift")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Le space !">
+                        <KeyUp Label="space" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey" "</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Le back !">
+                        <KeyUp Label="back" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"{Bs}"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="enter" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"{enter}"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+            </Zones>
+            <Layouts>
+              <Layout IsCurrent="true" Name="" Width="780" Height="280">
+                <RequirementLayer Name="Layout">
+                  <PluginRequirements></PluginRequirements>
+                  <ServiceRequirements></ServiceRequirements>
+                </RequirementLayer>
+                <Zones>
+                  <Zone Name="">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="5" Y="225" W="80" H="50" Visible="true" />
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="175" Y="225" W="505" H="50" Visible="true" />
+                      </LayoutKey>
+                      <LayoutKey Index="2">
+                        <LayoutKeyMode Mode="" X="90" Y="225" W="80" H="50" Visible="true" />
+                      </LayoutKey>
+                      <LayoutKey Index="3">
+                        <LayoutKeyMode Mode="" X="685" Y="225" W="80" H="50" Visible="true" />
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                </Zones>
+                <PluginsData>
+                  <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                    <data key="PositionX" type="Int32">561</data>
+                    <data key="PositionY" type="Int32">735</data>
+                    <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">319,115</Size>
+                    </data>
+                    <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFD3D3D3</Color>
+                    </data>
+                  </p>
+                </PluginsData>
+              </Layout>
+            </Layouts>
+          </Keyboard>
+         </data>
+      </p>
+      <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+        <data key="MiniViewPositionX" type="Double">1255</data>
+        <data key="MiniViewPositionY" type="Double">679</data>
+      </p>
+    </PluginData>
+  </CKContext>
+</CK-Structured>

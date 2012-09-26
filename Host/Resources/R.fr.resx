@@ -282,4 +282,13 @@
   <data name="FeatureDisable" xml:space="preserve">
     <value>Arrêter</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
 </root>

@@ -1,8 +1,11 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:CK.WPF.StandardViews">
+    xmlns:local="clr-namespace:CK.WPF.StandardViews"
+    xmlns:controls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls">
 
+    <controls:StringIsNullOrWhiteSpaceToBoolean x:Key="StringIsNullOrWhiteSpaceToBoolean" />
+    
     <Style TargetType="{x:Type local:StdKeyboardView}">
         <Setter Property="Width" Value="500" />
         <Setter Property="Height" Value="350" />
@@ -79,7 +82,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyView}">
-                    <Grid>
+                    <Grid x:Name="buttonGrid">
                         <Border x:Name="Border" CornerRadius="5"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1.5"
                                 Background="{TemplateBinding Background}" />
@@ -98,6 +101,9 @@
                         <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Description, Converter={StaticResource StringIsNullOrWhiteSpaceToBoolean}}" Value="False">
+                            <Setter TargetName="buttonGrid" Property="ToolTip" Value="{Binding Description}"/>
+                        </DataTrigger>
                         <!-- Trigger on : IsMouseOver -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>

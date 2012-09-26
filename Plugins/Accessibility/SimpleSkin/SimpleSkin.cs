@@ -1,4 +1,27 @@
-﻿using System;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Accessibility\SimpleSkin\SimpleSkin.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
@@ -11,7 +34,8 @@ using CommonServices;
 using Host.Services;
 using SimpleSkin.ViewModels;
 using CK.Windows;
-using CK.Windows.Helper;
+using CK.Windows.Helpers;
+using System.Linq;
 
 namespace SimpleSkin
 {
@@ -22,11 +46,15 @@ namespace SimpleSkin
     public class SimpleSkin : IPlugin, ISkinService
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
+        Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         bool _viewHidden;
+
+        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        //public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -47,6 +75,9 @@ namespace SimpleSkin
 
         [RequiredService]
         public INotificationService Notification { get; set; }
+
+        IHostManipulator _hostManipulator;
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -75,8 +106,6 @@ namespace SimpleSkin
 
                 _skinWindow.Show();
 
-
-
                 if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
 
                 //Placing the skin at the same location as the last launch.
@@ -96,8 +125,6 @@ namespace SimpleSkin
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
             }
         }
-
-
 
         private void RegisterEvents()
         {
@@ -150,7 +177,7 @@ namespace SimpleSkin
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Contains( PluginId ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
             }
@@ -231,12 +258,26 @@ namespace SimpleSkin
             }
         }
 
-
-
         public void Teardown()
         {
         }
 
+        /// <summary>
+        /// Toggles minimization of the application's host, the configuration window.
+        /// </summary>
+        public void ToggleHostMinimized()
+        {
+            HostManipulator.ToggleMinimize( _skinWindow.LastFocusedWindowHandle );
+        }
+
+        /// <summary>
+        /// Gets whether the application's host's window is minimized.
+        /// </summary>
+        public bool IsHostMinimized { get { return HostManipulator.IsMinimized; } }
+
+        /// <summary>
+        /// Hides the skin and shows the keyboard's MiniView
+        /// </summary>
         public void Hide()
         {
             if( !_viewHidden )
@@ -249,6 +290,9 @@ namespace SimpleSkin
             }
         }
 
+        /// <summary>
+        /// Hides the keyboard's MiniView and shows the keyboard
+        /// </summary>
         public void RestoreSkin()
         {
             if( _viewHidden )
@@ -259,6 +303,9 @@ namespace SimpleSkin
             }
         }
 
+        /// <summary>
+        /// Gets or sets the MiniView's X position
+        /// </summary>
         public double MiniViewPositionX
         {
             get
@@ -277,6 +324,9 @@ namespace SimpleSkin
             set { Config.Context["MiniViewPositionX"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the MiniView's Y position
+        /// </summary>
         public double MiniViewPositionY
         {
             get

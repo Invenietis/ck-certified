@@ -1,4 +1,27 @@
-﻿using System;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Accessibility\AutoClick\AutoClick.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.Linq;
 using CK.Plugin;
 using System.Windows.Input;
@@ -13,7 +36,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using CK.Windows;
 using System.Runtime.InteropServices;
-using CK.Windows.Helper;
+using CK.Windows.Helpers;
 
 namespace CK.Plugins.AutoClick
 {
@@ -220,7 +243,7 @@ namespace CK.Plugins.AutoClick
         /// <param name="e"></param>
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => String.Compare( "989BE0E6-D710-489e-918F-FBB8700E2BB2", c.UniqueId.ToString(), true ) == 0 ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 switch( e.Key )
                 {

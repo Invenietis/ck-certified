@@ -1,4 +1,27 @@
-﻿using System;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Advanced\UpdateChecker\UpdateChecker.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -15,6 +38,7 @@ using Host;
 using System.Text;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using CK.Windows.App;
 
 namespace UpdateChecker
 {
@@ -124,7 +148,7 @@ namespace UpdateChecker
         public void CheckForUpdate()
         {
             CheckNotBusy();
-            _distributionName = (string)Configuration.System["DistributionName"] ?? HostInformation.SubAppName;
+            _distributionName = HostInformation.SubAppName;
 
             UpdateVersionState savedState = _versionState;
             VersionState = UpdateVersionState.CheckingForNewVersion;
@@ -152,7 +176,7 @@ namespace UpdateChecker
                     NewVersion = new Version( version );
                     if( NewVersion > HostInformation.AppVersion )//If the version retrieved from the server is greater than the currently installed one
                     {
-                         //If the version retrived from the server is greater than the one that has been downloaded last
+                        //If the version retrived from the server is greater than the one that has been downloaded last
                         string retrievedVersionString = Configuration.System.GetOrSet<string>( "LastDownloadedVersion", "0.0.0" );
                         Version retrievedVersion;
                         if( Version.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
@@ -234,15 +258,34 @@ namespace UpdateChecker
 
         private void OnNewerVersionAvailable()
         {
-            if( MessageBox.Show( String.Format( "Une mise à jour est disponible (version {0}).\nVoulez-vous la télécharger ?", NewVersion ), "Mise à jour", MessageBoxButton.YesNo ) == MessageBoxResult.Yes )
+            ModalViewModel mvm = new ModalViewModel( R.UpdateAvailableTitle, String.Format( R.UpdateAvailableContent, NewVersion.ToString() ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+
+            Application.Current.Dispatcher.Invoke( new Action( () =>
             {
-                StartDownload();
-            }
+                CustomMsgBox msg = new CustomMsgBox( ref mvm );
+                msg.ShowDialog();
+
+                if( mvm.ModalResult == ModalResult.Yes )
+                {
+                    StartDownload();
+                }
+            } ) );
         }
 
         private void OnNewerVersionDownloaded()
         {
-            MessageBox.Show( "Une mise à jour est prête à être installée.\nElle vous sera proposée au prochain lancement de Civikey.", "Mise à jour" );
+            ModalViewModel mvm = new ModalViewModel( R.UpdateDownloadedTitle, R.UpdateDownloadedContent );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Ok, null, ModalResult.Ok ) );
+
+            Application.Current.Dispatcher.Invoke( new Action( () =>
+            {
+                CustomMsgBox msg = new CustomMsgBox( ref mvm );
+                msg.ShowDialog();
+            } ) );
+
+
         }
     }
 }

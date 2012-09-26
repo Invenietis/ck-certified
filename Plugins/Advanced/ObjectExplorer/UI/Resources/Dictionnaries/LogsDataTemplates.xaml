@@ -18,8 +18,8 @@
             </TransformGroup>
         </LinearGradientBrush.RelativeTransform>
         <LinearGradientBrush.GradientStops>
-            <GradientStop Color="#FF08E33B" Offset="0.0211864"/>
-            <GradientStop Color="#FF83F19D" Offset="0.0635593"/>
+            <GradientStop Color="#b2d24b" Offset="0.0211864"/>
+            <GradientStop Color="#d9e96c" Offset="0.0635593"/>
             <GradientStop Color="#FFF6F6F6" Offset="0.127119"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>

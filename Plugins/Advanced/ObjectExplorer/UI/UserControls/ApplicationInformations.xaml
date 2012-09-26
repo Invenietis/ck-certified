@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -74,6 +75,16 @@
                 </DockPanel>
             </StackPanel>
         </GroupBox>
-        <Button Grid.Row="3" Grid.ColumnSpan="2" Content="Force GC" Command="{Binding ForceGCCommand}"/>
+        <GroupBox Grid.Row="3" Grid.ColumnSpan="2" Header="Other informations" HeaderTemplate="{StaticResource BoldHeaderTemplate}" >
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Distribution Name : " VerticalAlignment="Center"/>
+                    <Label Content="{Binding DistributionName, Mode=OneWay}" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Header="Actions" HeaderTemplate="{StaticResource BoldHeaderTemplate}" >
+            <Button Content="Force GC" Width="100" Command="{Binding ForceGCCommand}" HorizontalAlignment="Left"/>
+        </GroupBox>
     </Grid>
 </UserControl>

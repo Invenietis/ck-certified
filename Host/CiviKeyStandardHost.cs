@@ -1,4 +1,27 @@
-﻿using System;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Host\CiviKeyStandardHost.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.IO;
 using System.Reflection;
 using CK.Context;
@@ -67,6 +90,7 @@ namespace Host
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.OptionalTryStart );
 
             ctx.PluginRunner.Add( hostRequirements );
 

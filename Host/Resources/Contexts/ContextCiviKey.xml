@@ -3354,7 +3354,7 @@
                   </Key>
                   <Key>
                     <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
+                      <KeyMode Mode="" Enabled="true" Description="Minimiser le clavier">
                         <KeyUp Label="Hide" />
                         <KeyPressed>
                           <KeyProgram xml:space="preserve">
@@ -3366,12 +3366,24 @@
                   </Key>
                   <Key>
                     <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
+                      <KeyMode Mode="" Enabled="true" Description="Fermer CiviKey">
                         <KeyUp Label="Exit">
                           <KeyProgram xml:space="preserve">
                             <Cmd>DynCommand("ShutDown")</Cmd>
                           </KeyProgram>
                         </KeyUp>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Afficher la fenêtre de configuration">
+                        <KeyUp Label="MinimizeHost" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>DynCommand("ToggleHostMinimized")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
                       </KeyMode>
                     </KeyModes>
                   </Key>
@@ -3995,6 +4007,17 @@
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                                 <Image Source="pack://application:,,,/SimpleSkin;component/Images/exit.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="3">
+                        <LayoutKeyMode Mode="" X="880" Y="270" W="50" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/EditorLogo.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                               </data>
                             </p>
                           </PluginsData>

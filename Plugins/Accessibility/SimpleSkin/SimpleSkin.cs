@@ -86,7 +86,15 @@ namespace SimpleSkin
             return true;
         }
 
-        private string PlacementString { get { return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement"; } }
+        private string PlacementString 
+        { 
+            get 
+            {
+                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null)
+                    return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
+                return ""; 
+            } 
+        }
 
         public void Start()
         {

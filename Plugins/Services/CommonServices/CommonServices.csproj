@@ -69,6 +69,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accessibility\IHighlighterService.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
     <Compile Include="Advanced\Commands\IMonitorOnceCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IDynCommandHandlerService.cs" />
@@ -90,6 +91,10 @@
       <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
       <Name>CK.Keyboard.Model</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -31,8 +31,8 @@ namespace ContextEditor.ViewModels
             Buttons = new List<WizardButtonViewModel>();
             HideNext = true;
             Buttons.Add( new WizardButtonViewModel( "Sauvegarder", "Sauvez vos modification dans le contexte courant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveInCurrentContext ) );
-            Buttons.Add( new WizardButtonViewModel( "Annuler et quitter", "Annuler toutes les modifications faites sur ce clavier et quitter l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveInCurrentContext ) );
-            Buttons.Add( new WizardButtonViewModel( "Annuler et recommencer", "Annuler toutes les modifications faites sur ce clavier et recommecner au début de l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveInCurrentContext ) );
+            Buttons.Add( new WizardButtonViewModel( "Annuler et quitter", "Annuler toutes les modifications faites sur ce clavier et quitter l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndQuit ) );
+            Buttons.Add( new WizardButtonViewModel( "Annuler et recommencer", "Annuler toutes les modifications faites sur ce clavier et recommecner au début de l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndRestart ) );
             //Buttons.Add( new WizardButtonViewModel( "Enregistrer dans un autre contexte", "Exportez ce clavier vers une autre bibliothèque de claviers", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveInExistingContext ) );
             //Buttons.Add( new WizardButtonViewModel( "Enregistrer dans un nouveau contexte", "Exportez ce clavier vers une nouvelle bibliothèque de claviers", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveAsNewContext ) );
         }

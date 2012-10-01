@@ -58,6 +58,14 @@ namespace CK.WPF.ViewModel
         }
 
         /// <summary>
+        /// Gets the logical position of the key in the zone.
+        /// </summary>
+        public int Index
+        {
+            get { return _key.Index; }
+        }
+
+        /// <summary>
         /// Gets the X coordinate of this key.
         /// </summary>
         public int X

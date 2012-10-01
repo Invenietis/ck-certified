@@ -23,14 +23,49 @@
 
 using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
+using HighlightModel;
+using CK.Core;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         public VMZoneSimple( VMContextSimple ctx, IZone zone ) 
             : base( ctx, zone )
         {
+        }
+
+        public IReadOnlyList<IHighlightableElement> Children
+        {
+            get { return Keys; }
+        }
+
+        public int X
+        {
+            get { return Keys.Min( k => k.X ); }
+        }
+
+        public int Y
+        {
+            get { return Keys.Min( k => k.Y ); }
+        }
+
+        public int Width
+        {
+            get { return Keys.Max( k => k.X + k.Width ) - X; }
+        }
+
+        public int Height
+        {
+            get { return Keys.Max( k => k.Y + k.Height ) - Y; }
+        }
+
+        public bool Skip
+        {
+            get { return Keys.All( k => k.Visible != System.Windows.Visibility.Visible ); }
         }
     }
 }

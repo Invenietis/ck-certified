@@ -30,10 +30,13 @@ using CK.Plugin.Config;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using CK.Windows.Helpers;
+using HighlightModel;
+using CK.Core;
+using System.Linq;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+    internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
             : base( ctx, kb )
@@ -82,5 +85,42 @@ namespace SimpleSkin.ViewModels
                 return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
             }
         }
+
+        #region IHighlightableElement Members
+
+        public IReadOnlyList<IHighlightableElement> Children
+        {
+            get
+            {
+                return new ReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
+            }
+        }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return W; }
+        }
+
+        public int Height
+        {
+            get { return H; }
+        }
+
+        public bool Skip
+        {
+            get { return false; }
+        }
+
+        #endregion
     }
 }

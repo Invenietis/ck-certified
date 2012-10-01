@@ -30,10 +30,12 @@ using CK.Keyboard.Model;
 using System.Windows.Controls;
 using System.Windows;
 using CK.Plugin.Config;
+using HighlightModel;
+using CK.Core;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         public VMKeySimple( VMContextSimple ctx, IKey k ) 
             : base( ctx, k )
@@ -134,5 +136,19 @@ namespace SimpleSkin.ViewModels
         {
             get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
         }
+
+        #region IHighlightableElement Members
+
+        public IReadOnlyList<IHighlightableElement> Children
+        {
+            get { return ReadOnlyListEmpty<IHighlightableElement>.Empty; }
+        }
+
+        public bool Skip
+        {
+            get { return Visible != Visibility.Visible; }
+        }
+
+        #endregion
     }
 }

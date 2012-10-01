@@ -36,6 +36,7 @@ using SimpleSkin.ViewModels;
 using CK.Windows;
 using CK.Windows.Helpers;
 using System.Linq;
+using CommonServices.Accessibility;
 
 namespace SimpleSkin
 {
@@ -52,9 +53,13 @@ namespace SimpleSkin
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         bool _viewHidden;
+        bool _treeRegistered;
 
         //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         //public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.Optional )]
+        public IService<IHighlighterService> Highlighter { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -92,6 +97,9 @@ namespace SimpleSkin
         {
             if( KeyboardContext.Status == RunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
+                //if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+                //Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
+
                 Context.ServiceContainer.Add( Config );
 
                 _isStarted = true;
@@ -124,6 +132,11 @@ namespace SimpleSkin
                 Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
             }
+        }
+
+        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
         }
 
         private void RegisterEvents()
@@ -236,6 +249,7 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
+                Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();

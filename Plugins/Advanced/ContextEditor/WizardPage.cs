@@ -17,10 +17,15 @@ namespace ContextEditor
     {
         bool _cantGoFurther;
 
-        ///// <summary>
-        ///// Gets the title of the <see cref="WizardPage"/>
-        ///// </summary>
-        //public string Title { get; private set; }
+        /// <summary>
+        /// Gets the title of the <see cref="WizardPage"/>
+        /// </summary>
+        public string Title { get; internal set; }
+
+        /// <summary>
+        /// Gets the description of the <see cref="WizardPage"/>
+        /// </summary>
+        public string Description { get; internal set; }
 
         /// <summary>
         /// Gets the WizardManager that holds this step (this WizardPage).
@@ -53,11 +58,12 @@ namespace ContextEditor
             set { _cantGoFurther = value; NotifyOfPropertyChange( () => CantGoFurther ); }
         }
 
-        private WizardPage( WizardManager wizardManager, WizardPage next, bool isLastStep )
+        private WizardPage( WizardManager wizardManager, WizardPage next, bool isLastStep, string title = "" )
         {
             WizardManager = wizardManager;
             IsLastStep = isLastStep;
             Next = next;
+            Title = title;
         }
 
         /// <summary>
@@ -66,7 +72,8 @@ namespace ContextEditor
         /// </summary>
         /// <param name="wizardManager">The WizardManager</param>
         /// <param name="next">The next WizardPage</param>
-        public WizardPage( WizardManager wizardManager, WizardPage next )
+        /// <param name="title">(optional) title of the page</param>
+        public WizardPage( WizardManager wizardManager, WizardPage next, string title = "" )
             : this( wizardManager, next, false )
         {
         }
@@ -77,8 +84,9 @@ namespace ContextEditor
         /// </summary>
         /// <param name="wizardManager">The WizardManager</param>
         /// <param name="isLastStep">Whether this step is the last of the wizard</param>
-        public WizardPage( WizardManager wizardManager, bool isLastStep )
-            : this( wizardManager, null, isLastStep )
+        /// <param name="title">(optional) title of the page</param>
+        public WizardPage( WizardManager wizardManager, bool isLastStep, string title = "" )
+            : this( wizardManager, null, isLastStep, title )
         {
         }
 

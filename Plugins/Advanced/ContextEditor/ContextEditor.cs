@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,18 +43,23 @@ namespace ContextEditor
             return bootstrap != null;
         }
 
-        
+
         public void Start()
         {
             w = new WindowManager();
             _appViewModel = new AppViewModel( this );
-            w.ShowWindow( _appViewModel );
+            dynamic settings = new ExpandoObject();
+
+            settings.SizeToContent = SizeToContent.WidthAndHeight;
+            settings.Height = 800;
+            settings.Width = 800;
+            w.ShowWindow( _appViewModel, null, settings );
         }
 
         public void Stop()
         {
-            Window win = _appViewModel.GetView(null) as Window;
-            if(win != null)
+            Window win = _appViewModel.GetView( null ) as Window;
+            if( win != null )
                 win.Close();
         }
 

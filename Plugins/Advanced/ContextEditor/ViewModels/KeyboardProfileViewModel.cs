@@ -9,11 +9,14 @@ using CK.Keyboard.Model;
 
 namespace ContextEditor.ViewModels
 {
+    /// <summary>
+    /// The <see cref="WizardPage"/> enables editing a keyboards basic properties : its name, width and height.
+    /// </summary>
     public class KeyboardProfileViewModel : WizardPage
     {
         SimpleKeyboardViewModel _viemModel;
-        IKeyboard _model;
         ContextEditor _root;
+        IKeyboard _model;
 
         /// <summary>
         /// Ctor
@@ -26,6 +29,9 @@ namespace ContextEditor.ViewModels
             _root = root;
             _model = model;
             _viemModel = new SimpleKeyboardViewModel( model );
+
+            Title = "Edition des propriétés de base d'un clavier";
+            Description = "Cette page vous permet d'éditer les propriétés de base d'un clavier : son nom, sa hauteur et sa largeur.";
         }
 
         /// <summary>
@@ -55,6 +61,15 @@ namespace ContextEditor.ViewModels
                 }
             }
         }
+
+        //TODO
+        bool _keepRatio;
+        public bool KeepRatio 
+        { 
+            get { return _keepRatio; } 
+            set { _keepRatio = value; NotifyOfPropertyChange( () => KeepRatio ); } 
+        }
+        //TODO
 
         /// <summary>
         /// Gets or sets the height of the keyboard

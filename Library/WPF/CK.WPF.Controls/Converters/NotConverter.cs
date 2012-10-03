@@ -1,6 +1,6 @@
-﻿        #region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (CK.Windows.Core\Converter\BooleanToVisibilityConverter.cs) is part of CiviKey. 
+* This file (Library\WPF\CK.WPF.Controls\Converters\NotNullConverter.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -25,49 +25,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Data;
+using System.Windows;
 
 namespace CK.WPF.Controls
-{
-    [ValueConversion( typeof( bool ), typeof( Visibility ) )]
-    public class StringIsNullOrWhiteSpaceToBoolean : IValueConverter
+{ 
+    /// <summary>
+    /// Not operator on a boolean.
+    /// </summary>
+    [ValueConversion( typeof( bool ), typeof( bool ) )]
+    public class NotConverter : IValueConverter
     {
-        /// <summary>
-        /// Internal arsed data structure.
-        /// </summary>
-        struct Parameter
-        {
-            public bool Invert;
-            public Visibility NotVisible;
-        }
-
-        /// <summary>
-        /// Returns true if the string is null or white space
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
         public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
-            string stringValue = value.ToString();
-            return String.IsNullOrWhiteSpace(stringValue);
+            bool returnValue;
+            if( Boolean.TryParse( value.ToString(), out returnValue ) )
+                return !returnValue;
+
+            throw new FormatException( String.Format( "The NotConverter is waiting for a boolean value, not a {0} value.", value.GetType() ) );
         }
 
-
-        /// <summary>
-        /// Does not support two-way binding 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
         public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
-            return Binding.DoNothing;
+            return Convert( value, targetType, parameter, culture );
         }
     }
 }

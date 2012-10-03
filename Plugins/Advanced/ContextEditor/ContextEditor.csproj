@@ -187,6 +187,10 @@
       <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
       <Name>CK.Keyboard.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6c0f25a7-6468-4d02-aba4-dc7f1ad209e1}</Project>
+      <Name>CK.WPF.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Accessibility\Keyboard\CK.Keyboard.csproj">
       <Project>{99bb5255-dea7-4548-a402-9db077d195b7}</Project>
       <Name>CK.Keyboard</Name>

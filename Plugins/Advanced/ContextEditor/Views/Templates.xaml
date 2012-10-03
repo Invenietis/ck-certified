@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ckcore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
              xmlns:ckconf="clr-namespace:CK.Windows.Config;assembly=CK.Windows.Config"
+             xmlns:ckcontrols="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              xmlns:views="clr-namespace:ContextEditor.s"
              xmlns:viewmodels="clr-namespace:ContextEditor.ViewModels"
              xmlns:local="clr-namespace:ContextEditor"
@@ -62,32 +63,49 @@
         <DataTemplate.Resources>
             <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
         </DataTemplate.Resources>
-        <ScrollViewer  HorizontalScrollBarVisibility="Hidden">
-            <DockPanel LastChildFill="True">
-                <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
-                <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
-                    <Button Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Retour" Visibility="{Binding ActiveItem.CanGoBack, Converter={StaticResource BooleanToVisibilityConv}, ConverterParameter=Hidden}"  VerticalAlignment="Bottom"/>
-                    <Button Height="50" Width="150" DockPanel.Dock="Right" Margin="3" IsEnabled="{Binding ActiveItem.CanGoFurther}" VerticalAlignment="Bottom">
-                        <Button.Visibility>
-                            <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert,Hidden"/>
-                        </Button.Visibility>
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="True">
-                                        <Setter Property="Content" Value="Terminer" />
-                                        <Setter Property="Command" Value="{Binding CloseCommand}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="False">
-                                        <Setter Property="Content" Value="Suivant" />
-                                        <Setter Property="Command" Value="{Binding GoFurtherCommand}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+        <!--<ScrollViewer>-->
+            <StackPanel Orientation="Vertical">
+                <StackPanel Margin="10 5">
+                    <StackPanel.Visibility>
+                        <Binding Path="ActiveItem.Title">
+                            <Binding.Converter>
+                                <ckcontrols:ValueConverterGroup>
+                                    <ckcontrols:StringIsNullOrWhiteSpaceToBoolean/>
+                                    <ckcontrols:NotConverter/>
+                                    <ckcore:BooleanToVisibilityConverter/>
+                                </ckcontrols:ValueConverterGroup>
+                            </Binding.Converter>
+                        </Binding>
+                    </StackPanel.Visibility>
+                    <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                </StackPanel>
+                <DockPanel LastChildFill="True">
+                    <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
+                    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
+                        <Button Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Retour" Visibility="{Binding ActiveItem.CanGoBack, Converter={StaticResource BooleanToVisibilityConv}, ConverterParameter=Hidden}"  VerticalAlignment="Bottom"/>
+                        <Button Height="50" Width="150" DockPanel.Dock="Right" Margin="3" IsEnabled="{Binding ActiveItem.CanGoFurther}" VerticalAlignment="Bottom">
+                            <Button.Visibility>
+                                <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert,Hidden"/>
+                            </Button.Visibility>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="True">
+                                            <Setter Property="Content" Value="Terminer" />
+                                            <Setter Property="Command" Value="{Binding CloseCommand}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="False">
+                                            <Setter Property="Content" Value="Suivant" />
+                                            <Setter Property="Command" Value="{Binding GoFurtherCommand}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </DockPanel>
                 </DockPanel>
-            </DockPanel>
-        </ScrollViewer>
+            </StackPanel>
+        <!--</ScrollViewer>-->
     </DataTemplate>
 </ResourceDictionary>

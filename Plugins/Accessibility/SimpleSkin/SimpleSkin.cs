@@ -142,12 +142,23 @@ namespace SimpleSkin
         {
             VMZoneSimple vm = e.Element as VMZoneSimple;
             if( vm != null ) vm.IsHighlighting = true;
+            else
+            {
+                VMKeySimple vmk = e.Element as VMKeySimple;
+                if( vmk != null ) vmk.IsHighlighting = true;
+            }
+
         }
 
         void OnEndHighlight( object sender, HighlightEventArgs e )
         {
             VMZoneSimple vm = e.Element as VMZoneSimple;
             if( vm != null ) vm.IsHighlighting = false;
+            else
+            {
+                VMKeySimple vmk = e.Element as VMKeySimple;
+                if( vmk != null ) vmk.IsHighlighting = false;
+            }
         }
 
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

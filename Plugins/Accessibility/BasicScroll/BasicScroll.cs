@@ -7,6 +7,7 @@ using System.Timers;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin;
+using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
 
@@ -27,10 +28,13 @@ namespace BasicScroll
         List<IHighlightableElement> _registeredElements;
         DefaultScrollingStrategy _scrollingStrategy;
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
             var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan( 0, 0, 0, 0, 1500 );
+            timer.Interval = new TimeSpan( 0, 0, 0, 0, 500 );
 
             _registeredElements = new List<IHighlightableElement>();
             _scrollingStrategy = new DefaultScrollingStrategy( timer, _registeredElements );
@@ -40,6 +44,10 @@ namespace BasicScroll
 
         public void Start()
         {
+            PointerDeviceDriver.Service.PointerButtonDown += ( o, e ) =>
+            {
+                if( e.ButtonInfo == ButtonInfo.XButton ) _scrollingStrategy.EnterChildren();
+            };
         }
 
         public void Stop()

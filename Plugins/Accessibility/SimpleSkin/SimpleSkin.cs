@@ -53,12 +53,11 @@ namespace SimpleSkin
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         bool _viewHidden;
-        bool _treeRegistered;
 
         //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         //public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.Optional )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -97,14 +96,19 @@ namespace SimpleSkin
         {
             if( KeyboardContext.Status == RunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                //if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
-                //Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
-
                 Context.ServiceContainer.Add( Config );
 
                 _isStarted = true;
                 _ctxVm = new VMContextSimple( Context, KeyboardContext.Service );
                 _skinWindow = new SkinWindow( _ctxVm );
+
+                Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
+                if( Highlighter.Status == RunningStatus.Started )
+                {
+                    Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+                    Highlighter.Service.BeginHighlight += OnBeginHighlight;
+                    Highlighter.Service.EndHighlight += OnEndHighlight;
+                }
 
                 int defaultWidth = _ctxVm.Keyboard.W;
                 int defaultHeight = _ctxVm.Keyboard.H;
@@ -132,6 +136,18 @@ namespace SimpleSkin
                 Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
             }
+        }
+
+        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        {
+            VMZoneSimple vm = e.Element as VMZoneSimple;
+            if( vm != null ) vm.IsHighlighting = true;
+        }
+
+        void OnEndHighlight( object sender, HighlightEventArgs e )
+        {
+            VMZoneSimple vm = e.Element as VMZoneSimple;
+            if( vm != null ) vm.IsHighlighting = false;
         }
 
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="IHighlightableElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkippingBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

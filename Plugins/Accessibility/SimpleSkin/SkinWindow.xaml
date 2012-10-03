@@ -63,22 +63,13 @@
                     <Setter TargetName="key" Property="ShowLabel" Value="false"/>
                     <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
                 </DataTrigger>
-                <!--<DataTrigger Binding="{Binding IsFallback}" Value="False">
-                    <DataTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard AutoReverse="True">
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="key">
-                                    <SplineColorKeyFrame KeyTime="0:0:0.2" Value="Red"/>
-                                </ColorAnimationUsingKeyFrames>
-                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.BorderBrush).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="key">
-                                    <SplineColorKeyFrame KeyTime="0:0:0.2" Value="Red"/>
-                                </ColorAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.EnterActions>
-                    <Setter TargetName="key" Property="BorderBrush" Value="Red"/>
-                    <Setter TargetName="key" Property="Opacity" Value="0.8"/>
-                </DataTrigger>-->
+                <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
+                    <Setter TargetName="key" Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="Red"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
         

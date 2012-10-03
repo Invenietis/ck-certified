@@ -28,6 +28,7 @@ using CK.Core;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System;
 
 namespace SimpleSkin.ViewModels
 {
@@ -63,9 +64,34 @@ namespace SimpleSkin.ViewModels
             get { return Keys.Max( k => k.Y + k.Height ) - Y; }
         }
 
-        public bool Skip
+        public SkippingBehavior Skip
         {
-            get { return Keys.All( k => k.Visible != System.Windows.Visibility.Visible ); }
+            get
+            {
+                if( string.IsNullOrEmpty( Name ) || Keys.All( k => k.Skip == SkippingBehavior.Skip ) )
+                {
+                    return SkippingBehavior.Skip;
+                }
+                return SkippingBehavior.None;
+            }
+        }
+
+        bool _isHighlighting;
+        public bool IsHighlighting
+        {
+            get { return _isHighlighting; }
+            set
+            {
+                if( value != _isHighlighting )
+                {
+                    _isHighlighting = value;
+                    OnPropertyChanged( "IsHighlighting" );
+                    foreach( var key in Keys )
+                    {
+                        key.IsHighlighting = value;
+                    }
+                }
+            }
         }
     }
 }

@@ -116,9 +116,9 @@ namespace SimpleSkin.ViewModels
             get { return H; }
         }
 
-        public bool Skip
+        public SkippingBehavior Skip
         {
-            get { return false; }
+            get { return SkippingBehavior.EnterChildren; }
         }
 
         #endregion

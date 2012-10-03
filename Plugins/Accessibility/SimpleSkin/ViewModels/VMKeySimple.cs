@@ -137,6 +137,20 @@ namespace SimpleSkin.ViewModels
             get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
         }
 
+        bool _isHighlighting;
+        public bool IsHighlighting
+        {
+            get { return _isHighlighting; }
+            set
+            {
+                if( value != _isHighlighting )
+                {
+                    _isHighlighting = value;
+                    OnPropertyChanged( "IsHighlighting" );
+                }
+            }
+        }
+
         #region IHighlightableElement Members
 
         public IReadOnlyList<IHighlightableElement> Children
@@ -144,9 +158,9 @@ namespace SimpleSkin.ViewModels
             get { return ReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
-        public bool Skip
+        public SkippingBehavior Skip
         {
-            get { return Visible != Visibility.Visible; }
+            get { return Visible != Visibility.Visible ? SkippingBehavior.Skip : SkippingBehavior.None; }
         }
 
         #endregion

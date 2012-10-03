@@ -38,6 +38,8 @@ namespace CK.WPF.ViewModel
 
         public ObservableSortedArrayKeyList<TK, int> Keys { get { return _keys; } }
 
+        public string Name { get { return _zone.Name; } }
+
         public VMZone( TC context, IZone zone )
             : base( context )
         {

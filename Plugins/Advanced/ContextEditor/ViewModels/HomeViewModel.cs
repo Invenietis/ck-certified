@@ -7,6 +7,7 @@ using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Windows;
 using CK.Windows.Config;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -44,15 +45,15 @@ namespace ContextEditor.ViewModels
             _keyboardCtx = keyboardCtx;
             Buttons = new List<WizardButtonViewModel>();
 
-            Buttons.Add( new WizardButtonViewModel( "Editer le clavier courant", "Editer simplement et rapidement cotre clavier actif", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditCurrentKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( "Nouveau clavier", "Commencer à créer un nouveau clavier CiviKey", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CreateNewKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( "Editer un autre clavier", "Ouvrez un autre contexte et éditez-le simplement", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditOtherKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( String.Format( R.HomeEditCurrentKeyboard, _keyboardCtx.CurrentKeyboard.Name ), R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditCurrentKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditNewKeyboard, R.HomeEditNewKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CreateNewKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditOtherKeyboard, R.HomeEditOtherKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditOtherKeyboard ) );
 
-            Title = "Création et modification de claviers";
-            Description = String.Format("Bienvenue dans l'assistant de création et de modification de claviers pour CiviKey.{0}Choisissez parmi les trois choix suivants l'action que vous voulez entreprendre : ", Environment.NewLine);
+            Title = R.HomeStepTitle;
+            Description = R.HomeStepDescription;
             HideNext = true;
         }
-        
+
         /// <summary>
         /// Command that takes a <see cref="WizardButtonViewModel"/> as parameter.
         /// Sets the <see cref="WizardButtonViewModel.IsSelected"/> property of the <see cref="WizardButtonViewModel"/> to true.

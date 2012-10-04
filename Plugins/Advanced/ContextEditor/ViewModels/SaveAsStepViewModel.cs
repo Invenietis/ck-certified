@@ -9,6 +9,7 @@ using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Windows.App;
 using CK.WPF.Controls;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -71,6 +72,9 @@ namespace ContextEditor.ViewModels
             Next = new EndingStepViewModel( root, wizardManager );
         }
 
+        /// <summary>
+        /// Gets the command called when a keyboard is selected
+        /// </summary>
         public ICommand SelectionCommand
         {
             get
@@ -97,6 +101,11 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        /// <summary>
+        /// Called before going to the next page.
+        /// Handles saving/erasing/replacing/renaming keyboards
+        /// </summary>
+        /// <returns>true if everything went well, false otherwise</returns>
         public override bool OnBeforeNext()
         {
             if( _selectedKeyboard != null )
@@ -121,9 +130,9 @@ namespace ContextEditor.ViewModels
         private bool HandleKeyboardSelected()
         {
             string keyboardName = _selectedKeyboard.Keyboard.Name;
-            ModalViewModel mvm = new ModalViewModel( "Ecraser le clavier existant", String.Format( "Vous êtes sur le point de sauvegarder vos modifications sur le clavier {0}.{1}Etes-vous sur de vouloir faire cela ?", keyboardName, System.Environment.NewLine ) );
-            mvm.Buttons.Add( new ModalButton( mvm, "Oui", ModalResult.Yes ) );
-            mvm.Buttons.Add( new ModalButton( mvm, "Non", ModalResult.No ) );
+            ModalViewModel mvm = new ModalViewModel( R.SaveAsStepPopInTitle, String.Format( R.SaveAsStepPopInDesc, keyboardName ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.No, ModalResult.No ) );
             CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
             msgBox.ShowDialog();
 
@@ -167,6 +176,10 @@ namespace ContextEditor.ViewModels
             return true;
         }
 
+        /// <summary>
+        /// Checks that the user can go on the next page
+        /// </summary>
+        /// <returns>true if <see cref="Next"/> is not null and <see cref="NewName"/> has a value</returns>
         public override bool CheckCanGoFurther()
         {
             return Next != null && !String.IsNullOrWhiteSpace( NewName );

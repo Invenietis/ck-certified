@@ -83,6 +83,8 @@ namespace ContextEditor
         /// <summary>
         /// Backs up a keyboard.
         /// Returns the file path where the keyboard has been backed up.
+        /// 
+        /// Throws a CKException if the IKeyboard implementation is not IStructuredSerializable
         /// </summary>
         /// <param name="keyboardToBackup">The keyboard ot backup</param>
         /// <returns>the path to the file in which the keyboard has been saved</returns>

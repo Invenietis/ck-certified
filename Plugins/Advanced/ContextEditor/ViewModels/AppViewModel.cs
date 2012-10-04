@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Windows.Config;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -15,7 +16,7 @@ namespace ContextEditor.ViewModels
 
         public AppViewModel( ContextEditor ctx )
         {
-            DisplayName = "Keyboard edition wizard";
+            DisplayName = R.WindowTitle;
 
             WizardManager = new WizardManager( this );
             WizardManager.ActivateItem( new HomeViewModel( ctx, WizardManager, ctx.KeyboardContext.Service ) );

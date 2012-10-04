@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Windows.App;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -41,10 +42,8 @@ namespace ContextEditor.ViewModels
 
             _backupFileName = _root.BackupKeyboard( model );
 
-            
-
-            Title = "Edition des propriétés de base d'un clavier";
-            Description = "Cette page vous permet d'éditer les propriétés de base d'un clavier : son nom, sa hauteur et sa largeur.";
+            Title = R.KeyboardProfileTitle;
+            Description = R.KeyboardProfileDesc;
         }
 
         /// <summary>
@@ -137,9 +136,9 @@ namespace ContextEditor.ViewModels
         {
             if( _stepAchieved )
             {
-                ModalViewModel mvm = new ModalViewModel( "Annuler les modifications", String.Format( "Revenir en arrière va effacer les modifications non sauvegardées.{0}Etes-vos sûr de vouloir continuer ?", System.Environment.NewLine ) );
-                mvm.Buttons.Add( new ModalButton( mvm, "Oui, perdre les modifications", ModalResult.Yes ) );
-                mvm.Buttons.Add( new ModalButton( mvm, "Non, rester sur cette fenêtre", ModalResult.No ) );
+                ModalViewModel mvm = new ModalViewModel( R.KeyboardProfileBackPopInTitle, R.KeyboardProfileBackPopInDesc );
+                mvm.Buttons.Add( new ModalButton( mvm, R.KeyboardProfileBackPopInYes, ModalResult.Yes ) );
+                mvm.Buttons.Add( new ModalButton( mvm, R.KeyboardProfileBackPopInNo, ModalResult.No ) );
                 CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
                 msgBox.ShowDialog();
 
@@ -176,6 +175,6 @@ namespace ContextEditor.ViewModels
             return _model != null;
         }
 
-        
+
     }
 }

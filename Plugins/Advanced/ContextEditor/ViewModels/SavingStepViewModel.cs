@@ -9,6 +9,7 @@ using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Windows;
 using CK.Windows.Config;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -27,10 +28,10 @@ namespace ContextEditor.ViewModels
 
             Buttons = new List<WizardButtonViewModel>();
             HideNext = true;
-            Buttons.Add( new WizardButtonViewModel( "Sauvegarder", "Sauvez les modifications apportées à ce clavier", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveOnEditedKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( "Sauvegarder sous...", "Sauvez les modifications apportées sous un autre nom.", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveUnderOtherKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( "Annuler et quitter", "Annuler toutes les modifications faites sur ce clavier et quitter l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndQuit ) );
-            Buttons.Add( new WizardButtonViewModel( "Annuler et recommencer", "Annuler toutes les modifications faites sur ce clavier et recommecner au début de l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndRestart ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepSaveTitle, R.SavingStepSaveDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveOnEditedKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepSaveAsTitle, R.SavingStepSaveAsDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveUnderOtherKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndQuitTitle, R.SavingStepCancelAndQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndQuit ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndRestartTitle, R.SavingStepCancelAndRestartDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndRestart ) );
         }
 
         SimpleCommand<WizardButtonViewModel> _command;

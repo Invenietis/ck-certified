@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Windows;
 using CK.Windows.Config;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -28,12 +29,10 @@ namespace ContextEditor.ViewModels
             HideNext = true;
             HideBack = true;
 
-            Buttons.Add( new WizardButtonViewModel( "Quitter", "Vous pouvez quitter l'assitant si vous avez effectué toutes les modifications nécessaires", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CloseWizard ) );
-            Buttons.Add( new WizardButtonViewModel( "Recommencer", "Vous pouvez retourner au début de l'assitant pour modifier d'autres claviers", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", RestartWizard ) );
+            Buttons.Add( new WizardButtonViewModel( R.Quit, R.EndingStepQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CloseWizard ) );
+            Buttons.Add( new WizardButtonViewModel( R.StartOver, R.EndingStepStartOverDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", RestartWizard ) );
 
             _root = root;
-
-            
         }
 
         SimpleCommand<WizardButtonViewModel> _command;

@@ -39,22 +39,9 @@ namespace ContextEditor.ViewModels
             _model = model;
             _viemModel = new SimpleKeyboardViewModel( model );
 
-            _backupFileName = GenerateBackupFileName();
+            _backupFileName = _root.BackupKeyboard( model );
 
-            IStructuredSerializable serializableModel = _model as IStructuredSerializable;
-            if( serializableModel != null )
-            {
-                using( FileStream str = new FileStream( _backupFileName, FileMode.CreateNew ) )
-                {
-                    using( IStructuredWriter writer = SimpleStructuredWriter.CreateWriter( str, _root.Context.ServiceContainer ) )
-                    {
-                        writer.Xml.WriteStartElement( "Keyboard" );
-                        serializableModel.WriteContent( writer );
-                        writer.Xml.WriteEndElement();
-                    }
-                }
-                _root.KeyboardBackup = new KeyboardBackup( model, _backupFileName );
-            }
+            
 
             Title = "Edition des propriétés de base d'un clavier";
             Description = "Cette page vous permet d'éditer les propriétés de base d'un clavier : son nom, sa hauteur et sa largeur.";
@@ -189,14 +176,6 @@ namespace ContextEditor.ViewModels
             return _model != null;
         }
 
-        //outputs a filepath of the form : [tempfolder]/CiviKey/CK-[GUID].txt
-        private string GenerateBackupFileName()
-        {
-            string fileName = String.Format( "CK-{0}.txt", Guid.NewGuid().ToString() );
-            string folderPath = Path.Combine( System.IO.Path.GetTempPath(), "CiviKey", "KeyboardEditorBackup" );
-            if( !Directory.Exists( folderPath ) ) Directory.CreateDirectory( folderPath );
-            string keyboardFilePath = Path.Combine( folderPath, fileName );
-            return keyboardFilePath;
-        }
+        
     }
 }

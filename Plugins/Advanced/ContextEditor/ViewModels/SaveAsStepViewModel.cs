@@ -31,10 +31,10 @@ namespace ContextEditor.ViewModels
         public string NewName
         {
             get { return _newName; }
-            set 
-            { 
-                _newName = value; 
-                NotifyOfPropertyChange( () => NewName ); 
+            set
+            {
+                _newName = value;
+                NotifyOfPropertyChange( () => NewName );
                 NotifyOfPropertyChange( () => CanGoFurther );
                 if( _selectedKeyboard != null && _selectedKeyboard.Keyboard.Name != value )
                 {
@@ -145,11 +145,8 @@ namespace ContextEditor.ViewModels
                 _root.KeyboardBackup = new KeyboardBackup( _selectedKeyboard.Keyboard, _root.KeyboardBackup.BackUpFilePath );
                 _root.CancelModifications();
             }
-
             return true;
         }
-
-
 
         /// <summary>
         /// Handles cases when no keyboards are selected, that the user has chosen a arbitrary name, inserted in the NewName property.
@@ -157,74 +154,18 @@ namespace ContextEditor.ViewModels
         /// <returns>false if execution should be stopped, true otherwise</returns>
         private bool HandleNewName()
         {
-            //IKeyboard k = _root.KeyboardContext.Service.Keyboards[NewName];
-            //if( k != null )
-            //{
-            //    string keyboardName = k.Name;
+            if( _root.KeyboardBackup.IsNew ) //If saving a new keyboard under another unused name, just rename the new keyboard.
+                _editedKeyboard.Rename( NewName );
+            else //if we started from another keyboard, we must rename this modified one, and recreate another one, on which the backup will be applied
+            {
+                _editedKeyboard.Rename( NewName );
+                IKeyboard rootKeyboard = _root.KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
 
-            //    ModalViewModel mvm = new ModalViewModel( "Un clavier portant ce nom existe déjà", String.Format( "Un clavier portant le nom '{0}' existe déjà.{1} Etes-vous sûr de vouloir l'écraser ?", keyboardName, System.Environment.NewLine ) );
-            //    mvm.Buttons.Add( new ModalButton( mvm, "Oui", ModalResult.Yes ) );
-            //    mvm.Buttons.Add( new ModalButton( mvm, "Non", ModalResult.No ) );
-            //    CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
-            //    msgBox.ShowDialog();
-
-            //    if( mvm.ModalResult != ModalResult.Yes ) return false;
-            //    if( _root.KeyboardBackup.IsNew )
-            //    {
-            //        //If we apply a new keyboard on an existing one, we just destroy the existing one, and rename the new one with its name.
-            //        k.Destroy();
-            //        _editedKeyboard.Rename( keyboardName );
-            //    }
-            //    else
-            //    {
-            //        //If we apply an existing keyboard under another existing keyboard, we must apply the backup to the keyboard we want to erase.
-            //        // and then we rename the edited keyboard to reflect its new name.
-
-            //        IStructuredSerializable serializableKeyboard = _selectedKeyboard as IStructuredSerializable;
-            //        if( serializableKeyboard == null ) throw new CKException( String.Format( "The selected element of the SaveAsStepViewModel should be IStructuredSerializable. Name : {0}", _selectedKeyboard.Keyboard.Name ) );
-
-            //        using( FileStream str = new FileStream( _root.KeyboardBackup.BackUpFilePath, FileMode.Open ) )
-            //        {
-            //            using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, _root.Context.ServiceContainer ) )
-            //            {
-            //                //Erasing all properties of the keyboard. We re-apply the backedup ones.
-            //                serializableKeyboard.ReadContent( reader );
-            //            }
-            //        }
-
-            //        _editedKeyboard.Rename( keyboardName );
-            //    }
-            //    return true;
-            //}
-            //else
-            //{
-                if( _root.KeyboardBackup.IsNew ) //If saving a new keyboard under another unused name, just rename the new keyboard.
-                    _editedKeyboard.Rename( NewName );
-                else //if we started from another keyboard, we must rename this modified one, and recreate another one, on which the backup will be applied
-                {
-                    _editedKeyboard.Rename( NewName );
-                    IKeyboard rootKeyboard = _root.KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
-
-                    _root.KeyboardBackup = new KeyboardBackup( rootKeyboard, _root.KeyboardBackup.BackUpFilePath );
-                    _root.CancelModifications();
-
-                    //IStructuredSerializable serializableRootKeyboard = rootKeyboard as IStructuredSerializable;
-                    //if( serializableRootKeyboard == null ) throw new CKException( "The created keyboard of the SaveAsStepViewModel should be IStructuredSerializable." );
-
-                    //using( FileStream str = new FileStream( _root.KeyboardBackup.BackUpFilePath, FileMode.Open ) )
-                    //{
-                    //    using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, _root.Context.ServiceContainer ) )
-                    //    {
-                    //        //Erasing all properties of the keyboard. We re-apply the backedup ones.
-                    //        serializableRootKeyboard.ReadContent( reader );
-                    //    }
-                    //}
-                }
-                return true;
-            //}
+                _root.KeyboardBackup = new KeyboardBackup( rootKeyboard, _root.KeyboardBackup.BackUpFilePath );
+                _root.CancelModifications();
+            }
+            return true;
         }
-
-
 
         public override bool CheckCanGoFurther()
         {

@@ -70,7 +70,7 @@
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
         <!--<ScrollViewer>-->
-        <StackPanel Orientation="Vertical"  Margin="10 5">
+        <StackPanel Orientation="Vertical"  Margin="10 5 10 20">
                 <StackPanel>
                     <StackPanel.Visibility>
                         <Binding Path="ActiveItem.Title">

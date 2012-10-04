@@ -99,6 +99,7 @@ namespace Host
 
             // Initializes Services.
             {
+                
                 ctx.ServiceContainer.Add<IHostInformation>( this );
                 // inject specific xaml serializers.
                 ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Size> ), new XamlSerializer<Size>() );

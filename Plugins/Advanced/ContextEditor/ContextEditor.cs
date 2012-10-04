@@ -11,6 +11,7 @@ using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
+using CK.Plugin.Config;
 using CK.Storage;
 using CK.Windows.Config;
 using ContextEditor.ViewModels;
@@ -76,6 +77,48 @@ namespace ContextEditor
         /// </summary>
         public KeyboardBackup KeyboardBackup { get; set; }
 
+        ISharedDictionary _sharedDictionary;
+        private ISharedDictionary SharedDictionary { get { return _sharedDictionary ?? ( _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>() ); } }
+
+        /// <summary>
+        /// Backs up a keyboard.
+        /// Returns the file path where the keyboard has been backed up.
+        /// </summary>
+        /// <param name="keyboardToBackup">The keyboard ot backup</param>
+        /// <returns>the path to the file in which the keyboard has been saved</returns>
+        public string BackupKeyboard(IKeyboard keyboardToBackup)
+        {
+            string backupFileName = GenerateBackupFileName();
+            IStructuredSerializable serializableModel = keyboardToBackup as IStructuredSerializable;
+            if( serializableModel != null )
+            {
+                using( FileStream str = new FileStream( backupFileName, FileMode.CreateNew ) )
+                {
+                    using( IStructuredWriter writer = SimpleStructuredWriter.CreateWriter( str, Context.ServiceContainer ) )
+                    {
+                        SharedDictionary.RegisterWriter( writer );
+                        writer.Xml.WriteStartElement( "Keyboard" );
+                        serializableModel.WriteContent( writer );
+                        writer.Xml.WriteEndElement();
+                    }
+                }
+                KeyboardBackup = new KeyboardBackup( keyboardToBackup, backupFileName );
+            }
+            else throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+
+            return backupFileName;
+        }
+
+        //outputs a filepath of the form : [tempfolder]/CiviKey/CK-[GUID].txt
+        private string GenerateBackupFileName()
+        {
+            string fileName = String.Format( "CK-{0}.txt", Guid.NewGuid().ToString() );
+            string folderPath = Path.Combine( System.IO.Path.GetTempPath(), "CiviKey", "KeyboardEditorBackup" );
+            if( !Directory.Exists( folderPath ) ) Directory.CreateDirectory( folderPath );
+            string keyboardFilePath = Path.Combine( folderPath, fileName );
+            return keyboardFilePath;
+        }
+
         /// <summary>
         /// Cancels all modifications made to the keyboard being currently modified
         /// Throws a <see cref="NullReferenceException"/> if <see cref="KeyboardBackup"/> is null.
@@ -93,6 +136,7 @@ namespace ContextEditor
                     {
                         using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                         {
+                            _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
                             //Erasing all properties of the keyboard. We re-apply the backedup ones.
                             serializableKeyboard.ReadContent( reader );
                         }
@@ -106,6 +150,7 @@ namespace ContextEditor
                 //After cancelling modifications, we have no backup left.
                 EnsureBackupIsClean();
             }
+            else throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
         }
 
         /// <summary>
@@ -123,41 +168,5 @@ namespace ContextEditor
     }
 
 
-    /// <summary>
-    /// Object that links an <see cref="IKeyboard"/> to the file which contains its XML backup.
-    /// <see cref="BackUpFilePath"/> can be null of whitespace. In this case, the keyboard is a new one, it has no backup.
-    /// </summary>
-    public class KeyboardBackup
-    {
-        /// <summary>
-        /// Gets the IKeyboard that has been backed up.
-        /// </summary>
-        public IKeyboard BackedUpKeyboard { get; private set; }
-
-        /// <summary>
-        /// Get the path to the Backed up keyboard
-        /// can be null of whitespace. In this case, the keyboard is a new one, it has no backup.
-        /// </summary>
-        public string BackUpFilePath { get; private set; }
-
-        /// <summary>
-        /// Gets whether the backup corresponds to a new keyboard (a backup that.. dosen't backup anything)
-        /// </summary>
-        public bool IsNew { get { return String.IsNullOrWhiteSpace( BackUpFilePath ); } }
-
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="backedUpKeyboard">The <see cref="IKeyboard"/> that has been backedup</param>
-        /// <param name="backedUpFilePath">Th elinked back up file path</param>
-        public KeyboardBackup( IKeyboard backedUpKeyboard, string backedUpFilePath )
-        {
-            if( backedUpKeyboard == null ) throw new ArgumentNullException( "backedUpKeyboard", "The backed up keyboard can't be null in the ctor of a KeyboardBackup object" );
-            if( !String.IsNullOrWhiteSpace( backedUpFilePath ) && !File.Exists( backedUpFilePath ) ) throw new ArgumentException( "backedUpFilePath", "The keyboard's backup file path must be either null (in the case of a new keyboard) or be an existing file." );
-
-            BackedUpKeyboard = backedUpKeyboard;
-            BackUpFilePath = backedUpFilePath;
-        }
-    }
 }
 

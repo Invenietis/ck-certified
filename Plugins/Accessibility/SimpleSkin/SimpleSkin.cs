@@ -108,6 +108,7 @@ namespace SimpleSkin
                     Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
                     Highlighter.Service.BeginHighlight += OnBeginHighlight;
                     Highlighter.Service.EndHighlight += OnEndHighlight;
+                    Highlighter.Service.SelectElement += OnSelectElement;
                 }
 
                 int defaultWidth = _ctxVm.Keyboard.W;
@@ -135,6 +136,21 @@ namespace SimpleSkin
                 _isStarted = false;
                 Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
+            }
+        }
+
+        void OnSelectElement( object sender, HighlightEventArgs e )
+        {
+            if( e.Element is VMKeySimple ) {
+                VMKeySimple key = (VMKeySimple)e.Element;
+                if( key.KeyDownCommand.CanExecute( null ) )
+                {
+                    key.KeyDownCommand.Execute( null );
+                    if( key.KeyUpCommand.CanExecute( null ) )
+                    {
+                        key.KeyUpCommand.Execute( null );
+                    }
+                }
             }
         }
 

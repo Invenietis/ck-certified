@@ -34,7 +34,7 @@ namespace BasicScroll
         public bool Setup( IPluginSetupInfo info )
         {
             var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan( 0, 0, 0, 0, 500 );
+            timer.Interval = new TimeSpan( 0, 0, 0, 0, 1000 );
 
             _registeredElements = new List<IHighlightableElement>();
             _scrollingStrategy = new DefaultScrollingStrategy( timer, _registeredElements );
@@ -46,7 +46,11 @@ namespace BasicScroll
         {
             PointerDeviceDriver.Service.PointerButtonDown += ( o, e ) =>
             {
-                if( e.ButtonInfo == ButtonInfo.XButton ) _scrollingStrategy.EnterChildren();
+                if( e.ButtonInfo == ButtonInfo.XButton )
+                {
+                    _scrollingStrategy.OnExternalEvent();
+                    e.Cancel = true;
+                }
             };
         }
 
@@ -86,6 +90,12 @@ namespace BasicScroll
         {
             add { _scrollingStrategy.EndHighlight += value; }
             remove { _scrollingStrategy.EndHighlight -= value; }
+        }
+
+        public event EventHandler<HighlightEventArgs> SelectElement
+        {
+            add { _scrollingStrategy.SelectElement += value; }
+            remove { _scrollingStrategy.SelectElement -= value; }
         }
 
         #endregion

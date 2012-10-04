@@ -25,6 +25,8 @@ namespace BasicScroll
 
         internal event EventHandler<HighlightEventArgs> EndHighlight;
 
+        internal event EventHandler<HighlightEventArgs> SelectElement;
+
         public DefaultScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements )
         {
             _elements = elements;
@@ -66,9 +68,13 @@ namespace BasicScroll
             }
         }
 
-        internal void EnterChildren()
+        internal void OnExternalEvent()
         {
-            _enterChildren = true;
+            if( _currentElement.Children.Count > 0 ) _enterChildren = true;
+            else
+            {
+                SelectElement( this, new HighlightEventArgs( _currentElement ) );
+            }
         }
 
         IHighlightableElement GetNextElement(bool enterchild = false, bool moveToParent = false )

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using CK.Keyboard.Model;
+using CK.Storage;
 using CK.Windows;
 using CK.Windows.Config;
 
@@ -17,24 +19,18 @@ namespace ContextEditor.ViewModels
         WizardButtonViewModel _selected;
         ContextEditor _root;
 
-        public override bool CheckCanGoFurther()
-        {
-            return Buttons.Any( ( b ) => b.IsSelected );
-        }
-
-        public SavingStepViewModel(ContextEditor root, WizardManager wizardManager, IKeyboard keyboard )
+        public SavingStepViewModel( ContextEditor root, WizardManager wizardManager, IKeyboard keyboard )
             : base( wizardManager, false )
         {
             _root = root;
             _keyboardToSave = keyboard;
-            
+
             Buttons = new List<WizardButtonViewModel>();
             HideNext = true;
-            Buttons.Add( new WizardButtonViewModel( "Sauvegarder", "Sauvez vos modification dans le contexte courant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveInCurrentContext ) );
+            Buttons.Add( new WizardButtonViewModel( "Sauvegarder", "Sauvez les modifications apportées à ce clavier", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveOnEditedKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( "Sauvegarder sous...", "Sauvez les modifications apportées sous un autre nom.", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveUnderOtherKeyboard ) );
             Buttons.Add( new WizardButtonViewModel( "Annuler et quitter", "Annuler toutes les modifications faites sur ce clavier et quitter l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndQuit ) );
             Buttons.Add( new WizardButtonViewModel( "Annuler et recommencer", "Annuler toutes les modifications faites sur ce clavier et recommecner au début de l'assistant", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndRestart ) );
-            //Buttons.Add( new WizardButtonViewModel( "Enregistrer dans un autre contexte", "Exportez ce clavier vers une autre bibliothèque de claviers", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveInExistingContext ) );
-            //Buttons.Add( new WizardButtonViewModel( "Enregistrer dans un nouveau contexte", "Exportez ce clavier vers une nouvelle bibliothèque de claviers", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveAsNewContext ) );
         }
 
         SimpleCommand<WizardButtonViewModel> _command;
@@ -55,42 +51,42 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        public void SaveInCurrentContext()
+        /// <summary>
+        /// Goes to the next page.
+        /// Not doing anything means keeping the modifications done on the keyboard on which they have been done.
+        /// </summary>
+        private void SaveOnEditedKeyboard()
         {
-            Next = new EndingStepViewModel( WizardManager );
+            Next = new EndingStepViewModel( _root, WizardManager );
             WizardManager.GoFurther();
         }
 
-        public void CancelAndQuit()
+        /// <summary>
+        /// Saves the modifications done on another keyboard and restores the current one.
+        /// Note that in reality, the current keyboard holds the modifications, so we will rename it, 
+        /// and restore the backup of the previous state of the keyboard on a new keyboard that we'll create with the name it previously had.
+        /// </summary>
+        private void SaveUnderOtherKeyboard()
         {
-            CancelModifications();
+            Next = new SaveAsStepViewModel( _root, WizardManager, _keyboardToSave );
+            WizardManager.GoFurther();
+        }
+
+        private void CancelAndQuit()
+        {
+            _root.CancelModifications();
             WizardManager.Close();
         }
 
-        public void CancelAndRestart()
+        private void CancelAndRestart()
         {
-            CancelModifications();
+            _root.CancelModifications();
             WizardManager.Restart();
         }
 
-        /// <summary>
-        /// Retrieves the keyboard's state before any modification and re-apply it.
-        /// </summary>
-        private void CancelModifications()
+        public override bool CheckCanGoFurther()
         {
-            //TODO
+            return Buttons.Any( ( b ) => b.IsSelected );
         }
-
-        //public void SaveInExistingContext()
-        //{
-        //    //TODO : Get the XML of the keyboard, set it in the selected context and destroy it from the current context.
-        //    Next = new ContextListViewModel( WizardManager, _root.Context.ConfigManager.UserConfiguration.ContextProfiles, _keyboardToSave );
-        //    WizardManager.GoFurther();
-        //}
-
-        //public void SaveAsNewContext()
-        //{
-        //    //TODO
-        //}
     }
 }

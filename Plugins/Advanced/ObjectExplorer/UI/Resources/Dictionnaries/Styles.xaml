@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ckwc="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+                    xmlns:ckwpfcontrols="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
                     xmlns:oe="clr-namespace:CK.Plugins.ObjectExplorer"
                     xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
                     xmlns:pm="clr-namespace:CK.Plugin;assembly=CK.Plugin.Model"
@@ -15,10 +16,10 @@
     <ckwc:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <oe:SimpleStringFormatConverter x:Key="SimpleStringFormatConverter"/>
     <oe:MultiStringFormatConverter x:Key="MultiStringFormatConverter"/>
-    <oe:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
-    <oe:NXORConverter x:Key="NXORConverter"/>
-    <oe:OrConverter x:Key="OrConverter"/>
-    <oe:NotConverter x:Key="NotConverter"/>
+    <ckwpfcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
+    <ckwpfcontrols:NXORConverter x:Key="NXORConverter"/>
+    <ckwpfcontrols:OrConverter x:Key="OrConverter"/>
+    <ckwpfcontrols:NotConverter x:Key="NotConverter"/>
     <oe:ICollectionToVisibilityConverter x:Key="ICollectionToVisibilityConverter" />
 
     <oe:EnumDisplayer Type="{x:Type pm:RunningRequirement}" x:Key="RunningRequirement">

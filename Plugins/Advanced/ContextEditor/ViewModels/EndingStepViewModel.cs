@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,20 +14,26 @@ namespace ContextEditor.ViewModels
     public class EndingStepViewModel : WizardPage
     {
         public IList<WizardButtonViewModel> Buttons { get; set; }
+        ContextEditor _root;
 
         public override bool CheckCanGoFurther()
         {
             return Buttons.Any( ( b ) => b.IsSelected );
         }
 
-        public EndingStepViewModel( WizardManager wizardManager )
+        public EndingStepViewModel( ContextEditor root, WizardManager wizardManager )
             : base( wizardManager, true )
         {
-            HideNext = true;
             Buttons = new List<WizardButtonViewModel>();
+            HideNext = true;
+            HideBack = true;
 
             Buttons.Add( new WizardButtonViewModel( "Quitter", "Vous pouvez quitter l'assitant si vous avez effectué toutes les modifications nécessaires", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CloseWizard ) );
             Buttons.Add( new WizardButtonViewModel( "Recommencer", "Vous pouvez retourner au début de l'assitant pour modifier d'autres claviers", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", RestartWizard ) );
+
+            _root = root;
+
+            
         }
 
         SimpleCommand<WizardButtonViewModel> _command;
@@ -44,11 +51,13 @@ namespace ContextEditor.ViewModels
 
         public void CloseWizard()
         {
+            _root.EnsureBackupIsClean();
             WizardManager.Close();
         }
 
         public void RestartWizard()
         {
+            _root.EnsureBackupIsClean();
             WizardManager.Restart();
         }
     }

@@ -63,6 +63,9 @@
     <Reference Include="CK.Storage">
       <HintPath>..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Windows.App">
+      <HintPath>..\..\..\packages\CK.Windows.App.2.8.44\lib\net40\CK.Windows.App.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Windows.Config">
       <HintPath>..\..\..\packages\CK.Windows.Config.2.8.44\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
@@ -103,6 +106,7 @@
     <Compile Include="ViewModels\ElementViewModels\ContextViewModel.cs" />
     <Compile Include="ViewModels\ElementViewModels\SimpleKeyboardViewModel.cs" />
     <Compile Include="ViewModels\EndingStepViewModel.cs" />
+    <Compile Include="ViewModels\SaveAsStepViewModel.cs" />
     <Compile Include="ViewModels\SavingStepViewModel.cs" />
     <Compile Include="ViewModels\KeyboardEditionViewModel.cs" />
     <Compile Include="ViewModels\KeyboardListViewModel.cs" />
@@ -115,6 +119,9 @@
     </Compile>
     <Compile Include="Views\ContextListView.xaml.cs">
       <DependentUpon>ContextListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SaveAsView.xaml.cs">
+      <DependentUpon>SaveAsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EndingStepView.xaml.cs">
       <DependentUpon>EndingStepView.xaml</DependentUpon>
@@ -146,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ContextListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SaveAsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

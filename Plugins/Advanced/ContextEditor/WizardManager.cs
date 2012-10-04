@@ -35,6 +35,11 @@ namespace ContextEditor
             get { return ActiveItem.Next; }
         }
 
+        public override bool OnBeforeGoBack()
+        {
+            return ActiveItem.OnBeforeGoBack();
+        }
+
         /// <summary>
         /// Activates the next view
         /// </summary>
@@ -42,14 +47,12 @@ namespace ContextEditor
         {
             if( ActiveItem.CheckCanGoFurther() )
             {
-                ActiveItem.OnBeforeNext();
-                if( Next != null )
+                if( ActiveItem.OnBeforeNext() && Next != null )
                 {
                     ActivateItem( Next );
                     return;
                 }
             }
-            ActiveItem.CantGoFurther = true;
         }
 
         /// <summary>
@@ -89,14 +92,11 @@ namespace ContextEditor
 
         /// <summary>
         /// Resets the stack to start again at the beginning of the wizard.
-        /// WizardPages are notre re-created.
+        /// WizardPages are not re-created.
         /// </summary>
         public void Restart()
         {
-            while( CanGoBack() )
-            {
-                GoBack();
-            }
+            GoBackToRoot();
         }
     }
 }

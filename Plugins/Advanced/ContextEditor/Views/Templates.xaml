@@ -57,15 +57,21 @@
                 <views:EndingStepView/>
             </DataTemplate>
         </ckcore:TypeDataTemplateSelector>
+        <ckcore:TypeDataTemplateSelector Type="{ckcore:Type viewmodels:SaveAsStepViewModel}" >
+            <DataTemplate>
+                <views:SaveAsStepView/>
+            </DataTemplate>
+        </ckcore:TypeDataTemplateSelector>
     </ckcore:CompositeDataTemplateSelector>
 
     <DataTemplate DataType="{x:Type local:WizardManager}">
         <DataTemplate.Resources>
             <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
+            <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
         <!--<ScrollViewer>-->
-            <StackPanel Orientation="Vertical">
-                <StackPanel Margin="10 5">
+        <StackPanel Orientation="Vertical"  Margin="10 5">
+                <StackPanel>
                     <StackPanel.Visibility>
                         <Binding Path="ActiveItem.Title">
                             <Binding.Converter>
@@ -83,8 +89,42 @@
                 <DockPanel LastChildFill="True">
                     <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
                     <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
-                        <Button Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Retour" Visibility="{Binding ActiveItem.CanGoBack, Converter={StaticResource BooleanToVisibilityConv}, ConverterParameter=Hidden}"  VerticalAlignment="Bottom"/>
-                        <Button Height="50" Width="150" DockPanel.Dock="Right" Margin="3" IsEnabled="{Binding ActiveItem.CanGoFurther}" VerticalAlignment="Bottom">
+                    <Button Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Retour" VerticalAlignment="Bottom">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Value="False" Binding="{Binding ActiveItem.HideBack}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Value="True" Binding="{Binding ActiveItem.CanGoBack}">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Value="False" Binding="{Binding ActiveItem.CanGoBack}">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                    <DataTrigger Value="True" Binding="{Binding ActiveItem.HideBack}">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <!--<Button.Visibility>
+                            <Binding>
+                                <MultiBinding Converter="{StaticResource AndMultiValueConverter}">
+                                    <MultiBinding.Converter>
+                                        <ckcontrols:ValueConverterGroup>
+                                            <ckcontrols:AndMultiValueConverter/>
+                                        
+                                        </ckcontrols:ValueConverterGroup>
+                                    </MultiBinding.Converter>
+                                    <Binding Path="ActiveItem.CanGoBack" />
+                                    <Binding Path="ActiveItem.HidePrevious"/>
+                                </MultiBinding>
+                            </Binding>
+                            <ckcore:BooleanToVisibilityConverter/>
+                        </Button.Visibility>-->
+                    </Button>
+                    <Button Height="50" Width="150" DockPanel.Dock="Right" Margin="3" IsEnabled="{Binding ActiveItem.CanGoFurther}" VerticalAlignment="Bottom">
                             <Button.Visibility>
                                 <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert,Hidden"/>
                             </Button.Visibility>

@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.Controls\Converters\NotNullConverter.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ObjectExplorer\UI\Converters\NXORConverter.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -23,27 +23,32 @@
 
 using System;
 using System.Windows.Data;
+using System.Globalization;
+using System.Diagnostics;
 
 namespace CK.WPF.Controls
-{ 
-    /// <summary>
-    /// Not operator on a boolean.
-    /// </summary>
-    [ValueConversion( typeof( bool ), typeof( bool ) )]
-    public class NotConverter : IValueConverter
+{
+    [ValueConversion( typeof( bool? ), typeof( bool ) )]
+    public class NXORConverter : IValueConverter
     {
-        public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
         {
-            bool returnValue;
-            if( Boolean.TryParse( value.ToString(), out returnValue ) )
-                return !returnValue;
+            bool param = bool.Parse( parameter.ToString() );
 
-            throw new FormatException( String.Format( "The NotConverter is waiting for a boolean value, not a {0} value.", value.GetType() ) );
+            if( value == null )
+            {
+                return false;
+            }
+            else
+            {
+                return !((bool)value ^ param);
+            }
         }
 
-        public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
         {
-            return Convert( value, targetType, parameter, culture );
+            bool param = bool.Parse( parameter.ToString() );
+            return !((bool)value ^ param);
         }
     }
 }

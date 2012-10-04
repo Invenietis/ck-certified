@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.Controls\Converters\NotNullConverter.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ObjectExplorer\UI\Converters\AndConverter.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,28 +22,28 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows.Data;
 
 namespace CK.WPF.Controls
-{ 
-    /// <summary>
-    /// Not operator on a boolean.
-    /// </summary>
-    [ValueConversion( typeof( bool ), typeof( bool ) )]
-    public class NotConverter : IValueConverter
+{
+    public class AndMultiValueConverter : IMultiValueConverter
     {
-        public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        public object Convert( object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
-            bool returnValue;
-            if( Boolean.TryParse( value.ToString(), out returnValue ) )
-                return !returnValue;
-
-            throw new FormatException( String.Format( "The NotConverter is waiting for a boolean value, not a {0} value.", value.GetType() ) );
+            foreach( bool value in values )
+            {
+                if( !value )
+                    return false;
+            }
+            return true;
         }
 
-        public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        public object[] ConvertBack( object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture )
         {
-            return Convert( value, targetType, parameter, culture );
+            return null;
         }
     }
 }

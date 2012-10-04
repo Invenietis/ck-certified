@@ -42,7 +42,6 @@ namespace ContextEditor.ViewModels
         {
             _root = root;
             _keyboardCtx = keyboardCtx;
-            Next = new KeyboardProfileViewModel( _root, WizardManager, _keyboardCtx.CurrentKeyboard );
             Buttons = new List<WizardButtonViewModel>();
 
             Buttons.Add( new WizardButtonViewModel( "Editer le clavier courant", "Editer simplement et rapidement cotre clavier actif", "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditCurrentKeyboard ) );

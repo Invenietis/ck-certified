@@ -14,11 +14,9 @@ namespace ContextEditor.ViewModels
     {
         IKeyboard _model;
         bool _isSelected;
-        KeyboardListViewModel _parent;
 
-        public KeyboardViewModel(KeyboardListViewModel parent, IKeyboard model)
-        {
-            _parent = parent;
+        public KeyboardViewModel( IKeyboard model )
+        {            
             _model = model;
         }
 

@@ -43,6 +43,11 @@ namespace ContextEditor
         public bool HideNext { get; set; }
 
         /// <summary>
+        /// Set to true if you want to hide the "Back" button of this wizard page.
+        /// </summary>
+        public bool HideBack { get; set; }
+
+        /// <summary>
         /// Set to true if this is th elast step of the wizard. 
         /// When set to true, the "Next" button now shows "Close"
         /// </summary>
@@ -89,8 +94,14 @@ namespace ContextEditor
             : this( wizardManager, null, isLastStep, title )
         {
         }
-
+        /// <summary>
+        /// Gets whether the user can go on the next Wizard page
+        /// </summary>
         public bool CanGoFurther { get { return CheckCanGoFurther(); } }
+
+        /// <summary>
+        /// Gets whether the user can go on the previous Wizard page
+        /// </summary>
         public bool CanGoBack { get { return CheckCanGoBack(); } }
 
         /// <summary>
@@ -118,8 +129,19 @@ namespace ContextEditor
         /// Can be overridden to do something before changing the ActiveItem.
         /// Return false to cancel going ot the next WizardPage
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true if the manager should go on changing the view, false otherwise</returns>
         public virtual bool OnBeforeNext()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Is called right before going ot the previous step, but after checking CanGoBack.
+        /// Can be overridden to do something before changing the ActiveItem.
+        /// Return false to cancel going ot the previous WizardPage 
+        /// </summary>
+        /// <returns>true if the manager should go on changing the view, false otherwise</returns>
+        public virtual bool OnBeforeGoBack()
         {
             return true;
         }

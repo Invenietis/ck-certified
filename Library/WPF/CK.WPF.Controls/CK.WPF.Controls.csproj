@@ -79,8 +79,11 @@
     <Compile Include="ColorCanvas\Implementation\ColorSpectrumSlider.cs" />
     <Compile Include="ColorPicker\Implementation\ColorItem.cs" />
     <Compile Include="ColorPicker\Implementation\ColorPicker.cs" />
+    <Compile Include="Converters\AndConverter.cs" />
     <Compile Include="Converters\BooleanToIsMinimizedConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
+    <Compile Include="Converters\NXORConverter.cs" />
+    <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\StringIsNullOrWhiteSpaceToBoolean.cs" />
     <Compile Include="Converters\NotNullConverter.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />

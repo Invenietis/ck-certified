@@ -20,33 +20,32 @@ namespace ContextEditor.ViewModels
 
         ContextViewModel _selectedContext;
         ICommand _selectionCommand;
+        ContextEditor _root;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The context to which we should save a keyboard</param>
-        public ContextListViewModel( WizardManager wizardManager, IUriHistoryCollection contexts, IKeyboard keyboardToSave )
+        public ContextListViewModel( ContextEditor root, WizardManager wizardManager, IUriHistoryCollection contexts, IKeyboard keyboardToSave )
             : base( wizardManager, false )
         {
+            _root = root;
             _contexts = contexts;
             _keyboardtoSave = keyboardToSave;
 
-            Next = new EndingStepViewModel( WizardManager );
+            Next = new EndingStepViewModel( _root, WizardManager );
 
             ContextVms = new List<ContextViewModel>();
             foreach( var context in _contexts )
             {
-                ContextVms.Add( new ContextViewModel( this, context  ) );
+                ContextVms.Add( new ContextViewModel( this, context ) );
             }
         }
 
         public override bool CheckCanGoFurther()
         {
-            if( _selectedContext == null ) return false;
-
-            //Next = new KeyboardProfileViewModel( WizardManager, _selectedKeyboard.Keyboard );
-            return Next != null;
+            return _selectedContext != null && Next != null;
         }
 
         public ICommand SelectionCommand
@@ -71,17 +70,19 @@ namespace ContextEditor.ViewModels
         }
 
         bool _canSave;
-        public bool CanSave 
-        { 
-            get { return _canSave; } 
-            set { _canSave = value; NotifyOfPropertyChange( () => CanSave ); 
+        public bool CanSave
+        {
+            get { return _canSave; }
+            set
+            {
+                _canSave = value; NotifyOfPropertyChange( () => CanSave );
             }
         }
 
         ICommand _saveCommand;
         public ICommand SaveCommand
         {
-            get 
+            get
             {
                 if( _saveCommand == null )
                 {

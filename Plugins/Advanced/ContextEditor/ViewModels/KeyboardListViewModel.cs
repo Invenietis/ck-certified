@@ -32,7 +32,7 @@ namespace ContextEditor.ViewModels
             KeyboardVms = new List<KeyboardViewModel>();
             foreach( var keyboard in _keyboards )
             {
-                KeyboardVms.Add( new KeyboardViewModel( this, keyboard ) );
+                KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }
             HideNext = true;
         }
@@ -57,7 +57,7 @@ namespace ContextEditor.ViewModels
                     _selectedKeyboard = keyboardVm;
 
                     //We update the Next property to give it the proper model.
-                    Next = new KeyboardProfileViewModel(_root, WizardManager, _selectedKeyboard.Keyboard );
+                    Next = new KeyboardProfileViewModel( _root, WizardManager, _selectedKeyboard.Keyboard );
 
                     CantGoFurther = false;
                     NotifyOfPropertyChange( () => IsLastStep );

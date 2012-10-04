@@ -24,7 +24,7 @@
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <Grid>
-                    <Grid Background="LightGray" Opacity="0.3"></Grid>
+                    <Grid Opacity="0.3"></Grid>
                     <Button Style="{StaticResource NoFocusSelectableButtonStyle}"  HorizontalAlignment="Center" Margin="10" Width="400" Height="80" Command="{Binding DataContext.SelectionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>

@@ -1,0 +1,32 @@
+﻿ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.Text	Text	True	True		Nouveau nom du clavier :
+ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Nom du clavier :
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.FrameworkElement.Width	None	False	True		200
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.TextBlock.FontSize	None	True	True		20
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Largeur :
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.FrameworkElement.Width	None	False	True		200
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.TextBlock.FontSize	None	True	True		20
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Hauteur :
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.FrameworkElement.Width	None	False	True		200
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.TextBlock.FontSize	None	True	True		20
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.Button.$Content	Button	True	True		
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.FrameworkElement.Height	None	False	True		50
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.FrameworkElement.Width	None	False	True		150
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.DockPanel.Dock	Button	True	False		Left
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.FrameworkElement.Margin	None	False	True		3
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.ContentControl.Content	Button	True	True		Retour
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Bottom
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Property	None	False	False		ContentControl.Content
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Value	None	False	True		Terminer
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Property	None	False	False		ContentControl.Content
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Value	None	False	True		Suivant

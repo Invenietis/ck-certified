@@ -15,11 +15,21 @@ namespace ContextEditor.ViewModels
 {
     public class SavingStepViewModel : WizardPage
     {
-        public IList<WizardButtonViewModel> Buttons { get; set; }
-        IKeyboard _keyboardToSave;
+        /// <summary>
+        /// Gets the list of <see cref="WizardButtonViewModel"/> of this <see cref="WizardPage"/>
+        /// </summary>
+        public IList<WizardButtonViewModel> Buttons { get; private set; }
+        SimpleCommand<WizardButtonViewModel> _command;
         WizardButtonViewModel _selected;
+        IKeyboard _keyboardToSave;
         ContextEditor _root;
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="root">The ContextEditor that is the root of this wizard</param>
+        /// <param name="wizardManager">The wizardManager</param>
+        /// <param name="keyboard">The modified keyboard to save</param>
         public SavingStepViewModel( ContextEditor root, WizardManager wizardManager, IKeyboard keyboard )
             : base( wizardManager, false )
         {
@@ -34,7 +44,9 @@ namespace ContextEditor.ViewModels
             Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndRestartTitle, R.SavingStepCancelAndRestartDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndRestart ) );
         }
 
-        SimpleCommand<WizardButtonViewModel> _command;
+        /// <summary>
+        /// Gets the command called when the user clicks on a WizardButtonViewModel
+        /// </summary>
         public SimpleCommand<WizardButtonViewModel> ButtonCommand
         {
             get
@@ -85,6 +97,10 @@ namespace ContextEditor.ViewModels
             WizardManager.Restart();
         }
 
+        /// <summary>
+        /// Checks that a keyboard has been selected before enabling going to the next step.
+        /// </summary>
+        /// <returns>true if a keyboard has been selected, false otherwise</returns>
         public override bool CheckCanGoFurther()
         {
             return Buttons.Any( ( b ) => b.IsSelected );

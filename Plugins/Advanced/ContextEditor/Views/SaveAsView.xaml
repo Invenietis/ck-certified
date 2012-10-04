@@ -41,7 +41,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <StackPanel Orientation="Horizontal" Margin="5 10" Width="400" HorizontalAlignment="Center">
-            <TextBlock Text="New name for the keyboard :" VerticalAlignment="Center" />
+            <TextBlock x:Uid="save-as-step-new-name-textblock" Text="New name for the keyboard :" VerticalAlignment="Center" />
             <TextBox Margin="10 0 0 0" Height="50" Width="220" Padding="5" Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" />
         </StackPanel>
     </StackPanel>

@@ -89,7 +89,7 @@
                 <DockPanel LastChildFill="True">
                     <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
                     <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
-                    <Button Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Retour" VerticalAlignment="Bottom">
+                    <Button x:Uid="wizard-manager-template-back-button" Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Back" VerticalAlignment="Bottom">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Style.Triggers>
@@ -108,21 +108,6 @@
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
-                        <!--<Button.Visibility>
-                            <Binding>
-                                <MultiBinding Converter="{StaticResource AndMultiValueConverter}">
-                                    <MultiBinding.Converter>
-                                        <ckcontrols:ValueConverterGroup>
-                                            <ckcontrols:AndMultiValueConverter/>
-                                        
-                                        </ckcontrols:ValueConverterGroup>
-                                    </MultiBinding.Converter>
-                                    <Binding Path="ActiveItem.CanGoBack" />
-                                    <Binding Path="ActiveItem.HidePrevious"/>
-                                </MultiBinding>
-                            </Binding>
-                            <ckcore:BooleanToVisibilityConverter/>
-                        </Button.Visibility>-->
                     </Button>
                     <Button Height="50" Width="150" DockPanel.Dock="Right" Margin="3" IsEnabled="{Binding ActiveItem.CanGoFurther}" VerticalAlignment="Bottom">
                             <Button.Visibility>
@@ -132,11 +117,11 @@
                                 <Style TargetType="{x:Type Button}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="True">
-                                            <Setter Property="Content" Value="Terminer" />
+                                            <Setter x:Uid="wizard-manager-template-forward-button-exit" Property="Content" Value="Exit" />
                                             <Setter Property="Command" Value="{Binding CloseCommand}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="False">
-                                            <Setter Property="Content" Value="Suivant" />
+                                            <Setter x:Uid="wizard-manager-template-forward-button-next" Property="Content" Value="Next" />
                                             <Setter Property="Command" Value="{Binding GoFurtherCommand}"/>
                                         </DataTrigger>
                                     </Style.Triggers>

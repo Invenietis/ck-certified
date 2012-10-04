@@ -121,7 +121,7 @@
     <value>Vous pouvez quitter l'assistant si vous avez effectué toutes les modifications nécessaires.</value>
   </data>
   <data name="EndingStepStartOverDesc" xml:space="preserve">
-    <value>Vous pouvez retourner au début de l'assitant pour modifier d'autres claviers.</value>
+    <value>Vous pouvez retourner au début de l'assistant pour modifier d'autres claviers.</value>
   </data>
   <data name="HomeEditCurrentKeyboard" xml:space="preserve">
     <value>Editer le clavier courant ({0})</value>
@@ -187,7 +187,7 @@ Etes-vous sur de vouloir faire cela ?</value>
     <value>Annuler et quitter</value>
   </data>
   <data name="SavingStepCancelAndRestartDesc" xml:space="preserve">
-    <value>Annuler toutes les modifications faites sur ce clavier et recommecner au début de l'assistant.</value>
+    <value>Annuler toutes les modifications faites sur ce clavier et recommencer au début de l'assistant.</value>
   </data>
   <data name="SavingStepCancelAndRestartTitle" xml:space="preserve">
     <value>Annuler et recommencer</value>
@@ -208,7 +208,7 @@ Etes-vous sur de vouloir faire cela ?</value>
     <value>Recommencer</value>
   </data>
   <data name="WindowTitle" xml:space="preserve">
-    <value>Keyboard edition wizard</value>
+    <value>Assistant de création de claviers</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>

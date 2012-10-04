@@ -123,6 +123,15 @@
                         <cc:ImageButton DockPanel.Dock="Right" CommandParameter="PressedBackground"/>
                     </DockPanel>
                 </Border>
+                <Border BorderThickness="0" Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" >
+                            <cce:ColorPicker SelectedColor="{Binding HighlightBackground}" />
+                            <TextBlock x:Uid="highlight-bg-color" VerticalAlignment="Center">Highlighted background color</TextBlock>
+                        </StackPanel>
+                        <cc:ImageButton DockPanel.Dock="Right" CommandParameter="HighlightBackground"/>
+                    </DockPanel>
+                </Border>
             </StackPanel>
         </Border>
         <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">

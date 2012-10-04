@@ -46,6 +46,7 @@ namespace SimpleSkin.ViewModels
             {
                 OnPropertyChanged( "Background" );
                 OnPropertyChanged( "HoverBackground" );
+                OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "LetterColor" );
                 OnPropertyChanged( "FontStyle" );
@@ -64,6 +65,7 @@ namespace SimpleSkin.ViewModels
             {
                 OnPropertyChanged( "Background" );
                 OnPropertyChanged( "HoverBackground" );
+                OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "LetterColor" );
                 OnPropertyChanged( "FontStyle" );
@@ -91,10 +93,15 @@ namespace SimpleSkin.ViewModels
         {
             get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
         }
-
+        
         public Color HoverBackground
         {
             get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+        }
+
+        public Color HighlightBackground
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
         }
 
         public Color PressedBackground

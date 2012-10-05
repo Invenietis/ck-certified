@@ -29,10 +29,12 @@ namespace ContextEditor.ViewModels
             HideNext = true;
             HideBack = true;
 
-            Buttons.Add( new WizardButtonViewModel( R.Quit, R.EndingStepQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CloseWizard ) );
-            Buttons.Add( new WizardButtonViewModel( R.StartOver, R.EndingStepStartOverDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", RestartWizard ) );
+            Buttons.Add( new WizardButtonViewModel( R.Quit, R.EndingStepQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/exit.png", CloseWizard ) );
+            Buttons.Add( new WizardButtonViewModel( R.StartOver, R.EndingStepStartOverDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/restart.png", RestartWizard ) );
 
             _root = root;
+            Title = R.EndingStepTitle;
+            Description = R.EndingStepDesc;
         }
 
         SimpleCommand<WizardButtonViewModel> _command;

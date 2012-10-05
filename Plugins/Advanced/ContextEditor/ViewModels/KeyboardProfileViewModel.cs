@@ -56,6 +56,9 @@ namespace ContextEditor.ViewModels
             _viemModel = new SimpleKeyboardViewModel();
             _backupFileName = "";
             _root = root;
+
+            Title = R.KeyboardProfileTitle;
+            Description = R.KeyboardProfileDesc;
         }
 
         #region Properties

@@ -38,10 +38,13 @@ namespace ContextEditor.ViewModels
 
             Buttons = new List<WizardButtonViewModel>();
             HideNext = true;
-            Buttons.Add( new WizardButtonViewModel( R.SavingStepSaveTitle, R.SavingStepSaveDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveOnEditedKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.SavingStepSaveAsTitle, R.SavingStepSaveAsDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", SaveUnderOtherKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndQuitTitle, R.SavingStepCancelAndQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndQuit ) );
-            Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndRestartTitle, R.SavingStepCancelAndRestartDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CancelAndRestart ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepSaveTitle, R.SavingStepSaveDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/save-keyboard.png", SaveOnEditedKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepSaveAsTitle, R.SavingStepSaveAsDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/save-as.png", SaveUnderOtherKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndQuitTitle, R.SavingStepCancelAndQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/cancel-quit.png", CancelAndQuit ) );
+            Buttons.Add( new WizardButtonViewModel( R.SavingStepCancelAndRestartTitle, R.SavingStepCancelAndRestartDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/cancel-restart.png", CancelAndRestart ) );
+
+            Title = R.SavingStepTitle;
+            Description = String.Format( R.SavingStepDesc, keyboard.Name );
         }
 
         /// <summary>

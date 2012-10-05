@@ -69,6 +69,9 @@ namespace ContextEditor.ViewModels
                 KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }
 
+            Title = R.SaveAsStepTitle;
+            Description = R.SaveAsStepDesc;
+
             Next = new EndingStepViewModel( root, wizardManager );
         }
 

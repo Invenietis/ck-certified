@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CK.Keyboard.Model;
 using CK.Windows;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -34,7 +35,10 @@ namespace ContextEditor.ViewModels
             {
                 KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }
+
             HideNext = true;
+            Title = R.KeyboardListStepTitle;
+            Description = R.KeyboardListStepDesc;
         }
 
         public override bool CheckCanGoFurther()

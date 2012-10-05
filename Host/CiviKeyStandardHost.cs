@@ -32,14 +32,10 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
 using Host.Services.Helper;
-using Host.Resources;
 using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
-using System.Linq;
 using System.ComponentModel;
-using CK.Plugin.Config;
-using System.Configuration;
 
 namespace Host
 {
@@ -99,7 +95,6 @@ namespace Host
 
             // Initializes Services.
             {
-                
                 ctx.ServiceContainer.Add<IHostInformation>( this );
                 // inject specific xaml serializers.
                 ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Size> ), new XamlSerializer<Size>() );

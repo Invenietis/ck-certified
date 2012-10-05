@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CK.Keyboard.Model;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -18,6 +19,9 @@ namespace ContextEditor.ViewModels
             _root = root;
             EditedKeyboard = editedKeyboard;
             Next = new SavingStepViewModel(_root, WizardManager, EditedKeyboard );
+
+            Title = String.Format( R.KeyboardEditionStepTitle, editedKeyboard.Name );
+            Description = R.KeyboardEditionStepDesc;
         }
     }
 }

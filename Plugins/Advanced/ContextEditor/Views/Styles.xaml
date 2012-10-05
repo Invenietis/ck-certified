@@ -9,7 +9,14 @@
     <ControlTemplate  x:Key="NoFocusButtonTemplate" TargetType="{x:Type ButtonBase}">
         <Border CornerRadius="5">
             <mwt:ButtonChrome Background="{TemplateBinding Panel.Background}" BorderBrush="{TemplateBinding Border.BorderBrush}" RenderDefaulted="{TemplateBinding Button.IsDefaulted}" Name="Chrome" SnapsToDevicePixels="True">
-                <ContentPresenter RecognizesAccessKey="True" Content="{TemplateBinding ContentControl.Content}" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" Margin="{TemplateBinding Control.Padding}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                <ContentPresenter RecognizesAccessKey="True" 
+                                  Content="{TemplateBinding ContentControl.Content}" 
+                                  ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" 
+                                  ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" 
+                                  Margin="{TemplateBinding Control.Padding}" 
+                                  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" 
+                                  VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" 
+                                  SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
             </mwt:ButtonChrome>
         </Border>
         <ControlTemplate.Triggers>

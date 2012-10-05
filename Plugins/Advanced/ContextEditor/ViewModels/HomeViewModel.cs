@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Windows;
-using CK.Windows.Config;
 using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
@@ -45,13 +41,14 @@ namespace ContextEditor.ViewModels
             _keyboardCtx = keyboardCtx;
             Buttons = new List<WizardButtonViewModel>();
 
-            Buttons.Add( new WizardButtonViewModel( String.Format( R.HomeEditCurrentKeyboard, _keyboardCtx.CurrentKeyboard.Name ), R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditCurrentKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.HomeEditNewKeyboard, R.HomeEditNewKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", CreateNewKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.HomeEditOtherKeyboard, R.HomeEditOtherKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/keyboard.png", EditOtherKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( String.Format( R.HomeEditCurrentKeyboard, _keyboardCtx.CurrentKeyboard.Name ), R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-keyboard.png", EditCurrentKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditNewKeyboard, R.HomeEditNewKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/create-keyboard.png", CreateNewKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditOtherKeyboard, R.HomeEditOtherKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-other-keyboard.png", EditOtherKeyboard ) );
 
             Title = R.HomeStepTitle;
             Description = R.HomeStepDescription;
             HideNext = true;
+            HideBack = true;
         }
 
         /// <summary>

@@ -29,7 +29,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel HorizontalAlignment="Left" Grid.Column="0" Margin="5 0">
                             <TextBlock HorizontalAlignment="Left" Text="{Binding Label}" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Description}"/>
+                            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Description}" FontSize="18" FontWeight="Bold" Foreground="DarkGray" FontFamily="Lucida Sans"/>
                         </StackPanel>
                         <Image HorizontalAlignment="Right" Margin="20 0 0 0" Grid.Column="1" Source="{Binding ImagePath}"></Image>
                     </Grid>

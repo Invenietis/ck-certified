@@ -61,6 +61,15 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard..
+        /// </summary>
+        internal static string EndingStepDesc {
+            get {
+                return ResourceManager.GetString("EndingStepDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can exit the wizard if you have no other modifications to make..
         /// </summary>
         internal static string EndingStepQuitDesc {
@@ -75,6 +84,15 @@ namespace ContextEditor.Resources {
         internal static string EndingStepStartOverDesc {
             get {
                 return ResourceManager.GetString("EndingStepStartOverDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modifications saved.
+        /// </summary>
+        internal static string EndingStepTitle {
+            get {
+                return ResourceManager.GetString("EndingStepTitle", resourceCulture);
             }
         }
         
@@ -152,6 +170,43 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Through this page you can add, delete or modify any key of the keyboard.
+        ///Modifications will be saved during the next step..
+        /// </summary>
+        internal static string KeyboardEditionStepDesc {
+            get {
+                return ResourceManager.GetString("KeyboardEditionStepDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard modification : {0}.
+        /// </summary>
+        internal static string KeyboardEditionStepTitle {
+            get {
+                return ResourceManager.GetString("KeyboardEditionStepTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose among the existing keyboard the one that you want to modify, or from which you want to start to create a new keyboard..
+        /// </summary>
+        internal static string KeyboardListStepDesc {
+            get {
+                return ResourceManager.GetString("KeyboardListStepDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Existing keyboards list.
+        /// </summary>
+        internal static string KeyboardListStepTitle {
+            get {
+                return ResourceManager.GetString("KeyboardListStepTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Going back is going to erase the modifications made until now.
         ///Are you sure you want to go back ?.
         /// </summary>
@@ -225,6 +280,16 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can either select an existing keyboard ot erase it, or type a new keyboard name to save your modifications under a new keyboard.
+        ///If you have started your modifications with an existing keyboard, its former state will be re-established..
+        /// </summary>
+        internal static string SaveAsStepDesc {
+            get {
+                return ResourceManager.GetString("SaveAsStepDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are about to save your modifications on the keyboard named {0}.
         ///Are you sure that you want to erase this existing keyboard ?.
         /// </summary>
@@ -240,6 +305,15 @@ namespace ContextEditor.Resources {
         internal static string SaveAsStepPopInTitle {
             get {
                 return ResourceManager.GetString("SaveAsStepPopInTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save as... step.
+        /// </summary>
+        internal static string SaveAsStepTitle {
+            get {
+                return ResourceManager.GetString("SaveAsStepTitle", resourceCulture);
             }
         }
         
@@ -280,6 +354,15 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can now choose where you want to save the modifications you just made; on the &quot;{0}&quot; keyboard, or on another one..
+        /// </summary>
+        internal static string SavingStepDesc {
+            get {
+                return ResourceManager.GetString("SavingStepDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save the modifications made on a new keyboard or another existing one..
         /// </summary>
         internal static string SavingStepSaveAsDesc {
@@ -312,6 +395,15 @@ namespace ContextEditor.Resources {
         internal static string SavingStepSaveTitle {
             get {
                 return ResourceManager.GetString("SavingStepSaveTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving step.
+        /// </summary>
+        internal static string SavingStepTitle {
+            get {
+                return ResourceManager.GetString("SavingStepTitle", resourceCulture);
             }
         }
         

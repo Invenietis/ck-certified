@@ -20,7 +20,7 @@ namespace ContextEditor.ViewModels
     {
         SimpleKeyboardViewModel _viemModel;
         string _backupFileName;
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
         IKeyboard _model;
 
         //Gets whether this step has already been passed. If so, and if the user wants to go back, 
@@ -33,7 +33,7 @@ namespace ContextEditor.ViewModels
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to create or modify</param>
-        public KeyboardProfileViewModel( ContextEditor root, WizardManager wizardManager, IKeyboard model )
+        public KeyboardProfileViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard model )
             : base( wizardManager, false )
         {
             _root = root;
@@ -50,7 +50,7 @@ namespace ContextEditor.ViewModels
         /// Ctor, creates a new <see cref="SimpleKeyboardViewModel"/>.
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
-        public KeyboardProfileViewModel( ContextEditor root, WizardManager wizardManager )
+        public KeyboardProfileViewModel( IKeyboardEditorRoot root, WizardManager wizardManager )
             : base( wizardManager, false )
         {
             _viemModel = new SimpleKeyboardViewModel();

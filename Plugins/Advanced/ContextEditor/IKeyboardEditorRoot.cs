@@ -8,10 +8,9 @@ using CK.Plugin;
 
 namespace ContextEditor
 {
-    interface IKeyboardEditorRoot : IKeyboardBackupManager
+    public interface IKeyboardEditorRoot : IKeyboardBackupManager
     {
         IService<IKeyboardContext> KeyboardContext { get; set; }
-
         IContext Context { get; set; }
     }
 }

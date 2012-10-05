@@ -15,14 +15,14 @@ namespace ContextEditor.ViewModels
     public class EndingStepViewModel : WizardPage
     {
         public IList<WizardButtonViewModel> Buttons { get; set; }
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
 
         public override bool CheckCanGoFurther()
         {
             return Buttons.Any( ( b ) => b.IsSelected );
         }
 
-        public EndingStepViewModel( ContextEditor root, WizardManager wizardManager )
+        public EndingStepViewModel( IKeyboardEditorRoot root, WizardManager wizardManager )
             : base( wizardManager, true )
         {
             Buttons = new List<WizardButtonViewModel>();

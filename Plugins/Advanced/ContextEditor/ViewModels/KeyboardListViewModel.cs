@@ -15,7 +15,7 @@ namespace ContextEditor.ViewModels
     {
         IKeyboardCollection _keyboards;
         public IList<KeyboardViewModel> KeyboardVms { get; set; }
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
 
         KeyboardViewModel _selectedKeyboard;
         ICommand _selectionCommand;
@@ -25,7 +25,7 @@ namespace ContextEditor.ViewModels
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to create or modify</param>
-        public KeyboardListViewModel( ContextEditor root, WizardManager wizardManager, IKeyboardCollection model )
+        public KeyboardListViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboardCollection model )
             : base( wizardManager, false )
         {
             _root = root;

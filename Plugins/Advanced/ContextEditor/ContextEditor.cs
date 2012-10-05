@@ -38,8 +38,9 @@ namespace ContextEditor
         public IContext Context { get; set; }
 
         ContextEditorBootstrapper bootstrap;
-        AppViewModel _appViewModel;
         WindowManager _windowManager;
+        AppViewModel _appViewModel;
+        Window _mainWindow;
         bool _stopping;
 
         public bool Setup( IPluginSetupInfo info )
@@ -52,24 +53,18 @@ namespace ContextEditor
         {
             _windowManager = new WindowManager();
             _appViewModel = new AppViewModel( this );
-            dynamic settings = new ExpandoObject();
+            _windowManager.ShowWindow( _appViewModel );
 
-            settings.SizeToContent = SizeToContent.WidthAndHeight;
-            settings.Height = 800;
-            settings.Width = 800;
-            _windowManager.ShowWindow( _appViewModel, null, settings );
-
-            Window win = _appViewModel.GetView( null ) as Window;
-            win.Closing += OnWindowClosing;
+            _mainWindow = _appViewModel.GetView( null ) as Window;
+            _mainWindow.Closing += OnWindowClosing;
         }
 
         public void Stop()
         {
             _stopping = true;
-            Window win = _appViewModel.GetView( null ) as Window;
 
-            if( win != null )
-                win.Close();
+            if( _mainWindow != null )
+                _mainWindow.Close();
         }
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
@@ -100,6 +95,9 @@ namespace ContextEditor
                 Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
                 Context.PluginRunner.Apply();
             }
+
+            if( _mainWindow != null )
+                _mainWindow.Closing -= OnWindowClosing;
         }
 
         public void Teardown()

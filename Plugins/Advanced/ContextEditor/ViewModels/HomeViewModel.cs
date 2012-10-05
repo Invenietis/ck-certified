@@ -12,7 +12,7 @@ namespace ContextEditor.ViewModels
         SimpleCommand<WizardButtonViewModel> _command;
         WizardButtonViewModel _selected;
         IKeyboardContext _keyboardCtx;
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
 
         /// <summary>
         /// Gets the list of <see cref="WizardButtonViewModel"/> on this <see cref="WizardPage"/>
@@ -34,7 +34,7 @@ namespace ContextEditor.ViewModels
         /// <param name="root"></param>
         /// <param name="wizardManager"></param>
         /// <param name="keyboardCtx"></param>
-        public HomeViewModel( ContextEditor root, WizardManager wizardManager, IKeyboardContext keyboardCtx )
+        public HomeViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboardContext keyboardCtx )
             : base( wizardManager, false )
         {
             _root = root;

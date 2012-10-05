@@ -11,9 +11,9 @@ namespace ContextEditor.ViewModels
     public class KeyboardEditionViewModel : WizardPage
     {
         public IKeyboard EditedKeyboard { get; set; }
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
 
-        public KeyboardEditionViewModel( ContextEditor root, WizardManager wizardManager, IKeyboard editedKeyboard )
+        public KeyboardEditionViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard editedKeyboard )
             : base( wizardManager, false )
         {
             _root = root;

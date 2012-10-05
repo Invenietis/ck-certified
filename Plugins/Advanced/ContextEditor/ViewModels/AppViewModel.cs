@@ -7,7 +7,7 @@ namespace ContextEditor.ViewModels
     {
         public WizardManager WizardManager { get; private set; }
 
-        public AppViewModel( ContextEditor ctx )
+        public AppViewModel( IKeyboardEditorRoot ctx )
         {
             DisplayName = R.WindowTitle;
 

@@ -23,7 +23,7 @@ namespace ContextEditor.ViewModels
         IEnumerable<IKeyboard> _keyboards;
         ICommand _selectionCommand;
         IKeyboard _editedKeyboard;
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
         string _newName;
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ContextEditor.ViewModels
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to save</param>
-        public SaveAsStepViewModel( ContextEditor root, WizardManager wizardManager, IKeyboard editedKeyboard )
+        public SaveAsStepViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard editedKeyboard )
             : base( wizardManager, false )
         {
             _root = root;

@@ -22,7 +22,7 @@ namespace ContextEditor.ViewModels
         SimpleCommand<WizardButtonViewModel> _command;
         WizardButtonViewModel _selected;
         IKeyboard _keyboardToSave;
-        ContextEditor _root;
+        IKeyboardEditorRoot _root;
 
         /// <summary>
         /// Ctor
@@ -30,7 +30,7 @@ namespace ContextEditor.ViewModels
         /// <param name="root">The ContextEditor that is the root of this wizard</param>
         /// <param name="wizardManager">The wizardManager</param>
         /// <param name="keyboard">The modified keyboard to save</param>
-        public SavingStepViewModel( ContextEditor root, WizardManager wizardManager, IKeyboard keyboard )
+        public SavingStepViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard keyboard )
             : base( wizardManager, false )
         {
             _root = root;

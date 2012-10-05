@@ -6,7 +6,7 @@ using CK.Keyboard.Model;
 
 namespace ContextEditor
 {
-    interface IKeyboardBackupManager
+    public interface IKeyboardBackupManager
     {
         /// <summary>
         /// This property holds the version of the keyboard that is being edited, before any modification.

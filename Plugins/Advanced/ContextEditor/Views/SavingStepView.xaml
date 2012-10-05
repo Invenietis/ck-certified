@@ -21,17 +21,13 @@
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <Button HorizontalAlignment="Center" Width="400" Height="80" Command="{Binding DataContext.ButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Margin="10" Style="{StaticResource NoFocusSelectableButtonStyle}">
-                    <Grid HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="80"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel HorizontalAlignment="Left" Grid.Column="0" Margin="5 0">
+                    <DockPanel LastChildFill="False">
+                        <StackPanel DockPanel.Dock="Left" Width="300" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0">
                             <TextBlock HorizontalAlignment="Left" Text="{Binding Label}" FontSize="20" FontWeight="Bold"/>
                             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Description}"/>
                         </StackPanel>
-                        <Image HorizontalAlignment="Right" Margin="20 0 0 0" Grid.Column="1" Source="{Binding ImagePath}"></Image>
-                    </Grid>
+                        <Image DockPanel.Dock="Right" Margin="10 0" Height="80" Source="{Binding ImagePath}"></Image>
+                    </DockPanel>
                 </Button>
             </DataTemplate>
         </ItemsControl.ItemTemplate>

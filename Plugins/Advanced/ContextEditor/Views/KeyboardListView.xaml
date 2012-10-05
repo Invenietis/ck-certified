@@ -23,20 +23,20 @@
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <Grid>
-                    <Grid Opacity="0.3"></Grid>
-                    <Button Style="{StaticResource NoFocusSelectableButtonStyle}"  HorizontalAlignment="Center" Margin="10" Width="400" Height="80" Command="{Binding DataContext.SelectionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="80"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="1" HorizontalAlignment="Right" Margin="20 0 0 0" Source="pack://application:,,,/ContextEditor;component/Resources/keyboard.png"></Image>
-                            <TextBlock Grid.Column="0" Text="{Binding Keyboard.Name}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left"/>
-                        </Grid>
-                    </Button>
-                    
-                </Grid>
+                <Button Style="{StaticResource NoFocusSelectableButtonStyle}" 
+                            HorizontalAlignment="Center" 
+                            Margin="10" Width="400" Height="80" 
+                            Command="{Binding DataContext.SelectionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
+                    <DockPanel LastChildFill="False">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Keyboard.Name}" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                       FontSize="20" FontWeight="Bold"  
+                                       Width="300" Margin="10 0 0 0"/>
+                        <Image DockPanel.Dock="Right" 
+                                   Source="pack://application:,,,/ContextEditor;component/Resources/Images/keyboard.png"
+                                   Margin="10 0" Height="80" ></Image>
+                    </DockPanel>
+                </Button>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>

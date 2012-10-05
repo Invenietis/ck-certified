@@ -14,6 +14,7 @@
              mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
         <ResourceDictionary>
             <StaticResource x:Key="OriginalConfigPageSelector" ResourceKey="CK.Config.DefaultPageSelector" />
@@ -69,9 +70,13 @@
             <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
-        <!--<ScrollViewer>-->
-        <StackPanel Orientation="Vertical"  Margin="10 5 10 20">
-                <StackPanel>
+        <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">-->
+            <Grid Margin="10" Width="800">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Width="500" HorizontalAlignment="Center">
                     <StackPanel.Visibility>
                         <Binding Path="ActiveItem.Title">
                             <Binding.Converter>
@@ -86,51 +91,25 @@
                     <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                     <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                 </StackPanel>
-                <DockPanel LastChildFill="True">
+                <DockPanel VerticalAlignment="Top" Grid.Row="1" LastChildFill="True" Margin="0 20 0 0">
+                    <!--Wizard page-->
                     <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
-                    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
-                    <Button x:Uid="wizard-manager-template-back-button" Height="50" Width="150" DockPanel.Dock="Left" Margin="3" Command="{Binding GoBackCommand}" Content="Back" VerticalAlignment="Bottom">
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <DataTrigger Value="False" Binding="{Binding ActiveItem.HideBack}">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                    <DataTrigger Value="True" Binding="{Binding ActiveItem.CanGoBack}">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                    <DataTrigger Value="False" Binding="{Binding ActiveItem.CanGoBack}">
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                    </DataTrigger>
-                                    <DataTrigger Value="True" Binding="{Binding ActiveItem.HideBack}">
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                    <Button Height="50" Width="150" DockPanel.Dock="Right" Margin="3" IsEnabled="{Binding ActiveItem.CanGoFurther}" VerticalAlignment="Bottom">
+                    <DockPanel Width="500" HorizontalAlignment="Center" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
+                        <!--Back button-->
+                        <Button x:Uid="wizard-manager-template-back-button" 
+                            Style="{StaticResource BackButtonStyle}" 
+                            DockPanel.Dock="Left" 
+                            Command="{Binding GoBackCommand}" 
+                            Content="Back"/>
+                        <!--Forward button-->
+                        <Button Style="{StaticResource ForwardButtonStyle}" DockPanel.Dock="Right" IsEnabled="{Binding ActiveItem.CanGoFurther}">
                             <Button.Visibility>
-                                <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert,Hidden"/>
+                                <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert"/>
                             </Button.Visibility>
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="True">
-                                            <Setter x:Uid="wizard-manager-template-forward-button-exit" Property="Content" Value="Exit" />
-                                            <Setter Property="Command" Value="{Binding CloseCommand}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="False">
-                                            <Setter x:Uid="wizard-manager-template-forward-button-next" Property="Content" Value="Next" />
-                                            <Setter Property="Command" Value="{Binding GoFurtherCommand}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
                         </Button>
                     </DockPanel>
                 </DockPanel>
-            </StackPanel>
+            </Grid>
         <!--</ScrollViewer>-->
     </DataTemplate>
 </ResourceDictionary>

@@ -34,15 +34,6 @@ namespace CK.WPF.Controls
     public class StringIsNullOrWhiteSpaceToBoolean : IValueConverter
     {
         /// <summary>
-        /// Internal arsed data structure.
-        /// </summary>
-        struct Parameter
-        {
-            public bool Invert;
-            public Visibility NotVisible;
-        }
-
-        /// <summary>
         /// Returns true if the string is null or white space
         /// </summary>
         /// <param name="value"></param>

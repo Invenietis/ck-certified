@@ -148,8 +148,7 @@
     <value>Modifier un autre clavier ou partez de celui-ci pour en créer un nouveau.</value>
   </data>
   <data name="HomeStepDescription" xml:space="preserve">
-    <value>Bienvenue dans l'assistant de création et de modification de claviers pour CiviKey.
-Cliquez sur l'un des trois boutons suivants, en fonction de l'action que vous voulez entreprendre :</value>
+    <value>Bienvenue dans l'assistant de création et de modification de claviers pour CiviKey. Cliquez sur l'un des trois boutons suivants, en fonction de l'action que vous voulez entreprendre.</value>
   </data>
   <data name="HomeStepTitle" xml:space="preserve">
     <value>Création et modification de claviers</value>
@@ -193,9 +192,7 @@ Etes-vos sûr de vouloir continuer ?</value>
     <value>Quitter</value>
   </data>
   <data name="SaveAsStepDesc" xml:space="preserve">
-    <value>Vous pouvez selectionner un clavier existant; cela l'écrasera pour y sauvegarder le clavier que vous venez de sauvegarder.
-Vous pouvez également saisir un nouveau nom pour créer un nouveau clavier ayant les touches définies à l'étape d'édition.
-Notez que dans tous les cas, le clavier à partir duquel vous avez fait des modifications reprendra son état avant modification.</value>
+    <value>Vous pouvez selectionner un clavier existant; cela l'écrasera pour y sauvegarder le clavier que vous venez de modifier. Vous pouvez également saisir un nouveau nom pour créer un nouveau clavier.</value>
   </data>
   <data name="SaveAsStepPopInDesc" xml:space="preserve">
     <value>Vous êtes sur le point de sauvegarder vos modifications sur le clavier {0}.

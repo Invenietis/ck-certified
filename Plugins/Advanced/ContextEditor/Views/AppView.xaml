@@ -20,7 +20,7 @@
                 <GradientStop Color="#FFC4D7EA" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/ContextEditor;component/Resources/keyboard-background.png" Opacity="0.1"/>
-        <ContentControl VerticalAlignment="Top" Content="{Binding ActiveItem}" Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/ContextEditor;component/Resources/Images/keyboard-background.png" Opacity="0.1"/>
+        <ContentControl Name="ContentControl" VerticalAlignment="Top" Content="{Binding ActiveItem}"/>
     </Grid>
 </UserControl>

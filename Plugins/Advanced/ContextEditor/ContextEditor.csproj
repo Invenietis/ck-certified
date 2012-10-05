@@ -250,6 +250,9 @@
     <Resource Include="Resources\Images\Information.png" />
     <Resource Include="Resources\Images\keyboard-background.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\keyboard.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

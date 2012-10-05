@@ -15,6 +15,7 @@ using CK.Plugin.Config;
 using CK.Storage;
 using CK.Windows.App;
 using CK.Windows.Config;
+using ContextEditor.Resources;
 using ContextEditor.ViewModels;
 
 namespace ContextEditor
@@ -74,9 +75,9 @@ namespace ContextEditor
             {   //If we are not already stopping, and we have a backup, apply it back.
                 if( KeyboardBackup != null )
                 {
-                    ModalViewModel mvm = new ModalViewModel( "Exiting the wizard", "You are about to close the keyboard edition wizard. Are you sure that you want to do that ? All modifications unsaved will be lost." );
-                    mvm.Buttons.Add( new ModalButton( mvm, "Yes", ModalResult.Yes ) );
-                    mvm.Buttons.Add( new ModalButton( mvm, "No", ModalResult.No ) );
+                    ModalViewModel mvm = new ModalViewModel( R.WizardExitPopInTitle, R.WizardExitPopInDesc );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.No, ModalResult.No ) );
                     CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
 
                     msgBox.ShowDialog();

@@ -242,6 +242,14 @@ Are you sure that you want to erase this existing keyboard ?</value>
   <data name="WindowTitle" xml:space="preserve">
     <value>Keyboard creation wizard</value>
   </data>
+  <data name="WizardExitPopInDesc" xml:space="preserve">
+    <value>You are about to close the keyboard edition wizard. 
+
+Are you sure that you want to do that ? All modifications unsaved will be lost.</value>
+  </data>
+  <data name="WizardExitPopInTitle" xml:space="preserve">
+    <value>Exiting the wizard</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>

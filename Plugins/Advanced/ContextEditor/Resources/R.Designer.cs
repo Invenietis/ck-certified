@@ -426,6 +426,26 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are about to close the keyboard edition wizard. 
+        ///
+        ///Are you sure that you want to do that ? All modifications unsaved will be lost..
+        /// </summary>
+        internal static string WizardExitPopInDesc {
+            get {
+                return ResourceManager.GetString("WizardExitPopInDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exiting the wizard.
+        /// </summary>
+        internal static string WizardExitPopInTitle {
+            get {
+                return ResourceManager.GetString("WizardExitPopInTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         internal static string Yes {

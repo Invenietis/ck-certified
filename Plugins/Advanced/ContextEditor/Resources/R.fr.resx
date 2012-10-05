@@ -240,6 +240,14 @@ Etes-vous sur de vouloir faire cela ?</value>
   <data name="WindowTitle" xml:space="preserve">
     <value>Assistant de création de claviers</value>
   </data>
+  <data name="WizardExitPopInDesc" xml:space="preserve">
+    <value>Vous êtes sur le point de quitter l'assistant de création de claviers.
+
+êtes-vous sur de vouloir faire cela ? Toute modifications non sauvegardée sera perdue.</value>
+  </data>
+  <data name="WizardExitPopInTitle" xml:space="preserve">
+    <value>Quitter l'assistant de création de claviers</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
   </data>

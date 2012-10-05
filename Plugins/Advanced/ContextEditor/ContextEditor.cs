@@ -13,6 +13,7 @@ using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Storage;
+using CK.Windows.App;
 using CK.Windows.Config;
 using ContextEditor.ViewModels;
 
@@ -22,7 +23,7 @@ namespace ContextEditor
         PublicName = PluginPublicName,
         Version = ContextEditor.PluginIdVersion,
         Categories = new string[] { "Visual", "Advanced" } )]
-    public class ContextEditor : IPlugin
+    public class ContextEditor : IPlugin, IKeyboardEditorRoot
     {
         const string PluginIdString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -38,7 +39,8 @@ namespace ContextEditor
 
         ContextEditorBootstrapper bootstrap;
         AppViewModel _appViewModel;
-        WindowManager w;
+        WindowManager _windowManager;
+        bool _stopping;
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -48,27 +50,64 @@ namespace ContextEditor
 
         public void Start()
         {
-            w = new WindowManager();
+            _windowManager = new WindowManager();
             _appViewModel = new AppViewModel( this );
             dynamic settings = new ExpandoObject();
 
             settings.SizeToContent = SizeToContent.WidthAndHeight;
             settings.Height = 800;
             settings.Width = 800;
-            w.ShowWindow( _appViewModel, null, settings );
+            _windowManager.ShowWindow( _appViewModel, null, settings );
+
+            Window win = _appViewModel.GetView( null ) as Window;
+            win.Closing += OnWindowClosing;
         }
 
         public void Stop()
         {
+            _stopping = true;
             Window win = _appViewModel.GetView( null ) as Window;
+
             if( win != null )
                 win.Close();
         }
 
+        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            //If we are already stopping. We do nothing.
+            if( !_stopping )
+            {   //If we are not already stopping, and we have a backup, apply it back.
+                if( KeyboardBackup != null )
+                {
+                    ModalViewModel mvm = new ModalViewModel( "Exiting the wizard", "You are about to close the keyboard edition wizard. Are you sure that you want to do that ? All modifications unsaved will be lost." );
+                    mvm.Buttons.Add( new ModalButton( mvm, "Yes", ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, "No", ModalResult.No ) );
+                    CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
+
+                    msgBox.ShowDialog();
+
+                    if( mvm.ModalResult != ModalResult.Yes )
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+
+                    //If the user really wants to quit the wizard, cancel all modifications
+                    CancelModifications();
+                }
+
+                //Stopping the plugin
+                Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
+                Context.PluginRunner.Apply();
+            }
+        }
+
         public void Teardown()
         {
+            _stopping = false;
             _appViewModel = null;
-            w = null;
+            _windowManager = null;
+            bootstrap = null;
         }
 
         /// <summary>
@@ -88,7 +127,7 @@ namespace ContextEditor
         /// </summary>
         /// <param name="keyboardToBackup">The keyboard ot backup</param>
         /// <returns>the path to the file in which the keyboard has been saved</returns>
-        public string BackupKeyboard(IKeyboard keyboardToBackup)
+        public string BackupKeyboard( IKeyboard keyboardToBackup )
         {
             string backupFileName = GenerateBackupFileName();
             IStructuredSerializable serializableModel = keyboardToBackup as IStructuredSerializable;
@@ -128,31 +167,29 @@ namespace ContextEditor
         public void CancelModifications()
         {
             if( KeyboardBackup == null || KeyboardBackup.BackedUpKeyboard == null ) throw new NullReferenceException( "Can't cancel modifications on a null KeyboardBackup" );
-
             IStructuredSerializable serializableKeyboard = KeyboardBackup.BackedUpKeyboard as IStructuredSerializable;
-            if( serializableKeyboard != null )
+            if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+
+
+            if( !String.IsNullOrWhiteSpace( KeyboardBackup.BackUpFilePath ) )
             {
-                if( !String.IsNullOrWhiteSpace( KeyboardBackup.BackUpFilePath ) )
+                using( FileStream str = new FileStream( KeyboardBackup.BackUpFilePath, FileMode.Open ) )
                 {
-                    using( FileStream str = new FileStream( KeyboardBackup.BackUpFilePath, FileMode.Open ) )
+                    using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
-                        using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
-                        {
-                            _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
-                            //Erasing all properties of the keyboard. We re-apply the backedup ones.
-                            serializableKeyboard.ReadContent( reader );
-                        }
+                        _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
+                        //Erasing all properties of the keyboard. We re-apply the backedup ones.
+                        serializableKeyboard.ReadContent( reader );
                     }
                 }
-                else ///if KeyboardBackupFilePath is null of whitespace, then we were creating a new keyboard. Reverting the chances means destroying the keyboard.
-                {
-                    KeyboardBackup.BackedUpKeyboard.Destroy();
-                }
-
-                //After cancelling modifications, we have no backup left.
-                EnsureBackupIsClean();
             }
-            else throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+            else ///if KeyboardBackupFilePath is null of whitespace, then we were creating a new keyboard. Reverting the chances means destroying the keyboard.
+            {
+                KeyboardBackup.BackedUpKeyboard.Destroy();
+            }
+
+            //After cancelling modifications, we have no backup left.
+            EnsureBackupIsClean();
         }
 
         /// <summary>
@@ -164,8 +201,9 @@ namespace ContextEditor
             if( KeyboardBackup != null && File.Exists( KeyboardBackup.BackUpFilePath ) )
             {
                 File.Delete( KeyboardBackup.BackUpFilePath );
-                KeyboardBackup = null;
             }
+
+            KeyboardBackup = null;
         }
     }
 

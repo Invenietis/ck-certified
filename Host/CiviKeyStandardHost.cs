@@ -50,7 +50,6 @@ namespace Host
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
 
-
         /// <summary>
         /// Gets the current version of the Civikey-Standard application.
         /// It is stored in the system configuration file and updated by the installer.

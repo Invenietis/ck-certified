@@ -153,6 +153,8 @@ namespace ContextEditor.ViewModels
                 _root.CancelModifications();
                 _stepAchieved = false;
             }
+
+            _root.EnsureBackupIsClean();
             return true;
         }
 
@@ -177,7 +179,5 @@ namespace ContextEditor.ViewModels
 
             return _model != null;
         }
-
-
     }
 }

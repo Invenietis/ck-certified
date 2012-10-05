@@ -166,7 +166,18 @@ namespace ContextEditor.ViewModels
         /// <returns>false if execution should be stopped, true otherwise</returns>
         private bool HandleNewName()
         {
-            if( _root.KeyboardBackup.IsNew ) //If saving a new keyboard under another unused name, just rename the new keyboard.
+            //Note : the different cases could have been squashed, yet they are not in order to keep the algorithm clean.
+
+            //The user typed the name of the keyboard it is editing. We have nothing to do.
+            if( _editedKeyboard.Name == NewName )
+            {
+                return true;
+            }
+            else if( _root.KeyboardBackup.Name == NewName ) //The user wants to save this new keyboard under the name from which it has started. So we just rename it, we don't cancel the modifications
+            {
+                _editedKeyboard.Rename( NewName );
+            }
+            else if( _root.KeyboardBackup.IsNew ) //If saving a new keyboard under another unused name, just rename the new keyboard.
                 _editedKeyboard.Rename( NewName );
             else //if we started from another keyboard, we must rename this modified one, and recreate another one, on which the backup will be applied
             {

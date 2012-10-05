@@ -105,6 +105,8 @@
   <ItemGroup>
     <Compile Include="ContextEditorBootstrapper.cs" />
     <Compile Include="ContextEditor.cs" />
+    <Compile Include="IKeyboardBackupAware.cs" />
+    <Compile Include="IKeyboardEditorRoot.cs" />
     <Compile Include="KeyboardBackup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\R.Designer.cs">

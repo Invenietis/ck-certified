@@ -91,7 +91,7 @@
                     <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                     <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                 </StackPanel>
-                <DockPanel VerticalAlignment="Top" Grid.Row="1" LastChildFill="True" Margin="0 20 0 0">
+                <DockPanel VerticalAlignment="Top" Grid.Row="1" LastChildFill="True" Margin="0 20">
                     <!--Wizard page-->
                     <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
                     <DockPanel Width="500" HorizontalAlignment="Center" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">

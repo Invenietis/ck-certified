@@ -69,6 +69,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accessibility\IKeyboardDriver.cs" />
     <Compile Include="Accessibility\IHighlighterService.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
     <Compile Include="Advanced\Commands\IMonitorOnceCommandHandlerService.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Advanced\Commands\IModeCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\ISendKeyCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\ICommandManagerService.cs" />
+    <Compile Include="Advanced\ITriggerService.cs" />
     <Compile Include="Advanced\ILogService.cs" />
     <Compile Include="Accessibility\ISkinService.cs" />
     <Compile Include="Advanced\IUpdateChecker.cs" />

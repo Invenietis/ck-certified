@@ -29,7 +29,7 @@ namespace BasicScroll
         DefaultScrollingStrategy _scrollingStrategy;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
+        public IService<ITriggerService> ExternalInput { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -44,13 +44,9 @@ namespace BasicScroll
 
         public void Start()
         {
-            PointerDeviceDriver.Service.PointerButtonDown += ( o, e ) =>
+            ExternalInput.Service.Triggered += ( o, e ) =>
             {
-                if( e.ButtonInfo == ButtonInfo.XButton )
-                {
-                    _scrollingStrategy.OnExternalEvent();
-                    e.Cancel = true;
-                }
+                _scrollingStrategy.OnExternalEvent();
             };
         }
 

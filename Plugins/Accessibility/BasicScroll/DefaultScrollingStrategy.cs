@@ -9,6 +9,13 @@ using HighlightModel;
 
 namespace BasicScroll
 {
+    enum ActionType
+    {
+        Normal = 0,
+        EnterChild = 1,
+        UpToParent = 2
+    }
+
     internal class DefaultScrollingStrategy
     {
         DispatcherTimer _timer;
@@ -19,7 +26,7 @@ namespace BasicScroll
         Stack<IHighlightableElement> _currentElementParents = null;
         IHighlightableElement _currentElement = null;
 
-        bool _enterChildren = false;
+        ActionType _actionType = ActionType.Normal;
 
         internal event EventHandler<HighlightEventArgs> BeginHighlight;
 
@@ -46,9 +53,9 @@ namespace BasicScroll
             if( _currentElement != null ) FireEndHighlight();
             
             // highlight the next element
-            _currentElement = GetNextElement(_enterChildren);
+            _currentElement = GetNextElement(_actionType);
             FireBeginHighlight();
-            _enterChildren = false;
+            _actionType = ActionType.Normal;
         }
 
         internal void Start()
@@ -70,21 +77,22 @@ namespace BasicScroll
 
         internal void OnExternalEvent()
         {
-            if( _currentElement.Children.Count > 0 ) _enterChildren = true;
+            if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
             else
             {
                 SelectElement( this, new HighlightEventArgs( _currentElement ) );
+                _actionType = ActionType.UpToParent;
             }
         }
 
-        IHighlightableElement GetNextElement(bool enterchild = false, bool moveToParent = false )
+        IHighlightableElement GetNextElement( ActionType actionType )
         {
             IHighlightableElement nextElement = null;
 
-            if( moveToParent )
+            if( actionType == ActionType.UpToParent )
             {
                 // if there is no parent, go to normal next element
-                if( _currentElementParents.Count == 0 ) return GetNextElement();
+                if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
                 IHighlightableElement parent = _currentElementParents.Pop();
                 IReadOnlyList<IHighlightableElement> parentSibblings = null;
@@ -92,7 +100,7 @@ namespace BasicScroll
                 else parentSibblings = RegisteredElements;
 
                 _currentId = parentSibblings.IndexOf( parent );
-                nextElement = parent; 
+                nextElement = parent;
             }
             else
             {
@@ -102,11 +110,11 @@ namespace BasicScroll
                 else elements = RegisteredElements;
 
                 // if it's the first iteration, or if we just have to go to the next sibbling
-                if( _currentId < 0 || !enterchild )
+                if( _currentId < 0 || actionType != ActionType.EnterChild )
                 {
                     if( _currentId < elements.Count - 1 ) _currentId++;
                     // if we are at the end of this elements set and if there is a parent in the stack, move to parent
-                    else if( _currentElementParents.Count > 0 ) return GetNextElement( false, true );
+                    else if( _currentElementParents.Count > 0 ) return GetNextElement( ActionType.UpToParent );
                     // otherwise we go back to the first element
                     else _currentId = 0;
 
@@ -115,7 +123,7 @@ namespace BasicScroll
                 else
                 {
                     // if the current element does not have childs ... go to the normal next element
-                    if( elements[_currentId].Children.Count == 0 ) return GetNextElement();
+                    if( elements[_currentId].Children.Count == 0 ) return GetNextElement(ActionType.Normal);
                     // else we just push the element as a parent and set the the first child as the current element
                     _currentElementParents.Push( elements[_currentId] );
                     nextElement = elements[_currentId].Children[0];
@@ -126,9 +134,9 @@ namespace BasicScroll
             switch( nextElement.Skip )
             {
                 case SkippingBehavior.Skip:
-                    return GetNextElement();
+                    return GetNextElement(ActionType.Normal);
                 case SkippingBehavior.EnterChildren:
-                    return GetNextElement( true );
+                    return GetNextElement( ActionType.EnterChild );
                 default:
                     return nextElement;
             }

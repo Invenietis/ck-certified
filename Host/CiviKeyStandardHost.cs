@@ -32,14 +32,10 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
 using Host.Services.Helper;
-using Host.Resources;
 using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
-using System.Linq;
 using System.ComponentModel;
-using CK.Plugin.Config;
-using System.Configuration;
 
 namespace Host
 {
@@ -53,7 +49,6 @@ namespace Host
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
-
 
         /// <summary>
         /// Gets the current version of the Civikey-Standard application.

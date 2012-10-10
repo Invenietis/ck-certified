@@ -35,10 +35,11 @@ namespace Host.VM
 {
     public class SkinViewModel : ConfigPage
     {
-        AppViewModel _app;
-        IPluginProxy _skinPlugin;
-        Guid _skinId;
         IObjectPluginConfig _config;
+        IPluginProxy _skinPlugin;
+        Guid _keyboardEditorId;
+        AppViewModel _app;
+        Guid _skinId;
 
         public SkinViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -109,16 +110,22 @@ namespace Host.VM
         protected override void OnInitialize()
         {
             _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" );
             InitializePlugin();
+            
+            var skinGroup = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig, this, h => h.ActivateSkin, this );
 
-            var g = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig, this, h => h.ActivateSkin, this );
-
-            g.AddProperty( R.SkinAutohideFeature, this, h => EnableAutoHide );
+            skinGroup.AddProperty( R.SkinAutohideFeature, this, h => EnableAutoHide );
 
             ConfigItemMillisecondProperty p = new ConfigItemMillisecondProperty( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, ( h ) => h.AutoHideTimeOut ) );
             p.DisplayName = R.SkinAutohideTimeout;
-            g.Items.Add( p );
+            
+            skinGroup.Items.Add( p );
 
+            var editionGroup = this.AddGroup();
+            var keyboardEditorStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _keyboardEditorId ) { DisplayName = R.SkinEditorSectionName };
+            editionGroup.Items.Add( keyboardEditorStarter );
+            
             base.OnInitialize();
         }
     }

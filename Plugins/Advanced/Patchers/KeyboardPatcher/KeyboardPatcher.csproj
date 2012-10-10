@@ -37,8 +37,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Context">
-      <HintPath>..\..\..\..\packages\CK.Context.2.8.44\lib\net40\CK.Context.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\packages\CK.Context.2.8.46-develop\lib\net40\CK.Context.dll</HintPath>
     </Reference>
     <Reference Include="CK.Core">
       <HintPath>..\..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
@@ -65,8 +64,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.SharedDic">
-      <HintPath>..\..\..\..\packages\CK.SharedDic.2.8.44\lib\net40\CK.SharedDic.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\packages\CK.SharedDic.2.8.46-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage">
       <HintPath>..\..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
@@ -76,10 +74,8 @@
       <HintPath>..\..\..\..\packages\CK.Windows.App.2.8.44\lib\net40\CK.Windows.App.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\CK.Windows.Core.2.8.45\lib\net40\CK.Windows.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Windows.Core">
+      <HintPath>..\..\..\..\packages\CK.Windows.Core.2.8.46-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop">
       <HintPath>..\..\..\..\packages\CK.Windows.Interop.2.8.44\lib\net40\CK.Windows.Interop.dll</HintPath>

@@ -166,7 +166,7 @@ namespace CK.Keyboard
             XmlReader r = sr.Xml;
             Debug.Assert( r.Name == "Keyboard" );
 
-            _name = r.GetAttribute( "Name" );
+            Rename( r.GetAttribute( "Name" ) );
             r.ReadStartElement( "Keyboard" );
 
             sr.ReadInlineObjectStructuredElement( "RequirementLayer", _reqLayer );

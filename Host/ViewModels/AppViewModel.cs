@@ -34,10 +34,6 @@ using System.Windows.Input;
 using System.Diagnostics;
 using Host.Resources;
 using CK.Windows.App;
-using System.Threading;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
@@ -58,7 +54,6 @@ namespace Host
 
             IsVisible = true;
             IsMinimized = true;
-
 
             CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );

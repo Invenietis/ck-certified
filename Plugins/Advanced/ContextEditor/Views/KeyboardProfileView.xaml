@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="ContextEditor.s.KeyboardProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             KeyboardNavigation.IsTabStop="False"
+             d:DesignHeight="500" d:DesignWidth="500">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Margin="0 20" KeyboardNavigation.IsTabStop="False" >
+        <DockPanel Width="450" Margin="10">
+            <TextBlock x:Uid="keyboard-profile-keyboard-name-textblock" VerticalAlignment="Center" Width="200" DockPanel.Dock="Left" FontWeight="Bold" FontSize="20">Keyboard name :</TextBlock>
+            <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Name}" Style="{StaticResource RoundedTextBox}"/>
+        </DockPanel>
+        <DockPanel Width="450" Margin="10 30 10 10">
+            <TextBlock x:Uid="keyboard-profile-keyboard-width-textblock" VerticalAlignment="Center" Width="200" DockPanel.Dock="Left" FontWeight="Bold" FontSize="20">Width :</TextBlock>
+            <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Width}" Style="{StaticResource RoundedTextBox}"/>
+        </DockPanel>
+        <DockPanel Width="450" Margin="10">
+            <TextBlock x:Uid="keyboard-profile-keyboard-height-textblock" VerticalAlignment="Center" Width="200" DockPanel.Dock="Left" FontWeight="Bold" FontSize="20">Height :</TextBlock>
+            <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Height}" Style="{StaticResource RoundedTextBox}">
+            </TextBox>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

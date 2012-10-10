@@ -529,6 +529,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to the skin editor.
+        /// </summary>
+        public static string SkinEditorSectionName {
+            get {
+                return ResourceManager.GetString("SkinEditorSectionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on screen keyboard.
         /// </summary>
         public static string SkinSectionName {

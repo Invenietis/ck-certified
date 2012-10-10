@@ -32,7 +32,6 @@ namespace Host
 {
     internal class AppBootstrapper : Bootstrapper<AppViewModel>
     {
-
         public AppBootstrapper()
             :base()
         {

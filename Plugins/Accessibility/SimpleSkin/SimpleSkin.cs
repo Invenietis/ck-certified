@@ -52,10 +52,16 @@ namespace SimpleSkin
         const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
+        IHostManipulator _hostManipulator;
+        VMContextSimple _ctxVm;
+        SkinWindow _skinWindow;
+        DispatcherTimer _timer;
+        MiniView _miniView;
+        bool _forceClose;
         bool _viewHidden;
-
-        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        //public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
+        bool _isStarted;
+        bool _autohide;
+        int _timeout;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> Highlighter { get; set; }
@@ -65,24 +71,19 @@ namespace SimpleSkin
 
         [RequiredService]
         public IContext Context { get; set; }
-
-        VMContextSimple _ctxVm;
-        SkinWindow _skinWindow;
-        MiniView _miniView;
-        bool _isStarted;
-        bool _forceClose;
-
-        // auto hide
-        bool _autohide;
-        int _timeout;
-        DispatcherTimer _timer;
-
+            
         [RequiredService]
-        public INotificationService Notification { get; set; }
+        public INotificationService Notification { get; set; }     
 
-        IHostManipulator _hostManipulator;
+        //Since the IHotsManipulator implementaiton is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
+        /// <summary>
+        /// The HostManipulator, enables minimizing the host.
+        /// </summary>
         public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
 
+        /// <summary>
+        /// Acessor to the CK config object.
+        /// </summary>
         public IPluginConfigAccessor Config { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
@@ -90,7 +91,15 @@ namespace SimpleSkin
             return true;
         }
 
-        private string PlacementString { get { return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement"; } }
+        private string PlacementString 
+        { 
+            get 
+            {
+                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null)
+                    return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
+                return ""; 
+            } 
+        }
 
         public void Start()
         {

@@ -8,6 +8,7 @@
 
     <Style TargetType="{x:Type Window}">
         <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        <Setter Property="Topmost" Value="False"/>
     </Style>
     
     <!--<LinearGradientBrush x:Key="ButtonOverBrush" StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">

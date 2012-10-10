@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using CK.Context;
 using CK.Core;
@@ -53,7 +54,7 @@ namespace ContextEditor
         {
             _windowManager = new WindowManager();
             _appViewModel = new AppViewModel( this );
-            _windowManager.ShowWindow( _appViewModel );
+            _windowManager.ShowWindow( _appViewModel, null );
 
             _mainWindow = _appViewModel.GetView( null ) as Window;
             _mainWindow.Closing += OnWindowClosing;
@@ -91,9 +92,16 @@ namespace ContextEditor
                     CancelModifications();
                 }
 
+                e.Cancel = true;
+
                 //Stopping the plugin
-                Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
-                Context.PluginRunner.Apply();
+                System.Action stop = () =>
+                {
+                    Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
+                    Context.PluginRunner.Apply();
+                };
+                e.Cancel = true;
+                Dispatcher.CurrentDispatcher.BeginInvoke( stop, null );
             }
 
             if( _mainWindow != null )

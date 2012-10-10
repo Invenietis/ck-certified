@@ -23,6 +23,7 @@
 
 using System.Collections.ObjectModel;
 using CK.Keyboard.Model;
+using CK.Core;
 
 namespace CK.WPF.ViewModel
 {
@@ -33,15 +34,17 @@ namespace CK.WPF.ViewModel
         where TK : VMKey<TC, TB, TZ, TK>
     {
         IZone _zone;
-        ObservableCollection<TK> _keys;
+        ObservableSortedArrayKeyList<TK,int> _keys;
 
-        public ObservableCollection<TK> Keys { get { return _keys; } }
+        public ObservableSortedArrayKeyList<TK, int> Keys { get { return _keys; } }
+
+        public string Name { get { return _zone.Name; } }
 
         public VMZone( TC context, IZone zone )
             : base( context )
         {
             _zone = zone;
-            _keys = new ObservableCollection<TK>();
+            _keys = new ObservableSortedArrayKeyList<TK, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
             {

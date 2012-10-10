@@ -175,6 +175,10 @@
       <Name>CommonServices</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Editor\EditorView.xaml">

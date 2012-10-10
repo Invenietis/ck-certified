@@ -14,6 +14,7 @@ SimpleSkin.g.en-US.resources:editorview.baml	hover-bg-color:System.Windows.Contr
 SimpleSkin.g.en-US.resources:editorview.baml	hover-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 SimpleSkin.g.en-US.resources:editorview.baml	pressed-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche pressée
 SimpleSkin.g.en-US.resources:editorview.baml	pressed-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+SimpleSkin.g.en-US.resources:editorview.baml	highlight-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche en surbrillance
 SimpleSkin.g.en-US.resources:editorview.baml	font-size:System.Windows.Controls.TextBlock.$Content	Text	True	True		Taille de la police :
 SimpleSkin.g.en-US.resources:editorview.baml	font-size:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 SimpleSkin.g.en-US.resources:editorview.baml	font-size:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0

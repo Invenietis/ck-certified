@@ -36,6 +36,7 @@ using SimpleSkin.ViewModels;
 using CK.Windows;
 using CK.Windows.Helpers;
 using System.Linq;
+using CommonServices.Accessibility;
 
 namespace SimpleSkin
 {
@@ -55,6 +56,9 @@ namespace SimpleSkin
 
         //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         //public IService<ISendKeyCommandHandlerService> SendStringService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IHighlighterService> Highlighter { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -98,6 +102,15 @@ namespace SimpleSkin
                 _ctxVm = new VMContextSimple( Context, KeyboardContext.Service );
                 _skinWindow = new SkinWindow( _ctxVm );
 
+                Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
+                if( Highlighter.Status == RunningStatus.Started )
+                {
+                    Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+                    Highlighter.Service.BeginHighlight += OnBeginHighlight;
+                    Highlighter.Service.EndHighlight += OnEndHighlight;
+                    Highlighter.Service.SelectElement += OnSelectElement;
+                }
+
                 int defaultWidth = _ctxVm.Keyboard.W;
                 int defaultHeight = _ctxVm.Keyboard.H;
 
@@ -124,6 +137,49 @@ namespace SimpleSkin
                 Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
                     "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
             }
+        }
+
+        void OnSelectElement( object sender, HighlightEventArgs e )
+        {
+            if( e.Element is VMKeySimple ) {
+                VMKeySimple key = (VMKeySimple)e.Element;
+                if( key.KeyDownCommand.CanExecute( null ) )
+                {
+                    key.KeyDownCommand.Execute( null );
+                    if( key.KeyUpCommand.CanExecute( null ) )
+                    {
+                        key.KeyUpCommand.Execute( null );
+                    }
+                }
+            }
+        }
+
+        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        {
+            VMZoneSimple vm = e.Element as VMZoneSimple;
+            if( vm != null ) vm.IsHighlighting = true;
+            else
+            {
+                VMKeySimple vmk = e.Element as VMKeySimple;
+                if( vmk != null ) vmk.IsHighlighting = true;
+            }
+
+        }
+
+        void OnEndHighlight( object sender, HighlightEventArgs e )
+        {
+            VMZoneSimple vm = e.Element as VMZoneSimple;
+            if( vm != null ) vm.IsHighlighting = false;
+            else
+            {
+                VMKeySimple vmk = e.Element as VMKeySimple;
+                if( vmk != null ) vmk.IsHighlighting = false;
+            }
+        }
+
+        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
         }
 
         private void RegisterEvents()
@@ -236,6 +292,7 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
+                Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();

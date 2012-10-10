@@ -30,10 +30,12 @@ using CK.Keyboard.Model;
 using System.Windows.Controls;
 using System.Windows;
 using CK.Plugin.Config;
+using HighlightModel;
+using CK.Core;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         public VMKeySimple( VMContextSimple ctx, IKey k ) 
             : base( ctx, k )
@@ -44,6 +46,7 @@ namespace SimpleSkin.ViewModels
             {
                 OnPropertyChanged( "Background" );
                 OnPropertyChanged( "HoverBackground" );
+                OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "LetterColor" );
                 OnPropertyChanged( "FontStyle" );
@@ -62,6 +65,7 @@ namespace SimpleSkin.ViewModels
             {
                 OnPropertyChanged( "Background" );
                 OnPropertyChanged( "HoverBackground" );
+                OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "LetterColor" );
                 OnPropertyChanged( "FontStyle" );
@@ -89,10 +93,15 @@ namespace SimpleSkin.ViewModels
         {
             get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
         }
-
+        
         public Color HoverBackground
         {
             get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+        }
+
+        public Color HighlightBackground
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
         }
 
         public Color PressedBackground
@@ -134,5 +143,33 @@ namespace SimpleSkin.ViewModels
         {
             get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
         }
+
+        bool _isHighlighting;
+        public bool IsHighlighting
+        {
+            get { return _isHighlighting; }
+            set
+            {
+                if( value != _isHighlighting )
+                {
+                    _isHighlighting = value;
+                    OnPropertyChanged( "IsHighlighting" );
+                }
+            }
+        }
+
+        #region IHighlightableElement Members
+
+        public IReadOnlyList<IHighlightableElement> Children
+        {
+            get { return ReadOnlyListEmpty<IHighlightableElement>.Empty; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return Visible != Visibility.Visible ? SkippingBehavior.Skip : SkippingBehavior.None; }
+        }
+
+        #endregion
     }
 }

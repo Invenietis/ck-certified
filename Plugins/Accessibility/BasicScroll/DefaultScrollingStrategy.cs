@@ -144,12 +144,12 @@ namespace BasicScroll
 
         void FireBeginHighlight()
         {
-            BeginHighlight( this, new HighlightEventArgs( _currentElement ) );
+            if( BeginHighlight != null ) BeginHighlight( this, new HighlightEventArgs( _currentElement ) );
         }
 
         void FireEndHighlight()
         {
-            EndHighlight( this, new HighlightEventArgs( _currentElement ) );
+            if( EndHighlight != null ) EndHighlight( this, new HighlightEventArgs( _currentElement ) );
             _currentElement = null;
         }
     }

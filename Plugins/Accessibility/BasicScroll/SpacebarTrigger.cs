@@ -47,7 +47,7 @@ namespace BasicScroll
             if( !_wasASpace && e.KeyCode == 0x20 ) // on spacebar pressed
             {
                 _wasASpace = true;
-                Triggered( this, EventArgs.Empty );
+                if( Triggered != null ) Triggered( this, EventArgs.Empty );
                 e.Cancel = true;
                 _wasASpace = false;
             }

@@ -247,6 +247,16 @@
   <ItemGroup>
     <Resource Include="Images\EditorLogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\arrows\bottom.png" />
+    <Resource Include="Images\arrows\left-bottom.png" />
+    <Resource Include="Images\arrows\left.png" />
+    <Resource Include="Images\arrows\right-bottom.png" />
+    <Resource Include="Images\arrows\right.png" />
+    <Resource Include="Images\arrows\top-left.png" />
+    <Resource Include="Images\arrows\top-right.png" />
+    <Resource Include="Images\arrows\top.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

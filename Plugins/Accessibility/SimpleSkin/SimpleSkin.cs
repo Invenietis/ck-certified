@@ -204,13 +204,14 @@ namespace SimpleSkin
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
             if( _skinWindow != null ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+            Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
         }
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
+            Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
             if( _skinWindow != null )
             {
-
                 if( Config.User[PlacementString] != null )
                 {
                     WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];

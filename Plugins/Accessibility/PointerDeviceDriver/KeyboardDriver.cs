@@ -27,6 +27,8 @@ using System.Threading;
 using CommonServices;
 using CK.Plugin;
 using System.Windows;
+using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace PointerDeviceDriver
 {
@@ -42,6 +44,7 @@ namespace PointerDeviceDriver
 
         WindowsHook _windowsHook;
         SynchronizationContext _syncCtx;
+        HashSet<int> _cancellableKeys;
 
         public event EventHandler<KeyboardDriverEventArg> KeyDown;
         
@@ -57,8 +60,19 @@ namespace PointerDeviceDriver
             }
         }
 
+        public void RegisterCancellableKey( int keyCode )
+        {
+            _cancellableKeys.Add( keyCode );
+        }
+
+        public void UnregisterCancellableKey( int keyCode )
+        {
+            _cancellableKeys.Remove( keyCode );
+        }
+
         public bool Setup( IPluginSetupInfo info )
         {
+            _cancellableKeys = new HashSet<int>();
             // We look if we can set the Low Level keyboard Hook 
             string message;
             if( !WindowsHook.CanSetWindowsHook( HookType.WH_KEYBOARD_LL, out message ) )
@@ -102,11 +116,19 @@ namespace PointerDeviceDriver
             if( e.Code >= 0 && e.wParam == (IntPtr)WM_KEYDOWN )
             {
                 int vkCode = Marshal.ReadInt32( e.lParam );
-
-                KeyboardDriverEventArg eventArgs = new KeyboardDriverEventArg( vkCode );
-                if( KeyDown != null ) KeyDown( this, eventArgs );
-                e.Cancel = eventArgs.Cancel;    
+                if( _cancellableKeys.Contains( vkCode ) )
+                {
+                    e.Cancel = true;
+                    Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int>)FireEvent, vkCode );
+                }
             }
         }
+
+        void FireEvent( int vkCode )
+        {
+            KeyboardDriverEventArg eventArgs = new KeyboardDriverEventArg( vkCode );
+            if( KeyDown != null ) KeyDown( this, eventArgs );
+        }
+
     }
 }

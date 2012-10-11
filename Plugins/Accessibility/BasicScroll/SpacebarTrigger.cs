@@ -40,6 +40,7 @@ namespace BasicScroll
         public void Start()
         {
             KeyboardDriver.Service.KeyDown += OnKeyDown;
+            KeyboardDriver.Service.RegisterCancellableKey( 0x20 );
         }
 
         void OnKeyDown( object sender, KeyboardDriverEventArg e )
@@ -48,7 +49,6 @@ namespace BasicScroll
             {
                 _wasASpace = true;
                 if( Triggered != null ) Triggered( this, EventArgs.Empty );
-                e.Cancel = true;
                 _wasASpace = false;
             }
         }
@@ -56,6 +56,7 @@ namespace BasicScroll
         public void Stop()
         {
             KeyboardDriver.Service.KeyDown -= OnKeyDown;
+            KeyboardDriver.Service.UnregisterCancellableKey( 0x20 );
         }
 
         public void Teardown()

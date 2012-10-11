@@ -33,6 +33,14 @@ namespace CommonServices
         /// </summary>
         event EventHandler<KeyboardDriverEventArg> KeyDown;
 
+        /// <summary>
+        /// The given keycode will be automatically cancelled by the hook.
+        /// </summary>
+        /// <param name="keyCode"></param>
+        void RegisterCancellableKey( int keyCode );
+
+        void UnregisterCancellableKey( int keyCode );
+
     }
 
     public class KeyboardDriverEventArg : EventArgs
@@ -43,7 +51,5 @@ namespace CommonServices
         }
 
         public int KeyCode { get; private set; }
-
-        public bool Cancel { get; set; }
     }
 }

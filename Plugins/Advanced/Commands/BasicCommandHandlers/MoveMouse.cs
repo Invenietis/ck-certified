@@ -30,20 +30,75 @@ using CK.Context;
 
 namespace BasicCommandHandlers
 {
-    [Plugin("{0628E093-A9C6-4EC6-83C8-F684352B5B37}", Categories = new string[] { "Advanced" },
-        PublicName = "MoveMouseCommandHandler",
+    [Plugin( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}", Categories = new string[] { "Advanced" },
+        PublicName = "Move mouse command handler",
         Description="Allows the system to execute simple actions for specific commands",
         Version = "1.0.0")]
     public class MoveMouseCommandHandler : BasicCommandHandler
     {
         const string PROTOCOL = "movemouse:";
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IPointerDeviceDriver> PointerDriver { get; set; }
+
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( e.Command.StartsWith( PROTOCOL ) )
             {
-                Console.WriteLine( e.Command );
+                string[] parameters = e.Command.Substring( PROTOCOL.Length ).Trim().Split( ',' );
+                string direction = parameters[0];
+                int step = int.Parse( parameters[1] );
+
+                MoveMouse( direction, step );
             }
+        }
+
+        void MoveMouse( string direction, int step )
+        {
+            switch( direction )
+            {
+                case "U":
+                    PointerDriver.Service.MovePointer(
+                        PointerDriver.Service.CurrentPointerXLocation,
+                        PointerDriver.Service.CurrentPointerYLocation - step );
+                    return;
+                case "R":
+                    PointerDriver.Service.MovePointer(
+                        PointerDriver.Service.CurrentPointerXLocation + step,
+                        PointerDriver.Service.CurrentPointerYLocation );
+                    return;
+                case "B":
+                    PointerDriver.Service.MovePointer(
+                        PointerDriver.Service.CurrentPointerXLocation,
+                        PointerDriver.Service.CurrentPointerYLocation + step );
+                    return;
+                case "L":
+                    PointerDriver.Service.MovePointer(
+                        PointerDriver.Service.CurrentPointerXLocation - step,
+                        PointerDriver.Service.CurrentPointerYLocation );
+                    return;
+            }
+
+            double angle = 0.0;
+            switch( direction )
+            {
+                case "UL":
+                    angle = -((3 * Math.PI) / 4);
+                    break;
+                case "BL":
+                    angle = (3 * Math.PI) / 4;
+                    break;
+                case "BR":
+                    angle = Math.PI / 4;
+                    break;
+                case "UR":
+                    angle = -(Math.PI / 4);
+                    break;
+            }
+
+            int x = (int)(PointerDriver.Service.CurrentPointerXLocation + (step * Math.Cos( angle )));
+            int y = (int)(PointerDriver.Service.CurrentPointerYLocation + (step * Math.Sin( angle )));
+            PointerDriver.Service.MovePointer( x, y );
         }
     }
 }

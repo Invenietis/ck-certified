@@ -11,7 +11,10 @@
           <Keyboard Name="Mouse Keyboard" IsCurrent="1">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
-              <ServiceRequirements></ServiceRequirements>
+              <ServiceRequirements>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+              </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="SuperRapide">
               <Mode>Mini</Mode>
@@ -545,9 +548,6 @@
                       <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">319,115</Size>
                     </data>
                     <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
-                    <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFADFF2F</Color>
-                    </data>
                   </p>
                 </PluginsData>
               </Layout>

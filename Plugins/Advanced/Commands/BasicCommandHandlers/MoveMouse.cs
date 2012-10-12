@@ -34,7 +34,7 @@ namespace BasicCommandHandlers
         PublicName = "Move mouse command handler",
         Description="Allows the system to execute simple actions for specific commands",
         Version = "1.0.0")]
-    public class MoveMouseCommandHandler : BasicCommandHandler
+    public class MoveMouseCommandHandler : BasicCommandHandler, IMoveMouseCommandHandlerService
     {
         const string PROTOCOL = "movemouse:";
 
@@ -53,7 +53,7 @@ namespace BasicCommandHandlers
             }
         }
 
-        void MoveMouse( string direction, int step )
+        public void MoveMouse( string direction, int step )
         {
             switch( direction )
             {

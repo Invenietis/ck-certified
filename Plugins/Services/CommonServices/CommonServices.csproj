@@ -72,6 +72,7 @@
     <Compile Include="Accessibility\IKeyboardDriver.cs" />
     <Compile Include="Accessibility\IHighlighterService.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
+    <Compile Include="Advanced\Commands\IMoveMouseCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IMonitorOnceCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IDynCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IModeCommandHandlerService.cs" />

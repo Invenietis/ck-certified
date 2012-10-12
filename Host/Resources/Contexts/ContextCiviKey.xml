@@ -14,6 +14,7 @@
               <ServiceRequirements>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="SuperRapide">
@@ -324,6 +325,46 @@
                   </Key>
                 </Keys>
               </Zone>
+              <Zone Name="Clics">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true">
+                        <KeyUp Label="Clic"/>
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>clics:simple</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true">
+                        <KeyUp Label="Double clic"/>
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>clics:double</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true">
+                        <KeyUp Label="Clic droit"/>
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>clics:right</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
               <Zone Name="Modes">
                 <Keys>
                   <Key>
@@ -378,7 +419,7 @@
               </Zone>
             </Zones>
             <Layouts>
-              <Layout IsCurrent="true" Name="" Width="435" Height="320">
+              <Layout IsCurrent="true" Name="" Width="435" Height="385">
                 <RequirementLayer Name="Layout">
                   <PluginRequirements></PluginRequirements>
                   <ServiceRequirements></ServiceRequirements>
@@ -483,6 +524,22 @@
                               </data>
                             </p>
                           </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Clics">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="5" Y="330" W="100" H="50" Visible="true">
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="110" Y="330" W="100" H="50" Visible="true">
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="2">
+                        <LayoutKeyMode Mode="" X="215" Y="330" W="100" H="50" Visible="true">
                         </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>

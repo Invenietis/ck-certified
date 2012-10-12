@@ -32,7 +32,6 @@ namespace BasicCommandHandlers
 {
     [Plugin( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}", Categories = new string[] { "Advanced" },
         PublicName = "Move mouse command handler",
-        Description="Allows the system to execute simple actions for specific commands",
         Version = "1.0.0")]
     public class MoveMouseCommandHandler : BasicCommandHandler, IMoveMouseCommandHandlerService
     {

@@ -13,7 +13,8 @@ namespace BasicScroll
     {
         Normal = 0,
         EnterChild = 1,
-        UpToParent = 2
+        UpToParent = 2,
+        StayOnTheSame = 3
     }
 
     internal class DefaultScrollingStrategy
@@ -55,7 +56,6 @@ namespace BasicScroll
             // highlight the next element
             _currentElement = GetNextElement(_actionType);
             FireBeginHighlight();
-            _actionType = ActionType.Normal;
         }
 
         internal void Start()
@@ -81,12 +81,15 @@ namespace BasicScroll
             else
             {
                 SelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.UpToParent;
+                _actionType = ActionType.StayOnTheSame;
             }
         }
 
         IHighlightableElement GetNextElement( ActionType actionType )
         {
+            // reset the action type to normal
+            _actionType = ActionType.Normal;
+
             IHighlightableElement nextElement = null;
 
             if( actionType == ActionType.UpToParent )
@@ -109,9 +112,15 @@ namespace BasicScroll
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 
-                // if it's the first iteration, or if we just have to go to the next sibbling
-                if( _currentId < 0 || actionType != ActionType.EnterChild )
+                if( actionType == ActionType.StayOnTheSame )
                 {
+                    nextElement = elements[_currentId];
+                    _actionType = ActionType.UpToParent;
+                }
+                else if( _currentId < 0 || actionType != ActionType.EnterChild )
+                {
+                    // if it's the first iteration, or if we just have to go to the next sibbling
+
                     if( _currentId < elements.Count - 1 ) _currentId++;
                     // if we are at the end of this elements set and if there is a parent in the stack, move to parent
                     else if( _currentElementParents.Count > 0 ) return GetNextElement( ActionType.UpToParent );
@@ -123,7 +132,7 @@ namespace BasicScroll
                 else
                 {
                     // if the current element does not have childs ... go to the normal next element
-                    if( elements[_currentId].Children.Count == 0 ) return GetNextElement(ActionType.Normal);
+                    if( elements[_currentId].Children.Count == 0 ) return GetNextElement( ActionType.Normal );
                     // else we just push the element as a parent and set the the first child as the current element
                     _currentElementParents.Push( elements[_currentId] );
                     nextElement = elements[_currentId].Children[0];
@@ -134,7 +143,7 @@ namespace BasicScroll
             switch( nextElement.Skip )
             {
                 case SkippingBehavior.Skip:
-                    return GetNextElement(ActionType.Normal);
+                    return GetNextElement( ActionType.Normal );
                 case SkippingBehavior.EnterChildren:
                     return GetNextElement( ActionType.EnterChild );
                 default:

@@ -34,7 +34,7 @@ namespace BasicScroll
         public bool Setup( IPluginSetupInfo info )
         {
             var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan( 0, 0, 0, 0, 1000 );
+            timer.Interval = new TimeSpan( 0, 0, 0, 0, 250 );
 
             _registeredElements = new List<IHighlightableElement>();
             _scrollingStrategy = new DefaultScrollingStrategy( timer, _registeredElements );

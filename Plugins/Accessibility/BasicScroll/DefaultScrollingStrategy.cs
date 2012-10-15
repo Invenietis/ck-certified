@@ -104,6 +104,13 @@ namespace BasicScroll
 
                 _currentId = parentSibblings.IndexOf( parent );
                 nextElement = parent;
+
+                // if the parent skipping behavior is enter children, we skip it
+                if( parent.Skip == SkippingBehavior.EnterChildren )
+                {
+                    _currentElement = nextElement;
+                    return GetNextElement( ActionType.Normal );
+                }
             }
             else
             {

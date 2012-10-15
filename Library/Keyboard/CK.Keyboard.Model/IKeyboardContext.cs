@@ -43,7 +43,7 @@ namespace CK.Keyboard.Model
         IKeyboardCollection Keyboards { get; }
 
         /// <summary>
-        /// Gets <see cref="IKeyboard"/> that is currently in use.
+        /// Gets or sets the <see cref="IKeyboard"/> that is currently in use.
         /// </summary>
         IKeyboard CurrentKeyboard { get; set; }
 

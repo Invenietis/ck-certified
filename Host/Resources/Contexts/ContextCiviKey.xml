@@ -15,6 +15,7 @@
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="SuperRapide">
@@ -417,6 +418,22 @@
                   </Key>
                 </Keys>
               </Zone>
+              <Zone Name="Return">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Afficher le clavier AZERTY">
+                        <KeyUp Label="Clavier normal" />
+                        <KeyPressed>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>keyboardswitch:Azerty</Cmd>
+                          </KeyProgram>
+                        </KeyPressed>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
             </Zones>
             <Layouts>
               <Layout IsCurrent="true" Name="" Width="435" Height="385">
@@ -593,6 +610,21 @@
                           </PluginsData>
                         </LayoutKeyMode>
                         <LayoutKeyMode Mode="" X="330" Y="242" W="100" H="74" Visible="true" />
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Return">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="330" Y="330" W="100" H="50" Visible="true" >
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/kb.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -1702,6 +1734,7 @@
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
@@ -3688,6 +3721,125 @@
                   </Key>
                 </Keys>
               </Zone>
+              <Zone Name="ctrl, win, etc..">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Ctrl" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("ctrl")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Win" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>DynCommand("WindowsKey")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Alt" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("alt")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="agrave" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"`"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="papo" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"^"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="tilde" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"~"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="trema" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"¨"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey" "</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="CtxMenu" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>DynCommand("ContextMenu")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Alt" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("alt")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Ctrl" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("ctrl")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
               <Zone Name="Arrows">
                 <Keys>
                   <Key>
@@ -3820,125 +3972,6 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="ctrl, win, etc..">
-                <Keys>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Ctrl" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("ctrl")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Win" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>DynCommand("WindowsKey")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Alt" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("alt")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="agrave" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"`"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"^"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="tilde" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"~"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="trema" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"¨"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey" "</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="CtxMenu" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>DynCommand("ContextMenu")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Alt" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("alt")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Ctrl" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("ctrl")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                </Keys>
-              </Zone>
               <Zone Name="CustomFunctions">
                 <Keys>
                   <Key>
@@ -3951,6 +3984,18 @@
                             <Cmd>MonitorOnce.SendKey("autoclose-fn"):Mode.Remove("fn")</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Afficher le clavier souris">
+                        <KeyUp Label="Clavier souris" />
+                        <KeyPressed>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>keyboardswitch:Mouse Keyboard</Cmd>
+                          </KeyProgram>
+                        </KeyPressed>
                       </KeyMode>
                     </KeyModes>
                   </Key>
@@ -4578,7 +4623,7 @@
                   <Zone Name="CustomFunctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="fn" X="880" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="fn" X="880" Y="50" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -4590,9 +4635,20 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="880" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="880" Y="50" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="880" Y="105" W="50" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/mousekb.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="880" Y="160" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4603,7 +4659,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="2">
+                      <LayoutKey Index="3">
                         <LayoutKeyMode Mode="" X="880" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4614,7 +4670,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="3">
+                      <LayoutKey Index="4">
                         <LayoutKeyMode Mode="" X="880" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">

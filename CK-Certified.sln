@@ -69,6 +69,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardPatcher", "Plugins\Advanced\Patchers\KeyboardPatcher\KeyboardPatcher.csproj", "{7AC81D56-34F7-4A29-82FE-5DC21050F47E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightModel", "Plugins\Services\HighlightModel\HighlightModel.csproj", "{BB945194-C1F5-432A-B4AF-F9E46B665486}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContextEditor", "Plugins\Advanced\ContextEditor\ContextEditor.csproj", "{30ADB3D6-ED05-403D-BEEC-9862200126B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicScroll", "Plugins\Accessibility\BasicScroll\BasicScroll.csproj", "{61618F4C-1288-401F-8644-77990429918C}"

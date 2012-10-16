@@ -116,7 +116,7 @@ namespace PointerDeviceDriver
             if( e.Code >= 0 && e.wParam == (IntPtr)WM_KEYDOWN )
             {
                 int vkCode = Marshal.ReadInt32( e.lParam );
-                if( _cancellableKeys.Contains( vkCode ) )
+                if( _cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 ) )
                 {
                     e.Cancel = true;
                     Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int>)FireEvent, vkCode );

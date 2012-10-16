@@ -1,0 +1,44 @@
+﻿<Window x:Class="BasicScroll.Editor.EditorView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:cal="http://www.caliburnproject.org"
+            Background="#FFEFEFEF"
+            MinWidth="350"
+            MinHeight="165"
+            SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <Style TargetType="Border" x:Key="Rounded">
+            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="BorderBrush" Value="Gray"></Setter>
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+            <Setter Property="Padding" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Border" x:Key="Splitter">
+            <Setter Property="BorderThickness" Value="0 0 0 0.5"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="MinHeight" Value="40"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Border Style="{StaticResource Rounded}" Margin="5">
+            <DockPanel>
+                <TextBlock x:Uid="target" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Configure trigger key :</TextBlock>
+                <StackPanel>
+                    <ToggleButton x:Uid="start-reccording" x:Name="StartReccording" IsChecked="{Binding IsRecording}">Start reccording</ToggleButton>
+                    <TextBlock x:Uid="select-zone" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SelectedKey}" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        <Border Style="{StaticResource Rounded}" Margin="5">
+            <DockPanel>
+                <TextBlock x:Uid="target" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
+                <StackPanel>
+                    <Slider Minimum="300" Maximum="2000" TickFrequency="100" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Speed}"/>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedSpeed}" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </StackPanel>
+</Window>

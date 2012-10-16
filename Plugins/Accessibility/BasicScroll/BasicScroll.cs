@@ -7,6 +7,7 @@ using System.Timers;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin;
+using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
@@ -19,7 +20,7 @@ namespace BasicScroll
            Categories = new string[] { "Visual", "Accessibility" } )]
     public class BasicScroll : IPlugin, IHighlighterService
     {
-        const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
+        internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "BasicScroll";
@@ -27,23 +28,35 @@ namespace BasicScroll
 
         List<IHighlightableElement> _registeredElements;
         DefaultScrollingStrategy _scrollingStrategy;
+        DispatcherTimer _timer;
+
+        public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
         {
-            var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan( 0, 0, 0, 0, 250 );
+            _timer = new DispatcherTimer();
+            int timerSpeed = Configuration.User.GetOrSet( "Speed", 1000 );
+            _timer.Interval = new TimeSpan( 0, 0, 0, 0, timerSpeed );
 
             _registeredElements = new List<IHighlightableElement>();
-            _scrollingStrategy = new DefaultScrollingStrategy( timer, _registeredElements );
+            _scrollingStrategy = new DefaultScrollingStrategy( _timer, _registeredElements );
             
             return true;
         }
 
         public void Start()
         {
+            Configuration.ConfigChanged += ( o, e ) =>
+            {
+                if( e.MultiPluginId.Any( u => u.UniqueId == BasicScroll.PluginId.UniqueId ) && e.Key == "Speed" )
+                {
+                    _timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
+                }
+            };
+
             ExternalInput.Service.Triggered += ( o, e ) =>
             {
                 _scrollingStrategy.OnExternalEvent();

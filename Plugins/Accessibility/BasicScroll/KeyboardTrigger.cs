@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin;
+using CK.Plugin.Config;
 using CommonServices;
 
 namespace BasicScroll
 {
-    [Plugin( SpacebarTrigger.PluginIdString,
+    [Plugin( KeyboardTrigger.PluginIdString,
            PublicName = PluginPublicName,
-           Version = SpacebarTrigger.PluginIdVersion,
+           Version = KeyboardTrigger.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class SpacebarTrigger : IPlugin, ITriggerService
+    public class KeyboardTrigger : IPlugin, ITriggerService
     {
         const string PluginIdString = "{4E3A3B25-7FD0-406F-A958-ECB50AC6A597}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -30,7 +31,11 @@ namespace BasicScroll
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
 
+        public IPluginConfigAccessor Configuration { get; set; }
+
         public event EventHandler Triggered;
+
+        int _keyCode;
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -40,12 +45,26 @@ namespace BasicScroll
         public void Start()
         {
             KeyboardDriver.Service.KeyDown += OnKeyDown;
-            KeyboardDriver.Service.RegisterCancellableKey( 0x20 );
+
+            _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 0x20 );
+            KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
+
+            Configuration.ConfigChanged += OnConfigChanged;
+        }
+
+        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.MultiPluginId.Any( u => u.UniqueId == KeyboardTrigger.PluginId.UniqueId ) && e.Key == "TriggerKeyCode" )
+            {
+                KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
+                _keyCode = (int)e.Value;
+                KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
+            }
         }
 
         void OnKeyDown( object sender, KeyboardDriverEventArg e )
         {
-            if( !_wasASpace && e.KeyCode == 0x20 ) // on spacebar pressed
+            if( !_wasASpace && e.KeyCode == _keyCode ) // on spacebar pressed
             {
                 _wasASpace = true;
                 if( Triggered != null ) Triggered( this, EventArgs.Empty );
@@ -56,7 +75,7 @@ namespace BasicScroll
         public void Stop()
         {
             KeyboardDriver.Service.KeyDown -= OnKeyDown;
-            KeyboardDriver.Service.UnregisterCancellableKey( 0x20 );
+            KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
         }
 
         public void Teardown()

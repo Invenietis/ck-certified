@@ -71,7 +71,7 @@ namespace BasicScroll
             if( _timer.IsEnabled )
             {
                 if( _currentElement != null ) FireEndHighlight();
-                _timer.Stop();
+                _timer.IsEnabled = false;
             }
         }
 

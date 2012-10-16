@@ -484,6 +484,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit scrolling configuration.
+        /// </summary>
+        public static string ScrollConfig {
+            get {
+                return ResourceManager.GetString("ScrollConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Systray icon.
         /// </summary>
         public static string ShowSystrayIcon {

@@ -160,9 +160,8 @@
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.StandardViews\CK.WPF.StandardViews.csproj">
-      <Project>{6F198D3D-39E5-4DE6-917E-DFB99AF31E3E}</Project>
+      <Project>{6f198d3d-39e5-4de6-917e-dfb99af31e3e}</Project>
       <Name>CK.WPF.StandardViews</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>

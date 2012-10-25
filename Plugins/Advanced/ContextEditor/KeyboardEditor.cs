@@ -70,8 +70,31 @@ namespace ContextEditor
             if( _mainWindow != null )
                 _mainWindow.Close();
         }
+            
 
-                e.Cancel = true;
+        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            //If we are already stopping. We do nothing.
+            if( !_stopping )
+            {   //If we are not already stopping, and we have a backup, apply it back.
+                if( KeyboardBackup != null )
+                {
+                    ModalViewModel mvm = new ModalViewModel( R.WizardExitPopInTitle, R.WizardExitPopInDesc );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.No, ModalResult.No ) );
+                    CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
+
+                    msgBox.ShowDialog();
+
+                    if( mvm.ModalResult != ModalResult.Yes )
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+
+                    //If the user really wants to quit the wizard, cancel all modifications
+                    CancelModifications();
+                }
 
                 System.Action stop = () =>
                 {
@@ -80,7 +103,12 @@ namespace ContextEditor
                 };
                 e.Cancel = true;
                 Dispatcher.CurrentDispatcher.BeginInvoke( stop, null );
-        
+            }
+
+            if( _mainWindow != null )
+                _mainWindow.Closing -= OnWindowClosing;
+        }
+     
         public void Teardown()
         {
             _stopping = false;
@@ -209,38 +237,7 @@ namespace ContextEditor
             KeyboardBackup = null;
         }
 
-        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
-        {
-            //If we are already stopping. We do nothing.
-            if( !_stopping )
-            {   //If we are not already stopping, and we have a backup, apply it back.
-                if( KeyboardBackup != null )
-                {
-                    ModalViewModel mvm = new ModalViewModel( R.WizardExitPopInTitle, R.WizardExitPopInDesc );
-                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );
-                    mvm.Buttons.Add( new ModalButton( mvm, R.No, ModalResult.No ) );
-                    CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
-
-                    msgBox.ShowDialog();
-
-                    if( mvm.ModalResult != ModalResult.Yes )
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    //If the user really wants to quit the wizard, cancel all modifications
-                    CancelModifications();
-                }
-
-                //Stopping the plugin
-                Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
-                Context.PluginRunner.Apply();
-            }
-
-            if( _mainWindow != null )
-                _mainWindow.Closing -= OnWindowClosing;
-        }
+        
     }
 }
 

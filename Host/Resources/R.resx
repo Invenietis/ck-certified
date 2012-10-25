@@ -294,4 +294,7 @@
   <data name="SkinEditorSectionName" xml:space="preserve">
     <value>the skin editor</value>
   </data>
+  <data name="ScrollConfig" xml:space="preserve">
+    <value>Edit scrolling configuration</value>
+  </data>
 </root>

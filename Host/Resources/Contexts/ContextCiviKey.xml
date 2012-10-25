@@ -8,6 +8,640 @@
     <PluginData>
       <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
         <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Keyboard Name="Mouse Keyboard" IsCurrent="1">
+            <RequirementLayer Name="Keyboard">
+              <PluginRequirements></PluginRequirements>
+              <ServiceRequirements>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+              </ServiceRequirements>
+            </RequirementLayer>
+            <Modes Current="SuperRapide">
+              <Mode>Mini</Mode>
+              <Mode>Normal</Mode>
+              <Mode>Rapide</Mode>
+              <Mode>SuperRapide</Mode>
+            </Modes>
+            <Zones>
+              <Zone Name="" />
+              <Zone Name="Up">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Up-Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UL, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Up-Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UL, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Up-Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UL, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Up-Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UL, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Up" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:U, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Up" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:U, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Up" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:U, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Up" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:U, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Up-Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UR, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Up-Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UR, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Up-Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UR, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Up-Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:UR, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+              <Zone Name="Middle">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:L, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:L, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:L, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:L, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:R, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:R, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:R, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Right" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:R, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+              <Zone Name="Bottom">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Left-Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BL, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Left-Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BL, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Bottom-Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BL, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Bottom-Left" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BL, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:B, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:B, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:B, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:B, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Right-Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BR, 50</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Mini" Enabled="true" Description="">
+                        <KeyUp Label="Right-Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BR, 5</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="Rapide" Enabled="true" Description="">
+                        <KeyUp Label="Right-Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BR, 100</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="SuperRapide" Enabled="true" Description="">
+                        <KeyUp Label="Right-Bottom" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>movemouse:BR, 200</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+              <Zone Name="Clics">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true">
+                        <KeyUp Label="Clic"/>
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>clics:simple</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true">
+                        <KeyUp Label="Double clic"/>
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>clics:double</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true">
+                        <KeyUp Label="Clic droit"/>
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>clics:right</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+              <Zone Name="Modes">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Mini" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Set("Mini")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Normal" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Set("Normal")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Rapide" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Set("Rapide")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Super rapide" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Set("SuperRapide")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+              <Zone Name="Return">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Afficher le clavier AZERTY">
+                        <KeyUp Label="Clavier normal" />
+                        <KeyPressed>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>keyboardswitch:Azerty</Cmd>
+                          </KeyProgram>
+                        </KeyPressed>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
+            </Zones>
+            <Layouts>
+              <Layout IsCurrent="true" Name="" Width="435" Height="385">
+                <RequirementLayer Name="Layout">
+                  <PluginRequirements></PluginRequirements>
+                  <ServiceRequirements></ServiceRequirements>
+                </RequirementLayer>
+                <Zones>
+                  <Zone Name="">
+                    <LayoutKeys />
+                  </Zone>
+                  <Zone Name="Up">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="5" Y="5" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/top-left.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="110" Y="5" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/top.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="2">
+                        <LayoutKeyMode Mode="" X="215" Y="5" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/top-right.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Middle">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="5" Y="110" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/left.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="215" Y="110" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/right.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Bottom">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="5" Y="215" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/left-bottom.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="110" Y="215" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/bottom.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="2">
+                        <LayoutKeyMode Mode="" X="215" Y="215" W="100" H="100" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/right-bottom.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Clics">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="5" Y="330" W="100" H="50" Visible="true">
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="110" Y="330" W="100" H="50" Visible="true">
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="2">
+                        <LayoutKeyMode Mode="" X="215" Y="330" W="100" H="50" Visible="true">
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Modes">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="Mini" X="330" Y="5" W="100" H="74" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="330" Y="5" W="100" H="74" Visible="true" />
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="Normal" X="330" Y="84" W="100" H="74" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="330" Y="84" W="100" H="74" Visible="true" />
+                      </LayoutKey>
+                      <LayoutKey Index="2">
+                        <LayoutKeyMode Mode="Rapide" X="330" Y="163" W="100" H="74" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="330" Y="163" W="100" H="74" Visible="true" />
+                      </LayoutKey>
+                      <LayoutKey Index="3">
+                        <LayoutKeyMode Mode="SuperRapide" X="330" Y="242" W="100" H="74" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFA2BDF2</Color>
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="330" Y="242" W="100" H="74" Visible="true" />
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                  <Zone Name="Return">
+                    <LayoutKeys>
+                      <LayoutKey Index="0">
+                        <LayoutKeyMode Mode="" X="330" Y="330" W="100" H="50" Visible="true" >
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/kb.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                    </LayoutKeys>
+                  </Zone>
+                </Zones>
+                <PluginsData>
+                  <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                    <data key="PositionX" type="Int32">561</data>
+                    <data key="PositionY" type="Int32">735</data>
+                    <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">319,115</Size>
+                    </data>
+                    <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
+                  </p>
+                </PluginsData>
+              </Layout>
+            </Layouts>
+          </Keyboard>
           <Keyboard Name="Ergonomic">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
@@ -1100,6 +1734,7 @@
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
@@ -3086,6 +3721,125 @@
                   </Key>
                 </Keys>
               </Zone>
+              <Zone Name="ctrl, win, etc..">
+                <Keys>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Ctrl" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("ctrl")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Win" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>DynCommand("WindowsKey")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Alt" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("alt")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="agrave" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"`"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="papo" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"^"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="tilde" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"~"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="trema" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey"¨"</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>sendKey" "</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="CtxMenu" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>DynCommand("ContextMenu")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Alt" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("alt")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Ctrl" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>Mode.Toggle("ctrl")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                </Keys>
+              </Zone>
               <Zone Name="Arrows">
                 <Keys>
                   <Key>
@@ -3218,125 +3972,6 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="ctrl, win, etc..">
-                <Keys>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Ctrl" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("ctrl")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Win" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>DynCommand("WindowsKey")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Alt" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("alt")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="agrave" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"`"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"^"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="tilde" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"~"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="trema" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"¨"</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey" "</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="CtxMenu" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>DynCommand("ContextMenu")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Alt" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("alt")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-alt"):Mode.Remove("alt")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                  <Key>
-                    <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Ctrl" />
-                        <KeyDown>
-                          <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("ctrl")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-ctrl"):Mode.Remove("ctrl")</Cmd>
-                          </KeyProgram>
-                        </KeyDown>
-                      </KeyMode>
-                    </KeyModes>
-                  </Key>
-                </Keys>
-              </Zone>
               <Zone Name="CustomFunctions">
                 <Keys>
                   <Key>
@@ -3349,6 +3984,18 @@
                             <Cmd>MonitorOnce.SendKey("autoclose-fn"):Mode.Remove("fn")</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="Afficher le clavier souris">
+                        <KeyUp Label="Clavier souris" />
+                        <KeyPressed>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>keyboardswitch:Mouse Keyboard</Cmd>
+                          </KeyProgram>
+                        </KeyPressed>
                       </KeyMode>
                     </KeyModes>
                   </Key>
@@ -3976,7 +4623,7 @@
                   <Zone Name="CustomFunctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="fn" X="880" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="fn" X="880" Y="50" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -3988,9 +4635,20 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="880" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="880" Y="50" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="" X="880" Y="105" W="50" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/mousekb.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="880" Y="160" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4001,7 +4659,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="2">
+                      <LayoutKey Index="3">
                         <LayoutKeyMode Mode="" X="880" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4012,7 +4670,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="3">
+                      <LayoutKey Index="4">
                         <LayoutKeyMode Mode="" X="880" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">

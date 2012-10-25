@@ -202,9 +202,10 @@ namespace SimpleSkin
             _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
         }
 
-        //bool _currentIsNull;
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
+            Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+             
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
@@ -242,11 +243,12 @@ namespace SimpleSkin
                     }
                 }
             }
-
         }
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
+            Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+
             if( e.Current != null && _skinWindow != null )
             {
                 if( Config.User[PlacementString] != null )

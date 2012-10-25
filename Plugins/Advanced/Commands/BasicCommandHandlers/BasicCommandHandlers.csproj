@@ -98,10 +98,14 @@
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandViewer.cs" />
+    <Compile Include="ClicCommandHandler.cs" />
+    <Compile Include="ChangeKeyboard.cs" />
+    <Compile Include="MoveMouse.cs" />
     <Compile Include="Keybd.cs" />
     <Compile Include="MonitorOnceCommandHandler.cs" />
     <Compile Include="DynCommandHandler.cs" />

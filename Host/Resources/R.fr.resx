@@ -294,4 +294,7 @@
   <data name="SkinEditorSectionName" xml:space="preserve">
     <value>l'éditeur de claviers</value>
   </data>
+  <data name="ScrollConfig" xml:space="preserve">
+    <value>Configuration du défilement</value>
+  </data>
 </root>

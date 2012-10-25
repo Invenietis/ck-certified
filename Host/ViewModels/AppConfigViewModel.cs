@@ -76,19 +76,7 @@ namespace Host.VM
             _stopReminderPath = Path.Combine( stopReminderFolderPath, "StopReminder" );
             _remindMeOfNewUpdates = !File.Exists( _stopReminderPath );
 
-            var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartEditor ) );
-            action.ImagePath = "edit.png";
-            action.DisplayName = R.SkinViewConfig;
-            action.Description = R.AdvancedUserNotice;
-            this.Items.Add( action );
-
             base.OnInitialize();
-        }
-
-        public void StartEditor()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{402C9FF7-545A-4E3C-AD35-70ED37497805}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
         }
 
         bool _remindMeOfNewUpdates;

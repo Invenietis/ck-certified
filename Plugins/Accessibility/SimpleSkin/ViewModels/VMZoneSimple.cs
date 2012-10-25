@@ -72,6 +72,10 @@ namespace SimpleSkin.ViewModels
                 {
                     return SkippingBehavior.Skip;
                 }
+                else if( Keys.Count == 1 )
+                {
+                    return SkippingBehavior.EnterChildren;
+                }
                 return SkippingBehavior.None;
             }
         }

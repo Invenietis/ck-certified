@@ -129,11 +129,17 @@
   <data name="EndingStepTitle" xml:space="preserve">
     <value>Modifications sauvegardées</value>
   </data>
+  <data name="HomeDestroyKeyboardDesc" xml:space="preserve">
+    <value>Suppimez l'un de vos claviers.</value>
+  </data>
+  <data name="HomeDestroyKeyboardTitle" xml:space="preserve">
+    <value>Supprimer un clavier</value>
+  </data>
   <data name="HomeEditCurrentKeyboard" xml:space="preserve">
-    <value>Editer le clavier courant ({0})</value>
+    <value>Modifier le clavier courant</value>
   </data>
   <data name="HomeEditCurrentKeyboardDesc" xml:space="preserve">
-    <value>Editer simplement et rapidement le clavier actif</value>
+    <value>Modifier simplement et rapidement le clavier actif</value>
   </data>
   <data name="HomeEditNewKeyboard" xml:space="preserve">
     <value>Créer un nouveau clavier</value>
@@ -152,6 +158,12 @@
   </data>
   <data name="HomeStepTitle" xml:space="preserve">
     <value>Création et modification de claviers</value>
+  </data>
+  <data name="KeyboardDeletionListStepDesc" xml:space="preserve">
+    <value>Pour supprimer un clavier, selectionnez le puis cliquez sur "Suivant.</value>
+  </data>
+  <data name="KeyboardDeletionListStepTitle" xml:space="preserve">
+    <value>Suppression de claviers</value>
   </data>
   <data name="KeyboardEditionStepDesc" xml:space="preserve">
     <value>A partir de cette fenêtre, vous pouvez ajouter, supprimer et modifier les touches du clavier.

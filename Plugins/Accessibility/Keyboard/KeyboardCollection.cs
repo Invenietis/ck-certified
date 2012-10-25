@@ -182,8 +182,7 @@ namespace CK.Keyboard
             get { return _current; }
             set
             {
-                //TODOJL : understand why value can be null...
-                if( value != null && value != _current ) 
+                if( value != _current ) 
                 {
                     if( CurrentChanging != null )
                     {

@@ -7,9 +7,9 @@ using Caliburn.Micro;
 
 namespace ContextEditor
 {
-    internal class ContextEditorBootstrapper : Bootstrapper
+    internal class KeyboardEditorBootstrapper : Bootstrapper
     {
-        public ContextEditorBootstrapper()
+        public KeyboardEditorBootstrapper()
             : base( false )
         {
         }

@@ -36,6 +36,7 @@ using SimpleSkin.ViewModels;
 using CK.Windows;
 using CK.Windows.Helpers;
 using System.Linq;
+using System.Diagnostics;
 
 namespace SimpleSkin
 {
@@ -67,9 +68,9 @@ namespace SimpleSkin
 
         [RequiredService]
         public IContext Context { get; set; }
-            
+
         [RequiredService]
-        public INotificationService Notification { get; set; }     
+        public INotificationService Notification { get; set; }
 
         //Since the IHotsManipulator implementaiton is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
         /// <summary>
@@ -87,14 +88,14 @@ namespace SimpleSkin
             return true;
         }
 
-        private string PlacementString 
-        { 
-            get 
+        private string PlacementString
+        {
+            get
             {
-                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null)
+                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null )
                     return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
-                return ""; 
-            } 
+                return "";
+            }
         }
 
         public void Start()
@@ -145,16 +146,53 @@ namespace SimpleSkin
             _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
         }
 
+        //bool _currentIsNull;
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
-            if( _skinWindow != null ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+            //Saving the state of the window before doing anything (if the current keyboard is not null)
+            if( e.Current != null && _skinWindow != null )
+            {
+                Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+            }
+
+            if( e.Next == null )
+            {
+                if( _miniView != null && _miniView.IsVisible )
+                {
+                    Debug.Assert( !_viewHidden, "The miniview is visible yet _viewHidden is false" );
+                    _miniView.Hide();
+                }
+
+                if( _skinWindow != null && _skinWindow.IsVisible )
+                {
+                    _skinWindow.Hide();
+                }
+            }
+            else
+            {
+                //if the previous keyboard was null
+                if( e.Current == null )
+                {
+                    //if the view was not hidden before setting the keyboard to null
+                    if( _skinWindow != null && !_viewHidden )
+                    {
+                        Debug.Assert( !_skinWindow.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the skin view was already visible" );
+                        _skinWindow.Show();
+                    }
+                    else if( _miniView != null )
+                    {
+                        Debug.Assert( !_miniView.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the miniview was already visible" );
+                        _miniView.Show();
+                    }
+                }
+            }
+
         }
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( _skinWindow != null )
+            if( e.Current != null && _skinWindow != null )
             {
-
                 if( Config.User[PlacementString] != null )
                 {
                     WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];

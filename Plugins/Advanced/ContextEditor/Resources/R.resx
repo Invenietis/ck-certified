@@ -129,8 +129,14 @@
   <data name="EndingStepTitle" xml:space="preserve">
     <value>Modifications saved</value>
   </data>
+  <data name="HomeDestroyKeyboardDesc" xml:space="preserve">
+    <value>Delete one of your keyboards</value>
+  </data>
+  <data name="HomeDestroyKeyboardTitle" xml:space="preserve">
+    <value>Delete a keyboard</value>
+  </data>
   <data name="HomeEditCurrentKeyboard" xml:space="preserve">
-    <value>Edit the current keyboard ({0})</value>
+    <value>Edit the current keyboard</value>
   </data>
   <data name="HomeEditCurrentKeyboardDesc" xml:space="preserve">
     <value>Edit easily the currently used keyboard.</value>
@@ -153,6 +159,12 @@ You can choose between the three following actions to chose the keyboard you wan
   </data>
   <data name="HomeStepTitle" xml:space="preserve">
     <value>Keyboard creation and modification</value>
+  </data>
+  <data name="KeyboardDeletionListStepDesc" xml:space="preserve">
+    <value>To delete a keybaord, select the keyboard you want removed, then press "Next".</value>
+  </data>
+  <data name="KeyboardDeletionListStepTitle" xml:space="preserve">
+    <value>Keyboard deletion</value>
   </data>
   <data name="KeyboardEditionStepDesc" xml:space="preserve">
     <value>Through this page you can add, delete or modify any key of the keyboard.

@@ -9,24 +9,10 @@
     <Style TargetType="{x:Type Window}">
         <Setter Property="SizeToContent" Value="WidthAndHeight"/>
     </Style>
-    
-    <!--<LinearGradientBrush x:Key="ButtonOverBrush" StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">
-        <LinearGradientBrush.GradientStops>
-            <GradientStop Color="#FFD8D8D8" Offset="0"/>
-            <GradientStop Color="#FFFFFFFF" Offset="1"/>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>-->
-    
-    <!--<LinearGradientBrushEndPoint="0.322,0.542" StartPoint="2.473,1.2">
-        <GradientStop Color="#FF919191"/>
-        <GradientStop Color="Transparent" Offset="1"/>
-    </LinearGradientBrush>-->
 
         <LinearGradientBrush x:Key="ButtonOverBrush"  EndPoint="0.017,0.032" StartPoint="0.974,0.971">
-        <!--<GradientStop Color="#FF919191"/>-->
         <GradientStop Color="White"/>
         <GradientStop Color="Transparent" Offset="0.726"/>
-        <!--<GradientStop Color="#FFC7C7C7" Offset="0.301"/>-->
     </LinearGradientBrush>
 
     <ControlTemplate  x:Key="NoFocusButtonTemplate" TargetType="{x:Type ButtonBase}">

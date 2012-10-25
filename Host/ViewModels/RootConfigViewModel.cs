@@ -59,8 +59,23 @@ namespace Host
                 keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
 
                 _app.KeyboardContext.Keyboards.KeyboardCreated += ( s, e ) => { keyboards.RefreshValues( s, e ); };
-                _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) => { keyboards.RefreshValues( s, e ); };
-                _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) => { keyboards.RefreshValues( s, e ); };
+                _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) => 
+                {
+                    //JL : that fix stinks like bloody hell.
+                    //When calling RefreshValues, the current selected item is set to null. (actually setting the current keyboard to null)
+                    //Can't figure out why yet.
+                    IKeyboard k = _app.KeyboardContext.CurrentKeyboard;
+                    keyboards.RefreshValues( s, e );
+                    keyboards.Values.MoveCurrentTo( k );
+                };
+
+                _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) => 
+                {
+                    keyboards.RefreshValues( s, e );
+                    //When renaming a keyboard, the value is removed and then added back.
+                    //The ConfigItemCurrent object cannot handle that on its own, so we set the current back to the keyboard which has been renamed.
+                    keyboards.Values.MoveCurrentTo( _app.KeyboardContext.CurrentKeyboard );
+                };
                 _app.KeyboardContext.Keyboards.CurrentChanged += ( s, e ) => { keyboards.RefreshCurrent( s, e ); };
             }
 

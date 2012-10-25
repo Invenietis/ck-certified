@@ -33,9 +33,14 @@
                 <views:KeyboardProfileView/>
             </DataTemplate>
         </ckcore:TypeDataTemplateSelector>
-        <ckcore:TypeDataTemplateSelector Type="{ckcore:Type viewmodels:KeyboardListViewModel}" >
+        <ckcore:TypeDataTemplateSelector Type="{ckcore:Type viewmodels:ModificationKeyboardListViewModel}" >
             <DataTemplate>
-                <views:KeyboardListView/>
+                <views:ModificationKeyboardListView/>
+            </DataTemplate>
+        </ckcore:TypeDataTemplateSelector>
+        <ckcore:TypeDataTemplateSelector Type="{ckcore:Type viewmodels:DeletionKeyboardListViewModel}" >
+            <DataTemplate>
+                <views:ModificationKeyboardListView/>
             </DataTemplate>
         </ckcore:TypeDataTemplateSelector>
         <ckcore:TypeDataTemplateSelector Type="{ckcore:Type viewmodels:KeyboardEditionViewModel}" >
@@ -70,7 +75,7 @@
             <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
-        <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">-->
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
             <Grid Margin="10" Width="800">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -110,6 +115,6 @@
                     </DockPanel>
                 </DockPanel>
             </Grid>
-        <!--</ScrollViewer>-->
+        </ScrollViewer>
     </DataTemplate>
 </ResourceDictionary>

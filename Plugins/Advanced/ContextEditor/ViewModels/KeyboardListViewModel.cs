@@ -13,11 +13,10 @@ namespace ContextEditor.ViewModels
 {
     public class KeyboardListViewModel : WizardPage
     {
-        IKeyboardCollection _keyboards;
         public IList<KeyboardViewModel> KeyboardVms { get; set; }
-        IKeyboardEditorRoot _root;
-
-        KeyboardViewModel _selectedKeyboard;
+        internal KeyboardViewModel _selectedKeyboard;
+        internal IKeyboardEditorRoot _root;
+        IKeyboardCollection _keyboards;
         ICommand _selectionCommand;
 
         /// <summary>
@@ -33,7 +32,8 @@ namespace ContextEditor.ViewModels
             KeyboardVms = new List<KeyboardViewModel>();
             foreach( var keyboard in _keyboards )
             {
-                KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
+                if(root.KeyboardContext.Service.CurrentKeyboard != keyboard)
+                    KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }
 
             HideNext = true;
@@ -52,26 +52,23 @@ namespace ContextEditor.ViewModels
             {
                 if( _selectionCommand == null ) _selectionCommand = new SimpleCommand<KeyboardViewModel>( ( k ) =>
                 {
-                    KeyboardViewModel keyboardVm = KeyboardVms.Single( ( vm ) => k == vm );
                     if( _selectedKeyboard != null )
                         _selectedKeyboard.IsSelected = false;
 
                     //The clicked keyboard is now the selected one.
-                    keyboardVm.IsSelected = true;
-                    _selectedKeyboard = keyboardVm;
+                    k.IsSelected = true;
+                    _selectedKeyboard = k;
 
-                    //We update the Next property to give it the proper model.
-                    Next = new KeyboardProfileViewModel( _root, WizardManager, _selectedKeyboard.Keyboard );
-
-                    CantGoFurther = false;
-                    NotifyOfPropertyChange( () => IsLastStep );
-                    NotifyOfPropertyChange( () => CanGoFurther );
-
-                    WizardManager.GoFurther();
+                    OnKeyboardSelected( k );
+                   
                 } );
 
                 return _selectionCommand;
             }
+        }
+
+        public virtual void OnKeyboardSelected( KeyboardViewModel selectedKeyboardViewModel )
+        {
         }
     }
 }

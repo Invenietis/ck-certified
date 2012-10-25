@@ -97,7 +97,25 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit the current keyboard ({0}).
+        ///   Looks up a localized string similar to Delete one of your keyboards.
+        /// </summary>
+        internal static string HomeDestroyKeyboardDesc {
+            get {
+                return ResourceManager.GetString("HomeDestroyKeyboardDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete a keyboard.
+        /// </summary>
+        internal static string HomeDestroyKeyboardTitle {
+            get {
+                return ResourceManager.GetString("HomeDestroyKeyboardTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit the current keyboard.
         /// </summary>
         internal static string HomeEditCurrentKeyboard {
             get {
@@ -166,6 +184,24 @@ namespace ContextEditor.Resources {
         internal static string HomeStepTitle {
             get {
                 return ResourceManager.GetString("HomeStepTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To delete a keybaord, select the keyboard you want removed, then press &quot;Next&quot;..
+        /// </summary>
+        internal static string KeyboardDeletionListStepDesc {
+            get {
+                return ResourceManager.GetString("KeyboardDeletionListStepDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard deletion.
+        /// </summary>
+        internal static string KeyboardDeletionListStepTitle {
+            get {
+                return ResourceManager.GetString("KeyboardDeletionListStepTitle", resourceCulture);
             }
         }
         
@@ -422,6 +458,26 @@ namespace ContextEditor.Resources {
         internal static string WindowTitle {
             get {
                 return ResourceManager.GetString("WindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are about to close the keyboard edition wizard. 
+        ///
+        ///Are you sure that you want to do that ? All modifications unsaved will be lost..
+        /// </summary>
+        internal static string WizardExitPopInDesc {
+            get {
+                return ResourceManager.GetString("WizardExitPopInDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exiting the wizard.
+        /// </summary>
+        internal static string WizardExitPopInTitle {
+            get {
+                return ResourceManager.GetString("WizardExitPopInTitle", resourceCulture);
             }
         }
         

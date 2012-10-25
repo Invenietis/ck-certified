@@ -41,10 +41,10 @@ namespace ContextEditor.ViewModels
             _keyboardCtx = keyboardCtx;
             Buttons = new List<WizardButtonViewModel>();
 
-            Buttons.Add( new WizardButtonViewModel( String.Format( R.HomeEditCurrentKeyboard, _keyboardCtx.CurrentKeyboard.Name ), R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-keyboard.png", EditCurrentKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditCurrentKeyboard, R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-keyboard.png", EditCurrentKeyboard ) );
             Buttons.Add( new WizardButtonViewModel( R.HomeEditNewKeyboard, R.HomeEditNewKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/create-keyboard.png", CreateNewKeyboard ) );
             Buttons.Add( new WizardButtonViewModel( R.HomeEditOtherKeyboard, R.HomeEditOtherKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-other-keyboard.png", EditOtherKeyboard ) );
-
+            Buttons.Add( new WizardButtonViewModel( R.HomeDestroyKeyboardTitle, R.HomeDestroyKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/destroy-keyboard.png", DestroyKeyboard ) );
             Title = R.HomeStepTitle;
             Description = R.HomeStepDescription;
             HideNext = true;
@@ -98,7 +98,16 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public void EditOtherKeyboard()
         {
-            Next = new KeyboardListViewModel( _root, WizardManager, _keyboardCtx.Keyboards );
+            Next = new ModificationKeyboardListViewModel( _root, WizardManager, _keyboardCtx.Keyboards );
+            WizardManager.GoFurther();
+        }
+
+        /// <summary>
+        /// Goes to a page listing all the keyboards that can be deleted.
+        /// </summary>
+        public void DestroyKeyboard()
+        {
+            Next = new DeletionKeyboardListViewModel( _root, WizardManager, _keyboardCtx.Keyboards );
             WizardManager.GoFurther();
         }
 

@@ -16,20 +16,20 @@ using CK.Plugin.Config;
 using CK.Storage;
 using CK.Windows.App;
 using CK.Windows.Config;
+using ContextEditor.Resources;
 using ContextEditor.ViewModels;
 
 namespace ContextEditor
 {
-    [Plugin( ContextEditor.PluginIdString,
+    [Plugin( KeyboardEditor.PluginIdString,
         PublicName = PluginPublicName,
-        Version = ContextEditor.PluginIdVersion,
-        Categories = new string[] { "Visual", "Advanced" } )]
-    public class ContextEditor : IPlugin, IKeyboardEditorRoot
+        Version = KeyboardEditor.PluginIdVersion )]
+    public class KeyboardEditor : IPlugin, IKeyboardEditorRoot
     {
         const string PluginIdString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "ContextEditor";
+        const string PluginPublicName = "Keyboard editor";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -38,7 +38,7 @@ namespace ContextEditor
         [RequiredService( Required = true )]
         public IContext Context { get; set; }
 
-        ContextEditorBootstrapper bootstrap;
+        KeyboardEditorBootstrapper bootstrap;
         WindowManager _windowManager;
         AppViewModel _appViewModel;
         Window _mainWindow;
@@ -46,7 +46,7 @@ namespace ContextEditor
 
         public bool Setup( IPluginSetupInfo info )
         {
-            bootstrap = new ContextEditorBootstrapper();
+            bootstrap = new KeyboardEditorBootstrapper();
             return bootstrap != null;
         }
 
@@ -54,10 +54,13 @@ namespace ContextEditor
         {
             _windowManager = new WindowManager();
             _appViewModel = new AppViewModel( this );
-            _windowManager.ShowWindow( _appViewModel, null );
+            var dic = new Dictionary<string, object>();
+            dic.Add("Topmost", false);
+            _windowManager.ShowWindow( _appViewModel, null, dic );
 
             _mainWindow = _appViewModel.GetView( null ) as Window;
             _mainWindow.Closing += OnWindowClosing;
+            _mainWindow.Topmost = false;
         }
 
         public void Stop()
@@ -68,33 +71,8 @@ namespace ContextEditor
                 _mainWindow.Close();
         }
 
-        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
-        {
-            //If we are already stopping. We do nothing.
-            if( !_stopping )
-            {   //If we are not already stopping, and we have a backup, apply it back.
-                if( KeyboardBackup != null )
-                {
-                    ModalViewModel mvm = new ModalViewModel( "Exiting the wizard", "You are about to close the keyboard edition wizard. Are you sure that you want to do that ? All modifications unsaved will be lost." );
-                    mvm.Buttons.Add( new ModalButton( mvm, "Yes", ModalResult.Yes ) );
-                    mvm.Buttons.Add( new ModalButton( mvm, "No", ModalResult.No ) );
-                    CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
-
-                    msgBox.ShowDialog();
-
-                    if( mvm.ModalResult != ModalResult.Yes )
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    //If the user really wants to quit the wizard, cancel all modifications
-                    CancelModifications();
-                }
-
                 e.Cancel = true;
 
-                //Stopping the plugin
                 System.Action stop = () =>
                 {
                     Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
@@ -102,12 +80,7 @@ namespace ContextEditor
                 };
                 e.Cancel = true;
                 Dispatcher.CurrentDispatcher.BeginInvoke( stop, null );
-            }
-
-            if( _mainWindow != null )
-                _mainWindow.Closing -= OnWindowClosing;
-        }
-
+        
         public void Teardown()
         {
             _stopping = false;
@@ -173,9 +146,8 @@ namespace ContextEditor
         public void CancelModifications()
         {
             if( KeyboardBackup == null || KeyboardBackup.BackedUpKeyboard == null ) throw new NullReferenceException( "Can't cancel modifications on a null KeyboardBackup" );
-            IStructuredSerializable serializableKeyboard = KeyboardBackup.BackedUpKeyboard as IStructuredSerializable;
-            if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
 
+            IKeyboard keyboardToRevert = KeyboardBackup.BackedUpKeyboard as IKeyboard;
 
             if( !String.IsNullOrWhiteSpace( KeyboardBackup.BackUpFilePath ) )
             {
@@ -183,6 +155,13 @@ namespace ContextEditor
                 {
                     using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
+                        IKeyboard keyboard = KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
+                        IStructuredSerializable serializableKeyboard = keyboard as IStructuredSerializable;
+
+                        if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+
+                        keyboardToRevert.Destroy();
+
                         _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
                         //Erasing all properties of the keyboard. We re-apply the backedup ones.
                         serializableKeyboard.ReadContent( reader );
@@ -194,6 +173,24 @@ namespace ContextEditor
                 KeyboardBackup.BackedUpKeyboard.Destroy();
             }
 
+            
+            //To work properly, there should be some kind of ReadContent with a configurable MergeMode, just like with the pluginsData
+            //if( !String.IsNullOrWhiteSpace( KeyboardBackup.BackUpFilePath ) )
+            //{
+            //    IStructuredSerializable serializableKeyboard = KeyboardBackup.BackedUpKeyboard as IStructuredSerializable;
+            //    if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+
+            //    using( FileStream str = new FileStream( KeyboardBackup.BackUpFilePath, FileMode.Open ) )
+            //    {
+            //        using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
+            //        {
+            //            _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.ReplaceExisting );
+            //            //Erasing all properties of the keyboard. We re-apply the backedup ones.
+            //            serializableKeyboard.ReadContent( reader );
+            //        }
+            //    }
+            //}
+            
             //After cancelling modifications, we have no backup left.
             EnsureBackupIsClean();
         }
@@ -211,8 +208,39 @@ namespace ContextEditor
 
             KeyboardBackup = null;
         }
+
+        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            //If we are already stopping. We do nothing.
+            if( !_stopping )
+            {   //If we are not already stopping, and we have a backup, apply it back.
+                if( KeyboardBackup != null )
+                {
+                    ModalViewModel mvm = new ModalViewModel( R.WizardExitPopInTitle, R.WizardExitPopInDesc );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.No, ModalResult.No ) );
+                    CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
+
+                    msgBox.ShowDialog();
+
+                    if( mvm.ModalResult != ModalResult.Yes )
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+
+                    //If the user really wants to quit the wizard, cancel all modifications
+                    CancelModifications();
+                }
+
+                //Stopping the plugin
+                Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
+                Context.PluginRunner.Apply();
+            }
+
+            if( _mainWindow != null )
+                _mainWindow.Closing -= OnWindowClosing;
+        }
     }
-
-
 }
 

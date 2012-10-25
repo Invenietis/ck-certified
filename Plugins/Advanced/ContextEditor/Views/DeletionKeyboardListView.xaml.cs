@@ -18,9 +18,9 @@ namespace ContextEditor.s
     /// <summary>
     /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class KeyboardListView : UserControl
+    public partial class DeletionKeyboardListView : UserControl
     {
-        public KeyboardListView()
+        public DeletionKeyboardListView()
         {
             InitializeComponent();
         }

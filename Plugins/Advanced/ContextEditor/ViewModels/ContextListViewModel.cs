@@ -20,14 +20,14 @@ namespace ContextEditor.ViewModels
 
         ContextViewModel _selectedContext;
         ICommand _selectionCommand;
-        ContextEditor _root;
+        KeyboardEditor _root;
 
         /// <summary>
         /// Ctor
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The context to which we should save a keyboard</param>
-        public ContextListViewModel( ContextEditor root, WizardManager wizardManager, IUriHistoryCollection contexts, IKeyboard keyboardToSave )
+        public ContextListViewModel( KeyboardEditor root, WizardManager wizardManager, IUriHistoryCollection contexts, IKeyboard keyboardToSave )
             : base( wizardManager, false )
         {
             _root = root;

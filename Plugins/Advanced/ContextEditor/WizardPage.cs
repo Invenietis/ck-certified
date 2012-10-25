@@ -94,6 +94,7 @@ namespace ContextEditor
             : this( wizardManager, null, isLastStep, title )
         {
         }
+
         /// <summary>
         /// Gets whether the user can go on the next Wizard page
         /// </summary>

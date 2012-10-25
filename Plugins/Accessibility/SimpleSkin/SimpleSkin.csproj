@@ -47,7 +47,8 @@
     </Reference>
     <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Context.2.8.46-develop\lib\net40\CK.Context.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Context.2.8.47-develop\lib\net40\CK.Context.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Core">
       <HintPath>..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
@@ -58,16 +59,19 @@
       <HintPath>..\..\..\packages\CK.Interop.2.7.40\lib\net40\CK.Interop.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Config">
-      <HintPath>..\..\..\packages\CK.Plugin.Config.2.8.44\lib\net40\CK.Plugin.Config.dll</HintPath>
+    <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Model.dll</HintPath>
+    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Reflection">
@@ -76,7 +80,8 @@
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.8.46-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CK.Storage">
       <HintPath>..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
@@ -84,10 +89,12 @@
     </Reference>
     <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.8.46-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.8.47-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Windows.Interop">
-      <HintPath>..\..\..\packages\CK.Windows.Interop.2.8.44\lib\net40\CK.Windows.Interop.dll</HintPath>
+    <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.8.47-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Common.Logging">
@@ -162,6 +169,7 @@
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.StandardViews\CK.WPF.StandardViews.csproj">
       <Project>{6f198d3d-39e5-4de6-917e-dfb99af31e3e}</Project>
       <Name>CK.WPF.StandardViews</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
@@ -176,6 +184,7 @@
     <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
       <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
       <Name>HighlightModel</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

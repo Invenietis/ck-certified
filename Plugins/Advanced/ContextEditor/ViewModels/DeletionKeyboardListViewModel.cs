@@ -39,7 +39,6 @@ namespace ContextEditor.ViewModels
         public override bool OnBeforeNext()
         {
             _selectedKeyboard.Keyboard.Destroy();
-            //_root.KeyboardContext.Service.CurrentKeyboard = null;
             return base.OnBeforeNext();
         }
     }

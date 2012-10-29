@@ -18,5 +18,7 @@ namespace CK.WordPredictor.Model
         /// 
         /// </summary>
         ReadOnlyObservableCollection<IWordPredicted> Words { get; }
+
+        IWordPredictorEngine CurrentEngine { get; }
     }
 }

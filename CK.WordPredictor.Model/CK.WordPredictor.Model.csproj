@@ -68,6 +68,7 @@
     <Compile Include="IWordPredictedService.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="ITextualContextService.cs" />
+    <Compile Include="IWordPredictorEngine.cs" />
     <Compile Include="IWordPredictorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IWordPredicted.cs" />

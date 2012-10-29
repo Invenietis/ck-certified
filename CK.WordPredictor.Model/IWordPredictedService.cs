@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CK.Plugin;
 
-namespace WordPredictor
+namespace CK.WordPredictor.Model
 {
-    public interface IWordPredictorService
+    public interface IWordPredictedService : IDynamicService
     {
         event EventHandler<WordPredictedEventArgs> WordPredicted;
 
-        void Predict( string word );
+        void WordHasBeenChoosen( string word );
     }
 }

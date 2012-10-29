@@ -25,7 +25,6 @@ namespace WordPredictorTest
         class SampleTokenCollection : ITokenCollection
         {
             IList<IToken> _token;
-            ITextualContextService _contextService;
 
             public void Add( string token )
             {
@@ -35,7 +34,7 @@ namespace WordPredictorTest
                     CollectionChanged( this, new System.Collections.Specialized.NotifyCollectionChangedEventArgs( System.Collections.Specialized.NotifyCollectionChangedAction.Add, ts ) );
             }
 
-            public SampleTokenCollection( ITextualContextService contextService, params string[] tokens )
+            public SampleTokenCollection( params string[] tokens )
             {
                 _token = new List<IToken>( tokens.Select( t => new TokenStub( t ) ) );
             }

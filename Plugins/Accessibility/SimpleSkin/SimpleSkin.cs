@@ -64,7 +64,7 @@ namespace SimpleSkin
         bool _autohide;
         int _timeout;
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

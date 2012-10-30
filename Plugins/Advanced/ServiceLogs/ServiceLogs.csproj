@@ -62,16 +62,19 @@
       <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Discoverer">
-      <HintPath>..\..\..\packages\CK-Runner.2.8.47-develop\lib\net40\CK.Plugin.Discoverer.dll</HintPath>
+    <Reference Include="CK.Plugin.Discoverer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Runner.2.8.51-develop\lib\net40\CK.Plugin.Discoverer.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Discoverer.Runner">
-      <HintPath>..\..\..\packages\CK-Runner.2.8.47-develop\lib\net40\CK.Plugin.Discoverer.Runner.dll</HintPath>
+    <Reference Include="CK.Plugin.Discoverer.Runner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Runner.2.8.51-develop\lib\net40\CK.Plugin.Discoverer.Runner.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Host">
-      <HintPath>..\..\..\packages\CK-Runner.2.8.47-develop\lib\net40\CK.Plugin.Host.dll</HintPath>
+    <Reference Include="CK.Plugin.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Runner.2.8.51-develop\lib\net40\CK.Plugin.Host.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
@@ -79,8 +82,9 @@
       <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CK.Plugin.Runner">
-      <HintPath>..\..\..\packages\CK-Runner.2.8.47-develop\lib\net40\CK.Plugin.Runner.dll</HintPath>
+    <Reference Include="CK.Plugin.Runner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Runner.2.8.51-develop\lib\net40\CK.Plugin.Runner.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CK.Reflection">

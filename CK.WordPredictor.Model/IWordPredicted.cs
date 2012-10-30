@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CK.Predictor.Model
+namespace CK.WordPredictor.Model
 {
     public interface IWordPredicted
     {

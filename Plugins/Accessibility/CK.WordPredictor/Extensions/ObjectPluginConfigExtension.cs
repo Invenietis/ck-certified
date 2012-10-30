@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin.Config;
 
-namespace CK.Predictor
+namespace CK.WordPredictor
 {
     public static class ObjectPluginConfigExtension
     {

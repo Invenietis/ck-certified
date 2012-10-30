@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CK.Predictor.Model;
+using CK.WordPredictor.Model;
 
-namespace CK.Predictor
+namespace CK.WordPredictor
 {
     internal class SimpleToken : IToken
     {

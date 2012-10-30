@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin;
 
-namespace CK.Predictor.Model
+namespace CK.WordPredictor.Model
 {
     public interface IWordPredictedService : IDynamicService
     {

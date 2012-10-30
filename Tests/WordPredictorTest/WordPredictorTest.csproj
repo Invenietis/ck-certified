@@ -85,9 +85,9 @@
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Accessibility\WordPredictor\WordPredictor.csproj">
+    <ProjectReference Include="..\..\Plugins\Accessibility\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
-      <Name>WordPredictor</Name>
+      <Name>CK.WordPredictor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

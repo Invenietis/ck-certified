@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using CK.Plugin;
 
-namespace CK.Predictor.Model
+namespace CK.WordPredictor.Model
 {
     public enum CaretPosition
     {
@@ -19,7 +19,6 @@ namespace CK.Predictor.Model
 
     public interface ITokenCollection : INotifyCollectionChanged, IReadOnlyList<IToken>
     {
-        event NotifyCollectionChangedEventHandler CollectionChanged;
     }
 
     public interface ITextualContextService : INotifyPropertyChanged, IDynamicService

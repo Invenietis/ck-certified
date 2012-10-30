@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using CK.Plugin;
-using CK.Predictor.Model;
+using CK.WordPredictor.Model;
 
-namespace CK.Predictor
+namespace CK.WordPredictor
 {
     [Plugin( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}", PublicName = "DirectTextualContext", Categories = new[] { "Advanced" } )]
     public class DirectTextualContextService : IPlugin, ITextualContextService

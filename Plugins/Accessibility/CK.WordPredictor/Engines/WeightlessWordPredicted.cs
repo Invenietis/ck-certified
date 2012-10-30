@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CK.Predictor.Model;
+using CK.WordPredictor.Model;
 
-namespace CK.Predictor
+namespace CK.WordPredictor.Engines
 {
-    public class SimpleWordPredicted : IWordPredicted
+    public class WeightlessWordPredicted : IWordPredicted
     {
-        public SimpleWordPredicted( string w )
+        public WeightlessWordPredicted( string w )
         {
             Word = w;
         }

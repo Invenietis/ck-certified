@@ -6,14 +6,15 @@ using System.Text;
 using CK.Context;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Predictor.Model;
+using CK.WordPredictor.Engines;
+using CK.WordPredictor.Model;
 
-namespace CK.Predictor
+namespace CK.WordPredictor
 {
     [Plugin( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", PublicName = "WordPredictor", Categories = new[] { "Accessibility" } )]
     public class WordPredictorService : IPlugin, IPredictorService
     {
-        IPredictorEngine _engine;
+        IWordPredictorEngine _engine;
         List<IWordPredicted> _predictedList;
 
         [RequiredService]
@@ -46,7 +47,7 @@ namespace CK.Predictor
 
         internal string ResourcePath { get; set; }
 
-        internal IPredictorEngine CurrentEngine
+        internal IWordPredictorEngine CurrentEngine
         {
             get { return _engine ?? (_engine = new WordPredictorEngineFactory( ResourcePath ).Create( PredictorEngine )); }
         }

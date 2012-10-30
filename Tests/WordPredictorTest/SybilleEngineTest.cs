@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CK.Predictor;
-using CK.Predictor.Model;
+using CK.WordPredictor;
+using CK.WordPredictor.Model;
+using CK.WordPredictor.Engines;
 using NUnit.Framework;
 
 namespace WordPredictorTest
@@ -12,13 +13,13 @@ namespace WordPredictorTest
     [TestFixture]
     public class SybilleEngineTest
     {
-        public static string ResourceFullPath = @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Accessibility\WordPredictor\Sybille";
+        public static string ResourceFullPath = @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Accessibility\CK.WordPredictor\";
 
         [Test]
         public void Sybille_Dictionnary_Should_Load_And_Provide_Results()
         {
             WordPredictorEngineFactory f = new WordPredictorEngineFactory( ResourceFullPath );
-            IPredictorEngine engine = f.Create( "sybille" );
+            IWordPredictorEngine engine = f.Create( "sybille" );
             TestEngine( engine );
             f.Release( engine );
         }
@@ -27,12 +28,12 @@ namespace WordPredictorTest
         public void Sem_Sybille_Should_Load_And_Provide_Results()
         {
             WordPredictorEngineFactory f = new WordPredictorEngineFactory( ResourceFullPath );
-            IPredictorEngine engine = f.Create( "sem-sybille" );
+            IWordPredictorEngine engine = f.Create( "sem-sybille" );
             TestEngine( engine );
             f.Release( engine );
         }
 
-        private static void TestEngine( IPredictorEngine engine )
+        private static void TestEngine( IWordPredictorEngine engine )
         {
             DirectTextualContextService textualContextService = new DirectTextualContextService();
             textualContextService.SetToken( "Je" );

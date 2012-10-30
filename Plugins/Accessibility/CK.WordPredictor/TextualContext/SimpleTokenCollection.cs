@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using CK.Predictor.Model;
+using CK.WordPredictor.Model;
 
-namespace CK.Predictor
+namespace CK.WordPredictor
 {
     internal class SimpleTokenCollection : ITokenCollection
     {
@@ -23,7 +24,7 @@ namespace CK.Predictor
             _token = new List<IToken>( tokens.Select( t => new SimpleToken( t ) ) );
         }
 
-        public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         #region IReadOnlyList<IToken> Members
 

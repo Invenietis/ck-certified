@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using CK.Predictor.Model;
+using CK.WordPredictor;
+using CK.WordPredictor.Engines;
+using CK.WordPredictor.Model;
 using Moq;
 using NUnit.Framework;
-using CK.Predictor;
 
-namespace CK.PredictorTest
+namespace CK.WordPredictorTest
 {
     [TestFixture]
     public class TextualContextServiceTest
     {
-        class NoPredictionPredictorEngine : IPredictorEngine
+        class NoPredictionPredictorEngine : IWordPredictorEngine
         {
             public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
             {
                 if( textualService == null ) throw new ArgumentNullException( "textualService" );
                 foreach( var w in textualService.Tokens )
                 {
-                    yield return new SimpleWordPredicted( w.Value );
+                    yield return new WeightlessWordPredicted( w.Value );
                 }
             }
 

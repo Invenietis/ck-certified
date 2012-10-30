@@ -7,21 +7,14 @@ using System.Text;
 using CK.WordPredictor.Model;
 using Moq;
 using NUnit.Framework;
+using WordPredictor;
 
 namespace WordPredictorTest
 {
     [TestFixture]
     public class TextualContextServiceTest
     {
-        class TokenStub : IToken
-        {
-            public TokenStub( string v )
-            {
-                Value = v;
-            }
-            public string Value { get; set; }
-        }
-        
+
         class WordPredictedStub : IWordPredicted
         {
             public WordPredictedStub( string w )
@@ -36,73 +29,6 @@ namespace WordPredictorTest
             }
         }
 
-        class SampleTokenCollection : ITokenCollection
-        {
-            IList<IToken> _token;
-
-            public void Add( string token )
-            {
-                var ts = new TokenStub( token );
-                _token.Add( ts );
-                if( CollectionChanged != null )
-                    CollectionChanged( this, new System.Collections.Specialized.NotifyCollectionChangedEventArgs( System.Collections.Specialized.NotifyCollectionChangedAction.Add, ts ) );
-            }
-
-            public SampleTokenCollection( params string[] tokens )
-            {
-                _token = new List<IToken>( tokens.Select( t => new TokenStub( t ) ) );
-            }
-
-            public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
-
-            #region IReadOnlyList<IToken> Members
-
-            public int IndexOf( object item )
-            {
-                return _token.IndexOf( (IToken)item );
-            }
-
-            public IToken this[int index]
-            {
-                get { return _token[index]; }
-                set { _token[index] = value; }
-            }
-
-            #endregion
-
-            #region IReadOnlyCollection<IToken> Members
-
-            public bool Contains( object item )
-            {
-                return _token.Contains( item );
-            }
-
-            public int Count
-            {
-                get { return _token.Count; }
-            }
-
-            #endregion
-
-            #region IEnumerable<IToken> Members
-
-            public IEnumerator<IToken> GetEnumerator()
-            {
-                return _token.GetEnumerator();
-            }
-
-            #endregion
-
-            #region IEnumerable Members
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return _token.GetEnumerator();
-            }
-
-            #endregion
-        }
-
         class NoPredictionPredictorEngine : IWordPredictorEngine
         {
             public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService )
@@ -115,92 +41,10 @@ namespace WordPredictorTest
             }
         }
 
-        class LiveTextualContextService : ITextualContextService
-        {
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            SampleTokenCollection _tokenCollection;
-
-            public LiveTextualContextService( string token )
-            {
-                _tokenCollection = new SampleTokenCollection( token );
-                _position = CaretPosition.EndToken;
-            }
-
-            public ITokenCollection Tokens
-            {
-                get { return _tokenCollection; }
-            }
-
-            public int CurrentTokenIndex
-            {
-                get { return _tokenCollection.Count - 1; }
-            }
-
-            public IToken CurrentToken
-            {
-                get
-                {
-                    if( _position == CaretPosition.OutsideToken ) return null;
-
-                    return _tokenCollection[CurrentTokenIndex];
-                }
-            }
-
-            public int CaretOffset
-            {
-                get { return CurrentToken.Value.Length - 1; }
-            }
-
-            CaretPosition _position;
-
-            public CaretPosition CurrentPosition
-            {
-                get { return _position; }
-            }
-
-            public void SetToken( string token )
-            {
-                if( token == "." )
-                {
-                    _tokenCollection = new SampleTokenCollection();
-                    _position = CaretPosition.OutsideToken;
-                }
-                else if( token == " " )
-                {
-                    _tokenCollection.Add( String.Empty );
-                    _position = CaretPosition.StartToken;
-                }
-                else
-                {
-                    //We were on the end of a phrase. We start a new context.
-                    if( CurrentToken == null )
-                    {
-                        _tokenCollection = new SampleTokenCollection( token );
-                    }
-                    else //We continue in the same context.
-                    {
-                        _tokenCollection[CurrentTokenIndex] = new TokenStub( CurrentToken.Value + token );
-                    }
-
-                    _position = CaretPosition.EndToken;
-                }
-
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "Tokens" ) );
-
-                if( CurrentToken != null )
-                {
-                    if( PropertyChanged != null )
-                        PropertyChanged( this, new PropertyChangedEventArgs( "CurrentToken" ) );
-                }
-            }
-        }
-
         [Test]
         public void When_Textual_Context_Token_Changed_The_Predictor_Word_List_Should_Be_Impacted()
         {
-            var t = new LiveTextualContextService( "J" );
+            var t = new DirectTextualContextService();
             var p = new Mock<IWordPredictorService>();
             p.Setup( e => e.CurrentEngine ).Returns( new NoPredictionPredictorEngine() );
 
@@ -218,6 +62,7 @@ namespace WordPredictorTest
                 }
             };
 
+            t.SetToken( "J" );
             t.SetToken( "e" );
             Assert.That( p.Object.Words.FirstOrDefault().Word == "Je" );
 

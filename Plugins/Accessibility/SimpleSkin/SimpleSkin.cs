@@ -189,7 +189,20 @@ namespace SimpleSkin
 
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+            if( e.Current == RunningStatus.Started )
+            {
+                Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+                Highlighter.Service.BeginHighlight += OnBeginHighlight;
+                Highlighter.Service.EndHighlight += OnEndHighlight;
+                Highlighter.Service.SelectElement += OnSelectElement;
+            }
+            else if( e.Current == RunningStatus.Stopping )
+            {
+                Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+                Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+                Highlighter.Service.EndHighlight -= OnEndHighlight;
+                Highlighter.Service.SelectElement -= OnSelectElement;
+            }
         }
 
         private void RegisterEvents()

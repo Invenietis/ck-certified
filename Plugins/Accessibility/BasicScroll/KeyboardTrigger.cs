@@ -23,7 +23,7 @@ namespace BasicScroll
         const string PluginIdString = "{4E3A3B25-7FD0-406F-A958-ECB50AC6A597}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "SpacebarTrigger";
+        const string PluginPublicName = "Keyboard Trigger";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         bool _wasASpace = false;

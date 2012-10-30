@@ -71,8 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SybilleEngineTest.cs" />
     <Compile Include="TextualContextServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordPredictorEngineFactoryTest.cs" />
+    <Compile Include="WordPredictorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

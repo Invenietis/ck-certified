@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CK.WordPredictor.Model
+namespace CK.Predictor.Model
 {
     public class WordPredictedEventArgs : EventArgs
     {

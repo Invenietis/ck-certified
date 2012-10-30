@@ -7,7 +7,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using CK.Plugin;
 
-namespace CK.WordPredictor.Model
+namespace CK.Predictor.Model
 {
     public enum CaretPosition
     {

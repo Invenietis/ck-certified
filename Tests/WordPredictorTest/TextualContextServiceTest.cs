@@ -4,40 +4,30 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using CK.WordPredictor.Model;
+using CK.Predictor.Model;
 using Moq;
 using NUnit.Framework;
-using WordPredictor;
+using CK.Predictor;
 
-namespace WordPredictorTest
+namespace CK.PredictorTest
 {
     [TestFixture]
     public class TextualContextServiceTest
     {
-
-        class WordPredictedStub : IWordPredicted
+        class NoPredictionPredictorEngine : IPredictorEngine
         {
-            public WordPredictedStub( string w )
-            {
-                Word = w;
-            }
-            public string Word { get; private set; }
-
-            public double Weight
-            {
-                get { return 0; }
-            }
-        }
-
-        class NoPredictionPredictorEngine : IWordPredictorEngine
-        {
-            public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService )
+            public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
             {
                 if( textualService == null ) throw new ArgumentNullException( "textualService" );
                 foreach( var w in textualService.Tokens )
                 {
-                    yield return new WordPredictedStub( w.Value );
+                    yield return new SimpleWordPredicted( w.Value );
                 }
+            }
+
+            public bool IsWeightedPrediction
+            {
+                get { return false; }
             }
         }
 
@@ -45,8 +35,7 @@ namespace WordPredictorTest
         public void When_Textual_Context_Token_Changed_The_Predictor_Word_List_Should_Be_Impacted()
         {
             var t = new DirectTextualContextService();
-            var p = new Mock<IWordPredictorService>();
-            p.Setup( e => e.CurrentEngine ).Returns( new NoPredictionPredictorEngine() );
+            var p = new Mock<IPredictorService>();
 
             t.PropertyChanged += ( sender, e ) =>
             {
@@ -57,7 +46,7 @@ namespace WordPredictorTest
                     p.Setup( w => w.Words )
                         .Returns(
                             () => new ReadOnlyObservableCollection<IWordPredicted>(
-                            new ObservableCollection<IWordPredicted>( p.Object.CurrentEngine.Predict( textualService ) ) ) )
+                            new ObservableCollection<IWordPredicted>( new NoPredictionPredictorEngine().Predict( textualService, 10 ) ) ) )
                         .Verifiable();
                 }
             };

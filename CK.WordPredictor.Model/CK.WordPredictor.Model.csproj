@@ -71,7 +71,7 @@
     <Compile Include="IPredictorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IWordPredicted.cs" />
-    <Compile Include="WordPredictedEventArgs.cs" />
+    <Compile Include="WordPredictionSuccessfulEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

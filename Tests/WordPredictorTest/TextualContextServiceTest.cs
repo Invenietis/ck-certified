@@ -34,7 +34,7 @@ namespace CK.WordPredictorTest
         public void When_Textual_Context_Token_Changed_The_Predictor_Word_List_Should_Be_Impacted()
         {
             var t = new DirectTextualContextService();
-            var p = new Mock<IPredictorService>();
+            var p = new Mock<IWordPredictorService>();
 
             t.PropertyChanged += ( sender, e ) =>
             {

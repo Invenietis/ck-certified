@@ -88,11 +88,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1D94D6F0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordPredictorTest", "Tests\WordPredictorTest\WordPredictorTest.csproj", "{98E92129-086C-4C31-935C-D33B2234534D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WordPredictor.Model", "CK.WordPredictor.Model\CK.WordPredictor.Model.csproj", "{771CA644-F99F-4AAF-8554-F9DDC49CB01B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WordPredictor.Model", "Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj", "{771CA644-F99F-4AAF-8554-F9DDC49CB01B}"
 EndProject
 <<<<<<< p-wordpredictor
 =======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WordPredictor.UI", "CK.WordPredictor.UI\CK.WordPredictor.UI.csproj", "{4CDC576F-47BD-4B76-B1A6-E2A8D7BBFF5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WordPredictor.UI", "Plugins\Accessibility\CK.WordPredictor.UI\CK.WordPredictor.UI.csproj", "{4CDC576F-47BD-4B76-B1A6-E2A8D7BBFF5C}"
 EndProject
 >>>>>>> local
 >>>>>>> local

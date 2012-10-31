@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,28 +33,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config">
-      <HintPath>..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Reflection">
-      <HintPath>..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="CK.SharedDic">
-      <HintPath>..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage">
-      <HintPath>..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,15 +69,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
+    <ProjectReference Include="..\..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+    <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
       <Name>CK.Keyboard.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugins\Accessibility\CK.WordPredictor\CK.WordPredictor.csproj">
+    <ProjectReference Include="..\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
       <Name>CK.WordPredictor</Name>
     </ProjectReference>

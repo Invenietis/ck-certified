@@ -90,7 +90,7 @@
     <Compile Include="WordPredictorService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
+    <ProjectReference Include="..\..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
     </ProjectReference>

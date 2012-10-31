@@ -12,7 +12,7 @@ using CK.WordPredictor.Model;
 namespace CK.WordPredictor
 {
     [Plugin( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", PublicName = "WordPredictor", Categories = new[] { "Accessibility" } )]
-    public class WordPredictorService : IPlugin, IPredictorService
+    public class WordPredictorService : IPlugin, IWordPredictorService
     {
         IWordPredictorEngine _engine;
         List<IWordPredicted> _predictedList;

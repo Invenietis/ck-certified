@@ -12,3 +12,5 @@ Plugins/Advanced/ContextEditor/bin/*
 Plugins/Accessibility/WordPredictor/bin/Debug/
 Tests/WordPredictorTest/bin/
 Plugins/Accessibility/CK.WordPredictor/bin/
+Library/CK.WordPredictor.Model/bin/
+Plugins/Accessibility/CK.WordPredictor.UI/bin/

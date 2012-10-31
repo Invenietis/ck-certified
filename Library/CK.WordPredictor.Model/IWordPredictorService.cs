@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CK.WordPredictor.Model
 {
-    public interface IPredictorService
+    public interface IWordPredictorService
     {
         /// <summary>
         /// Gets whether this service can produce weights for its predictions.

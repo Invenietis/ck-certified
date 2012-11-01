@@ -44,14 +44,25 @@ namespace CK.WordPredictor.UI
                 var zone = Context.CurrentKeyboard.Zones[PredictionZoneName];
                 if( zone != null )
                 {
-                    IKey key = zone.Keys.Create();
-                    IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
-                    key.Current.DownLabel = wordPredicted.Word;
-                    key.Current.UpLabel = wordPredicted.Word;
-                    key.CurrentLayout.Current.X = 5;
-                    key.CurrentLayout.Current.Y = 5;
-                    key.CurrentLayout.Current.Width = 200;
-                    key.CurrentLayout.Current.Height = 50;
+                    if( e.Action == NotifyCollectionChangedAction.Reset )
+                    {
+                        zone.Destroy();
+                        CreatePredictionZone( Context.CurrentKeyboard );
+                    }
+                    else if( e.Action == NotifyCollectionChangedAction.Add )
+                    {
+                        IKey key = zone.Keys.Create();
+                        if( key != null )
+                        {
+                            IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
+                            key.Current.DownLabel = wordPredicted.Word;
+                            key.Current.UpLabel = wordPredicted.Word;
+                            key.CurrentLayout.Current.X = 5;
+                            key.CurrentLayout.Current.Y = 5;
+                            key.CurrentLayout.Current.Width = 200;
+                            key.CurrentLayout.Current.Height = 50;
+                        }
+                    }
                 }
             }
         }
@@ -96,10 +107,7 @@ namespace CK.WordPredictor.UI
         {
             if( kb.Zones[PredictionZoneName] == null )
             {
-                IZone zone = kb.Zones.Create( PredictionZoneName );
-                IKeyMode keyMode = zone.Keys.Create().KeyModes.Create( kb.CurrentMode );
-                keyMode.DownLabel = "test";
-                keyMode.UpLabel = "test";
+                kb.Zones.Create( PredictionZoneName );
             }
         }
 

@@ -57,16 +57,17 @@ namespace WordPredictorTest
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
 
+            int keyCount = 0;
             // Mocking of IKeyboardContext
             var mKbContext = MockKeyboardContext( ( mockedZone ) =>
             {
                 var keyCollectionMock = new Mock<IKeyCollection>();
-                keyCollectionMock.Setup( e => e.Create() ).Verifiable();
+                keyCollectionMock.Setup( e => e.Create() ).Callback( () => keyCount++ );
                 keyCollectionMock.Setup( e => e.Count ).Returns( () =>
                 {
-                    return predictorService.Words.Count;
+                    return keyCount;
                 } );
-
+                keyCollectionMock.Setup( e => e.GetEnumerator() ).Returns( new List<IKey>().GetEnumerator() );
                 mockedZone.Setup( e => e.Keys ).Returns( keyCollectionMock.Object );
             } );
 
@@ -91,17 +92,19 @@ namespace WordPredictorTest
 
             // Test
             var keys = pluginSut.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
-            Assert.That( keys.Count > 0 );
+            Assert.That( keys.Count == predictorService.Words.Count );
+
+            //mKbContext.VerifyAll();
         }
 
 
         private static Mock<IKeyboardContext> MockKeyboardContext( Action<Mock<IZone>> zoneMockConfiguration = null )
         {
+            var mZone = new Mock<IZone>();
             var mzCollection = new Mock<IZoneCollection>();
             var mkb = new Mock<IKeyboard>();
             var mkbCollection = new Mock<IKeyboardCollection>();
             var mKbContext = new Mock<IKeyboardContext>();
-            var mZone = new Mock<IZone>();
 
             if( zoneMockConfiguration != null )
             {
@@ -124,6 +127,7 @@ namespace WordPredictorTest
                 .Setup( e => e.Zones )
                 .Returns( mzCollection.Object )
                 .Verifiable();
+            mkb.Setup( e => e.Name ).Returns( InKeyboardWordPredictor.CompatibilityKeyboardName );
 
             mkbCollection
                 .Setup( e => e[It.IsAny<string>()] )

@@ -67,7 +67,7 @@ namespace CK.WordPredictor.UI
                             IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
                             key.Current.DownLabel = wordPredicted.Word;
                             key.Current.UpLabel = wordPredicted.Word;
-                            key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+                            //key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
                             key.Current.OnKeyPressedCommands.Commands.Add( CommandFromWord( wordPredicted ) );
 
                             key.CurrentLayout.Current.X = (e.NewStartingIndex) * 5 + (WordPredictorService.Words.Count - 1) * wordWidth + offset;

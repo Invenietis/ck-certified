@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
 using CK.Plugin;
+using CK.Plugin.Config;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
@@ -18,8 +19,15 @@ namespace CK.WordPredictor.UI
         [RequiredService]
         public IWordPredictorService WordPredictorService { get; set; }
 
+        public IPluginConfigAccessor Config { get; set; }
+
         public const string CompatibilityKeyboardName = "Azerty";
         public const string PredictionZoneName = "Prediction";
+
+        public int MaxDisplayedWords
+        {
+            get { return Config.User.TryGet( "MaxDisplayedWords", 10 ); }
+        }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -54,17 +62,28 @@ namespace CK.WordPredictor.UI
                         IKey key = zone.Keys.Create();
                         if( key != null )
                         {
+                            int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / MaxDisplayedWords - 5;
+                            int offset = 2;
                             IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
                             key.Current.DownLabel = wordPredicted.Word;
                             key.Current.UpLabel = wordPredicted.Word;
-                            key.CurrentLayout.Current.X = 5;
+                            //key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+                            key.Current.OnKeyPressedCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+
+                            key.CurrentLayout.Current.X = (e.NewStartingIndex) * 5 + (WordPredictorService.Words.Count - 1) * wordWidth + offset;
                             key.CurrentLayout.Current.Y = 5;
-                            key.CurrentLayout.Current.Width = 200;
-                            key.CurrentLayout.Current.Height = 50;
+                            key.CurrentLayout.Current.Visible = true;
+                            key.CurrentLayout.Current.Width = wordWidth;
+                            key.CurrentLayout.Current.Height = 45;
                         }
                     }
                 }
             }
+        }
+
+        private static string CommandFromWord( IWordPredicted wordPredicted )
+        {
+            return String.Format( @"sendKey""{0}""", wordPredicted.Word );
         }
 
         public void Stop()

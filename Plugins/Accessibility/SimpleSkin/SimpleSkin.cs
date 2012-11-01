@@ -213,24 +213,6 @@ namespace SimpleSkin
             _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
             _ctxVm.KeyboardContext.CurrentKeyboardChanging += new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
             _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-            _ctxVm.KeyboardContext.CurrentKeyboard.KeyCreated += OnKeyCreated;
-            _ctxVm.KeyboardContext.CurrentKeyboard.Zones.ZoneCreated += OnZoneCreated;
-            _ctxVm.KeyboardContext.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
-        }
-
-        void OnZoneCreated( object sender, ZoneEventArgs e )
-        {
-            throw new NotImplementedException();
-        }
-
-        void OnZoneDestroyed( object sender, ZoneEventArgs e )
-        {
-            throw new NotImplementedException();
-        }
-
-        void OnKeyCreated( object sender, KeyEventArgs e )
-        {
-            throw new NotImplementedException();
         }
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )

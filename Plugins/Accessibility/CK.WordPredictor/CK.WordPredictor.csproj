@@ -76,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WordPredictedCollectio.cs" />
     <Compile Include="Engines\WordPredictorEngineFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngine.cs" />
@@ -94,17 +95,33 @@
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Engines\Sybille\Data\LMbin_fr.sib" />
-    <None Include="Engines\Sybille\Data\SemMatrix_fr.bin" />
-    <None Include="Engines\Sybille\Data\UserPredictor_fr.sib" />
+    <None Include="Engines\Sybille\Data\LMbin_fr.sib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Engines\Sybille\Data\SemMatrix_fr.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Engines\Sybille\Data\UserPredictor_fr.sib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Engines\Sybille\Data\SemLambdas_fr.txt" />
-    <Content Include="Engines\Sybille\Data\SemWords_fr.txt" />
-    <Content Include="Engines\Sybille\Data\UserTexts_fr.txt" />
+    <None Include="Engines\Sybille\Data\SemLambdas_fr.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Engines\Sybille\Data\SemWords_fr.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Engines\Sybille\Data\UserTexts_fr.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Engines\Sybille\Data\WordPredictor.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

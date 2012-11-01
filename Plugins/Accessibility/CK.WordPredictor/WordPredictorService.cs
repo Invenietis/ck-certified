@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using CK.Context;
 using CK.Plugin;
@@ -15,7 +17,8 @@ namespace CK.WordPredictor
     public class WordPredictorService : IPlugin, IWordPredictorService
     {
         IWordPredictorEngine _engine;
-        List<IWordPredicted> _predictedList;
+        ObservableCollection<IWordPredicted> _predictedList;
+        WordPredictedCollection _wordPredictedCollection;
 
         [RequiredService]
         public ITextualContextService TextualContextService { get; set; }
@@ -40,16 +43,22 @@ namespace CK.WordPredictor
             get { return Config.User.TryGet( "PredictorEngine", "sybille" ); }
         }
 
-        public ReadOnlyObservableCollection<IWordPredicted> Words
+        public IWordPredictedCollection Words
         {
-            get { return new ReadOnlyObservableCollection<IWordPredicted>( new ObservableCollection<IWordPredicted>( _predictedList ) ); }
+            get { return _wordPredictedCollection; }
         }
 
-        internal string ResourcePath { get; set; }
+        Func<string> _resourcePath = () => Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) );
+
+        internal Func<string> PluginDirectoryPath
+        {
+            get { return _resourcePath; }
+            set { _resourcePath = value; }
+        }
 
         internal IWordPredictorEngine CurrentEngine
         {
-            get { return _engine ?? (_engine = new WordPredictorEngineFactory( ResourcePath ).Create( PredictorEngine )); }
+            get { return _engine ?? (_engine = new WordPredictorEngineFactory( PluginDirectoryPath() ).Create( PredictorEngine )); }
         }
 
         public bool Setup( IPluginSetupInfo info )
@@ -59,7 +68,8 @@ namespace CK.WordPredictor
 
         public void Start()
         {
-            _predictedList = new List<IWordPredicted>();
+            _predictedList = new ObservableCollection<IWordPredicted>();
+            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
             TextualContextService.PropertyChanged += TextualContextService_PropertyChanged;
         }
 
@@ -67,9 +77,9 @@ namespace CK.WordPredictor
         {
             if( e.PropertyName == "CurrentToken" )
             {
-                IEnumerable<IWordPredicted> words = CurrentEngine.Predict( TextualContextService, MaxSuggestedWords );
                 _predictedList.Clear();
-                _predictedList.AddRange( words );
+                IEnumerable<IWordPredicted> words = CurrentEngine.Predict( TextualContextService, MaxSuggestedWords );
+                foreach( var w in words ) _predictedList.Add( w );
             }
         }
 

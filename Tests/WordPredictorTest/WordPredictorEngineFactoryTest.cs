@@ -15,14 +15,14 @@ namespace WordPredictorTest
         [Test]
         public void Create_Should_Throw_Exception_If_No_Engine_With_The_Given_Name_Is_Available()
         {
-            WordPredictorEngineFactory f = new WordPredictorEngineFactory( SybilleEngineTest.ResourceFullPath );
+            WordPredictorEngineFactory f = new WordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
             Assert.Throws<ArgumentException>( () => f.Create( "lucene" ) );
         }
 
         [Test]
         public void Sybillye_And_Semantic_Sybille_Are_Available()
         {
-            WordPredictorEngineFactory f = new WordPredictorEngineFactory( SybilleEngineTest.ResourceFullPath );
+            WordPredictorEngineFactory f = new WordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
             Assert.That( f.Create( "sybille" ), Is.Not.Null );
             Assert.That( f.Create( "sem-sybille" ), Is.Not.Null );
         }
@@ -49,7 +49,7 @@ namespace WordPredictorTest
         [Test]
         public void Release_Should_Call_Dispose()
         {
-            WordPredictorEngineFactory f = new WordPredictorEngineFactory( SybilleEngineTest.ResourceFullPath );
+            WordPredictorEngineFactory f = new WordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
             var engine = new DisposableEngine();
             f.Release( engine );
             Assert.That( engine.DisposedCalled );

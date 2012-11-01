@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IWordPredictedCollection.cs" />
     <Compile Include="IWordPredictedService.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="ITextualContextService.cs" />

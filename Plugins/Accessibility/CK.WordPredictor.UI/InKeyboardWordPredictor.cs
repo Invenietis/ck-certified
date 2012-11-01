@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
@@ -14,12 +15,11 @@ namespace CK.WordPredictor.UI
         [RequiredService]
         public IKeyboardContext Context { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        //public IService<ITextualContextService> TextualContextService { get; set; }
-
         [RequiredService]
         public IWordPredictorService WordPredictorService { get; set; }
 
+        public const string CompatibilityKeyboardName = "Azerty";
+        public const string PredictionZoneName = "Prediction";
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -32,20 +32,50 @@ namespace CK.WordPredictor.UI
             int keySpace = 5;
             IKeyboard kb = UpdateAzertyKeyboard( keyHeight, keySpace );
             if( kb != null )
+                CreatePredictionZone( kb );
+
+            WordPredictorService.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+        }
+
+        protected void OnWordPredictedCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
+        {
+            if( Context.CurrentKeyboard.Name == CompatibilityKeyboardName )
             {
-                if( kb.Zones["Prediction"] == null )
+                var zone = Context.CurrentKeyboard.Zones[PredictionZoneName];
+                if( zone != null )
                 {
-                    IZone zone = kb.Zones.Create( "Prediction" );
-                    IKeyMode keyMode = zone.Keys.Create().KeyModes.Create( kb.CurrentMode );
-                    keyMode.DownLabel = "test";
-                    keyMode.UpLabel = "test";
+                    IKey key = zone.Keys.Create();
+                    IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
+                    key.Current.DownLabel = wordPredicted.Word;
+                    key.Current.UpLabel = wordPredicted.Word;
+                    key.CurrentLayout.Current.X = 5;
+                    key.CurrentLayout.Current.Y = 5;
+                    key.CurrentLayout.Current.Width = 200;
+                    key.CurrentLayout.Current.Height = 50;
                 }
             }
         }
 
+        public void Stop()
+        {
+            int keyHeight = -50;
+            int keySpace = -5;
+            IKeyboard kb = UpdateAzertyKeyboard( keyHeight, keySpace );
+            if( kb != null )
+            {
+                IZone zone = kb.Zones[PredictionZoneName];
+                if( zone != null ) zone.Destroy();
+            }
+        }
+
+        public void Teardown()
+        {
+        }
+
+
         private IKeyboard UpdateAzertyKeyboard( int keyHeight, int keySpace )
         {
-            IKeyboard azertyKeyboard = Context.Keyboards["Azerty"];
+            IKeyboard azertyKeyboard = Context.Keyboards[CompatibilityKeyboardName];
             if( azertyKeyboard != null )
             {
                 //azertyKeyboard.CurrentLayout.LayoutZones.SelectMany( t => t.LayoutKeys ).ToList().ForEach( ( l ) =>
@@ -62,20 +92,16 @@ namespace CK.WordPredictor.UI
             return null;
         }
 
-        public void Stop()
+        private static void CreatePredictionZone( IKeyboard kb )
         {
-            int keyHeight = -50;
-            int keySpace = -5;
-            IKeyboard kb = UpdateAzertyKeyboard( keyHeight, keySpace );
-            if( kb != null )
+            if( kb.Zones[PredictionZoneName] == null )
             {
-                IZone zone = kb.Zones["Prediction"];
-                if( zone != null ) zone.Destroy();
+                IZone zone = kb.Zones.Create( PredictionZoneName );
+                IKeyMode keyMode = zone.Keys.Create().KeyModes.Create( kb.CurrentMode );
+                keyMode.DownLabel = "test";
+                keyMode.UpLabel = "test";
             }
         }
 
-        public void Teardown()
-        {
-        }
     }
 }

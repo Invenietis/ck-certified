@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin;
 using CK.WordPredictor.Model;
+using CommonServices;
 
 namespace CK.WordPredictor
 {
@@ -14,6 +15,9 @@ namespace CK.WordPredictor
         SimpleTokenCollection _tokenCollection;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        [RequiredService]
+        public ISendKeyCommandHandlerService SendKeyService { get; set; }
 
         public DirectTextualContextService()
         {
@@ -52,7 +56,7 @@ namespace CK.WordPredictor
             get { return _position; }
         }
 
-        public void SetToken( string token )
+        internal void SetToken( string token )
         {
             if( token == "." )
             {
@@ -89,6 +93,11 @@ namespace CK.WordPredictor
             }
         }
 
+        protected virtual void OnKeySent( object sender, KeySentEventArgs e )
+        {
+            if( e != null ) SetToken( e.Key );
+        }
+
         public bool Setup( IPluginSetupInfo info )
         {
             return info.Error != null;
@@ -96,11 +105,16 @@ namespace CK.WordPredictor
 
         public void Start()
         {
-            _position = CaretPosition.EndToken;
+            _position = CaretPosition.OutsideToken;
+            if( SendKeyService != null )
+            {
+                SendKeyService.KeySent += OnKeySent;
+            }
         }
 
         public void Stop()
         {
+            SendKeyService.KeySent -= OnKeySent;
         }
 
         public void Teardown()

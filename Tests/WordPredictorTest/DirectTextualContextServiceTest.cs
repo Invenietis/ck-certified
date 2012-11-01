@@ -5,6 +5,7 @@ using System.Linq;
 using CK.WordPredictor;
 using CK.WordPredictor.Engines;
 using CK.WordPredictor.Model;
+using CommonServices;
 using Moq;
 using NUnit.Framework;
 
@@ -44,8 +45,7 @@ namespace CK.WordPredictorTest
                     Assert.That( textualService, Is.Not.Null );
                     p.Setup( w => w.Words )
                         .Returns(
-                            () => new ReadOnlyObservableCollection<IWordPredicted>(
-                            new ObservableCollection<IWordPredicted>( new NoPredictionPredictorEngine().Predict( textualService, 10 ) ) ) )
+                            () => new WordPredictedCollection( new ObservableCollection<IWordPredicted>( new NoPredictionPredictorEngine().Predict( textualService, 10 ) ) ) )
                         .Verifiable();
                 }
             };
@@ -80,5 +80,63 @@ namespace CK.WordPredictorTest
 
             p.VerifyAll();
         }
+
+        private static DirectTextualContextService SetupDirectTextualContextService( string keyToSend )
+        {
+            DirectTextualContextService sut = new DirectTextualContextService();
+            Mock<ISendKeyCommandHandlerService> sendKey = new Mock<ISendKeyCommandHandlerService>();
+            sendKey.Setup( e => e.SendKey( It.IsAny<string>() ) ).Raises( e => e.KeySent += ( sender, eventArgs ) => { }, new KeySentEventArgs( keyToSend ) ).Verifiable();
+
+            sut.SendKeyService = sendKey.Object;
+            return sut;
+        }
+
+        [Test]
+        public void When_Input_Is_Received_The_Context_Should_Be_Updated()
+        {
+            string keyToSend = "J";
+            bool propertyChangedMustBeRaised = false;
+
+            DirectTextualContextService sut = SetupDirectTextualContextService( keyToSend );
+            sut.PropertyChanged += ( sender, e ) =>
+            {
+                propertyChangedMustBeRaised = true;
+            };
+
+            sut.Start();
+            sut.SendKeyService.SendKey( keyToSend );
+
+            Assert.That( propertyChangedMustBeRaised == true );
+            Assert.That( sut.CurrentToken.Value == keyToSend );
+        }
+
+        [Test]
+        public void If_The_Plugin_Is_Not_Started_Or_Stopped_It_Should_Not_Handle_Keys_From_SendKeyService()
+        {
+            bool propertyChangedRaised = false;
+            string keyToSend = "X";
+            DirectTextualContextService sut = SetupDirectTextualContextService( keyToSend );
+            sut.PropertyChanged += ( sender, e ) =>
+            {
+                propertyChangedRaised = true;
+            };
+
+            sut.SendKeyService.SendKey( keyToSend );
+            Assert.That( propertyChangedRaised == false );
+            Assert.That( sut.CurrentToken == null );
+
+            sut.Start();
+            sut.SendKeyService.SendKey( keyToSend );
+            Assert.That( propertyChangedRaised == true );
+            Assert.That( sut.CurrentToken.Value == keyToSend );
+
+            propertyChangedRaised = false;
+            sut.Stop();
+            sut.SendKeyService.SendKey( keyToSend );
+            Assert.That( propertyChangedRaised == false );
+            Assert.That( sut.CurrentToken.Value == keyToSend );
+        }
+
+
     }
 }

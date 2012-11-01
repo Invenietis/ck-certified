@@ -73,7 +73,8 @@
   <ItemGroup>
     <Compile Include="InKeyboardWordPredictorTests.cs" />
     <Compile Include="SybilleEngineTest.cs" />
-    <Compile Include="TextualContextServiceTest.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="DirectTextualContextServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordPredictorEngineFactoryTest.cs" />
     <Compile Include="WordPredictorTest.cs" />
@@ -97,6 +98,10 @@
     <ProjectReference Include="..\..\Plugins\Accessibility\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
       <Name>CK.WordPredictor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

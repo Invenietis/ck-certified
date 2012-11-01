@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using CK.Core;
+using CK.Plugin;
 
 namespace CK.WordPredictor.Model
 {
-    public interface IWordPredictorService
+    public interface IWordPredictorService : IDynamicService
     {
         /// <summary>
         /// Gets whether this service can produce weights for its predictions.
@@ -17,6 +17,6 @@ namespace CK.WordPredictor.Model
         /// <summary>
         /// 
         /// </summary>
-        ReadOnlyObservableCollection<IWordPredicted> Words { get; }
+        IWordPredictedCollection Words { get; }
     }
 }

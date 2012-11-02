@@ -23,10 +23,11 @@ namespace CK.WordPredictor.UI
 
         public const string CompatibilityKeyboardName = "Azerty";
         public const string PredictionZoneName = "Prediction";
+        public const int DefaultMaxDisplayedWords = 10;
 
         public int MaxDisplayedWords
         {
-            get { return Config.User.TryGet( "MaxDisplayedWords", 10 ); }
+            get { return Config.User.TryGet( "MaxDisplayedWords", DefaultMaxDisplayedWords ); }
         }
 
         public bool Setup( IPluginSetupInfo info )
@@ -36,13 +37,12 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
-            int keyHeight = 50;
-            int keySpace = 5;
-            IKeyboard kb = UpdateAzertyKeyboard( keyHeight, keySpace );
+            IKeyboard kb = GetAzertyKeyboard();
             if( kb != null )
                 CreatePredictionZone( kb );
 
-            WordPredictorService.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+            if( WordPredictorService != null )
+                WordPredictorService.Words.CollectionChanged += OnWordPredictedCollectionChanged;
         }
 
         protected void OnWordPredictedCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
@@ -54,43 +54,39 @@ namespace CK.WordPredictor.UI
                 {
                     if( e.Action == NotifyCollectionChangedAction.Reset )
                     {
-                        zone.Destroy();
-                        CreatePredictionZone( Context.CurrentKeyboard );
+                        for( int i = 0; i < MaxDisplayedWords; ++i )
+                        {
+                            zone.Keys[i].CurrentLayout.Current.Visible = false;
+                        }
                     }
                     else if( e.Action == NotifyCollectionChangedAction.Add )
                     {
-                        IKey key = zone.Keys.Create();
+                        int idx = e.NewStartingIndex;
+                        IKey key = zone.Keys[idx];
                         if( key != null )
                         {
-                            int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / MaxDisplayedWords - 5;
-                            int offset = 2;
                             IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
-                            key.Current.DownLabel = wordPredicted.Word;
-                            key.Current.UpLabel = wordPredicted.Word;
-                            //key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
-                            key.Current.OnKeyPressedCommands.Commands.Add( CommandFromWord( wordPredicted ) );
-
-                            key.CurrentLayout.Current.X = (e.NewStartingIndex) * 5 + (WordPredictorService.Words.Count - 1) * wordWidth + offset;
-                            key.CurrentLayout.Current.Y = 5;
-                            key.CurrentLayout.Current.Visible = true;
-                            key.CurrentLayout.Current.Width = wordWidth;
-                            key.CurrentLayout.Current.Height = 45;
+                            if( wordPredicted != null )
+                            {
+                                key.Current.DownLabel = wordPredicted.Word;
+                                key.Current.UpLabel = wordPredicted.Word;
+                                key.Current.OnKeyPressedCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+                                key.CurrentLayout.Current.Visible = true;
+                            }
                         }
                     }
                 }
             }
         }
 
-        private static string CommandFromWord( IWordPredicted wordPredicted )
+        protected virtual string CommandFromWord( IWordPredicted wordPredicted )
         {
             return String.Format( @"sendKey""{0}""", wordPredicted.Word );
         }
 
         public void Stop()
         {
-            int keyHeight = -50;
-            int keySpace = -5;
-            IKeyboard kb = UpdateAzertyKeyboard( keyHeight, keySpace );
+            IKeyboard kb = GetAzertyKeyboard();
             if( kb != null )
             {
                 IZone zone = kb.Zones[PredictionZoneName];
@@ -103,32 +99,46 @@ namespace CK.WordPredictor.UI
         }
 
 
-        private IKeyboard UpdateAzertyKeyboard( int keyHeight, int keySpace )
+        private IKeyboard GetAzertyKeyboard()
         {
             IKeyboard azertyKeyboard = Context.Keyboards[CompatibilityKeyboardName];
             if( azertyKeyboard != null )
             {
-                //azertyKeyboard.CurrentLayout.LayoutZones.SelectMany( t => t.LayoutKeys ).ToList().ForEach( ( l ) =>
-                //{
-                //    foreach( var mode in l.LayoutKeyModes )
-                //    {
-                //        mode.Y = mode.Y + keyHeight + keySpace;
-                //    }
-                //} );
-                //azertyKeyboard.CurrentLayout.H = Context.CurrentKeyboard.CurrentLayout.H + keyHeight + keySpace;
                 return azertyKeyboard;
             }
 
             return null;
         }
 
-        private static void CreatePredictionZone( IKeyboard kb )
+        protected virtual void CreatePredictionZone( IKeyboard kb )
         {
             if( kb.Zones[PredictionZoneName] == null )
             {
-                kb.Zones.Create( PredictionZoneName );
+                IZone predictionZone = kb.Zones.Create( PredictionZoneName );
+                if( predictionZone != null )
+                {
+                    int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / MaxDisplayedWords - 5;
+                    int offset = 2;
+
+                    for( int i = 0; i < MaxDisplayedWords; ++i )
+                    {
+                        IKey key = predictionZone.Keys.Create( i );
+                        key.CurrentLayout.Current.Visible = false;
+                        ConfigureKey( key.CurrentLayout.Current, i, wordWidth, offset );
+                    }
+                }
             }
         }
+
+        protected virtual void ConfigureKey( ILayoutKeyModeCurrent layoutKeyMode, int idx, int wordWidth, int offset )
+        {
+            if( layoutKeyMode == null ) throw new ArgumentNullException( "layoutKeyMode" );
+            layoutKeyMode.X = idx * 5 + (idx - 1) * wordWidth + offset;
+            layoutKeyMode.Y = 5;
+            layoutKeyMode.Width = wordWidth;
+            layoutKeyMode.Height = 45;
+        }
+
 
     }
 }

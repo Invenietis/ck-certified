@@ -19,22 +19,33 @@ namespace WordPredictorTest
         [Test]
         public void When_Plugin_Is_Started_It_Must_Create_A_Prediction_Zone_In_The_Context()
         {
-            var mKbContext = MockKeyboardContext();
+            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
 
-            InKeyboardWordPredictor p = new InKeyboardWordPredictor();
-            p.Context = mKbContext.Object;
+            InKeyboardWordPredictor p = new InKeyboardWordPredictor()
+            {
+                Context = mKbContext.Object,
+                Config = TestHelper.MockPluginConfigAccessor().Object
+            };
             p.Start();
 
-            Assert.That( p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName] != null );
+            IZone predictionZone = p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName];
+            Assert.That( predictionZone != null );
+            Assert.That( InKeyboardWordPredictor.DefaultMaxDisplayedWords == 10 );
+            Assert.That( predictionZone.Keys.Count == p.MaxDisplayedWords );
+
             mKbContext.VerifyAll();
         }
 
         [Test]
         public void When_Plugin_Is_Stopped_It_Must_Destroys_Prediction_Zone_Previously_Created()
         {
-            var mKbContext = MockKeyboardContext();
-            InKeyboardWordPredictor p = new InKeyboardWordPredictor();
-            p.Context = mKbContext.Object;
+            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
+            InKeyboardWordPredictor p = new InKeyboardWordPredictor()
+            {
+                Context = mKbContext.Object,
+                Config = TestHelper.MockPluginConfigAccessor().Object
+            };
+
             p.Start();
             Assert.That( p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName] != null );
 
@@ -57,26 +68,15 @@ namespace WordPredictorTest
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
 
-            int keyCount = 0;
             // Mocking of IKeyboardContext
-            var mKbContext = MockKeyboardContext( ( mockedZone ) =>
-            {
-                var keyCollectionMock = new Mock<IKeyCollection>();
-                keyCollectionMock.Setup( e => e.Create() ).Callback( () => keyCount++ );
-                keyCollectionMock.Setup( e => e.Count ).Returns( () =>
-                {
-                    return keyCount;
-                } );
-                keyCollectionMock.Setup( e => e.GetEnumerator() ).Returns( new List<IKey>().GetEnumerator() );
-                mockedZone.Setup( e => e.Keys ).Returns( keyCollectionMock.Object );
-            } );
-
+            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
 
             // The Plugin Under Test.
             var pluginSut = new InKeyboardWordPredictor()
             {
                 WordPredictorService = predictorService,
-                Context = mKbContext.Object
+                Context = mKbContext.Object,
+                Config = TestHelper.MockPluginConfigAccessor().Object
             };
 
             // Start all depending plugins
@@ -96,54 +96,5 @@ namespace WordPredictorTest
 
             //mKbContext.VerifyAll();
         }
-
-
-        private static Mock<IKeyboardContext> MockKeyboardContext( Action<Mock<IZone>> zoneMockConfiguration = null )
-        {
-            var mZone = new Mock<IZone>();
-            var mzCollection = new Mock<IZoneCollection>();
-            var mkb = new Mock<IKeyboard>();
-            var mkbCollection = new Mock<IKeyboardCollection>();
-            var mKbContext = new Mock<IKeyboardContext>();
-
-            if( zoneMockConfiguration != null )
-            {
-                zoneMockConfiguration( mZone );
-            }
-            mZone.Setup( e => e.Destroy() ).Callback( () =>
-            {
-                mzCollection
-                    .Setup( x => x[It.IsAny<string>()] ).Returns( () => null );
-            } );
-            mzCollection
-                .Setup( e => e.Create( It.IsAny<string>() ) )
-                .Verifiable();
-            mzCollection
-                .Setup( e => e[It.IsAny<string>()] )
-                .Callback<string>( ( z ) => Assert.That( z == InKeyboardWordPredictor.PredictionZoneName ) )
-                .Returns( mZone.Object );
-
-            mkb
-                .Setup( e => e.Zones )
-                .Returns( mzCollection.Object )
-                .Verifiable();
-            mkb.Setup( e => e.Name ).Returns( InKeyboardWordPredictor.CompatibilityKeyboardName );
-
-            mkbCollection
-                .Setup( e => e[It.IsAny<string>()] )
-                .Callback<string>( z => Assert.That( z == InKeyboardWordPredictor.CompatibilityKeyboardName ) )
-                .Returns( mkb.Object )
-                .Verifiable();
-
-            mKbContext.Setup( e => e.CurrentKeyboard ).Returns( mkb.Object );
-
-            mKbContext
-                .Setup( e => e.Keyboards )
-                .Returns( mkbCollection.Object )
-                .Verifiable();
-
-            return mKbContext;
-        }
-
     }
 }

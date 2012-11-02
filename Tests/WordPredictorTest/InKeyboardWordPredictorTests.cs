@@ -127,7 +127,7 @@ namespace WordPredictorTest
                 Assert.That( keyCollection[0].Current.OnKeyPressedCommands, Is.Not.Null );
                 Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
                 Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands.Count == 1 );
-                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord:oneword" );
             }
             wordList.Add( predictedWord.Object );
             {
@@ -138,12 +138,12 @@ namespace WordPredictorTest
                 Assert.That( keyCollection[0].Current.OnKeyPressedCommands, Is.Not.Null );
                 Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
                 Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands.Count == 1 );
-                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord:oneword" );
 
                 Assert.That( keyCollection[1].Current.OnKeyPressedCommands, Is.Not.Null );
                 Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
                 Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands.Count == 1 );
-                Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+                Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord:oneword" );
             }
         }
     }

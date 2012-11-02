@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CK.Plugin.Config;
 using CK.WordPredictor;
 using Moq;
@@ -24,7 +25,8 @@ namespace WordPredictorTest
             w.TextualContextService = t;
 
             w.Start();
-
+            Task.WaitAll( w.AsyncEngineContinuation );
+            
             t.SetToken( "Je" );
             Assert.That( w.Words.Count > 0 );
             Console.WriteLine( String.Join( " ", w.Words.Select( o => o.Word ).ToArray() ) );

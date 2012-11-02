@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using CK.WordPredictor;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace WordPredictorTest
 {
@@ -84,7 +85,7 @@ namespace WordPredictorTest
             textualService.Start();
             predictorService.Start();
             pluginSut.Start();
-
+            Task.WaitAll( predictorService.AsyncEngineContinuation );
             // Start test. When a token is inserted into the textual service, it will triggers the predictor service to make a prediction.
             textualService.SetToken( "J" );
             Assert.That( predictorService.Words.Count > 0 );

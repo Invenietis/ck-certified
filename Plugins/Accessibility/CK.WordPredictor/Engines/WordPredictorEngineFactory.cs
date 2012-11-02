@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.Engines
@@ -34,6 +35,14 @@ namespace CK.WordPredictor.Engines
                     Path.Combine( _pluginResourceDirectory, _sybileDataPath, "SemLambdas_fr.txt" ) );
                 default: throw new ArgumentException( String.Format( "There is no word predictor engine for the name: {0}", predictorName ), "predictorName" );
             }
+        }
+
+        public Task<IWordPredictorEngine> CreateAsync( string predictorName )
+        {
+            return Task.Factory.StartNew<IWordPredictorEngine>( () =>
+            {
+                return Create( predictorName );
+            } );
         }
 
         public void Release( IWordPredictorEngine engine )

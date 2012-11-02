@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using CK.Context;
 using CK.Plugin;
 using CK.Plugin.Config;
@@ -16,7 +17,6 @@ namespace CK.WordPredictor
     [Plugin( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", PublicName = "WordPredictor", Categories = new[] { "Accessibility" } )]
     public class WordPredictorService : IPlugin, IWordPredictorService
     {
-        IWordPredictorEngine _engine;
         ObservableCollection<IWordPredicted> _predictedList;
         WordPredictedCollection _wordPredictedCollection;
 
@@ -30,7 +30,7 @@ namespace CK.WordPredictor
 
         public bool IsWeightedPrediction
         {
-            get { return CurrentEngine.IsWeightedPrediction; }
+            get { return _engine != null ? _engine.IsWeightedPrediction : false; }
         }
 
         protected int MaxSuggestedWords
@@ -56,9 +56,19 @@ namespace CK.WordPredictor
             set { _resourcePath = value; }
         }
 
-        internal IWordPredictorEngine CurrentEngine
+        IWordPredictorEngine _engine;
+        Task _asyncEngineContinuation;
+
+        internal Task AsyncEngineContinuation
         {
-            get { return _engine ?? (_engine = new WordPredictorEngineFactory( PluginDirectoryPath() ).Create( PredictorEngine )); }
+            get { return _asyncEngineContinuation; }
+        }
+
+        private void FeedPredictedList()
+        {
+            _predictedList.Clear();
+            IEnumerable<IWordPredicted> words = _engine.Predict( TextualContextService, MaxSuggestedWords );
+            foreach( var w in words ) _predictedList.Add( w );
         }
 
         public bool Setup( IPluginSetupInfo info )
@@ -71,20 +81,26 @@ namespace CK.WordPredictor
             _predictedList = new ObservableCollection<IWordPredicted>();
             _wordPredictedCollection = new WordPredictedCollection( _predictedList );
             TextualContextService.PropertyChanged += TextualContextService_PropertyChanged;
+
+            var asyncEngine = new WordPredictorEngineFactory( PluginDirectoryPath() ).CreateAsync( PredictorEngine );
+            _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
+            {
+                if( _engine == null ) _engine = task.Result;
+            } );
         }
 
         void TextualContextService_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "CurrentToken" )
             {
-                _predictedList.Clear();
-                IEnumerable<IWordPredicted> words = CurrentEngine.Predict( TextualContextService, MaxSuggestedWords );
-                foreach( var w in words ) _predictedList.Add( w );
+                if( _engine == null ) _asyncEngineContinuation.ContinueWith( task => FeedPredictedList() );
+                else FeedPredictedList();
             }
         }
 
         public void Stop()
         {
+            _engine = null;
             _predictedList.Clear();
         }
 

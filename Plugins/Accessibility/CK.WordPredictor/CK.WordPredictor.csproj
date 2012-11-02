@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TextualContext\SimpleTextualContextAwarePredictedWordSender.cs" />
-    <Compile Include="WordPredictedCollectio.cs" />
+    <Compile Include="WordPredictedCollection.cs" />
     <Compile Include="Engines\WordPredictorEngineFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngine.cs" />

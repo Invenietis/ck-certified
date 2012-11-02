@@ -40,7 +40,7 @@ namespace CK.WordPredictor
 
         protected string PredictorEngine
         {
-            get { return Config.User.TryGet( "PredictorEngine", "sybille" ); }
+            get { return Config.User.TryGet( "PredictorEngine", "sem-sybille" ); }
         }
 
         public IWordPredictedCollection Words

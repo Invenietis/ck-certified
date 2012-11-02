@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
+using CK.WordPredictor;
+using CK.WordPredictor.Model;
 using Moq;
 using NUnit.Framework;
 
@@ -22,7 +25,25 @@ namespace WordPredictorTest
             return configAccessor;
         }
 
+        public static Mock<IWordPredictorService> MockPredictorService()
+        {
+            var p = new Mock<IWordPredictorService>();
 
+            p.Setup( w => w.Words )
+                .Returns(
+                    () => new WordPredictedCollection( new ObservableCollection<IWordPredicted>( WordCollection( 10 ) ) ) );
+            return p;
+        }
+
+        private static IEnumerable<IWordPredicted> WordCollection( int count )
+        {
+            for( int i=0; i < count; ++i )
+            {
+                var moq = new Mock<IWordPredicted>();
+                moq.SetupAllProperties();
+                yield return moq.Object;
+            }
+        }
 
         public static Func<Mock<IKey>, Mock<IKey>> MockKey( int index = 0 )
         {

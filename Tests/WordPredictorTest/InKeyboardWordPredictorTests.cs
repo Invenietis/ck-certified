@@ -92,9 +92,26 @@ namespace WordPredictorTest
 
             // Test
             var keys = pluginSut.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
-            Assert.That( keys.Count == predictorService.Words.Count );
+            Assert.That( keys.Select( e => e.CurrentLayout.Current.Visible == true ).Count() == predictorService.Words.Count );
 
-            //mKbContext.VerifyAll();
+            mKbContext.VerifyAll();
+        }
+
+        [Test]
+        public void There_Must_Be_Only_One_Command_Associated_With_The_Key_OnKeyPressed()
+        {
+            // Mocking of IKeyboardContext
+            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
+
+            // The Plugin Under Test.
+            var pluginSut = new InKeyboardWordPredictor()
+            {
+                WordPredictorService = TestHelper.MockPredictorService().Object,
+                Context = mKbContext.Object,
+                Config = TestHelper.MockPluginConfigAccessor().Object
+            };
+
+            //TODO write test
         }
     }
 }

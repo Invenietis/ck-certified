@@ -12,6 +12,7 @@ using System.Collections.Specialized;
 using CK.WordPredictor;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using CK.Plugin;
 
 namespace WordPredictorTest
 {
@@ -69,6 +70,8 @@ namespace WordPredictorTest
                 PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
+            var mockServiceWordPredictor = new Mock<IService<IWordPredictorService>>();
+            mockServiceWordPredictor.SetupGet( e => e.Service ).Returns( predictorService );
 
             // Mocking of IKeyboardContext
             var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
@@ -76,13 +79,14 @@ namespace WordPredictorTest
             // The Plugin Under Test.
             var pluginSut = new InKeyboardWordPredictor()
             {
-                WordPredictorService = predictorService,
+                WordPredictorService = mockServiceWordPredictor.Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
 
             // Start all depending plugins
             textualService.Start();
+            predictorService.Setup( null );
             predictorService.Start();
             pluginSut.Start();
             Task.WaitAll( predictorService.AsyncEngineContinuation );
@@ -109,9 +113,12 @@ namespace WordPredictorTest
             // The Plugin Under Test.
             var mkWordPredictor = TestHelper.MockPredictorService( wordList );
 
+            var mockServiceWordPredictor = new Mock<IService<IWordPredictorService>>();
+            mockServiceWordPredictor.SetupGet( e => e.Service ).Returns( mkWordPredictor.Object );
+
             var pluginSut = new InKeyboardWordPredictor()
             {
-                WordPredictorService = mkWordPredictor.Object,
+                WordPredictorService = mockServiceWordPredictor.Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };

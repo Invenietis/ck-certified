@@ -23,7 +23,8 @@ namespace WordPredictorTest
             w.PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath;
             w.Config = configAccessor.Object;
             w.TextualContextService = t;
-
+            
+            w.Setup( null );
             w.Start();
             Task.WaitAll( w.AsyncEngineContinuation );
             

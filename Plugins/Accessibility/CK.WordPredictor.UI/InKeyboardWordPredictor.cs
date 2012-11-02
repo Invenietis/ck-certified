@@ -16,8 +16,8 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IWordPredictorService WordPredictorService { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExist )]
+        public IService<IWordPredictorService> WordPredictorService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -40,9 +40,15 @@ namespace CK.WordPredictor.UI
             IKeyboard kb = GetAzertyKeyboard();
             if( kb != null )
                 CreatePredictionZone( kb );
+            if( WordPredictorService != null && WordPredictorService.Service != null )
+            {
+                WordPredictorService.ServiceStatusChanged += OnServiceStatusChanged;
+                WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+            }
+        }
 
-            if( WordPredictorService != null )
-                WordPredictorService.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+        void OnServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
         }
 
         protected void OnWordPredictedCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
@@ -65,7 +71,7 @@ namespace CK.WordPredictor.UI
                         IKey key = zone.Keys[idx];
                         if( key != null )
                         {
-                            IWordPredicted wordPredicted = WordPredictorService.Words[e.NewStartingIndex];
+                            IWordPredicted wordPredicted = WordPredictorService.Service.Words[e.NewStartingIndex];
                             if( wordPredicted != null )
                             {
                                 key.Current.DownLabel = wordPredicted.Word;

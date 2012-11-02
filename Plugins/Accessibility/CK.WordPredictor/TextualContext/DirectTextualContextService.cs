@@ -141,8 +141,10 @@ namespace CK.WordPredictor
 
         public void Stop()
         {
-            SendKeyService.KeySent -= OnKeySent;
-            SendStringService.StringSent -= OnStringSent;
+            if( SendKeyService != null )
+                SendKeyService.KeySent -= OnKeySent;
+            if( SendStringService != null )
+                SendStringService.StringSent -= OnStringSent;
         }
 
         public void Teardown()

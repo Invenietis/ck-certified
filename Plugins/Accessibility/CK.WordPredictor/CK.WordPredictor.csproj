@@ -76,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TextualContext\SimpleTextualContextAwarePredictedWordSender.cs" />
     <Compile Include="WordPredictedCollectio.cs" />
     <Compile Include="Engines\WordPredictorEngineFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
@@ -94,6 +95,14 @@
     <ProjectReference Include="..\..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Advanced\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
+      <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
+      <Name>BasicCommandHandlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Advanced\Commands\CommandManager\CommandManager.csproj">
+      <Project>{8e610388-f400-4d3e-83a2-a91a04b55558}</Project>
+      <Name>CommandManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>

@@ -14,15 +14,17 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", PublicName = "WordPredictor", Categories = new[] { "Accessibility" } )]
-    public class WordPredictorService : IPlugin, IWordPredictorService
+    public abstract class WordPredictorServiceBase : IPlugin, IWordPredictorService
     {
         ObservableCollection<IWordPredicted> _predictedList;
         WordPredictedCollection _wordPredictedCollection;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
-        
+
+        [DynamicService( Requires = RunningRequirement.MustExist )]
+        public IWordPredictorFeature Feature { get; set; }
+
         public IPluginConfigAccessor Config { get; set; }
 
         public bool IsWeightedPrediction
@@ -30,15 +32,7 @@ namespace CK.WordPredictor
             get { return _engine != null ? _engine.IsWeightedPrediction : false; }
         }
 
-        protected int MaxSuggestedWords
-        {
-            get { return Config.User.TryGet( "MaxSuggestedWords", 10 ); }
-        }
-
-        protected string PredictorEngine
-        {
-            get { return Config.User.TryGet( "PredictorEngine", "sem-sybille" ); }
-        }
+        protected abstract string PredictorEngine { get; }
 
         public IWordPredictedCollection Words
         {
@@ -64,7 +58,7 @@ namespace CK.WordPredictor
         private void FeedPredictedList()
         {
             _predictedList.Clear();
-            IEnumerable<IWordPredicted> words = _engine.Predict( TextualContextService, MaxSuggestedWords );
+            IEnumerable<IWordPredicted> words = _engine.Predict( TextualContextService, Feature.MaxSuggestedWords );
             foreach( var w in words ) _predictedList.Add( w );
         }
 

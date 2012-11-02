@@ -16,6 +16,14 @@ namespace WordPredictorTest
     {
         public static string SybilleResourceFullPath = @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Accessibility\CK.WordPredictor\";
 
+        public static Mock<IWordPredictorFeature> MockFeature( int maxSuggestedWords )
+        {
+            var feature = new Mock<IWordPredictorFeature>();
+            feature.SetupGet( e => e.MaxSuggestedWords ).Returns( maxSuggestedWords );
+            feature.SetupGet( e => e.InsertSpaceAfterPredictedWord ).Returns( true );
+            return feature;
+        }
+
         public static Mock<IPluginConfigAccessor> MockPluginConfigAccessor()
         {
             var configAccessor = new Mock<IPluginConfigAccessor>();
@@ -28,6 +36,7 @@ namespace WordPredictorTest
         public static Mock<IWordPredictorService> MockPredictorService( ObservableCollection<IWordPredicted> wordsToReturn = null )
         {
             var p = new Mock<IWordPredictorService>();
+            
             var c =  wordsToReturn ?? new ObservableCollection<IWordPredicted>( WordCollection( 10 ) );
             p.Setup( w => w.Words )
                 .Returns(

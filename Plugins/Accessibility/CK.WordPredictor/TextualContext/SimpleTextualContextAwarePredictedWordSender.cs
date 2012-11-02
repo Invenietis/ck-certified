@@ -22,12 +22,10 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ISendStringService SendStringService { get; set; }
 
-        public IPluginConfigAccessor Config { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExist )]
+        public IWordPredictorFeature Feature { get; set; }
 
-        public bool SendSpaceAfterWordPredicted
-        {
-            get { return Config.User.TryGet( "SendSpaceAfterWordPredicted", true ); }
-        }
+        public IPluginConfigAccessor Config { get; set; }
 
         protected virtual void OnWordPredictionSuccessful( object sender, WordPredictionSuccessfulEventArgs e )
         {
@@ -36,7 +34,7 @@ namespace CK.WordPredictor
                 int currentContextTokenLenth = TextualContextService.CurrentToken.Value.Length;
                 string wordToSend = e.Word.Substring( currentContextTokenLenth, e.Word.Length - currentContextTokenLenth );
 
-                if( SendSpaceAfterWordPredicted ) wordToSend += " ";
+                if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";
 
                 SendStringService.SendString( wordToSend );
             }

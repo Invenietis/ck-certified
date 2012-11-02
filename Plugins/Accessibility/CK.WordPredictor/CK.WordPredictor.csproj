@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engines\Sybille\SybilleWordPredictor.cs" />
     <Compile Include="TextualContext\SimpleTextualContextAwarePredictedWordSender.cs" />
     <Compile Include="WordPredictedCollection.cs" />
     <Compile Include="Engines\WordPredictorEngineFactory.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="Engines\WeightlessWordPredicted.cs" />
     <Compile Include="Engines\Sybille\SybilleWordPredictorEngine.cs" />
     <Compile Include="WordPredictedService.cs" />
-    <Compile Include="WordPredictorService.cs" />
+    <Compile Include="WordPredictorServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">

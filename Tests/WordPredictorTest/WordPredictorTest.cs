@@ -19,15 +19,18 @@ namespace WordPredictorTest
             var configAccessor = TestHelper.MockPluginConfigAccessor();
             DirectTextualContextService t = new DirectTextualContextService();
 
-            WordPredictorService w = new WordPredictorService();
-            w.PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath;
-            w.Config = configAccessor.Object;
-            w.TextualContextService = t;
-            
+            WordPredictorServiceBase w = new SybilleWordPredictorService()
+            {
+                Feature = TestHelper.MockFeature( 10 ).Object,
+                PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
+                Config = configAccessor.Object,
+                TextualContextService = t
+            };
             w.Setup( null );
             w.Start();
+
             Task.WaitAll( w.AsyncEngineContinuation );
-            
+
             t.SetToken( "Je" );
             Assert.That( w.Words.Count > 0 );
             Console.WriteLine( String.Join( " ", w.Words.Select( o => o.Word ).ToArray() ) );

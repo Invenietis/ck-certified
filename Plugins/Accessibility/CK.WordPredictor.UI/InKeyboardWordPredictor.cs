@@ -19,16 +19,14 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExist )]
         public IService<IWordPredictorService> WordPredictorService { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.MustExist )]
+        public IWordPredictorFeature Feature { get; set; }
+
         public IPluginConfigAccessor Config { get; set; }
 
         public const string CompatibilityKeyboardName = "Azerty";
         public const string PredictionZoneName = "Prediction";
         public const int DefaultMaxDisplayedWords = 10;
-
-        public int MaxDisplayedWords
-        {
-            get { return Config.User.TryGet( "MaxDisplayedWords", DefaultMaxDisplayedWords ); }
-        }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -60,7 +58,7 @@ namespace CK.WordPredictor.UI
                 {
                     if( e.Action == NotifyCollectionChangedAction.Reset )
                     {
-                        for( int i = 0; i < MaxDisplayedWords; ++i )
+                        for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
                         {
                             zone.Keys[i].CurrentLayout.Current.Visible = false;
                         }
@@ -124,10 +122,10 @@ namespace CK.WordPredictor.UI
                 IZone predictionZone = kb.Zones.Create( PredictionZoneName );
                 if( predictionZone != null )
                 {
-                    int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / MaxDisplayedWords - 5;
+                    int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / Feature.MaxSuggestedWords - 5;
                     int offset = 2;
 
-                    for( int i = 0; i < MaxDisplayedWords; ++i )
+                    for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
                     {
                         IKey key = predictionZone.Keys.Create( i );
                         key.CurrentLayout.Current.Visible = false;

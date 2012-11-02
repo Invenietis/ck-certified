@@ -26,6 +26,7 @@ namespace WordPredictorTest
 
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
+                Feature = TestHelper.MockFeature( 10 ).Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
@@ -34,7 +35,7 @@ namespace WordPredictorTest
             IZone predictionZone = p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName];
             Assert.That( predictionZone != null );
             Assert.That( InKeyboardWordPredictor.DefaultMaxDisplayedWords == 10 );
-            Assert.That( predictionZone.Keys.Count == p.MaxDisplayedWords );
+            Assert.That( predictionZone.Keys.Count == p.Feature.MaxSuggestedWords );
 
             mKbContext.VerifyAll();
         }
@@ -45,6 +46,7 @@ namespace WordPredictorTest
             var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
+                Feature = TestHelper.MockFeature( 10 ).Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
@@ -64,8 +66,9 @@ namespace WordPredictorTest
             // Texual service plugin usage
             var textualService = new DirectTextualContextService();
             // Predictor service plugin usage
-            var predictorService = new WordPredictorService()
+            var predictorService = new SybilleWordPredictorService()
             {
+                Feature = TestHelper.MockFeature( 10 ).Object,
                 TextualContextService = textualService,
                 PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
                 Config = TestHelper.MockPluginConfigAccessor().Object
@@ -79,6 +82,7 @@ namespace WordPredictorTest
             // The Plugin Under Test.
             var pluginSut = new InKeyboardWordPredictor()
             {
+                Feature = TestHelper.MockFeature( 10 ).Object,
                 WordPredictorService = mockServiceWordPredictor.Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object
@@ -118,6 +122,7 @@ namespace WordPredictorTest
 
             var pluginSut = new InKeyboardWordPredictor()
             {
+                Feature = TestHelper.MockFeature( 10 ).Object,
                 WordPredictorService = mockServiceWordPredictor.Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object

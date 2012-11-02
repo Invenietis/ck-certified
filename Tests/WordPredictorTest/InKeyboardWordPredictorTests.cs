@@ -10,6 +10,7 @@ using NUnit.Framework;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using CK.WordPredictor;
+using System.Collections.ObjectModel;
 
 namespace WordPredictorTest
 {
@@ -103,15 +104,29 @@ namespace WordPredictorTest
             // Mocking of IKeyboardContext
             var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
 
+            var wordList = new ObservableCollection<IWordPredicted>();
             // The Plugin Under Test.
+            var mkWordPredictor = TestHelper.MockPredictorService( wordList );
+
             var pluginSut = new InKeyboardWordPredictor()
             {
-                WordPredictorService = TestHelper.MockPredictorService().Object,
+                WordPredictorService = mkWordPredictor.Object,
                 Context = mKbContext.Object,
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
 
             //TODO write test
+            pluginSut.Start();
+            var predictedWord = new Mock<IWordPredicted>();
+            predictedWord.Setup( e => e.Word ).Returns( "OneWord" );
+            wordList.Add( predictedWord.Object );
+
+            IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
+            Assert.That( keyCollection.Count > 0 );
+            Assert.That( keyCollection[0].Current.OnKeyPressedCommands, Is.Not.Null );
+            Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
+            Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands.Count == 1 );
+            Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
         }
     }
 }

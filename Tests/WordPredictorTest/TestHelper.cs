@@ -25,13 +25,13 @@ namespace WordPredictorTest
             return configAccessor;
         }
 
-        public static Mock<IWordPredictorService> MockPredictorService()
+        public static Mock<IWordPredictorService> MockPredictorService( ObservableCollection<IWordPredicted> wordsToReturn = null )
         {
             var p = new Mock<IWordPredictorService>();
-
+            var c =  wordsToReturn ?? new ObservableCollection<IWordPredicted>( WordCollection( 10 ) );
             p.Setup( w => w.Words )
                 .Returns(
-                    () => new WordPredictedCollection( new ObservableCollection<IWordPredicted>( WordCollection( 10 ) ) ) );
+                    () => new WordPredictedCollection( c ) );
             return p;
         }
 
@@ -76,9 +76,16 @@ namespace WordPredictorTest
             {
                 var keyCollectionMock = new Mock<IKeyCollection>();
                 var mockKeyFactory = MockKey();
-                keyCollectionMock.Setup( e => e.Create() ).Callback( () => keyCount++ ).Returns( () => mockKeyFactory( new Mock<IKey>() ).Object );
-                keyCollectionMock.Setup( e => e.Create( It.IsAny<int>() ) ).Callback( () => keyCount++ ).Returns( mockKeyFactory( new Mock<IKey>() ).Object );
-                keyCollectionMock.Setup( e => e[It.IsAny<int>()] ).Returns( () => mockKeyFactory( new Mock<IKey>() ).Object );
+                var list = new List<IKey>();
+                Func<IKey> create = () =>
+                {
+                    var key = mockKeyFactory( new Mock<IKey>() ).Object;
+                    list.Add( key );
+                    return key;
+                };
+                keyCollectionMock.Setup( e => e.Create() ).Callback( () => keyCount++ ).Returns( create );
+                keyCollectionMock.Setup( e => e.Create( It.IsAny<int>() ) ).Callback( () => keyCount++ ).Returns( create );
+                keyCollectionMock.Setup( e => e[It.IsAny<int>()] ).Returns<int>( e => list[e] );
                 keyCollectionMock.Setup( e => e.Count ).Returns( () =>
                 {
                     return keyCount;

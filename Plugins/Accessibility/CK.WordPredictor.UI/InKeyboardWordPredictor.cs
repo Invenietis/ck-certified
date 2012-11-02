@@ -81,7 +81,7 @@ namespace CK.WordPredictor.UI
 
         protected virtual string CommandFromWord( IWordPredicted wordPredicted )
         {
-            return String.Format( @"sendKey""{0}""", wordPredicted.Word );
+            return String.Format( @"sendPredictedWord""{0}""", wordPredicted.Word.ToLowerInvariant() );
         }
 
         public void Stop()

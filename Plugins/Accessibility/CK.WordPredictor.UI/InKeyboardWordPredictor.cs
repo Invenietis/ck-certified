@@ -13,10 +13,10 @@ namespace CK.WordPredictor.UI
     [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "CK.Wordpredictor.UI | InKeyboard" )]
     public class InKeyboardWordPredictor : IPlugin
     {
-        [RequiredService]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
-        [RequiredService]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictorService WordPredictorService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }

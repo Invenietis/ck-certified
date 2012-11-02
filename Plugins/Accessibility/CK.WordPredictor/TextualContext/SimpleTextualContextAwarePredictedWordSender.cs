@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Plugins.SendInput;
 using CK.WordPredictor.Model;
 using CommonServices;
 
@@ -12,14 +13,14 @@ namespace CK.WordPredictor
     [Plugin( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}", PublicName = "Simple TextualContext aware predicted word sender", Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Advanced" } )]
     public class SimpleTextualContextAwarePredictedWordSender : IPlugin
     {
-        [RequiredService]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictedService WordPredictedService { get; set; }
 
-        [RequiredService]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
 
-        [RequiredService]
-        public ICommandManagerService CommandManager { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISendStringService SendStringService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -34,8 +35,10 @@ namespace CK.WordPredictor
             {
                 int currentContextTokenLenth = TextualContextService.CurrentToken.Value.Length;
                 string wordToSend = e.Word.Substring( currentContextTokenLenth, e.Word.Length - currentContextTokenLenth );
-                CommandManager.SendCommand( this, String.Concat( "sendString:", wordToSend ) );
-                if( SendSpaceAfterWordPredicted ) CommandManager.SendCommand( this, "sendKey\" \"" );
+
+                if( SendSpaceAfterWordPredicted ) wordToSend += " ";
+
+                SendStringService.SendString( wordToSend );
             }
         }
 
@@ -53,7 +56,8 @@ namespace CK.WordPredictor
 
         public void Stop()
         {
-            WordPredictedService.WordPredictionSuccessful -= OnWordPredictionSuccessful;
+            if( WordPredictedService != null )
+                WordPredictedService.WordPredictionSuccessful -= OnWordPredictionSuccessful;
         }
 
         public void Teardown()

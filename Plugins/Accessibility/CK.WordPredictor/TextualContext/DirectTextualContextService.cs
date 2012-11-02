@@ -7,6 +7,7 @@ using BasicCommandHandlers;
 using CK.Plugin;
 using CK.WordPredictor.Model;
 using CommonServices;
+using CK.Plugins.SendInput;
 
 namespace CK.WordPredictor
 {
@@ -17,11 +18,11 @@ namespace CK.WordPredictor
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [RequiredService]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ISendKeyCommandHandlerService SendKeyService { get; set; }
 
-        [RequiredService]
-        public ICommandManagerService CommandManager { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISendStringService SendStringService { get; set; }
 
         public DirectTextualContextService()
         {
@@ -67,7 +68,7 @@ namespace CK.WordPredictor
                 _tokenCollection = new SimpleTokenCollection();
                 _position = CaretPosition.OutsideToken;
             }
-            else if( token == " "  )
+            else if( token == " " )
             {
                 _tokenCollection.Add( String.Empty );
                 _position = CaretPosition.StartToken;
@@ -89,11 +90,14 @@ namespace CK.WordPredictor
                     else
                     {
                         string tokenValue = token.TrimEnd();
-                        _tokenCollection[CurrentTokenIndex] = new SimpleToken( CurrentToken.Value + tokenValue );
-                    }
-                    if( token.Length > 1 && token[token.Length - 1] == ' ' )
-                    {
-                        SetToken( " " );
+                        string tokenFull = CurrentToken.Value + tokenValue;
+
+                        _tokenCollection[CurrentTokenIndex] = new SimpleToken( tokenFull );
+                        if( token.Length > 1 && token[token.Length - 1] == ' ' )
+                        {
+                            _tokenCollection.Add( String.Empty );
+                            _position = CaretPosition.StartToken;
+                        }
                     }
                 }
 
@@ -115,6 +119,11 @@ namespace CK.WordPredictor
             if( e != null ) SetToken( e.Key );
         }
 
+        protected virtual void OnStringSent( object sender, StringSentEventArgs e )
+        {
+            SetToken( e.StringVal );
+        }
+
         public bool Setup( IPluginSetupInfo info )
         {
             return info.Error != null;
@@ -124,29 +133,16 @@ namespace CK.WordPredictor
         {
             _position = CaretPosition.OutsideToken;
             if( SendKeyService != null )
-            {
                 SendKeyService.KeySent += OnKeySent;
-            }
-            if( CommandManager != null )
-            {
-                CommandManager.CommandSent += OnCommandSent;
-            }
-        }
 
-        void OnCommandSent( object sender, CommandSentEventArgs e )
-        {
-            CommandParser p = new CommandParser( e.Command );
-            string str;
-            if( p.IsIdentifier( out str ) && !e.Canceled && str == "sendString" )
-            {
-                p.GetNextToken();
-                SetToken( p.StringValue );
-            }
+            if( SendStringService != null )
+                SendStringService.StringSent += OnStringSent;
         }
 
         public void Stop()
         {
             SendKeyService.KeySent -= OnKeySent;
+            SendStringService.StringSent -= OnStringSent;
         }
 
         public void Teardown()

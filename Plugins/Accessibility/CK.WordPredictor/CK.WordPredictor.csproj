@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdvancedCommandHandler">
+      <HintPath>..\..\..\ThirdParty\AdvancedCommandHandler.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Context">
       <HintPath>..\..\..\packages\CK.Context.2.8.47-develop\lib\net40\CK.Context.dll</HintPath>
     </Reference>

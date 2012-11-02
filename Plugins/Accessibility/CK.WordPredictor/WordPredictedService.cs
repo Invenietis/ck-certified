@@ -35,6 +35,4 @@ namespace CK.WordPredictor
             }
         }
     }
-    //The WordPredicted Service is now a CommandHandler that handle sendPredictedWord command
-   
 }

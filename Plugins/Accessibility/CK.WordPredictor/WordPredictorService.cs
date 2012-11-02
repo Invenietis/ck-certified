@@ -20,13 +20,10 @@ namespace CK.WordPredictor
         ObservableCollection<IWordPredicted> _predictedList;
         WordPredictedCollection _wordPredictedCollection;
 
-        [RequiredService]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
-
+        
         public IPluginConfigAccessor Config { get; set; }
-
-        [RequiredService( Required = true )]
-        public IContext Context { get; set; }
 
         public bool IsWeightedPrediction
         {
@@ -73,20 +70,28 @@ namespace CK.WordPredictor
 
         public bool Setup( IPluginSetupInfo info )
         {
-            return true;
+            try
+            {
+                _predictedList = new ObservableCollection<IWordPredicted>();
+                _wordPredictedCollection = new WordPredictedCollection( _predictedList );
+
+                var asyncEngine = new WordPredictorEngineFactory( PluginDirectoryPath() ).CreateAsync( PredictorEngine );
+                _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
+                {
+                    if( _engine == null ) _engine = task.Result;
+                } );
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
 
         public void Start()
         {
-            _predictedList = new ObservableCollection<IWordPredicted>();
-            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
             TextualContextService.PropertyChanged += TextualContextService_PropertyChanged;
-
-            var asyncEngine = new WordPredictorEngineFactory( PluginDirectoryPath() ).CreateAsync( PredictorEngine );
-            _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
-            {
-                if( _engine == null ) _engine = task.Result;
-            } );
         }
 
         void TextualContextService_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
@@ -100,12 +105,12 @@ namespace CK.WordPredictor
 
         public void Stop()
         {
-            _engine = null;
             _predictedList.Clear();
         }
 
         public void Teardown()
         {
+            _engine = null;
         }
     }
 }

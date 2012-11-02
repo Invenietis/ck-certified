@@ -82,7 +82,7 @@ namespace CK.WordPredictor.UI
 
         protected virtual string CommandFromWord( IWordPredicted wordPredicted )
         {
-            return String.Format( @"sendPredictedWord""{0}""", wordPredicted.Word.ToLowerInvariant() );
+            return String.Format( @"{0}:{1}", "sendPredictedWord", wordPredicted.Word.ToLowerInvariant() );
         }
 
         public void Stop()
@@ -134,7 +134,7 @@ namespace CK.WordPredictor.UI
         protected virtual void ConfigureKey( ILayoutKeyModeCurrent layoutKeyMode, int idx, int wordWidth, int offset )
         {
             if( layoutKeyMode == null ) throw new ArgumentNullException( "layoutKeyMode" );
-            layoutKeyMode.X = idx * 5 + (idx - 1) * wordWidth + offset;
+            layoutKeyMode.X = idx * (wordWidth + 5) + offset;
             layoutKeyMode.Y = 5;
             layoutKeyMode.Width = wordWidth;
             layoutKeyMode.Height = 45;

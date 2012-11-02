@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using BasicCommandHandlers;
 using CK.Plugin;
 using CK.WordPredictor.Model;
 using CommonServices;
@@ -18,6 +19,9 @@ namespace CK.WordPredictor
 
         [RequiredService]
         public ISendKeyCommandHandlerService SendKeyService { get; set; }
+
+        [RequiredService]
+        public ICommandManagerService CommandManager { get; set; }
 
         public DirectTextualContextService()
         {
@@ -63,7 +67,7 @@ namespace CK.WordPredictor
                 _tokenCollection = new SimpleTokenCollection();
                 _position = CaretPosition.OutsideToken;
             }
-            else if( token == " " )
+            else if( token == " "  )
             {
                 _tokenCollection.Add( String.Empty );
                 _position = CaretPosition.StartToken;
@@ -77,7 +81,20 @@ namespace CK.WordPredictor
                 }
                 else //We continue in the same context.
                 {
-                    _tokenCollection[CurrentTokenIndex] = new SimpleToken( CurrentToken.Value + token );
+                    if( token.Length > 1 && token.IndexOf( ' ' ) == 0 )
+                    {
+                        SetToken( " " );
+                        SetToken( token.TrimStart() );
+                    }
+                    else
+                    {
+                        string tokenValue = token.TrimEnd();
+                        _tokenCollection[CurrentTokenIndex] = new SimpleToken( CurrentToken.Value + tokenValue );
+                    }
+                    if( token.Length > 1 && token[token.Length - 1] == ' ' )
+                    {
+                        SetToken( " " );
+                    }
                 }
 
                 _position = CaretPosition.EndToken;
@@ -109,6 +126,21 @@ namespace CK.WordPredictor
             if( SendKeyService != null )
             {
                 SendKeyService.KeySent += OnKeySent;
+            }
+            if( CommandManager != null )
+            {
+                CommandManager.CommandSent += OnCommandSent;
+            }
+        }
+
+        void OnCommandSent( object sender, CommandSentEventArgs e )
+        {
+            CommandParser p = new CommandParser( e.Command );
+            string str;
+            if( p.IsIdentifier( out str ) && !e.Canceled && str == "sendString" )
+            {
+                p.GetNextToken();
+                SetToken( p.StringValue );
             }
         }
 

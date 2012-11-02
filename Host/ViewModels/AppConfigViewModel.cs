@@ -46,6 +46,7 @@ namespace Host.VM
         string _stopReminderPath;
         AutoClickViewModel _acVm;
         SkinViewModel _sVm;
+        WordPredictionViewModel _wpVm;
         AppViewModel _app;
 
         public AppConfigViewModel( AppViewModel app )
@@ -68,8 +69,9 @@ namespace Host.VM
             g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
             g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
 
-            this.AddLink( _acVm ?? ( _acVm = new AutoClickViewModel( _app ) ) );
-            this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
+            this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
+            this.AddLink( _sVm ?? (_sVm = new SkinViewModel( _app )) );
+            this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
 
             string stopReminderFolderPath = Path.Combine( _app.CivikeyHost.ApplicationDataPath, "Updates" );
             if( !Directory.Exists( stopReminderFolderPath ) ) Directory.CreateDirectory( stopReminderFolderPath );

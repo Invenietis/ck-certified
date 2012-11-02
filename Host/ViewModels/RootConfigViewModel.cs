@@ -59,7 +59,7 @@ namespace Host
                 keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
 
                 _app.KeyboardContext.Keyboards.KeyboardCreated += ( s, e ) => { keyboards.RefreshValues( s, e ); };
-                _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) => 
+                _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) =>
                 {
                     //JL : that fix stinks like bloody hell.
                     //When calling RefreshValues, the current selected item is set to null. (actually setting the current keyboard to null)
@@ -69,7 +69,7 @@ namespace Host
                     keyboards.Values.MoveCurrentTo( k );
                 };
 
-                _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) => 
+                _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) =>
                 {
                     keyboards.RefreshValues( s, e );
                     //When renaming a keyboard, the value is removed and then added back.
@@ -81,11 +81,16 @@ namespace Host
 
             var g = this.AddGroup();
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
-            var i = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
+            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
+            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ) )
+            {
+                DisplayName = R.WordPredictionSectionName
+            };
             g.Items.Add( skinStarter );
-            g.Items.Add( i );
+            g.Items.Add( autoClicStarter );
+            g.Items.Add( wordPredictionStarter );
 
-            this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
+            this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             base.OnInitialize();
         }

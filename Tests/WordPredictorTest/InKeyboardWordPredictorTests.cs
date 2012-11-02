@@ -115,18 +115,36 @@ namespace WordPredictorTest
                 Config = TestHelper.MockPluginConfigAccessor().Object
             };
 
-            //TODO write test
             pluginSut.Start();
             var predictedWord = new Mock<IWordPredicted>();
             predictedWord.Setup( e => e.Word ).Returns( "OneWord" );
             wordList.Add( predictedWord.Object );
+            {
+                IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
+                Assert.That( keyCollection[0].CurrentLayout.Current.Visible, Is.True );
+                Assert.That( keyCollection[1].CurrentLayout.Current.Visible, Is.False );
 
-            IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
-            Assert.That( keyCollection.Count > 0 );
-            Assert.That( keyCollection[0].Current.OnKeyPressedCommands, Is.Not.Null );
-            Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
-            Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands.Count == 1 );
-            Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands, Is.Not.Null );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands.Count == 1 );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+            }
+            wordList.Add( predictedWord.Object );
+            {
+                IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
+                Assert.That( keyCollection[0].CurrentLayout.Current.Visible, Is.True );
+                Assert.That( keyCollection[1].CurrentLayout.Current.Visible, Is.True );
+
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands, Is.Not.Null );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands.Count == 1 );
+                Assert.That( keyCollection[0].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+
+                Assert.That( keyCollection[1].Current.OnKeyPressedCommands, Is.Not.Null );
+                Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands, Is.Not.Null );
+                Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands.Count == 1 );
+                Assert.That( keyCollection[1].Current.OnKeyPressedCommands.Commands[0] == "sendPredictedWord\"oneword\"" );
+            }
         }
     }
 }

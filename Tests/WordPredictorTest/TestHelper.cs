@@ -24,14 +24,14 @@ namespace WordPredictorTest
             return feature;
         }
 
-        public static Mock<IPluginConfigAccessor> MockPluginConfigAccessor()
-        {
-            var configAccessor = new Mock<IPluginConfigAccessor>();
-            var pluginConfig = new Mock<IObjectPluginConfig>();
-            configAccessor.Setup( e => e.User ).Returns( pluginConfig.Object );
+        //public static Mock<IPluginConfigAccessor> MockPluginConfigAccessor()
+        //{
+        //    var configAccessor = new Mock<IPluginConfigAccessor>();
+        //    var pluginConfig = new Mock<IObjectPluginConfig>();
+        //    configAccessor.Setup( e => e.User ).Returns( pluginConfig.Object );
 
-            return configAccessor;
-        }
+        //    return configAccessor;
+        //}
 
         public static Mock<IWordPredictorService> MockPredictorService( ObservableCollection<IWordPredicted> wordsToReturn = null )
         {

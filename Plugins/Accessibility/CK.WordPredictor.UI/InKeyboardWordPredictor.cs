@@ -19,7 +19,7 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExist )]
         public IService<IWordPredictorService> WordPredictorService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExist )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictorFeature Feature { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }

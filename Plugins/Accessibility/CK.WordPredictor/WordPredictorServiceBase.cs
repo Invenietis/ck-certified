@@ -22,10 +22,8 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExist )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictorFeature Feature { get; set; }
-
-        public IPluginConfigAccessor Config { get; set; }
 
         public bool IsWeightedPrediction
         {

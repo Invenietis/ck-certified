@@ -27,8 +27,7 @@ namespace WordPredictorTest
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
-                Context = mKbContext.Object,
-                Config = TestHelper.MockPluginConfigAccessor().Object
+                Context = mKbContext.Object
             };
             p.Start();
 
@@ -47,8 +46,7 @@ namespace WordPredictorTest
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
-                Context = mKbContext.Object,
-                Config = TestHelper.MockPluginConfigAccessor().Object
+                Context = mKbContext.Object
             };
 
             p.Start();
@@ -71,7 +69,6 @@ namespace WordPredictorTest
                 Feature = TestHelper.MockFeature( 10 ).Object,
                 TextualContextService = textualService,
                 PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
-                Config = TestHelper.MockPluginConfigAccessor().Object
             };
             var mockServiceWordPredictor = new Mock<IService<IWordPredictorService>>();
             mockServiceWordPredictor.SetupGet( e => e.Service ).Returns( predictorService );
@@ -84,8 +81,7 @@ namespace WordPredictorTest
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
                 WordPredictorService = mockServiceWordPredictor.Object,
-                Context = mKbContext.Object,
-                Config = TestHelper.MockPluginConfigAccessor().Object
+                Context = mKbContext.Object
             };
 
             // Start all depending plugins
@@ -124,8 +120,7 @@ namespace WordPredictorTest
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
                 WordPredictorService = mockServiceWordPredictor.Object,
-                Context = mKbContext.Object,
-                Config = TestHelper.MockPluginConfigAccessor().Object
+                Context = mKbContext.Object
             };
 
             pluginSut.Start();

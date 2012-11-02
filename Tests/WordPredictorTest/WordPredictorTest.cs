@@ -16,14 +16,12 @@ namespace WordPredictorTest
         [Test]
         public void WordPredictorServiceTest()
         {
-            var configAccessor = TestHelper.MockPluginConfigAccessor();
             DirectTextualContextService t = new DirectTextualContextService();
 
             WordPredictorServiceBase w = new SybilleWordPredictorService()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
                 PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
-                Config = configAccessor.Object,
                 TextualContextService = t
             };
             w.Setup( null );

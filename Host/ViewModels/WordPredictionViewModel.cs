@@ -11,7 +11,7 @@ namespace Host.VM
     public class WordPredictionViewModel : ConfigBase
     {
         public WordPredictionViewModel( AppViewModel app )
-            : base( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", R.WordPredictionConfig, app )
+            : base( "{4DC42B82-4B29-4896-A548-3086AA9421D7}", R.WordPredictionConfig, app )
         {
         }
 
@@ -21,6 +21,15 @@ namespace Host.VM
             set
             {
                 if( Config != null ) Config.Set( "MaxSuggestedWords", value );
+            }
+        }
+
+        public bool InsertSpaceAfterPredictedWord
+        {
+            get { return Config != null ? Config.GetOrSet( "InsertSpaceAfterPredictedWord", true ) : true; }
+            set
+            {
+                if( Config != null ) Config.Set( "InsertSpaceAfterPredictedWord", value );
             }
         }
 
@@ -37,7 +46,10 @@ namespace Host.VM
             var c = new ConfigItemProperty<int>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.MaxSuggestedWords ) );
             c.DisplayName = R.WordPredictionMaxSuggestedWords;
             g.Items.Add( c );
-            
+
+            var p = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.InsertSpaceAfterPredictedWord ) );
+            p.DisplayName = R.WordPredictionInsertSpace;
+            g.Items.Add( p );
             base.OnInitialize();
         }
 

@@ -601,6 +601,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert space after predicted words.
+        /// </summary>
+        public static string WordPredictionInsertSpace {
+            get {
+                return ResourceManager.GetString("WordPredictionInsertSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max suggested words (maximum).
         /// </summary>
         public static string WordPredictionMaxSuggestedWords {

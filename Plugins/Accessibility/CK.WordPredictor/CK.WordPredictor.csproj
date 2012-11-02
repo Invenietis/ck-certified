@@ -93,6 +93,7 @@
     <Compile Include="Engines\WeightlessWordPredicted.cs" />
     <Compile Include="Engines\Sybille\SybilleWordPredictorEngine.cs" />
     <Compile Include="WordPredictedService.cs" />
+    <Compile Include="WordPredictorFeature.cs" />
     <Compile Include="WordPredictorServiceBase.cs" />
   </ItemGroup>
   <ItemGroup>

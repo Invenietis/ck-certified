@@ -303,6 +303,9 @@
   <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
     <value>Nombre de mots prédits (maximum)</value>
   </data>
+  <data name="WordPredictionInsertSpace" xml:space="preserve">
+    <value>Insérer un espace après les mots prédits</value>
+  </data>
   <data name="WordPredictionSectionName" xml:space="preserve">
     <value>Prédiction de mots</value>
   </data>

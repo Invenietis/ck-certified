@@ -19,7 +19,6 @@ namespace CK.WordPredictor.Engines
         public SybilleWordPredictorEngine( string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
-            _sybille.SemanticPredictorOn = true;
         }
 
         public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
@@ -40,6 +39,7 @@ namespace CK.WordPredictor.Engines
         {
             if( _sybille != null )
             {
+                _sybille.ResetUserPredictor();
                 // Do we need to save user prediction ?
                 // _sybille.SaveUserPredictor();
             }

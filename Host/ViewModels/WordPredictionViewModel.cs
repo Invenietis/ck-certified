@@ -33,10 +33,20 @@ namespace Host.VM
             }
         }
 
-        protected override void NotifyOfPropertiesChange()
+        public bool UsesSemanticPrediction
         {
-            base.NotifyOfPropertiesChange();
+            get { return Config != null ? (string)Config["Engine"] == "sem-sybille" : false; }
+            set
+            {
+                if( Config != null ) Config.Set( "Engine", value == true ? "sem-sybille" : "sybille" );
+            }
+        }
+
+        protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
             NotifyOfPropertyChange( () => MaxSuggestedWords );
+            NotifyOfPropertyChange( () => InsertSpaceAfterPredictedWord );
+            NotifyOfPropertyChange( () => UsesSemanticPrediction );
         }
 
         protected override void OnInitialize()
@@ -50,12 +60,13 @@ namespace Host.VM
             var p = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.InsertSpaceAfterPredictedWord ) );
             p.DisplayName = R.WordPredictionInsertSpace;
             g.Items.Add( p );
+
+            var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
+            engine.DisplayName = "Utiliser la prédiction sémantique";
+            g.Items.Add( engine );
+
             base.OnInitialize();
         }
 
-        protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
-        {
-            NotifyOfPropertyChange( () => MaxSuggestedWords );
-        }
     }
 }

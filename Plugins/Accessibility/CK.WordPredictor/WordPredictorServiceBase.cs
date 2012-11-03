@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -75,12 +76,27 @@ namespace CK.WordPredictor
 
         public virtual void Start()
         {
+            LoadEngine();
+            TextualContextService.PropertyChanged += OnTextualContextServicePropertyChanged;
+            Feature.PropertyChanged += OnFeaturePropertyChanged;
+        }
+
+        private void LoadEngine()
+        {
             var asyncEngine = EngineFactory.CreateAsync( PredictorEngine );
             _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
             {
                 if( _engine == null ) _engine = task.Result;
             } );
-            TextualContextService.PropertyChanged += OnTextualContextServicePropertyChanged;
+        }
+
+        protected virtual void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "Engine" )
+            {
+                EngineFactory.Release( _engine );
+                LoadEngine();
+            }
         }
 
         protected virtual void OnTextualContextServicePropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )

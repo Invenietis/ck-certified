@@ -72,6 +72,7 @@ namespace Host.VM
         protected virtual void NotifyOfPropertiesChange()
         {
             NotifyOfPropertyChange( () => ActivatePlugin );
+            OnConfigChanged( this, null );
         }
 
         private void OnConfigChangedWrapper( object sender, ConfigChangedEventArgs e )

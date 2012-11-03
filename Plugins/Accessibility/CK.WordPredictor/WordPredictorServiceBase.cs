@@ -16,8 +16,12 @@ namespace CK.WordPredictor
 {
     public abstract class WordPredictorServiceBase : IPlugin, IWordPredictorService
     {
+        static Func<string> _resourcePath = () => Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) );
+
         ObservableCollection<IWordPredicted> _predictedList;
         WordPredictedCollection _wordPredictedCollection;
+        IWordPredictorEngine _engine;
+        Task _asyncEngineContinuation;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
@@ -30,48 +34,36 @@ namespace CK.WordPredictor
             get { return _engine != null ? _engine.IsWeightedPrediction : false; }
         }
 
-        protected abstract string PredictorEngine { get; }
-
         public IWordPredictedCollection Words
         {
             get { return _wordPredictedCollection; }
         }
 
-        Func<string> _resourcePath = () => Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) );
+        protected abstract IWordPredictorEngineFactory EngineFactory { get; }
 
-        internal Func<string> PluginDirectoryPath
+        protected virtual string PredictorEngine
+        {
+            get { return Feature.Engine; }
+        }
+
+        internal static Func<string> PluginDirectoryPath
         {
             get { return _resourcePath; }
             set { _resourcePath = value; }
         }
-
-        IWordPredictorEngine _engine;
-        Task _asyncEngineContinuation;
 
         internal Task AsyncEngineContinuation
         {
             get { return _asyncEngineContinuation; }
         }
 
-        private void FeedPredictedList()
-        {
-            _predictedList.Clear();
-            IEnumerable<IWordPredicted> words = _engine.Predict( TextualContextService, Feature.MaxSuggestedWords );
-            foreach( var w in words ) _predictedList.Add( w );
-        }
-
-        public bool Setup( IPluginSetupInfo info )
+        public virtual bool Setup( IPluginSetupInfo info )
         {
             try
             {
                 _predictedList = new ObservableCollection<IWordPredicted>();
                 _wordPredictedCollection = new WordPredictedCollection( _predictedList );
 
-                var asyncEngine = new WordPredictorEngineFactory( PluginDirectoryPath() ).CreateAsync( PredictorEngine );
-                _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
-                {
-                    if( _engine == null ) _engine = task.Result;
-                } );
                 return true;
             }
             catch
@@ -81,12 +73,17 @@ namespace CK.WordPredictor
 
         }
 
-        public void Start()
+        public virtual void Start()
         {
-            TextualContextService.PropertyChanged += TextualContextService_PropertyChanged;
+            var asyncEngine = EngineFactory.CreateAsync( PredictorEngine );
+            _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
+            {
+                if( _engine == null ) _engine = task.Result;
+            } );
+            TextualContextService.PropertyChanged += OnTextualContextServicePropertyChanged;
         }
 
-        void TextualContextService_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+        protected virtual void OnTextualContextServicePropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "CurrentToken" )
             {
@@ -95,14 +92,24 @@ namespace CK.WordPredictor
             }
         }
 
-        public void Stop()
+        private void FeedPredictedList()
         {
+            _predictedList.Clear();
+            IEnumerable<IWordPredicted> words = _engine.Predict( TextualContextService, Feature.MaxSuggestedWords );
+            foreach( var w in words ) _predictedList.Add( w );
+        }
+
+        public virtual void Stop()
+        {
+            TextualContextService.PropertyChanged -= OnTextualContextServicePropertyChanged;
+
+            EngineFactory.Release( _engine );
+            _engine = null;
             _predictedList.Clear();
         }
 
-        public void Teardown()
+        public virtual void Teardown()
         {
-            _engine = null;
         }
     }
 }

@@ -64,12 +64,14 @@ namespace WordPredictorTest
             // Texual service plugin usage
             var textualService = new DirectTextualContextService();
             // Predictor service plugin usage
+
+            SybilleWordPredictorService.PluginDirectoryPath = TestHelper.SybilleResourceFullPath;
             var predictorService = new SybilleWordPredictorService()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
                 TextualContextService = textualService,
-                PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
             };
+
             var mockServiceWordPredictor = new Mock<IService<IWordPredictorService>>();
             mockServiceWordPredictor.SetupGet( e => e.Service ).Returns( predictorService );
 

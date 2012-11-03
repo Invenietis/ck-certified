@@ -17,7 +17,7 @@ namespace WordPredictorTest
         [Test]
         public void Sybille_Dictionnary_Should_Load_And_Provide_Results()
         {
-            WordPredictorEngineFactory f = new WordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
             IWordPredictorEngine engine = f.Create( "sybille" );
             TestEngine( engine );
             f.Release( engine );
@@ -26,7 +26,7 @@ namespace WordPredictorTest
         [Test]
         public void Sem_Sybille_Should_Load_And_Provide_Results()
         {
-            WordPredictorEngineFactory f = new WordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
             IWordPredictorEngine engine = f.Create( "sem-sybille" );
             TestEngine( engine );
             f.Release( engine );

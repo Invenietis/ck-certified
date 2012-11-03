@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CK.WordPredictor.Model;
 
-namespace CK.WordPredictor.Engines
+namespace CK.WordPredictor.Model
 {
-    internal interface IWordPredictorEngine
+    public interface IWordPredictorEngine
     {
         bool IsWeightedPrediction { get; }
 

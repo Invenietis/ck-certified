@@ -23,8 +23,25 @@ namespace CK.WordPredictor
             get { return Config.User.TryGet( "MaxSuggestedWords", 10 ); }
         }
 
+        public string Engine
+        {
+            get
+            {                
+                return Config.User.TryGet( "Engine", "sybille" );
+            }
+        }
+
+        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.Key == "Engine" )
+            {
+
+            }
+        }
+
         public bool Setup( IPluginSetupInfo info )
         {
+            Config.ConfigChanged += OnConfigChanged;
             return true;
         }
 
@@ -32,12 +49,16 @@ namespace CK.WordPredictor
         {
         }
 
+
         public void Stop()
         {
         }
 
         public void Teardown()
         {
+            Config.ConfigChanged -= OnConfigChanged;
         }
+
+
     }
 }

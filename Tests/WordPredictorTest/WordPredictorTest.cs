@@ -18,12 +18,13 @@ namespace WordPredictorTest
         {
             DirectTextualContextService t = new DirectTextualContextService();
 
+            WordPredictorServiceBase.PluginDirectoryPath = TestHelper.SybilleResourceFullPath;
             WordPredictorServiceBase w = new SybilleWordPredictorService()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
-                PluginDirectoryPath = () => TestHelper.SybilleResourceFullPath,
                 TextualContextService = t
             };
+
             w.Setup( null );
             w.Start();
 

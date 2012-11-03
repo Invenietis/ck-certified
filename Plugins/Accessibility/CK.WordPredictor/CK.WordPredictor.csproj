@@ -79,18 +79,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engines\Sybille\SybilleWordPredictor.cs" />
+    <Compile Include="Engines\IWordPredictorEngine.cs" />
+    <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
+    <Compile Include="Engines\Sybille\SybilleWordPredictorService.cs" />
     <Compile Include="TextualContext\SimpleTextualContextAwarePredictedWordSender.cs" />
     <Compile Include="WordPredictedCollection.cs" />
-    <Compile Include="Engines\WordPredictorEngineFactory.cs" />
-    <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
-    <Compile Include="Engines\IWordPredictorEngine.cs" />
+    <Compile Include="Engines\Sybille\SybilleWordPredictorEngineFactory.cs" />
     <Compile Include="Extensions\ObjectPluginConfigExtension.cs" />
     <Compile Include="TextualContext\SimpleToken.cs" />
     <Compile Include="TextualContext\SimpleTokenCollection.cs" />
     <Compile Include="TextualContext\DirectTextualContextService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Engines\WeightlessWordPredicted.cs" />
+    <Compile Include="WeightlessWordPredicted.cs" />
     <Compile Include="Engines\Sybille\SybilleWordPredictorEngine.cs" />
     <Compile Include="WordPredictedService.cs" />
     <Compile Include="WordPredictorFeature.cs" />

@@ -11,5 +11,7 @@ namespace CK.WordPredictor.Model
         bool InsertSpaceAfterPredictedWord { get; }
 
         int MaxSuggestedWords { get; }
+
+        string Engine { get; }
     }
 }

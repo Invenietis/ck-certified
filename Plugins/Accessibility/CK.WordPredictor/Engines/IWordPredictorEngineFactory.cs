@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CK.WordPredictor.Model;
 
-namespace CK.WordPredictor.Engines
+namespace CK.WordPredictor.Model
 {
-    internal interface IWordPredictorEngineFactory
+    public interface IWordPredictorEngineFactory
     {
         IWordPredictorEngine Create( string predictorName );
 

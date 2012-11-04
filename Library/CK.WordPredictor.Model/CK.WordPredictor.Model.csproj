@@ -33,28 +33,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config">
-      <HintPath>..\packages\CK.Plugin.Config.2.8.44\lib\net40\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Reflection">
-      <HintPath>..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.SharedDic">
-      <HintPath>..\packages\CK.SharedDic.2.8.44\lib\net40\CK.SharedDic.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Storage">
-      <HintPath>..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -51,19 +51,17 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            var g = this.AddActivableSection( R.WordPredictionSectionName, R.WordPredictionConfig );
-
             var c = new ConfigItemProperty<int>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.MaxSuggestedWords ) );
             c.DisplayName = R.WordPredictionMaxSuggestedWords;
-            g.Items.Add( c );
+            Items.Add( c );
 
             var p = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.InsertSpaceAfterPredictedWord ) );
             p.DisplayName = R.WordPredictionInsertSpace;
-            g.Items.Add( p );
+            Items.Add( p );
 
             var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
             engine.DisplayName = "Utiliser la prédiction sémantique";
-            g.Items.Add( engine );
+            Items.Add( engine );
 
             base.OnInitialize();
         }

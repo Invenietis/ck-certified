@@ -82,7 +82,14 @@ namespace Host
             var g = this.AddGroup();
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
-            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ) )
+            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, 
+                new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ) ,
+                new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ),
+                new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ),
+                new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ),
+                new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ),
+                new Guid( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}" ) 
+                )
             {
                 DisplayName = R.WordPredictionSectionName
             };

@@ -33,7 +33,7 @@ namespace WordPredictorTest
 
             IZone predictionZone = p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName];
             Assert.That( predictionZone != null );
-            Assert.That( InKeyboardWordPredictor.DefaultMaxDisplayedWords == 10 );
+            //Assert.That( InKeyboardWordPredictor.DefaultMaxDisplayedWords == 10 );
             Assert.That( predictionZone.Keys.Count == p.Feature.MaxSuggestedWords );
 
             mKbContext.VerifyAll();

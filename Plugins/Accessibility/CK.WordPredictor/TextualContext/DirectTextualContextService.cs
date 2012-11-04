@@ -18,11 +18,11 @@ namespace CK.WordPredictor
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ISendKeyCommandHandlerService SendKeyService { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ISendKeyCommandHandlerService> SendKeyService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ISendStringService SendStringService { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ISendStringService> SendStringService { get; set; }
 
         public DirectTextualContextService()
         {
@@ -132,19 +132,50 @@ namespace CK.WordPredictor
         public void Start()
         {
             _position = CaretPosition.OutsideToken;
-            if( SendKeyService != null )
-                SendKeyService.KeySent += OnKeySent;
+            
+            if( SendKeyService.Service != null )
+                SendKeyService.Service.KeySent += OnKeySent;
+            SendKeyService.ServiceStatusChanged += OnSendKeyServiceStatusChanged;
 
             if( SendStringService != null )
-                SendStringService.StringSent += OnStringSent;
+               SendStringService.Service.StringSent += OnStringSent;
+            SendStringService.ServiceStatusChanged += OnSendStringServiceStatusChanged;
+            
+        }
+
+        void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopping )
+            {
+                SendStringService.Service.StringSent -= OnStringSent;
+            }
+            if( e.Current == RunningStatus.Starting )
+            {
+                SendStringService.Service.StringSent += OnStringSent;
+            }
+        }
+
+        void OnSendKeyServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopping )
+            {
+                SendKeyService.Service.KeySent -= OnKeySent;
+            }
+            if( e.Current == RunningStatus.Starting )
+            {
+                SendKeyService.Service.KeySent += OnKeySent;
+            }
         }
 
         public void Stop()
         {
-            if( SendKeyService != null )
-                SendKeyService.KeySent -= OnKeySent;
-            if( SendStringService != null )
-                SendStringService.StringSent -= OnStringSent;
+            if( SendKeyService.Service != null )
+                SendKeyService.Service.KeySent -= OnKeySent;
+            SendKeyService.ServiceStatusChanged -= OnSendKeyServiceStatusChanged;
+            
+            if( SendStringService.Service != null )
+                SendStringService.Service.StringSent -= OnStringSent;
+            SendStringService.ServiceStatusChanged -= OnSendStringServiceStatusChanged;
         }
 
         public void Teardown()

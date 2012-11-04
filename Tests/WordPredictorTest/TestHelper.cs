@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
+using CK.Plugin;
 using CK.Plugin.Config;
 using CK.WordPredictor;
 using CK.WordPredictor.Model;
@@ -12,6 +13,29 @@ using NUnit.Framework;
 
 namespace WordPredictorTest
 {
+    public static class ServiceHelper
+    {
+        public static IService<TService> MockServiceWrapper<TService>() where TService : class, IDynamicService
+        {
+            Mock<TService> serviceMock = new Mock<TService>();
+            return serviceMock.MockServiceWrapper();
+        }
+
+        public static IService<TService> MockServiceWrapper<TService>( this Mock<TService> serviceMock ) where TService : class, IDynamicService
+        {
+            Mock<IService<TService>> serviceWrapperMock = new Mock<IService<TService>>();
+            serviceWrapperMock.SetupGet( e => e.Service ).Returns( serviceMock.Object );
+            return serviceWrapperMock.Object;
+        }
+
+        public static IService<TService> MockServiceWrapper<TService>( this TService service ) where TService : class, IDynamicService
+        {
+            Mock<IService<TService>> serviceWrapperMock = new Mock<IService<TService>>();
+            serviceWrapperMock.SetupGet( e => e.Service ).Returns( service );
+            return serviceWrapperMock.Object;
+        }
+    }
+
     public class TestHelper
     {
         public static Func<string> SybilleResourceFullPath = () => @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Accessibility\CK.WordPredictor\";
@@ -24,15 +48,6 @@ namespace WordPredictorTest
             feature.SetupGet( e => e.Engine ).Returns( "sybille" );
             return feature;
         }
-
-        //public static Mock<IPluginConfigAccessor> MockPluginConfigAccessor()
-        //{
-        //    var configAccessor = new Mock<IPluginConfigAccessor>();
-        //    var pluginConfig = new Mock<IObjectPluginConfig>();
-        //    configAccessor.Setup( e => e.User ).Returns( pluginConfig.Object );
-
-        //    return configAccessor;
-        //}
 
         public static Mock<IWordPredictorService> MockPredictorService( ObservableCollection<IWordPredicted> wordsToReturn = null )
         {
@@ -151,6 +166,8 @@ namespace WordPredictorTest
                 .Callback<string>( z => Assert.That( z == keyboardName ) )
                 .Returns( mkb.Object )
                 .Verifiable();
+
+            mkbCollection.Setup( e => e.GetEnumerator() ).Returns( new List<IKeyboard>() { mkb.Object }.GetEnumerator() );
 
             mKbContext.Setup( e => e.CurrentKeyboard ).Returns( mkb.Object );
 

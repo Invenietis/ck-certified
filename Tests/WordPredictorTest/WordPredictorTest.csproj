@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdvancedCommandHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty\AdvancedCommandHandler.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Core">
       <HintPath>..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
     </Reference>

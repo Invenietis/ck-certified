@@ -13,6 +13,8 @@ using CK.WordPredictor;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CK.Plugin;
+using CommonServices;
+using CK.Plugins.SendInput;
 
 namespace WordPredictorTest
 {
@@ -46,7 +48,8 @@ namespace WordPredictorTest
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
-                Context = mKbContext.Object
+                Context = mKbContext.Object,
+                WordPredictorService = TestHelper.MockPredictorService().MockServiceWrapper()
             };
 
             p.Start();
@@ -62,7 +65,11 @@ namespace WordPredictorTest
         public void When_A_Word_Is_Predicted_It_Must_Appears_In_Prediction_Zone()
         {
             // Texual service plugin usage
-            var textualService = new DirectTextualContextService();
+            var textualService = new DirectTextualContextService()
+            {
+                SendKeyService = ServiceHelper.MockServiceWrapper<ISendKeyCommandHandlerService>(),
+                SendStringService = ServiceHelper.MockServiceWrapper<ISendStringService>()
+            };
             // Predictor service plugin usage
 
             SybilleWordPredictorService.PluginDirectoryPath = TestHelper.SybilleResourceFullPath;
@@ -72,9 +79,6 @@ namespace WordPredictorTest
                 TextualContextService = textualService,
             };
 
-            var mockServiceWordPredictor = new Mock<IService<IWordPredictorService>>();
-            mockServiceWordPredictor.SetupGet( e => e.Service ).Returns( predictorService );
-
             // Mocking of IKeyboardContext
             var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
 
@@ -82,7 +86,7 @@ namespace WordPredictorTest
             var pluginSut = new InKeyboardWordPredictor()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
-                WordPredictorService = mockServiceWordPredictor.Object,
+                WordPredictorService = predictorService.MockServiceWrapper<IWordPredictorService>(),
                 Context = mKbContext.Object
             };
 
@@ -115,13 +119,10 @@ namespace WordPredictorTest
             // The Plugin Under Test.
             var mkWordPredictor = TestHelper.MockPredictorService( wordList );
 
-            var mockServiceWordPredictor = new Mock<IService<IWordPredictorService>>();
-            mockServiceWordPredictor.SetupGet( e => e.Service ).Returns( mkWordPredictor.Object );
-
             var pluginSut = new InKeyboardWordPredictor()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
-                WordPredictorService = mockServiceWordPredictor.Object,
+                WordPredictorService = mkWordPredictor.MockServiceWrapper<IWordPredictorService>(),
                 Context = mKbContext.Object
             };
 

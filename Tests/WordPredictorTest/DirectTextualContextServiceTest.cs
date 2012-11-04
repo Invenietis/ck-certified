@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CK.Plugin;
+using CK.Plugins.SendInput;
 using CK.WordPredictor;
 using CK.WordPredictor.Engines;
 using CK.WordPredictor.Model;
@@ -9,7 +11,7 @@ using CommonServices;
 using Moq;
 using NUnit.Framework;
 
-namespace CK.WordPredictorTest
+namespace WordPredictorTest
 {
     [TestFixture]
     public class TextualContextServiceTest
@@ -86,8 +88,12 @@ namespace CK.WordPredictorTest
             DirectTextualContextService sut = new DirectTextualContextService();
             Mock<ISendKeyCommandHandlerService> sendKey = new Mock<ISendKeyCommandHandlerService>();
             sendKey.Setup( e => e.SendKey( It.IsAny<string>() ) ).Raises( e => e.KeySent += ( sender, eventArgs ) => { }, new KeySentEventArgs( keyToSend ) ).Verifiable();
+            
+            Mock<ISendStringService> sendString = new Mock<ISendStringService>();
+            sendString.Setup( e => e.SendString( It.IsAny<string>() ) ).Raises( e => e.StringSent += ( sender, eventArgs ) => { }, new StringSendingEventArgs( "" ) );
 
-            sut.SendKeyService = sendKey.Object;
+            sut.SendKeyService = sendKey.MockServiceWrapper();
+            sut.SendStringService = sendString.MockServiceWrapper();
             return sut;
         }
 
@@ -104,7 +110,7 @@ namespace CK.WordPredictorTest
             };
 
             sut.Start();
-            sut.SendKeyService.SendKey( keyToSend );
+            sut.SendKeyService.Service.SendKey( keyToSend );
 
             Assert.That( propertyChangedMustBeRaised == true );
             Assert.That( sut.CurrentToken.Value == keyToSend );
@@ -121,18 +127,18 @@ namespace CK.WordPredictorTest
                 propertyChangedRaised = true;
             };
 
-            sut.SendKeyService.SendKey( keyToSend );
+            sut.SendKeyService.Service.SendKey( keyToSend );
             Assert.That( propertyChangedRaised == false );
             Assert.That( sut.CurrentToken == null );
 
             sut.Start();
-            sut.SendKeyService.SendKey( keyToSend );
+            sut.SendKeyService.Service.SendKey( keyToSend );
             Assert.That( propertyChangedRaised == true );
             Assert.That( sut.CurrentToken.Value == keyToSend );
 
             propertyChangedRaised = false;
             sut.Stop();
-            sut.SendKeyService.SendKey( keyToSend );
+            sut.SendKeyService.Service.SendKey( keyToSend );
             Assert.That( propertyChangedRaised == false );
             Assert.That( sut.CurrentToken.Value == keyToSend );
         }

@@ -45,7 +45,7 @@ namespace CK.WordPredictor.UI
             if( WordPredictorService != null )
             {
                 WordPredictorService.ServiceStatusChanged += OnWordPredictorServiceStatusChanged;
-                //WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+                WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }
         }
 
@@ -57,8 +57,11 @@ namespace CK.WordPredictor.UI
             }
             if( Context != null )
             {
-                IZone zone = Context.CurrentKeyboard.Zones[PredictionZoneName];
-                if( zone != null ) zone.Destroy();
+                foreach( IKeyboard k in Context.Keyboards )
+                {
+                    IZone zone = k.Zones[PredictionZoneName];
+                    if( zone != null ) zone.Destroy();
+                }
             }
         }
 
@@ -69,9 +72,9 @@ namespace CK.WordPredictor.UI
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( e.Current.Name != "Azerty" )
+            if( IsKeyboardCompatible( e.Current ) )
             {
-
+                CreatePredictionZone( e.Current );
             }
         }
 
@@ -130,18 +133,6 @@ namespace CK.WordPredictor.UI
         
         public void Teardown()
         {
-        }
-
-
-        private IKeyboard GetAzertyKeyboard()
-        {
-            IKeyboard azertyKeyboard = Context.Keyboards[CompatibilityKeyboardName];
-            if( azertyKeyboard != null )
-            {
-                return azertyKeyboard;
-            }
-
-            return null;
         }
 
         protected virtual void CreatePredictionZone( IKeyboard kb )

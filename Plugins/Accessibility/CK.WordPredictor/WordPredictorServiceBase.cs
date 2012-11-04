@@ -24,10 +24,10 @@ namespace CK.WordPredictor
         IWordPredictorEngine _engine;
         Task _asyncEngineContinuation;
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public ITextualContextService TextualContextService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWordPredictorFeature Feature { get; set; }
 
         public bool IsWeightedPrediction

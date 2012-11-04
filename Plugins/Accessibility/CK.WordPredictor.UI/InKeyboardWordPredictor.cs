@@ -10,7 +10,7 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "CK.Wordpredictor.UI | InKeyboard" )]
+    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction UI - In Keyboard", Categories = new string[] { "Prediction", "Visual" } )]
     public class InKeyboardWordPredictor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -26,7 +26,6 @@ namespace CK.WordPredictor.UI
 
         public const string CompatibilityKeyboardName = "Azerty";
         public const string PredictionZoneName = "Prediction";
-        public const int DefaultMaxDisplayedWords = 10;
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -35,18 +34,57 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
-            IKeyboard kb = GetAzertyKeyboard();
-            if( kb != null )
-                CreatePredictionZone( kb );
-            if( WordPredictorService != null && WordPredictorService.Service != null )
+            if( Context != null )
             {
-                WordPredictorService.ServiceStatusChanged += OnServiceStatusChanged;
-                WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+                if( IsKeyboardCompatible( Context.CurrentKeyboard ) )
+                    CreatePredictionZone( Context.CurrentKeyboard );
+
+                Context.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
+            }
+
+            if( WordPredictorService != null )
+            {
+                WordPredictorService.ServiceStatusChanged += OnWordPredictorServiceStatusChanged;
+                //WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }
         }
 
-        void OnServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        public void Stop()
         {
+            if( WordPredictorService != null && WordPredictorService.Service != null )
+            {
+                WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
+            }
+            if( Context != null )
+            {
+                IZone zone = Context.CurrentKeyboard.Zones[PredictionZoneName];
+                if( zone != null ) zone.Destroy();
+            }
+        }
+
+        protected virtual bool IsKeyboardCompatible( IKeyboard keyboard )
+        {
+            return keyboard.Name == CompatibilityKeyboardName;
+        }
+
+        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        {
+            if( e.Current.Name != "Azerty" )
+            {
+
+            }
+        }
+
+        void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopping )
+            {
+                WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
+            }
+            if( e.Current == RunningStatus.Starting )
+            {
+                WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
+            }
         }
 
         protected void OnWordPredictedCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
@@ -89,16 +127,7 @@ namespace CK.WordPredictor.UI
             return String.Format( @"{0}:{1}", "sendPredictedWord", wordPredicted.Word.ToLowerInvariant() );
         }
 
-        public void Stop()
-        {
-            IKeyboard kb = GetAzertyKeyboard();
-            if( kb != null )
-            {
-                IZone zone = kb.Zones[PredictionZoneName];
-                if( zone != null ) zone.Destroy();
-            }
-        }
-
+        
         public void Teardown()
         {
         }

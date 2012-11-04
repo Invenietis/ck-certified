@@ -73,10 +73,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WordPredictor, Version=1.0.3063.25415, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Sybille\WordPredictor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engines\IWordPredictorEngine.cs" />
@@ -100,6 +96,10 @@
     <ProjectReference Include="..\..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SybilleWordPreditor\SybilleWordPreditor.csproj">
+      <Project>{a3128137-6746-4796-99e5-1b944bac4c06}</Project>
+      <Name>SybilleWordPreditor</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Advanced\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
       <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>

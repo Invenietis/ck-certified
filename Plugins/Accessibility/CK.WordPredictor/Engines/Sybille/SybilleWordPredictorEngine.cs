@@ -39,9 +39,9 @@ namespace CK.WordPredictor.Engines
         {
             if( _sybille != null )
             {
-                _sybille.ResetUserPredictor();
-                // Do we need to save user prediction ?
-                // _sybille.SaveUserPredictor();
+                //_sybille.SaveUserPredictor();
+                _sybille = null; // Sybille will be correctly garbage collected as we pass the ref to null.
+                //GC.Collect();
             }
         }
 

@@ -11,7 +11,7 @@ using CK.Plugins.SendInput;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}", PublicName = "DirectTextualContext", Categories = new[] { "Advanced" } )]
+    [Plugin( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}", PublicName = "DirectTextualContext", Categories = new[] { "Prediction" } )]
     public class DirectTextualContextService : IPlugin, ITextualContextService
     {
         SimpleTokenCollection _tokenCollection;

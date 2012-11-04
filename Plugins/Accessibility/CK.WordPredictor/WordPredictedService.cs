@@ -11,7 +11,7 @@ using CK.Plugin.Config;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}", PublicName = "WordPredictedService", Categories = new string[] { "Advanced" } )]
+    [Plugin( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}", PublicName = "WordPredictedService", Categories = new string[] { "Advanced", "Prediction" } )]
     public class WordPredictedService : BasicCommandHandler, IWordPredictedService
     {
         public const string CMDSendPredictedWord = "sendPredictedWord";

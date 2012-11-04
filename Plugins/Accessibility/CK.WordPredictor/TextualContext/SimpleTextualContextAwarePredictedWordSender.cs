@@ -10,7 +10,7 @@ using CommonServices;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}", PublicName = "Simple TextualContext aware predicted word sender", Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Advanced" } )]
+    [Plugin( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}", PublicName = "Simple TextualContext aware predicted word sender", Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Prediction" } )]
     public class SimpleTextualContextAwarePredictedWordSender : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

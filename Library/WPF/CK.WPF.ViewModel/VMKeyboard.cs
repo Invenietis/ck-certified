@@ -46,24 +46,25 @@ namespace CK.WPF.ViewModel
         /// <summary>
         /// Gets the width of the current layout.
         /// </summary>
-        public int W 
-        { 
-            get 
-            { 
-                return _keyboard.CurrentLayout.W; 
-            } 
+        public int W
+        {
+            get
+            {
+                return _keyboard.CurrentLayout.W;
+            }
         }
 
         /// <summary>
         /// Gets the height of the current layout.
         /// </summary>
-        public int H { 
-            get 
-            { 
-                return _keyboard.CurrentLayout.H; 
-            } 
+        public int H
+        {
+            get
+            {
+                return _keyboard.CurrentLayout.H;
+            }
         }
-        
+
         public ObservableCollection<TZ> Zones { get { return _zones; } }
         public ObservableCollection<TK> Keys { get { return _keys; } }
 
@@ -77,7 +78,7 @@ namespace CK.WPF.ViewModel
 
             _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
             _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );            
+            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
             _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
             _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
@@ -147,8 +148,19 @@ namespace CK.WPF.ViewModel
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            Zones.Remove( Context.Obtain( e.Zone ) );
-            Context.OnModelDestroy( e.Zone );
+            var zone = Context.Obtain( e.Zone );
+            if( zone != null )
+            {
+                foreach( var k in e.Zone.Keys )
+                {
+                    var mk = Context.Obtain( k );
+                    Keys.Remove( mk );
+                    Context.OnModelDestroy( k );
+                }
+                
+                Zones.Remove( zone );
+                Context.OnModelDestroy( e.Zone );
+            }
         }
 
         void OnLayoutSizeChanged( object sender, LayoutEventArgs e )

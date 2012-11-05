@@ -131,27 +131,27 @@ namespace CK.WordPredictor.UI
             return String.Format( @"{0}:{1}", "sendPredictedWord", wordPredicted.Word.ToLowerInvariant() );
         }
 
-        
+
         public void Teardown()
         {
         }
 
         protected virtual void CreatePredictionZone( IKeyboard kb )
         {
-            if( kb.Zones[PredictionZoneName] == null )
-            {
-                IZone predictionZone = kb.Zones.Create( PredictionZoneName );
-                if( predictionZone != null )
-                {
-                    int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / Feature.MaxSuggestedWords - 5;
-                    int offset = 2;
+            IZone predictionZone = kb.Zones[PredictionZoneName];
+            if( predictionZone != null ) predictionZone.Destroy();
 
-                    for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
-                    {
-                        IKey key = predictionZone.Keys.Create( i );
-                        key.CurrentLayout.Current.Visible = false;
-                        ConfigureKey( key.CurrentLayout.Current, i, wordWidth, offset );
-                    }
+            predictionZone = kb.Zones.Create( PredictionZoneName );
+            if( predictionZone != null )
+            {
+                int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / Feature.MaxSuggestedWords - 5;
+                int offset = 2;
+
+                for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
+                {
+                    IKey key = predictionZone.Keys.Create( i );
+                    key.CurrentLayout.Current.Visible = false;
+                    ConfigureKey( key.CurrentLayout.Current, i, wordWidth, offset );
                 }
             }
         }

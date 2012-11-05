@@ -31,7 +31,7 @@ namespace CK.WordPredictor
         {
             if( TextualContextService.Service != null && SendStringService.Service != null )
             {
-                int currentContextTokenLenth = TextualContextService.Service.CurrentToken.Value.Length;
+                int currentContextTokenLenth = TextualContextService.Service.CurrentToken != null ? TextualContextService.Service.CurrentToken.Value.Length : 0;
                 string wordToSend = e.Word.Substring( currentContextTokenLenth, e.Word.Length - currentContextTokenLenth );
 
                 if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";

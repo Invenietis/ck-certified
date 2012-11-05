@@ -33,7 +33,7 @@
         </Border>
         <Border Style="{StaticResource Rounded}" Margin="5">
             <DockPanel>
-                <TextBlock x:Uid="target" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
+                <TextBlock x:Uid="scroll-speed" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
                 <StackPanel>
                     <Slider Minimum="300" Maximum="2000" TickFrequency="100" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Speed}"/>
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedSpeed}" />

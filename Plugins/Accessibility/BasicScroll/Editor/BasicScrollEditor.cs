@@ -28,7 +28,7 @@ namespace BasicScroll.Editor
         [RequiredService]
         public IContext Context { get; set; }
 
-        [ConfigurationAccessor( BasicScroll.PluginIdString )]
+        [ConfigurationAccessor( BasicScrollPlugin.PluginIdString )]
         public IPluginConfigAccessor BasicScrollConfiguration { get; set; }
 
         [ConfigurationAccessor( "{4E3A3B25-7FD0-406F-A958-ECB50AC6A597}" )]

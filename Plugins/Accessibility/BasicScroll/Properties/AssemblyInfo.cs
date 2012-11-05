@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -21,6 +22,8 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("4ee6fe39-1461-46fd-b285-7632197452c6")]
+
+[assembly: NeutralResourcesLanguage( "en-US", UltimateResourceFallbackLocation.Satellite )]
 
 // Version information for an assembly consists of the following four values:
 //

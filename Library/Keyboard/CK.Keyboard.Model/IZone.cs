@@ -33,6 +33,7 @@ namespace CK.Keyboard.Model
         /// <summary>
         /// Destroys this zone. The default zone can not be destroyed.
         /// On success, the <see cref="IKeyboard.ZoneDestroyed"/> event is fired.
+        /// <i>Note</i> that it does not call <see cref="IKey.Destroy"/> on each keys contains in the <see cref="IKeyCollection"/> of the zone being destroyed.
         /// </summary>
         /// <remarks>
         /// Once destroyed, a zone is no more functionnal and no method nor properties should be called.

@@ -54,6 +54,7 @@ namespace CK.WordPredictor.UI
             if( WordPredictorService != null && WordPredictorService.Service != null )
             {
                 WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
+                WordPredictorService.ServiceStatusChanged -= OnWordPredictorServiceStatusChanged;
             }
             if( Context != null )
             {

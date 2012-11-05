@@ -33,7 +33,7 @@ namespace CommonServices
     public interface ILogService : IDynamicService
     {
         /// <summary>
-        /// Event fired when a log as been formatted & sent by the underlying LogPlugin
+        /// Event fired when a log as been formatted and sent by the underlying LogPlugin
         /// </summary>
         event LogTriggeredEventHandler LogTriggered;
     }

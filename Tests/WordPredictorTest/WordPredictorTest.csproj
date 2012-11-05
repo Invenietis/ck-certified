@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98E92129-086C-4C31-935C-D33B2234534D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WordPredictorTest</RootNamespace>
+    <AssemblyName>WordPredictorTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AdvancedCommandHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ThirdParty\AdvancedCommandHandler.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Core">
+      <HintPath>..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config">
+      <HintPath>..\..\packages\CK.Plugin.Config.2.8.44\lib\net40\CK.Plugin.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config.Model">
+      <HintPath>..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Model">
+      <HintPath>..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Reflection">
+      <HintPath>..\..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.SharedDic">
+      <HintPath>..\..\packages\CK.SharedDic.2.8.44\lib\net40\CK.SharedDic.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage">
+      <HintPath>..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InKeyboardWordPredictorTests.cs" />
+    <Compile Include="SybilleEngineTest.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="DirectTextualContextServiceTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordPredictorEngineFactoryTest.cs" />
+    <Compile Include="WordPredictorTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
+      <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
+      <Name>CK.WordPredictor.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Accessibility\CK.WordPredictor.UI\CK.WordPredictor.UI.csproj">
+      <Project>{4cdc576f-47bd-4b76-b1a6-e2a8d7bbff5c}</Project>
+      <Name>CK.WordPredictor.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Accessibility\CK.WordPredictor\CK.WordPredictor.csproj">
+      <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
+      <Name>CK.WordPredictor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

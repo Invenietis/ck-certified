@@ -74,7 +74,6 @@
     <Compile Include="Events\KeyboardContextEventArgs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IKeyboardService.cs" />
     <Compile Include="IKeyboardContextMode.cs" />
     <Compile Include="IKeyboardContext.cs" />
     <Compile Include="Events\CurrentKeyboardChangedEventArgs.cs" />

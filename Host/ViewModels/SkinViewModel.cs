@@ -34,87 +34,51 @@ using CK.Windows;
 
 namespace Host.VM
 {
-    public class SkinViewModel : ConfigPage
+    public class SkinViewModel : ConfigBase
     {
-        IObjectPluginConfig _config;
-        IPluginProxy _skinPlugin;
         Guid _keyboardEditorId;
-        AppViewModel _app;
-        Guid _skinId;
+        AppViewModel _app; 
 
         public SkinViewModel( AppViewModel app )
-            : base( app.ConfigManager )
+            : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
         {
-            DisplayName = R.SkinConfig;
             _app = app;
-            _app.PluginRunner.PluginHost.StatusChanged += ( o, e ) => 
-            {
-                if( e.PluginProxy.PluginKey.PluginId == _skinId && _skinPlugin == null )
-                {
-                    _skinPlugin = _app.PluginRunner.PluginHost.FindLoadedPlugin( _skinId, true );
-                    _config = _app.ConfigContainer.GetObjectPluginConfig( _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinPlugin );
-                }
-
-                NotifyOfPropertyChange( () => ActivateSkin );
-                NotifyOfPropertyChange( () => EnableAutoHide );
-                NotifyOfPropertyChange( () => AutoHideTimeOut );
-            };
         }
 
-        void InitializePlugin()
+        protected override void NotifyOfPropertiesChange()
         {
-            _skinPlugin = _app.PluginRunner.PluginHost.FindLoadedPlugin( _skinId, true );
-            if( _skinPlugin != null ) _config = _app.ConfigContainer.GetObjectPluginConfig( _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinPlugin );
+            base.NotifyOfPropertiesChange();
+            NotifyOfPropertyChange( () => EnableAutoHide );
+            NotifyOfPropertyChange( () => AutoHideTimeOut );
         }
 
-        public bool ActivateSkin
+        protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            get { return _skinPlugin != null ? _app.IsPluginRunning( _skinPlugin.PluginKey ) : false; }
-            set
-            {
-                using( var waiting = _app.ShowBusyIndicator() )
-                {
-                    if( value )
-                    {
-                        _app.StartPlugin( _skinId );
-
-                        if( _skinPlugin == null ) _skinPlugin = _app.PluginRunner.PluginHost.FindLoadedPlugin( _skinId, true );
-                        _config = _skinPlugin != null ? _app.ConfigContainer.GetObjectPluginConfig( _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinPlugin ) : null;
-                    }
-                    else
-                    {
-                        _app.StopPlugin( _skinId );
-                    }
-                }
-
-                NotifyOfPropertyChange( () => ActivateSkin );
-                NotifyOfPropertyChange( () => EnableAutoHide );
-                NotifyOfPropertyChange( () => AutoHideTimeOut );
-            }
+            NotifyOfPropertyChange( () => EnableAutoHide );
+            NotifyOfPropertyChange( () => AutoHideTimeOut );
         }
 
         public bool EnableAutoHide
         {
-            get { return _config != null ? _config.GetOrSet( "autohide", false ) : false; }
-            set { if( _config != null ) _config.Set( "autohide", value ); }
+            get { return Config != null ? Config.GetOrSet( "autohide", false ) : false; }
+            set { if( Config != null ) Config.Set( "autohide", value ); }
         }
 
         public int AutoHideTimeOut
         {
-            get { return _config != null ? _config.GetOrSet( "autohide-timeout", 6000 ) : 0; }
+            get { return Config != null ? Config.GetOrSet( "autohide-timeout", 6000 ) : 0; }
             set
             {
-                if( _config != null ) _config.Set( "autohide-timeout", value );
+                if( Config != null ) Config.Set( "autohide-timeout", value );
             }
         }
 
         protected override void OnInitialize()
         {
-            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            base.OnInitialize();
             _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" );
-            InitializePlugin();
 
-            var skinGroup = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig, this, h => h.ActivateSkin, this );
+            var skinGroup = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig );
 
             skinGroup.AddProperty( R.SkinAutohideFeature, this, h => EnableAutoHide );
 
@@ -141,7 +105,6 @@ namespace Host.VM
             var keyboardEditorStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _keyboardEditorId ) { DisplayName = R.SkinEditorSectionName };
             editionGroup.Items.Add( keyboardEditorStarter );
 
-            base.OnInitialize();
         }
 
         public void StartSkinEditor()

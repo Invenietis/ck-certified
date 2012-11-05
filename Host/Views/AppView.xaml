@@ -23,14 +23,14 @@
     </Window.Visibility>
     <Grid>
         <StackPanel>
-            <tb:TaskbarIcon 
+            <!--<tb:TaskbarIcon 
             x:Name="taskbarIcon"
             IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico"
             ToolTipText="CiviKey" 
             DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}"
             Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
             ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
-            </tb:TaskbarIcon>
+            </tb:TaskbarIcon>-->
 
             <Grid>
                 <Grid.RowDefinitions>

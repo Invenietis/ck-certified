@@ -56,7 +56,7 @@ namespace Host
         /// </summary>
         public Version AppVersion
         {
-            get { return _appVersion ?? ( _appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) ) ); }
+            get { return _appVersion ?? (_appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) )); }
         }
 
         /// <summary>
@@ -91,7 +91,6 @@ namespace Host
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
-
             // Initializes Services.
             {
                 ctx.ServiceContainer.Add<IHostInformation>( this );

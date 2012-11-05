@@ -80,7 +80,7 @@ namespace CK.StandardPlugins.CommandManager
             if( _runningCommands == null ) _runningCommands = new Queue<DictionaryEntry>();
             bool isRunning = _runningCommands.Count > 0;
 
-            _runningCommands.Enqueue( new DictionaryEntry( sender, command.Trim() ) );
+            _runningCommands.Enqueue( new DictionaryEntry( sender, command.TrimStart() ) );
 
             if( !isRunning )
             {

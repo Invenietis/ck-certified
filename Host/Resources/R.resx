@@ -297,4 +297,16 @@
   <data name="ScrollConfig" xml:space="preserve">
     <value>Edit scrolling configuration</value>
   </data>
+  <data name="WordPredictionConfig" xml:space="preserve">
+    <value>Word Prediction configuration</value>
+  </data>
+  <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
+    <value>Max suggested words (maximum)</value>
+  </data>
+  <data name="WordPredictionInsertSpace" xml:space="preserve">
+    <value>Insert space after predicted words</value>
+  </data>
+  <data name="WordPredictionSectionName" xml:space="preserve">
+    <value>Word Prediction</value>
+  </data>
 </root>

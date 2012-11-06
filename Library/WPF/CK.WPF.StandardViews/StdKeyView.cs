@@ -36,15 +36,26 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Markup;
+using System.Windows.Controls.Primitives;
+using System.ComponentModel;
+using System.Windows.Interop;
 
 namespace CK.WPF.StandardViews
 {
-    [ContentProperty("UpLabel")]
-    public class StdKeyView : Button
+    [ContentProperty( "UpLabel" )]
+    public class StdKeyView : ButtonBase
     {
         static StdKeyView()
         {
+            //Keyboard.DefaultRestoreFocusMode = RestoreFocusMode.None;
+            //HwndSource.DefaultAcquireHwndFocusInMenuMode = false;
+            //DefaultStyleKeyProperty.DefaultMetadata.DefaultValue = ToolBarButtonStyleKey;
             DefaultStyleKeyProperty.OverrideMetadata( typeof( StdKeyView ), new FrameworkPropertyMetadata( typeof( StdKeyView ) ) );
+        }
+
+        public StdKeyView()
+        {
+            Focusable = false;
         }
 
         public ICommand KeyDownCommand

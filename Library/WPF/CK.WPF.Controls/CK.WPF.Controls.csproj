@@ -100,6 +100,7 @@
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimpleCommand.cs" />
+    <Compile Include="TextBlockService.cs" />
     <Page Include="Chromes\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

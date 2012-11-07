@@ -10,13 +10,13 @@
     mc:Ignorable="d" Height="208" Width="539">
     <Grid>
 
-        <TextBox Text="{Binding TextualContext, UpdateSourceTrigger=PropertyChanged}" MinLines="3" FontSize="15" FlowDirection="LeftToRight" Margin="10,10,105,10" AcceptsReturn="True" AcceptsTab="True" >
+        <TextBox x:Name="buffer" Text="{Binding TextualContext, UpdateSourceTrigger=PropertyChanged}" MinLines="3" FontSize="15" FlowDirection="LeftToRight" Margin="10,10,105,10" AcceptsReturn="True" AcceptsTab="True" >
             <i:Interaction.Behaviors>
                 <h:SetCaretIndexBehavior CaretPosition="{Binding CaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                          SelectedText="{Binding SelectedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </i:Interaction.Behaviors>
         </TextBox>
-        <Button Content="Envoyer" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Stretch" Width="90" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5">
+        <Button Focusable="False" Command="{Binding SendTextCommand}" CommandParameter="{Binding ElementName=buffer, Path=Text}" Content="Envoyer" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Stretch" Width="90" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5">
         </Button>
     </Grid>
 </Window>

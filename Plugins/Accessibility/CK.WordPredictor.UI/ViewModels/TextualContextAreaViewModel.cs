@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
+using CK.Plugins.SendInput;
 using CK.WordPredictor.Model;
 using CK.WPF.ViewModel;
 
@@ -9,12 +11,14 @@ namespace CK.WordPredictor.UI.ViewModels
 {
     public class TextualContextAreaViewModel : VMBase
     {
-        TextualContextSmartArea _textualContext;
+        readonly ISendStringService _sendStringService;
+        readonly TextualContextSmartArea _textualContext;
         string _selectedText;
 
-        public TextualContextAreaViewModel( TextualContextSmartArea textualContext )
+        public TextualContextAreaViewModel( TextualContextSmartArea textualContext, ISendStringService sendStringService )
         {
             _textualContext = textualContext;
+            _sendStringService = sendStringService;
         }
 
         public int CaretIndex
@@ -49,6 +53,19 @@ namespace CK.WordPredictor.UI.ViewModels
             set
             {
                 _textualContext.SetText( value );
+            }
+        }
+
+        ICommand _sendTextCommand;
+
+        public ICommand SendTextCommand
+        {
+            get
+            {
+                return _sendTextCommand ?? (_sendTextCommand = new VMCommand<string>( ( text ) =>
+                    {
+                        _sendStringService.SendString( this, text );
+                    } ));
             }
         }
     }

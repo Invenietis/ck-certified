@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using CK.Plugin;
+using CK.Plugins.SendInput;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.Models;
 using CK.WordPredictor.UI.ViewModels;
@@ -15,6 +16,9 @@ namespace CK.WordPredictor.UI
     [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "Word Prediction UI - TextualContextSmartArea", Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextSmartArea : IPlugin, ITextualContextService
     {
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISendStringService SendStringService { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
             return true;
@@ -22,17 +26,11 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( this );
+            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( this, SendStringService );
             TextualContextSmartAreaWindow window = new TextualContextSmartAreaWindow( vm );
             window.Width = 600;
             window.Height = 200;
             window.Show();
-
-            TextualContextPreviewViewModel previewVm = new TextualContextPreviewViewModel( this );
-            TextualContextPreview preview = new TextualContextPreview( previewVm );
-            preview.Width = 600;
-            preview.Height = 200; 
-            preview.Show();
         }
 
         public void Stop()
@@ -94,23 +92,20 @@ namespace CK.WordPredictor.UI
                 }
                 else
                 {
-                    int i = 0, 
-                        previousWordIndex = 0;
+                    int i = 1, 
+                        previousWordIndex = 0,
+                        wordIndex = 0;
                     while( i < _tokenSeparatorIndexes.Length )
                     {
-                        int wordIndex = _tokenSeparatorIndexes[i];
+                        wordIndex = _tokenSeparatorIndexes[i];
                         if( wordIndex > _caretIndex )
                         {
-                            if( i > 0 )
-                            {
-                                previousWordIndex = _tokenSeparatorIndexes[i - 1];
-                                return _caretIndex - previousWordIndex;
-                            }
-                            else return _caretIndex;
+                            previousWordIndex = _tokenSeparatorIndexes[i - 1];
+                            return _caretIndex - previousWordIndex;
                         }
                         i++;
                     }
-                    return _caretIndex - previousWordIndex;
+                    return _caretIndex - wordIndex;
                 }
             }
         }

@@ -12,7 +12,7 @@ namespace CK.WordPredictor.Model
     /// </summary>
     public interface IWordPredictorFeature : IDynamicService, INotifyPropertyChanged
     {
-        bool FilterAlreadyShowWords { get; }
+        bool FilterAlreadyShownWords { get; }
 
         bool InsertSpaceAfterPredictedWord { get; }
 

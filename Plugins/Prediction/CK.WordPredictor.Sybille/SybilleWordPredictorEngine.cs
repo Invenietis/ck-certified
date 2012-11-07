@@ -11,25 +11,43 @@ namespace CK.WordPredictor.Engines
     public class SybilleWordPredictorEngine : IWordPredictorEngine, IDisposable
     {
         Sybille.WordPredictor _sybille;
+        IWordPredictorFeature _wordPredictionFeature;
+
+        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature )
+        {
+            _wordPredictionFeature = wordPredictionFeature;
+            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+        }
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
+            : this( wordPredictionFeature )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShowWords;
+            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
         }
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+            : this( wordPredictionFeature )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShowWords;
+            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+        }
+
+
+        void OnWordPredictionFeaturePropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "FilterAlreadyShownWords" )
+            {
+                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.FilterAlreadyShownWords;
+            }
         }
 
         public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
         {
-            return Task.Factory.StartNew( () => 
+            return Task.Factory.StartNew( () =>
             {
                 return Predict( textualContext, maxSuggestedWords );
-            });
+            } );
         }
 
         public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )

@@ -30,11 +30,6 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWordPredictorFeature Feature { get; set; }
 
-        public bool IsWeightedPrediction
-        {
-            get { return _engine != null ? _engine.IsWeightedPrediction : false; }
-        }
-
         public IWordPredictedCollection Words
         {
             get { return _wordPredictedCollection; }
@@ -47,7 +42,7 @@ namespace CK.WordPredictor
             get { return Feature.Engine; }
         }
 
-        internal static Func<string> PluginDirectoryPath
+        internal protected static Func<string> PluginDirectoryPath
         {
             get { return _resourcePath; }
             set { _resourcePath = value; }
@@ -60,18 +55,9 @@ namespace CK.WordPredictor
 
         public virtual bool Setup( IPluginSetupInfo info )
         {
-            try
-            {
-                _predictedList = new ObservableCollection<IWordPredicted>();
-                _wordPredictedCollection = new WordPredictedCollection( _predictedList );
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-
+            _predictedList = new ObservableCollection<IWordPredicted>();
+            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
+            return true;
         }
 
         public virtual void Start()
@@ -110,9 +96,11 @@ namespace CK.WordPredictor
 
         private void FeedPredictedList()
         {
-            _predictedList.Clear();
-            IEnumerable<IWordPredicted> words = _engine.Predict( TextualContextService, Feature.MaxSuggestedWords );
-            foreach( var w in words ) _predictedList.Add( w );
+            _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
+            {
+                _predictedList.Clear();
+                foreach( var w in words.Result ) _predictedList.Add( w );
+            } );
         }
 
         public virtual void Stop()

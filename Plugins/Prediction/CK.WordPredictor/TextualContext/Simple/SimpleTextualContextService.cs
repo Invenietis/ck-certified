@@ -11,8 +11,8 @@ using CK.Plugins.SendInput;
 
 namespace CK.WordPredictor
 {
-    //[Plugin( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}", PublicName = "DirectTextualContext", Categories = new[] { "Prediction" } )]
-    public class DirectTextualContextService : IPlugin, ITextualContextService
+    //[Plugin( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}", PublicName = "SimpleTextualContextService", Categories = new[] { "Prediction" } )]
+    public class SimpleTextualContextService : IPlugin, ITextualContextService
     {
         SimpleTokenCollection _tokenCollection;
 
@@ -24,9 +24,8 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ISendStringService> SendStringService { get; set; }
 
-        public DirectTextualContextService()
+        public SimpleTextualContextService()
         {
-            _tokenCollection = new SimpleTokenCollection();
         }
 
         public string RawContext
@@ -56,7 +55,7 @@ namespace CK.WordPredictor
 
         public int CaretOffset
         {
-            get { return CurrentToken.Value.Length - 1; }
+            get { return CurrentToken != null ? CurrentToken.Value.Length : 0; }
         }
 
         CaretPosition _position;
@@ -66,14 +65,30 @@ namespace CK.WordPredictor
             get { return _position; }
         }
 
+        protected virtual bool IsResetContextToken( string token )
+        {
+            if( String.IsNullOrWhiteSpace( token ) ) return false;
+
+            return Char.IsPunctuation( token.Trim()[0] );
+        }
+
+        protected virtual bool IsTokenSeparator( string token )
+        {
+            if( String.IsNullOrEmpty( token ) ) return false;
+            if( String.IsNullOrEmpty( token.Trim() ) ) return true;
+
+            char c = token[0];
+            return Char.IsWhiteSpace( c ) || Char.IsSeparator( c );
+        }
+
         internal void SetToken( string token )
         {
-            if( token == "." )
+            if( IsResetContextToken( token ) )
             {
                 _tokenCollection = new SimpleTokenCollection();
                 _position = CaretPosition.OutsideToken;
             }
-            else if( token == " " )
+            else if( IsTokenSeparator( token ) )
             {
                 _tokenCollection.Add( String.Empty );
                 _position = CaretPosition.StartToken;
@@ -112,40 +127,41 @@ namespace CK.WordPredictor
             if( PropertyChanged != null )
                 PropertyChanged( this, new PropertyChangedEventArgs( "Tokens" ) );
 
-            if( CurrentToken != null )
+            if( CurrentToken != null && PropertyChanged != null )
             {
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "CurrentToken" ) );
+                PropertyChanged( this, new PropertyChangedEventArgs( "RawContext" ) );
+                PropertyChanged( this, new PropertyChangedEventArgs( "CurrentToken" ) );
             }
         }
 
         protected virtual void OnKeySent( object sender, KeySentEventArgs e )
         {
-            if( e != null ) SetToken( e.Key );
+            if( e.Key != null ) SetToken( e.Key );
         }
 
         protected virtual void OnStringSent( object sender, StringSentEventArgs e )
         {
-            SetToken( e.StringVal );
+            if( e.StringVal != null ) SetToken( e.StringVal );
         }
 
         public bool Setup( IPluginSetupInfo info )
         {
+            _tokenCollection = new SimpleTokenCollection();
             return info.Error != null;
         }
 
         public void Start()
         {
             _position = CaretPosition.OutsideToken;
-            
+
             if( SendKeyService.Service != null )
                 SendKeyService.Service.KeySent += OnKeySent;
             SendKeyService.ServiceStatusChanged += OnSendKeyServiceStatusChanged;
 
             if( SendStringService != null )
-               SendStringService.Service.StringSent += OnStringSent;
+                SendStringService.Service.StringSent += OnStringSent;
             SendStringService.ServiceStatusChanged += OnSendStringServiceStatusChanged;
-            
+
         }
 
         void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
@@ -177,7 +193,7 @@ namespace CK.WordPredictor
             if( SendKeyService.Service != null )
                 SendKeyService.Service.KeySent -= OnKeySent;
             SendKeyService.ServiceStatusChanged -= OnSendKeyServiceStatusChanged;
-            
+
             if( SendStringService.Service != null )
                 SendStringService.Service.StringSent -= OnStringSent;
             SendStringService.ServiceStatusChanged -= OnSendStringServiceStatusChanged;

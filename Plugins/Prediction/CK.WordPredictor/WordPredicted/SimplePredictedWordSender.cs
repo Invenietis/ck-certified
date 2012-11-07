@@ -11,7 +11,7 @@ using CommonServices;
 namespace CK.WordPredictor
 {
     [Plugin( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}", PublicName = "Simple TextualContext aware predicted word sender", Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Prediction" } )]
-    public class SimpleTextualContextAwarePredictedWordSender : IPlugin
+    public class SimplePredictedWordSender : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWordPredictedService WordPredictedService { get; set; }
@@ -31,8 +31,7 @@ namespace CK.WordPredictor
         {
             if( TextualContextService.Service != null && SendStringService.Service != null )
             {
-                int currentContextTokenLenth = TextualContextService.Service.CurrentToken != null ? TextualContextService.Service.CurrentToken.Value.Length : 0;
-                string wordToSend = e.Word.Substring( currentContextTokenLenth, e.Word.Length - currentContextTokenLenth );
+                string wordToSend = e.Word.Substring( TextualContextService.Service.CaretOffset, e.Word.Length - TextualContextService.Service.CaretOffset );
 
                 if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";
 

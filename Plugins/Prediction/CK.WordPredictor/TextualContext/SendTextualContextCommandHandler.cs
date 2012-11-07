@@ -10,13 +10,6 @@ using CommonServices;
 
 namespace CK.WordPredictor
 {
-    public interface ISendTextualContextService : IDynamicService
-    {
-        event EventHandler TextualContextSent;
-
-        void SendTextualContext( ITextualContextService textualContext );
-    }
-
     [Plugin( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}", PublicName = "TextualContext Command Handler", Categories = new string[] { "Prediction" } )]
     public class SendTextualContextCommandHandler : BasicCommandHandler, ISendTextualContextService
     {
@@ -30,12 +23,8 @@ namespace CK.WordPredictor
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            CommandParser p = new CommandParser( e.Command );
-            string str;
-            if( p.IsIdentifier( out str ) && !e.Canceled && str == CMDSendPredictedWord )
-            {
+            if( e.Command == CMDSendPredictedWord )
                 SendTextualContext( TextualContextService.Service );
-            }
         }
 
         public event EventHandler TextualContextSent;

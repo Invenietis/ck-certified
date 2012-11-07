@@ -9,13 +9,8 @@ namespace CK.WordPredictor.Model
     public interface IWordPredictorService : IDynamicService
     {
         /// <summary>
-        /// Gets whether this service can produce weights for its predictions.
-        /// This may change at any moment.
-        /// </summary>
-        bool IsWeightedPrediction { get; }
-
-        /// <summary>
-        /// 
+        /// Gets a an observable collection of <see cref="IWordPredicted"/>.
+        /// <see cref="INotifyCollectionChanged"/> is raised whenever the collection change.
         /// </summary>
         IWordPredictedCollection Words { get; }
     }

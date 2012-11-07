@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
 
@@ -11,16 +12,24 @@ namespace CK.WordPredictor.Engines
     {
         Sybille.WordPredictor _sybille;
 
-        public SybilleWordPredictorEngine( string languageFileName, string userLanguageFileName, string userTextsFileName )
+        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
-            _sybille.FilterAlreadyShownWords = false;
+            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShowWords;
         }
 
-        public SybilleWordPredictorEngine( string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
-            _sybille.FilterAlreadyShownWords = false;
+            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShowWords;
+        }
+
+        public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+        {
+            return Task.Factory.StartNew( () => 
+            {
+                return Predict( textualContext, maxSuggestedWords );
+            });
         }
 
         public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )

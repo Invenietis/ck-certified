@@ -17,7 +17,7 @@ namespace WordPredictorTest
         [Test]
         public void Sybille_Dictionnary_Should_Load_And_Provide_Results()
         {
-            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath, TestHelper.MockFeature( 8 ).Object );
             IWordPredictorEngine engine = f.Create( "sybille" );
             TestEngine( engine );
             f.Release( engine );
@@ -26,7 +26,7 @@ namespace WordPredictorTest
         [Test]
         public void Sem_Sybille_Should_Load_And_Provide_Results()
         {
-            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath, TestHelper.MockFeature( 8 ).Object );
             IWordPredictorEngine engine = f.Create( "sem-sybille" );
             TestEngine( engine );
             f.Release( engine );
@@ -34,7 +34,7 @@ namespace WordPredictorTest
 
         private static void TestEngine( IWordPredictorEngine engine )
         {
-            DirectTextualContextService textualContextService = new DirectTextualContextService();
+            SimpleTextualContextService textualContextService = new SimpleTextualContextService();
             textualContextService.SetToken( "Je" );
             var predicted = engine.Predict( textualContextService, 20 );
             Assert.That( predicted, Is.Not.Null );

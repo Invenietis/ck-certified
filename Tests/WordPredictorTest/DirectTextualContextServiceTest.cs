@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using CK.Plugin;
 using CK.Plugins.SendInput;
 using CK.WordPredictor;
@@ -31,12 +32,17 @@ namespace WordPredictorTest
             {
                 get { return false; }
             }
+
+            public System.Threading.Tasks.Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+            {
+                return Task.Factory.StartNew( () => Predict( textualContext, maxSuggestedWords ) );
+            }
         }
 
         [Test]
         public void When_Textual_Context_Token_Changed_The_Predictor_Word_List_Should_Be_Impacted()
         {
-            var t = new DirectTextualContextService();
+            var t = new SimpleTextualContextService();
             var p = new Mock<IWordPredictorService>();
 
             t.PropertyChanged += ( sender, e ) =>
@@ -83,9 +89,9 @@ namespace WordPredictorTest
             p.VerifyAll();
         }
 
-        private static DirectTextualContextService SetupDirectTextualContextService( string keyToSend )
+        private static SimpleTextualContextService SetupDirectTextualContextService( string keyToSend )
         {
-            DirectTextualContextService sut = new DirectTextualContextService();
+            SimpleTextualContextService sut = new SimpleTextualContextService();
             Mock<ISendKeyCommandHandlerService> sendKey = new Mock<ISendKeyCommandHandlerService>();
             sendKey.Setup( e => e.SendKey( It.IsAny<string>() ) ).Raises( e => e.KeySent += ( sender, eventArgs ) => { }, new KeySentEventArgs( keyToSend ) ).Verifiable();
             
@@ -103,7 +109,7 @@ namespace WordPredictorTest
             string keyToSend = "J";
             bool propertyChangedMustBeRaised = false;
 
-            DirectTextualContextService sut = SetupDirectTextualContextService( keyToSend );
+            SimpleTextualContextService sut = SetupDirectTextualContextService( keyToSend );
             sut.PropertyChanged += ( sender, e ) =>
             {
                 propertyChangedMustBeRaised = true;
@@ -121,7 +127,7 @@ namespace WordPredictorTest
         {
             bool propertyChangedRaised = false;
             string keyToSend = "X";
-            DirectTextualContextService sut = SetupDirectTextualContextService( keyToSend );
+            SimpleTextualContextService sut = SetupDirectTextualContextService( keyToSend );
             sut.PropertyChanged += ( sender, e ) =>
             {
                 propertyChangedRaised = true;

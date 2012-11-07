@@ -14,3 +14,5 @@ Plugins/Accessibility/CK.WordPredictor.UI/bin/
 Plugins/Accessibility/CK.WordPredictor/bin/
 Tests/WordPredictorTest/bin/
 
+Plugins/Prediction/CK.WordPredictor.Sybille/bin/
+Plugins/Prediction/CK.WordPredictor/bin/

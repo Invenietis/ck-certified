@@ -21,6 +21,11 @@ namespace CK.WordPredictor
             get { return Config.User.TryGet( "InsertSpaceAfterPredictedWord", true ); }
         }
 
+        public bool FilterAlreadyShowWords
+        {
+            get { return Config.User.TryGet( "FilterAlreadyShowWords", true ); }
+        }
+
         public int MaxSuggestedWords
         {
             get { return Config.User.TryGet( "MaxSuggestedWords", 10 ); }

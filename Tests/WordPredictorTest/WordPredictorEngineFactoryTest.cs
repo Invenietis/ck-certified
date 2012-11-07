@@ -15,14 +15,14 @@ namespace WordPredictorTest
         [Test]
         public void Create_Should_Throw_Exception_If_No_Engine_With_The_Given_Name_Is_Available()
         {
-            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath, TestHelper.MockFeature( 8 ).Object );
             Assert.Throws<ArgumentException>( () => f.Create( "lucene" ) );
         }
 
         [Test]
         public void Sybillye_And_Semantic_Sybille_Are_Available()
         {
-            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath, TestHelper.MockFeature( 8 ).Object );
             Assert.That( f.Create( "sybille" ), Is.Not.Null );
             Assert.That( f.Create( "sem-sybille" ), Is.Not.Null );
         }
@@ -44,12 +44,17 @@ namespace WordPredictorTest
             {
                 throw new NotImplementedException();
             }
+
+            public System.Threading.Tasks.Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [Test]
         public void Release_Should_Call_Dispose()
         {
-            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath );
+            SybilleWordPredictorEngineFactory f = new SybilleWordPredictorEngineFactory( TestHelper.SybilleResourceFullPath, TestHelper.MockFeature( 8 ).Object );
             var engine = new DisposableEngine();
             f.Release( engine );
             Assert.That( engine.DisposedCalled );

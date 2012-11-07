@@ -65,7 +65,7 @@ namespace WordPredictorTest
         public void When_A_Word_Is_Predicted_It_Must_Appears_In_Prediction_Zone()
         {
             // Texual service plugin usage
-            var textualService = new DirectTextualContextService()
+            var textualService = new SimpleTextualContextService()
             {
                 SendKeyService = ServiceHelper.MockServiceWrapper<ISendKeyCommandHandlerService>(),
                 SendStringService = ServiceHelper.MockServiceWrapper<ISendStringService>()

@@ -95,11 +95,15 @@
       <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
       <Name>CK.Keyboard.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Accessibility\CK.WordPredictor.UI\CK.WordPredictor.UI.csproj">
+    <ProjectReference Include="..\..\Plugins\Prediction\CK.WordPredictor.Sybille\CK.WordPredictor.Sybille.csproj">
+      <Project>{afc6ce94-4900-45b0-a334-46cf41aee043}</Project>
+      <Name>CK.WordPredictor.Sybille</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Prediction\CK.WordPredictor.UI\CK.WordPredictor.UI.csproj">
       <Project>{4cdc576f-47bd-4b76-b1a6-e2a8d7bbff5c}</Project>
       <Name>CK.WordPredictor.UI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Accessibility\CK.WordPredictor\CK.WordPredictor.csproj">
+    <ProjectReference Include="..\..\Plugins\Prediction\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
       <Name>CK.WordPredictor</Name>
     </ProjectReference>

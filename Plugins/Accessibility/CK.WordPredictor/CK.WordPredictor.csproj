@@ -82,6 +82,7 @@
     <Compile Include="Engines\IWordPredictorEngine.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
     <Compile Include="Engines\Sybille\SybilleWordPredictorService.cs" />
+    <Compile Include="TextualContext\SendTextualContextCommandHandler.cs" />
     <Compile Include="TextualContext\SimpleTextualContextAwarePredictedWordSender.cs" />
     <Compile Include="WordPredictedCollection.cs" />
     <Compile Include="Engines\Sybille\SybilleWordPredictorEngineFactory.cs" />

@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
-namespace CK.WordPredictor.UI
+namespace CK.WordPredictor.UI.Helpers
 {
     public class TextBoxHelpers
     {
@@ -92,70 +92,4 @@ namespace CK.WordPredictor.UI
         }
     }
 
-    public class SetCaretIndexBehavior : Behavior<TextBox>
-    {
-        public static readonly DependencyProperty CaretPositionProperty;
-        public static readonly DependencyProperty SelectedTextProperty;
-
-        private bool _internalChange;
-
-        static SetCaretIndexBehavior()
-        {
-            SelectedTextProperty = DependencyProperty.Register( "SelectedText", typeof( string ), typeof( SetCaretIndexBehavior ), new PropertyMetadata( null, SelectedTextChanged ) );
-            CaretPositionProperty = DependencyProperty.Register( "CaretPosition", typeof( int ), typeof( SetCaretIndexBehavior ), new PropertyMetadata( 0, OnCaretPositionChanged ) );
-        }
-
-        public int CaretPosition
-        {
-            get { return Convert.ToInt32( GetValue( CaretPositionProperty ) ); }
-            set { SetValue( CaretPositionProperty, value ); }
-        }
-
-        public string SelectedText
-        {
-            get { return (string)GetValue( SelectedTextProperty ); }
-            set { SetValue( SelectedTextProperty, value ); }
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.KeyUp += OnKeyUp;
-            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
-        }
-
-
-        private static void OnCaretPositionChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-        {
-            var behavior = (SetCaretIndexBehavior)d;
-            if( !behavior._internalChange )
-            {
-                behavior.AssociatedObject.CaretIndex = Convert.ToInt32( e.NewValue );
-            }
-        }
-
-        private static void SelectedTextChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-        {
-            var behavior = (SetCaretIndexBehavior)d;
-            if( !behavior._internalChange )
-            {
-                behavior.AssociatedObject.SelectedText = e.NewValue as string;
-            }
-        }
-
-        private void OnKeyUp( object sender, KeyEventArgs e )
-        {
-            _internalChange = true;
-            CaretPosition = AssociatedObject.CaretIndex;
-            _internalChange = false;
-        }
-
-        void AssociatedObject_SelectionChanged( object sender, RoutedEventArgs e )
-        {
-            _internalChange = true;
-            SelectedText = AssociatedObject.SelectedText;
-            _internalChange = false;
-        }
-
-    }
 }

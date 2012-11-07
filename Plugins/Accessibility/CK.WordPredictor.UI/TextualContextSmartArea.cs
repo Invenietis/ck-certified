@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugins.SendInput;
 using CK.WordPredictor.Model;
@@ -17,7 +18,15 @@ namespace CK.WordPredictor.UI
     public class TextualContextSmartArea : IPlugin, ITextualContextService
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ISendStringService SendStringService { get; set; }
+        public IKeyboardContext Context { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IWordPredictorFeature Feature { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISendTextualContextService SendTextualContextService { get; set; }
+
+        TextualContextAreaViewModel _vm;
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -26,11 +35,51 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( this, SendStringService );
-            TextualContextSmartAreaWindow window = new TextualContextSmartAreaWindow( vm );
+            _vm = new TextualContextAreaViewModel( this );
+            TextualContextSmartAreaWindow window = new TextualContextSmartAreaWindow( _vm );
             window.Width = 600;
             window.Height = 200;
             window.Show();
+
+            int wordWidth = (Context.CurrentKeyboard.CurrentLayout.W) / (Feature.MaxSuggestedWords + 1) - 5;
+            int offset = 2;
+
+            var zone = Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName];
+            var sendContextKey = zone.Keys.Create();
+            if( sendContextKey != null )
+            {
+                sendContextKey.Current.DownLabel = "En cours..";
+                sendContextKey.Current.UpLabel = "Envoyer";
+                sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
+                sendContextKey.CurrentLayout.Current.Visible = true;
+                ConfigureKey( sendContextKey.CurrentLayout.Current, Feature.MaxSuggestedWords, wordWidth, offset );
+            }
+
+            if( SendTextualContextService != null )
+                SendTextualContextService.TextualContextSent += SendTextualContextService_TextualContextSent;
+        }
+
+        void SendTextualContextService_TextualContextSent( object sender, EventArgs e )
+        {
+            _rawContext = null;
+            _tokenCollection.Clear();
+            _caretIndex = 0;
+            _tokenSeparatorIndexes = new int[0];
+            OnPropertyChanged( "Tokens" );
+            OnPropertyChanged( "RawContext" );
+            OnPropertyChanged( "CurrentToken" );
+            OnPropertyChanged( "CurrentTokenIndex" );
+            OnPropertyChanged( "CurrentPosition" );
+            OnPropertyChanged( "CaretOffset" );
+        }
+
+        protected virtual void ConfigureKey( ILayoutKeyModeCurrent layoutKeyMode, int idx, int wordWidth, int offset )
+        {
+            if( layoutKeyMode == null ) throw new ArgumentNullException( "layoutKeyMode" );
+            layoutKeyMode.X = idx * (wordWidth + 5) + offset;
+            layoutKeyMode.Y = 5;
+            layoutKeyMode.Width = wordWidth;
+            layoutKeyMode.Height = 45;
         }
 
         public void Stop()
@@ -42,10 +91,15 @@ namespace CK.WordPredictor.UI
         }
 
         int _caretIndex;
-
+        string _rawContext;
         int[] _tokenSeparatorIndexes = new int[0];
 
         TokenCollection _tokenCollection = new TokenCollection();
+
+        public string RawContext
+        {
+            get { return _rawContext; }
+        }
 
         public ITokenCollection Tokens
         {
@@ -69,7 +123,7 @@ namespace CK.WordPredictor.UI
 
         public IToken CurrentToken
         {
-            get { return _tokenCollection[CurrentTokenIndex]; }
+            get { return _tokenCollection.Count == 0 ? null : _tokenCollection[CurrentTokenIndex]; }
         }
 
         /// <summary>
@@ -149,6 +203,8 @@ namespace CK.WordPredictor.UI
         // WORD1  WORD2 WORD3
         internal void SetText( string value )
         {
+            _rawContext = value;
+
             if( String.IsNullOrWhiteSpace( value ) )
             {
                 _tokenSeparatorIndexes = new int[0];
@@ -168,8 +224,10 @@ namespace CK.WordPredictor.UI
                 }
             }
 
-            _tokenCollection = new TokenCollection( tokens );
+            _tokenCollection.Clear();
+            _tokenCollection.AddRange( tokens );
 
+            OnPropertyChanged( "RawContext" );
             OnPropertyChanged( "Tokens" );
 
             //// The Current Token Index is smaller than the number of token: It is an insertion.
@@ -226,7 +284,5 @@ namespace CK.WordPredictor.UI
                 handler( this, e );
             }
         }
-
-
     }
 }

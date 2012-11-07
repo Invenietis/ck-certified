@@ -43,6 +43,10 @@
     <Reference Include="CK.Core">
       <HintPath>..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Interop, Version=2.7.40.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Interop.2.7.40\lib\net40\CK.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Plugin.Config">
       <HintPath>..\..\..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
@@ -60,6 +64,14 @@
     </Reference>
     <Reference Include="CK.Storage">
       <HintPath>..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.8.47-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.8.47-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging">
       <HintPath>..\..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
@@ -82,17 +94,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SelectedTextBehavior.cs" />
+    <Compile Include="Helpers\SetCaretIndexBehavior.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
     <Compile Include="TextualContextPreview.cs" />
-    <Compile Include="Views\TextualContextPreview.xaml.cs">
-      <DependentUpon>TextualContextPreview.xaml</DependentUpon>
+    <Compile Include="Views\TextualContextPreviewWindow.xaml.cs">
+      <DependentUpon>TextualContextPreviewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="InKeyboardWordPredictor.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="Models\TokenCollection.cs" />
     <Compile Include="ViewModels\TextualContextPreviewViewModel.cs" />
-    <Compile Include="Views\TextualContextSmartArea.xaml.cs">
-      <DependentUpon>TextualContextSmartArea.xaml</DependentUpon>
+    <Compile Include="Views\TextualContextSmartAreaWindow.xaml.cs">
+      <DependentUpon>TextualContextSmartAreaWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\TextualContextAreaViewModel.cs" />
@@ -124,11 +138,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\TextualContextPreview.xaml">
+    <Page Include="Views\TextualContextPreviewWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TextualContextSmartArea.xaml">
+    <Page Include="Views\TextualContextSmartAreaWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

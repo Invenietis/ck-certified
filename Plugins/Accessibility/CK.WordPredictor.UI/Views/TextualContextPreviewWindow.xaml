@@ -15,9 +15,6 @@
                  AcceptsReturn="True" 
                  AcceptsTab="True" 
                  Height="133" Margin="10,0" >
-            <i:Interaction.Behaviors>
-                <h:SetCaretIndexBehavior CaretPosition="{Binding CaretIndex}" />
-            </i:Interaction.Behaviors>
             <!--h:TextBoxHelper.CaretIndex="{Binding CaretIndex, Mode=OneWay}"-->
 
         </TextBox>

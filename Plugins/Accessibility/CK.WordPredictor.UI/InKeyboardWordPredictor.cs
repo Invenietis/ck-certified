@@ -144,7 +144,7 @@ namespace CK.WordPredictor.UI
             predictionZone = kb.Zones.Create( PredictionZoneName );
             if( predictionZone != null )
             {
-                int wordWidth = Context.CurrentKeyboard.CurrentLayout.W / Feature.MaxSuggestedWords - 5;
+                int wordWidth = ( Context.CurrentKeyboard.CurrentLayout.W )/ ( Feature.MaxSuggestedWords + 1 ) - 5;
                 int offset = 2;
 
                 for( int i = 0; i < Feature.MaxSuggestedWords; ++i )

@@ -16,6 +16,13 @@ namespace CK.WordPredictor.UI.Models
             InsertAt( _token.Count, token );
         }
 
+        internal void AddRange( string[] tokens )
+        {
+            _token.AddRange( tokens.Select( e => new Token( e )) );
+            
+            if( CollectionChanged != null )
+                CollectionChanged( this, new NotifyCollectionChangedEventArgs( NotifyCollectionChangedAction.Add, _token ) );
+        }
         internal void InsertAt( int insertionPoint, string token )
         {
             var ts = new Token( token );
@@ -86,6 +93,14 @@ namespace CK.WordPredictor.UI.Models
         }
 
         #endregion
+
+
+        internal void Clear()
+        {
+            _token.Clear();
+            if( CollectionChanged != null )
+                CollectionChanged( this, new NotifyCollectionChangedEventArgs( NotifyCollectionChangedAction.Reset ) );
+        }
 
     }
 

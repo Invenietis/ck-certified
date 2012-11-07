@@ -29,6 +29,11 @@ namespace CK.WordPredictor
             _tokenCollection = new SimpleTokenCollection();
         }
 
+        public string RawContext
+        {
+            get { return String.Join( " ", _tokenCollection.Select( e => e.Value ) ); }
+        }
+
         public ITokenCollection Tokens
         {
             get { return _tokenCollection; }

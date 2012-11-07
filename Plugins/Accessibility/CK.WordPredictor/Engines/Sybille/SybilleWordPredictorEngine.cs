@@ -32,11 +32,19 @@ namespace CK.WordPredictor.Engines
 
         public string ObtainContext( ITextualContextService textualService )
         {
-            string tokenPhrase =  String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
-            tokenPhrase += " ";
-            tokenPhrase += textualService.Tokens.Count >= textualService.CurrentTokenIndex ?
-                (textualService.Tokens[textualService.CurrentTokenIndex].Value.Substring( 0, textualService.CaretOffset )) : String.Empty;
-            return tokenPhrase;
+            if( textualService.Tokens.Count > 1 )
+            {
+                string tokenPhrase =  String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
+                tokenPhrase += " ";
+                tokenPhrase += textualService.Tokens.Count >= textualService.CurrentTokenIndex ?
+                    (textualService.Tokens[textualService.CurrentTokenIndex].Value.Substring( 0, textualService.CaretOffset )) : String.Empty;
+                return tokenPhrase;
+            }
+            if( textualService.Tokens.Count == 1 )
+            {
+                return textualService.CurrentToken.Value.Substring( 0, textualService.CaretOffset );
+            }
+            return String.Empty;
         }
 
 

@@ -11,14 +11,21 @@ namespace CK.WordPredictor.UI.ViewModels
 {
     public class TextualContextAreaViewModel : VMBase
     {
-        readonly ISendStringService _sendStringService;
         readonly TextualContextSmartArea _textualContext;
         string _selectedText;
 
-        public TextualContextAreaViewModel( TextualContextSmartArea textualContext, ISendStringService sendStringService )
+        public TextualContextAreaViewModel( TextualContextSmartArea textualContext )
         {
             _textualContext = textualContext;
-            _sendStringService = sendStringService;
+            _textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
+        }
+
+        void Tokens_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
+        {
+            if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset )
+            {
+                OnPropertyChanged( "TextualContext" );
+            }
         }
 
         public int CaretIndex
@@ -56,17 +63,17 @@ namespace CK.WordPredictor.UI.ViewModels
             }
         }
 
-        ICommand _sendTextCommand;
+        //ICommand _sendTextCommand;
 
-        public ICommand SendTextCommand
-        {
-            get
-            {
-                return _sendTextCommand ?? (_sendTextCommand = new VMCommand<string>( ( text ) =>
-                    {
-                        _sendStringService.SendString( this, text );
-                    } ));
-            }
-        }
+        //public ICommand SendTextCommand
+        //{
+        //    get
+        //    {
+        //        return _sendTextCommand ?? (_sendTextCommand = new VMCommand<string>( ( text ) =>
+        //            {
+        //                _sendStringService.SendString( this, text );
+        //            } ));
+        //    }
+        //}
     }
 }

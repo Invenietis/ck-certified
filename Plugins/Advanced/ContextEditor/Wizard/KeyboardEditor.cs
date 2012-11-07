@@ -32,9 +32,14 @@ namespace ContextEditor
         const string PluginPublicName = "Keyboard editor";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        public IPluginConfigAccessor SkinConfiguration { get; set; }
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
+        public IPluginConfigAccessor Config { get; set; }
+        
         [RequiredService( Required = true )]
         public IContext Context { get; set; }
 
@@ -71,6 +76,13 @@ namespace ContextEditor
                 _mainWindow.Close();
         }
             
+        public void Teardown()
+        {
+            _stopping = false;
+            _appViewModel = null;
+            _windowManager = null;
+            bootstrap = null;
+        }
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
@@ -109,13 +121,6 @@ namespace ContextEditor
                 _mainWindow.Closing -= OnWindowClosing;
         }
      
-        public void Teardown()
-        {
-            _stopping = false;
-            _appViewModel = null;
-            _windowManager = null;
-            bootstrap = null;
-        }
 
         /// <summary>
         /// This property holds the version of the keyboard that is being edited, before any modification.
@@ -233,7 +238,7 @@ namespace ContextEditor
             {
                 File.Delete( KeyboardBackup.BackUpFilePath );
             }
-
+            
             KeyboardBackup = null;
         }
 

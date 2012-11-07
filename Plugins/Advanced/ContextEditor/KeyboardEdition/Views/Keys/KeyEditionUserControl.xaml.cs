@@ -18,16 +18,11 @@ namespace ContextEditor.s
     /// <summary>
     /// Interaction logic for KeyboardEditionView.xaml
     /// </summary>
-    public partial class KeyboardEditionView : UserControl
+    public partial class KeyEditionUserControl : UserControl
     {
-        public KeyboardEditionView()
+        public KeyEditionUserControl()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click_1( object sender, RoutedEventArgs e )
-        {
-
         }
     }
 }

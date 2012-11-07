@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="ContextEditor.s.GenericLayoutEditionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+             xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+             xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
+             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
+             xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+             xmlns:local="clr-namespace:ContextEditor.s"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel Orientation="Horizontal">
+        <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+            <StackPanel>
+                <Border Style="{StaticResource Splitter}">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Font size :</TextBlock>
+                            <ComboBox Margin="0 3" ItemsSource="{Binding FontSizes}" SelectedValue="{Binding FontSize}" />
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="FontSize"/>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="font-styles" VerticalAlignment="Center" Margin="0 0 10 0">Font styles :</TextBlock>
+                            <ToggleButton x:Uid="bold" Padding="3 2" IsChecked="{Binding FontWeightAsBool}">Bold</ToggleButton>
+                            <ToggleButton x:Uid="Italic" Padding="3 2" IsChecked="{Binding FontStyleAsBool}">Italic</ToggleButton>
+                            <ToggleButton x:Uid="underline" Padding="3 2" IsChecked="{Binding TextDecorationsAsBool}">Underline</ToggleButton>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="FontWeight,FontStyle,TextDecorations"/>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource Splitter}" BorderThickness="0" Padding="5" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding LetterColor}"/>
+                            <TextBlock x:Uid="font-color" VerticalAlignment="Center">Font color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="LetterColor"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+            <StackPanel Orientation="Vertical">
+                <Border Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding Background}" />
+                            <TextBlock x:Uid="normal-bg-color" VerticalAlignment="Center">Normal background color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="Background"/>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding HoverBackground}" />
+                            <TextBlock x:Uid="hover-bg-color" VerticalAlignment="Center">Hover background color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="HoverBackground"/>
+                    </DockPanel>
+                </Border>
+                <Border BorderThickness="0" Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" >
+                            <cce:ColorPicker SelectedColor="{Binding PressedBackground}" />
+                            <TextBlock x:Uid="pressed-bg-color" VerticalAlignment="Center">Pressed background color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="PressedBackground"/>
+                    </DockPanel>
+                </Border>
+                <Border BorderThickness="0" Style="{StaticResource Splitter}" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal" >
+                            <cce:ColorPicker SelectedColor="{Binding HighlightBackground}" />
+                            <TextBlock x:Uid="highlight-bg-color" VerticalAlignment="Center">Highlighted background color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="HighlightBackground"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

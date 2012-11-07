@@ -69,6 +69,7 @@ namespace Host.VM
             g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
 
             this.AddLink( _acVm ?? ( _acVm = new AutoClickViewModel( _app ) ) );
+            this.AddLink( _acVm ?? ( _acVm = new AutoClickViewModel( _app ) ) );
             this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
 
             string stopReminderFolderPath = Path.Combine( _app.CivikeyHost.ApplicationDataPath, "Updates" );

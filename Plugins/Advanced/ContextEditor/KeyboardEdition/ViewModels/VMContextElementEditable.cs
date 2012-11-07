@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.Controls\Converters\NotNullConverter.cs) is part of CiviKey. 
+* This file (Plugins\Accessibility\SimpleSkin\ViewModels\VMContextElementSimple.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,31 +22,26 @@
 #endregion
 
 using System;
-using System.Windows.Data;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Input;
+using CK.WPF.ViewModel;
+using Microsoft.Win32;
 
-namespace CK.WPF.Controls
-{ 
-    /// <summary>
-    /// Not operator on a boolean.
-    /// returns null if the vlaue is null.
-    /// </summary>
-    [ValueConversion( typeof( bool ), typeof( bool ) )]
-    public class NotConverter : IValueConverter
+namespace ContextEditor.ViewModels
+{
+    public class VMContextElementEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
-        public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
+        object _model;
+
+        public VMContextElementEditable( VMContextEditable context, object model )
+            : base( context, model )
         {
-            if( value == null ) return null;
-
-            bool returnValue;
-            if( Boolean.TryParse( value.ToString(), out returnValue ) )
-                return !returnValue;
-
-            throw new FormatException( String.Format( "The NotConverter is waiting for a boolean value, not a {0} value.", value.GetType() ) );
+            _model = model;
         }
 
-        public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
-        {
-            return Convert( value, targetType, parameter, culture );
-        }
+        
     }
 }

@@ -135,7 +135,6 @@
     <Compile Include="Editor\EditorViewModel.cs" />
     <Compile Include="Editor\EditorViewModel.FontProperties.cs" />
     <Compile Include="Editor\SimpleSkinEditor.cs" />
-    <Compile Include="Helpers\PropertyLookupExtentions.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>
@@ -270,6 +269,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\kb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

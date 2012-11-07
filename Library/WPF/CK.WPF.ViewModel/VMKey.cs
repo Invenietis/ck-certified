@@ -30,19 +30,54 @@ using CK.Keyboard.Model;
 
 namespace CK.WPF.ViewModel
 {
+    [Flags]
+    public enum FallbackVisibility
+    {
+        /// <summary>
+        /// Enables the Fallback on the nearest <see cref="ILayoutKeyMode"/>
+        /// </summary>
+        FallbackOnLayout = 1,
+
+        /// <summary>
+        /// Enables the Fallback on the nearest <see cref="IKeyMode"/>
+        /// </summary>
+        FallbackOnKeyMode = 2
+    }
+
     public abstract class VMKey<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
         where TC : VMContext<TC, TB, TZ, TK>
         where TB : VMKeyboard<TC, TB, TZ, TK>
         where TZ : VMZone<TC, TB, TZ, TK>
         where TK : VMKey<TC, TB, TZ, TK>
     {
-        IKey _key;
+        Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
+        ICommand _keyPressedCmd;
         ICommand _keyDownCmd;
         ICommand _keyUpCmd;
-        ICommand _keyPressedCmd;
-        Dictionary<string,ActionSequence> _actionsOnPropertiesChanged;
+        IKey _key;
 
         #region Properties
+
+        FallbackVisibility _showFallback;
+        public FallbackVisibility ShowFallback
+        {
+            get { return _showFallback; }
+            set
+            {
+                _showFallback = value;
+                OnPropertyChanged( "ShowFallback" );
+            }
+        }
+
+        /// <summary>
+        /// If there is no <see cref="IKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="IKeyMode"/> should be displayed.
+        /// </summary>
+        public bool ShowKeyModeFallback { get { return ( ShowFallback & FallbackVisibility.FallbackOnKeyMode ) == FallbackVisibility.FallbackOnKeyMode; } }
+
+        /// <summary>
+        /// If there is no <see cref="ILayoutKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="ILayoutKeyMode"/> should be displayed.
+        /// </summary>
+        public bool ShowLayoutFallback { get { return ( ShowFallback & FallbackVisibility.FallbackOnLayout ) == FallbackVisibility.FallbackOnLayout; } }
 
         /// <summary>
         /// Gets the current actualKey layout.
@@ -58,53 +93,94 @@ namespace CK.WPF.ViewModel
         }
 
         /// <summary>
-        /// Gets the logical position of the key in the zone.
+        /// Gets the logical position of the <see cref="IKey"/> in the zone.
         /// </summary>
         public int Index
         {
             get { return _key.Index; }
+            set
+            {
+                _key.Index = value;
+                OnPropertyChanged( "Index" );
+            }
         }
 
+        #region Layout Properties
+
+
         /// <summary>
-        /// Gets the X coordinate of this key.
+        /// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
         /// </summary>
         public int X
         {
             get { return _key.CurrentLayout.Current.X; }
+            set
+            {
+                //if( _key.CurrentLayout.Current.IsFallBack )
+                //{
+                //    _key.KeyModes.Create( _key.Keyboard.CurrentMode );
+                //    _key.CurrentLayout.LayoutKeyModes.Create( _key.Keyboard.CurrentMode );
+                //}
+                _key.CurrentLayout.Current.X = value;
+                OnPropertyChanged( "X" );
+            }
         }
 
         /// <summary>
-        /// Gets the Y coordinate of this key.
+        /// Gets the Y coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
         /// </summary>
         public int Y
         {
             get { return _key.CurrentLayout.Current.Y; }
+            set
+            {
+                _key.CurrentLayout.Current.Y = value;
+                OnPropertyChanged( "Y" );
+            }
         }
 
         /// <summary>
-        /// Gets the width of this key.
+        /// Gets or sets the width of this key, for the current <see cref="ILayoutKeyMode"/>.
         /// </summary>
         public int Width
         {
             get { return _key.CurrentLayout.Current.Width; }
-
+            set 
+            { 
+                _key.CurrentLayout.Current.Width = value;
+                OnPropertyChanged( "Width" );
+            }
         }
 
         /// <summary>
-        /// Gets the height of this key.
+        /// Gets or sets the height of this key, for the current <see cref="ILayoutKeyMode"/>.
         /// </summary>
         public int Height
         {
-            get { return _key.CurrentLayout.Current.Height; ; }
+            get { return _key.CurrentLayout.Current.Height; }
+            set
+            {
+                _key.CurrentLayout.Current.Height = value;
+                OnPropertyChanged( "Height" );
+            }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this actual key is visible or not.
+        /// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
         /// </summary>
         public Visibility Visible
         {
             get { return LayoutKeyMode.Visible ? Visibility.Visible : Visibility.Collapsed; }
+            set
+            {
+                LayoutKeyMode.Visible = ( value == Visibility.Visible );
+                OnPropertyChanged( "Visible" );
+            }
         }
+
+        #endregion
+
+        #region KeyMode Properties
 
         /// <summary>
         /// Gets a value indicating wether the current keymode is enabled or not.
@@ -112,48 +188,100 @@ namespace CK.WPF.ViewModel
         public bool Enabled { get { return _key.Current.Enabled; } }
 
         /// <summary>
-        /// Gets the label that must be used when the key is up.
+        /// Gets or sets the label that must be used when the key is up, for the current <see cref="IKeyMode"/>.
         /// </summary>
         public string UpLabel
         {
             get { return _key.Current.UpLabel; }
+            set
+            {
+                EnsureKeyMode();
+                _key.Current.UpLabel = value;
+                OnPropertyChanged( "UpLabel" );
+            }
         }
 
         /// <summary>
-        /// Gets the label that must be used when the key is down.
+        /// Makes sure there is a KeyMode on this key for the current mode.
+        /// </summary>
+        private void EnsureKeyMode()
+        {
+            //If the user is modifying a property linked to the KeyMode and that there is no KeyMode for this mode; we create one.
+            if( _key.Current.IsFallBack )
+            {
+                _key.KeyModes.Create( _key.Keyboard.CurrentMode );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the label that must be used when the key is down, for the current <see cref="IKeyMode"/>.
         /// </summary>
         public string DownLabel
         {
             get { return _key.Current.DownLabel; }
+            set
+            {
+                EnsureKeyMode();
+                _key.Current.DownLabel = value;
+                OnPropertyChanged( "DownLabel" );
+            }
         }
 
         /// <summary>
-        /// Gets the description of the key
+        /// Gets or sets the description of the current <see cref="IKeyMode"/> of this Key
         /// </summary>
         public string Description
         {
             get { return _key.Current.Description; }
+            set
+            {
+                EnsureKeyMode();
+                _key.Current.Description = value;
+                OnPropertyChanged( "Description" );
+            }
         }
+
+        #endregion
 
         /// <summary>
         /// Gets if the current keymode is a fallback or not.
         /// </summary>
         public bool IsFallback { get { return _key.Current.IsFallBack; } }
 
-        public ICommand KeyDownCommand { get { return _keyDownCmd; } }
+        public ICommand KeyUpCommand { get { return _keyUpCmd; } set { _keyUpCmd = value; } }
 
-        public ICommand KeyUpCommand { get { return _keyUpCmd; } }
+        public ICommand KeyDownCommand { get { return _keyDownCmd; } set { _keyDownCmd = value; } }
 
-        public ICommand KeyPressedCommand { get { return _keyPressedCmd; } }
+        public ICommand KeyPressedCommand { get { return _keyPressedCmd; } set { _keyPressedCmd = value; } }
 
         #endregion
 
+        /// <summary>
+        /// Ctor for VMKey
+        /// </summary>
+        /// <param name="context">The VMContext</param>
+        /// <param name="key">The underlying model</param>
         public VMKey( TC context, IKey key )
-            : base( context )
+            : this( context, key, true )
         {
+        }
+
+        /// <summary>
+        /// Advanced Ctor for a VMKey. Enables setting <see cref="KeyUpCommand"/> <see cref="KeyDownCommand"/> and <see cref="KeyPressedCommand"/>
+        /// </summary>
+        /// <param name="context">The VMContext</param>
+        /// <param name="key">The underlying model</param>
+        /// <param name="presetPushBehavior">Set to true if you want <see cref="KeyUpCommand"/> <see cref="KeyDownCommand"/> and <see cref="KeyPressedCommand"/> to transfer the pushes to the underlying <see cref="IKey"/> (classic behavior for a VMKey used as a keyboard key) </param>
+        public VMKey( TC context, IKey key, bool presetPushBehavior )
+            : base( context, key )
+        {
+            //By default, we show the fallback.
+            ShowFallback = FallbackVisibility.FallbackOnLayout | FallbackVisibility.FallbackOnKeyMode;
+
             _key = key;
 
-            ResetCommands();
+            if( presetPushBehavior )
+                SetCommands();
 
             _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
 
@@ -181,6 +309,7 @@ namespace CK.WPF.ViewModel
             SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
             SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
             SetActionOnPropertyChanged( "DownLabel", () => OnPropertyChanged( "DownLabel" ) );
+            SetActionOnPropertyChanged( "Description", () => OnPropertyChanged( "Description" ) );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
@@ -221,7 +350,7 @@ namespace CK.WPF.ViewModel
                 _actionsOnPropertiesChanged[e.PropertyName].Run();
         }
 
-        void ResetCommands()
+        void SetCommands()
         {
             _keyDownCmd = new KeyCommand( () => { if( !_key.IsDown )_key.Push(); } );
             _keyUpCmd = new KeyCommand( () => { if( _key.IsDown ) _key.Release(); } );

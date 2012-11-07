@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="ContextEditor.s.LayoutKeyEditionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+             xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+             xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
+             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
+             xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+              xmlns:local="clr-namespace:ContextEditor.s"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border BorderThickness="1" CornerRadius="5">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <CheckBox Margin="0 3 5 0" x:Name="layoutcheckbox" />
+                <TextBlock TextWrapping="Wrap">Configurer la touche pour le mode choisi</TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsChecked, ElementName=layoutcheckbox}">
+                <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+                    <StackPanel IsEnabled="{Binding IsFallback, Converter={StaticResource notconverter}}" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
+                                <TextBox Text="{Binding X}" Margin="2" Width="50"></TextBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
+                                <TextBox Text="{Binding Y}" Margin="2" Width="50"></TextBox>
+                            </StackPanel>
+                            <Border Grid.Column="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
+                            <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
+                                <TextBox Text="{Binding Width}" Margin="2" Width="50"></TextBox>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
+                                <TextBox Text="{Binding Height}" Margin="2" Width="50"></TextBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <local:GenericLayoutEditionUserControl />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

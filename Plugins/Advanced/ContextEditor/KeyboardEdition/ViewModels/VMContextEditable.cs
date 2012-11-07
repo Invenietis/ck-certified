@@ -69,7 +69,11 @@ namespace ContextEditor.ViewModels
         VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _selectedElement;
         public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> SelectedElement
         {
-            get { return _selectedElement; }
+            get 
+            {
+                if( _selectedElement == null ) _selectedElement = KeyboardVM;
+                return _selectedElement; 
+            }
             set { _selectedElement = value; OnPropertyChanged( "SelectedElement" ); }
         }
 

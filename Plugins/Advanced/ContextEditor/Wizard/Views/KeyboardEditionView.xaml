@@ -33,28 +33,60 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
+
+            <DataTemplate x:Key="KeyEditionDataTemplate">
+                <TabControl Style="{StaticResource KeyEditionUCStyle}">
+                    <TabItem Header="Affichage">
+                        <local:KeyModeEditionUserControl DataContext="{Binding}"/>
+                    </TabItem>
+                    <TabItem Header="Couleurs et position">
+                        <local:LayoutKeyEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                </TabControl>
+            </DataTemplate>
+
+            <DataTemplate x:Key="KeyboardEditionDataTemplate">
+                <TabControl Style="{StaticResource KeyEditionUCStyle}">
+                    <TabItem Header="Affichage">
+                        <local:KeyboardEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                    <TabItem Header="Couleurs">
+                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                </TabControl>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ZoneEditionDataTemplate">
+                <TabControl Style="{StaticResource KeyEditionUCStyle}">
+                    <TabItem Header="Affichage">
+                        <local:ZoneEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                    <TabItem Header="Couleurs">
+                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                </TabControl>
+            </DataTemplate>
+
+            <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" 
+                                                KeyEditionTemplate="{StaticResource KeyEditionDataTemplate}" 
+                                                ZoneEditionTemplate="{StaticResource ZoneEditionDataTemplate}" 
+                                                KeyboardEditionTemplate="{StaticResource KeyboardEditionDataTemplate}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Border DataContext="{Binding EditedContext}" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Margin="10 20">
                 <TextBlock Text="Mode : " />
-                <ItemsControl ItemsSource="{Binding KeyboardVM.Model.AvailableMode.AtomicModes}">
+                <ItemsControl ItemsSource="{Binding KeyboardVM.KeyboardModes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <DockPanel LastChildFill="False" Margin="5 0 2 0">
-                                <TextBlock DockPanel.Dock="Left" Text="{Binding}"/>
-                                <Button DockPanel.Dock="Right" Content="--&gt;" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.KeyboardVM.AddKeyboardModeCommand}" CommandParameter="{Binding}"></Button>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <ItemsControl ItemsSource="{Binding KeyboardVM.CurrentMode.AtomicModes}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <DockPanel LastChildFill="False" Margin="5 0 2 0">
-                                <TextBlock DockPanel.Dock="Right" Text="{Binding}"/>
-                                <Button DockPanel.Dock="Left" Content="&lt;--" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.KeyboardVM.RemoveKeyboardModeCommand}" CommandParameter="{Binding}" />
+                                <ToggleButton IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
                             </DockPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -63,15 +95,10 @@
             <Viewbox Stretch="Uniform" Grid.Column="1">
                 <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />
             </Viewbox>
-            <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                <TabItem Header="Affichage">
-                    <local:KeyModeEditionUserControl DataContext="{Binding SelectedElement}"/>
-                </TabItem>
-                <TabItem Header="Couleurs et position">
-                    <local:LayoutKeyEditionUserControl DataContext="{Binding SelectedElement}" />
-                </TabItem>
-            </TabControl>
-            <local:ZoneEditionUserControl DataContext="{Binding KeyboardVM}"/>
+
+            <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}">
+            </ContentControl>
+            
         </StackPanel>
     </Border>
 </UserControl>

@@ -19,7 +19,7 @@
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
-#endregion$
+#endregion
 
 using System;
 using System.Linq;
@@ -92,14 +92,6 @@ namespace ContextEditor.ViewModels
             base.OnDispose();
         }
 
-        IEnumerable<double> _sizes;
-        IEnumerable<double> GetSizes( int from, int to )
-        {
-            for( int i = from; i <= to; i++ ) yield return i;
-        }
-
-        public IEnumerable<double> FontSizes { get { return _sizes == null ? _sizes = GetSizes( 10, 30 ) : _sizes; } }
-
         /// <summary>
         /// Gets the model linked to this ViewModel
         /// </summary>
@@ -111,17 +103,21 @@ namespace ContextEditor.ViewModels
         /// </summary>
         #region Fallback properties overrides
 
+        ///Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public new string UpLabel
         {
             get { return ( !IsFallback || ShowKeyModeFallback ) ? base.UpLabel : String.Empty; }
             set { base.UpLabel = value; }
         }
+
+        ///Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public new string DownLabel
         {
             get { return ( !IsFallback || ShowKeyModeFallback ) ? base.DownLabel : String.Empty; }
             set { base.DownLabel = value; }
         }
 
+        ///Gets the Description of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public new string Description
         {
             get { return ( !IsFallback || ShowKeyModeFallback ) ? base.Description : String.Empty; }
@@ -130,56 +126,23 @@ namespace ContextEditor.ViewModels
 
         #endregion
 
-        public object Image
+        #region Layout Edition elements
+
+        VMCommand<string> _clearCmd;
+        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd == null ? _clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty ) : _clearCmd; } }
+
+        void ClearProperty( string propertyName )
         {
-            get
-            {
-                object imageData = _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"];
-                Image image = new Image();
+            string[] names = propertyName.Split( ',' );
+            foreach( var pname in names ) _ctx.Config[Model.CurrentLayout.Current].Remove( pname );
+        }
 
-                if( imageData != null )
-                {
-                    string imageString = imageData.ToString();
-
-                    if( imageData.GetType() == typeof( Image ) ) return imageData;
-                    else if( File.Exists( imageString ) )
-                    {
-
-                        BitmapImage bitmapImage = new BitmapImage();
-
-                        bitmapImage.BeginInit();
-                        bitmapImage.UriSource = new Uri( imageString );
-                        bitmapImage.EndInit();
-
-                        image.Source = bitmapImage;
-
-                        return image;
-                    }
-                    else if( imageString.StartsWith( "pack://" ) )
-                    {
-                        ImageSourceConverter imsc = new ImageSourceConverter();
-                        return imsc.ConvertFromString( imageString );
-                    }
-                    else
-                    {
-                        byte[] imageBytes = Convert.FromBase64String( imageData.ToString() );
-                        using( MemoryStream ms = new MemoryStream( imageBytes ) )
-                        {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.StreamSource = ms;
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.EndInit();
-                            image.Source = bitmapImage;
-                        }
-                        return image;
-                    }
-                }
-
-                return null;
-            }
-
-            set { _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"] = value; }
+        bool CanClearProperty( string propertyName )
+        {
+            string[] names = propertyName.Split( ',' );
+            // We can clear property if the property owns directly a value.
+            foreach( var pname in names ) if( _ctx.Config[Model.CurrentLayout.Current][pname] != null ) return true;
+            return false;
         }
 
         public Color Background
@@ -231,7 +194,7 @@ namespace ContextEditor.ViewModels
         {
             get { return Model.CurrentLayout.Current.GetWrappedPropertyValue( _ctx.Config, "FontStyle", FontStyles.Normal ).Value; }
         }
-       
+
         public FontWeight FontWeight
         {
             get { return Model.CurrentLayout.Current.GetWrappedPropertyValue( _ctx.Config, "FontWeight", FontWeights.Normal ).Value; }
@@ -294,6 +257,15 @@ namespace ContextEditor.ViewModels
                 else _ctx.Config[Model.CurrentLayout.Current]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "" );
             }
         }
+
+        IEnumerable<double> _sizes;
+        IEnumerable<double> GetSizes( int from, int to )
+        {
+            for( int i = from; i <= to; i++ ) yield return i;
+        }
+        public IEnumerable<double> FontSizes { get { return _sizes == null ? _sizes = GetSizes( 10, 30 ) : _sizes; } }
+
+
         #endregion
 
         public double FontSize
@@ -305,14 +277,66 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        #endregion
+
+        #region Key Image management
+
         public bool ShowLabel
         {
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
         }
 
-        public double Opacity
+
+        public object Image
         {
-            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
+            get
+            {
+                object imageData = _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"];
+                Image image = new Image();
+
+                if( imageData != null )
+                {
+                    string imageString = imageData.ToString();
+
+                    if( imageData.GetType() == typeof( Image ) ) return imageData;
+                    else if( File.Exists( imageString ) )
+                    {
+
+                        BitmapImage bitmapImage = new BitmapImage();
+
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri( imageString );
+                        bitmapImage.EndInit();
+
+                        image.Source = bitmapImage;
+
+                        return image;
+                    }
+                    else if( imageString.StartsWith( "pack://" ) )
+                    {
+                        ImageSourceConverter imsc = new ImageSourceConverter();
+                        return imsc.ConvertFromString( imageString );
+                    }
+                    else
+                    {
+                        byte[] imageBytes = Convert.FromBase64String( imageData.ToString() );
+                        using( MemoryStream ms = new MemoryStream( imageBytes ) )
+                        {
+                            BitmapImage bitmapImage = new BitmapImage();
+                            bitmapImage.BeginInit();
+                            bitmapImage.StreamSource = ms;
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.EndInit();
+                            image.Source = bitmapImage;
+                        }
+                        return image;
+                    }
+                }
+
+                return null;
+            }
+
+            set { _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"] = value; }
         }
 
         ICommand _removeImageCommand;
@@ -359,29 +383,20 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        VMCommand<string> _clearCmd;
-        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd == null ? _clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty ) : _clearCmd; } }
-
-        void ClearProperty( string propertyName )
-        {
-            string[] names = propertyName.Split( ',' );
-            foreach( var pname in names ) _ctx.Config[Model.CurrentLayout.Current].Remove( pname );
-        }
-
-        bool CanClearProperty( string propertyName )
-        {
-            string[] names = propertyName.Split( ',' );
-            // We can clear property if the property owns directly a value.
-            foreach( var pname in names ) if( _ctx.Config[Model.CurrentLayout.Current][pname] != null ) return true;
-            return false;
-        }
-
         private bool EnsureIsImage( string extension )
         {
             return String.Compare( extension, ".jpeg", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".jpg", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".png", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".bmp", StringComparison.CurrentCultureIgnoreCase ) == 0;
+        }
+
+        #endregion
+
+
+        public double Opacity
+        {
+            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
         }
     }
 }

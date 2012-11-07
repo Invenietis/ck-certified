@@ -89,6 +89,15 @@ namespace ContextEditor.ViewModels
         public IZone Model { get; private set; }
 
         /// <summary>
+        /// Gets or sets the Name of the underlying <see cref="IZone"/>
+        /// </summary>
+        public new string Name 
+        { 
+            get { return Model.Name; } 
+            set { Model.Rename( value ); } 
+        }
+
+        /// <summary>
         /// Gets the X position of the key contained in this zone that is the nearer to the Top Left corner;
         /// </summary>
         public int X

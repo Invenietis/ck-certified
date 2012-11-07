@@ -163,12 +163,6 @@ namespace CK.WordPredictor.UI
             string[] tokens = Normalization( value ); ;
             if( tokens.Length > 1 )
             {
-                //int j = 0;
-                //for( int i = 0; i < value.Length; ++i )
-                //{
-                //    if( value[i] == ' ' ) _tokenSeparatorIndexes[j++] = i;
-                //}
-
                 _tokenSeparatorIndexes = new int[tokens.Length - 1];
                 _tokenSeparatorIndexes[0] = tokens[0].Length + 1;
 

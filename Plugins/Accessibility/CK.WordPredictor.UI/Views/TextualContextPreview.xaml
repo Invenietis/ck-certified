@@ -6,21 +6,22 @@
         xmlns:vm="clr-namespace:CK.WordPredictor.UI.ViewModels"
         xmlns:h="clr-namespace:CK.WordPredictor.UI"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        mc:Ignorable="d" Height="304" Width="875" >
-    <StackPanel Margin="0">
+        mc:Ignorable="d" Height="238" Width="869" >
+    <StackPanel>
         <TextBox Text="{Binding TextualContext, Mode=OneWay}" 
-                 MinLines="3" 
+                 MinLines="3" VerticalAlignment="Top"
                  FontSize="15" 
                  FlowDirection="LeftToRight" 
                  AcceptsReturn="True" 
                  AcceptsTab="True" 
-                 Height="223" Margin="10,0" >
+                 Height="133" Margin="10,0" >
             <i:Interaction.Behaviors>
                 <h:SetCaretIndexBehavior CaretPosition="{Binding CaretIndex}" />
             </i:Interaction.Behaviors>
             <!--h:TextBoxHelper.CaretIndex="{Binding CaretIndex, Mode=OneWay}"-->
 
         </TextBox>
-        <TextBlock Margin="10" Text="{Binding CurrentToken}" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" Background="#FFEAEAEA" />
+        <TextBlock Margin="10" Text="{Binding CurrentToken}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="27" Background="#FFEAEAEA" />
+        <TextBlock Text="{Binding CaretIndex}" />
     </StackPanel>
 </Window>

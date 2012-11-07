@@ -31,7 +31,7 @@ namespace CK.WordPredictor.UI.ViewModels
 
         private IEnumerable<int> PreviousWordsLength()
         {
-            return _textualContext.Tokens.Take( _textualContext.CurrentTokenIndex - 1 ).Select( t => t.Value.Length );
+            return _textualContext.Tokens.Take( _textualContext.CurrentTokenIndex ).Select( t => t.Value.Length );
         }
 
         public string CurrentToken

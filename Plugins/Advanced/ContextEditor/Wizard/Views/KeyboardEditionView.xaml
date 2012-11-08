@@ -95,10 +95,10 @@
             <Viewbox Stretch="Uniform" Grid.Column="1">
                 <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />
             </Viewbox>
-
+   
             <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}">
             </ContentControl>
-            
+   
         </StackPanel>
     </Border>
 </UserControl>

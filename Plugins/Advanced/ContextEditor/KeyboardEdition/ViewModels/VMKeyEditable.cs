@@ -35,6 +35,7 @@ using Microsoft.Win32;
 using System.Windows.Input;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ContextEditor.ViewModels
 {
@@ -52,18 +53,18 @@ namespace ContextEditor.ViewModels
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
-                OnPropertyChanged( "Background" );
-                OnPropertyChanged( "HoverBackground" );
                 OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "PressedBackground" );
-                OnPropertyChanged( "LetterColor" );
-                OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "FontWeight" );
-                OnPropertyChanged( "FontSize" );
+                OnPropertyChanged( "HoverBackground" );
                 OnPropertyChanged( "TextDecorations" );
+                OnPropertyChanged( "LetterColor" );
+                OnPropertyChanged( "FontWeight" );
+                OnPropertyChanged( "Background" );
+                OnPropertyChanged( "FontStyle" );
+                OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
-                OnPropertyChanged( "ShowLabel" );
             } );
         }
 
@@ -71,19 +72,25 @@ namespace ContextEditor.ViewModels
         {
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
-                OnPropertyChanged( "Background" );
-                OnPropertyChanged( "HoverBackground" );
                 OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "PressedBackground" );
-                OnPropertyChanged( "LetterColor" );
-                OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "FontWeight" );
-                OnPropertyChanged( "FontSize" );
+                OnPropertyChanged( "HoverBackground" );
                 OnPropertyChanged( "TextDecorations" );
+                OnPropertyChanged( "LetterColor" );
+                OnPropertyChanged( "Background" );
+                OnPropertyChanged( "FontWeight" );
+                OnPropertyChanged( "FontStyle" );
+                OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
-                OnPropertyChanged( "ShowLabel" );
             }
+        }
+
+        protected override void OnTriggerModeChanged()
+        {
+            OnPropertyChanged( "CurrentKeyModeMode" );
+            OnPropertyChanged( "CurrentLayoutKeyModeMode" );
         }
 
         protected override void OnDispose()
@@ -97,30 +104,110 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public IKey Model { get; private set; }
 
+        public IKeyboardMode CurrentKeyModeMode { get { return Model.Current.Mode; } } //.ToString() == String.Empty ? "default mode" : Model.Current.Mode.ToString();
+        public IKeyboardMode CurrentLayoutKeyModeMode { get { return Model.CurrentLayout.Current.Mode; } } //.ToString() == String.Empty ? "default mode" : Model.CurrentLayout.Current.Mode.ToString();
+
         /// <summary>
         /// This regions contains overrides to the <see cref="VMKey"/> properties.
         /// It enables hidding the fallback if necessary.
         /// </summary>
-        #region Fallback properties overrides
+        #region KeyMode properties overrides
+
+        VMCommand<string> _createKeyModeCommand;
+        /// <summary>
+        /// Gets a Command that creates the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
+        /// </summary>
+        public VMCommand<string> CreateKeyModeCommand
+        {
+            get
+            {
+                if( _createKeyModeCommand == null )
+                {
+                    _createKeyModeCommand = new VMCommand<string>( (type) =>
+                    {
+                       
+                        if( type == "KeyMode" )
+                        {
+                            Debug.Assert( IsKeyModeFallback );
+                            Model.KeyModes.Create( Model.Keyboard.CurrentMode );
+
+                            OnPropertyChanged( "CurrentKeyModeMode" );
+                            OnPropertyChanged( "IsKeyModeFallback" );
+                        }
+                        else if( type == "LayoutKeyMode" )
+                        {
+                            Debug.Assert( IsLayoutKeyModeFallback );
+                            ILayoutKeyMode previousMode = Model.CurrentLayout.Current;
+                            ILayoutKeyMode mode = Model.CurrentLayout.LayoutKeyModes.Create( Model.Keyboard.CurrentMode );
+
+                            //Retrieving the previous layoutkeymode's properties values, to apply them on the new layoutkeymode.
+                            mode.X = previousMode.X;
+                            mode.Y = previousMode.Y;
+                            mode.Height = previousMode.Height;
+                            mode.Width = previousMode.Width;
+                            mode.Visible = true;
+
+                            OnPropertyChanged( "CurrentLayoutKeyModeMode" );
+                            OnPropertyChanged( "IsLayoutKeyModeFallback" );
+                        }
+                    } );
+                }
+                return _createKeyModeCommand;
+            }
+        }
+
+        VMCommand<string> _deleteKeyModeCommand;
+        /// <summary>
+        /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
+        /// </summary>
+        public VMCommand<string> DeleteKeyModeCommand
+        {
+            get
+            {
+                if( _deleteKeyModeCommand == null )
+                {
+                    _deleteKeyModeCommand = new VMCommand<string>( (type) =>
+                    {
+                        if( type == "KeyMode" )
+                        {
+                            Debug.Assert( !IsKeyModeFallback );
+                            Model.Current.Destroy();
+
+                            OnPropertyChanged( "CurrentKeyModeMode" );
+                            OnPropertyChanged( "IsKeyModeFallback" );
+                        }
+                        else if( type == "LayoutKeyMode" )
+                        {
+                            Debug.Assert( !IsLayoutKeyModeFallback );
+                            Model.CurrentLayout.Current.Destroy();
+
+                            OnPropertyChanged( "CurrentLayoutKeyModeMode" );
+                            OnPropertyChanged( "IsLayoutKeyModeFallback" );
+                        }
+                    } );
+                }
+                return _deleteKeyModeCommand;
+            }
+        }
 
         ///Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public new string UpLabel
         {
-            get { return ( !IsFallback || ShowKeyModeFallback ) ? base.UpLabel : String.Empty; }
+            get { return ( !IsKeyModeFallback || ShowKeyModeFallback ) ? base.UpLabel : String.Empty; }
             set { base.UpLabel = value; }
         }
 
         ///Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public new string DownLabel
         {
-            get { return ( !IsFallback || ShowKeyModeFallback ) ? base.DownLabel : String.Empty; }
+            get { return ( !IsKeyModeFallback || ShowKeyModeFallback ) ? base.DownLabel : String.Empty; }
             set { base.DownLabel = value; }
         }
 
         ///Gets the Description of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public new string Description
         {
-            get { return ( !IsFallback || ShowKeyModeFallback ) ? base.Description : String.Empty; }
+            get { return ( !IsKeyModeFallback || ShowKeyModeFallback ) ? base.Description : String.Empty; }
             set { base.Description = value; }
         }
 

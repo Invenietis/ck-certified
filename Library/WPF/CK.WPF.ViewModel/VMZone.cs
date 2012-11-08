@@ -53,6 +53,8 @@ namespace CK.WPF.ViewModel
             }
         }
 
+
+
         protected override void OnDispose()
         {
             foreach( TK key in Keys )

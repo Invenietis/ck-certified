@@ -195,7 +195,6 @@ namespace CK.WPF.ViewModel
             get { return _key.Current.UpLabel; }
             set
             {
-                EnsureKeyMode();
                 _key.Current.UpLabel = value;
                 OnPropertyChanged( "UpLabel" );
             }
@@ -221,7 +220,6 @@ namespace CK.WPF.ViewModel
             get { return _key.Current.DownLabel; }
             set
             {
-                EnsureKeyMode();
                 _key.Current.DownLabel = value;
                 OnPropertyChanged( "DownLabel" );
             }
@@ -235,7 +233,6 @@ namespace CK.WPF.ViewModel
             get { return _key.Current.Description; }
             set
             {
-                EnsureKeyMode();
                 _key.Current.Description = value;
                 OnPropertyChanged( "Description" );
             }
@@ -244,14 +241,28 @@ namespace CK.WPF.ViewModel
         #endregion
 
         /// <summary>
-        /// Gets if the current keymode is a fallback or not.
+        /// Gets if the current <see cref="IKeyMode"/> is a fallback or not.
         /// </summary>
-        public bool IsFallback { get { return _key.Current.IsFallBack; } }
+        public bool IsKeyModeFallback { get { return _key.Current.IsFallBack; } }
 
+        /// <summary>
+        /// Gets if the current <see cref="ILayoutKeyMode"/> is a fallback or not.
+        /// </summary>
+        public bool IsLayoutKeyModeFallback { get { return _key.CurrentLayout.Current.IsFallBack; } }
+
+        /// <summary>
+        /// Gets the command called when the user releases the left click on the key
+        /// </summary>
         public ICommand KeyUpCommand { get { return _keyUpCmd; } set { _keyUpCmd = value; } }
 
+        /// <summary>
+        /// Gets the command called when the user pushes the left click on the key
+        /// </summary>
         public ICommand KeyDownCommand { get { return _keyDownCmd; } set { _keyDownCmd = value; } }
 
+        /// <summary>
+        /// Gets the command called when the user (lef-click) presses the key
+        /// </summary>
         public ICommand KeyPressedCommand { get { return _keyPressedCmd; } set { _keyPressedCmd = value; } }
 
         #endregion
@@ -303,6 +314,8 @@ namespace CK.WPF.ViewModel
 
             SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
             SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
+            SetActionOnPropertyChanged( "W", () => OnPropertyChanged( "Width" ) );
+            SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
             SetActionOnPropertyChanged( "Width", () => OnPropertyChanged( "Width" ) );
             SetActionOnPropertyChanged( "Height", () => OnPropertyChanged( "Height" ) );
             SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
@@ -315,9 +328,15 @@ namespace CK.WPF.ViewModel
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
         }
 
+        protected virtual void OnTriggerModeChanged()
+        {
+        }
+
         void OnModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
-            OnPropertyChanged( "IsFallback" );
+            OnTriggerModeChanged();
+            OnPropertyChanged( "IsKeyModeFallback" );
+            OnPropertyChanged( "IsLayoutKeyModeFallback" );
         }
 
         protected void SetActionOnPropertyChanged( string propertyName, Action action )

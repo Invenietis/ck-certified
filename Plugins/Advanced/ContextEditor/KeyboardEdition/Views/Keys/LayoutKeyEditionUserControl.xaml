@@ -9,6 +9,7 @@
              xmlns:vm="clr-namespace:ContextEditor.ViewModels"
              xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
               xmlns:local="clr-namespace:ContextEditor.s"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -19,13 +20,47 @@
     </UserControl.Resources>
     <Border BorderThickness="1" CornerRadius="5">
         <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" Margin="10">
-                <CheckBox Margin="0 3 5 0" x:Name="layoutcheckbox" />
-                <TextBlock TextWrapping="Wrap">Configurer la touche pour le mode choisi</TextBlock>
-            </StackPanel>
+            <DockPanel LastChildFill="False">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="5">
+                    <TextBlock Text="The values shown below are the values of the key when in the following mode :"/>
+                    <ContentControl Margin="2 0" FontWeight="Bold" DataContext="{Binding CurrentLayoutKeyModeMode, Mode=OneWay}" Content="{Binding}" Style="{StaticResource CurrentModeDisplayerStyle}" />
+                </StackPanel>
+                <Grid DockPanel.Dock="Right">
+                    <Button Margin="2" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                        <Button.ToolTip>
+                            <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
+                        </Button.ToolTip>
+                        <Image Height="30" Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentLayoutKeyModeMode.IsEmpty}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button Margin="2" Command="{Binding CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                        <Button.ToolTip>
+                            <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                        </Button.ToolTip>
+                        <Image Height="30" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </DockPanel>
             <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsChecked, ElementName=layoutcheckbox}">
                 <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
-                    <StackPanel IsEnabled="{Binding IsFallback, Converter={StaticResource notconverter}}" Margin="5">
+                    <StackPanel IsEnabled="{Binding IsLayoutKeyModeFallback, Converter={StaticResource notconverter}}" Margin="5">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>

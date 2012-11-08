@@ -108,23 +108,25 @@
     <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
         <StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBlock FontWeight="Bold" Margin="0 0 5 0">Zone name : </TextBlock>
+                <TextBlock FontWeight="Bold" Margin="0 0 5 0">Zone name :</TextBlock>
                 <TextBox Text="{Binding Name}" />
             </StackPanel>
             <Border Margin="20" CornerRadius="10" BorderThickness="1" BorderBrush="LightGray" Background="Ivory" Padding="5">
                 <DockPanel LastChildFill="True" Margin="50 10">
-                    <ItemsControl DockPanel.Dock="Top" Height="100" ItemsSource="{Binding Keys}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <view:StdKeyView HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ZoneDisplayedKeyStyle}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    
+                        <ItemsControl DockPanel.Dock="Top" Height="100" ItemsSource="{Binding Keys}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <view:StdKeyView HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource ZoneDisplayedKeyStyle}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
                     <DockPanel x:Name="zoneConfigurationPanel" DockPanel.Dock="Bottom" LastChildFill="False">
                         <Button DockPanel.Dock="Left" Margin="5" Width="50" Height="50" Command="{Binding DeleteZoneCommand}">
                             <Image Width="24" Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png" />

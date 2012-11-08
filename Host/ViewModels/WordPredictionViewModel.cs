@@ -24,6 +24,15 @@ namespace Host.VM
             }
         }
 
+        public bool FilterAlreadyShownWords
+        {
+            get { return Config != null ? Config.GetOrSet( "FilterAlreadyShownWords", true ) : true; }
+            set
+            {
+                if( Config != null ) Config.Set( "FilterAlreadyShownWords", value );
+            }
+        }
+
         public bool InsertSpaceAfterPredictedWord
         {
             get { return Config != null ? Config.GetOrSet( "InsertSpaceAfterPredictedWord", true ) : true; }
@@ -47,6 +56,7 @@ namespace Host.VM
             NotifyOfPropertyChange( () => MaxSuggestedWords );
             NotifyOfPropertyChange( () => InsertSpaceAfterPredictedWord );
             NotifyOfPropertyChange( () => UsesSemanticPrediction );
+            NotifyOfPropertyChange( () => FilterAlreadyShownWords );
         }
 
         protected override void OnInitialize()
@@ -62,6 +72,10 @@ namespace Host.VM
             var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
             engine.DisplayName = "Utiliser la prédiction sémantique";
             Items.Add( engine );
+
+            var filter = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.FilterAlreadyShownWords ) );
+            filter.DisplayName = "Masquer les mots déja présentés";
+            Items.Add( filter );
 
             base.OnInitialize();
         }

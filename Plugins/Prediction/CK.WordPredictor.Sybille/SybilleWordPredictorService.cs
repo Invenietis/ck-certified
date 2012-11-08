@@ -13,15 +13,9 @@ namespace CK.WordPredictor
     {
         IWordPredictorEngineFactory _engineFactory;
 
-        public SybilleWordPredictorService()
-        {
-            _engineFactory = new SybilleWordPredictorEngineFactory( PluginDirectoryPath );
-        }
-
         protected override IWordPredictorEngineFactory EngineFactory
         {
-            get { return _engineFactory; }
+            get { return _engineFactory ?? (_engineFactory = new SybilleWordPredictorEngineFactory( PluginDirectoryPath, Feature )); }
         }
     }
-
 }

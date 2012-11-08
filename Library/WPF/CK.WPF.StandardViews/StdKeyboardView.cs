@@ -34,6 +34,10 @@ namespace CK.WPF.StandardViews
         {
             DefaultStyleKeyProperty.OverrideMetadata( typeof( StdKeyboardView ), new FrameworkPropertyMetadata( typeof( StdKeyboardView ) ) );
         }
+        public StdKeyboardView()
+        {
+            Focusable = false;
+        }
 
         #region Dependency properties
 

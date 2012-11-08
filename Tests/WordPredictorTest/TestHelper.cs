@@ -38,7 +38,7 @@ namespace WordPredictorTest
 
     public class TestHelper
     {
-        public static Func<string> SybilleResourceFullPath = () => @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Accessibility\CK.WordPredictor\";
+        public static Func<string> SybilleResourceFullPath = () => @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Prediction\CK.WordPredictor.Sybille\";
 
         public static Mock<IWordPredictorFeature> MockFeature( int maxSuggestedWords )
         {

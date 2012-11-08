@@ -11,17 +11,19 @@ namespace CK.WordPredictor.Engines
     internal class SybilleWordPredictorEngineFactory : IWordPredictorEngineFactory
     {
         Func<string> _pluginResourceDirectory;
-        const string _sybileDataPath = "Engines\\Sybille\\Data";
+        const string _sybileDataPath = "Data";
+        IWordPredictorFeature _predictorFeature;
 
-        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory )
+        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, IWordPredictorFeature predictorFeature )
         {
             _pluginResourceDirectory = pluginResourceDirectory;
+            _predictorFeature = predictorFeature;
         }
 
         public IWordPredictorEngine Create( string predictorName )
         {
             string p = _pluginResourceDirectory();
-            return DoCreate( predictorName, p );
+            return DoCreate( predictorName, p, _predictorFeature );
         }
 
         public Task<IWordPredictorEngine> CreateAsync( string predictorName )
@@ -29,19 +31,19 @@ namespace CK.WordPredictor.Engines
             string p = _pluginResourceDirectory();
             return Task.Factory.StartNew<IWordPredictorEngine>( () =>
             {
-                return DoCreate( predictorName, p );
+                return DoCreate( predictorName, p, _predictorFeature );
             } );
         }
 
-        private static IWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath )
+        private static IWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath, IWordPredictorFeature predictorFeature )
         {
             switch( predictorName.ToLowerInvariant() )
             {
-                case "sybille": return new SybilleWordPredictorEngine(
+                case "sybille": return new SybilleWordPredictorEngine( predictorFeature,
                     Path.Combine( pluginResourcePath, _sybileDataPath, "LMbin_fr.sib" ),
                     Path.Combine( pluginResourcePath, _sybileDataPath, "UserPredictor_fr.sib" ),
                     Path.Combine( pluginResourcePath, _sybileDataPath, "UserTexts_fr.txt" ) );
-                case "sem-sybille": return new SybilleWordPredictorEngine(
+                case "sem-sybille": return new SybilleWordPredictorEngine( predictorFeature,
                     Path.Combine( pluginResourcePath, _sybileDataPath, "LMbin_fr.sib" ),
                     Path.Combine( pluginResourcePath, _sybileDataPath, "UserPredictor_fr.sib" ),
                     Path.Combine( pluginResourcePath, _sybileDataPath, "UserTexts_fr.txt" ),

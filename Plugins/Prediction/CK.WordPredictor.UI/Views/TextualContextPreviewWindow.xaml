@@ -1,0 +1,24 @@
+﻿<Window x:Class="CK.WordPredictor.UI.TextualContextPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:vm="clr-namespace:CK.WordPredictor.UI.ViewModels"
+        xmlns:h="clr-namespace:CK.WordPredictor.UI"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d" Height="238" Width="869" >
+    <StackPanel>
+        <TextBox Text="{Binding TextualContext, Mode=OneWay}" 
+                 MinLines="3" VerticalAlignment="Top"
+                 FontSize="15" 
+                 FlowDirection="LeftToRight" 
+                 AcceptsReturn="True" 
+                 AcceptsTab="True" 
+                 Height="133" Margin="10,0" >
+            <!--h:TextBoxHelper.CaretIndex="{Binding CaretIndex, Mode=OneWay}"-->
+
+        </TextBox>
+        <TextBlock Margin="10" Text="{Binding CurrentToken}" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="27" Background="#FFEAEAEA" />
+        <TextBlock Text="{Binding CaretIndex}" />
+    </StackPanel>
+</Window>

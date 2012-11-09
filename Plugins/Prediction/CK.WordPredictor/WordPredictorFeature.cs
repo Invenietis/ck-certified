@@ -23,7 +23,7 @@ namespace CK.WordPredictor
 
         public bool FilterAlreadyShownWords
         {
-            get { return Config.User.TryGet( "FilterAlreadyShowWords", true ); }
+            get { return Config.User.TryGet( "FilterAlreadyShownWords", true ); }
         }
 
         public int MaxSuggestedWords

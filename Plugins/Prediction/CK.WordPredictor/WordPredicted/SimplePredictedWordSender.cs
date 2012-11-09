@@ -31,11 +31,14 @@ namespace CK.WordPredictor
         {
             if( TextualContextService.Service != null && SendStringService.Service != null )
             {
-                string wordToSend = e.Word.Substring( TextualContextService.Service.CaretOffset, e.Word.Length - TextualContextService.Service.CaretOffset );
+                if( e.Word.Length > 0 && e.Word.Length > TextualContextService.Service.CaretOffset )
+                {
+                    string wordToSend = e.Word.Substring( TextualContextService.Service.CaretOffset, e.Word.Length - TextualContextService.Service.CaretOffset );
 
-                if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";
+                    if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";
 
-                SendStringService.Service.SendString( wordToSend );
+                    SendStringService.Service.SendString( wordToSend );
+                }
             }
         }
 

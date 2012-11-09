@@ -31,12 +31,14 @@ namespace CK.WordPredictor.UI.Helpers
         {
             base.OnAttached();
             AssociatedObject.KeyUp += OnKeyUp;
+            AssociatedObject.MouseLeftButtonUp += AssociatedObject_MouseUp;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.KeyUp -= OnKeyUp;
+            AssociatedObject.MouseLeftButtonUp -= AssociatedObject_MouseUp;
         } 
 
 
@@ -49,7 +51,17 @@ namespace CK.WordPredictor.UI.Helpers
             }
         }
 
+        void AssociatedObject_MouseUp( object sender, MouseButtonEventArgs e )
+        {
+            MoveCaretInternal();
+        }
+
         private void OnKeyUp( object sender, KeyEventArgs e )
+        {
+            MoveCaretInternal();
+        }
+
+        private void MoveCaretInternal()
         {
             _internalChange = true;
             CaretPosition = AssociatedObject.CaretIndex;

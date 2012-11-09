@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using BasicCommandHandlers;
 using CK.Plugin;
 using CK.Plugins.SendInput;
@@ -33,9 +34,12 @@ namespace CK.WordPredictor
         {
             if( !String.IsNullOrEmpty( TextualContextService.Service.RawContext ) )
             {
-                SendStringSevice.Service.SendString( TextualContextService.Service.RawContext );
-                if( TextualContextSent != null )
-                    TextualContextSent( this, EventArgs.Empty );
+                Task.Factory.StartNew( () =>
+                {
+                    SendStringSevice.Service.SendString( TextualContextService.Service.RawContext );
+                    if( TextualContextSent != null )
+                        TextualContextSent( this, EventArgs.Empty );
+                } );
             }
         }
     }

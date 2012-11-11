@@ -60,10 +60,6 @@ namespace CK.WordPredictor.UI.ViewModels
             }
         }
 
-        public int WordCount { get; set; }
-
-        public int CharacterCount { get; set; }
-
         public string TextualContext
         {
             get { return String.Join( " ", _textualContext.Tokens.Select( e => e.Value ) ); }

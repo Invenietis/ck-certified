@@ -96,7 +96,7 @@
   <ItemGroup>
     <Compile Include="Helpers\FocusBehavior.cs" />
     <Compile Include="Helpers\SelectedTextBehavior.cs" />
-    <Compile Include="Helpers\SetCaretIndexBehavior.cs" />
+    <Compile Include="Helpers\CaretIndexBehavior.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
     <Compile Include="TextualContextPreview.cs" />
     <Compile Include="Views\TextualContextPreviewWindow.xaml.cs">

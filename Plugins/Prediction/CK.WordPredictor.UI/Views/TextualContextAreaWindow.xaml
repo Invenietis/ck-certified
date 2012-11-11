@@ -11,7 +11,7 @@
     <Grid>
         <TextBox Focusable="True"  x:Name="buffer" Text="{Binding TextualContext, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinLines="3" FontSize="15" FlowDirection="LeftToRight" Margin="10" AcceptsReturn="True" AcceptsTab="True" >
             <i:Interaction.Behaviors>
-                <h:SetCaretIndexBehavior CaretPosition="{Binding CaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <h:CaretIndexBehavior CaretPosition="{Binding CaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <h:SelectedTextBehavior SelectedText="{Binding SelectedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <h:FocusBehavior IsKeyboardFocused="{Binding Path=IsFocused, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
             </i:Interaction.Behaviors>

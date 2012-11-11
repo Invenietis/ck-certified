@@ -31,9 +31,10 @@ namespace CK.WordPredictor
         {
             if( TextualContextService.Service != null && SendStringService.Service != null )
             {
-                if( e.Word.Length > 0 && e.Word.Length > TextualContextService.Service.CaretOffset )
+                int caretOffset = TextualContextService.Service.CaretOffset;
+                if( e.Word.Length > 0 && e.Word.Length > caretOffset )
                 {
-                    string wordToSend = e.Word.Substring( TextualContextService.Service.CaretOffset, e.Word.Length - TextualContextService.Service.CaretOffset );
+                    string wordToSend = e.Word.Substring( caretOffset, e.Word.Length - caretOffset );
 
                     if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";
 

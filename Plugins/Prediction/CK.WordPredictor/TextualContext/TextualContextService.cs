@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CK.Plugin;
+using CK.Plugins.SendInput;
 using CK.WordPredictor.Model;
+using CommonServices;
 
 namespace CK.WordPredictor
 {
@@ -13,7 +16,15 @@ namespace CK.WordPredictor
     public class TextualContextService : IPlugin, ITextualContextService
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ISendTextualContextService SendTextualContextService { get; set; }
+        public IService<ICommandTextualContextService> CommandTextualContextService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        public IService<ISendStringService> SendStringService { get; set; }
+        
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ISendKeyCommandHandlerService> SendKeyService { get; set; }
+
+        #region IPlugin Initialization
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -30,17 +41,79 @@ namespace CK.WordPredictor
 
         public void Start()
         {
-            if( SendTextualContextService != null )
-                SendTextualContextService.TextualContextSent += SendTextualContextService_TextualContextSent;
+            if( CommandTextualContextService != null && CommandTextualContextService.Service != null )
+            {
+                CommandTextualContextService.Service.TextualContextSent += OnTextualContextSent;
+                CommandTextualContextService.Service.TextualContextClear += OnTextualContextClear;
+            }
+            CommandTextualContextService.ServiceStatusChanged += OnCommandTextualContextServiceServiceStatusChanged;
+            
+            if( SendKeyService != null && SendKeyService.Service != null )
+            {
+                SendKeyService.Service.KeySent += OnKeySent;
+            }
+            SendKeyService.ServiceStatusChanged += OnSendKeyServiceStatusChanged;
+
+            if( SendStringService != null && SendStringService.Service != null )
+            {
+                SendStringService.Service.StringSent += OnStringSent;
+            }
+            SendStringService.ServiceStatusChanged += OnSendStringServiceStatusChanged;
         }
+
 
         public void Stop()
         {
-            if( SendTextualContextService != null )
-                SendTextualContextService.TextualContextSent -= SendTextualContextService_TextualContextSent;
+            if( CommandTextualContextService != null && CommandTextualContextService.Service != null )
+            {
+                CommandTextualContextService.Service.TextualContextSent -= OnTextualContextSent;
+                CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
+            }
+            CommandTextualContextService.ServiceStatusChanged -= OnCommandTextualContextServiceServiceStatusChanged;
+            
+            if( SendKeyService != null && SendKeyService.Service != null )
+            {
+                SendKeyService.Service.KeySent -= OnKeySent;
+            }
+            SendKeyService.ServiceStatusChanged -= OnSendKeyServiceStatusChanged;
+
+            if( SendStringService != null && SendStringService.Service != null )
+            {
+                SendStringService.Service.StringSent -= OnStringSent;
+            }
+            SendStringService.ServiceStatusChanged -= OnSendStringServiceStatusChanged;
         }
 
-        void SendTextualContextService_TextualContextSent( object sender, EventArgs e )
+        #endregion
+
+        #region Event Registration
+
+        protected virtual void OnKeySent( object sender, KeySentEventArgs e )
+        {
+            if( e.Key != null ) SetToken( e.Key );
+        }
+
+        protected virtual void OnStringSent( object sender, StringSentEventArgs e )
+        {
+            if( e.StringVal != null ) SetToken( e.StringVal );
+        }
+        
+        void SetToken( string token )
+        {
+            string newRawContext = String.Concat( _rawContext, token );
+            SetRawText( newRawContext );
+            SetCaretIndex( newRawContext.Length );
+        }
+
+        protected virtual void OnTextualContextSent( object sender, EventArgs e )
+        {
+            Task.Factory.StartNew( () =>
+            {
+                SendStringService.Service.SendString( RawContext );
+            } );
+        }
+
+        protected virtual void OnTextualContextClear( object sender, EventArgs e )
         {
             _rawContext = null;
             _tokenCollection.Clear();
@@ -54,6 +127,10 @@ namespace CK.WordPredictor
             OnPropertyChanged( "CurrentPosition" );
             OnPropertyChanged( "CaretOffset" );
         }
+
+        #endregion
+
+        #region ITextualContextService Implementation
 
         int _caretIndex;
         string _rawContext;
@@ -197,13 +274,26 @@ namespace CK.WordPredictor
             OnPropertyChanged( "CurrentToken" );
         }
 
+        #endregion
+
+        internal static bool IsResetContextToken( string token )
+        {
+            if( String.IsNullOrWhiteSpace( token ) ) return false;
+
+            return Char.IsPunctuation( token.Trim()[0] );
+        }
+
+        internal static bool IsTokenSeparator( string token )
+        {
+            if( String.IsNullOrEmpty( token ) ) return false;
+            if( String.IsNullOrEmpty( token.Trim() ) ) return true;
+
+            char c = token[0];
+            return Char.IsWhiteSpace( c ) || Char.IsSeparator( c );
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// Raises this object's <see cref="PropertyChanged"/> event.
-        /// </summary>
-        /// <param name="propertyName">The property that has a new value.</param>
         protected virtual void OnPropertyChanged( string propertyName )
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
@@ -213,5 +303,44 @@ namespace CK.WordPredictor
                 handler( this, e );
             }
         }
+
+        void OnCommandTextualContextServiceServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopping )
+            {
+                CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
+                CommandTextualContextService.Service.TextualContextSent -= OnTextualContextSent;
+            }
+            if( e.Current == RunningStatus.Starting )
+            {
+                CommandTextualContextService.Service.TextualContextClear += OnTextualContextClear;
+                CommandTextualContextService.Service.TextualContextSent += OnTextualContextSent;
+            }
+        }
+
+        void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopping )
+            {
+                SendStringService.Service.StringSent -= OnStringSent;
+            }
+            if( e.Current == RunningStatus.Starting )
+            {
+                SendStringService.Service.StringSent += OnStringSent;
+            }
+        }
+
+        void OnSendKeyServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == RunningStatus.Stopping )
+            {
+                SendKeyService.Service.KeySent -= OnKeySent;
+            }
+            if( e.Current == RunningStatus.Starting )
+            {
+                SendKeyService.Service.KeySent += OnKeySent;
+            }
+        }
+
     }
 }

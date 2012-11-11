@@ -26,6 +26,9 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ICommandTextualContextService CommandTextualContextService { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
             return true;
@@ -33,8 +36,8 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService );
-            TextualContextSmartAreaWindow window = new TextualContextSmartAreaWindow( vm )
+            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, CommandTextualContextService );
+            TextualContextAreaWindow window = new TextualContextAreaWindow( vm )
             {
                 Width = 600,
                 Height = 200

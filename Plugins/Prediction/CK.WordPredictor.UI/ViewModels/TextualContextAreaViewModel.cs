@@ -11,12 +11,14 @@ namespace CK.WordPredictor.UI.ViewModels
 {
     public class TextualContextAreaViewModel : VMBase
     {
+        readonly ICommandTextualContextService _commandTextualContextService;
         readonly ITextualContextService _textualContext;
         string _selectedText;
 
-        public TextualContextAreaViewModel( ITextualContextService textualContext )
+        public TextualContextAreaViewModel( ITextualContextService textualContext, ICommandTextualContextService commandTextualContextService )
         {
             _textualContext = textualContext;
+            _commandTextualContextService = commandTextualContextService;
             _textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
         }
 
@@ -25,6 +27,14 @@ namespace CK.WordPredictor.UI.ViewModels
             if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset )
             {
                 OnPropertyChanged( "TextualContext" );
+            }
+        }
+
+        public bool IsFocused
+        {
+            set
+            {
+                _commandTextualContextService.ClearTextualContext();    
             }
         }
 

@@ -65,10 +65,10 @@ namespace WordPredictorTest
         public void When_A_Word_Is_Predicted_It_Must_Appears_In_Prediction_Zone()
         {
             // Texual service plugin usage
-            var textualService = new SimpleTextualContextService()
+            var textualService = new TextualContextService()
             {
-                SendKeyService = ServiceHelper.MockServiceWrapper<ISendKeyCommandHandlerService>(),
-                SendStringService = ServiceHelper.MockServiceWrapper<ISendStringService>()
+                //SendKeyService = ServiceHelper.MockServiceWrapper<ISendKeyCommandHandlerService>(),
+                //SendStringService = ServiceHelper.MockServiceWrapper<ISendStringService>()
             };
             // Predictor service plugin usage
 
@@ -97,7 +97,7 @@ namespace WordPredictorTest
             pluginSut.Start();
             Task.WaitAll( predictorService.AsyncEngineContinuation );
             // Start test. When a token is inserted into the textual service, it will triggers the predictor service to make a prediction.
-            textualService.SetToken( "J" );
+            textualService.SetRawText( "J" );
             Assert.That( predictorService.Words.Count > 0 );
 
             // We need to assert that the SUT correctly creates Keys into the Prediction Zone, according to its specs.

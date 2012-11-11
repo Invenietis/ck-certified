@@ -81,13 +81,14 @@
   <ItemGroup>
     <Compile Include="Engines\IWordPredictorEngine.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
-    <Compile Include="TextualContext\SendTextualContextCommandHandler.cs" />
+    <Compile Include="TextualContext\TextualContextService.cs" />
+    <Compile Include="TextualContext\TextualContextCommandHandler.cs" />
+    <Compile Include="TextualContext\Token.cs" />
+    <Compile Include="TextualContext\TokenCollection.cs" />
     <Compile Include="WordPredicted\SimplePredictedWordSender.cs" />
     <Compile Include="WordPrediction\WordPredictedCollection.cs" />
     <Compile Include="Extensions\ObjectPluginConfigExtension.cs" />
-    <Compile Include="TextualContext\Simple\SimpleToken.cs" />
-    <Compile Include="TextualContext\Simple\SimpleTokenCollection.cs" />
-    <Compile Include="TextualContext\Simple\SimpleTextualContextService.cs" />
+    <Compile Include="TextualContext\TextualContextCommandListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordPrediction\WeightlessWordPredicted.cs" />
     <Compile Include="WordPredicted\WordPredictedService.cs" />

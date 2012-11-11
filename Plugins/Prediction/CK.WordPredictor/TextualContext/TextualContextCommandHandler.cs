@@ -11,10 +11,10 @@ using CommonServices;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}", PublicName = "TextualContext Command Handler", Categories = new string[] { "Prediction" } )]
-    public class SendTextualContextCommandHandler : BasicCommandHandler, ISendTextualContextService
+    [Plugin( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}", PublicName = "TextualContext - Command Handler", Categories = new string[] { "Prediction" } )]
+    public class TextualContextCommandHandler : BasicCommandHandler, ISendTextualContextService
     {
-        public const string CMDSendPredictedWord = "sendTextualContext";
+        public const string CMDSendTextualContext = "sendTextualContext";
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IService<ITextualContextService> TextualContextService { get; set; }
@@ -24,7 +24,7 @@ namespace CK.WordPredictor
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            if( e.Command == CMDSendPredictedWord )
+            if( e.Command == CMDSendTextualContext )
                 SendTextualContext( TextualContextService.Service );
         }
 

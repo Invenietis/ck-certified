@@ -10,7 +10,7 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction UI - In Keyboard", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" } )]
     public class InKeyboardWordPredictor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

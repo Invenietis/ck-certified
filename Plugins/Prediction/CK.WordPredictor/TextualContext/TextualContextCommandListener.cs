@@ -11,59 +11,17 @@ using CK.Plugins.SendInput;
 
 namespace CK.WordPredictor
 {
-    //[Plugin( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}", PublicName = "SimpleTextualContextService", Categories = new[] { "Prediction" } )]
-    public class SimpleTextualContextService : IPlugin, ITextualContextService
+    [Plugin( "{AD9B0316-0498-4E79-989E-1EB43F9644C7}", PublicName = "TextualContext - Command Listener ", Categories = new[] { "Prediction" } )]
+    public class TextualContextCommandListener : IPlugin
     {
-        SimpleTokenCollection _tokenCollection;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ISendKeyCommandHandlerService> SendKeyService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ISendStringService> SendStringService { get; set; }
 
-        public SimpleTextualContextService()
-        {
-        }
-
-        public string RawContext
-        {
-            get { return String.Join( " ", _tokenCollection.Select( e => e.Value ) ); }
-        }
-
-        public ITokenCollection Tokens
-        {
-            get { return _tokenCollection; }
-        }
-
-        public int CurrentTokenIndex
-        {
-            get { return _tokenCollection.Count - 1; }
-        }
-
-        public IToken CurrentToken
-        {
-            get
-            {
-                if( _position == CaretPosition.OutsideToken ) return null;
-
-                return _tokenCollection[CurrentTokenIndex];
-            }
-        }
-
-        public int CaretOffset
-        {
-            get { return CurrentToken != null ? CurrentToken.Value.Length : 0; }
-        }
-
-        CaretPosition _position;
-
-        public CaretPosition CurrentPosition
-        {
-            get { return _position; }
-        }
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ITextualContextService TextualContextService { get; set; }
 
         protected virtual bool IsResetContextToken( string token )
         {
@@ -83,55 +41,10 @@ namespace CK.WordPredictor
 
         internal void SetToken( string token )
         {
-            if( IsResetContextToken( token ) )
-            {
-                _tokenCollection = new SimpleTokenCollection();
-                _position = CaretPosition.OutsideToken;
-            }
-            else if( IsTokenSeparator( token ) )
-            {
-                _tokenCollection.Add( String.Empty );
-                _position = CaretPosition.StartToken;
-            }
-            else
-            {
-                //We were on the end of a phrase. We start a new context.
-                if( CurrentToken == null )
-                {
-                    _tokenCollection = new SimpleTokenCollection( token );
-                }
-                else //We continue in the same context.
-                {
-                    if( token.Length > 1 && token.IndexOf( ' ' ) == 0 )
-                    {
-                        SetToken( " " );
-                        SetToken( token.TrimStart() );
-                    }
-                    else
-                    {
-                        string tokenValue = token.TrimEnd();
-                        string tokenFull = CurrentToken.Value + tokenValue;
-
-                        _tokenCollection[CurrentTokenIndex] = new SimpleToken( tokenFull );
-                        if( token.Length > 1 && token[token.Length - 1] == ' ' )
-                        {
-                            _tokenCollection.Add( String.Empty );
-                            _position = CaretPosition.StartToken;
-                        }
-                    }
-                }
-
-                _position = CaretPosition.EndToken;
-            }
-
-            if( PropertyChanged != null )
-                PropertyChanged( this, new PropertyChangedEventArgs( "Tokens" ) );
-
-            if( CurrentToken != null && PropertyChanged != null )
-            {
-                PropertyChanged( this, new PropertyChangedEventArgs( "RawContext" ) );
-                PropertyChanged( this, new PropertyChangedEventArgs( "CurrentToken" ) );
-            }
+            string rawContext = TextualContextService.RawContext;
+            string newRawContext = String.Concat( rawContext, token );
+            TextualContextService.SetRawText( newRawContext );
+            TextualContextService.SetCaretIndex( newRawContext.Length );
         }
 
         protected virtual void OnKeySent( object sender, KeySentEventArgs e )
@@ -146,14 +59,11 @@ namespace CK.WordPredictor
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _tokenCollection = new SimpleTokenCollection();
             return info.Error != null;
         }
 
         public void Start()
         {
-            _position = CaretPosition.OutsideToken;
-
             if( SendKeyService.Service != null )
                 SendKeyService.Service.KeySent += OnKeySent;
             SendKeyService.ServiceStatusChanged += OnSendKeyServiceStatusChanged;
@@ -161,7 +71,6 @@ namespace CK.WordPredictor
             if( SendStringService != null )
                 SendStringService.Service.StringSent += OnStringSent;
             SendStringService.ServiceStatusChanged += OnSendStringServiceStatusChanged;
-
         }
 
         void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

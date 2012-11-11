@@ -11,10 +11,10 @@ namespace CK.WordPredictor.UI.ViewModels
 {
     public class TextualContextAreaViewModel : VMBase
     {
-        readonly TextualContextSmartArea _textualContext;
+        readonly ITextualContextService _textualContext;
         string _selectedText;
 
-        public TextualContextAreaViewModel( TextualContextSmartArea textualContext )
+        public TextualContextAreaViewModel( ITextualContextService textualContext )
         {
             _textualContext = textualContext;
             _textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
@@ -59,21 +59,8 @@ namespace CK.WordPredictor.UI.ViewModels
             get { return String.Join( " ", _textualContext.Tokens.Select( e => e.Value ) ); }
             set
             {
-                _textualContext.SetText( value );
+                _textualContext.SetRawText( value );
             }
         }
-
-        //ICommand _sendTextCommand;
-
-        //public ICommand SendTextCommand
-        //{
-        //    get
-        //    {
-        //        return _sendTextCommand ?? (_sendTextCommand = new VMCommand<string>( ( text ) =>
-        //            {
-        //                _sendStringService.SendString( this, text );
-        //            } ));
-        //    }
-        //}
     }
 }

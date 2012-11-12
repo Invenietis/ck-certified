@@ -11,12 +11,14 @@ namespace CK.WordPredictor.UI.ViewModels
 {
     public class TextualContextAreaViewModel : VMBase
     {
-        readonly TextualContextSmartArea _textualContext;
+        readonly ICommandTextualContextService _commandTextualContextService;
+        readonly ITextualContextService _textualContext;
         string _selectedText;
 
-        public TextualContextAreaViewModel( TextualContextSmartArea textualContext )
+        public TextualContextAreaViewModel( ITextualContextService textualContext, ICommandTextualContextService commandTextualContextService )
         {
             _textualContext = textualContext;
+            _commandTextualContextService = commandTextualContextService;
             _textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
         }
 
@@ -25,6 +27,14 @@ namespace CK.WordPredictor.UI.ViewModels
             if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset )
             {
                 OnPropertyChanged( "TextualContext" );
+            }
+        }
+
+        public bool IsFocused
+        {
+            set
+            {
+                _commandTextualContextService.ClearTextualContext();    
             }
         }
 
@@ -50,30 +60,13 @@ namespace CK.WordPredictor.UI.ViewModels
             }
         }
 
-        public int WordCount { get; set; }
-
-        public int CharacterCount { get; set; }
-
         public string TextualContext
         {
             get { return String.Join( " ", _textualContext.Tokens.Select( e => e.Value ) ); }
             set
             {
-                _textualContext.SetText( value );
+                _textualContext.SetRawText( value );
             }
         }
-
-        //ICommand _sendTextCommand;
-
-        //public ICommand SendTextCommand
-        //{
-        //    get
-        //    {
-        //        return _sendTextCommand ?? (_sendTextCommand = new VMCommand<string>( ( text ) =>
-        //            {
-        //                _sendStringService.SendString( this, text );
-        //            } ));
-        //    }
-        //}
     }
 }

@@ -34,8 +34,8 @@ namespace WordPredictorTest
 
         private static void TestEngine( IWordPredictorEngine engine )
         {
-            SimpleTextualContextService textualContextService = new SimpleTextualContextService();
-            textualContextService.SetToken( "Je" );
+            TextualContextService textualContextService = new TextualContextService();
+            textualContextService.SetRawText( "Je" );
             var predicted = engine.Predict( textualContextService, 20 );
             Assert.That( predicted, Is.Not.Null );
             Assert.That( predicted.Count() > 0 );

@@ -19,5 +19,7 @@ namespace CK.WordPredictor.Model
         int MaxSuggestedWords { get; }
 
         string Engine { get; }
+
+        bool DisplayContextEditor { get; }
     }
 }

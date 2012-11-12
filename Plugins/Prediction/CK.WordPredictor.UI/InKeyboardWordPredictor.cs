@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
@@ -47,6 +48,20 @@ namespace CK.WordPredictor.UI
                 WordPredictorService.ServiceStatusChanged += OnWordPredictorServiceStatusChanged;
                 WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }
+
+            if( Feature != null )
+            {
+                Feature.PropertyChanged += OnFeaturePropertyChanged;
+            }
+        }
+
+        void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "MaxSuggestedWords" )
+            {
+                DestroyPredictionZones();
+                CreatePredictionZone( Context.CurrentKeyboard );
+            }
         }
 
         public void Stop()
@@ -58,11 +73,16 @@ namespace CK.WordPredictor.UI
             }
             if( Context != null )
             {
-                foreach( IKeyboard k in Context.Keyboards )
-                {
-                    IZone zone = k.Zones[PredictionZoneName];
-                    if( zone != null ) zone.Destroy();
-                }
+                DestroyPredictionZones();
+            }
+        }
+
+        private void DestroyPredictionZones()
+        {
+            foreach( IKeyboard k in Context.Keyboards )
+            {
+                IZone zone = k.Zones[PredictionZoneName];
+                if( zone != null ) zone.Destroy();
             }
         }
 

@@ -64,7 +64,7 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        private void EnableEditor()
+        void EnableEditor()
         {
             TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, CommandTextualContextService );
             _window = new TextualContextAreaWindow( vm )
@@ -74,26 +74,37 @@ namespace CK.WordPredictor.UI
             };
             _window.Show();
 
-            int wordWidth = (Context.CurrentKeyboard.CurrentLayout.W) / (Feature.Service.MaxSuggestedWords + 1) - 5;
-            int offset = 2;
+            Context.CurrentKeyboard.Zones.ZoneCreated += OnZoneCreated;
+            Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
 
             var zone = Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName];
-            _sendContextKey = zone.Keys.Create();
-            if( _sendContextKey != null )
-            {
-                _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
-                _sendContextKey.CurrentLayout.Current.Visible = true;
-                ConfigureKey( _sendContextKey.CurrentLayout.Current, Feature.Service.MaxSuggestedWords, wordWidth, offset );
-            }
+            CreateSendContextKeyInPredictionZone( zone );
         }
 
-        private void DisableEditor()
+        void DisableEditor()
         {
             if( !Feature.Service.DisplayContextEditor )
             {
-                if( _sendContextKey != null ) _sendContextKey.Destroy();
+                DestroySendContextKey();
                 if( _window != null ) _window.Close();
+                Context.CurrentKeyboard.Zones.ZoneCreated -= OnZoneCreated;
+            }
+        }
+
+        void CreateSendContextKeyInPredictionZone( IZone zone )
+        {
+            _sendContextKey = zone.Keys.Create();
+
+            if( _sendContextKey != null )
+            {
+                int wordWidth = (Context.CurrentKeyboard.CurrentLayout.W) / (Feature.Service.MaxSuggestedWords + 1) - 5;
+                int offset = 2;
+
+                _sendContextKey.Current.UpLabel = "Envoyer";
+                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
+                _sendContextKey.CurrentLayout.Current.Visible = true;
+
+                ConfigureKey( _sendContextKey.CurrentLayout.Current, Feature.Service.MaxSuggestedWords, wordWidth, offset );
             }
         }
 
@@ -104,6 +115,27 @@ namespace CK.WordPredictor.UI
             layoutKeyMode.Y = 5;
             layoutKeyMode.Width = wordWidth;
             layoutKeyMode.Height = 45;
+        }
+
+        void DestroySendContextKey()
+        {
+            if( _sendContextKey != null ) _sendContextKey.Destroy();
+        }
+
+        void OnZoneCreated( object sender, ZoneEventArgs e )
+        {
+            if( e.Zone.Name == InKeyboardWordPredictor.PredictionZoneName )
+            {
+                CreateSendContextKeyInPredictionZone( e.Zone );
+            }
+        }
+
+        void OnZoneDestroyed( object sender, ZoneEventArgs e )
+        {
+            if( e.Zone.Name == InKeyboardWordPredictor.PredictionZoneName )
+            {
+                DestroySendContextKey();
+            }
         }
 
         private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

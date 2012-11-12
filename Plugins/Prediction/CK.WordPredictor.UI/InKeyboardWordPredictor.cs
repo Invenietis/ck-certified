@@ -158,33 +158,14 @@ namespace CK.WordPredictor.UI
 
         protected virtual void CreatePredictionZone( IKeyboard kb )
         {
-            IZone predictionZone = kb.Zones[PredictionZoneName];
-            if( predictionZone != null ) predictionZone.Destroy();
-
-            predictionZone = kb.Zones.Create( PredictionZoneName );
+            IZone predictionZone = Feature.PredictionContextFactory.CreatePredictionZone( kb );
             if( predictionZone != null )
             {
-                int wordWidth = (Context.CurrentKeyboard.CurrentLayout.W) / (Feature.MaxSuggestedWords + 1) - 5;
-                int offset = 2;
-
                 for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
                 {
-                    IKey key = predictionZone.Keys.Create( i );
-                    key.CurrentLayout.Current.Visible = false;
-                    ConfigureKey( key.CurrentLayout.Current, i, wordWidth, offset );
+                    Feature.PredictionContextFactory.CreatePredictionKey( predictionZone, i );
                 }
             }
         }
-
-        protected virtual void ConfigureKey( ILayoutKeyModeCurrent layoutKeyMode, int idx, int wordWidth, int offset )
-        {
-            if( layoutKeyMode == null ) throw new ArgumentNullException( "layoutKeyMode" );
-            layoutKeyMode.X = idx * (wordWidth + 5) + offset;
-            layoutKeyMode.Y = 5;
-            layoutKeyMode.Width = wordWidth;
-            layoutKeyMode.Height = 45;
-        }
-
-
     }
 }

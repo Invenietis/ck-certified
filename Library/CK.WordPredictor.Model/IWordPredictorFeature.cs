@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using CK.Keyboard.Model;
 using CK.Plugin;
 
 namespace CK.WordPredictor.Model
@@ -21,5 +22,16 @@ namespace CK.WordPredictor.Model
         string Engine { get; }
 
         bool DisplayContextEditor { get; }
+
+        IPredictionContextFactory PredictionContextFactory { get; }
+    }
+
+    public interface IPredictionContextFactory
+    {
+        string PredictionZoneName { get; }
+
+        IZone CreatePredictionZone( IKeyboard keyboard );
+
+        IKey CreatePredictionKey( IZone zone, int index );
     }
 }

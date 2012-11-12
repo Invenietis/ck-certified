@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -74,10 +75,10 @@ namespace CK.WordPredictor.UI
             };
             _window.Show();
 
-            Context.CurrentKeyboard.Zones.ZoneCreated += OnZoneCreated;
+            Feature.Service.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
             Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
 
-            var zone = Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName];
+            var zone = Context.CurrentKeyboard.Zones[Feature.Service.PredictionContextFactory.PredictionZoneName];
             CreateSendContextKeyInPredictionZone( zone );
         }
 
@@ -86,7 +87,7 @@ namespace CK.WordPredictor.UI
             if( !Feature.Service.DisplayContextEditor )
             {
                 DestroySendContextKey();
-                Context.CurrentKeyboard.Zones.ZoneCreated -= OnZoneCreated;
+                Feature.Service.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
                 Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
 
                 if( _window != null ) _window.Close();
@@ -95,11 +96,14 @@ namespace CK.WordPredictor.UI
 
         void CreateSendContextKeyInPredictionZone( IZone zone )
         {
-            _sendContextKey = Feature.Service.PredictionContextFactory.CreatePredictionKey( zone, Feature.Service.MaxSuggestedWords + 1 );
+            if( zone != null )
+            {
+                _sendContextKey = Feature.Service.PredictionContextFactory.CreatePredictionKey( zone, Feature.Service.MaxSuggestedWords + 1 );
 
-            _sendContextKey.Current.UpLabel = "Envoyer";
-            _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
-            _sendContextKey.CurrentLayout.Current.Visible = true;
+                _sendContextKey.Current.UpLabel = "Envoyer";
+                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
+                _sendContextKey.CurrentLayout.Current.Visible = true;
+            }
         }
 
         void DestroySendContextKey()
@@ -109,15 +113,12 @@ namespace CK.WordPredictor.UI
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            if( e.Zone.Name == InKeyboardWordPredictor.PredictionZoneName )
-            {
-                CreateSendContextKeyInPredictionZone( e.Zone );
-            }
+            CreateSendContextKeyInPredictionZone( e.Zone );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            if( e.Zone.Name == InKeyboardWordPredictor.PredictionZoneName )
+            if( e.Zone.Name == Feature.Service.PredictionContextFactory.PredictionZoneName )
             {
                 DestroySendContextKey();
             }

@@ -17,14 +17,19 @@ namespace CK.WordPredictor.Model
         /// </summary>
         event EventHandler TextualContextSent;
 
+        /// <summary>
+        /// This event is raised when the <see cref="ITextualContextService"/> has been clear.
+        /// </summary>
         event EventHandler TextualContextClear;
 
         /// <summary>
-        /// Sends the 
+        /// Raises the <see cref="TextualContextSent"/> event
         /// </summary>
-        /// <param name="textualContext"></param>
         void SendTextualContext();
 
+        /// <summary>
+        /// Raises the <see cref="TextualContextClear"/> event
+        /// </summary>
         void ClearTextualContext();
     }
 }

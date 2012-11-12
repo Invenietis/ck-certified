@@ -109,7 +109,7 @@ namespace CK.WordPredictor
         {
             Task.Factory.StartNew( () =>
             {
-                SendStringService.Service.SendString( RawContext );
+                SendStringService.Service.SendString( _rawContext );
             } );
         }
 
@@ -136,11 +136,6 @@ namespace CK.WordPredictor
         string _rawContext;
         int[] _tokenSeparatorIndexes;
         TokenCollection _tokenCollection;
-
-        public string RawContext
-        {
-            get { return _rawContext; }
-        }
 
         public ITokenCollection Tokens
         {

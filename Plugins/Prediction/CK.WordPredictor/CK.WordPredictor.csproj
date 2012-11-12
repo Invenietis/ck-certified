@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultKeyboardContextPredictionFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngine.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
     <Compile Include="TextualContext\TextualContextService.cs" />

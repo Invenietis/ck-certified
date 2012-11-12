@@ -23,15 +23,6 @@ namespace CK.WordPredictor.Model
 
         bool DisplayContextEditor { get; }
 
-        IPredictionContextFactory PredictionContextFactory { get; }
-    }
-
-    public interface IPredictionContextFactory
-    {
-        string PredictionZoneName { get; }
-
-        IZone CreatePredictionZone( IKeyboard keyboard );
-
-        IKey CreatePredictionKey( IZone zone, int index );
+        IKeyboardContextPredictionFactory PredictionContextFactory { get; set; }
     }
 }

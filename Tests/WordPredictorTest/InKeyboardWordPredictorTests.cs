@@ -24,7 +24,7 @@ namespace WordPredictorTest
         [Test]
         public void When_Plugin_Is_Started_It_Must_Create_A_Prediction_Zone_In_The_Context()
         {
-            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
+            var mKbContext = TestHelper.MockKeyboardContext( TestHelper.CompatibilityKeyboardName, TestHelper.PredictionZoneName );
 
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
@@ -33,7 +33,7 @@ namespace WordPredictorTest
             };
             p.Start();
 
-            IZone predictionZone = p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName];
+            IZone predictionZone = p.Context.Keyboards[TestHelper.CompatibilityKeyboardName].Zones[ TestHelper.PredictionZoneName];
             Assert.That( predictionZone != null );
             //Assert.That( InKeyboardWordPredictor.DefaultMaxDisplayedWords == 10 );
             Assert.That( predictionZone.Keys.Count == p.Feature.MaxSuggestedWords );
@@ -44,7 +44,7 @@ namespace WordPredictorTest
         [Test]
         public void When_Plugin_Is_Stopped_It_Must_Destroys_Prediction_Zone_Previously_Created()
         {
-            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
+            var mKbContext = TestHelper.MockKeyboardContext( TestHelper.CompatibilityKeyboardName, TestHelper.PredictionZoneName );
             InKeyboardWordPredictor p = new InKeyboardWordPredictor()
             {
                 Feature = TestHelper.MockFeature( 10 ).Object,
@@ -53,11 +53,11 @@ namespace WordPredictorTest
             };
 
             p.Start();
-            Assert.That( p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName] != null );
+            Assert.That( p.Context.Keyboards[TestHelper.CompatibilityKeyboardName].Zones[ TestHelper.PredictionZoneName] != null );
 
             p.Stop();
 
-            Assert.That( p.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName] == null );
+            Assert.That( p.Context.Keyboards[TestHelper.CompatibilityKeyboardName].Zones[ TestHelper.PredictionZoneName] == null );
             mKbContext.VerifyAll();
         }
 
@@ -80,7 +80,7 @@ namespace WordPredictorTest
             };
 
             // Mocking of IKeyboardContext
-            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
+            var mKbContext = TestHelper.MockKeyboardContext( TestHelper.CompatibilityKeyboardName, TestHelper.PredictionZoneName );
 
             // The Plugin Under Test.
             var pluginSut = new InKeyboardWordPredictor()
@@ -103,7 +103,7 @@ namespace WordPredictorTest
             // We need to assert that the SUT correctly creates Keys into the Prediction Zone, according to its specs.
 
             // Test
-            var keys = pluginSut.Context.Keyboards[InKeyboardWordPredictor.CompatibilityKeyboardName].Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
+            var keys = pluginSut.Context.Keyboards[TestHelper.CompatibilityKeyboardName].Zones[ TestHelper.PredictionZoneName].Keys;
             Assert.That( keys.Select( e => e.CurrentLayout.Current.Visible == true ).Count() == predictorService.Words.Count );
 
             mKbContext.VerifyAll();
@@ -113,7 +113,7 @@ namespace WordPredictorTest
         public void There_Must_Be_Only_One_Command_Associated_With_The_Key_OnKeyPressed()
         {
             // Mocking of IKeyboardContext
-            var mKbContext = TestHelper.MockKeyboardContext( InKeyboardWordPredictor.CompatibilityKeyboardName, InKeyboardWordPredictor.PredictionZoneName );
+            var mKbContext = TestHelper.MockKeyboardContext( TestHelper.CompatibilityKeyboardName, TestHelper.PredictionZoneName );
 
             var wordList = new ObservableCollection<IWordPredicted>();
             // The Plugin Under Test.
@@ -131,7 +131,7 @@ namespace WordPredictorTest
             predictedWord.Setup( e => e.Word ).Returns( "OneWord" );
             wordList.Add( predictedWord.Object );
             {
-                IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
+                IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[ TestHelper.PredictionZoneName].Keys;
                 Assert.That( keyCollection[0].CurrentLayout.Current.Visible, Is.True );
                 Assert.That( keyCollection[1].CurrentLayout.Current.Visible, Is.False );
 
@@ -142,7 +142,7 @@ namespace WordPredictorTest
             }
             wordList.Add( predictedWord.Object );
             {
-                IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName].Keys;
+                IKeyCollection keyCollection = pluginSut.Context.CurrentKeyboard.Zones[ TestHelper.PredictionZoneName].Keys;
                 Assert.That( keyCollection[0].CurrentLayout.Current.Visible, Is.True );
                 Assert.That( keyCollection[1].CurrentLayout.Current.Visible, Is.True );
 

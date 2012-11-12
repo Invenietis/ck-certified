@@ -29,7 +29,7 @@ namespace CK.WordPredictor
 
         protected virtual int KeyWidth
         {
-            get { return _keyboardContext.CurrentKeyboard.CurrentLayout.W / (_feature.MaxSuggestedWords + 1); }
+            get { return _keyboardContext.CurrentKeyboard.CurrentLayout.W / (_feature.MaxSuggestedWords + 1) - KeySpace; }
         }
 
         protected virtual int KeyHeight
@@ -92,7 +92,7 @@ namespace CK.WordPredictor
 
             layoutKeyMode.X = key.Index * (KeyWidth + KeySpace) + KeyOffset;
             layoutKeyMode.Y = KeySpace;
-            layoutKeyMode.Width = KeyWidth - KeySpace;
+            layoutKeyMode.Width = KeyWidth;
             layoutKeyMode.Height = KeyHeight;
         }
     }

@@ -19,9 +19,9 @@ namespace CK.WordPredictor.UI
     /// <summary>
     /// Interaction logic for PredictionTextArea.xaml
     /// </summary>
-    public partial class TextualContextSmartAreaWindow : Window
+    public partial class TextualContextAreaWindow : Window
     {
-        public TextualContextSmartAreaWindow( ViewModels.TextualContextAreaViewModel vm )
+        public TextualContextAreaWindow( ViewModels.TextualContextAreaViewModel vm )
         {
             this.DataContext = vm;
             InitializeComponent();

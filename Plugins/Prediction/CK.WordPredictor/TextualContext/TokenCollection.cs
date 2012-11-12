@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using CK.WordPredictor.Model;
 
-namespace CK.WordPredictor.UI.Models
+namespace CK.WordPredictor
 {
     internal class TokenCollection : ITokenCollection
     {
@@ -16,13 +16,18 @@ namespace CK.WordPredictor.UI.Models
             InsertAt( _token.Count, token );
         }
 
-        internal void AddRange( string[] tokens )
+        internal void AddRange( string[] tokens, bool raiseCollectionChange )
         {
-            _token.AddRange( tokens.Select( e => new Token( e )) );
-            
-            if( CollectionChanged != null )
+            _token.AddRange( tokens.Select( e => new Token( e ) ) );
+            if( CollectionChanged != null && raiseCollectionChange )
                 CollectionChanged( this, new NotifyCollectionChangedEventArgs( NotifyCollectionChangedAction.Add, _token ) );
         }
+
+        internal void AddRange( string[] tokens )
+        {
+            AddRange( tokens, true );
+        }
+
         internal void InsertAt( int insertionPoint, string token )
         {
             var ts = new Token( token );
@@ -38,7 +43,7 @@ namespace CK.WordPredictor.UI.Models
         {
             if( CollectionChanged != null )
                 CollectionChanged( this, new NotifyCollectionChangedEventArgs( NotifyCollectionChangedAction.Reset ) );
-            
+
             _token = new List<IToken>( tokens.Select( t => new Token( t ) ) );
 
             if( CollectionChanged != null )
@@ -94,11 +99,15 @@ namespace CK.WordPredictor.UI.Models
 
         #endregion
 
-
         internal void Clear()
         {
+            Clear( true );
+        }
+
+        internal void Clear( bool raiseCollectionChange )
+        {
             _token.Clear();
-            if( CollectionChanged != null )
+            if( CollectionChanged != null && raiseCollectionChange )
                 CollectionChanged( this, new NotifyCollectionChangedEventArgs( NotifyCollectionChangedAction.Reset ) );
         }
 

@@ -49,9 +49,8 @@ namespace CK.WordPredictor.Model
         /// </summary>
         CaretPosition CurrentPosition { get; }
 
-        /// <summary>
-        /// The whole raw context
-        /// </summary>
-        string RawContext { get; }
+        void SetRawText( string rawText );
+
+        void SetCaretIndex( int caretIndex );
     }
 }

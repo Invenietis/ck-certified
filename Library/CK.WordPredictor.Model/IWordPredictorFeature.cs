@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using CK.Keyboard.Model;
 using CK.Plugin;
 
 namespace CK.WordPredictor.Model
@@ -19,5 +20,9 @@ namespace CK.WordPredictor.Model
         int MaxSuggestedWords { get; }
 
         string Engine { get; }
+
+        bool DisplayContextEditor { get; }
+
+        IKeyboardContextPredictionFactory PredictionContextFactory { get; set; }
     }
 }

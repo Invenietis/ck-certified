@@ -40,6 +40,10 @@ namespace WordPredictorTest
     {
         public static Func<string> SybilleResourceFullPath = () => @"F:\Users\Cedric\Documents\Dev\__Dev4\Civikey\ck-certified\Plugins\Prediction\CK.WordPredictor.Sybille\";
 
+        public const string PredictionZoneName = "Prediction";
+
+        public const string CompatibilityKeyboardName = "CompatibilityKeyboardName";
+
         public static Mock<IWordPredictorFeature> MockFeature( int maxSuggestedWords )
         {
             var feature = new Mock<IWordPredictorFeature>();

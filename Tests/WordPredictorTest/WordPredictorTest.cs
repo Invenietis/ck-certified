@@ -16,7 +16,7 @@ namespace WordPredictorTest
         [Test]
         public void WordPredictorServiceTest()
         {
-            SimpleTextualContextService t = new SimpleTextualContextService();
+            TextualContextService t = new TextualContextService();
 
             WordPredictorServiceBase.PluginDirectoryPath = TestHelper.SybilleResourceFullPath;
             WordPredictorServiceBase w = new SybilleWordPredictorService()
@@ -30,12 +30,12 @@ namespace WordPredictorTest
 
             Task.WaitAll( w.AsyncEngineContinuation );
 
-            t.SetToken( "Je" );
+            t.SetRawText( "Je" );
             //Task.WaitAll( w.AsyncEngineContinuation );
             Assert.That( w.Words.Count > 0 );
             Console.WriteLine( String.Join( " ", w.Words.Select( o => o.Word ).ToArray() ) );
-            t.SetToken( " " );
-            t.SetToken( "Bon" );
+            t.SetRawText( "Je " );
+            t.SetRawText( "Je Bon" );
             Assert.That( w.Words.Count > 0 );
             Console.WriteLine( String.Join( " ", w.Words.Select( o => o.Word ).ToArray() ) );
 

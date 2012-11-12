@@ -9,15 +9,15 @@ using System.Windows.Interactivity;
 
 namespace CK.WordPredictor.UI.Helpers
 {
-    public class SetCaretIndexBehavior : Behavior<TextBox>
+    public class CaretIndexBehavior : Behavior<TextBox>
     {
         public static readonly DependencyProperty CaretPositionProperty;
 
         private bool _internalChange;
 
-        static SetCaretIndexBehavior()
+        static CaretIndexBehavior()
         {
-            CaretPositionProperty = DependencyProperty.Register( "CaretPosition", typeof( int ), typeof( SetCaretIndexBehavior ), new PropertyMetadata( 0, OnCaretPositionChanged ) );
+            CaretPositionProperty = DependencyProperty.Register( "CaretPosition", typeof( int ), typeof( CaretIndexBehavior ), new PropertyMetadata( 0, OnCaretPositionChanged ) );
         }
 
         public int CaretPosition
@@ -44,7 +44,7 @@ namespace CK.WordPredictor.UI.Helpers
 
         private static void OnCaretPositionChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
         {
-            var behavior = (SetCaretIndexBehavior)d;
+            var behavior = (CaretIndexBehavior)d;
             if( !behavior._internalChange )
             {
                 behavior.AssociatedObject.CaretIndex = Convert.ToInt32( e.NewValue );

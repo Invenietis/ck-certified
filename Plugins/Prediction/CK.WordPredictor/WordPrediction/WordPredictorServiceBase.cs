@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -37,11 +38,6 @@ namespace CK.WordPredictor
 
         protected abstract IWordPredictorEngineFactory EngineFactory { get; }
 
-        protected virtual string PredictorEngine
-        {
-            get { return Feature.Engine; }
-        }
-
         internal protected static Func<string> PluginDirectoryPath
         {
             get { return _resourcePath; }
@@ -69,7 +65,7 @@ namespace CK.WordPredictor
 
         private void LoadEngine()
         {
-            var asyncEngine = EngineFactory.CreateAsync( PredictorEngine );
+            var asyncEngine = EngineFactory.CreateAsync( Feature.Engine );
             _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
             {
                 if( _engine == null ) _engine = task.Result;
@@ -81,6 +77,7 @@ namespace CK.WordPredictor
             if( e.PropertyName == "Engine" )
             {
                 EngineFactory.Release( _engine );
+                _engine = null;
                 LoadEngine();
             }
         }
@@ -96,6 +93,7 @@ namespace CK.WordPredictor
 
         private void FeedPredictedList()
         {
+            Debug.Assert( _engine != null );
             _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
             {
                 _predictedList.Clear();

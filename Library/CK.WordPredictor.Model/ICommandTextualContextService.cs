@@ -10,7 +10,7 @@ namespace CK.WordPredictor.Model
     /// Sends the textual context service. 
     /// This is typically an action triggered by the user.
     /// </summary>
-    public interface ISendTextualContextService : IDynamicService
+    public interface ICommandTextualContextService : IDynamicService
     {
         /// <summary>
         /// This event is raised when the <see cref="ITextualContextService"/> has been sent by the service.
@@ -18,9 +18,18 @@ namespace CK.WordPredictor.Model
         event EventHandler TextualContextSent;
 
         /// <summary>
-        /// Sends the 
+        /// This event is raised when the <see cref="ITextualContextService"/> has been clear.
         /// </summary>
-        /// <param name="textualContext"></param>
-        void SendTextualContext( ITextualContextService textualContext );
+        event EventHandler TextualContextClear;
+
+        /// <summary>
+        /// Raises the <see cref="TextualContextSent"/> event
+        /// </summary>
+        void SendTextualContext();
+
+        /// <summary>
+        /// Raises the <see cref="TextualContextClear"/> event
+        /// </summary>
+        void ClearTextualContext();
     }
 }

@@ -56,7 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ISendTextualContextService.cs" />
+    <Compile Include="IKeyboardContextPredictionFactory.cs" />
+    <Compile Include="ICommandTextualContextService.cs" />
     <Compile Include="IWordPredictedCollection.cs" />
     <Compile Include="IWordPredictedService.cs" />
     <Compile Include="IToken.cs" />
@@ -69,6 +70,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

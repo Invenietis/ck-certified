@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CK.WordPredictor.Model;
 
-namespace CK.WordPredictor.UI.Models
+namespace CK.WordPredictor
 {
     internal class Token : IToken
     {

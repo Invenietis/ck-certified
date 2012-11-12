@@ -21,13 +21,16 @@ namespace CK.WordPredictor.UI
         public IKeyboardContext Context { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IWordPredictorFeature Feature { get; set; }
+        public IService<IWordPredictorFeature> Feature { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ICommandTextualContextService CommandTextualContextService { get; set; }
+
+        TextualContextAreaWindow _window;
+        IKey _sendContextKey;
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -36,28 +39,63 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
+            Feature.ServiceStatusChanged += OnFeatureServiceStatusChanged;
+            Feature.Service.PropertyChanged += OnFeaturePropertyChanged;
+            if( Feature.Service.DisplayContextEditor ) EnableEditor();
+        }
+
+        public void Stop()
+        {
+            if( Feature.Service.DisplayContextEditor == false ) DisableEditor();
+            Feature.ServiceStatusChanged -= OnFeatureServiceStatusChanged;
+            Feature.Service.PropertyChanged -= OnFeaturePropertyChanged;
+        }
+
+        public void Teardown()
+        {
+        }
+
+        void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "DisplayContextEditor" )
+            {
+                if( Feature.Service.DisplayContextEditor && (_window == null || !_window.IsVisible) ) EnableEditor();
+                if( Feature.Service.DisplayContextEditor == false && (_window != null && _window.IsVisible) ) DisableEditor();
+            }
+        }
+
+        private void EnableEditor()
+        {
             TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, CommandTextualContextService );
-            TextualContextAreaWindow window = new TextualContextAreaWindow( vm )
+            _window = new TextualContextAreaWindow( vm )
             {
                 Width = 600,
                 Height = 200
             };
-            window.Show();
+            _window.Show();
 
-            int wordWidth = (Context.CurrentKeyboard.CurrentLayout.W) / (Feature.MaxSuggestedWords + 1) - 5;
+            int wordWidth = (Context.CurrentKeyboard.CurrentLayout.W) / (Feature.Service.MaxSuggestedWords + 1) - 5;
             int offset = 2;
 
             var zone = Context.CurrentKeyboard.Zones[InKeyboardWordPredictor.PredictionZoneName];
-            var sendContextKey = zone.Keys.Create();
-            if( sendContextKey != null )
+            _sendContextKey = zone.Keys.Create();
+            if( _sendContextKey != null )
             {
-                sendContextKey.Current.UpLabel = "Envoyer";
-                sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
-                sendContextKey.CurrentLayout.Current.Visible = true;
-                ConfigureKey( sendContextKey.CurrentLayout.Current, Feature.MaxSuggestedWords, wordWidth, offset );
+                _sendContextKey.Current.UpLabel = "Envoyer";
+                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
+                _sendContextKey.CurrentLayout.Current.Visible = true;
+                ConfigureKey( _sendContextKey.CurrentLayout.Current, Feature.Service.MaxSuggestedWords, wordWidth, offset );
             }
         }
 
+        private void DisableEditor()
+        {
+            if( !Feature.Service.DisplayContextEditor )
+            {
+                if( _sendContextKey != null ) _sendContextKey.Destroy();
+                if( _window != null ) _window.Close();
+            }
+        }
 
         protected virtual void ConfigureKey( ILayoutKeyModeCurrent layoutKeyMode, int idx, int wordWidth, int offset )
         {
@@ -68,12 +106,16 @@ namespace CK.WordPredictor.UI
             layoutKeyMode.Height = 45;
         }
 
-        public void Stop()
+        private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-        }
-
-        public void Teardown()
-        {
+            if( e.Current == RunningStatus.Starting )
+            {
+                Feature.Service.PropertyChanged += OnFeaturePropertyChanged;
+            }
+            if( e.Current == RunningStatus.Stopping )
+            {
+                Feature.Service.PropertyChanged -= OnFeaturePropertyChanged;
+            }
         }
 
     }

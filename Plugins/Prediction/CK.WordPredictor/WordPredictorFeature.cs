@@ -21,6 +21,11 @@ namespace CK.WordPredictor
             get { return Config.User.TryGet( "InsertSpaceAfterPredictedWord", true ); }
         }
 
+        public bool DisplayContextEditor
+        {
+            get { return Config.User.TryGet( "DisplayContextEditor", false ); }
+        }
+
         public bool FilterAlreadyShownWords
         {
             get { return Config.User.TryGet( "FilterAlreadyShownWords", true ); }

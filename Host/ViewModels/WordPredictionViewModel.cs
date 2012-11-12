@@ -51,12 +51,22 @@ namespace Host.VM
             }
         }
 
+        public bool DisplayContextEditor
+        {
+            get { return Config != null ? Config.GetOrSet( "DisplayContextEditor", false ) : false; }
+            set
+            {
+                if( Config != null ) Config.Set( "DisplayContextEditor", value );
+            }
+        }
+
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             NotifyOfPropertyChange( () => MaxSuggestedWords );
             NotifyOfPropertyChange( () => InsertSpaceAfterPredictedWord );
             NotifyOfPropertyChange( () => UsesSemanticPrediction );
             NotifyOfPropertyChange( () => FilterAlreadyShownWords );
+            NotifyOfPropertyChange( () => DisplayContextEditor );
         }
 
         protected override void OnInitialize()
@@ -76,6 +86,10 @@ namespace Host.VM
             var filter = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.FilterAlreadyShownWords ) );
             filter.DisplayName = "Masquer les mots déja présentés";
             Items.Add( filter );
+
+            var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
+            contextEditor.DisplayName = "Affiche la fenêtre de l'éditeur de prédiction";
+            Items.Add( contextEditor );
 
             base.OnInitialize();
         }

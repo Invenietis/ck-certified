@@ -135,7 +135,7 @@ namespace CK.WordPredictor.UI
 
         protected virtual string CommandFromWord( IWordPredicted wordPredicted )
         {
-            return String.Format( @"{0}:{1}", "sendPredictedWord", wordPredicted.Word.ToLowerInvariant() );
+            return String.Format( @"{0}:{1}", "sendPredictedWord", wordPredicted.Word );
         }
 
         public void Teardown()

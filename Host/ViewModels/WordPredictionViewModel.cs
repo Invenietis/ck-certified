@@ -80,15 +80,15 @@ namespace Host.VM
             Items.Add( p );
 
             var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
-            engine.DisplayName = "Utiliser la prédiction sémantique";
+            engine.DisplayName = R.WordPredictionUseSemanticPrediction;
             Items.Add( engine );
 
             var filter = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.FilterAlreadyShownWords ) );
-            filter.DisplayName = "Masquer les mots déja présentés";
+            filter.DisplayName = R.WordPredictionFilterAlreadySuggestedWord;
             Items.Add( filter );
 
             var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
-            contextEditor.DisplayName = "Affiche la fenêtre de l'éditeur de prédiction";
+            contextEditor.DisplayName = R.WordPredictionDisplayPredictionEditorWindow;
             Items.Add( contextEditor );
 
             base.OnInitialize();

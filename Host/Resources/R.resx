@@ -309,4 +309,13 @@
   <data name="WordPredictionSectionName" xml:space="preserve">
     <value>Word Prediction</value>
   </data>
+  <data name="WordPredictionDisplayPredictionEditorWindow" xml:space="preserve">
+    <value>Afficher la fenêtre de l'éditeur de prédiction</value>
+  </data>
+  <data name="WordPredictionFilterAlreadySuggestedWord" xml:space="preserve">
+    <value>Filters already suggested words</value>
+  </data>
+  <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
+    <value>Uses semantic prediction</value>
+  </data>
 </root>

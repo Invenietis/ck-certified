@@ -1,42 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using CK.Plugins.SendInput;
 using CK.WordPredictor.Model;
-using CK.WPF.ViewModel;
 
 namespace CK.WordPredictor.UI.ViewModels
 {
-    public class TextualContextAreaViewModel : VMBase
+    public class TextualContextAreaViewModel : INotifyPropertyChanged
     {
-        readonly ICommandTextualContextService _commandTextualContextService;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         readonly ITextualContextService _textualContext;
-        string _selectedText;
+        readonly IPredictionTextAreaService _predictionTextArea;
+        readonly ICommandTextualContextService _commandTextualContextService;
         string _text;
 
-        public TextualContextAreaViewModel( ITextualContextService textualContext, ICommandTextualContextService commandTextualContextService )
+        public TextualContextAreaViewModel( ITextualContextService textualContext, IPredictionTextAreaService predictionTextArea, ICommandTextualContextService commandTextualContextService )
         {
             _textualContext = textualContext;
+            _predictionTextArea = predictionTextArea;
+            _predictionTextArea.TextSent += OnPredictionAreaContentSent;
             _commandTextualContextService = commandTextualContextService;
-            _commandTextualContextService.PredictionAreaContentSent += OnPredictionAreaContentSent;
-            //_textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
         }
 
         void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
         {
-            _text = String.Empty;
-            OnPropertyChanged( "TextualContext" );
+            _text = _predictionTextArea.Text = String.Empty;
+            if( PropertyChanged != null )
+                PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
         }
-
-        //void Tokens_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
-        //{
-        //    if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset )
-        //    {
-        //        OnPropertyChanged( "TextualContext" );
-        //    }
-        //}
 
         public bool IsFocused
         {
@@ -49,41 +44,21 @@ namespace CK.WordPredictor.UI.ViewModels
                 if( value == true )
                 {
                     _commandTextualContextService.ClearTextualContext();
-                    _textualContext.SetRawText( _text );
+                    _predictionTextArea.Text = _text;
                 }
             }
         }
 
         public int CaretIndex
         {
-            get { return _textualContext.CaretOffset; }
-            set
-            {
-                _textualContext.SetCaretIndex( value );
-            }
+            get { return _predictionTextArea.CaretIndex; }
+            set { _predictionTextArea.CaretIndex = value; }
         }
 
         public string TextualContext
         {
-            get { return _text; }
-            set
-            {
-                _text = value;
-                _textualContext.SetRawText( value );
-            }
-        }
-
-        public string SelectedText
-        {
-            get
-            {
-                return _selectedText;
-            }
-            set
-            {
-                _selectedText = value;
-                OnPropertyChanged( "SelectedText" );
-            }
+            get { return _predictionTextArea.Text; }
+            set { _text = _predictionTextArea.Text = value; }
         }
     }
 }

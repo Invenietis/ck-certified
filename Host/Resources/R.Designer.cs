@@ -601,6 +601,24 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Afficher la fenêtre de l&apos;éditeur de prédiction.
+        /// </summary>
+        public static string WordPredictionDisplayPredictionEditorWindow {
+            get {
+                return ResourceManager.GetString("WordPredictionDisplayPredictionEditorWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filters already suggested words.
+        /// </summary>
+        public static string WordPredictionFilterAlreadySuggestedWord {
+            get {
+                return ResourceManager.GetString("WordPredictionFilterAlreadySuggestedWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert space after predicted words.
         /// </summary>
         public static string WordPredictionInsertSpace {
@@ -624,6 +642,15 @@ namespace Host.Resources {
         public static string WordPredictionSectionName {
             get {
                 return ResourceManager.GetString("WordPredictionSectionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses semantic prediction.
+        /// </summary>
+        public static string WordPredictionUseSemanticPrediction {
+            get {
+                return ResourceManager.GetString("WordPredictionUseSemanticPrediction", resourceCulture);
             }
         }
         

@@ -15,7 +15,7 @@ namespace CK.WordPredictor.Model
         /// <summary>
         /// This event is raised when the <see cref="ITextualContextService"/> has been sent by the service.
         /// </summary>
-        event EventHandler TextualContextSent;
+        event EventHandler<PredictionAreaContentEventArgs> PredictionAreaContentSent;
 
         /// <summary>
         /// This event is raised when the <see cref="ITextualContextService"/> has been clear.
@@ -25,7 +25,7 @@ namespace CK.WordPredictor.Model
         /// <summary>
         /// Raises the <see cref="TextualContextSent"/> event
         /// </summary>
-        void SendTextualContext();
+        void SendPredictionAreaContent();
 
         /// <summary>
         /// Raises the <see cref="TextualContextClear"/> event

@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using CK.Context;
 using CK.Plugin;
-using CK.Plugin.Config;
-using CK.WordPredictor.Engines;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
@@ -65,8 +59,7 @@ namespace CK.WordPredictor
 
         private void LoadEngine()
         {
-            var asyncEngine = EngineFactory.CreateAsync( Feature.Engine );
-            _asyncEngineContinuation = asyncEngine.ContinueWith( task =>
+            _asyncEngineContinuation = EngineFactory.CreateAsync( Feature.Engine ).ContinueWith( task =>
             {
                 if( _engine == null ) _engine = task.Result;
             } );

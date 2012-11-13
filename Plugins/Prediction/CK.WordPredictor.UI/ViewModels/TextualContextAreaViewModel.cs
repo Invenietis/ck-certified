@@ -14,27 +14,43 @@ namespace CK.WordPredictor.UI.ViewModels
         readonly ICommandTextualContextService _commandTextualContextService;
         readonly ITextualContextService _textualContext;
         string _selectedText;
+        string _text;
 
         public TextualContextAreaViewModel( ITextualContextService textualContext, ICommandTextualContextService commandTextualContextService )
         {
             _textualContext = textualContext;
             _commandTextualContextService = commandTextualContextService;
-            _textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
+            _commandTextualContextService.PredictionAreaContentSent += OnPredictionAreaContentSent;
+            //_textualContext.Tokens.CollectionChanged += Tokens_CollectionChanged;
         }
 
-        void Tokens_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
+        void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
         {
-            if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset )
-            {
-                OnPropertyChanged( "TextualContext" );
-            }
+            _text = String.Empty;
+            OnPropertyChanged( "TextualContext" );
         }
+
+        //void Tokens_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
+        //{
+        //    if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset )
+        //    {
+        //        OnPropertyChanged( "TextualContext" );
+        //    }
+        //}
 
         public bool IsFocused
         {
             set
             {
-                _commandTextualContextService.ClearTextualContext();    
+                if( value == false )
+                {
+                    _commandTextualContextService.ClearTextualContext();
+                }
+                if( value == true )
+                {
+                    _commandTextualContextService.ClearTextualContext();
+                    _textualContext.SetRawText( _text );
+                }
             }
         }
 
@@ -44,6 +60,16 @@ namespace CK.WordPredictor.UI.ViewModels
             set
             {
                 _textualContext.SetCaretIndex( value );
+            }
+        }
+
+        public string TextualContext
+        {
+            get { return _text; }
+            set
+            {
+                _text = value;
+                _textualContext.SetRawText( value );
             }
         }
 
@@ -57,15 +83,6 @@ namespace CK.WordPredictor.UI.ViewModels
             {
                 _selectedText = value;
                 OnPropertyChanged( "SelectedText" );
-            }
-        }
-
-        public string TextualContext
-        {
-            get { return String.Join( " ", _textualContext.Tokens.Select( e => e.Value ) ); }
-            set
-            {
-                _textualContext.SetRawText( value );
             }
         }
     }

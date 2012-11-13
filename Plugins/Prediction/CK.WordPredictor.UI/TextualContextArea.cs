@@ -16,8 +16,10 @@ namespace CK.WordPredictor.UI
 {
 
     [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" } )]
-    public class TextualContextArea : IPlugin
+    public class TextualContextArea : IPlugin, IPredictionTextAreaService
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
@@ -30,6 +32,7 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ICommandTextualContextService CommandTextualContextService { get; set; }
 
+        TextualContextAreaViewModel _vm;
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
 
@@ -56,6 +59,20 @@ namespace CK.WordPredictor.UI
         {
         }
 
+
+        public string Text
+        {
+            get
+            {
+                if( _vm != null )
+                {
+                    return _vm.TextualContext;
+                }
+                return String.Empty;
+            }
+        }
+
+
         void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "DisplayContextEditor" )
@@ -67,8 +84,10 @@ namespace CK.WordPredictor.UI
 
         void EnableEditor()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, CommandTextualContextService );
-            _window = new TextualContextAreaWindow( vm )
+            _vm = new TextualContextAreaViewModel( TextualContextService, CommandTextualContextService );
+            _vm.PropertyChanged += OnTextualContextAreaPropertyChanged;
+
+            _window = new TextualContextAreaWindow( _vm )
             {
                 Width = 600,
                 Height = 200
@@ -82,6 +101,12 @@ namespace CK.WordPredictor.UI
             CreateSendContextKeyInPredictionZone( zone );
         }
 
+        void OnTextualContextAreaPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( PropertyChanged != null )
+                PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
+        }
+
         void DisableEditor()
         {
             if( !Feature.Service.DisplayContextEditor )
@@ -89,6 +114,8 @@ namespace CK.WordPredictor.UI
                 DestroySendContextKey();
                 Feature.Service.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
                 Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+
+                _vm.PropertyChanged -= OnTextualContextAreaPropertyChanged;
 
                 if( _window != null ) _window.Close();
             }
@@ -101,7 +128,7 @@ namespace CK.WordPredictor.UI
                 _sendContextKey = Feature.Service.PredictionContextFactory.CreatePredictionKey( zone, Feature.Service.MaxSuggestedWords + 1 );
 
                 _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
+                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendPredictionAreaContent" );
                 _sendContextKey.CurrentLayout.Current.Visible = true;
             }
         }

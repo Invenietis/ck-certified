@@ -14,15 +14,18 @@ namespace CK.WordPredictor
     [Plugin( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}", PublicName = "TextualContext - Command Handler", Categories = new string[] { "Prediction" } )]
     public class TextualContextCommandHandler : BasicCommandHandler, ICommandTextualContextService
     {
-        public const string CMDSendTextualContext = "sendTextualContext";
+        public const string CMDSendPredictionAreaContent = "sendPredictionAreaContent";
         public const string CMDClearTextualContext = "clearTextualContext";
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IPredictionTextAreaService PredictionTextAreaService { get; set; }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( e.Command != null )
             {
-                if( e.Command.Contains( CMDSendTextualContext ) )
-                    SendTextualContext();
+                if( e.Command.Contains( CMDSendPredictionAreaContent ) )
+                    SendPredictionAreaContent();
 
                 if( e.Command.Contains( CMDClearTextualContext ) )
                     ClearTextualContext();
@@ -30,14 +33,17 @@ namespace CK.WordPredictor
 
         }
 
-        public event EventHandler TextualContextSent;
+        public event EventHandler<PredictionAreaContentEventArgs> PredictionAreaContentSent;
 
         public event EventHandler TextualContextClear;
 
-        public void SendTextualContext()
+        public void SendPredictionAreaContent()
         {
-            if( TextualContextSent != null )
-                TextualContextSent( this, EventArgs.Empty );
+            if( PredictionTextAreaService != null )
+            {
+                if( PredictionAreaContentSent != null )
+                    PredictionAreaContentSent( this, new PredictionAreaContentEventArgs( PredictionTextAreaService.Text ) );
+            }
         }
 
         public void ClearTextualContext()

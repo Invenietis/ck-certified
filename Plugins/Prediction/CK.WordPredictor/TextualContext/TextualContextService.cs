@@ -18,11 +18,14 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ICommandTextualContextService> CommandTextualContextService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendStringService> SendStringService { get; set; }
         
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ISendKeyCommandHandlerService> SendKeyService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IPredictionTextAreaService PredictionTextAreaService { get; set; }
 
         #region IPlugin Initialization
 
@@ -43,7 +46,7 @@ namespace CK.WordPredictor
         {
             if( CommandTextualContextService != null && CommandTextualContextService.Service != null )
             {
-                CommandTextualContextService.Service.TextualContextSent += OnTextualContextSent;
+                CommandTextualContextService.Service.PredictionAreaContentSent += OnPredictionAreaContentSent;
                 CommandTextualContextService.Service.TextualContextClear += OnTextualContextClear;
             }
             CommandTextualContextService.ServiceStatusChanged += OnCommandTextualContextServiceServiceStatusChanged;
@@ -61,12 +64,11 @@ namespace CK.WordPredictor
             SendStringService.ServiceStatusChanged += OnSendStringServiceStatusChanged;
         }
 
-
         public void Stop()
         {
             if( CommandTextualContextService != null && CommandTextualContextService.Service != null )
             {
-                CommandTextualContextService.Service.TextualContextSent -= OnTextualContextSent;
+                CommandTextualContextService.Service.PredictionAreaContentSent -= OnPredictionAreaContentSent;
                 CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
             }
             CommandTextualContextService.ServiceStatusChanged -= OnCommandTextualContextServiceServiceStatusChanged;
@@ -105,14 +107,6 @@ namespace CK.WordPredictor
             SetCaretIndex( newRawContext.Length );
         }
 
-        protected virtual void OnTextualContextSent( object sender, EventArgs e )
-        {
-            Task.Factory.StartNew( () =>
-            {
-                SendStringService.Service.SendString( _rawContext );
-            } );
-        }
-
         protected virtual void OnTextualContextClear( object sender, EventArgs e )
         {
             _rawContext = null;
@@ -126,6 +120,12 @@ namespace CK.WordPredictor
             OnPropertyChanged( "CurrentTokenIndex" );
             OnPropertyChanged( "CurrentPosition" );
             OnPropertyChanged( "CaretOffset" );
+        }
+
+        private void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
+        {
+            CommandTextualContextService.Service.ClearTextualContext();
+            SendStringService.Service.SendString( e.Text );
         }
 
         #endregion
@@ -304,12 +304,12 @@ namespace CK.WordPredictor
             if( e.Current == RunningStatus.Stopping )
             {
                 CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
-                CommandTextualContextService.Service.TextualContextSent -= OnTextualContextSent;
+                CommandTextualContextService.Service.PredictionAreaContentSent -= OnPredictionAreaContentSent;
             }
             if( e.Current == RunningStatus.Starting )
             {
                 CommandTextualContextService.Service.TextualContextClear += OnTextualContextClear;
-                CommandTextualContextService.Service.TextualContextSent += OnTextualContextSent;
+                CommandTextualContextService.Service.PredictionAreaContentSent += OnPredictionAreaContentSent;
             }
         }
 

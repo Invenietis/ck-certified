@@ -158,6 +158,11 @@ namespace SimpleSkin.ViewModels
             }
         }
 
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> GetParent()
+        {
+            return Context.Obtain( Model.Zone );
+        }
+
         #region IHighlightableElement Members
 
         public IReadOnlyList<IHighlightableElement> Children

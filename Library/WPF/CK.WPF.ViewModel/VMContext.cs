@@ -32,7 +32,7 @@ using System.ComponentModel;
 namespace CK.WPF.ViewModel
 {
     public abstract class VMContext<TC, TB, TZ, TK> : VMBase, IDisposable
-        where TC : VMContext<TC,TB,TZ,TK>
+        where TC : VMContext<TC, TB, TZ, TK>
         where TB : VMKeyboard<TC, TB, TZ, TK>
         where TZ : VMZone<TC, TB, TZ, TK>
         where TK : VMKey<TC, TB, TZ, TK>
@@ -75,7 +75,7 @@ namespace CK.WPF.ViewModel
             }
             return z;
         }
-        
+
         public TK Obtain( IKey key )
         {
             TK k = FindViewModel<TK>( key );
@@ -89,8 +89,8 @@ namespace CK.WPF.ViewModel
             return k;
         }
 
-        public TB KeyboardVM 
-        { 
+        public TB KeyboardVM
+        {
             get { return _currentKeyboard; }
             set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
         }
@@ -113,12 +113,12 @@ namespace CK.WPF.ViewModel
                 }
                 _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
             }
-            
+
             _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
             _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
             _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
             _evUserConfigurationChanged = new PropertyChangedEventHandler( OnUserConfigurationChanged );
-            
+
             _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
             _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
@@ -174,7 +174,7 @@ namespace CK.WPF.ViewModel
             _dic.Add( e.Keyboard, k );
             _keyboards.Add( k );
         }
-      
+
         //This behavior is linked to the current keyboard.
         //It should be overridden in the KeyboardEditor, for the KeyboardEditor is not linked to the application's current keyboard.
         protected virtual void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )

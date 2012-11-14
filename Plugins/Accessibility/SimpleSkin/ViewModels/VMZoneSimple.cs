@@ -80,6 +80,11 @@ namespace SimpleSkin.ViewModels
             }
         }
 
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> GetParent()
+        {
+            return Context.KeyboardVM;
+        }
+
         bool _isHighlighting;
         public bool IsHighlighting
         {

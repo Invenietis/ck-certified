@@ -77,7 +77,7 @@ namespace CK.WPF.ViewModel
         public ObservableCollection<TK> Keys { get { return _keys; } }
 
         public VMKeyboard( TC context, IKeyboard keyboard )
-            : base( context, keyboard )
+            : base( context )
         {
             _zones = new ObservableCollection<TZ>();
             _keys = new ObservableCollection<TK>();

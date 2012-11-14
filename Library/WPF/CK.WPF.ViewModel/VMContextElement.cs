@@ -21,6 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 namespace CK.WPF.ViewModel
 {
     /// <summary>
@@ -33,10 +35,39 @@ namespace CK.WPF.ViewModel
     {
         TC _context;
 
-        protected VMContextElement( TC context, object model )
+        protected VMContextElement( TC context )
         {
             _context = context;
         }
+
+
+        private IEnumerable<VMContextElement<TC, TB, TZ, TK>> GetParents()
+        {
+            VMContextElement<TC, TB, TZ, TK> elem = this;
+            while( elem != null )
+            {
+                elem = elem.GetParent();
+
+                if( elem != null )
+                    yield return elem;
+            }
+        }
+
+
+        public IEnumerable<VMContextElement<TC, TB, TZ, TK>> Parents
+        {
+            get
+            {
+                return GetParents().Reverse();
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the parent of the object.
+        /// Null for the VMContext
+        /// </summary>
+        public abstract VMContextElement<TC, TB, TZ, TK> GetParent();
 
         /// <summary>
         /// Gets the <see cref="VMContext"/> to which this element belongs.

@@ -42,16 +42,21 @@ namespace ContextEditor.ViewModels
             Model = zone;
         }
 
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        {
+            return Context.Obtain( Model.Keyboard ); 
+        }
+
         VMContextEditable _ctx;
 
         ICommand _deleteZoneCommand;
         public ICommand DeleteZoneCommand
         {
-            get 
+            get
             {
                 if( _deleteZoneCommand == null )
                 {
-                    _deleteZoneCommand = new CK.WPF.ViewModel.VMCommand( () => 
+                    _deleteZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
                     {
                         ModalViewModel mvm = new ModalViewModel( "Supprimer une zone", "Vous êtes sur le point de supprimer une zone. Cela supprimera galement l'ensemble des touches contenues dans cette zone. Etes vous sûr de vouloir continuer ?" );
                         mvm.Buttons.Add( new ModalButton( mvm, "Oui", ModalResult.Yes ) );
@@ -91,10 +96,10 @@ namespace ContextEditor.ViewModels
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>
         /// </summary>
-        public new string Name 
-        { 
-            get { return Model.Name; } 
-            set { Model.Rename( value ); } 
+        public new string Name
+        {
+            get { return Model.Name; }
+            set { Model.Rename( value ); }
         }
 
         /// <summary>

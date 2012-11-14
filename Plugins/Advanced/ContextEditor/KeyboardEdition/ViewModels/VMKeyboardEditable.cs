@@ -47,7 +47,7 @@ namespace ContextEditor.ViewModels
         {
             _holder = ctx;
             Model = kb;
-            _keyboardModes = new ObservableCollection<VMKeyboardMode>();
+            _keyboardModes = new ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>();
 
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
             Model.AvailableModeChanged += ( s, e ) => RefreshModes();
@@ -60,18 +60,18 @@ namespace ContextEditor.ViewModels
             _keyboardModes.Clear();
             foreach( var item in AvailableModes )
             {
-                _keyboardModes.Add( new VMKeyboardMode( _holder, item ) );
+                _keyboardModes.Add( new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _holder, item ) );
             }
             OnPropertyChanged( "KeyboardModes" );
         }
 
         private IEnumerable<IKeyboardMode> AvailableModes { get { return Model.AvailableMode.AtomicModes; } }
 
-        ObservableCollection<VMKeyboardMode> _keyboardModes;
+        ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _keyboardModes;
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/>'s AtomicModes, wrapped in <see cref="VMKeyboardMode"/>.
         /// </summary>
-        public ObservableCollection<VMKeyboardMode> KeyboardModes { get { return _keyboardModes; } }
+        public ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> KeyboardModes { get { return _keyboardModes; } }
 
         protected override void OnDispose()
         {
@@ -79,6 +79,11 @@ namespace ContextEditor.ViewModels
             Model.AvailableModeChanged -= ( s, e ) => RefreshModes();
             Model.CurrentModeChanged -= ( s, e ) => RefreshModes();
             base.OnDispose();
+        }
+
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        {
+            return null;
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -96,6 +101,11 @@ namespace ContextEditor.ViewModels
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the name of the underlying <see cref="IKeyboard"/>
+        /// </summary>
+        public string Name { get { return Model.Name; } }
 
         /// <summary>
         /// Gets the model linked to this ViewModel

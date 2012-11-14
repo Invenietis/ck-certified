@@ -41,7 +41,7 @@ namespace CK.WPF.ViewModel
         public string Name { get { return _zone.Name; } }
 
         public VMZone( TC context, IZone zone )
-            : base( context, zone )
+            : base( context )
         {
             _zone = zone;
             _keys = new ObservableSortedArrayKeyList<TK, int>( k => k.Index );

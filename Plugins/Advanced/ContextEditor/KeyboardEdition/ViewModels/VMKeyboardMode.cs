@@ -14,7 +14,7 @@ namespace ContextEditor.ViewModels
     /// automatically triggering a command on the holder that activates or deactivates the current mode. 
     /// Also has a command setting the holder's current mode to the one embedded in this class. (deactivates all mode that is not contained in the embedded one)
     /// </summary>
-    public class VMKeyboardMode : INotifyPropertyChanged, IDisposable
+    public class VMKeyboardMode<TC, TB, TZ, TK> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>, INotifyPropertyChanged, IDisposable
     {
         VMContextEditable _holder;
 
@@ -38,6 +38,7 @@ namespace ContextEditor.ViewModels
         }
 
         public VMKeyboardMode( VMContextEditable holder, IKeyboardMode keyboardMode )
+            : base( holder )
         {
             Mode = keyboardMode;
             _holder = holder;
@@ -70,18 +71,23 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        #region INotifyPropertyChanged Implementation
-
-        public void OnPropertyChanged( string propertyName )
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
         {
-            if( PropertyChanged != null )
-            {
-                PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
-            }
+            return _holder.SelectedElement;
         }
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
+        //#region INotifyPropertyChanged Implementation
+
+        //public void OnPropertyChanged( string propertyName )
+        //{
+        //    if( PropertyChanged != null )
+        //    {
+        //        PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
+        //    }
+        //}
+        //public event PropertyChangedEventHandler PropertyChanged;
+
+        //#endregion
 
         public void Dispose()
         {

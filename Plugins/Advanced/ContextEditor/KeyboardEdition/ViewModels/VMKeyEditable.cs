@@ -42,16 +42,14 @@ namespace ContextEditor.ViewModels
     public class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
         VMContextEditable _ctx;
-
-
-
+        
         public VMKeyEditable( VMContextEditable ctx, IKey k )
             : base( ctx, k, false )
         {
             _ctx = ctx;
             KeyDownCommand = new VMCommand( () => _ctx.SelectedElement = this );
-            _currentKeyModeModeVM = new VMKeyboardMode( _ctx, k.Current.Mode );
-            _currentLayoutKeyModeModeVM = new VMKeyboardMode( _ctx, k.CurrentLayout.Current.Mode );
+            _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.Current.Mode );
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.CurrentLayout.Current.Mode );
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
@@ -69,6 +67,16 @@ namespace ContextEditor.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
             } );
+        }
+
+        /// <summary>
+        /// Gets the
+        /// </summary>
+        public string Name { get { return UpLabel; } }
+
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        {
+            return Context.Obtain( Model.Zone ); 
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -97,8 +105,8 @@ namespace ContextEditor.ViewModels
 
         private void RefreshKeyboardModelViewModels()
         {
-            _currentLayoutKeyModeModeVM = new VMKeyboardMode( _ctx, Model.CurrentLayout.Current.Mode );
-            _currentKeyModeModeVM = new VMKeyboardMode( _ctx, Model.Current.Mode );
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.CurrentLayout.Current.Mode );
+            _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.Current.Mode );
             OnPropertyChanged( "CurrentLayoutKeyModeModeVM" );
             OnPropertyChanged( "CurrentKeyModeModeVM" );
         }
@@ -115,17 +123,17 @@ namespace ContextEditor.ViewModels
         /// </summary>
         #region KeyMode properties overrides
 
-        VMKeyboardMode _currentKeyModeModeVM;
+        VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _currentKeyModeModeVM;
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
         /// </summary>
-        public VMKeyboardMode CurrentKeyModeModeVM { get { return _currentKeyModeModeVM; } }
+        public VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> CurrentKeyModeModeVM { get { return _currentKeyModeModeVM; } }
 
-        VMKeyboardMode _currentLayoutKeyModeModeVM;
+        VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _currentLayoutKeyModeModeVM;
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
         /// </summary>
-        public VMKeyboardMode CurrentLayoutKeyModeModeVM { get { return _currentLayoutKeyModeModeVM; } } 
+        public VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> CurrentLayoutKeyModeModeVM { get { return _currentLayoutKeyModeModeVM; } } 
 
         VMCommand<string> _createKeyModeCommand;
         /// <summary>

@@ -299,7 +299,7 @@ namespace CK.WPF.ViewModel
         /// <param name="key">The underlying model</param>
         /// <param name="presetPushBehavior">Set to true if you want <see cref="KeyUpCommand"/> <see cref="KeyDownCommand"/> and <see cref="KeyPressedCommand"/> to transfer the pushes to the underlying <see cref="IKey"/> (classic behavior for a VMKey used as a keyboard key) </param>
         public VMKey( TC context, IKey key, bool presetPushBehavior )
-            : base( context, key )
+            : base( context )
         {
             //By default, we show the fallback.
             ShowFallback = FallbackVisibility.FallbackOnLayout | FallbackVisibility.FallbackOnKeyMode;

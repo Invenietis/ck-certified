@@ -81,7 +81,7 @@
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
+                        </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -95,10 +95,27 @@
             <Viewbox Stretch="Uniform" Grid.Column="1">
                 <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />
             </Viewbox>
-   
+            <StackPanel Orientation="Horizontal">
+                <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="5" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button VerticalAlignment="Center" Content="{Binding Name}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.SelectCommand}" CommandParameter="{Binding}" />
+                                <TextBlock Text=">" VerticalAlignment="Center" Margin="5 0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button IsEnabled="False" VerticalAlignment="Center" Content="{Binding SelectedElement.Name}" />
+            </StackPanel>
             <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}">
             </ContentControl>
-   
+
         </StackPanel>
     </Border>
 </UserControl>

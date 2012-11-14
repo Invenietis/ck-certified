@@ -97,5 +97,21 @@ namespace ContextEditor.ViewModels
             //Do nothing, we are not bound to the current keyboard of the keyboard context
         }
 
+        VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _selectCommand;
+        public VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> SelectCommand
+        {
+            get
+            {
+                if( _selectCommand == null )
+                {
+                    _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>( ( elem ) =>
+                    {
+                        SelectedElement = elem;
+                    } );
+                }
+                return _selectCommand;
+            }
+        }
+
     }
 }

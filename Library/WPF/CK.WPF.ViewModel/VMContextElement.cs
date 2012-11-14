@@ -32,7 +32,6 @@ namespace CK.WPF.ViewModel
         where TK : VMKey<TC, TB, TZ, TK>
     {
         TC _context;
-        //object _model;
 
         protected VMContextElement( TC context, object model )
         {
@@ -43,11 +42,6 @@ namespace CK.WPF.ViewModel
         /// Gets the <see cref="VMContext"/> to which this element belongs.
         /// </summary>
         public TC Context { get { return _context; } }
-
-        ///// <summary>
-        ///// Gets the model of the element
-        ///// </summary>
-        //public object Model { get { return _model; } }
 
         /// <summary>
         /// Internal method called by this <see cref="Context"/> only.

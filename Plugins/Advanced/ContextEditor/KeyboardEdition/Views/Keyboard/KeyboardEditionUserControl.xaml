@@ -118,8 +118,6 @@
                         <Border Margin="20" CornerRadius="10" BorderThickness="1" BorderBrush="LightGray" Background="Ivory" Padding="5">
                             <ContentControl>
                                 <ContentControl.Content>
-                                    <!--<DataTemplate>-->
-                                    <!--<TextBlock x:Name="blop" Text="{Binding Name}"></TextBlock>-->
                                     <DockPanel LastChildFill="True">
                                         <ItemsControl DockPanel.Dock="Top" Width="300" ItemsSource="{Binding Keys}">
                                             <ItemsControl.ItemsPanel>

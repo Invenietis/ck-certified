@@ -41,15 +41,17 @@ namespace ContextEditor.ViewModels
 {
     public class VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
+        VMContextEditable _holder;
         public VMKeyboardEditable( VMContextEditable ctx, IKeyboard kb )
             : base( ctx, kb )
         {
+            _holder = ctx;
             Model = kb;
-            Model.AvailableModeChanged += ( s, e ) => OnPropertyChanged( "AvailableModes" );
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Model.CurrentModeChanged += ( s, e ) => OnPropertyChanged( "CurrentMode" );
+            _keyboardModes = new ObservableCollection<VMKeyboardMode>();
 
-            _keyboardModes = new List<VMKeyboardMode>();
+            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Model.AvailableModeChanged += ( s, e ) => RefreshModes();
+            Model.CurrentModeChanged += ( s, e ) => RefreshModes();
             RefreshModes();
         }
 
@@ -58,19 +60,24 @@ namespace ContextEditor.ViewModels
             _keyboardModes.Clear();
             foreach( var item in AvailableModes )
             {
-                _keyboardModes.Add( new VMKeyboardMode( this, item, Model.CurrentMode.ContainsAll( item ) ) );
+                _keyboardModes.Add( new VMKeyboardMode( _holder, item ) );
             }
             OnPropertyChanged( "KeyboardModes" );
         }
 
-        public IEnumerable<IKeyboardMode> AvailableModes { get { return Model.AvailableMode.AtomicModes; } }
+        private IEnumerable<IKeyboardMode> AvailableModes { get { return Model.AvailableMode.AtomicModes; } }
 
-        IList<VMKeyboardMode> _keyboardModes;
-        public IEnumerable<VMKeyboardMode> KeyboardModes { get { return _keyboardModes; } }
+        ObservableCollection<VMKeyboardMode> _keyboardModes;
+        /// <summary>
+        /// Gets the current <see cref="IKeyboardMode"/>'s AtomicModes, wrapped in <see cref="VMKeyboardMode"/>.
+        /// </summary>
+        public ObservableCollection<VMKeyboardMode> KeyboardModes { get { return _keyboardModes; } }
 
         protected override void OnDispose()
         {
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Model.AvailableModeChanged -= ( s, e ) => RefreshModes();
+            Model.CurrentModeChanged -= ( s, e ) => RefreshModes();
             base.OnDispose();
         }
 
@@ -81,7 +88,7 @@ namespace ContextEditor.ViewModels
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
-                        OnPropertyChanged( "Background" );
+                        OnPropertyChanged( "BackgroundImagePath" );
                         break;
                     case "InsideBorderColor":
                         OnPropertyChanged( "InsideBorderColor" );
@@ -167,39 +174,5 @@ namespace ContextEditor.ViewModels
         }
     }
 
-    public class VMKeyboardMode : INotifyPropertyChanged
-    {
-        VMKeyboardEditable _holder;
 
-        public IKeyboardMode Mode { get; private set; }
-        bool _isChecked;
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                _isChecked = value;
-                OnPropertyChanged( "IsChecked" );
-                if( _isChecked ) _holder.AddKeyboardModeCommand.Execute( Mode );
-                else _holder.RemoveKeyboardModeCommand.Execute( Mode );
-            }
-        }
-
-        public VMKeyboardMode( VMKeyboardEditable holder, IKeyboardMode keyboardMode, bool isChecked )
-        {
-            Mode = keyboardMode;
-            _holder = holder;
-            _isChecked = isChecked;
-        }
-
-        public void OnPropertyChanged( string propertyName )
-        {
-            if( PropertyChanged != null )
-            {
-                PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
 }

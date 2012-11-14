@@ -36,10 +36,10 @@
 
             <DataTemplate x:Key="KeyEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Affichage">
+                    <TabItem Header="Configuration générale">
                         <local:KeyModeEditionUserControl DataContext="{Binding}"/>
                     </TabItem>
-                    <TabItem Header="Couleurs et position">
+                    <TabItem Header="Aspect et position">
                         <local:LayoutKeyEditionUserControl DataContext="{Binding}" />
                     </TabItem>
                 </TabControl>
@@ -50,7 +50,7 @@
                     <TabItem Header="Affichage">
                         <local:KeyboardEditionUserControl DataContext="{Binding}" />
                     </TabItem>
-                    <TabItem Header="Couleurs">
+                    <TabItem Header="Aspect">
                         <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
                     </TabItem>
                 </TabControl>
@@ -61,7 +61,7 @@
                     <TabItem Header="Affichage">
                         <local:ZoneEditionUserControl DataContext="{Binding}" />
                     </TabItem>
-                    <TabItem Header="Couleurs">
+                    <TabItem Header="Aspect">
                         <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
                     </TabItem>
                 </TabControl>

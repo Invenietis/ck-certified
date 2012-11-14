@@ -129,6 +129,7 @@
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMZoneEditable.cs" />
     <Compile Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml.cs">

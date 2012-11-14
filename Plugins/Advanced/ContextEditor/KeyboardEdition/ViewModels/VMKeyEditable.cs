@@ -43,12 +43,15 @@ namespace ContextEditor.ViewModels
     {
         VMContextEditable _ctx;
 
+
+
         public VMKeyEditable( VMContextEditable ctx, IKey k )
             : base( ctx, k, false )
         {
             _ctx = ctx;
-            Model = k;
             KeyDownCommand = new VMCommand( () => _ctx.SelectedElement = this );
+            _currentKeyModeModeVM = new VMKeyboardMode( _ctx, k.Current.Mode );
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode( _ctx, k.CurrentLayout.Current.Mode );
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
@@ -89,8 +92,15 @@ namespace ContextEditor.ViewModels
 
         protected override void OnTriggerModeChanged()
         {
-            OnPropertyChanged( "CurrentKeyModeMode" );
-            OnPropertyChanged( "CurrentLayoutKeyModeMode" );
+            RefreshKeyboardModelViewModels();
+        }
+
+        private void RefreshKeyboardModelViewModels()
+        {
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode( _ctx, Model.CurrentLayout.Current.Mode );
+            _currentKeyModeModeVM = new VMKeyboardMode( _ctx, Model.Current.Mode );
+            OnPropertyChanged( "CurrentLayoutKeyModeModeVM" );
+            OnPropertyChanged( "CurrentKeyModeModeVM" );
         }
 
         protected override void OnDispose()
@@ -100,18 +110,22 @@ namespace ContextEditor.ViewModels
         }
 
         /// <summary>
-        /// Gets the model linked to this ViewModel
-        /// </summary>
-        public IKey Model { get; private set; }
-
-        public IKeyboardMode CurrentKeyModeMode { get { return Model.Current.Mode; } } //.ToString() == String.Empty ? "default mode" : Model.Current.Mode.ToString();
-        public IKeyboardMode CurrentLayoutKeyModeMode { get { return Model.CurrentLayout.Current.Mode; } } //.ToString() == String.Empty ? "default mode" : Model.CurrentLayout.Current.Mode.ToString();
-
-        /// <summary>
         /// This regions contains overrides to the <see cref="VMKey"/> properties.
         /// It enables hidding the fallback if necessary.
         /// </summary>
         #region KeyMode properties overrides
+
+        VMKeyboardMode _currentKeyModeModeVM;
+        /// <summary>
+        /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
+        /// </summary>
+        public VMKeyboardMode CurrentKeyModeModeVM { get { return _currentKeyModeModeVM; } }
+
+        VMKeyboardMode _currentLayoutKeyModeModeVM;
+        /// <summary>
+        /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
+        /// </summary>
+        public VMKeyboardMode CurrentLayoutKeyModeModeVM { get { return _currentLayoutKeyModeModeVM; } } 
 
         VMCommand<string> _createKeyModeCommand;
         /// <summary>
@@ -131,7 +145,6 @@ namespace ContextEditor.ViewModels
                             Debug.Assert( IsKeyModeFallback );
                             Model.KeyModes.Create( Model.Keyboard.CurrentMode );
 
-                            OnPropertyChanged( "CurrentKeyModeMode" );
                             OnPropertyChanged( "IsKeyModeFallback" );
                         }
                         else if( type == "LayoutKeyMode" )
@@ -145,11 +158,12 @@ namespace ContextEditor.ViewModels
                             mode.Y = previousMode.Y;
                             mode.Height = previousMode.Height;
                             mode.Width = previousMode.Width;
-                            mode.Visible = true;
+                            mode.Visible = true; 
 
-                            OnPropertyChanged( "CurrentLayoutKeyModeMode" );
                             OnPropertyChanged( "IsLayoutKeyModeFallback" );
                         }
+
+                        RefreshKeyboardModelViewModels();
                     } );
                 }
                 return _createKeyModeCommand;
@@ -173,7 +187,6 @@ namespace ContextEditor.ViewModels
                             Debug.Assert( !IsKeyModeFallback );
                             Model.Current.Destroy();
 
-                            OnPropertyChanged( "CurrentKeyModeMode" );
                             OnPropertyChanged( "IsKeyModeFallback" );
                         }
                         else if( type == "LayoutKeyMode" )
@@ -181,9 +194,10 @@ namespace ContextEditor.ViewModels
                             Debug.Assert( !IsLayoutKeyModeFallback );
                             Model.CurrentLayout.Current.Destroy();
 
-                            OnPropertyChanged( "CurrentLayoutKeyModeMode" );
                             OnPropertyChanged( "IsLayoutKeyModeFallback" );
                         }
+                        RefreshKeyboardModelViewModels();
+
                     } );
                 }
                 return _deleteKeyModeCommand;
@@ -373,7 +387,6 @@ namespace ContextEditor.ViewModels
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
         }
 
-
         public object Image
         {
             get
@@ -479,7 +492,6 @@ namespace ContextEditor.ViewModels
         }
 
         #endregion
-
 
         public double Opacity
         {

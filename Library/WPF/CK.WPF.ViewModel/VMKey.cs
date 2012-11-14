@@ -58,6 +58,11 @@ namespace CK.WPF.ViewModel
 
         #region Properties
 
+        /// <summary>
+        /// Gets the model linked to this ViewModel
+        /// </summary>
+        public IKey Model { get { return _key; } }
+
         FallbackVisibility _showFallback;
         public FallbackVisibility ShowFallback
         {
@@ -239,6 +244,16 @@ namespace CK.WPF.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
+        /// </summary>
+        private IKeyboardMode CurrentKeyModeMode { get { return _key.Current.Mode; } }
+
+        /// <summary>
+        /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="ILayoutKeyMode"/>
+        /// </summary>
+        private IKeyboardMode CurrentLayoutKeyModeMode { get { return _key.CurrentLayout.Current.Mode; } }
 
         /// <summary>
         /// Gets if the current <see cref="IKeyMode"/> is a fallback or not.

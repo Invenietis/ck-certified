@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Caliburn.Micro;
 using CK.Plugin;
-using CK.Plugins.WizardFirstStart.ViewModels;
 
 namespace CK.Plugins.WizardFirstStart
 {

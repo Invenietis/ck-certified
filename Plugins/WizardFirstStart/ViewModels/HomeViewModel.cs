@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using CK.WPF.Wizard;
 
-namespace CK.Plugins.WizardFirstStart.ViewModels
+namespace CK.Plugins.WizardFirstStart
 {
-    class HomeViewModel : WizardPage
+    public class HomeViewModel : WizardPage
     {
         private readonly WizardManager _wizardManager;
 
@@ -14,7 +14,6 @@ namespace CK.Plugins.WizardFirstStart.ViewModels
             : base( wizardManager, isLastStep: false )
         {
             _wizardManager = wizardManager;
-            
         }
     }
 }

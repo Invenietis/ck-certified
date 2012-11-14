@@ -88,8 +88,8 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\WizardViewModel.cs" />
     <Compile Include="WizardFirstStart.cs" />
-    <Compile Include="WizardManager.cs" />
-    <Compile Include="WizardPage.cs" />
+    <Compile Include="Model\WizardManager.cs" />
+    <Compile Include="Model\WizardPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -103,15 +103,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Views\Home.xaml">
+    <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Style.xaml">
+    <Page Include="Views\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizard.xaml">
+    <Page Include="Views\WizardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

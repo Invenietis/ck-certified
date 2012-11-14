@@ -60,7 +60,7 @@ namespace ContextEditor
             _windowManager = new WindowManager();
             _appViewModel = new AppViewModel( this );
             var dic = new Dictionary<string, object>();
-            dic.Add("Topmost", false);
+            dic.Add("TopMost", false);
             _windowManager.ShowWindow( _appViewModel, null, dic );
 
             _mainWindow = _appViewModel.GetView( null ) as Window;

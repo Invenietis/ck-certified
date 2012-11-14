@@ -36,8 +36,8 @@ namespace ContextEditor.ViewModels
 {
     public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
-        public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit )
-            : base( root.Context, root.KeyboardContext.Service.Keyboards.Context )
+        public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor skinConfiguration )
+            : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, skinConfiguration )
         {
             _root = root;
             Model = root.KeyboardContext.Service;

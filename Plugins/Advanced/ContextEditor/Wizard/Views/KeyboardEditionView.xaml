@@ -15,7 +15,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../KeyboardEdition/Views/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type FrameworkElement}" x:Key="KeyEditionUCStyle">
+            <Style TargetType="{x:Type TabControl}" x:Key="KeyEditionUCStyle">
+                <Setter Property="Background" Value="White"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding SelectedElement, Converter={StaticResource notnull}}" Value="False">
@@ -46,25 +47,11 @@
             </DataTemplate>
 
             <DataTemplate x:Key="KeyboardEditionDataTemplate">
-                <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Affichage">
-                        <local:KeyboardEditionUserControl DataContext="{Binding}" />
-                    </TabItem>
-                    <TabItem Header="Aspect">
-                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
-                    </TabItem>
-                </TabControl>
+                <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
             </DataTemplate>
 
             <DataTemplate x:Key="ZoneEditionDataTemplate">
-                <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Affichage">
-                        <local:ZoneEditionUserControl DataContext="{Binding}" />
-                    </TabItem>
-                    <TabItem Header="Aspect">
-                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
-                    </TabItem>
-                </TabControl>
+                <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
             </DataTemplate>
 
             <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" 
@@ -76,21 +63,24 @@
     <Border DataContext="{Binding EditedContext}" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Margin="10 20">
-                <TextBlock Text="Mode : " />
-                <ItemsControl ItemsSource="{Binding KeyboardVM.KeyboardModes}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <DockPanel LastChildFill="False" Margin="5 0 2 0">
-                                <ToggleButton IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
-                            </DockPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Mode : " Margin="5 0" />
+                    <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="ModeColumn" />
+                                </Grid.ColumnDefinitions>
+                                    <ToggleButton Grid.Row="0" Padding="3 2" IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
             </StackPanel>
             <Viewbox Stretch="Uniform" Grid.Column="1">
                 <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />

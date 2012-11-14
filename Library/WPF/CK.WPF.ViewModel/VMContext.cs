@@ -28,6 +28,8 @@ using System.Collections.ObjectModel;
 using CK.Keyboard.Model;
 using CK.Context;
 using System.ComponentModel;
+using CK.Plugin.Config;
+using CK.Core;
 
 namespace CK.WPF.ViewModel
 {
@@ -46,6 +48,18 @@ namespace CK.WPF.ViewModel
         IKeyboardContext _kbctx;
         TB _currentKeyboard;
         IContext _ctx;
+
+        IPluginConfigAccessor _config;
+        public IPluginConfigAccessor Config
+        {
+            get
+            {
+                if( _config == null ) _config = Context.GetService<IPluginConfigAccessor>( true );
+                return _config;
+            }
+        }
+
+        public IPluginConfigAccessor SkinConfiguration { get; set; }
 
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
 
@@ -95,11 +109,12 @@ namespace CK.WPF.ViewModel
             set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
         }
 
-        public VMContext( IContext ctx, IKeyboardContext kbctx )
+        public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor skinConfiguration )
         {
             OnBeforeCreate();
             _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK>>();
             _keyboards = new ObservableCollection<TB>();
+            SkinConfiguration = skinConfiguration;
 
             _kbctx = kbctx;
             _ctx = ctx;

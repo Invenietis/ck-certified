@@ -90,9 +90,14 @@ namespace SimpleSkin.ViewModels
         /// Returns the parent of the element.
         /// </summary>
         /// <returns></returns>
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> GetParent()
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> Parent
         {
-            return null;
+            get { return null; }
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Layout; }
         }
 
         #region IHighlightableElement Members

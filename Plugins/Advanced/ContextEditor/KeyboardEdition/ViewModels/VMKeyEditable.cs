@@ -74,9 +74,14 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public string Name { get { return UpLabel; } }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
         {
-            return Context.Obtain( Model.Zone ); 
+            get { return Context.Obtain( Model.Zone ); }
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Model.CurrentLayout.Current; }
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )

@@ -42,9 +42,14 @@ namespace ContextEditor.ViewModels
             Model = zone;
         }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
         {
-            return Context.Obtain( Model.Keyboard ); 
+            get { return Context.Obtain( Model.Keyboard ); } 
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Model.CurrentLayout; }
         }
 
         VMContextEditable _ctx;

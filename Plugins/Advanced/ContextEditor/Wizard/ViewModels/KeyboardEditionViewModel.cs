@@ -18,7 +18,7 @@ namespace ContextEditor.ViewModels
             : base( wizardManager, false )
         {
             _root = root;
-            EditedContext = new VMContextEditable( root, editedKeyboard );
+            EditedContext = new VMContextEditable( root, editedKeyboard, root.SkinConfiguration );
             Next = new SavingStepViewModel(_root, WizardManager, EditedContext.KeyboardVM.Model );
 
             Title = String.Format( R.KeyboardEditionStepTitle, editedKeyboard.Name );

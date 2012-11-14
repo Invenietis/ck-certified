@@ -10,40 +10,71 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeOKDisplayStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="True">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Rounded}" x:Key="WarningRoundedStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderThickness="1" CornerRadius="5">
+    <Border BorderThickness="1" CornerRadius="5" Background="White">
         <StackPanel Orientation="Vertical">
-            <DockPanel LastChildFill="False">
-                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="5">
-                    <TextBlock Text="The values shown below are the values of the key when in the following mode :"/>
-                    <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentKeyModeModeVM, Mode=OneWay}" Style="{StaticResource TestCurrentKeyModeDisplayerStyle}" />
+            <DockPanel LastChildFill="False" Margin="5 5 5 0">
+                <Border Style="{StaticResource WarningRoundedStyle}" Background="#FFFCF8E3">
+                    <StackPanel Style="{StaticResource KeyModeWarningDisplayStyle}">
+                        <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png"></Image>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
+                                <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
+                                <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+                            </StackPanel>
+                            <ContentControl VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
+                            <Button Height="30" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="KeyMode">
+                                <Button.ToolTip>
+                                    <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                                </Button.ToolTip>
+                                <Image Width="20" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <StackPanel Style="{StaticResource KeyModeOKDisplayStyle}">
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
+                    <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
                 </StackPanel>
                 <Grid DockPanel.Dock="Right">
-                    <Button Margin="2" Command="{Binding DeleteKeyModeCommand}" CommandParameter="KeyMode">
+                    <Button Width="30" Height="30" Margin="5" Command="{Binding DeleteKeyModeCommand}" CommandParameter="KeyMode">
                         <Button.ToolTip>
                             <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
                         </Button.ToolTip>
-                        <Image Height="30" Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                    <Button Margin="2" Command="{Binding CreateKeyModeCommand}" CommandParameter="KeyMode">
-                        <Button.ToolTip>
-                            <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
-                        </Button.ToolTip>
-                        <Image Height="30" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="False">
+                                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -52,8 +83,8 @@
                     </Button>
                 </Grid>
             </DockPanel>
-            <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsKeyModeFallback, Converter={StaticResource notconverter}}">
-                <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+            <DockPanel LastChildFill="True" IsEnabled="{Binding IsKeyModeFallback, Converter={StaticResource notconverter}}" Margin="0 5">
+                <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
                     <StackPanel>
                         <StackPanel Margin="5">
                             <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="True">
@@ -85,17 +116,8 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-                <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
-                    <StackPanel Margin="5">
-                        <TextBlock Text="Description : ">
-                            <TextBlock.ToolTip>
-                                Cette description sera visible lorsque la souris restera au-dessus de cette touche
-                            </TextBlock.ToolTip>
-                        </TextBlock>
-                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description}" SpellCheck.IsEnabled="True" />
-                    </StackPanel>
-                </Border>
-                <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+
+                <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
                     <StackPanel Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Type d'action : "/>
@@ -107,11 +129,22 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 5">
                             <TextBlock>Texte à envoyer :</TextBlock>
-                            <TextBox Margin="5 0"></TextBox>
+                            <TextBox MinWidth="100" Margin="5 0"></TextBox>
                         </StackPanel>
                     </StackPanel>
                 </Border>
-            </StackPanel>
+
+                <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
+                    <StackPanel Margin="5">
+                        <TextBlock Margin="0 0 0 5" Text="Description : ">
+                            <TextBlock.ToolTip>
+                                Cette description sera visible lorsque la souris restera au-dessus de cette touche
+                            </TextBlock.ToolTip>
+                        </TextBlock>
+                        <TextBox MinWidth="200" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description}" SpellCheck.IsEnabled="True" Height="130" />
+                    </StackPanel>
+                </Border>
+            </DockPanel>
         </StackPanel>
     </Border>
 </UserControl>

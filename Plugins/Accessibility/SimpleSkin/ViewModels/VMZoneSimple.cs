@@ -80,9 +80,14 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> GetParent()
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> Parent
         {
-            return Context.KeyboardVM;
+            get { return Context.KeyboardVM; }
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Model.CurrentLayout; }
         }
 
         bool _isHighlighting;

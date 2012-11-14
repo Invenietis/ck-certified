@@ -16,14 +16,38 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="LayoutKeyModeWarningDisplayStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="LayoutKeyModeOKDisplayStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="True">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Rounded}" x:Key="LayoutWarningRoundedStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderThickness="1" CornerRadius="5">
+    <Border BorderThickness="1" CornerRadius="5" Background="White">
         <StackPanel Orientation="Vertical">
-            <DockPanel LastChildFill="False">
+            <!--<DockPanel LastChildFill="False">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="5">
                     <TextBlock Text="The values shown below are the values of the key when in the following mode :"/>
-                    <ContentControl Margin="2 0" FontWeight="Bold" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Content="{Binding}" Style="{StaticResource TestCurrentKeyModeDisplayerStyle}" />
+                    <ContentControl Margin="2 0" FontWeight="Bold" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Content="{Binding}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
                 </StackPanel>
                 <Grid DockPanel.Dock="Right">
                     <Button Margin="2" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
@@ -57,9 +81,56 @@
                         </Button.Style>
                     </Button>
                 </Grid>
+            </DockPanel>-->
+            
+            
+            <DockPanel LastChildFill="False" Margin="5 5 5 0">
+                <Border Style="{StaticResource LayoutWarningRoundedStyle}" Background="#FFFCF8E3">
+                    <StackPanel Style="{StaticResource LayoutKeyModeWarningDisplayStyle}">
+                        <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png"></Image>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel>
+                                <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
+                                <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
+                                <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+                            </StackPanel>
+                            <ContentControl VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
+                            <Button Height="30" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                                <Button.ToolTip>
+                                    <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                                </Button.ToolTip>
+                                <Image Width="20" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <StackPanel Style="{StaticResource LayoutKeyModeOKDisplayStyle}">
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
+                    <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
+                </StackPanel>
+                <Grid DockPanel.Dock="Right">
+                    <Button Width="30" Height="30" Margin="5" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                        <Button.ToolTip>
+                            <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
+                        </Button.ToolTip>
+                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
             </DockPanel>
-            <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsLayoutKeyModeFallback, Converter={StaticResource notconverter}}" >
-                <Border Style="{StaticResource Rounded}" Padding="0" Margin="5 0 5 5">
+            <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsLayoutKeyModeFallback, Converter={StaticResource notconverter}}" Margin="0 5">
+                <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5 0 5 5">
                     <StackPanel Margin="5">
                         <Grid>
                             <Grid.ColumnDefinitions>

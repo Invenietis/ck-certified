@@ -71,23 +71,15 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
         {
-            return _holder.SelectedElement;
+            get { return _holder.SelectedElement; }
         }
 
-        //#region INotifyPropertyChanged Implementation
-
-        //public void OnPropertyChanged( string propertyName )
-        //{
-        //    if( PropertyChanged != null )
-        //    {
-        //        PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
-        //    }
-        //}
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //#endregion
+        public override IKeyboardElement LayoutElement
+        {
+            get { return null; }
+        }
 
         public void Dispose()
         {

@@ -36,6 +36,8 @@ namespace CK.WPF.ViewModel
         IZone _zone;
         ObservableSortedArrayKeyList<TK,int> _keys;
 
+        public IZone Model { get { return _zone; } }
+
         public ObservableSortedArrayKeyList<TK, int> Keys { get { return _keys; } }
 
         public string Name { get { return _zone.Name; } }
@@ -52,8 +54,6 @@ namespace CK.WPF.ViewModel
                 Keys.Add( k );
             }
         }
-
-
 
         protected override void OnDispose()
         {

@@ -109,7 +109,7 @@ namespace SimpleSkin
                 Context.ServiceContainer.Add( Config );
 
                 _isStarted = true;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service );
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service, Config );
                 _skinWindow = new SkinWindow( _ctxVm );
 
                 Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;

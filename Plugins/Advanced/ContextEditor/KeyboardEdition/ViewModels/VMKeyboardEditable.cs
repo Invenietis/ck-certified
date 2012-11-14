@@ -81,9 +81,14 @@ namespace ContextEditor.ViewModels
             base.OnDispose();
         }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> GetParent()
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
         {
-            return null;
+            get { return null; }
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Layout; }
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )

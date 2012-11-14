@@ -43,7 +43,7 @@ namespace CK.WPF.ViewModel
         protected VMContextElement( TC context )
         {
             _context = context;
-            if( _context.SkinConfiguration != null)
+            if( _context.SkinConfiguration != null )
                 _context.SkinConfiguration.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnLayoutConfigChanged );
         }
 
@@ -101,15 +101,18 @@ namespace CK.WPF.ViewModel
                     case "FontStyle":
                     case "TextDecorations":
                     case "FontColor":
-                        OnPropertyChanged( "Background" );
-                        OnPropertyChanged( "HoverBackground" );
+                        OnPropertyChanged( "TextDecorationsAsBool" );
+                        OnPropertyChanged( "FontWeightAsBool" );
                         OnPropertyChanged( "PressedBackground" );
-                        OnPropertyChanged( "FontSize" );
+                        OnPropertyChanged( "FontStyleAsBool" );
+                        OnPropertyChanged( "HoverBackground" );
+                        OnPropertyChanged( "LetterColor" );
                         OnPropertyChanged( "FontWeight" );
+                        OnPropertyChanged( "Background" );
                         OnPropertyChanged( "FontSizes" );
                         OnPropertyChanged( "FontStyle" );
-                        OnPropertyChanged( "TextDecorations" );
-                        OnPropertyChanged( "LetterColor" );
+                        OnPropertyChanged( "FontSize" );
+                        OnPropertyChanged( "FontSize" );
                         break;
                     default:
                         break;

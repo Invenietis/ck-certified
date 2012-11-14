@@ -39,7 +39,6 @@ namespace ContextEditor.ViewModels
             : base( ctx, zone )
         {
             _ctx = ctx;
-            Model = zone;
         }
 
         public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
@@ -93,10 +92,7 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the model linked to this ViewModel
-        /// </summary>
-        public IZone Model { get; private set; }
+
 
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>

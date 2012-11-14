@@ -17,23 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type TabControl}" x:Key="KeyEditionUCStyle">
                 <Setter Property="Background" Value="White"/>
-                <Setter Property="Visibility" Value="Visible"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding SelectedElement, Converter={StaticResource notnull}}" Value="False">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-            <Style TargetType="{x:Type TextBlock}" x:Key="SelectElementTBStyle">
-                <Setter Property="Visibility" Value="Visible"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding SelectedElement, Converter={StaticResource notnull}}" Value="True">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
+            </Style>     
 
             <DataTemplate x:Key="KeyEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
@@ -47,11 +31,19 @@
             </DataTemplate>
 
             <DataTemplate x:Key="KeyboardEditionDataTemplate">
-                <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                <TabControl Style="{StaticResource KeyEditionUCStyle}">
+                    <TabItem Header="Aspect">
+                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                </TabControl>
             </DataTemplate>
 
             <DataTemplate x:Key="ZoneEditionDataTemplate">
-                <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                <TabControl Style="{StaticResource KeyEditionUCStyle}">
+                    <TabItem Header="Aspect">
+                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                    </TabItem>
+                </TabControl>
             </DataTemplate>
 
             <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" 
@@ -64,23 +56,23 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Margin="10 20">
                 <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Mode : " Margin="5 0" />
-                    <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
+                <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
                                     <ColumnDefinition SharedSizeGroup="ModeColumn" />
                                 </Grid.ColumnDefinitions>
-                                    <ToggleButton Grid.Row="0" Padding="3 2" IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                                <ToggleButton Grid.Row="0" Padding="3 2" IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
             <Viewbox Stretch="Uniform" Grid.Column="1">
                 <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />
@@ -103,9 +95,7 @@
                 </ItemsControl>
                 <Button IsEnabled="False" VerticalAlignment="Center" Content="{Binding SelectedElement.Name}" />
             </StackPanel>
-            <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}">
-            </ContentControl>
-
+            <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}" />
         </StackPanel>
     </Border>
 </UserControl>

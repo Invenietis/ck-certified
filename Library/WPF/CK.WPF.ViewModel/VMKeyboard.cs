@@ -85,7 +85,11 @@ namespace CK.WPF.ViewModel
 
             foreach( IZone zone in _keyboard.Zones )
             {
-                Zones.Add( Context.Obtain( zone ) );
+                var vmz = Context.Obtain( zone );
+                // TODO: find a better way....
+                if( zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
+                else Zones.Add( vmz );
+
                 foreach( IKey key in zone.Keys )
                 {
                     _keys.Add( Context.Obtain( key ) );
@@ -143,7 +147,10 @@ namespace CK.WPF.ViewModel
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            Zones.Add( Context.Obtain( e.Zone ) );
+            //TODO
+            var vmz = Context.Obtain( e.Zone );
+            if( e.Zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
+            else Zones.Add( vmz);
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
@@ -157,7 +164,7 @@ namespace CK.WPF.ViewModel
                     Keys.Remove( mk );
                     Context.OnModelDestroy( k );
                 }
-                
+
                 Zones.Remove( zone );
                 Context.OnModelDestroy( e.Zone );
             }

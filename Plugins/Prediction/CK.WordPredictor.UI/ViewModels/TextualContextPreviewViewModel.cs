@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using CK.Plugin;
 using CK.WordPredictor.Model;
-using CK.WPF.ViewModel;
 
 namespace CK.WordPredictor.UI.ViewModels
 {
-    public class TextualContextPreviewViewModel : VMBase
+    public class TextualContextPreviewViewModel : INotifyPropertyChanged, IDisposable
     {
-        ITextualContextService _textualContext;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public TextualContextPreviewViewModel( ITextualContextService textualContext )
+        readonly IService<ITextualContextService> _textualContext;
+
+        public TextualContextPreviewViewModel( IService<ITextualContextService> textualContext )
         {
             _textualContext = textualContext;
-            _textualContext.PropertyChanged += TextualContext_PropertyChanged;
+            _textualContext.Service.PropertyChanged += TextualContext_PropertyChanged;
+            _textualContext.ServiceStatusChanged += TextualContextService_ServiceStatusChanged;
         }
 
         private void TextualContext_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
@@ -24,24 +28,57 @@ namespace CK.WordPredictor.UI.ViewModels
             OnPropertyChanged( "CaretIndex" );
         }
 
+        private void TextualContextService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            OnPropertyChanged( "IsTextualContextServiceAvailable" );
+        }
+
+        public bool IsTextualContextServiceAvailable
+        {
+            get { return _textualContext.Service != null; }
+        }
+
         public int CaretIndex
         {
-            get { return _textualContext.CaretOffset + _textualContext.CurrentTokenIndex > 0 ? PreviousWordsLength().Sum() : 0; }
+            get
+            {
+                return IsTextualContextServiceAvailable && (_textualContext.Service.CaretOffset + _textualContext.Service.CurrentTokenIndex > 0) ? PreviousWordsLength().Sum() : 0;
+            }
         }
 
         private IEnumerable<int> PreviousWordsLength()
         {
-            return _textualContext.Tokens.Take( _textualContext.CurrentTokenIndex ).Select( t => t.Value.Length );
+            return _textualContext.Service.Tokens.Take( _textualContext.Service.CurrentTokenIndex ).Select( t => t.Value.Length );
         }
 
         public string CurrentToken
         {
-            get { return _textualContext.CurrentToken != null ? _textualContext.CurrentToken.Value : String.Empty; }
+            get { return IsTextualContextServiceAvailable && _textualContext.Service.CurrentToken != null ? _textualContext.Service.CurrentToken.Value : String.Empty; }
         }
 
         public string TextualContext
         {
-            get { return String.Join( " ", _textualContext.Tokens.Select( x => x.Value ) ); }
+            get { return IsTextualContextServiceAvailable ? String.Join( " ", _textualContext.Service.Tokens.Select( x => x.Value ) ) : String.Empty; }
+        }
+
+        /// <summary>
+        /// Raises this object's <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <param name="propertyName">The property that has a new value.</param>
+        protected virtual void OnPropertyChanged( string propertyName )
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if( handler != null )
+            {
+                var e = new PropertyChangedEventArgs( propertyName );
+                handler( this, e );
+            }
+        }
+
+        public void Dispose()
+        {
+            _textualContext.Service.PropertyChanged -= TextualContext_PropertyChanged;
+            _textualContext.ServiceStatusChanged -= TextualContextService_ServiceStatusChanged;
         }
     }
 }

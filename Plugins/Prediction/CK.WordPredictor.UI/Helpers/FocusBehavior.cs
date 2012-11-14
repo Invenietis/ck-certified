@@ -27,23 +27,24 @@ namespace CK.WordPredictor.UI.Helpers
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.PreviewGotKeyboardFocus += OnPreviewGotKeyboardFocus;
-            AssociatedObject.PreviewLostKeyboardFocus += OnPreviewLostKeyboardFocus;
+            AssociatedObject.GotKeyboardFocus += OnGotKeyboardFocus;
+            AssociatedObject.LostKeyboardFocus += OnLostKeyboardFocus;
         }
+
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            AssociatedObject.PreviewGotKeyboardFocus -= OnPreviewGotKeyboardFocus;
-            AssociatedObject.PreviewLostKeyboardFocus -= OnPreviewLostKeyboardFocus;
+            AssociatedObject.GotKeyboardFocus -= OnGotKeyboardFocus;
+            AssociatedObject.PreviewGotKeyboardFocus -= OnGotKeyboardFocus;
         }
 
-        private void OnPreviewLostKeyboardFocus( object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e )
+        private void OnLostKeyboardFocus( object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e )
         {
             IsKeyboardFocused = false;
         }
 
-        void OnPreviewGotKeyboardFocus( object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e )
+        void OnGotKeyboardFocus( object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e )
         {
             if( AssociatedObject == e.OldFocus ) return;
             if( AssociatedObject == e.NewFocus )

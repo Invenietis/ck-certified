@@ -31,14 +31,14 @@ namespace CK.WordPredictor.UI.Helpers
         {
             base.OnAttached();
             AssociatedObject.KeyUp += OnKeyUp;
-            AssociatedObject.MouseLeftButtonUp += AssociatedObject_MouseUp;
+            AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_MouseUp;
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.KeyUp -= OnKeyUp;
-            AssociatedObject.MouseLeftButtonUp -= AssociatedObject_MouseUp;
+            AssociatedObject.PreviewMouseLeftButtonUp -= AssociatedObject_MouseUp;
         } 
 
 

@@ -22,10 +22,13 @@ namespace CK.WordPredictor.UI
         public IKeyboardContext Context { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IWordPredictorFeature> Feature { get; set; }
+        public IWordPredictorFeature Feature { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IPredictionTextAreaService PredictionTextAreaService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ICommandTextualContextService CommandTextualContextService { get; set; }
@@ -40,16 +43,14 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
-            Feature.ServiceStatusChanged += OnFeatureServiceStatusChanged;
-            Feature.Service.PropertyChanged += OnFeaturePropertyChanged;
-            if( Feature.Service.DisplayContextEditor ) EnableEditor();
+            Feature.PropertyChanged += OnFeaturePropertyChanged;
+            if( Feature.DisplayContextEditor ) EnableEditor();
         }
 
         public void Stop()
         {
-            if( Feature.Service.DisplayContextEditor == false ) DisableEditor();
-            Feature.ServiceStatusChanged -= OnFeatureServiceStatusChanged;
-            Feature.Service.PropertyChanged -= OnFeaturePropertyChanged;
+            DisableEditor();
+            Feature.PropertyChanged -= OnFeaturePropertyChanged;
         }
 
         public void Teardown()
@@ -60,14 +61,14 @@ namespace CK.WordPredictor.UI
         {
             if( e.PropertyName == "DisplayContextEditor" )
             {
-                if( Feature.Service.DisplayContextEditor && (_window == null || !_window.IsVisible) ) EnableEditor();
-                if( Feature.Service.DisplayContextEditor == false && (_window != null && _window.IsVisible) ) DisableEditor();
+                if( Feature.DisplayContextEditor && (_window == null || !_window.IsVisible) ) EnableEditor();
+                if( Feature.DisplayContextEditor == false && (_window != null && _window.IsVisible) ) DisableEditor();
             }
         }
 
         void EnableEditor()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, CommandTextualContextService );
+            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
             _window = new TextualContextAreaWindow( vm )
             {
                 Width = 600,
@@ -75,33 +76,30 @@ namespace CK.WordPredictor.UI
             };
             _window.Show();
 
-            Feature.Service.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
+            Feature.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
             Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
 
-            var zone = Context.CurrentKeyboard.Zones[Feature.Service.PredictionContextFactory.PredictionZoneName];
+            var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
             CreateSendContextKeyInPredictionZone( zone );
         }
 
         void DisableEditor()
         {
-            if( !Feature.Service.DisplayContextEditor )
-            {
-                DestroySendContextKey();
-                Feature.Service.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
-                Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+            DestroySendContextKey();
+            Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
+            Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
 
-                if( _window != null ) _window.Close();
-            }
+            if( _window != null ) _window.Close();
         }
 
         void CreateSendContextKeyInPredictionZone( IZone zone )
         {
             if( zone != null )
             {
-                _sendContextKey = Feature.Service.PredictionContextFactory.CreatePredictionKey( zone, Feature.Service.MaxSuggestedWords + 1 );
+                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords + 1 );
 
                 _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendTextualContext" );
+                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendPredictionAreaContent" );
                 _sendContextKey.CurrentLayout.Current.Visible = true;
             }
         }
@@ -118,7 +116,7 @@ namespace CK.WordPredictor.UI
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            if( e.Zone.Name == Feature.Service.PredictionContextFactory.PredictionZoneName )
+            if( e.Zone.Name == Feature.PredictionContextFactory.PredictionZoneName )
             {
                 DestroySendContextKey();
             }
@@ -128,11 +126,11 @@ namespace CK.WordPredictor.UI
         {
             if( e.Current == RunningStatus.Starting )
             {
-                Feature.Service.PropertyChanged += OnFeaturePropertyChanged;
+                Feature.PropertyChanged += OnFeaturePropertyChanged;
             }
             if( e.Current == RunningStatus.Stopping )
             {
-                Feature.Service.PropertyChanged -= OnFeaturePropertyChanged;
+                Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }
         }
 

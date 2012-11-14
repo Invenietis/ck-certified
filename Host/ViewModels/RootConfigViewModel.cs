@@ -82,13 +82,16 @@ namespace Host
             var g = this.AddGroup();
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
-            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, 
-                new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ) ,
-                new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ),
-                new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ),
-                new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ),
-                new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ),
-                new Guid( "{409208EC-81AE-46A1-89E9-0D34943E4FBB}" ) 
+            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
+                new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
+                new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), // SybilleWordPredictorService
+                new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), // WordPredictedService
+                new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ), //WordPredictorFeature
+                new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ), //SimplePredictedWordSender
+                new Guid( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}" ), //TextualContextArea
+                new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ), //TextualContextService
+                new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ), //TextualContextCommandHandler
+                new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" ) //PredictionTextAreaBus
                 )
             {
                 DisplayName = R.WordPredictionSectionName

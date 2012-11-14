@@ -124,10 +124,6 @@
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
-      <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
-      <Name>CK.WPF.ViewModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
       <Name>CK.WordPredictor</Name>

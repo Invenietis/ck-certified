@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="IKeyboardContextPredictionFactory.cs" />
     <Compile Include="ICommandTextualContextService.cs" />
+    <Compile Include="IPredictionTextAreaService.cs" />
     <Compile Include="IWordPredictedCollection.cs" />
     <Compile Include="IWordPredictedService.cs" />
     <Compile Include="IToken.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="IWordPredictorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IWordPredicted.cs" />
+    <Compile Include="PredictionAreaContentEventArgs.cs" />
     <Compile Include="WordPredictionSuccessfulEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>

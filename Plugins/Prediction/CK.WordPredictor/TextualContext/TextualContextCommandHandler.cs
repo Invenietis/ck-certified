@@ -14,30 +14,16 @@ namespace CK.WordPredictor
     [Plugin( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}", PublicName = "TextualContext - Command Handler", Categories = new string[] { "Prediction" } )]
     public class TextualContextCommandHandler : BasicCommandHandler, ICommandTextualContextService
     {
-        public const string CMDSendTextualContext = "sendTextualContext";
         public const string CMDClearTextualContext = "clearTextualContext";
-
-        protected override void OnCommandSent( object sender, CommandSentEventArgs e )
-        {
-            if( e.Command != null )
-            {
-                if( e.Command.Contains( CMDSendTextualContext ) )
-                    SendTextualContext();
-
-                if( e.Command.Contains( CMDClearTextualContext ) )
-                    ClearTextualContext();
-            }
-
-        }
-
-        public event EventHandler TextualContextSent;
 
         public event EventHandler TextualContextClear;
 
-        public void SendTextualContext()
+        protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            if( TextualContextSent != null )
-                TextualContextSent( this, EventArgs.Empty );
+            if( e.Command != null && e.Command.Contains( CMDClearTextualContext ) )
+            {
+                ClearTextualContext();
+            }
         }
 
         public void ClearTextualContext()

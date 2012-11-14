@@ -13,19 +13,9 @@ namespace CK.WordPredictor.Model
     public interface ICommandTextualContextService : IDynamicService
     {
         /// <summary>
-        /// This event is raised when the <see cref="ITextualContextService"/> has been sent by the service.
-        /// </summary>
-        event EventHandler TextualContextSent;
-
-        /// <summary>
         /// This event is raised when the <see cref="ITextualContextService"/> has been clear.
         /// </summary>
         event EventHandler TextualContextClear;
-
-        /// <summary>
-        /// Raises the <see cref="TextualContextSent"/> event
-        /// </summary>
-        void SendTextualContext();
 
         /// <summary>
         /// Raises the <see cref="TextualContextClear"/> event

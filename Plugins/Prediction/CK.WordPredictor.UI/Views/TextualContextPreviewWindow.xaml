@@ -7,7 +7,7 @@
         xmlns:h="clr-namespace:CK.WordPredictor.UI"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d" Height="238" Width="869" >
-    <StackPanel>
+    <StackPanel IsEnabled="{Binding Path=IsTextualContextServiceAvailable}">
         <TextBox Text="{Binding TextualContext, Mode=OneWay}" 
                  MinLines="3" VerticalAlignment="Top"
                  FontSize="15" 

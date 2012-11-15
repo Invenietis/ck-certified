@@ -57,7 +57,7 @@ namespace SimpleSkin.ViewModels
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
-                        OnPropertyChanged( "Background" );
+                        OnPropertyChanged( "BackgroundImagePath" );
                         break;
                     case "InsideBorderColor":
                         OnPropertyChanged( "InsideBorderColor" );

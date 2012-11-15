@@ -19,10 +19,10 @@ namespace CK.WordPredictor
         IWordPredictorEngine _engine;
         Task _asyncEngineContinuation;
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ITextualContextService TextualContextService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictorFeature Feature { get; set; }
 
         public IWordPredictedCollection Words

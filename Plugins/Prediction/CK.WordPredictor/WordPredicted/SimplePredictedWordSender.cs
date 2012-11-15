@@ -13,16 +13,16 @@ namespace CK.WordPredictor
     [Plugin( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}", PublicName = "Simple TextualContext aware predicted word sender", Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Prediction" } )]
     public class SimplePredictedWordSender : IPlugin
     {
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictedService WordPredictedService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITextualContextService> TextualContextService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendStringService> SendStringService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictorFeature Feature { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }

@@ -38,7 +38,7 @@ namespace CommonServices
         bool _cLink;
 
         ICommandManagerService _cm;
-        [DynamicService(Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService(Requires = RunningRequirement.MustExistAndRun )]
         public ICommandManagerService CommandManager
         {
             get { return _cm; }

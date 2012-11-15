@@ -21,10 +21,10 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendStringService> SendStringService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendKeyCommandHandlerService> SendKeyService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPredictionTextAreaService> PredictionTextAreaService { get; set; }
 
         #region IPlugin Initialization

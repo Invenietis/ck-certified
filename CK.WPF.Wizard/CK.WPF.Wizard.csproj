@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{771CA644-F99F-4AAF-8554-F9DDC49CB01B}</ProjectGuid>
+    <ProjectGuid>{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CK.WordPredictor.Model</RootNamespace>
-    <AssemblyName>CK.WordPredictor.Model</AssemblyName>
+    <RootNamespace>CK.WPF.Wizard</RootNamespace>
+    <AssemblyName>CK.WPF.Wizard</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -33,52 +33,76 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Core">
-      <HintPath>..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Core.2.7.41\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config">
-      <HintPath>..\..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
+    <Reference Include="CK.Interop">
+      <HintPath>..\packages\CK.Interop.2.7.40\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    <Reference Include="CK.Reflection">
+      <HintPath>..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
+    <Reference Include="CK.Windows.Config">
+      <HintPath>..\packages\CK.Windows.Config.2.8.47-develop\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.SharedDic">
-      <HintPath>..\..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
+    <Reference Include="CK.Windows.Core">
+      <HintPath>..\packages\CK.Windows.Core.2.8.47-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Windows.Interop">
+      <HintPath>..\packages\CK.Windows.Interop.2.8.47-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging">
+      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IKeyboardContextPredictionFactory.cs" />
-    <Compile Include="ICommandTextualContextService.cs" />
-    <Compile Include="IPredictionTextAreaService.cs" />
-    <Compile Include="IWordPredictedCollection.cs" />
-    <Compile Include="IWordPredictedService.cs" />
-    <Compile Include="IToken.cs" />
-    <Compile Include="ITextualContextService.cs" />
-    <Compile Include="IWordPredictorFeature.cs" />
-    <Compile Include="IWordPredictorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IWordPredicted.cs" />
-    <Compile Include="PredictionAreaContentEventArgs.cs" />
-    <Compile Include="WordPredictionSuccessfulEventArgs.cs" />
+    <Compile Include="WizardManager.cs" />
+    <Compile Include="WizardPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6c0f25a7-6468-4d02-aba4-dc7f1ad209e1}</Project>
+      <Name>CK.WPF.Controls</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
-      <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
-      <Name>CK.Keyboard.Model</Name>
-    </ProjectReference>
+    <Resource Include="Resources\Images\keyboard-background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

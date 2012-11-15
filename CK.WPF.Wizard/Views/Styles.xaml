@@ -1,0 +1,95 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+    <LinearGradientBrush x:Key="ButtonOverBrush"  EndPoint="0.017,0.032" StartPoint="0.974,0.971">
+        <GradientStop Color="White"/>
+        <GradientStop Color="Transparent" Offset="0.726"/>
+    </LinearGradientBrush>
+
+    <ControlTemplate  x:Key="NoFocusButtonTemplate" TargetType="{x:Type ButtonBase}">
+        <Border CornerRadius="5">
+            <mwt:ButtonChrome Background="{TemplateBinding Panel.Background}" BorderBrush="{TemplateBinding Border.BorderBrush}" RenderDefaulted="{TemplateBinding Button.IsDefaulted}" Name="Chrome" SnapsToDevicePixels="True">
+                <ContentPresenter RecognizesAccessKey="True" 
+                                  Margin="{TemplateBinding Control.Padding}"
+                                  Content="{TemplateBinding ContentControl.Content}" 
+                                  ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" 
+                                  SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                                  VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                                  ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" 
+                                  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" />
+            </mwt:ButtonChrome>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter Property="TextElement.Foreground">
+                    <Setter.Value>
+                        <SolidColorBrush>#FFADADAD</SolidColorBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type Button}" x:Key="NoFocusSelectableButtonStyle">
+        <Setter Property="Control.Template" Value="{StaticResource NoFocusButtonTemplate}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="Button.Background" Value="{StaticResource ButtonOverBrush}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                <Setter Property="Button.Background" Value="Transparent"/>
+            </DataTrigger>
+            <Trigger Property="Button.IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <!--Value="#FFA3C9D6"-->
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Color="#FFD8D8D8" Offset="0"/>
+                                <GradientStop Color="#FFFFFFFF" Offset="1"/>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="NavigationButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource NoFocusSelectableButtonStyle}">
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style x:Key="BackButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource NavigationButtonStyle}">
+        <Style.Triggers>
+            <DataTrigger Value="False" Binding="{Binding ActiveItem.HideBack}">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Value="True" Binding="{Binding ActiveItem.CanGoBack}">
+                <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Value="False" Binding="{Binding ActiveItem.CanGoBack}">
+                <Setter Property="Visibility" Value="Hidden" />
+            </DataTrigger>
+            <DataTrigger Value="True" Binding="{Binding ActiveItem.HideBack}">
+                <Setter Property="Visibility" Value="Hidden" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ForwardButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource NavigationButtonStyle}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="True">
+                <Setter x:Uid="wizard-manager-template-forward-button-exit" Property="Content" Value="Exit" />
+                <Setter Property="Command" Value="{Binding CloseCommand}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ActiveItem.IsLastStep}" Value="False">
+                <Setter x:Uid="wizard-manager-template-forward-button-next" Property="Content" Value="Next" />
+                <Setter Property="Command" Value="{Binding GoFurtherCommand}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

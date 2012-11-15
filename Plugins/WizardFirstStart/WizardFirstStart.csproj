@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -96,8 +97,6 @@
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WizardFirstStart.cs" />
-    <Compile Include="Model\WizardManager.cs" />
-    <Compile Include="Model\WizardPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -110,20 +109,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CK.WPF.Wizard\CK.WPF.Wizard.csproj">
+      <Project>{dd6f2cff-00e9-4630-aba8-5b58f765abaf}</Project>
+      <Name>CK.WPF.Wizard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6c0f25a7-6468-4d02-aba4-dc7f1ad209e1}</Project>
       <Name>CK.WPF.Controls</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Templates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

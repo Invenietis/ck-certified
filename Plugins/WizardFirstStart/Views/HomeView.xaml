@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="10,145,0,0" TextWrapping="Wrap" Text="Bienvenu dans l'assistant de premier démarrage de Civikey" VerticalAlignment="Top" Height="51" Width="280" Foreground="White"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,145,0,0" TextWrapping="Wrap" Text="Bienvenu dans l'assistant de premier démarrage de Civikey" VerticalAlignment="Top" Height="51" Width="280" Foreground="Black"/>
     </Grid>
 </UserControl>

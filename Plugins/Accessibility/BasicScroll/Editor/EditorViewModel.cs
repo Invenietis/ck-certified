@@ -58,14 +58,13 @@ namespace BasicScroll.Editor
             }
         }
 
-        string _selectedKeyFormat = "Listening for the \"{0}\" key";
         public string SelectedKey
         {
             get
             {
                 var selectedKey = _keyboardTriggerConfig.User["TriggerKeyCode"];
-                if( selectedKey != null ) return string.Format( _selectedKeyFormat, selectedKey.ToString() );
-                return "No selected key";
+                if( selectedKey != null ) return string.Format( BasicScroll.Resources.R.Listening, selectedKey.ToString() );
+                return BasicScroll.Resources.R.NothingSelected;
             }
         }
 

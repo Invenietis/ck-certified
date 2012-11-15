@@ -14,11 +14,11 @@ using HighlightModel;
 
 namespace BasicScroll
 {
-    [Plugin( BasicScroll.PluginIdString,
+    [Plugin( BasicScrollPlugin.PluginIdString,
            PublicName = PluginPublicName,
-           Version = BasicScroll.PluginIdVersion,
+           Version = BasicScrollPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class BasicScroll : IPlugin, IHighlighterService
+    public class BasicScrollPlugin : IPlugin, IHighlighterService
     {
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -51,7 +51,7 @@ namespace BasicScroll
         {
             Configuration.ConfigChanged += ( o, e ) =>
             {
-                if( e.MultiPluginId.Any( u => u.UniqueId == BasicScroll.PluginId.UniqueId ) && e.Key == "Speed" )
+                if( e.MultiPluginId.Any( u => u.UniqueId == BasicScrollPlugin.PluginId.UniqueId ) && e.Key == "Speed" )
                 {
                     _timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                 }

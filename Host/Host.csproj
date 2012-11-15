@@ -43,6 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -217,9 +218,11 @@
     <Compile Include="ViewModels\AppConfigViewModel.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
+    <Compile Include="ViewModels\ConfigBase.cs" />
     <Compile Include="ViewModels\ConfigFeatureStarter.cs" />
     <Compile Include="ViewModels\RootConfigViewModel.cs" />
     <Compile Include="ViewModels\SkinViewModel.cs" />
+    <Compile Include="ViewModels\WordPredictionViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>

@@ -297,4 +297,25 @@
   <data name="ScrollConfig" xml:space="preserve">
     <value>Configuration du défilement</value>
   </data>
+  <data name="WordPredictionConfig" xml:space="preserve">
+    <value>Configuration de la Prédiction de mots</value>
+  </data>
+  <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
+    <value>Nombre de mots prédits (maximum)</value>
+  </data>
+  <data name="WordPredictionInsertSpace" xml:space="preserve">
+    <value>Insérer un espace après les mots prédits</value>
+  </data>
+  <data name="WordPredictionSectionName" xml:space="preserve">
+    <value>Prédiction de mots</value>
+  </data>
+  <data name="WordPredictionDisplayPredictionEditorWindow" xml:space="preserve">
+    <value>Afficher la fenêtre de l'éditeur de prédiction</value>
+  </data>
+  <data name="WordPredictionFilterAlreadySuggestedWord" xml:space="preserve">
+    <value>Masquer les mots déja présentés</value>
+  </data>
+  <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
+    <value>Utiliser la prédiction sémantique</value>
+  </data>
 </root>

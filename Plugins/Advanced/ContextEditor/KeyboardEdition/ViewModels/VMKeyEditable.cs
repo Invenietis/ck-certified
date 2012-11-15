@@ -36,6 +36,7 @@ using System.Windows.Input;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace ContextEditor.ViewModels
 {
@@ -67,10 +68,29 @@ namespace ContextEditor.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
             } );
+            this.PropertyChanged += new PropertyChangedEventHandler( OnPropertyChangedTriggered );
+        }
+
+        private void OnPropertyChangedTriggered(object sender,PropertyChangedEventArgs e )
+        {
+            if(e.PropertyName == "IsBeingEdited")
+            {
+                OnPropertyChanged("Opacity");
+            }
+        }
+
+        bool _isBeingEdited;
+        /// <summary>
+        /// Gets whether this object is being edited (or is contained in a parent that is being edited
+        /// </summary>
+        public override bool IsBeingEdited 
+        { 
+            get { return _isBeingEdited || Parent.IsBeingEdited; }
+            set { _isBeingEdited = value; OnPropertyChanged( "IsBeingEdited" ); OnPropertyChanged( "Opacity" ); } 
         }
 
         /// <summary>
-        /// Gets the
+        /// Gets the uplabel of the underlying <see cref="IKeyMode"/>
         /// </summary>
         public string Name { get { return UpLabel; } }
 
@@ -82,6 +102,11 @@ namespace ContextEditor.ViewModels
         public override IKeyboardElement LayoutElement
         {
             get { return Model.CurrentLayout.Current; }
+        }
+
+        internal void TriggerOnPropertyChanged( string propertyName )
+        {
+            OnPropertyChanged( propertyName );
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -353,9 +378,15 @@ namespace ContextEditor.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Gets the opacity of the key.
+        /// When the key has <see cref="IsBeingEdited"/> set to false, the opacity is lowered.
+        /// returns 1 otherwise.
+        /// </summary>
         public double Opacity
         {
-            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
+            get { return IsBeingEdited ? 1 : 0.3; }
+            //get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
         }
     }
 }

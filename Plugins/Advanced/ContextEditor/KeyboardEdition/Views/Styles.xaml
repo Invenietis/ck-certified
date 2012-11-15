@@ -12,6 +12,7 @@
              mc:Ignorable="d">
     <ctrls:NotNullConverter x:Key="notnull"/>
     <ctrls:NotConverter x:Key="notconverter"/>
+    <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
 
     <Style TargetType="Border" x:Key="Rounded">
         <Setter Property="Background" Value="White"></Setter>
@@ -171,7 +172,7 @@
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
     </Style>
 
-    
+
 
     <Style TargetType="{x:Type view:StdKeyboardView}">
         <Setter Property="Width" Value="{Binding W}" />
@@ -197,8 +198,8 @@
         <Setter Property="FontSize" Value="{Binding FontSize}"/>
         <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
         <Setter Property="Opacity" Value="{Binding Opacity}"/>
-        <Setter Property="Height" Value="{Binding Height}"/>
-        <Setter Property="Width" Value="{Binding Width}"/>
+        <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}"/>
+        <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}"/>
     </Style>
 
     <DataTemplate DataType="{x:Type vm:VMKeyEditable}">

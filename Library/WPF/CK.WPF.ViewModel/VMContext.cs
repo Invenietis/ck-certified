@@ -54,9 +54,9 @@ namespace CK.WPF.ViewModel
         {
             get
             {
-                if( _config == null ) _config = Context.GetService<IPluginConfigAccessor>( true );
                 return _config;
             }
+            set { _config = value; }
         }
 
         public IPluginConfigAccessor SkinConfiguration { get; set; }
@@ -109,12 +109,13 @@ namespace CK.WPF.ViewModel
             set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
         }
 
-        public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor skinConfiguration )
+        public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
         {
             OnBeforeCreate();
             _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK>>();
             _keyboards = new ObservableCollection<TB>();
             SkinConfiguration = skinConfiguration;
+            Config = config;
 
             _kbctx = kbctx;
             _ctx = ctx;

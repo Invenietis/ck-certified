@@ -89,50 +89,50 @@ namespace SimpleSkin.ViewModels
             get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
         }
 
-        public Color Background
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
-        }
+        //public Color Background
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
+        //}
         
-        public Color HoverBackground
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
-        }
+        //public Color HoverBackground
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+        //}
 
-        public Color HighlightBackground
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
-        }
+        //public Color HighlightBackground
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
+        //}
 
-        public Color PressedBackground
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
-        }
+        //public Color PressedBackground
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
+        //}
 
-        public Color LetterColor
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
-        }
+        //public Color LetterColor
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
+        //}
 
-        public FontStyle FontStyle
-        {
-            get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
-        }
+        //public FontStyle FontStyle
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
+        //}
 
-        public FontWeight FontWeight
-        {
-            get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
-        }
+        //public FontWeight FontWeight
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
+        //}
 
-        public double FontSize
-        {
-            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
-        }
+        //public double FontSize
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
+        //}
 
-        public TextDecorationCollection TextDecorations
-        {
-            get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
-        }
+        //public TextDecorationCollection TextDecorations
+        //{
+        //    get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
+        //}
 
         public bool ShowLabel
         {
@@ -168,6 +168,15 @@ namespace SimpleSkin.ViewModels
             get { return Model.CurrentLayout.Current; }
         }
 
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return false; }
+            set { }
+        }
 
         #region IHighlightableElement Members
 

@@ -46,8 +46,8 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
-                                        <Setter Property="Canvas.Top" Value="{Binding Path=Y}"/>
-                                        <Setter Property="Canvas.Left" Value="{Binding Path=X}"/>
+                                        <Setter Property="Canvas.Top" Value="{Binding Path=Y, Mode=TwoWay}"/>
+                                        <Setter Property="Canvas.Left" Value="{Binding Path=X, Mode=TwoWay}"/>
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                             </ItemsControl>

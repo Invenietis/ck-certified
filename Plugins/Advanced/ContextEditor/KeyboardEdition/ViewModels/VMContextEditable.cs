@@ -36,8 +36,8 @@ namespace ContextEditor.ViewModels
 {
     public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
-        public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor skinConfiguration )
-            : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, skinConfiguration )
+        public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
+            : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, config, skinConfiguration )
         {
             _root = root;
             Model = root.KeyboardContext.Service;
@@ -45,16 +45,6 @@ namespace ContextEditor.ViewModels
         }
 
         IKeyboardEditorRoot _root;
-
-        IPluginConfigAccessor _config;
-        public IPluginConfigAccessor Config
-        {
-            get
-            {
-                if( _config == null ) _config = Context.GetService<IPluginConfigAccessor>( true );
-                return _config;
-            }
-        }
 
         /// <summary>
         /// Gets the model linked to this ViewModel
@@ -64,17 +54,30 @@ namespace ContextEditor.ViewModels
         /// <summary>
         /// Gets the Skin plugin's configuration accessor
         /// </summary>
-        public IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
+        public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
 
         VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _selectedElement;
         public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> SelectedElement
         {
-            get 
+            get
             {
-                if( _selectedElement == null ) _selectedElement = KeyboardVM;
-                return _selectedElement; 
+                if( _selectedElement == null )
+                {
+                    _selectedElement = KeyboardVM;
+                    _selectedElement.IsBeingEdited = true;
+                }
+                return _selectedElement;
             }
-            set { _selectedElement = value; OnPropertyChanged( "SelectedElement" ); }
+            set 
+            {
+                if( _selectedElement != value )
+                {
+                    _selectedElement.IsBeingEdited = false;
+                    _selectedElement = value;
+                    _selectedElement.IsBeingEdited = true;
+                    OnPropertyChanged( "SelectedElement" );
+                }
+            }
         }
 
         protected override VMKeyEditable CreateKey( IKey k )

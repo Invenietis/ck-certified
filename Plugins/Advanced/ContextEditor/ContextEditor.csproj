@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\ResizingAdorner.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardMode.cs" />

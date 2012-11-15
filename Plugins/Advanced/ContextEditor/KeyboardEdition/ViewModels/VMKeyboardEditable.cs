@@ -91,6 +91,24 @@ namespace ContextEditor.ViewModels
             get { return Layout; }
         }
 
+        bool _isBeingEdited;
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return _isBeingEdited; }
+            set 
+            { 
+                _isBeingEdited = value; 
+                OnPropertyChanged( "IsBeingEdited" );
+                foreach( var item in Zones )
+                {
+                    item.TriggerOnPropertyChanged( "IsBeingEdited", true );
+                }
+            }
+        }
+
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( e.Obj == Layout )
@@ -188,6 +206,4 @@ namespace ContextEditor.ViewModels
             }
         }
     }
-
-
 }

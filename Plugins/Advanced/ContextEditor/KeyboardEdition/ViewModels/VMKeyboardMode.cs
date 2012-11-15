@@ -81,6 +81,15 @@ namespace ContextEditor.ViewModels
             get { return null; }
         }
 
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return false; }
+            set { }
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();

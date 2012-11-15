@@ -44,7 +44,7 @@ namespace CK.WPF.ViewModel
         FallbackOnKeyMode = 2
     }
 
-    public abstract class VMKey<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
+    public abstract class VMKey<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>, IDraggableResizableElement
         where TC : VMContext<TC, TB, TZ, TK>
         where TB : VMKeyboard<TC, TB, TZ, TK>
         where TZ : VMZone<TC, TB, TZ, TK>

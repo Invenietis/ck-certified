@@ -90,6 +90,16 @@ namespace SimpleSkin.ViewModels
             get { return Model.CurrentLayout; }
         }
 
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return false; }
+            set { }
+        }
+
         bool _isHighlighting;
         public bool IsHighlighting
         {

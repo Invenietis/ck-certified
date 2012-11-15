@@ -51,6 +51,40 @@ namespace ContextEditor.ViewModels
             get { return Model.CurrentLayout; }
         }
 
+        bool _isBeingEdited;
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return _isBeingEdited || Parent.IsBeingEdited; }
+            set 
+            { 
+                _isBeingEdited = value; 
+                OnPropertyChanged( "IsBeingEdited" );
+                foreach( var item in Keys )
+                {
+                    item.TriggerOnPropertyChanged( "IsBeingEdited" );
+                }
+            }
+        }
+
+        internal void TriggerOnPropertyChanged( string propertyName )
+        {
+            OnPropertyChanged( propertyName );
+        }
+
+        internal void TriggerOnPropertyChanged( string propertyName, bool propagate )
+        {
+            OnPropertyChanged( propertyName );
+            if( !propagate ) return;
+
+            foreach( var item in Keys )
+            {
+                item.TriggerOnPropertyChanged( propertyName );
+            }
+        }
+
         VMContextEditable _ctx;
 
         ICommand _deleteZoneCommand;

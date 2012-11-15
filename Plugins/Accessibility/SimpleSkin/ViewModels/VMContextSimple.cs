@@ -32,7 +32,7 @@ namespace SimpleSkin.ViewModels
     internal class VMContextSimple : VMContext<VMContextSimple,VMKeyboardSimple,VMZoneSimple,VMKeySimple>
     {
         public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
-            : base( ctx, kbctx.Keyboards.Context, config )
+            : base( ctx, kbctx.Keyboards.Context, config, config )
         {
         }
 

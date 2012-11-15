@@ -75,7 +75,7 @@
                 </ItemsControl>
             </StackPanel>
             <Viewbox Stretch="Uniform" Grid.Column="1">
-                <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />
+                <view:StdKeyboardView DataContext="{Binding KeyboardVM}" x:Name="KeyboardContainer"/>
             </Viewbox>
             <StackPanel Orientation="Horizontal">
                 <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">

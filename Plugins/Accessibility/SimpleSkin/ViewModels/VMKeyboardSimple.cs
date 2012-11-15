@@ -100,6 +100,16 @@ namespace SimpleSkin.ViewModels
             get { return Layout; }
         }
 
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return false; }
+            set { }
+        }
+
         #region IHighlightableElement Members
 
         public IReadOnlyList<IHighlightableElement> Children

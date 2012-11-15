@@ -47,6 +47,11 @@ namespace CK.WPF.ViewModel
                 _context.SkinConfiguration.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnLayoutConfigChanged );
         }
 
+        /// <summary>
+        /// Gets whether the element is being edited.
+        /// </summary>
+        public abstract bool IsBeingEdited { get; set; }
+
         private IEnumerable<VMContextElement<TC, TB, TZ, TK>> GetParents()
         {
             VMContextElement<TC, TB, TZ, TK> elem = this;

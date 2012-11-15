@@ -9,3 +9,4 @@ Setup/StandardSetup/Resources/CiviKey*.exe
 Plugins/Advanced/Patchers/KeyboardPatcher/bin/
 Plugins/Advanced/ContextEditor/bin/*
 **/bin/*
+bin/

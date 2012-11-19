@@ -217,7 +217,7 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
-            Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+            if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
              
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
@@ -260,7 +260,7 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+            if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
 
             if( e.Current != null && _skinWindow != null )
             {
@@ -354,7 +354,7 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
-                Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+                if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();

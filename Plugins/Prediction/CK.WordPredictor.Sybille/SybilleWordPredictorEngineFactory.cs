@@ -15,6 +15,11 @@ namespace CK.WordPredictor.Engines
         IWordPredictorFeature _predictorFeature;
 
         public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, IWordPredictorFeature predictorFeature )
+            : this( pluginResourceDirectory, pluginResourceDirectory, predictorFeature )
+        {
+        }
+
+        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, Func<string> userPath, IWordPredictorFeature predictorFeature )
         {
             _pluginResourceDirectory = pluginResourceDirectory;
             _predictorFeature = predictorFeature;

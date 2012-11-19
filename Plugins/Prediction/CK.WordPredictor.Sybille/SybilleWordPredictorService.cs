@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using CK.Context;
 using CK.Plugin;
 using CK.WordPredictor.Engines;
 using CK.WordPredictor.Model;
@@ -13,9 +15,38 @@ namespace CK.WordPredictor
     {
         IWordPredictorEngineFactory _engineFactory;
 
+        [RequiredService]
+        public IContext Context { get; set; }
+
+        Func<string> _userPath;
+
+        internal Func<string> UserPath
+        {
+            get
+            {
+                if( _userPath == null )
+                {
+                    return () =>
+                    {
+                        Uri userUri = Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address;
+                        
+                        return Path.GetDirectoryName( userUri.LocalPath );
+                    };
+                }
+                return _userPath;
+            }
+            set
+            {
+                _userPath = value;
+            }
+        }
+
         protected override IWordPredictorEngineFactory EngineFactory
         {
-            get { return _engineFactory ?? (_engineFactory = new SybilleWordPredictorEngineFactory( PluginDirectoryPath, Feature )); }
+            get
+            {
+                return _engineFactory ?? (_engineFactory = new SybilleWordPredictorEngineFactory( PluginDirectoryPath, UserPath, Feature ));
+            }
         }
     }
 }

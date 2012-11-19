@@ -17,10 +17,10 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IWordPredictorService> WordPredictorService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictorFeature Feature { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }

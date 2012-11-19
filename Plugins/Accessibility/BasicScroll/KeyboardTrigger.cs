@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Plugins.SendInput;
 using CommonServices;
 
 namespace BasicScroll
@@ -27,9 +28,13 @@ namespace BasicScroll
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         bool _wasASpace = false;
+        bool _stringSending = false;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ISendStringService> SendStringService { get; set; }
 
         public IPluginConfigAccessor Configuration { get; set; }
 
@@ -44,12 +49,34 @@ namespace BasicScroll
 
         public void Start()
         {
+            if( SendStringService.Service != null )
+            {
+                SendStringService.Service.StringSending += OnStringSending;
+                SendStringService.Service.StringSent += OnStringSent;
+            }
+            SendStringService.ServiceStatusChanged += SendStringService_ServiceStatusChanged;
+
             KeyboardDriver.Service.KeyDown += OnKeyDown;
 
             _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 0x20 );
             KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
 
             Configuration.ConfigChanged += OnConfigChanged;
+        }
+
+        void OnStringSending( object sender, StringSendingEventArgs e )
+        {
+            _stringSending = true;
+        }
+
+        void OnStringSent( object sender, StringSentEventArgs e )
+        {
+            _stringSending = false;
+        }
+
+
+        void SendStringService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -64,7 +91,7 @@ namespace BasicScroll
 
         void OnKeyDown( object sender, KeyboardDriverEventArg e )
         {
-            if( !_wasASpace && e.KeyCode == _keyCode ) // on spacebar pressed
+            if( _stringSending == false && !_wasASpace && e.KeyCode == _keyCode ) // on spacebar pressed
             {
                 _wasASpace = true;
                 if( Triggered != null ) Triggered( this, EventArgs.Empty );
@@ -74,6 +101,12 @@ namespace BasicScroll
 
         public void Stop()
         {
+            if( SendStringService.Service != null )
+            {
+                SendStringService.Service.StringSending -= OnStringSending;
+                SendStringService.Service.StringSent -= OnStringSent;
+            }
+            SendStringService.ServiceStatusChanged -= SendStringService_ServiceStatusChanged;
             KeyboardDriver.Service.KeyDown -= OnKeyDown;
             KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
         }

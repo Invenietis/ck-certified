@@ -50,9 +50,9 @@ namespace CK.WordPredictor.Engines
 
         private static IWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath, string userPath, IWordPredictorFeature predictorFeature )
         {
-            string userPredictorSibFilePath = EnsureFileCopy( Path.Combine( pluginResourcePath, _sybileDataPath ), userPath, "UserPredictor_fr.sib" );
             string userTextsFilePath = EnsureFileCreation( userPath, "UserTexts_fr.txt" );
-
+            string userPredictorSibFilePath = EnsureFileCopy( Path.Combine( pluginResourcePath, _sybileDataPath ), userPath, "UserPredictor_fr.sib" );
+            
             switch( predictorName.ToLowerInvariant() )
             {
                 case "sybille": return new SybilleWordPredictorEngine( predictorFeature,

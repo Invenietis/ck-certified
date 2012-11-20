@@ -14,7 +14,7 @@ namespace CK.WordPredictor
     public class WordPredictorFeature : IPlugin, IWordPredictorFeature
     {
         private IKeyboardContextPredictionFactory _predictionContextFactory;
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IPluginConfigAccessor Config { get; set; }

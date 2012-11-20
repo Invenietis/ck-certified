@@ -17,6 +17,7 @@ namespace CK.WordPredictor.Engines
         {
             _wordPredictionFeature = wordPredictionFeature;
             _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+            
         }
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
@@ -86,9 +87,8 @@ namespace CK.WordPredictor.Engines
         {
             if( _sybille != null )
             {
-                //_sybille.SaveUserPredictor();
-                _sybille = null; // Sybille will be correctly garbage collected as we pass the ref to null.
-                //GC.Collect();
+                _sybille.SaveUserPredictor();
+                _sybille = null;
             }
         }
 

@@ -69,7 +69,8 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public override bool IsBeingEdited
         {
-            get { return IsSelected || Parent.IsBeingEdited; }
+            get { 
+                return IsSelected || Parent.IsBeingEdited; }
         }
 
         /// <summary>
@@ -113,13 +114,27 @@ namespace ContextEditor.ViewModels
             } );
 
             this.PropertyChanged += new PropertyChangedEventHandler( OnPropertyChangedTriggered );
-            _ctx.PointerDeviceDriver.Service.PointerMove += OnMouseMove;
-            _ctx.PointerDeviceDriver.Service.PointerButtonUp += OnPointerButtonUp;
         }
 
         internal void TriggerOnPropertyChanged( string propertyName )
         {
             OnPropertyChanged( propertyName );
+        }
+
+
+        public void TriggerMouseEvent( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
+        {
+            switch( eventType )
+            {
+                case KeyboardEditorMouseEvent.MouseMove:
+                    OnMouseMove( args );
+                    break;
+                case KeyboardEditorMouseEvent.PointerButtonUp:
+                    OnPointerButtonUp( args );
+                    break;
+                default: //ButtonDown is handler by a Command, we don't use the pointer device driver for that. (yet ?)
+                    break;
+            }
         }
 
         #endregion

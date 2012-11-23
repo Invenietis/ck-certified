@@ -17,7 +17,48 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderThickness="1" CornerRadius="5">
-        <local:GenericLayoutEditionUserControl />
-    </Border>
+    <StackPanel Orientation="Horizontal">
+        <Border BorderThickness="1" CornerRadius="5">
+            <local:GenericLayoutEditionUserControl />
+        </Border>
+        <GroupBox Header="Key creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+            <StackPanel Width="220">
+                <!--<StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock>Saisissez le nom de la zone puis validez :</TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0 5">
+                        <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0"></TextBox>
+                        <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked" 
+                                Command="{Binding CreateZoneCommand}" CommandParameter="{Binding Text, ElementName=zoneCreationTextBox}" >
+                            <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                            <Button.ToolTip>
+                                Confirmez la création de zone
+                            </Button.ToolTip>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="CommandParameter" Value="{Binding Text, ElementName=zoneCreationTextBox}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True" Binding="{Binding Text, ElementName=zoneCreationTextBox, Converter={StaticResource stringemptytoboolconverter}}">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked">
+                            <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                            <Button.ToolTip>
+                                Annuler la création de zone
+                            </Button.ToolTip>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>-->
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding CreateKeyCommand}">
+                    <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                    <Button.ToolTip>
+                        Ajouter une touche
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
 </UserControl>

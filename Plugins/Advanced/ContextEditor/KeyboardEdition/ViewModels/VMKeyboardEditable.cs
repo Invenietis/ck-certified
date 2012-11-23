@@ -249,17 +249,16 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        VMCommand<object> _createZoneCommand;
-        public VMCommand<object> CreateZoneCommand 
+        VMCommand<string> _createZoneCommand;
+        public VMCommand<string> CreateZoneCommand 
         { 
             get 
             {
                 if( _createZoneCommand == null )
                 {
-                    _createZoneCommand = new VMCommand<object>( ( name ) => 
+                    _createZoneCommand = new VMCommand<string>( ( name ) => 
                     {
-                        Console.Out.WriteLine( "creating zone named : " + name.ToString() );
-                         Model.Zones.Create( name.ToString() );
+                         Model.Zones.Create( name );
                     } );
                 }
 

@@ -9,7 +9,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:ContextEditor.ViewModels"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Width="Auto" Height="Auto">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,7 +20,7 @@
             </Style>
 
             <DataTemplate x:Key="KeyEditionDataTemplate">
-                <TabControl Style="{StaticResource KeyEditionUCStyle}">
+                <TabControl Style="{StaticResource KeyEditionUCStyle}" Width="Auto" Height="Auto" >
                     <TabItem Header="Configuration générale">
                         <local:KeyModeEditionUserControl DataContext="{Binding}"/>
                     </TabItem>
@@ -41,7 +41,7 @@
             <DataTemplate x:Key="ZoneEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
                     <TabItem Header="Aspect">
-                        <local:GenericLayoutEditionUserControl DataContext="{Binding}" />
+                        <local:ZoneEditionUserControl DataContext="{Binding}" />
                     </TabItem>
                 </TabControl>
             </DataTemplate>
@@ -54,21 +54,23 @@
     </UserControl.Resources>
     <Border DataContext="{Binding EditedContext}" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
         <StackPanel Orientation="Horizontal">
-            <!--<TreeView ItemsSource="{Binding KeyboardVM.Zones}">
-                <TreeView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/browse.png"></Image>
-                            <TextBlock Text="{Binding Name}"></TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </TreeView.ItemTemplate>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-            </TreeView>-->
+            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" MinWidth="100">
+                <TreeView ItemsSource="{Binding KeyboardVM.Zones}">
+                    <TreeView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/browse.png"></Image>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeView.ItemTemplate>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                </TreeView>
+            </ScrollViewer>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Margin="10 20">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Mode : " Margin="5 0" />

@@ -11,7 +11,7 @@
         <Setter Property="Topmost" Value="False"/>
     </Style>
 
-        <LinearGradientBrush x:Key="ButtonOverBrush"  EndPoint="0.017,0.032" StartPoint="0.974,0.971">
+    <LinearGradientBrush x:Key="ButtonOverBrush"  EndPoint="0.017,0.032" StartPoint="0.974,0.971">
         <GradientStop Color="White"/>
         <GradientStop Color="Transparent" Offset="0.726"/>
     </LinearGradientBrush>
@@ -119,8 +119,6 @@
         <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 
-   
-
     <Style x:Key="RoundedTextBox" BasedOn="{x:Null}" TargetType="{x:Type TextBox}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -149,9 +147,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    
-
-
 
 </ResourceDictionary>

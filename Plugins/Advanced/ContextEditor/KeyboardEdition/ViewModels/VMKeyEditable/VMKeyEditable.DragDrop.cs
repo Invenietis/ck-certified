@@ -124,7 +124,6 @@ namespace ContextEditor.ViewModels
             {
                 return new VMCommand<MouseEventArgs>( ( args ) =>
                 {
-                    Debug.WriteLine( "Stop dragging car : laché le click gauche" );
                     StopDragging();
                 } );
             }
@@ -134,13 +133,12 @@ namespace ContextEditor.ViewModels
 
         #region OnXXX
 
-        public void OnPointerButtonUp( object sender, PointerDeviceEventArgs args )
+        public void OnPointerButtonUp( PointerDeviceEventArgs args )
         {
-            Debug.WriteLine( "Stop dragging car : laché le click gauche" );
             StopDragging();
         }
 
-        void OnMouseMove( object sender, PointerDeviceEventArgs e )
+        void OnMouseMove( PointerDeviceEventArgs e )
         {
             if( _isDown )
             {
@@ -153,7 +151,6 @@ namespace ContextEditor.ViewModels
 
                 if( _isDragging )
                 {
-
                     X = (int)( position.X - ( _startPoint.X - _originalLeft ) );
                     Y = (int)( position.Y - ( _startPoint.Y - _originalTop ) );
                 }

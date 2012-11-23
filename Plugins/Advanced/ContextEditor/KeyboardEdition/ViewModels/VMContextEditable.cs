@@ -37,6 +37,13 @@ using System.Collections.Specialized;
 
 namespace ContextEditor.ViewModels
 {
+    public enum KeyboardEditorMouseEvent
+    {
+        MouseMove = 1,
+        PointerButtonUp = 2,
+        PointerButtonDown = 3
+    }
+
     public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
         IKeyboardEditorRoot _root;
@@ -52,15 +59,50 @@ namespace ContextEditor.ViewModels
 
         private void Initialize()
         {
-            KeyboardVM.Model.Zones.ZoneCreated += OnZoneCreated;
+            //KeyboardVM.Model.Zones.ZoneCreated += OnZoneCreated;
+            PointerDeviceDriver.Service.PointerMove += OnMouseMove;
+            PointerDeviceDriver.Service.PointerButtonUp += OnPointerButtonUp;
             KeyboardVM.Initialize();
         }
 
-        private void OnZoneCreated( object sender, ZoneEventArgs args )
+        //private void OnZoneCreated( object sender, ZoneEventArgs args )
+        //{
+        //    KeyboardVM.Zones.Add( Obtain( args.Zone ) );
+        //}
+
+        //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
+        private void OnMouseMove( object sender, PointerDeviceEventArgs args )
         {
-            KeyboardVM.Zones.Add( Obtain( args.Zone ) );
+            OnMouseEventTriggered( KeyboardEditorMouseEvent.MouseMove, args );
         }
 
+        //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
+        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs args )
+        {
+            OnMouseEventTriggered( KeyboardEditorMouseEvent.PointerButtonUp, args );
+        }
+
+        private void OnMouseEventTriggered( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
+        {
+            if( SelectedElement as VMKeyEditable != null ) ( SelectedElement as VMKeyEditable ).TriggerMouseEvent( eventType, args );
+            else if( SelectedElement as VMZoneEditable != null )
+            {
+                foreach( var key in ( SelectedElement as VMZoneEditable ).Keys )
+                {
+                    key.TriggerMouseEvent( eventType, args );
+                }
+            }
+            else if( SelectedElement as VMKeyboardEditable != null )
+            {
+                foreach( var zone in ( SelectedElement as VMKeyboardEditable ).Zones )
+                {
+                    foreach( var key in zone.Keys )
+                    {
+                        key.TriggerMouseEvent( eventType, args );
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the model linked to this ViewModel
@@ -70,13 +112,7 @@ namespace ContextEditor.ViewModels
         /// <summary>
         /// Gets the pointer device driver, can be used to hook events
         /// </summary>
-        public IService<IPointerDeviceDriver> PointerDeviceDriver
-        {
-            get
-            {
-                return _root.PointerDeviceDriver;
-            }
-        }
+        public IService<IPointerDeviceDriver> PointerDeviceDriver { get { return _root.PointerDeviceDriver; } }
 
         /// <summary>
         /// Gets the Skin plugin's configuration accessor
@@ -109,22 +145,40 @@ namespace ContextEditor.ViewModels
 
         protected override VMKeyEditable CreateKey( IKey k )
         {
-            return new VMKeyEditable( this, k );
+            VMKeyEditable vmKey = new VMKeyEditable( this, k );
+            vmKey.Initialize();
+            return vmKey;
         }
 
         protected override VMZoneEditable CreateZone( IZone z )
         {
-            return new VMZoneEditable( this, z );
+            VMZoneEditable vmZone = new VMZoneEditable( this, z );
+            vmZone.Initialize();
+            return vmZone;
         }
 
         protected override VMKeyboardEditable CreateKeyboard( IKeyboard kb )
         {
-            return new VMKeyboardEditable( this, kb );
+            VMKeyboardEditable vmKeyboard = new VMKeyboardEditable( this, kb );
+            vmKeyboard.Initialize();
+            return vmKeyboard;
         }
 
         protected override void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             //Do nothing, we are not bound to the current keyboard of the keyboard context
+        }
+
+        protected override void OnDispose()
+        {
+            //if( KeyboardVM != null && KeyboardVM.Model != null && KeyboardVM.Model.Zones != null )
+            //    KeyboardVM.Model.Zones.ZoneCreated -= OnZoneCreated;
+
+            if( PointerDeviceDriver != null && PointerDeviceDriver.Status == RunningStatus.Started )
+            {
+                PointerDeviceDriver.Service.PointerMove -= OnMouseMove;
+                PointerDeviceDriver.Service.PointerButtonUp -= OnPointerButtonUp;
+            }
         }
 
         VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _selectCommand;

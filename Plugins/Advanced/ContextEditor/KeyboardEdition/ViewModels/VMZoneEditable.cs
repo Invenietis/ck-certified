@@ -102,6 +102,30 @@ namespace ContextEditor.ViewModels
 
         VMContextEditable _ctx;
 
+        ICommand _createKeyCommand;
+        public ICommand CreateKeyCommand
+        {
+            get
+            {
+                if( _createKeyCommand == null )
+                {
+                    _createKeyCommand = new CK.WPF.ViewModel.VMCommand( () =>
+                    {
+                        IKey key = Model.Keys.Create();
+                        key.KeyModes.First().UpLabel = "New key";
+                        key.CurrentLayout.Current.X = X;
+                        key.CurrentLayout.Current.Y = Y;
+                        key.CurrentLayout.Current.Width = 20;
+                        key.CurrentLayout.Current.Height = 20;
+                        key.CurrentLayout.Current.Visible = true;
+                        OnPropertyChanged( "Keys" );
+                    } );
+                }
+                return _createKeyCommand;
+            }
+        }
+
+
         ICommand _deleteZoneCommand;
         public ICommand DeleteZoneCommand
         {

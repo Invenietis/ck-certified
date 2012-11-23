@@ -50,7 +50,12 @@ namespace CK.WPF.ViewModel
         /// <summary>
         /// Gets whether the element is being edited.
         /// </summary>
-        public abstract bool IsBeingEdited { get; set; }
+        public abstract bool IsBeingEdited { get; }
+
+        /// <summary>
+        /// Gets whether the element is selected.
+        /// </summary>
+        public abstract bool IsSelected { get; set; }
 
         private IEnumerable<VMContextElement<TC, TB, TZ, TK>> GetParents()
         {
@@ -106,14 +111,18 @@ namespace CK.WPF.ViewModel
                     case "FontStyle":
                     case "TextDecorations":
                     case "FontColor":
+                    case "LetterColor":
                         OnPropertyChanged( "TextDecorationsAsBool" );
-                        OnPropertyChanged( "FontWeightAsBool" );
                         OnPropertyChanged( "PressedBackground" );
+                        OnPropertyChanged( "FontWeightAsBool" );
                         OnPropertyChanged( "FontStyleAsBool" );
+                        OnPropertyChanged( "TextDecorations" );
                         OnPropertyChanged( "HoverBackground" );
                         OnPropertyChanged( "LetterColor" );
                         OnPropertyChanged( "FontWeight" );
                         OnPropertyChanged( "Background" );
+                        OnPropertyChanged( "FontWeight" );
+                        OnPropertyChanged( "FontStyle" );
                         OnPropertyChanged( "FontSizes" );
                         OnPropertyChanged( "FontStyle" );
                         OnPropertyChanged( "FontSize" );
@@ -220,11 +229,11 @@ namespace CK.WPF.ViewModel
         /// </summary>
         public bool FontStyleAsBool
         {
-            get { return LayoutElement.GetWrappedPropertyValue( _context.Config, "FontStyle", FontStyles.Normal ).Value == FontStyles.Italic; }
+            get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontStyle", FontStyles.Normal ).Value == FontStyles.Italic; }
             set
             {
-                if( value ) _context.Config[LayoutElement]["FontStyle"] = FontStyles.Italic;
-                else _context.Config[LayoutElement]["FontStyle"] = FontStyles.Normal;
+                if( value ) _context.SkinConfiguration[LayoutElement]["FontStyle"] = FontStyles.Italic;
+                else _context.SkinConfiguration[LayoutElement]["FontStyle"] = FontStyles.Normal;
             }
         }
 
@@ -235,11 +244,11 @@ namespace CK.WPF.ViewModel
         /// </summary>
         public bool FontWeightAsBool
         {
-            get { return LayoutElement.GetWrappedPropertyValue( _context.Config, "FontWeight", FontWeights.Normal ).Value == FontWeights.Bold; }
+            get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontWeight", FontWeights.Normal ).Value == FontWeights.Bold; }
             set
             {
-                if( value ) _context.Config[LayoutElement]["FontWeight"] = FontWeights.Bold;
-                else _context.Config[LayoutElement]["FontWeight"] = FontWeights.Normal;
+                if( value ) _context.SkinConfiguration[LayoutElement]["FontWeight"] = FontWeights.Bold;
+                else _context.SkinConfiguration[LayoutElement]["FontWeight"] = FontWeights.Normal;
             }
         }
 
@@ -252,13 +261,13 @@ namespace CK.WPF.ViewModel
         {
             get
             {
-                var val = LayoutElement.GetWrappedPropertyValue<TextDecorationCollection>( _context.Config, "TextDecorations" );
+                var val = LayoutElement.GetWrappedPropertyValue<TextDecorationCollection>( _context.SkinConfiguration, "TextDecorations" );
                 return val.Value != null && val.Value.Count > 0;
             }
             set
             {
-                if( value ) _context.Config[LayoutElement]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "Underline" );
-                else _context.Config[LayoutElement]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "" );
+                if( value ) _context.SkinConfiguration[LayoutElement]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "Underline" );
+                else _context.SkinConfiguration[LayoutElement]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "" );
             }
         }
 

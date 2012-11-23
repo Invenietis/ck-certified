@@ -17,9 +17,6 @@
             <Setter Property="Height" Value="{Binding H}" />
             <Setter Property="Keys" Value="{Binding Keys}" />
             <Style.Triggers>
-                <!--<DataTrigger Binding="{Binding Path=Background, Converter={StaticResource notnull}}" Value="true">
-                    <Setter Property="Background" Value="{Binding Background}"/>
-                </DataTrigger>-->
                 <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
                 </DataTrigger>
@@ -72,7 +69,7 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        
+
     </Window.Resources>
     <Grid>
         <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding Keyboard.BackgroundImagePath}" />

@@ -41,9 +41,17 @@ namespace ContextEditor.ViewModels
             _ctx = ctx;
         }
 
+        public void Initialize()
+        {
+            foreach( VMKeyEditable key in Keys )
+            {
+                key.Initialize();
+            }
+        }
+
         public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
         {
-            get { return Context.Obtain( Model.Keyboard ); } 
+            get { return Context.Obtain( Model.Keyboard ); }
         }
 
         public override IKeyboardElement LayoutElement
@@ -51,17 +59,24 @@ namespace ContextEditor.ViewModels
             get { return Model.CurrentLayout; }
         }
 
-        bool _isBeingEdited;
+        bool _isSelected;
         /// <summary>
         /// Gets whether this element is being edited.
         /// </summary>
         public override bool IsBeingEdited
         {
-            get { return _isBeingEdited || Parent.IsBeingEdited; }
-            set 
-            { 
-                _isBeingEdited = value; 
+            get { return IsSelected || Parent.IsBeingEdited; }
+        }
+
+        public override bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                Context.SelectedElement = this;
                 OnPropertyChanged( "IsBeingEdited" );
+                OnPropertyChanged( "IsSelected" );
                 foreach( var item in Keys )
                 {
                     item.TriggerOnPropertyChanged( "IsBeingEdited" );
@@ -125,8 +140,6 @@ namespace ContextEditor.ViewModels
                 return _selectZoneCommand;
             }
         }
-
-
 
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>

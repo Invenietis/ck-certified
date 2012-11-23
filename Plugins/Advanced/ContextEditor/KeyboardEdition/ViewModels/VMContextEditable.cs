@@ -31,25 +31,52 @@ using Microsoft.Win32;
 using System.IO;
 using System;
 using System.Globalization;
+using CK.Plugin;
+using CommonServices;
+using System.Collections.Specialized;
 
 namespace ContextEditor.ViewModels
 {
     public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
+        IKeyboardEditorRoot _root;
+
         public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
             : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, config, skinConfiguration )
         {
             _root = root;
             Model = root.KeyboardContext.Service;
             KeyboardVM = Obtain( keyboardToEdit );
+            Initialize();
         }
 
-        IKeyboardEditorRoot _root;
+        private void Initialize()
+        {
+            KeyboardVM.Model.Zones.ZoneCreated += OnZoneCreated;
+            KeyboardVM.Initialize();
+        }
+
+        private void OnZoneCreated( object sender, ZoneEventArgs args )
+        {
+            KeyboardVM.Zones.Add( Obtain( args.Zone ) );
+        }
+
 
         /// <summary>
         /// Gets the model linked to this ViewModel
         /// </summary>
         public IKeyboardContext Model { get; private set; }
+
+        /// <summary>
+        /// Gets the pointer device driver, can be used to hook events
+        /// </summary>
+        public IService<IPointerDeviceDriver> PointerDeviceDriver
+        {
+            get
+            {
+                return _root.PointerDeviceDriver;
+            }
+        }
 
         /// <summary>
         /// Gets the Skin plugin's configuration accessor
@@ -64,17 +91,17 @@ namespace ContextEditor.ViewModels
                 if( _selectedElement == null )
                 {
                     _selectedElement = KeyboardVM;
-                    _selectedElement.IsBeingEdited = true;
+                    _selectedElement.IsSelected = true;
                 }
                 return _selectedElement;
             }
-            set 
+            set
             {
                 if( _selectedElement != value )
                 {
-                    _selectedElement.IsBeingEdited = false;
+                    _selectedElement.IsSelected = false;
                     _selectedElement = value;
-                    _selectedElement.IsBeingEdited = true;
+                    _selectedElement.IsSelected = true;
                     OnPropertyChanged( "SelectedElement" );
                 }
             }

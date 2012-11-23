@@ -92,9 +92,19 @@ namespace SimpleSkin.ViewModels
 
         /// <summary>
         /// Gets whether this element is being edited.
+        /// an element is beingedited if it is selected or one of its parents is being edited
         /// This implementation is readonly. It always returns false
         /// </summary>
         public override bool IsBeingEdited
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets whether this element is selected.
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsSelected
         {
             get { return false; }
             set { }

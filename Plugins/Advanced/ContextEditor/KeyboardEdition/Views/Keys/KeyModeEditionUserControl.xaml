@@ -90,7 +90,7 @@
                             <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="True">
                                 <TextBlock Text="Texte affiché : " />
                             </RadioButton>
-                            <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding UpLabel}" />
+                            <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                         <StackPanel Margin="5">
                             <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox">
@@ -141,7 +141,7 @@
                                 Cette description sera visible lorsque la souris restera au-dessus de cette touche
                             </TextBlock.ToolTip>
                         </TextBlock>
-                        <TextBox MinWidth="200" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description}" SpellCheck.IsEnabled="True" Height="130" />
+                        <TextBox MinWidth="200" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
                     </StackPanel>
                 </Border>
             </DockPanel>

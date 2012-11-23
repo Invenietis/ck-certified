@@ -144,20 +144,20 @@
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
-                                <TextBox Text="{Binding X}" Margin="2" Width="50"></TextBox>
+                                <TextBox Text="{Binding X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                             </StackPanel>
                             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
-                                <TextBox Text="{Binding Y}" Margin="2" Width="50"></TextBox>
+                                <TextBox Text="{Binding Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                             </StackPanel>
                             <Border Grid.Column="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
                             <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
                                 <TextBlock Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
-                                <TextBox Text="{Binding Width}" Margin="2" Width="50"></TextBox>
+                                <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                             </StackPanel>
                             <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
-                                <TextBox Text="{Binding Height}" Margin="2" Width="50"></TextBox>
+                                <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

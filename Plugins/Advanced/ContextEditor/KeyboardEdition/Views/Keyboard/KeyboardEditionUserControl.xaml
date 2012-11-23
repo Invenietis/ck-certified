@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="ContextEditor.s.KeyboardEditionUserControl"
              xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+             xmlns:ckctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
@@ -13,12 +14,54 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
+            <ckctrls:StringIsNullOrWhiteSpaceToBoolean x:Key="stringemptytoboolconverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderThickness="1" CornerRadius="5" MaxHeight="300">
-        <local:GenericLayoutEditionUserControl />
-    </Border>
+    <StackPanel Orientation="Horizontal">
+        <Border BorderThickness="1" CornerRadius="5" MaxHeight="300">
+            <local:GenericLayoutEditionUserControl />
+        </Border>
+        <GroupBox Header="Zone creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+            <StackPanel Width="220">
+                <StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock>Saisissez le nom de la zone puis validez :</TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="0 5">
+                        <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0"></TextBox>
+                        <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked" 
+                                Command="{Binding CreateZoneCommand}" CommandParameter="{Binding Text, ElementName=zoneCreationTextBox}" >
+                            <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                            <Button.ToolTip>
+                                Confirmez la création de zone
+                            </Button.ToolTip>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="CommandParameter" Value="{Binding Text, ElementName=zoneCreationTextBox}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Value="True" Binding="{Binding Text, ElementName=zoneCreationTextBox, Converter={StaticResource stringemptytoboolconverter}}">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked">
+                            <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                            <Button.ToolTip>
+                                Annuler la création de zone
+                            </Button.ToolTip>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnNewZoneClicked" x:Name="zoneCreationMainButton">
+                    <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                    <Button.ToolTip>
+                        Ajouter une zone
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
 </UserControl>

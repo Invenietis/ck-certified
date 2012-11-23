@@ -104,6 +104,14 @@
       <HintPath>..\..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=63eb5c012e0b3c1c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\GalaSoft.MvvmLight.WPF4.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
@@ -125,12 +133,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KeyboardEdition\Components\AttachedProperties\TreeViewItemImage.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
-    <Compile Include="KeyboardEdition\ResizingAdorner.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.DragDrop.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardMode.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMZoneEditable.cs" />
     <Compile Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml.cs">
       <DependentUpon>KeyModeEditionUserControl.xaml</DependentUpon>
@@ -319,6 +330,10 @@
       <Name>CK.Keyboard</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\R.fr.resx">
@@ -364,6 +379,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\cancel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

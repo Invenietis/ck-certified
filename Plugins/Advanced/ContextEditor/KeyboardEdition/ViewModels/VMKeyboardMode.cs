@@ -83,8 +83,19 @@ namespace ContextEditor.ViewModels
 
         /// <summary>
         /// Gets whether this element is being edited.
+        /// For this implementation, alsways return false.
         /// </summary>
         public override bool IsBeingEdited
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets whether this element is being edited. 
+        /// An element is being edited if it IsSelected or one of its parents is.
+        /// Therefore with this implementation, IsBeingEdited is the same as IsSelected
+        /// </summary>
+        public override bool IsSelected
         {
             get { return false; }
             set { }

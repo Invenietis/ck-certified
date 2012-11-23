@@ -37,7 +37,6 @@
                                 Background="{TemplateBinding Background}">
                                 </Border>
                             </Border>
-
                             <ItemsControl ItemsSource="{TemplateBinding Keys}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -60,6 +59,7 @@
 
     <Style TargetType="{x:Type local:StdKeyView}">
         <!-- Border brush -->
+        <!--<Setter Property="Focusable" Value="False"/>-->
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

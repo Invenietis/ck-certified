@@ -6,6 +6,7 @@ using CK.Context;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CommonServices;
 
 namespace ContextEditor
 {
@@ -32,5 +33,10 @@ namespace ContextEditor
         /// Gets the <see cref="IPluginConfigAccessor"/> linked ot the configuration of the keyboard editor
         /// </summary>
         IPluginConfigAccessor Config { get; }
+
+        /// <summary>
+        /// Gets the PointerDeviceDriver service , is used to hook mouse events to enable drag n drop for keys
+        /// </summary>
+        IService<IPointerDeviceDriver> PointerDeviceDriver { get; }
     }
 }

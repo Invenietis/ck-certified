@@ -16,6 +16,7 @@ using CK.Plugin.Config;
 using CK.Storage;
 using CK.Windows.App;
 using CK.Windows.Config;
+using CommonServices;
 using ContextEditor.Resources;
 using ContextEditor.ViewModels;
 
@@ -42,6 +43,9 @@ namespace ContextEditor
         
         [RequiredService( Required = true )]
         public IContext Context { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
 
         KeyboardEditorBootstrapper bootstrap;
         WindowManager _windowManager;

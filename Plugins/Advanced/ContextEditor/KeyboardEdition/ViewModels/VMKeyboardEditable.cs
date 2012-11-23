@@ -42,6 +42,8 @@ namespace ContextEditor.ViewModels
     public class VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
         VMContextEditable _holder;
+        bool _isSelected;
+
         public VMKeyboardEditable( VMContextEditable ctx, IKeyboard kb )
             : base( ctx, kb )
         {
@@ -49,11 +51,12 @@ namespace ContextEditor.ViewModels
             Model = kb;
             _keyboardModes = new ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>();
 
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
             Model.AvailableModeChanged += ( s, e ) => RefreshModes();
             Model.CurrentModeChanged += ( s, e ) => RefreshModes();
             RefreshModes();
         }
+
+        #region Methods
 
         private void RefreshModes()
         {
@@ -65,21 +68,45 @@ namespace ContextEditor.ViewModels
             OnPropertyChanged( "KeyboardModes" );
         }
 
-        private IEnumerable<IKeyboardMode> AvailableModes { get { return Model.AvailableMode.AtomicModes; } }
+        /// <summary>
+        /// Initialization's second step.
+        /// Used to make sure configuration accessors and service (like th PointerDeviceDriver) are available before using them
+        /// </summary>
+        public void Initialize()
+        {
+            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
-        ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _keyboardModes;
+            foreach( VMZoneEditable zone in Zones )
+            {
+                zone.Initialize();
+            }
+        }
+
+        #endregion
+
+        #region Properties
+
+        #region Modes
+
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/>'s AtomicModes, wrapped in <see cref="VMKeyboardMode"/>.
         /// </summary>
         public ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> KeyboardModes { get { return _keyboardModes; } }
 
-        protected override void OnDispose()
+        ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _keyboardModes;
+
+        private IEnumerable<IKeyboardMode> AvailableModes { get { return Model.AvailableMode.AtomicModes; } }
+
+        /// <summary>
+        /// Gets or sets the current mode of the edited keyboard.
+        /// </summary>
+        public IKeyboardMode CurrentMode
         {
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Model.AvailableModeChanged -= ( s, e ) => RefreshModes();
-            Model.CurrentModeChanged -= ( s, e ) => RefreshModes();
-            base.OnDispose();
+            get { return Model.CurrentMode; }
+            set { Model.CurrentMode = value; }
         }
+
+        #endregion
 
         public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
         {
@@ -91,23 +118,66 @@ namespace ContextEditor.ViewModels
             get { return Layout; }
         }
 
-        bool _isBeingEdited;
         /// <summary>
-        /// Gets whether this element is being edited.
+        /// Gets the name of the underlying <see cref="IKeyboard"/>
+        /// </summary>
+        public string Name { get { return Model.Name; } }
+
+        /// <summary>
+        /// Gets the model linked to this ViewModel
+        /// </summary>
+        public IKeyboard Model { get; private set; }
+
+
+        /// <summary>
+        /// Gets whether this element is being edited. 
+        /// An element is being edited if it IsSelected or one of its parents is.
+        /// Therefore with this implementation, IsBeingEdited is the same as IsSelected
         /// </summary>
         public override bool IsBeingEdited
         {
-            get { return _isBeingEdited; }
-            set 
-            { 
-                _isBeingEdited = value; 
+            get { return IsSelected; }
+        }
+
+        public override bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                Context.SelectedElement = this;
                 OnPropertyChanged( "IsBeingEdited" );
+                OnPropertyChanged( "IsSelected" );
                 foreach( var item in Zones )
                 {
                     item.TriggerOnPropertyChanged( "IsBeingEdited", true );
                 }
             }
         }
+
+        public Brush InsideBorderColor
+        {
+            get
+            {
+                if( Context.Config[Layout]["InsideBorderColor"] != null )
+                    return new SolidColorBrush( (Color)Context.Config[Layout]["InsideBorderColor"] );
+                return null;
+            }
+        }
+
+        ImageSourceConverter imsc;
+        public object BackgroundImagePath
+        {
+            get
+            {
+                if( imsc == null ) imsc = new ImageSourceConverter();
+                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/EditableSkin;component/Images/skinBackground.png" ) );
+            }
+        }
+
+        #endregion
+
+        #region OnXXX
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
@@ -125,24 +195,17 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the name of the underlying <see cref="IKeyboard"/>
-        /// </summary>
-        public string Name { get { return Model.Name; } }
-
-        /// <summary>
-        /// Gets the model linked to this ViewModel
-        /// </summary>
-        public IKeyboard Model { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the current mode of the edited keyboard.
-        /// </summary>
-        public IKeyboardMode CurrentMode
+        protected override void OnDispose()
         {
-            get { return Model.CurrentMode; }
-            set { Model.CurrentMode = value; }
+            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Model.AvailableModeChanged -= ( s, e ) => RefreshModes();
+            Model.CurrentModeChanged -= ( s, e ) => RefreshModes();
+            base.OnDispose();
         }
+
+        #endregion
+
+        #region Commands
 
         VMCommand<IKeyboardMode> _addKeyboardModeCommand;
         public VMCommand<IKeyboardMode> AddKeyboardModeCommand
@@ -186,24 +249,24 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        public Brush InsideBorderColor
-        {
-            get
+        VMCommand<object> _createZoneCommand;
+        public VMCommand<object> CreateZoneCommand 
+        { 
+            get 
             {
-                if( Context.Config[Layout]["InsideBorderColor"] != null )
-                    return new SolidColorBrush( (Color)Context.Config[Layout]["InsideBorderColor"] );
-                return null;
-            }
+                if( _createZoneCommand == null )
+                {
+                    _createZoneCommand = new VMCommand<object>( ( name ) => 
+                    {
+                        Console.Out.WriteLine( "creating zone named : " + name.ToString() );
+                         Model.Zones.Create( name.ToString() );
+                    } );
+                }
+
+                return _createZoneCommand;
+            } 
         }
 
-        ImageSourceConverter imsc;
-        public object BackgroundImagePath
-        {
-            get
-            {
-                if( imsc == null ) imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/EditableSkin;component/Images/skinBackground.png" ) );
-            }
-        }
+        #endregion
     }
 }

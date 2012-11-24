@@ -56,6 +56,9 @@ namespace ContextEditor.ViewModels
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
         }
 
+        /// <summary>
+        /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
+        /// </summary>
         public object Image
         {
             get
@@ -65,47 +68,61 @@ namespace ContextEditor.ViewModels
 
                 if( imageData != null )
                 {
-                    string imageString = imageData.ToString();
-
-                    if( imageData.GetType() == typeof( Image ) ) return imageData;
-                    else if( File.Exists( imageString ) )
-                    {
-
-                        BitmapImage bitmapImage = new BitmapImage();
-
-                        bitmapImage.BeginInit();
-                        bitmapImage.UriSource = new Uri( imageString );
-                        bitmapImage.EndInit();
-
-                        image.Source = bitmapImage;
-
-                        return image;
-                    }
-                    else if( imageString.StartsWith( "pack://" ) )
-                    {
-                        ImageSourceConverter imsc = new ImageSourceConverter();
-                        return imsc.ConvertFromString( imageString );
-                    }
-                    else
-                    {
-                        byte[] imageBytes = Convert.FromBase64String( imageData.ToString() );
-                        using( MemoryStream ms = new MemoryStream( imageBytes ) )
-                        {
-                            BitmapImage bitmapImage = new BitmapImage();
-                            bitmapImage.BeginInit();
-                            bitmapImage.StreamSource = ms;
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.EndInit();
-                            image.Source = bitmapImage;
-                        }
-                        return image;
-                    }
+                    return ProcessImage( imageData, image );
                 }
 
                 return null;
             }
 
             set { _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"] = value; }
+        }
+
+        //This method handles the different ways an image can be stored in plugin datas
+        private object ProcessImage( object imageData, Image image )
+        {
+            string imageString = imageData.ToString();
+
+
+            if( imageData.GetType() == typeof( Image ) )
+            {
+                //If a WPF image was stored in the PluginDatas, we use its source to create a NEW image instance, to enable using it multiple times. 
+                Image img = new Image();
+                BitmapImage bitmapImage = new BitmapImage( new Uri( ( (Image)imageData ).Source.ToString() ) );
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                img.Source = bitmapImage;
+                return img;
+            }
+            else if( File.Exists( imageString ) ) //Handles URis
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri( imageString );
+                bitmapImage.EndInit();
+
+                image.Source = bitmapImage;
+
+                return image;
+            }
+            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF's pack:// protocol
+            {
+                ImageSourceConverter imsc = new ImageSourceConverter();
+                return imsc.ConvertFromString( imageString );
+            }
+            else
+            {
+                byte[] imageBytes = Convert.FromBase64String( imageData.ToString() ); //Handles base 64 encoded images
+                using( MemoryStream ms = new MemoryStream( imageBytes ) )
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = ms;
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                }
+                return image;
+            }
         }
 
         ICommand _removeImageCommand;

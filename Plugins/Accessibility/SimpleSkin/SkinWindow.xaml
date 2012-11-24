@@ -72,7 +72,7 @@
 
     </Window.Resources>
     <Grid>
-        <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding Keyboard.BackgroundImagePath}" />
+        <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
         <Viewbox Stretch="Fill">
             <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
         </Viewbox>

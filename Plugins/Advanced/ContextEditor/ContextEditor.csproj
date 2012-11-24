@@ -265,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Wizard\Views\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Wizard\Views\DeletionKeyboardListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

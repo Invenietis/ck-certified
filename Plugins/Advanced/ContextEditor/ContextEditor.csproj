@@ -133,7 +133,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyboardEdition\Components\AttachedProperties\TreeViewItemImage.cs" />
+    <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs" />
@@ -142,6 +142,7 @@
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyboardMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyModeEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMZoneEditable.cs" />
     <Compile Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml.cs">
       <DependentUpon>KeyModeEditionUserControl.xaml</DependentUpon>

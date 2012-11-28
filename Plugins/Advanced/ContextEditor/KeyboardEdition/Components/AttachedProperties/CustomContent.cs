@@ -26,19 +26,19 @@ using System.Windows;
 
 namespace ContextEditor.ViewModels
 {
-    public class TreeViewItemImage
+    public class CustomContent
     {
-        public static ImageSource GetImage( DependencyObject obj )
+        public static object GetContent( DependencyObject obj )
         {
-            return (ImageSource)obj.GetValue( ImageProperty );
+            return (object)obj.GetValue( ContentProperty );
         }
 
-        public static void SetImage( DependencyObject obj, ImageSource value )
+        public static void SetContent( DependencyObject obj, object value )
         {
-            obj.SetValue( ImageProperty, value );
+            obj.SetValue( ContentProperty, value );
         }
 
-        public static readonly DependencyProperty ImageProperty =
-        DependencyProperty.RegisterAttached( "Image", typeof( ImageSource ), typeof( TreeViewItemImage ) );
+        public static readonly DependencyProperty ContentProperty =
+        DependencyProperty.RegisterAttached( "Content", typeof( object ), typeof( CustomContent ) );
     }
 }

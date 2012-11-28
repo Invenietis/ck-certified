@@ -83,6 +83,8 @@ namespace ContextEditor.ViewModels
             {
                 _isSelected = value;
                 Context.SelectedElement = this;
+                if( value ) ZIndex = 100;
+                else ZIndex = 1;
                 OnPropertyChanged( "IsBeingEdited" );
                 OnPropertyChanged( "IsSelected" );
                 OnPropertyChanged( "Opacity" );
@@ -175,5 +177,23 @@ namespace ContextEditor.ViewModels
         }
 
         #endregion
+
+        VMCommand _deleteKeyCommand;
+
+        public VMCommand DeleteKeyCommand
+        {
+            get
+            {
+                if( _deleteKeyCommand == null )
+                {
+                    _deleteKeyCommand = new VMCommand( () =>
+                    {
+                        Model.Destroy();
+                    } );
+                }
+                return _deleteKeyCommand;
+            }
+        }
+
     }
 }

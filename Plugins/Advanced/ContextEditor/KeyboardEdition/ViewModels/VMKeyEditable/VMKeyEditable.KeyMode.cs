@@ -39,6 +39,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
+using System.Collections.ObjectModel;
 
 namespace ContextEditor.ViewModels
 {

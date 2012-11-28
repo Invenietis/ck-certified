@@ -83,6 +83,7 @@
                     </Button>
                 </Grid>
             </DockPanel>
+            
             <DockPanel LastChildFill="True" IsEnabled="{Binding IsKeyModeFallback, Converter={StaticResource notconverter}}" Margin="0 5">
                 <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
                     <StackPanel>
@@ -117,6 +118,20 @@
                     </StackPanel>
                 </Border>
 
+                <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+                    <StackPanel>
+                        <DockPanel LastChildFill="False" Margin="2">
+                            <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this key :</TextBlock>
+                            <Button Height="30" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteKeyCommand}">
+                                <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                                <Button.ToolTip>
+                                    Delete this key
+                                </Button.ToolTip>
+                            </Button>
+                        </DockPanel>
+                    </StackPanel>
+                </GroupBox>
+                
                 <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
                     <StackPanel Margin="5">
                         <StackPanel Orientation="Horizontal">
@@ -144,6 +159,7 @@
                         <TextBox MinWidth="200" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
                     </StackPanel>
                 </Border>
+                
             </DockPanel>
         </StackPanel>
     </Border>

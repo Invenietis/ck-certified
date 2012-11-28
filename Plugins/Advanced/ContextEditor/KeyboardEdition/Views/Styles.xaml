@@ -199,6 +199,7 @@
         <Setter Property="FontSize" Value="{Binding FontSize}"/>
         <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
         <Setter Property="Opacity" Value="{Binding Opacity}"/>
+        <Setter Property="ZIndex" Value="{Binding ZIndex}"/>
         <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}"/>
         <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}"/>
     </Style>
@@ -236,7 +237,7 @@
             </view:StdKeyView>
 
             <!-- Resizing thumbs -->
-            <DockPanel LastChildFill="False" Canvas.ZIndex="100">
+            <DockPanel LastChildFill="False">
                 <Grid DockPanel.Dock="Top" >
                     <Thumb Cursor="SizeNWSE" HorizontalAlignment="Left" >
                         <i:Interaction.Triggers>
@@ -325,7 +326,7 @@
     </Style>
 
     <!-- TreeViewItemFocusVisual -->
-    <!--<Style x:Key="TreeViewItemFocusVisual">
+    <Style x:Key="TreeViewItemFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -333,7 +334,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
 
     <!-- HeaderedSelectableTVI -->
     <Style TargetType="TreeViewItem" x:Key="HeaderedSelectableTVI">
@@ -342,7 +343,7 @@
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
         <Setter Property="Padding" Value="1,0,0,0"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <!--<Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>-->
+        <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>
         <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -359,8 +360,8 @@
                         </Grid.RowDefinitions>
                         <ToggleButton x:Name="Expander" Style="{StaticResource ExpandCollapseToggleStyle}" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"/>
                         <Border x:Name="Bd" SnapsToDevicePixels="true" Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Stretch="Fill" StretchDirection="Both" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Path=(vm:TreeViewItemImage.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
+                            <StackPanel Orientation="Horizontal" Margin="3">
+                                <ContentControl Focusable="False" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0 0 3 0" Content="{Binding Path=(vm:CustomContent.Content), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
                                 <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"/>
                             </StackPanel>
                         </Border>

@@ -33,7 +33,7 @@
 
             <DataTemplate x:Key="KeyboardEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Aspect">
+                    <TabItem Header="Configuration générale">
                         <local:KeyboardEditionUserControl DataContext="{Binding}"/>
                     </TabItem>
                 </TabControl>
@@ -41,7 +41,7 @@
 
             <DataTemplate x:Key="ZoneEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Aspect">
+                    <TabItem Header="Configuration générale">
                         <local:ZoneEditionUserControl DataContext="{Binding}" />
                     </TabItem>
                 </TabControl>
@@ -54,11 +54,11 @@
 
             <HierarchicalDataTemplate x:Key="KeyboardEditionKeyTemplate">
                 <!--Key template-->
-                <StackPanel Orientation="Horizontal" Margin="5" >
-                    <ContentControl Width="20" Height="20" Focusable="False" Content="{StaticResource LayoutKeyPath}" />
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <ContentControl Width="12" Height="12" Margin="0 0 3 0" Focusable="False" Content="{StaticResource LayoutKeyPath}" />
                     <TextBlock VerticalAlignment="Center" Text="{Binding UpLabel}" />
-                    <StackPanel Orientation="Horizontal">
-                        <!--KeyMode is not fallback display-->
+                    <!--<StackPanel Orientation="Horizontal">
+                        KeyMode is not fallback display
                         <ContentControl Focusable="False" Content="{StaticResource KeyPath}" Width="9" Height="9" Margin="2 0">
                             <ContentControl.Style>
                                 <Style TargetType="{x:Type ContentControl}">
@@ -70,7 +70,7 @@
                                 </Style>
                             </ContentControl.Style>
                         </ContentControl>
-                        <!--LayoutKeyMode is not fallback display-->
+                        LayoutKeyMode is not fallback display
                         <ContentControl Focusable="False" Content="{StaticResource LayoutKeyPath}" Width="9" Height="9" Margin="2 0">
                             <ContentControl.Style>
                                 <Style TargetType="{x:Type ContentControl}">
@@ -82,14 +82,14 @@
                                 </Style>
                             </ContentControl.Style>
                         </ContentControl>
-                    </StackPanel>
+                    </StackPanel>-->
                 </StackPanel>
             </HierarchicalDataTemplate>
 
             <HierarchicalDataTemplate x:Key="KeyboardEditionZoneTemplate" ItemsSource="{Binding Keys}" ItemTemplate="{StaticResource KeyboardEditionKeyTemplate}">
                 <!--Zone template-->
-                <StackPanel Orientation="Horizontal">
-                    <ContentControl Width="24" Height="24" Margin="3 3 5 3" Focusable="False" Content="{DynamicResource CloudPath}"></ContentControl>
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <ContentControl Width="16" Height="16" Margin="0 0 3 0" Focusable="False" Content="{DynamicResource CloudPath}"></ContentControl>
                     <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                 </StackPanel>
             </HierarchicalDataTemplate>
@@ -102,22 +102,18 @@
     </UserControl.Resources>
     
     <Border DataContext="{Binding EditedContext}" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
+        <Border.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+        </Border.Resources>
         <StackPanel Orientation="Horizontal">
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" MinWidth="100">
                 <TreeView DataContext="{Binding KeyboardVM}" Padding="20 0">
-                    <TreeViewItem Header="Yah" ItemsSource="{Binding Zones}" Style="{StaticResource HeaderedSelectableTVI}" ItemTemplate="{StaticResource KeyboardEditionZoneTemplate}">
-                        <!--<TreeViewItem.Template>
-                            <ControlTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <ContentControl Width="24" Height="24" Content="{StaticResource KeyboardPath}"/>
-                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
-                                </StackPanel>
-                            </ControlTemplate>
-                        </TreeViewItem.Template>-->
-                    </TreeViewItem>
-                    <!--<TreeView.ItemContainerStyle>
-                        
-                    </TreeView.ItemContainerStyle>-->
+                    <TreeViewItem Header="{Binding Name}" 
+                                  vm:CustomContent.Content="{DynamicResource KeyboardPath}" 
+                                  ItemsSource="{Binding Zones}" 
+                                  Style="{StaticResource HeaderedSelectableTVI}"
+                                  ItemTemplate="{StaticResource KeyboardEditionZoneTemplate}" />
                 </TreeView>
             </ScrollViewer>
             <StackPanel Orientation="Vertical">

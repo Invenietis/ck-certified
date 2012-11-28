@@ -45,6 +45,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
+                                        <Setter Property="Canvas.ZIndex" Value="{Binding Path=ZIndex, Mode=TwoWay}"/>
                                         <Setter Property="Canvas.Top" Value="{Binding Path=Y, Mode=TwoWay}"/>
                                         <Setter Property="Canvas.Left" Value="{Binding Path=X, Mode=TwoWay}"/>
                                     </Style>
@@ -82,7 +83,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyView}">
-                    <Grid x:Name="buttonGrid">
+                    <Grid x:Name="buttonGrid" Canvas.ZIndex="{TemplateBinding ZIndex}">
                         <Border x:Name="Border" CornerRadius="5"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1.5"
                                 Background="{TemplateBinding Background}" />

@@ -135,18 +135,56 @@ namespace ContextEditor.ViewModels
                 {
                     _deleteZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
                     {
-                        ModalViewModel mvm = new ModalViewModel( "Supprimer une zone", "Vous êtes sur le point de supprimer une zone. Cela supprimera galement l'ensemble des touches contenues dans cette zone. Etes vous sûr de vouloir continuer ?" );
-                        mvm.Buttons.Add( new ModalButton( mvm, "Oui", ModalResult.Yes ) );
-                        mvm.Buttons.Add( new ModalButton( mvm, "Non", ModalResult.No ) );
-                        mvm.FocusedButtonIndex = 1;
+                        ModalViewModel mvm = new ModalViewModel( "Supprimer une zone", "Vous êtes sur le point de supprimer une zone. Voulez-vous que les touches contenues dans cette zone soient stockées dans la zone par défaut ? Dans le cas contraire, elles seront détruites." );
+                        mvm.Buttons.Add( new ModalButton( mvm, "Sauver les touches", ModalResult.Yes ) );
+                        mvm.Buttons.Add( new ModalButton( mvm, "Détruire les touches", ModalResult.No ) );
+                        mvm.Buttons.Add( new ModalButton( mvm, "Annuler", ModalResult.Cancel ) );
                         CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
                         msgBox.ShowDialog();
-                        if( mvm.ModalResult == ModalResult.Yes )
-                            Model.Destroy();
+
+                        if( mvm.ModalResult == ModalResult.Cancel ) return;
+
+                        if( mvm.ModalResult == ModalResult.Yes ) //Saving the key
+                        {
+                            foreach( var key in Model.Keys )
+                            {
+                                IKey newKey = key.Keyboard.Zones[""].Keys.Create();
+                                foreach( var keyMode in key.KeyModes )
+                                {
+                                    InsertKeyMode( keyMode, newKey ); //TODO : check the todos of this method
+                                }
+                            }
+                        }
+
+                        for( int i = Model.Keys.Count - 1; i >= 0; i-- )
+                        {
+                            if( Model.Keys[i] != null )
+                                Model.Keys[i].Destroy();
+                        }
+
+                        Model.Destroy(); //Deleting the key
+
                     } );
                 }
                 return _deleteZoneCommand;
             }
+        }
+
+        private IKey InsertKeyMode( IKeyMode keyMode, IKey newKey )
+        {
+            IKeyMode newKeyMode = newKey.KeyModes.Create( keyMode.Mode );
+            newKeyMode.UpLabel = keyMode.UpLabel;
+            newKeyMode.DownLabel = keyMode.DownLabel;
+            newKeyMode.Description = keyMode.Description;
+            newKeyMode.Enabled = keyMode.Enabled;
+            //TODOJL : copy the Command
+            //newKeyMode.OnKeyDownCommands = keyMode.OnKeyDownCommands;
+            //newKeyMode.OnKeyPressedCommands = keyMode.OnKeyPressedCommands;
+            //newKeyMode.OnKeyUpCommands = keyMode.OnKeyUpCommands;
+
+            //TODOJL : copy all the plugindatas onto the new keymode
+
+            return newKey;
         }
 
         ICommand _selectZoneCommand;

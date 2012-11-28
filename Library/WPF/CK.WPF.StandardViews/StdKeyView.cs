@@ -47,6 +47,14 @@ namespace CK.WPF.StandardViews
             DefaultStyleKeyProperty.OverrideMetadata( typeof( StdKeyView ), new FrameworkPropertyMetadata( typeof( StdKeyView ) ) );
         }
 
+        public ICommand ZIndex
+        {
+            get { return (ICommand)GetValue( ZIndexProperty ); }
+            set { SetValue( ZIndexProperty, value ); }
+        }
+        public static readonly DependencyProperty ZIndexProperty =
+        DependencyProperty.Register( "ZIndex", typeof( int ), typeof( StdKeyView ) );
+
         public ICommand KeyDownCommand
         {
             get { return (ICommand)GetValue( KeyDownCommandProperty ); }

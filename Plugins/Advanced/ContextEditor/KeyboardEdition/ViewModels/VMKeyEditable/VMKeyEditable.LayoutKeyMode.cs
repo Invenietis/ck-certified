@@ -187,7 +187,18 @@ namespace ContextEditor.ViewModels
         public double Opacity
         {
             get { return IsBeingEdited ? 1 : 0.3; }
-            //get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
+            /////get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
+        }
+
+        double _zIndex = 50;
+        public double ZIndex 
+        { 
+            get { return _zIndex; } 
+            set 
+            { 
+                _zIndex = value; 
+                OnPropertyChanged( "ZIndex" ); 
+            }
         }
     }
 }

@@ -115,8 +115,8 @@ namespace ContextEditor.ViewModels
                         key.KeyModes.First().UpLabel = "New key";
                         key.CurrentLayout.Current.X = X;
                         key.CurrentLayout.Current.Y = Y;
-                        key.CurrentLayout.Current.Width = 20;
-                        key.CurrentLayout.Current.Height = 20;
+                        key.CurrentLayout.Current.Width = 40;
+                        key.CurrentLayout.Current.Height = 40;
                         key.CurrentLayout.Current.Visible = true;
                         OnPropertyChanged( "Keys" );
                     } );
@@ -153,6 +153,10 @@ namespace ContextEditor.ViewModels
                                 {
                                     InsertKeyMode( keyMode, newKey ); //TODO : check the todos of this method
                                 }
+
+                                //TODOJL : copy all the LayoutKeyModes of the key (+ plugindatas)
+                                //TODOJL : copy the plugindatas of the key
+
                             }
                         }
 
@@ -162,6 +166,7 @@ namespace ContextEditor.ViewModels
                                 Model.Keys[i].Destroy();
                         }
 
+                        Context.SelectedElement = Parent;
                         Model.Destroy(); //Deleting the key
 
                     } );
@@ -177,12 +182,23 @@ namespace ContextEditor.ViewModels
             newKeyMode.DownLabel = keyMode.DownLabel;
             newKeyMode.Description = keyMode.Description;
             newKeyMode.Enabled = keyMode.Enabled;
-            //TODOJL : copy the Command
-            //newKeyMode.OnKeyDownCommands = keyMode.OnKeyDownCommands;
-            //newKeyMode.OnKeyPressedCommands = keyMode.OnKeyPressedCommands;
-            //newKeyMode.OnKeyUpCommands = keyMode.OnKeyUpCommands;
 
-            //TODOJL : copy all the plugindatas onto the new keymode
+            foreach (string keyProgram in keyMode.OnKeyDownCommands.Commands)
+	        {
+                newKeyMode.OnKeyDownCommands.Commands.Add( keyProgram );    
+	        }
+
+            foreach( string keyProgram in keyMode.OnKeyPressedCommands.Commands )
+            {
+                newKeyMode.OnKeyPressedCommands.Commands.Add( keyProgram );
+            }
+
+            foreach( string keyProgram in keyMode.OnKeyUpCommands.Commands )
+            {
+                newKeyMode.OnKeyUpCommands.Commands.Add( keyProgram );
+            }
+
+            //TODOJL : copy all the plugindatas of the keymode onto the new keymode
 
             return newKey;
         }

@@ -43,8 +43,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Border BorderThickness="1" CornerRadius="5" Background="White">
-        <StackPanel Orientation="Vertical">
-            <!--<DockPanel LastChildFill="False">
+        <StackPanel Orientation="Horizontal">
+            
+            <StackPanel Orientation="Vertical">
+                <!--<DockPanel LastChildFill="False">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="5">
                     <TextBlock Text="The values shown below are the values of the key when in the following mode :"/>
                     <ContentControl Margin="2 0" FontWeight="Bold" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Content="{Binding}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
@@ -82,88 +84,109 @@
                     </Button>
                 </Grid>
             </DockPanel>-->
-            
-            
-            <DockPanel LastChildFill="False" Margin="5 5 5 0">
-                <Border Style="{StaticResource LayoutWarningRoundedStyle}" Background="#FFFCF8E3">
-                    <StackPanel Style="{StaticResource LayoutKeyModeWarningDisplayStyle}">
-                        <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png"></Image>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel>
-                                <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
-                                <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
-                                <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+
+
+                <DockPanel LastChildFill="False" Margin="5 5 5 0">
+                    <Border Style="{StaticResource LayoutWarningRoundedStyle}" Background="#FFFCF8E3">
+                        <StackPanel Style="{StaticResource LayoutKeyModeWarningDisplayStyle}">
+                            <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png"></Image>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
+                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
+                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+                                </StackPanel>
+                                <ContentControl VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
+                                <Button Height="30" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                                    <Button.ToolTip>
+                                        <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                                    </Button.ToolTip>
+                                    <Image Width="20" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                                </Button>
                             </StackPanel>
-                            <ContentControl VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
-                            <Button Height="30" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
-                                <Button.ToolTip>
-                                    <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
-                                </Button.ToolTip>
-                                <Image Width="20" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
-                            </Button>
                         </StackPanel>
+                    </Border>
+                    <StackPanel Style="{StaticResource LayoutKeyModeOKDisplayStyle}">
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
+                        <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
                     </StackPanel>
-                </Border>
-                <StackPanel Style="{StaticResource LayoutKeyModeOKDisplayStyle}">
-                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
-                    <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
+                    <Grid DockPanel.Dock="Right">
+                        <Button Width="30" Height="30" Margin="5" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                            <Button.ToolTip>
+                                <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
+                            </Button.ToolTip>
+                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsLayoutKeyModeFallback, Converter={StaticResource notconverter}}" Margin="0 5">
+                    <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5 0 5 5">
+                        <StackPanel Margin="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="10"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0 5">
+                                    <TextBlock Grid.IsSharedSizeScope="True" VerticalAlignment="Center" Text="Visible : " Margin="2" />
+
+                                    <CheckBox  IsChecked="{Binding IsVisible, Mode=TwoWay}" VerticalAlignment="Center"  Margin="2" Width="50" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
+                                    <TextBox Text="{Binding X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                </StackPanel>
+                                <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
+                                    <TextBox Text="{Binding Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                </StackPanel>
+                                <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
+                                <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                                    <TextBlock Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
+                                    <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
+                                    <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <local:GenericLayoutEditionUserControl />
                 </StackPanel>
-                <Grid DockPanel.Dock="Right">
-                    <Button Width="30" Height="30" Margin="5" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
-                        <Button.ToolTip>
-                            <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
-                        </Button.ToolTip>
-                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                </Grid>
-            </DockPanel>
-            <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsLayoutKeyModeFallback, Converter={StaticResource notconverter}}" Margin="0 5">
-                <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5 0 5 5">
-                    <StackPanel Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition Width="10"></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-                                <TextBlock Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
-                                <TextBox Text="{Binding X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                            </StackPanel>
-                            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                                <TextBlock Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
-                                <TextBox Text="{Binding Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                            </StackPanel>
-                            <Border Grid.Column="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
-                            <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal">
-                                <TextBlock Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
-                                <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                                <TextBlock Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
-                                <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-                <local:GenericLayoutEditionUserControl />
             </StackPanel>
+            <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+                <StackPanel>
+                    <DockPanel LastChildFill="False" Margin="2">
+                        <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this key :</TextBlock>
+                        <Button Height="30" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteKeyCommand}">
+                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                            <Button.ToolTip>
+                                Delete this key
+                            </Button.ToolTip>
+                        </Button>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
+        
     </Border>
 </UserControl>

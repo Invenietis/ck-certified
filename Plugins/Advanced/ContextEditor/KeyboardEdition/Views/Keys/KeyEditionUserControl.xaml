@@ -28,7 +28,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <local:LayoutKeyEditionUserControl Grid.Column="0"  Grid.Row="1" DataContext="{Binding SelectedElement}" />
-            <local:KeyModeEditionUserControl DataContext="{Binding SelectedElement}" Grid.Column="1" Grid.Row="1"/>
+            <local:KeyModeEditionUserControl Grid.Column="1" Grid.Row="1" DataContext="{Binding SelectedElement}"/>
         </Grid>
     </Border>
 </UserControl>

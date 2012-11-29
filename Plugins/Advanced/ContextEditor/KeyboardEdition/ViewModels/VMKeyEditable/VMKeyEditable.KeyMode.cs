@@ -45,7 +45,7 @@ namespace ContextEditor.ViewModels
 {
     public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
     {
-      
+
         /// <summary>
         /// Gets the uplabel of the underlying <see cref="IKeyMode"/>
         /// </summary>
@@ -182,5 +182,72 @@ namespace ContextEditor.ViewModels
 
         #endregion
 
+        #region KeyPrograms
+
+        ObservableCollection<string> _commands;
+        public ObservableCollection<string> Commands { get { return _commands; } }
+
+        VMCommand<string> _addCommand;
+        public VMCommand<string> AddCommand
+        {
+            get
+            {
+                if( _addCommand == null )
+                {
+                    _addCommand = new VMCommand<string>( ( cmdString ) =>
+                    {
+                        Model.Current.OnKeyPressedCommands.Commands.Add( cmdString );
+                        //Commands.Add( cmdString );
+
+                    } );
+                }
+
+                return _addCommand;
+            }
+        }
+
+        VMCommand<string> _removeCommand;
+        public VMCommand<string> RemoveCommand
+        {
+            get
+            {
+                if( _removeCommand == null )
+                {
+                    _removeCommand = new VMCommand<string>( ( cmdString ) =>
+                    {
+                        Debug.Assert( Commands.Contains( cmdString ) );
+                        Commands.Remove( cmdString );
+                    } );
+                }
+
+                return _removeCommand;
+            }
+        }
+
+
+        void OnKeyPressedCommands_CommandUpdated( object sender, KeyProgramCommandsEventArgs e )
+        {
+            if( Commands[e.Index] != null ) throw new IndexOutOfRangeException( "The index of the command that has been updated is out of range in the corresponding viewmodel's Command collection" );
+            if( Model.Current.OnKeyPressedCommands.Commands[e.Index] != null ) throw new IndexOutOfRangeException( "The index of the command that has been updated is out of range in the corresponding viewmodel's Command collection" );
+
+            Commands[e.Index] = e.KeyProgram.Commands[e.Index];
+        }
+
+        void OnKeyPressedCommands_CommandsCleared( object sender, KeyProgramCommandsEventArgs e )
+        {
+            throw new NotImplementedException();
+        }
+
+        void OnKeyPressedCommands_CommandInserted( object sender, KeyProgramCommandsEventArgs e )
+        {
+            throw new NotImplementedException();
+        }
+
+        void OnKeyPressedCommands_CommandDeleted( object sender, KeyProgramCommandsEventArgs e )
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

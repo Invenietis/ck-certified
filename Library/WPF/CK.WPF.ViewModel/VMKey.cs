@@ -121,11 +121,6 @@ namespace CK.WPF.ViewModel
             get { return _key.CurrentLayout.Current.X; }
             set
             {
-                //if( _key.CurrentLayout.Current.IsFallBack )
-                //{
-                //    _key.KeyModes.Create( _key.Keyboard.CurrentMode );
-                //    _key.CurrentLayout.LayoutKeyModes.Create( _key.Keyboard.CurrentMode );
-                //}
                 _key.CurrentLayout.Current.X = value;
                 OnPropertyChanged( "X" );
             }
@@ -175,10 +170,23 @@ namespace CK.WPF.ViewModel
         /// </summary>
         public Visibility Visible
         {
-            get { return LayoutKeyMode.Visible ? Visibility.Visible : Visibility.Collapsed; }
+            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
             set
             {
-                LayoutKeyMode.Visible = ( value == Visibility.Visible );
+                IsVisible = ( value == Visibility.Visible );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
+        /// </summary>
+        public bool IsVisible
+        {
+            get { return LayoutKeyMode.Visible; }
+            set
+            {
+                LayoutKeyMode.Visible = value;                
+                OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
             }
         }
@@ -325,6 +333,7 @@ namespace CK.WPF.ViewModel
                 OnPropertyChanged( "Width" );
                 OnPropertyChanged( "Height" );
                 OnPropertyChanged( "Visible" );
+                OnPropertyChanged( "IsVisible" );
             } );
 
             SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
@@ -333,11 +342,11 @@ namespace CK.WPF.ViewModel
             SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
             SetActionOnPropertyChanged( "Width", () => OnPropertyChanged( "Width" ) );
             SetActionOnPropertyChanged( "Height", () => OnPropertyChanged( "Height" ) );
-            SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
             SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
             SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
             SetActionOnPropertyChanged( "DownLabel", () => OnPropertyChanged( "DownLabel" ) );
             SetActionOnPropertyChanged( "Description", () => OnPropertyChanged( "Description" ) );
+            SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "Visible" ); OnPropertyChanged( "IsVisible" ); } );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );

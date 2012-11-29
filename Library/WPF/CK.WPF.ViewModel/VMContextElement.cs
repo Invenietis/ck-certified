@@ -57,6 +57,26 @@ namespace CK.WPF.ViewModel
         /// </summary>
         public abstract bool IsSelected { get; set; }
 
+        bool _isExpanded;
+        /// <summary>
+        /// Gets whether the element is expanded. Used ot bind a treeview to a context element.
+        /// Should only be used on an editor.
+        /// </summary>
+        public virtual bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                _isExpanded = value;
+                if( value && Parent != null )
+                {
+                    Parent.IsExpanded = value;
+                }
+                OnPropertyChanged( "IsExpanded" );
+            }
+        }
+
+
         private IEnumerable<VMContextElement<TC, TB, TZ, TK>> GetParents()
         {
             VMContextElement<TC, TB, TZ, TK> elem = this;

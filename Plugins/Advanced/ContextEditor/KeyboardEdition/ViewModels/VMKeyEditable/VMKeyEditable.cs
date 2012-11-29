@@ -54,7 +54,16 @@ namespace ContextEditor.ViewModels
             KeyDownCommand = new VMCommand( () => _ctx.SelectedElement = this );
             _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.Current.Mode );
             _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.CurrentLayout.Current.Mode );
+
+            foreach( var keyMode in Model.KeyModes )
+            {
+                keyMode.OnKeyPressedCommands.CommandInserted += OnKeyPressedCommands_CommandInserted;
+                keyMode.OnKeyPressedCommands.CommandsCleared += OnKeyPressedCommands_CommandsCleared;
+                keyMode.OnKeyPressedCommands.CommandDeleted += OnKeyPressedCommands_CommandDeleted;
+                keyMode.OnKeyPressedCommands.CommandUpdated += OnKeyPressedCommands_CommandUpdated;
+            }
         }
+
 
         #region Properties
 
@@ -69,8 +78,10 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public override bool IsBeingEdited
         {
-            get { 
-                return IsSelected || Parent.IsBeingEdited; }
+            get
+            {
+                return IsSelected || Parent.IsBeingEdited;
+            }
         }
 
         /// <summary>
@@ -85,6 +96,9 @@ namespace ContextEditor.ViewModels
                 Context.SelectedElement = this;
                 if( value ) ZIndex = 100;
                 else ZIndex = 1;
+
+                IsExpanded = value;
+
                 OnPropertyChanged( "IsBeingEdited" );
                 OnPropertyChanged( "IsSelected" );
                 OnPropertyChanged( "Opacity" );
@@ -173,6 +187,15 @@ namespace ContextEditor.ViewModels
         protected override void OnDispose()
         {
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+
+            foreach( var keyMode in Model.KeyModes )
+            {
+                keyMode.OnKeyPressedCommands.CommandInserted -= OnKeyPressedCommands_CommandInserted;
+                keyMode.OnKeyPressedCommands.CommandsCleared -= OnKeyPressedCommands_CommandsCleared;
+                keyMode.OnKeyPressedCommands.CommandDeleted -= OnKeyPressedCommands_CommandDeleted;
+                keyMode.OnKeyPressedCommands.CommandUpdated -= OnKeyPressedCommands_CommandUpdated;
+            }
+
             base.OnDispose();
         }
 
@@ -188,12 +211,12 @@ namespace ContextEditor.ViewModels
                 {
                     _deleteKeyCommand = new VMCommand( () =>
                     {
+                        Context.SelectedElement = Parent;
                         Model.Destroy();
                     } );
                 }
                 return _deleteKeyCommand;
             }
         }
-
     }
 }

@@ -14,7 +14,7 @@ namespace ContextEditor.ViewModels
     /// automatically triggering a command on the holder that activates or deactivates the current mode. 
     /// Also has a command setting the holder's current mode to the one embedded in this class. (deactivates all mode that is not contained in the embedded one)
     /// </summary>
-    public class VMKeyboardMode<TC, TB, TZ, TK> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>, IDisposable
+    public class VMKeyboardMode<TC, TB, TZ, TK> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IDisposable
     {
         VMContextEditable _holder;
 
@@ -74,7 +74,7 @@ namespace ContextEditor.ViewModels
         /// <summary>
         /// The Parent of a VMKeyboardMode is the currently selected element
         /// </summary>
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
         {
             get { return _holder.SelectedElement; }
         }

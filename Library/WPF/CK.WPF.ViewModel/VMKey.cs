@@ -44,11 +44,13 @@ namespace CK.WPF.ViewModel
         FallbackOnKeyMode = 2
     }
 
-    public abstract class VMKey<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>, IDraggableResizableElement
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
+    public abstract class VMKey<TC, TB, TZ, TK, TKM, TLKM> : VMContextElement<TC, TB, TZ, TK, TKM, TLKM>
+        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
+        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
+        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
+        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
+        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
         Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
         ICommand _keyPressedCmd;
@@ -73,6 +75,9 @@ namespace CK.WPF.ViewModel
                 OnPropertyChanged( "ShowFallback" );
             }
         }
+
+        public TKM KeyModeVM { get { return Context.Obtain( _key.Current ); } }
+        public TLKM LayoutKeyModeVM { get { return Context.Obtain( LayoutKeyMode ); } }
 
         /// <summary>
         /// If there is no <see cref="IKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="IKeyMode"/> should be displayed.
@@ -145,8 +150,8 @@ namespace CK.WPF.ViewModel
         public int Width
         {
             get { return _key.CurrentLayout.Current.Width; }
-            set 
-            { 
+            set
+            {
                 _key.CurrentLayout.Current.Width = value;
                 OnPropertyChanged( "Width" );
             }
@@ -185,7 +190,7 @@ namespace CK.WPF.ViewModel
             get { return LayoutKeyMode.Visible; }
             set
             {
-                LayoutKeyMode.Visible = value;                
+                LayoutKeyMode.Visible = value;
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
             }
@@ -234,7 +239,7 @@ namespace CK.WPF.ViewModel
             set
             {
                 _key.Current.DownLabel = value;
-                OnPropertyChanged( "DownLabel" );
+                //OnPropertyChanged( "DownLabel" );
             }
         }
 
@@ -247,7 +252,7 @@ namespace CK.WPF.ViewModel
             set
             {
                 _key.Current.Description = value;
-                OnPropertyChanged( "Description" );
+                //OnPropertyChanged( "Description" );
             }
         }
 
@@ -321,35 +326,58 @@ namespace CK.WPF.ViewModel
 
             SetActionOnPropertyChanged( "Current", () =>
             {
-                OnPropertyChanged( "UpLabel" );
-                OnPropertyChanged( "DownLabel" );
-                OnPropertyChanged( "Enabled" );
+                DispatchPropertyChanged( "UpLabel", "KeyMode" );
+                DispatchPropertyChanged( "DownLabel", "KeyMode" );
+                DispatchPropertyChanged( "Enabled", "KeyMode" );
+                DispatchPropertyChanged( "Description", "KeyMode" );
             } );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
-                OnPropertyChanged( "X" );
-                OnPropertyChanged( "Y" );
-                OnPropertyChanged( "Width" );
-                OnPropertyChanged( "Height" );
-                OnPropertyChanged( "Visible" );
-                OnPropertyChanged( "IsVisible" );
+                DispatchPropertyChanged( "X", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Y", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Width", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Height", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Visible", "LayoutKeyMode" );
+                DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" );
             } );
 
-            SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
-            SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
-            SetActionOnPropertyChanged( "W", () => OnPropertyChanged( "Width" ) );
-            SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
-            SetActionOnPropertyChanged( "Width", () => OnPropertyChanged( "Width" ) );
-            SetActionOnPropertyChanged( "Height", () => OnPropertyChanged( "Height" ) );
-            SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
-            SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
-            SetActionOnPropertyChanged( "DownLabel", () => OnPropertyChanged( "DownLabel" ) );
-            SetActionOnPropertyChanged( "Description", () => OnPropertyChanged( "Description" ) );
-            SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "Visible" ); OnPropertyChanged( "IsVisible" ); } );
+            SetActionOnPropertyChanged( "X", () => DispatchPropertyChanged( "X", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "Y", () => DispatchPropertyChanged( "Y", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "W", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "H", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "Width", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "Height", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "Enabled", () => DispatchPropertyChanged( "Enabled", "KeyMode" ) );
+            SetActionOnPropertyChanged( "UpLabel", () => DispatchPropertyChanged( "UpLabel", "KeyMode" ) );
+            SetActionOnPropertyChanged( "DownLabel", () => DispatchPropertyChanged( "DownLabel", "KeyMode" ) );
+            SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
+
+            SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "IsVisible" ); OnPropertyChanged( "Visible" ); } );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+        }
+
+        //Dispatches the property changed to the LayoutKeyMode if necessary
+        private void DispatchPropertyChanged( string propertyName, string target )
+        {
+            OnPropertyChanged( propertyName );
+
+            if( target == "LayoutKeyMode" )
+            {
+                if( LayoutKeyModeVM != null )
+                {
+                    LayoutKeyModeVM.TriggerPropertyChanged( propertyName );
+                }
+            }
+            else if( target == "KeyMode" )
+            {
+                if( KeyModeVM != null )
+                {
+                    KeyModeVM.TriggerPropertyChanged( propertyName );
+                }
+            }
         }
 
         protected virtual void OnTriggerModeChanged()
@@ -359,8 +387,6 @@ namespace CK.WPF.ViewModel
         void OnModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
             OnTriggerModeChanged();
-            OnPropertyChanged( "IsKeyModeFallback" );
-            OnPropertyChanged( "IsLayoutKeyModeFallback" );
         }
 
         protected void SetActionOnPropertyChanged( string propertyName, Action action )
@@ -383,8 +409,8 @@ namespace CK.WPF.ViewModel
 
         internal void PositionChanged()
         {
-            OnPropertyChanged( "X" );
-            OnPropertyChanged( "Y" );
+            DispatchPropertyChanged( "X", "LayoutKeyMode" );
+            DispatchPropertyChanged( "Y", "LayoutKeyMode" );
         }
 
         public void OnKeyPropertyChanged( object sender, KeyPropertyChangedEventArgs e )

@@ -35,7 +35,7 @@ using CK.Core;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
     {
         public VMKeySimple( VMContextSimple ctx, IKey k ) 
             : base( ctx, k )
@@ -56,6 +56,8 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "IsVisible" );
+                OnPropertyChanged( "Visible" );
             } );
         }
 
@@ -75,6 +77,8 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "IsVisible" );
+                OnPropertyChanged( "Visible" );
             }
         }
 
@@ -113,7 +117,7 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> Parent
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
         {
             get { return Context.Obtain( Model.Zone ); }
         }
@@ -141,6 +145,14 @@ namespace SimpleSkin.ViewModels
         {
             get { return false; }
             set { }
+        }
+
+        public double ZIndex
+        {
+            get { return 100; }
+            set
+            {
+            }
         }
 
         #region IHighlightableElement Members

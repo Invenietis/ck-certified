@@ -43,25 +43,34 @@ using System.Collections.ObjectModel;
 
 namespace ContextEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
+    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
-
-        /// <summary>
-        /// Gets the uplabel of the underlying <see cref="IKeyMode"/>
-        /// </summary>
-        public string Name { get { return UpLabel; } }
-
         protected override void OnTriggerModeChanged()
         {
             RefreshKeyboardModelViewModels();
         }
 
-        private void RefreshKeyboardModelViewModels()
-        {
+        internal void RefreshKeyboardModelViewModels()
+        {   
             _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.CurrentLayout.Current.Mode );
             _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.Current.Mode );
-            OnPropertyChanged( "CurrentLayoutKeyModeModeVM" );
+
+            OnPropertyChanged( "KeyModeVM" );
+            OnPropertyChanged( "LayoutKeyModeVM" );
+
+            foreach( var keyMode in KeyModes )
+            {
+                keyMode.TriggerPropertyChanged( "IsSelected" );
+            }
+
+            foreach( var layoutKeyMode in LayoutKeyModes )
+            {
+                layoutKeyMode.TriggerPropertyChanged( "IsSelected" );
+            }
+
+            OnPropertyChanged( "IsSelected" );
             OnPropertyChanged( "CurrentKeyModeModeVM" );
+            OnPropertyChanged( "CurrentLayoutKeyModeModeVM" );
         }
 
         /// <summary>
@@ -94,17 +103,13 @@ namespace ContextEditor.ViewModels
                 {
                     _createKeyModeCommand = new VMCommand<string>( ( type ) =>
                     {
-
+                        
                         if( type == "KeyMode" )
                         {
-                            Debug.Assert( IsKeyModeFallback );
                             Model.KeyModes.Create( Model.Keyboard.CurrentMode );
-
-                            OnPropertyChanged( "IsKeyModeFallback" );
                         }
                         else if( type == "LayoutKeyMode" )
                         {
-                            Debug.Assert( IsLayoutKeyModeFallback );
                             ILayoutKeyMode previousMode = Model.CurrentLayout.Current;
                             ILayoutKeyMode mode = Model.CurrentLayout.LayoutKeyModes.Create( Model.Keyboard.CurrentMode );
 
@@ -114,8 +119,6 @@ namespace ContextEditor.ViewModels
                             mode.Height = previousMode.Height;
                             mode.Width = previousMode.Width;
                             mode.Visible = true;
-
-                            OnPropertyChanged( "IsLayoutKeyModeFallback" );
                         }
 
                         RefreshKeyboardModelViewModels();
@@ -123,129 +126,6 @@ namespace ContextEditor.ViewModels
                 }
                 return _createKeyModeCommand;
             }
-        }
-
-        VMCommand<string> _deleteKeyModeCommand;
-        /// <summary>
-        /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
-        /// </summary>
-        public VMCommand<string> DeleteKeyModeCommand
-        {
-            get
-            {
-                if( _deleteKeyModeCommand == null )
-                {
-                    _deleteKeyModeCommand = new VMCommand<string>( ( type ) =>
-                    {
-                        if( type == "KeyMode" )
-                        {
-                            Debug.Assert( !IsKeyModeFallback );
-                            Model.Current.Destroy();
-
-                            OnPropertyChanged( "IsKeyModeFallback" );
-                        }
-                        else if( type == "LayoutKeyMode" )
-                        {
-                            Debug.Assert( !IsLayoutKeyModeFallback );
-                            Model.CurrentLayout.Current.Destroy();
-
-                            OnPropertyChanged( "IsLayoutKeyModeFallback" );
-                        }
-                        RefreshKeyboardModelViewModels();
-
-                    } );
-                }
-                return _deleteKeyModeCommand;
-            }
-        }
-
-        ///Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
-        public new string UpLabel
-        {
-            get { return ( !IsKeyModeFallback || ShowKeyModeFallback ) ? base.UpLabel : String.Empty; }
-            set { base.UpLabel = value; }
-        }
-
-        ///Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
-        public new string DownLabel
-        {
-            get { return ( !IsKeyModeFallback || ShowKeyModeFallback ) ? base.DownLabel : String.Empty; }
-            set { base.DownLabel = value; }
-        }
-
-        ///Gets the Description of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
-        public new string Description
-        {
-            get { return ( !IsKeyModeFallback || ShowKeyModeFallback ) ? base.Description : String.Empty; }
-            set { base.Description = value; }
-        }
-
-        #endregion
-
-        #region KeyPrograms
-
-        ObservableCollection<string> _commands;
-        public ObservableCollection<string> Commands { get { return _commands; } }
-
-        VMCommand<string> _addCommand;
-        public VMCommand<string> AddCommand
-        {
-            get
-            {
-                if( _addCommand == null )
-                {
-                    _addCommand = new VMCommand<string>( ( cmdString ) =>
-                    {
-                        Model.Current.OnKeyPressedCommands.Commands.Add( cmdString );
-                        //Commands.Add( cmdString );
-
-                    } );
-                }
-
-                return _addCommand;
-            }
-        }
-
-        VMCommand<string> _removeCommand;
-        public VMCommand<string> RemoveCommand
-        {
-            get
-            {
-                if( _removeCommand == null )
-                {
-                    _removeCommand = new VMCommand<string>( ( cmdString ) =>
-                    {
-                        Debug.Assert( Commands.Contains( cmdString ) );
-                        Commands.Remove( cmdString );
-                    } );
-                }
-
-                return _removeCommand;
-            }
-        }
-
-
-        void OnKeyPressedCommands_CommandUpdated( object sender, KeyProgramCommandsEventArgs e )
-        {
-            if( Commands[e.Index] != null ) throw new IndexOutOfRangeException( "The index of the command that has been updated is out of range in the corresponding viewmodel's Command collection" );
-            if( Model.Current.OnKeyPressedCommands.Commands[e.Index] != null ) throw new IndexOutOfRangeException( "The index of the command that has been updated is out of range in the corresponding viewmodel's Command collection" );
-
-            Commands[e.Index] = e.KeyProgram.Commands[e.Index];
-        }
-
-        void OnKeyPressedCommands_CommandsCleared( object sender, KeyProgramCommandsEventArgs e )
-        {
-            throw new NotImplementedException();
-        }
-
-        void OnKeyPressedCommands_CommandInserted( object sender, KeyProgramCommandsEventArgs e )
-        {
-            throw new NotImplementedException();
-        }
-
-        void OnKeyPressedCommands_CommandDeleted( object sender, KeyProgramCommandsEventArgs e )
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

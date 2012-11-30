@@ -13,7 +13,7 @@
             
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="False">
+                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="False">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -21,7 +21,7 @@
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeOKDisplayStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="True">
+                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="True">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -29,7 +29,7 @@
 
             <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Rounded}" x:Key="WarningRoundedStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="False">
+                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="False">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -71,7 +71,7 @@
                     
                     <!-- Mode : Add & delete buttons -->
                     <Grid DockPanel.Dock="Right">
-                        <Button Width="30" Height="30" Margin="5" Command="{Binding DeleteKeyModeCommand}" CommandParameter="KeyMode">
+                        <Button Width="30" Height="30" Margin="5" Command="{Binding KeyModeVM.DeleteKeyModeCommand}" CommandParameter="KeyMode">
                             <Button.ToolTip>
                                 <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
                             </Button.ToolTip>
@@ -82,7 +82,7 @@
                                         <DataTrigger Binding="{Binding CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsKeyModeFallback}" Value="True">
+                                        <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -93,7 +93,7 @@
                     
                 </DockPanel>
 
-                <DockPanel LastChildFill="True" IsEnabled="{Binding IsKeyModeFallback, Converter={StaticResource notconverter}}">
+                <DockPanel LastChildFill="True" IsEnabled="{Binding KeyModeVM.IsFallback, Converter={StaticResource notconverter}}">
                     
                     <!-- KeyMode display text & image -->
                     <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
@@ -102,7 +102,7 @@
                                 <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="True">
                                     <TextBlock Text="Texte affiché : " />
                                 </RadioButton>
-                                <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding KeyModeVM.UpLabel, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox">
@@ -118,10 +118,10 @@
                                         <RowDefinition></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Image}" Grid.Column="0" Grid.RowSpan="2" />
-                                    <Button Grid.Column="1" Grid.Row="0" Command="{Binding BrowseCommand}" Margin="2" >
+                                    <Button Grid.Column="1" Grid.Row="0" Command="{Binding KeyModeVM.BrowseCommand}" Margin="2" >
                                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/browse.png"></Image>
                                     </Button>
-                                    <Button Grid.Column="1" Grid.Row="1" Command="{Binding RemoveImageCommand}" Margin="2">
+                                    <Button Grid.Column="1" Grid.Row="1" Command="{Binding KeyModeVM.RemoveImageCommand}" Margin="2">
                                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
                                     </Button>
                                 </Grid>
@@ -155,7 +155,7 @@
                                     Cette description sera visible lorsque la souris restera au-dessus de cette touche
                                 </TextBlock.ToolTip>
                             </TextBlock>
-                            <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
+                            <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding KeyModeVM.Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
                         </StackPanel>
                     </Border>
                     

@@ -16,17 +16,43 @@
                 <ResourceDictionary Source="pack://application:,,,/ContextEditor;component/KeyboardEdition/Views/Styles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ContextEditor;component/Wizard/Views/Images.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <ctrls:FolderConverter x:Key="folderConverter"/>
+            <vm:ModeTypeToSelectedConverter x:Key="modeTypeToSelectedConverter"/>
+            
+            
             <Style TargetType="{x:Type TabControl}" x:Key="KeyEditionUCStyle">
                 <Setter Property="Background" Value="White"/>
             </Style>
 
             <DataTemplate x:Key="KeyEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}" Width="Auto" Height="Auto" >
-                    <TabItem Header="Aspect et position">
-                        <local:LayoutKeyEditionUserControl DataContext="{Binding}" />
+                    <TabItem Header="Aspect et position" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Layout, Converter={StaticResource modeTypeToSelectedConverter}}">
+                        <local:LayoutKeyEditionUserControl DataContext="{Binding}"  />
+                        <!--IsSelected="{Binding Context.CurrentlyDisplayedModeType}"-->
+                        <!--<TabItem.Style>
+                            <Style TargetType="{x:Type TabItem}">
+                                <Setter Property="IsSelected" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Context.CurrentlyDisplayedModeType}" Value="vm:ModeTypes.Layout">
+                                        <Setter Property="IsSelected" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TabItem.Style>-->
                     </TabItem>
-                    <TabItem Header="Configuration générale">
+                    <TabItem Header="Configuration générale" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Mode, Converter={StaticResource modeTypeToSelectedConverter}}">
                         <local:KeyModeEditionUserControl DataContext="{Binding}"/>
+                        <!--<TabItem.Style>
+                            <Style TargetType="{x:Type TabItem}" >
+                                <Setter Property="IsSelected" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Context.CurrentlyDisplayedModeType}" Value="vm:ModeTypes.Mode">
+                                        <Setter Property="IsSelected" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TabItem.Style>-->
                     </TabItem>
                 </TabControl>
             </DataTemplate>
@@ -52,8 +78,31 @@
                                                 ZoneEditionTemplate="{StaticResource ZoneEditionDataTemplate}" 
                                                 KeyboardEditionTemplate="{StaticResource KeyboardEditionDataTemplate}" />
 
+            <!-- Style for the treeviewitem of a mode -->
+            <Style x:Key="ActualModeKeyTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource CloudPath}"></Setter>
+                <Setter Property="Header" Value="{Binding Name}"></Setter>
+            </Style>
+
+            <!-- Style for the treeviewitem of a mode folder-->
+            <Style x:Key="ModefolderTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ActualModeKeyTreeViewStyle}"></Setter>
+                <Setter Property="ItemsSource" Value="{Binding Items}"/>
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource GridPath}"></Setter>
+                <Setter Property="Header" Value="{Binding Name}"></Setter>
+            </Style>
+
             <!-- Style for the treeviewitem of a key-->
             <Style x:Key="KeyTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ModefolderTreeViewStyle}"></Setter>
+                <Setter Property="ItemsSource">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource folderConverter}" ConverterParameter="Modes,Layouts">
+                            <Binding Path="KeyModes" />
+                            <Binding Path="LayoutKeyModes" />
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="vm:CustomContent.Content" Value="{DynamicResource LayoutKeyPath}"></Setter>
                 <Setter Property="Header" Value="{Binding UpLabel}"></Setter>
             </Style>
@@ -73,7 +122,7 @@
                 <Setter Property="ItemsSource" Value="{Binding Zones}"></Setter>
                 <Setter Property="Header" Value="{Binding Name}"></Setter>
             </Style>
-            
+
             <!--<StackPanel Orientation="Horizontal">
                         KeyMode is not fallback display
                         <ContentControl Focusable="False" Content="{StaticResource KeyPath}" Width="9" Height="9" Margin="2 0">
@@ -111,7 +160,7 @@
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
         </Border.Resources>
         <StackPanel Orientation="Horizontal">
-            
+
             <!-- TreeView -->
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" MinWidth="100">
                 <TreeView DataContext="{Binding KeyboardVM}" Padding="20 0">
@@ -119,7 +168,7 @@
                 </TreeView>
             </ScrollViewer>
             <StackPanel Orientation="Vertical">
-                
+
                 <!-- Mode selection panel -->
                 <StackPanel Orientation="Horizontal" Margin="10 20">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Mode : " Margin="5 0" />
@@ -141,12 +190,12 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-                
+
                 <!-- Edition panel -->
                 <Viewbox Stretch="Uniform" Grid.Column="1">
                     <view:StdKeyboardView DataContext="{Binding KeyboardVM}" x:Name="KeyboardContainer"/>
                 </Viewbox>
-                
+
                 <!-- Breadcrumb -->
                 <StackPanel Orientation="Horizontal">
                     <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">

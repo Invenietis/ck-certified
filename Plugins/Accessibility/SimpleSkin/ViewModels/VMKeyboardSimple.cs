@@ -36,7 +36,7 @@ using System.Linq;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
     {
         public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
             : base( ctx, kb )
@@ -90,7 +90,7 @@ namespace SimpleSkin.ViewModels
         /// Returns the parent of the element.
         /// </summary>
         /// <returns></returns>
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> Parent
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
         {
             get { return null; }
         }

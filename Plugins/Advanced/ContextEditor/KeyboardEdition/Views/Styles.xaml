@@ -82,6 +82,7 @@
         <Setter Property="Command" Value="{Binding ClearPropertyCmd}"/>
     </Style>
 
+    <!-- Style for the element that displays the current mode (below the breadcrumb) -->
     <Style TargetType="{x:Type ContentControl}" x:Key="CurrentModeDisplayerStyle">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Mode.IsEmpty}" Value="True">
@@ -105,6 +106,7 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Style for the element that displays the current mode (below the breadcrumb) -->
     <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource CurrentModeDisplayerStyle}" x:Key="CurrentKeyModeDisplayerStyle">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsHolderCurrent}" Value="False">
@@ -188,20 +190,21 @@
 
     <Style TargetType="{x:Type view:StdKeyView}">
         <Setter Property="KeyPressedCommand" Value="{Binding KeyPressedCommand}"/>
-        <Setter Property="TextDecorations" Value="{Binding TextDecorations}"/>
+        <Setter Property="TextDecorations" Value="{Binding LayoutKeyModeVM.TextDecorations}"/>
         <Setter Property="KeyDownCommand" Value="{Binding KeyDownCommand}"/>
         <Setter Property="KeyUpCommand" Value="{Binding KeyUpCommand}"/>
-        <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
-        <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
-        <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
+        <Setter Property="FontWeight" Value="{Binding LayoutKeyModeVM.FontWeight}"/>
+        <Setter Property="DownLabel" Value="{Binding KeyModeVM.DownLabel}"/>
+        <Setter Property="Description" Value="{Binding KeyModeVM.Description}"/>
+        <Setter Property="FontStyle" Value="{Binding LayoutKeyModeVM.FontStyle}"/>
         <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
-        <Setter Property="Visibility" Value="{Binding Visible}"/>
-        <Setter Property="FontSize" Value="{Binding FontSize}"/>
-        <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
+        <Setter Property="Visibility" Value="{Binding LayoutKeyModeVM.Visible}"/>
+        <Setter Property="FontSize" Value="{Binding LayoutKeyModeVM.FontSize}"/>
+        <Setter Property="UpLabel" Value="{Binding KeyModeVM.UpLabel}"/>
         <Setter Property="Opacity" Value="{Binding Opacity}"/>
         <Setter Property="ZIndex" Value="{Binding ZIndex}"/>
-        <Setter Property="Height" Value="{Binding Height, Mode=TwoWay}"/>
-        <Setter Property="Width" Value="{Binding Width, Mode=TwoWay}"/>
+        <Setter Property="Height" Value="{Binding LayoutKeyModeVM.Height, Mode=TwoWay}"/>
+        <Setter Property="Width" Value="{Binding LayoutKeyModeVM.Width, Mode=TwoWay}"/>
     </Style>
 
     <Style TargetType="{x:Type Thumb}">

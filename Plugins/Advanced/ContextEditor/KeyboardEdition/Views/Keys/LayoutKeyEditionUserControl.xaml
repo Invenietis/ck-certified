@@ -19,7 +19,7 @@
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="LayoutKeyModeWarningDisplayStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="False">
+                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="False">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -27,7 +27,7 @@
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="LayoutKeyModeOKDisplayStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="True">
+                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="True">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -35,7 +35,7 @@
 
             <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Rounded}" x:Key="LayoutWarningRoundedStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="False">
+                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="False">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -52,7 +52,7 @@
                     <ContentControl Margin="2 0" FontWeight="Bold" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Content="{Binding}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
                 </StackPanel>
                 <Grid DockPanel.Dock="Right">
-                    <Button Margin="2" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                    <Button Margin="2" Command="{Binding LayoutKeyModeVM.DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
                         <Button.ToolTip>
                             <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
                         </Button.ToolTip>
@@ -111,7 +111,7 @@
                         <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentLayoutKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
                     </StackPanel>
                     <Grid DockPanel.Dock="Right">
-                        <Button Width="30" Height="30" Margin="5" Command="{Binding DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                        <Button Width="30" Height="30" Margin="5" Command="{Binding LayoutKeyModeVM.DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
                             <Button.ToolTip>
                                 <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
                             </Button.ToolTip>
@@ -122,7 +122,7 @@
                                         <DataTrigger Binding="{Binding CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsLayoutKeyModeFallback}" Value="True">
+                                        <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -131,7 +131,7 @@
                         </Button>
                     </Grid>
                 </DockPanel>
-                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsLayoutKeyModeFallback, Converter={StaticResource notconverter}}" Margin="0 5">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding LayoutKeyModeVM.IsFallback, Converter={StaticResource notconverter}}" Margin="0 5">
                     <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5 0 5 5">
                         <StackPanel Margin="5">
                             <Grid>
@@ -152,20 +152,20 @@
                                 </StackPanel>
                                 <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
                                     <TextBlock Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
-                                    <TextBox Text="{Binding X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                    <TextBox Text="{Binding LayoutKeyModeVM.X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                                 <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
                                     <TextBlock Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
-                                    <TextBox Text="{Binding Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                    <TextBox Text="{Binding LayoutKeyModeVM.Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                                 <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
                                 <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                                     <TextBlock Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
-                                    <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                    <TextBox Text="{Binding LayoutKeyModeVM.Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
                                     <TextBlock Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
-                                    <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
+                                    <TextBox Text="{Binding LayoutKeyModeVM.Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

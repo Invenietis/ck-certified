@@ -33,14 +33,16 @@ using CK.Core;
 
 namespace CK.WPF.ViewModel
 {
-    public abstract class VMContext<TC, TB, TZ, TK> : VMBase, IDisposable
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
+    public abstract class VMContext<TC, TB, TZ, TK, TKM, TLKM> : VMBase, IDisposable
+        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
+        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
+        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
+        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
+        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
         EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
-        Dictionary<object, VMContextElement<TC, TB, TZ, TK>> _dic;
+        Dictionary<object, VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> _dic;
         PropertyChangedEventHandler _evUserConfigurationChanged;
         EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
         EventHandler<KeyboardEventArgs> _evKeyboardCreated;
@@ -103,6 +105,34 @@ namespace CK.WPF.ViewModel
             return k;
         }
 
+        public TKM Obtain( IKeyMode keyMode )
+        {
+            TKM km = FindViewModel<TKM>( keyMode );
+            if( km == null )
+            {
+                if( keyMode.Context != _kbctx )
+                    throw new Exception( "Context mismatch." );
+                km = CreateKeyMode( keyMode );
+                if( km != null ) //the viewmodel can be null, if the implementation doesn't use this level of objects (SimpleSkin doesn't use these templates)
+                    _dic.Add( keyMode, km );
+            }
+            return km;
+        }
+
+        public TLKM Obtain( ILayoutKeyMode layoutKeyMode )
+        {
+            TLKM lkm = FindViewModel<TLKM>( layoutKeyMode );
+            if( lkm == null )
+            {
+                if( layoutKeyMode.Context != _kbctx )
+                    throw new Exception( "Context mismatch." );
+                lkm = CreateLayoutKeyMode( layoutKeyMode );
+                if( lkm != null ) //the viewmodel can be null, if the implementation doesn't use this level of objects (SimpleSkin doesn't use these templates)
+                    _dic.Add( layoutKeyMode, lkm );
+            }
+            return lkm;
+        }
+
         public TB KeyboardVM
         {
             get { return _currentKeyboard; }
@@ -112,7 +142,7 @@ namespace CK.WPF.ViewModel
         public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
         {
             OnBeforeCreate();
-            _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK>>();
+            _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK, TKM, TLKM>>();
             _keyboards = new ObservableCollection<TB>();
             SkinConfiguration = skinConfiguration;
             Config = config;
@@ -146,14 +176,16 @@ namespace CK.WPF.ViewModel
         {
         }
 
+        protected abstract TLKM CreateLayoutKeyMode( ILayoutKeyMode lkm );
+        protected abstract TKM CreateKeyMode( IKeyMode km );
         protected abstract TB CreateKeyboard( IKeyboard kb );
         protected abstract TZ CreateZone( IZone z );
         protected abstract TK CreateKey( IKey k );
 
         T FindViewModel<T>( object m )
-            where T : VMContextElement<TC, TB, TZ, TK>
+            where T : VMContextElement<TC, TB, TZ, TK, TKM, TLKM>
         {
-            VMContextElement<TC, TB, TZ, TK> vm;
+            VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm;
             _dic.TryGetValue( m, out vm );
             return (T)vm;
         }
@@ -165,7 +197,7 @@ namespace CK.WPF.ViewModel
             _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
             _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
-            foreach( VMContextElement<TC, TB, TZ, TK> vm in _dic.Values ) vm.Dispose();
+            foreach( VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm in _dic.Values ) vm.Dispose();
             _dic.Clear();
         }
 
@@ -175,7 +207,7 @@ namespace CK.WPF.ViewModel
 
         internal virtual void OnModelDestroy( object m )
         {
-            VMContextElement<TC, TB, TZ, TK> vm;
+            VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm;
             if( _dic.TryGetValue( m, out vm ) )
             {
                 vm.Dispose();

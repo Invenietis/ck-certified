@@ -27,11 +27,13 @@ using CK.Core;
 
 namespace CK.WPF.ViewModel
 {
-    public abstract class VMZone<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
+    public abstract class VMZone<TC, TB, TZ, TK, TKM, TLKM> : VMContextElement<TC, TB, TZ, TK, TKM, TLKM>
+        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
+        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
+        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
+        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
+        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
         IZone _zone;
         ObservableSortedArrayKeyList<TK,int> _keys;

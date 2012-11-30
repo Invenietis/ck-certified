@@ -32,11 +32,13 @@ namespace CK.WPF.ViewModel
 {
     /// <summary>
     /// </summary>
-    public abstract class VMContextElement<TC, TB, TZ, TK> : VMBase
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
+    public abstract class VMContextElement<TC, TB, TZ, TK, TKM, TLKM> : VMBase
+        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
+        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
+        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
+        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
+        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
         TC _context;
 
@@ -48,9 +50,17 @@ namespace CK.WPF.ViewModel
         }
 
         /// <summary>
-        /// Gets whether the element is being edited.
+        /// Gets whether this element is being edited. 
+        /// An element is being edited if it IsSelected or one of its parents is being edited.
+        /// can be overidden
         /// </summary>
-        public abstract bool IsBeingEdited { get; }
+        public virtual bool IsBeingEdited
+        {
+            get
+            {
+                return IsSelected || Parent.IsBeingEdited;
+            }
+        }
 
         /// <summary>
         /// Gets whether the element is selected.
@@ -77,9 +87,9 @@ namespace CK.WPF.ViewModel
         }
 
 
-        private IEnumerable<VMContextElement<TC, TB, TZ, TK>> GetParents()
+        private IEnumerable<VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> GetParents()
         {
-            VMContextElement<TC, TB, TZ, TK> elem = this;
+            VMContextElement<TC, TB, TZ, TK, TKM, TLKM> elem = this;
             while( elem != null )
             {
                 elem = elem.Parent;
@@ -92,12 +102,12 @@ namespace CK.WPF.ViewModel
         /// <summary>
         /// Gets the parents of the element.
         /// </summary>
-        public IEnumerable<VMContextElement<TC, TB, TZ, TK>> Parents { get { return GetParents().Reverse(); } }
+        public IEnumerable<VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> Parents { get { return GetParents().Reverse(); } }
 
         /// <summary>
         /// Gets the parent of the object.
         /// </summary>
-        public abstract VMContextElement<TC, TB, TZ, TK> Parent { get; }
+        public abstract VMContextElement<TC, TB, TZ, TK, TKM, TLKM> Parent { get; }
 
         /// <summary>
         /// Gets the <see cref="VMContext"/> to which this element belongs.

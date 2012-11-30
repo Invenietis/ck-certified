@@ -34,6 +34,8 @@ using System.Globalization;
 using CK.Plugin;
 using CommonServices;
 using System.Collections.Specialized;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ContextEditor.ViewModels
 {
@@ -44,8 +46,16 @@ namespace ContextEditor.ViewModels
         PointerButtonDown = 3
     }
 
-    public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
+    public enum ModeTypes
     {
+        Mode = 1,
+        Layout = 2
+    }
+
+    public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    {
+        Dictionary<object, VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> _dic;
+        ModeTypes _currentlyDisplayedModeType = ModeTypes.Mode;
         IKeyboardEditorRoot _root;
 
         public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
@@ -54,21 +64,16 @@ namespace ContextEditor.ViewModels
             _root = root;
             Model = root.KeyboardContext.Service;
             KeyboardVM = Obtain( keyboardToEdit );
+            _dic = new Dictionary<object, VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>>();
             Initialize();
         }
 
         private void Initialize()
         {
-            //KeyboardVM.Model.Zones.ZoneCreated += OnZoneCreated;
             PointerDeviceDriver.Service.PointerMove += OnMouseMove;
             PointerDeviceDriver.Service.PointerButtonUp += OnPointerButtonUp;
             KeyboardVM.Initialize();
         }
-
-        //private void OnZoneCreated( object sender, ZoneEventArgs args )
-        //{
-        //    KeyboardVM.Zones.Add( Obtain( args.Zone ) );
-        //}
 
         //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
         private void OnMouseMove( object sender, PointerDeviceEventArgs args )
@@ -103,6 +108,29 @@ namespace ContextEditor.ViewModels
                 }
             }
         }
+        
+        /// <summary>
+        /// The fact that we are displaying the LayoutKeyMode or the KeyMode, on a IKey edition panel must be handled at a higher level.
+        /// This property gets whether we should display the KeyMode or the LayoutKeyMode panel.
+        /// </summary>
+        public ModeTypes CurrentlyDisplayedModeType 
+        { 
+            get { return _currentlyDisplayedModeType; } 
+            set 
+            {
+                if( _currentlyDisplayedModeType != value )
+                {
+                    _currentlyDisplayedModeType = value;
+
+                    Debug.Assert( SelectedElement is VMKeyEditable, "When modifying the CurrentlyDisplayedModeType, the selected element should always be a VMKeyEditable" );
+                    ( (VMKeyEditable)SelectedElement ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                    ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+
+                    OnPropertyChanged( "CurrentlyDisplayedModeType" );
+                    Console.Out.WriteLine( "Passage a la valeur : " + value.ToString() );
+                }
+            } 
+        }
 
         /// <summary>
         /// Gets the model linked to this ViewModel
@@ -119,8 +147,8 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
 
-        VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _selectedElement;
-        public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> SelectedElement
+        VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _selectedElement;
+        public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> SelectedElement
         {
             get
             {
@@ -133,14 +161,41 @@ namespace ContextEditor.ViewModels
             }
             set
             {
-                if( _selectedElement != value )
+                if( _selectedElement != value && value != null)
                 {
-                    _selectedElement.IsSelected = false;
+                    if(_selectedElement != null)
+                        _selectedElement.IsSelected = false;
                     _selectedElement = value;
                     _selectedElement.IsSelected = true;
                     OnPropertyChanged( "SelectedElement" );
                 }
             }
+        }
+
+        public VMKeyModeEditable FindViewModel( IKeyMode km )
+        {
+            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> vm;
+            _dic.TryGetValue( km, out vm );
+            return (VMKeyModeEditable)vm;
+        }
+
+        public VMKeyModeEditable FindViewModel( ILayoutKeyMode lkm )
+        {
+            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> vm;
+            _dic.TryGetValue( lkm, out vm );
+            return (VMKeyModeEditable)vm;
+        }
+
+        protected override VMLayoutKeyModeEditable CreateLayoutKeyMode( ILayoutKeyMode layoutKeyMode )
+        {
+            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> vm = new VMLayoutKeyModeEditable( this, layoutKeyMode );
+            return (VMLayoutKeyModeEditable)vm;
+        }
+
+        protected override VMKeyModeEditable CreateKeyMode( IKeyMode keyMode )
+        {
+            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> vm = new VMKeyModeEditable( this, keyMode );
+            return (VMKeyModeEditable)vm;
         }
 
         protected override VMKeyEditable CreateKey( IKey k )
@@ -171,9 +226,6 @@ namespace ContextEditor.ViewModels
 
         protected override void OnDispose()
         {
-            //if( KeyboardVM != null && KeyboardVM.Model != null && KeyboardVM.Model.Zones != null )
-            //    KeyboardVM.Model.Zones.ZoneCreated -= OnZoneCreated;
-
             if( PointerDeviceDriver != null && PointerDeviceDriver.Status == RunningStatus.Started )
             {
                 PointerDeviceDriver.Service.PointerMove -= OnMouseMove;
@@ -181,14 +233,14 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _selectCommand;
-        public VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> SelectCommand
+        VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> _selectCommand;
+        public VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> SelectCommand
         {
             get
             {
                 if( _selectCommand == null )
                 {
-                    _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>( ( elem ) =>
+                    _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>>( ( elem ) =>
                     {
                         SelectedElement = elem;
                     } );

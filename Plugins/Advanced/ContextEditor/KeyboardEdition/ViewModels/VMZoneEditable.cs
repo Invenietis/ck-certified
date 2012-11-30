@@ -33,7 +33,7 @@ using CK.Windows.App;
 
 namespace ContextEditor.ViewModels
 {
-    public class VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
+    public class VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
         public VMZoneEditable( VMContextEditable ctx, IZone zone )
             : base( ctx, zone )
@@ -49,7 +49,7 @@ namespace ContextEditor.ViewModels
             }
         }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
         {
             get { return Context.Obtain( Model.Keyboard ); }
         }

@@ -109,6 +109,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VMLayoutKeyMode.cs" />
+    <Compile Include="VMKeyMode.cs" />
     <Compile Include="Helpers\PropertyLookupExtentions.cs" />
     <Compile Include="IDraggableResizableElement.cs" />
     <Compile Include="VMCollection.cs" />

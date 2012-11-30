@@ -134,15 +134,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMLayoutKeyModeEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.DragDrop.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextEditable.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardMode.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable\VMKeyboardEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable\VMKeyboardMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\VMKeyModeEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMZoneEditable.cs" />
     <Compile Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml.cs">
       <DependentUpon>KeyModeEditionUserControl.xaml</DependentUpon>
@@ -388,6 +391,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\cancel.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

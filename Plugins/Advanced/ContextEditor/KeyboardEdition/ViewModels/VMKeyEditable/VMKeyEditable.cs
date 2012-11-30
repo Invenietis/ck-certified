@@ -39,11 +39,20 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
+using System.Collections.ObjectModel;
 
 namespace ContextEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
+    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
+        //internal IModeViewModel SelectedModeViewModel { get; set; }
+
+        ObservableCollection<VMLayoutKeyModeEditable> _layoutKeyModes;
+        public ObservableCollection<VMLayoutKeyModeEditable> LayoutKeyModes { get { return _layoutKeyModes; } }
+
+        ObservableCollection<VMKeyModeEditable> _keyModes;
+        public ObservableCollection<VMKeyModeEditable> KeyModes { get { return _keyModes; } }
+
         VMContextEditable _ctx;
         bool _isSelected;
 
@@ -55,34 +64,43 @@ namespace ContextEditor.ViewModels
             _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.Current.Mode );
             _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.CurrentLayout.Current.Mode );
 
-            foreach( var keyMode in Model.KeyModes )
+            _layoutKeyModes = new ObservableCollection<VMLayoutKeyModeEditable>();
+            _keyModes = new ObservableCollection<VMKeyModeEditable>();
+
+            Model.KeyModes.KeyModeCreated += (obj, sender) => RefreshKeyModeCollections();
+            Model.KeyModes.KeyModeDestroyed += ( obj, sender ) => RefreshKeyModeCollections();
+
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated += ( obj, sender ) => RefreshKeyModeCollections();
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed += ( obj, sender ) => RefreshKeyModeCollections();
+
+            RefreshKeyModeCollections();
+        }
+
+        private void RefreshKeyModeCollections()
+        {
+            _keyModes.Clear();
+            _layoutKeyModes.Clear();
+
+            foreach( var km in Model.KeyModes )
             {
-                keyMode.OnKeyPressedCommands.CommandInserted += OnKeyPressedCommands_CommandInserted;
-                keyMode.OnKeyPressedCommands.CommandsCleared += OnKeyPressedCommands_CommandsCleared;
-                keyMode.OnKeyPressedCommands.CommandDeleted += OnKeyPressedCommands_CommandDeleted;
-                keyMode.OnKeyPressedCommands.CommandUpdated += OnKeyPressedCommands_CommandUpdated;
+                _keyModes.Add( Context.Obtain( km ) );
+            }
+
+            foreach( var lkm in Model.CurrentLayout.LayoutKeyModes )
+            {
+                _layoutKeyModes.Add( Context.Obtain( lkm ) );
             }
         }
 
 
         #region Properties
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
         {
             get { return Context.Obtain( Model.Zone ); }
         }
 
-        /// <summary>
-        /// Gets whether this element is being edited. 
-        /// An element is being edited if it IsSelected or one of its parents is being edited.
-        /// </summary>
-        public override bool IsBeingEdited
-        {
-            get
-            {
-                return IsSelected || Parent.IsBeingEdited;
-            }
-        }
+        public string Name { get { return KeyModeVM.UpLabel; } }
 
         /// <summary>
         /// Gets whether this element is selected.
@@ -92,16 +110,24 @@ namespace ContextEditor.ViewModels
             get { return _isSelected; }
             set
             {
-                _isSelected = value;
-                Context.SelectedElement = this;
-                if( value ) ZIndex = 100;
-                else ZIndex = 1;
+                if( _isSelected != value )
+                {
+                    _isSelected = value;
+                    Context.SelectedElement = this;
+                    if( value ) ZIndex = 100;
+                    else ZIndex = 1;
 
-                IsExpanded = value;
+                    if(value) Parent.IsExpanded = value;
+                    OnPropertyChanged( "IsSelected" );
+                    OnPropertyChanged( "IsBeingEdited" );
+                    OnPropertyChanged( "Opacity" );
+                }
 
-                OnPropertyChanged( "IsBeingEdited" );
-                OnPropertyChanged( "IsSelected" );
-                OnPropertyChanged( "Opacity" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "IsBeingEdited" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
+
+                KeyModeVM.TriggerPropertyChanged( "IsBeingEdited" );
+                KeyModeVM.TriggerPropertyChanged( "IsSelected" );
             }
         }
 
@@ -115,21 +141,43 @@ namespace ContextEditor.ViewModels
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
-                OnPropertyChanged( "HighlightBackground" );
-                OnPropertyChanged( "PressedBackground" );
-                OnPropertyChanged( "HoverBackground" );
-                OnPropertyChanged( "TextDecorations" );
-                OnPropertyChanged( "LetterColor" );
-                OnPropertyChanged( "FontWeight" );
-                OnPropertyChanged( "Background" );
-                OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "ShowLabel" );
-                OnPropertyChanged( "FontSize" );
+                DispatchPropertyChanged( "HighlightBackground", "LayoutKeyMode" );
+                DispatchPropertyChanged( "PressedBackground", "LayoutKeyMode" );
+                DispatchPropertyChanged( "HoverBackground", "LayoutKeyMode" );
+                DispatchPropertyChanged( "TextDecorations", "LayoutKeyMode" );
+                DispatchPropertyChanged( "LetterColor", "LayoutKeyMode" );
+                DispatchPropertyChanged( "FontWeight", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Background", "LayoutKeyMode" );
+                DispatchPropertyChanged( "FontStyle", "LayoutKeyMode" );
+                DispatchPropertyChanged( "ShowLabel", "LayoutKeyMode" );
+                DispatchPropertyChanged( "FontSize", "LayoutKeyMode" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
             } );
 
             this.PropertyChanged += new PropertyChangedEventHandler( OnPropertyChangedTriggered );
+        }
+
+        //Dispatches the property changed to the LayoutKeyMode if necessary
+        private void DispatchPropertyChanged( string propertyName, string target )
+        {
+            //TODO don't forget to uncomment that, for the SimpleSkin to update properly
+            //OnPropertyChanged( propertyName );
+
+            if( target == "LayoutKeyMode" )
+            {
+                if( LayoutKeyModeVM != null )
+                {
+                    LayoutKeyModeVM.TriggerPropertyChanged( propertyName );
+                }
+            }
+            else if( target == "KeyMode" )
+            {
+                if( KeyModeVM != null )
+                {
+                    KeyModeVM.TriggerPropertyChanged( propertyName );
+                }
+            }
         }
 
         internal void TriggerOnPropertyChanged( string propertyName )
@@ -161,17 +209,17 @@ namespace ContextEditor.ViewModels
         {
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
-                OnPropertyChanged( "HighlightBackground" );
-                OnPropertyChanged( "PressedBackground" );
-                OnPropertyChanged( "HoverBackground" );
-                OnPropertyChanged( "TextDecorations" );
-                OnPropertyChanged( "LetterColor" );
-                OnPropertyChanged( "Background" );
-                OnPropertyChanged( "FontWeight" );
-                OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "ShowLabel" );
-                OnPropertyChanged( "FontSize" );
-                OnPropertyChanged( "Opacity" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "PressedBackground" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "HoverBackground" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "TextDecorations" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "LetterColor" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "Background" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "FontWeight" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
+                LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
+                KeyModeVM.TriggerPropertyChanged( "Image" );
                 OnPropertyChanged( "Image" );
             }
         }
@@ -186,16 +234,13 @@ namespace ContextEditor.ViewModels
 
         protected override void OnDispose()
         {
+            Model.KeyModes.KeyModeCreated -= ( obj, sender ) => RefreshKeyModeCollections();
+            Model.KeyModes.KeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollections();
+
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated -= ( obj, sender ) => RefreshKeyModeCollections();
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollections();
+
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-
-            foreach( var keyMode in Model.KeyModes )
-            {
-                keyMode.OnKeyPressedCommands.CommandInserted -= OnKeyPressedCommands_CommandInserted;
-                keyMode.OnKeyPressedCommands.CommandsCleared -= OnKeyPressedCommands_CommandsCleared;
-                keyMode.OnKeyPressedCommands.CommandDeleted -= OnKeyPressedCommands_CommandDeleted;
-                keyMode.OnKeyPressedCommands.CommandUpdated -= OnKeyPressedCommands_CommandUpdated;
-            }
-
             base.OnDispose();
         }
 

@@ -39,7 +39,7 @@ using System.ComponentModel;
 
 namespace ContextEditor.ViewModels
 {
-    public class VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>
+    public class VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
         VMContextEditable _holder;
         bool _isSelected;
@@ -108,7 +108,7 @@ namespace ContextEditor.ViewModels
 
         #endregion
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> Parent
+        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
         {
             get { return null; }
         }

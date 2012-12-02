@@ -27,7 +27,11 @@ namespace ContextEditor.ViewModels
             _model = model;
         }
 
-        public string Name { get { return _model.Mode.ToString(); } }
+        public bool IsCurrent { get { return _model.IsCurrent; } }
+
+        public bool IsEmpty { get { return _model.Mode.IsEmpty; } }
+
+        public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? "Default mode" : _model.Mode.ToString(); } }
 
         /// <summary>
         /// Gets whether the element is selected.
@@ -92,9 +96,36 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        VMCommand _applyToCurrentModeCommand;
+        /// <summary>
+        /// Gets a command that sets the embedded <see cref="IKeyboardMode"/> as the holder's current one.
+        /// </summary>
+        public VMCommand ApplyToCurrentModeCommand
+        {
+            get
+            {
+                if( _applyToCurrentModeCommand == null )
+                {
+                    _applyToCurrentModeCommand = new VMCommand( () =>
+                    {
+                        if( !Context.KeyboardVM.CurrentMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( Context.KeyboardVM.CurrentMode ) )
+                        {
+                            Context.KeyboardVM.CurrentMode = _model.Mode;
+                        }
+                    } );
+                }
+                return _applyToCurrentModeCommand;
+            }
+        }
+
         public bool ShowLabel
         {
             get { return _model.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

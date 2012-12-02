@@ -38,7 +38,6 @@
     <Style TargetType="{x:Type Button}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="false"/>
-        <Setter Property="MinHeight" Value="40"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -83,45 +82,21 @@
     </Style>
 
     <!-- Style for the element that displays the current mode (below the breadcrumb) -->
-    <Style TargetType="{x:Type ContentControl}" x:Key="CurrentModeDisplayerStyle">
+    <!--<Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource CurrentModeDisplayerStyle}" x:Key="CurrentKeyModeDisplayerStyle">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode.IsEmpty}" Value="True">
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock VerticalAlignment="Center" Text="Default mode" />
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Mode.IsEmpty}" Value="False">
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <ContentControl VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Content="{Binding Mode}"></ContentControl>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <!-- Style for the element that displays the current mode (below the breadcrumb) -->
-    <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource CurrentModeDisplayerStyle}" x:Key="CurrentKeyModeDisplayerStyle">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsHolderCurrent}" Value="False">
+            <DataTrigger Binding="{Binding IsCurrent}" Value="False">
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
                         <DataTemplate>
                             <Button Height="20" VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding ApplyToCurrentModeCommand}" >
-                                <ContentControl Content="{Binding Mode}" />
+                                <ContentControl Content="{Binding Name}" />
                             </Button>
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>
             </DataTrigger>
         </Style.Triggers>
-    </Style>
+    </Style>-->
 
 
     <!--<Style TargetType="{x:Type ContentControl}" x:Key="TestCurrentModeDisplayerStyle">
@@ -332,14 +307,15 @@
     </Style>
 
     <!-- TreeViewItemFocusVisual -->
-    <Style x:Key="TreeViewItemFocusVisual">
-        <Setter Property="Control.Template">
+    <Style TargetType="{x:Type Control}" x:Key="TreeViewItemFocusVisual">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <!--<Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Rectangle/>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 
     <!-- HeaderedSelectableTVI -->

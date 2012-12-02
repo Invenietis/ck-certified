@@ -10,7 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="False">
@@ -41,7 +41,7 @@
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <DockPanel LastChildFill="False">
-                    
+
                     <!-- Mode : Fallback warning -->
                     <Border Style="{StaticResource WarningRoundedStyle}" Background="#FFFCF8E3">
                         <StackPanel Style="{StaticResource KeyModeWarningDisplayStyle}">
@@ -52,49 +52,29 @@
                                     <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
                                     <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
                                 </StackPanel>
-                                <ContentControl VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
-                                <Button Height="30" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="KeyMode">
+                                <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding KeyModeVM.ApplyToCurrentModeCommand}" >
+                                    <ContentControl Content="{Binding KeyModeVM.Name}" />
+                                </Button>
+                                <Button Height="24" Width="24" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="KeyMode">
                                     <Button.ToolTip>
                                         <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
                                     </Button.ToolTip>
-                                    <Image Width="20" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                                    <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png" />
                                 </Button>
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    
+
                     <!-- Mode : current mode display -->
                     <StackPanel Style="{StaticResource KeyModeOKDisplayStyle}">
                         <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
-                        <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding CurrentKeyModeModeVM, Mode=OneWay}" Style="{StaticResource CurrentKeyModeDisplayerStyle}" />
+                        <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding KeyModeVM, Mode=OneWay}" />
                     </StackPanel>
-                    
-                    <!-- Mode : Add & delete buttons -->
-                    <Grid DockPanel.Dock="Right">
-                        <Button Width="30" Height="30" Margin="5" Command="{Binding KeyModeVM.DeleteKeyModeCommand}" CommandParameter="KeyMode">
-                            <Button.ToolTip>
-                                <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
-                            </Button.ToolTip>
-                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                    </Grid>
-                    
+
                 </DockPanel>
 
                 <DockPanel LastChildFill="True" IsEnabled="{Binding KeyModeVM.IsFallback, Converter={StaticResource notconverter}}">
-                    
+
                     <!-- KeyMode display text & image -->
                     <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
                         <StackPanel>
@@ -128,25 +108,37 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    
+
                     <!-- Commands -->
                     <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
                         <StackPanel Margin="5">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Type d'action : "/>
-                                <ComboBox Margin="5 0" SelectedIndex="0">
-                                    <TextBlock Text="Word" />
-                                    <TextBlock Text="Launch application" />
-                                    <TextBlock Text="Execute file" />
-                                </ComboBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0 5">
-                                <TextBlock>Texte à envoyer :</TextBlock>
-                                <TextBox MinWidth="100" Margin="5 0"></TextBox>
-                            </StackPanel>
+                            <TextBlock Text="Key program : " Margin="8"/>
+                            <ItemsControl ItemsSource="{Binding KeyModeVM.Commands}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="{Binding}" DockPanel.Dock="Left"/>
+                                            <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.KeyModeVM.RemoveCommandCommand}" CommandParameter="{Binding}">
+                                                <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                                            </Button>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <DockPanel LastChildFill="True" Margin="0 5 0 0">
+                                <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding KeyModeVM.AddCommandCommand}" CommandParameter="{Binding ElementName=addTxtBox, Path=Text}">
+                                    <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                                </Button>
+                                <TextBox DockPanel.Dock="Left" MinWidth="100" Name="addTxtBox" Margin="0 0 5 0"></TextBox>
+                            </DockPanel>
                         </StackPanel>
                     </Border>
-                    
+
                     <!-- Description -->
                     <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
                         <StackPanel Margin="5">
@@ -158,21 +150,44 @@
                             <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding KeyModeVM.Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
                         </StackPanel>
                     </Border>
-                    
+
                 </DockPanel>
             </StackPanel>
-            
+
             <!-- Actions -->
             <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0 0 0">
                 <StackPanel>
                     <DockPanel LastChildFill="False" Margin="2">
-                        <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this key :</TextBlock>
-                        <Button Height="30" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteKeyCommand}">
+                        <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center">Delete this key :</TextBlock>
+                        <Button Height="24" Width="24" Margin="2" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding DeleteKeyCommand}">
                             <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
                             <Button.ToolTip>
                                 Delete this key
                             </Button.ToolTip>
                         </Button>
+                    </DockPanel>
+
+                    <!-- Mode : Delete buttons -->
+                    <DockPanel LastChildFill="False">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" DockPanel.Dock="Left">Delete this mode :</TextBlock>
+                        <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="2" HorizontalAlignment="Right" Command="{Binding KeyModeVM.DeleteKeyModeCommand}" CommandParameter="KeyMode">
+                            <Button.ToolTip>
+                                <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
+                            </Button.ToolTip>
+                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                        </Button>
+                        <DockPanel.Style>
+                            <Style TargetType="{x:Type DockPanel}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Style>
                     </DockPanel>
                 </StackPanel>
             </GroupBox>

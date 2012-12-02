@@ -28,16 +28,23 @@ namespace ContextEditor.ViewModels
             _commands = new ObservableCollection<string>();
             //TODO : add the commands
 
-            _model.OnKeyPressedCommands.CommandInserted += OnKeyPressedCommands_CommandInserted;
-            _model.OnKeyPressedCommands.CommandsCleared += OnKeyPressedCommands_CommandsCleared;
-            _model.OnKeyPressedCommands.CommandDeleted += OnKeyPressedCommands_CommandDeleted;
-            _model.OnKeyPressedCommands.CommandUpdated += OnKeyPressedCommands_CommandUpdated;
+            foreach( var cmd in _model.OnKeyDownCommands.Commands )
+            {
+                _commands.Add( cmd );
+            }
+
+            _model.OnKeyDownCommands.CommandInserted += OnKeyDownCommands_CommandInserted;
+            _model.OnKeyDownCommands.CommandsCleared += OnKeyDownCommands_CommandsCleared;
+            _model.OnKeyDownCommands.CommandDeleted += OnKeyDownCommands_CommandDeleted;
+            _model.OnKeyDownCommands.CommandUpdated += OnKeyDownCommands_CommandUpdated;
 
         }
 
         #region Properties
 
-        public string Name { get { return _model.Mode.ToString(); } }
+        public bool IsEmpty { get { return _model.Mode.IsEmpty; } }
+
+        public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? "Default mode" : _model.Mode.ToString(); } }
 
         /// <summary>
         /// Gets whether the element is selected.
@@ -45,10 +52,13 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public override bool IsSelected
         {
-            get { return Parent.IsSelected 
-                && ActualParent.CurrentKeyModeModeVM.Mode.ContainsAll( _model.Mode )
-                && _model.Mode.ContainsAll( ActualParent.CurrentKeyModeModeVM.Mode ) 
-                && Context.CurrentlyDisplayedModeType == ModeTypes.Mode; }
+            get
+            {
+                return Parent.IsSelected
+                    && ActualParent.CurrentKeyModeModeVM.Mode.ContainsAll( _model.Mode )
+                    && _model.Mode.ContainsAll( ActualParent.CurrentKeyModeModeVM.Mode )
+                    && Context.CurrentlyDisplayedModeType == ModeTypes.Mode;
+            }
             set
             {
                 VMKeyModeEditable previousKeyMode = null;
@@ -123,31 +133,28 @@ namespace ContextEditor.ViewModels
         const string vmCollectionOutOfRangeErrorMessage = "The index of the command that has been {0} is out of range in the corresponding viewmodel's Command collection";
         const string ownCollectionOutOfRangeErrorMessage = "The index of the command that has been {0} is out of range in its own Command collection";
 
-        void OnKeyPressedCommands_CommandUpdated( object sender, KeyProgramCommandsEventArgs e )
+        void OnKeyDownCommands_CommandUpdated( object sender, KeyProgramCommandsEventArgs e )
         {
-            if( Commands[e.Index] != null ) throw new IndexOutOfRangeException( String.Format( vmCollectionOutOfRangeErrorMessage, "updated" ) );
-            if( _model.OnKeyPressedCommands.Commands[e.Index] != null ) throw new IndexOutOfRangeException( String.Format( ownCollectionOutOfRangeErrorMessage, "updated" ) );
+            if( Commands[e.Index] == null ) throw new IndexOutOfRangeException( String.Format( vmCollectionOutOfRangeErrorMessage, "updated" ) );
+            if( _model.OnKeyDownCommands.Commands[e.Index] == null ) throw new IndexOutOfRangeException( String.Format( ownCollectionOutOfRangeErrorMessage, "updated" ) );
 
             Commands[e.Index] = e.KeyProgram.Commands[e.Index];
         }
 
-        void OnKeyPressedCommands_CommandsCleared( object sender, KeyProgramCommandsEventArgs e )
+        void OnKeyDownCommands_CommandsCleared( object sender, KeyProgramCommandsEventArgs e )
         {
             Commands.Clear();
         }
 
-        void OnKeyPressedCommands_CommandInserted( object sender, KeyProgramCommandsEventArgs e )
+        void OnKeyDownCommands_CommandInserted( object sender, KeyProgramCommandsEventArgs e )
         {
-            if( Commands[e.Index] != null ) throw new IndexOutOfRangeException( String.Format( vmCollectionOutOfRangeErrorMessage, "inserted" ) );
-            if( _model.OnKeyPressedCommands.Commands[e.Index] != null ) throw new IndexOutOfRangeException( String.Format( ownCollectionOutOfRangeErrorMessage, "inserted" ) );
-
+            if( _model.OnKeyDownCommands.Commands[e.Index] == null ) throw new IndexOutOfRangeException( String.Format( ownCollectionOutOfRangeErrorMessage, "inserted" ) );
             Commands.Insert( e.Index, e.KeyProgram.Commands[e.Index] );
         }
 
-        void OnKeyPressedCommands_CommandDeleted( object sender, KeyProgramCommandsEventArgs e )
+        void OnKeyDownCommands_CommandDeleted( object sender, KeyProgramCommandsEventArgs e )
         {
-            if( Commands[e.Index] != null ) throw new IndexOutOfRangeException( String.Format( vmCollectionOutOfRangeErrorMessage, "deleted" ) );
-
+            if( Commands[e.Index] == null ) throw new IndexOutOfRangeException( String.Format( vmCollectionOutOfRangeErrorMessage, "deleted" ) );
             Commands.RemoveAt( e.Index );
         }
 
@@ -155,7 +162,7 @@ namespace ContextEditor.ViewModels
         public ObservableCollection<string> Commands { get { return _commands; } }
 
         VMCommand<string> _addCommand;
-        public VMCommand<string> AddCommand
+        public VMCommand<string> AddCommandCommand
         {
             get
             {
@@ -163,7 +170,7 @@ namespace ContextEditor.ViewModels
                 {
                     _addCommand = new VMCommand<string>( ( cmdString ) =>
                     {
-                        _model.OnKeyPressedCommands.Commands.Add( cmdString );
+                        _model.OnKeyDownCommands.Commands.Add( cmdString );
                     } );
                 }
 
@@ -172,7 +179,7 @@ namespace ContextEditor.ViewModels
         }
 
         VMCommand<string> _removeCommand;
-        public VMCommand<string> RemoveCommand
+        public VMCommand<string> RemoveCommandCommand
         {
             get
             {
@@ -180,8 +187,8 @@ namespace ContextEditor.ViewModels
                 {
                     _removeCommand = new VMCommand<string>( ( cmdString ) =>
                     {
-                        Debug.Assert( Commands.Contains( cmdString ) );
-                        Commands.Remove( cmdString );
+                        Debug.Assert( _model.OnKeyDownCommands.Commands.Contains( cmdString ) );
+                        _model.OnKeyDownCommands.Commands.Remove( cmdString );
                     } );
                 }
 
@@ -213,15 +220,41 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         protected override void OnDispose()
         {
-            _model.OnKeyPressedCommands.CommandInserted -= OnKeyPressedCommands_CommandInserted;
-            _model.OnKeyPressedCommands.CommandsCleared -= OnKeyPressedCommands_CommandsCleared;
-            _model.OnKeyPressedCommands.CommandDeleted -= OnKeyPressedCommands_CommandDeleted;
-            _model.OnKeyPressedCommands.CommandUpdated -= OnKeyPressedCommands_CommandUpdated;
+            _model.OnKeyDownCommands.CommandInserted -= OnKeyDownCommands_CommandInserted;
+            _model.OnKeyDownCommands.CommandsCleared -= OnKeyDownCommands_CommandsCleared;
+            _model.OnKeyDownCommands.CommandDeleted -= OnKeyDownCommands_CommandDeleted;
+            _model.OnKeyDownCommands.CommandUpdated -= OnKeyDownCommands_CommandUpdated;
             base.OnDispose();
         }
 
+        VMCommand _applyToCurrentModeCommand;
+        /// <summary>
+        /// Gets a command that sets the embedded <see cref="IKeyboardMode"/> as the holder's current one.
+        /// </summary>
+        public VMCommand ApplyToCurrentModeCommand
+        {
+            get
+            {
+                if( _applyToCurrentModeCommand == null )
+                {
+                    _applyToCurrentModeCommand = new VMCommand( () =>
+                    {
+                        if( !Context.KeyboardVM.CurrentMode.ContainsAll(_model.Mode) || !_model.Mode.ContainsAll(Context.KeyboardVM.CurrentMode) )
+                        {
+                            Context.KeyboardVM.CurrentMode = _model.Mode;
+                        }
+                    } );
+                }
+                return _applyToCurrentModeCommand;
+            }
+        }
 
         #region Key Image management
 

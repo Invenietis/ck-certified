@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using CK.Context;
 using CK.Core;
 using CK.Plugin;
@@ -24,6 +25,7 @@ namespace OnlineHelp
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
         public string _defaultCulture = "en";
+        HelpBrowser _helpBrowser;
 
         [RequiredService]
         public IHostInformation HostInformations { get; set; }
@@ -31,6 +33,25 @@ namespace OnlineHelp
         private string LocalHelpBaseDirectory { get { return Path.Combine( HostInformations.ApplicationDataPath, "HelpContents" ); } }
 
         private string NoContentFilePath { get { return Path.Combine( LocalHelpBaseDirectory, "Default", "nocontent.html" ); } }
+
+        private HelpBrowser HelpBrowser
+        {
+            get
+            {
+                if( _helpBrowser == null )
+                {
+                    _helpBrowser = new HelpBrowser();
+                    _helpBrowser.Closed += OnHelpBrowserClosed;
+                }
+                return _helpBrowser;
+            }
+        }
+
+        void OnHelpBrowserClosed( object sender, EventArgs e )
+        {
+            _helpBrowser.Closed -= OnHelpBrowserClosed;
+            _helpBrowser = null;
+        }
 
         string GetHelpLocalContentFilePath( INamedVersionedUniqueId pluginName, string culture = null )
         {
@@ -66,6 +87,7 @@ namespace OnlineHelp
 
         public void Stop()
         {
+            if( _helpBrowser != null ) _helpBrowser.Close();
         }
 
         public void Teardown()
@@ -96,8 +118,8 @@ namespace OnlineHelp
             bool found = url != NoContentFilePath;
             if( found || force )
             {
-                var startinfo = new System.Diagnostics.ProcessStartInfo( "IExplore.exe", url );
-                System.Diagnostics.Process.Start( startinfo );
+                HelpBrowser._browser.Navigate( url );
+                HelpBrowser.Show();
             }
             return found;
         }

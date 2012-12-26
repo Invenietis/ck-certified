@@ -70,6 +70,9 @@ namespace SimpleSkin
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IHelpService> HelpService { get; set; }
+
         [RequiredService]
         public IContext Context { get; set; }
 
@@ -104,6 +107,8 @@ namespace SimpleSkin
 
         public void Start()
         {
+            if( HelpService.Status == RunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" ) );
+
             if( KeyboardContext.Status == RunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 Context.ServiceContainer.Add( Config );

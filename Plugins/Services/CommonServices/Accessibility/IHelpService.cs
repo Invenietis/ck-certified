@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,7 +18,7 @@ namespace CommonServices.Accessibility
         /// <param name="pluginName">Plugin name</param>
         /// <param name="onComplete">delegate invoked when the help will be loaded</param>
         /// <returns>A cancellation token used to cancel the loading if needed</returns>
-        CancellationTokenSource GetHelpContentFor( INamedVersionedUniqueId pluginName, Action<Task<string>> onComplete );
+        CancellationTokenSource GetHelpContentFor( IVersionedUniqueId pluginName, Action<Task<string>> onComplete );
 
         /// <summary>
         /// Open the default web browser to the plugin's help
@@ -25,6 +26,8 @@ namespace CommonServices.Accessibility
         /// <param name="pluginName">The plugin name in order to find the help</param>
         /// <param name="force">Set force to true to open the web browser even is the content was not found</param>
         /// <returns>True if the content was found, false otherwise</returns>
-        bool ShowHelpFor( INamedVersionedUniqueId pluginName, bool force = false );
+        bool ShowHelpFor( IVersionedUniqueId pluginName, bool force = false );
+
+        void RegisterHelpContent( IVersionedUniqueId pluginName, Stream zipContent );
     }
 }

@@ -95,7 +95,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizardFirstStart", "Plugins
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WPF.Wizard", "CK.WPF.Wizard\CK.WPF.Wizard.csproj", "{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineHelp", "Plugins\OnlineHelp\OnlineHelp.csproj", "{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineHelp", "Plugins\Accessibility\OnlineHelp\OnlineHelp.csproj", "{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

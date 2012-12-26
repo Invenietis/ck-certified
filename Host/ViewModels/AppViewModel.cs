@@ -36,6 +36,7 @@ using Host.Resources;
 using CK.Windows.App;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using CommonServices.Accessibility;
 
 namespace Host
 {
@@ -191,6 +192,25 @@ namespace Host
                 if( _ensureMainWindowVisibleCommand == null )
                     _ensureMainWindowVisibleCommand = new CK.WPF.ViewModel.VMCommand( EnsureMainWindowVisible );
                 return _ensureMainWindowVisibleCommand;
+            }
+        }
+
+        ICommand _showHelpCommand;
+        IVersionedUniqueId _fakeUniqueIdForTheHost;
+        public ICommand ShowHelpCommand
+        {
+            get
+            {
+                if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, CivikeyHost.AppVersion );
+                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
+                {
+                    IService<IHelpService> service = PluginRunner.ServiceHost.GetProxy<IHelpService>();
+                    if( service != null && service.Status == RunningStatus.Started )
+                    {
+                        service.Service.RegisterHelpContent( _fakeUniqueIdForTheHost, typeof( AppViewModel ).Assembly.GetManifestResourceStream( "Host.Resources.helpcontent.zip" ) );
+                        service.Service.ShowHelpFor( _fakeUniqueIdForTheHost, true );
+                    }
+                } ));
             }
         }
 

@@ -272,6 +272,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Resources\helpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AppView.xaml">
@@ -299,6 +300,10 @@
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +359,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\SplashTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\help.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

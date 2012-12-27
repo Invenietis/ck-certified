@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -131,8 +132,17 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <DockPanel LastChildFill="True" Margin="0 5 0 0">
-                                <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding KeyModeVM.AddCommandCommand}" CommandParameter="{Binding ElementName=addTxtBox, Path=Text}">
+                                <Button DockPanel.Dock="Right" Width="24" Height="24" VerticalAlignment="Center" Command="{Binding KeyModeVM.AddCommandCommand}" CommandParameter="{Binding ElementName=addTxtBox, Path=Text}">
                                     <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=addTxtBox, Path=Text, Converter={StaticResource stringnulltobool}}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
                                 </Button>
                                 <TextBox DockPanel.Dock="Left" MinWidth="100" Name="addTxtBox" Margin="0 0 5 0"></TextBox>
                             </DockPanel>
@@ -157,27 +167,22 @@
             <!-- Actions -->
             <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0 0 0">
                 <StackPanel>
-                    <DockPanel LastChildFill="False" Margin="2">
-                        <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center">Delete this key :</TextBlock>
-                        <Button Height="24" Width="24" Margin="2" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding DeleteKeyCommand}">
-                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
-                            <Button.ToolTip>
-                                Delete this key
-                            </Button.ToolTip>
-                        </Button>
-                    </DockPanel>
+                    
+                    <!-- Key : Delete buttons -->
 
                     <!-- Mode : Delete buttons -->
-                    <DockPanel LastChildFill="False">
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" DockPanel.Dock="Left">Delete this mode :</TextBlock>
-                        <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="2" HorizontalAlignment="Right" Command="{Binding KeyModeVM.DeleteKeyModeCommand}" CommandParameter="KeyMode">
-                            <Button.ToolTip>
-                                <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
-                            </Button.ToolTip>
-                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
-                        </Button>
-                        <DockPanel.Style>
-                            <Style TargetType="{x:Type DockPanel}">
+                    <!-- Key : Delete buttons -->
+                    <vm:ActionControl Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
+                                      ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png" 
+                                      Template="{StaticResource SimpleActionControlTemplate}" />
+
+                    <!-- Mode : Delete buttons -->
+                    <vm:ActionControl Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
+                                      ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"
+                                      Template="{StaticResource SimpleActionControlTemplate}"
+                                      Text="Delete this mode :">
+                        <vm:ActionControl.Style>
+                            <Style TargetType="{x:Type vm:ActionControl}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -187,8 +192,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </DockPanel.Style>
-                    </DockPanel>
+                        </vm:ActionControl.Style>
+                    </vm:ActionControl>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

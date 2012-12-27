@@ -134,7 +134,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\ImageConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\UserControls\ActionButton.xaml.cs">
+      <DependentUpon>ActionButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMLayoutKeyModeEditable.cs" />
@@ -233,6 +238,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="KeyboardEdition\Components\UserControls\ActionButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

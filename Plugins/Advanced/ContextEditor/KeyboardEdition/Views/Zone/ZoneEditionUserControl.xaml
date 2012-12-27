@@ -25,7 +25,7 @@
             <StackPanel>
                 <DockPanel LastChildFill="False" Margin="2">
                     <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new key in this zone :</TextBlock>
-                    <Button Height="50" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding CreateKeyCommand}">
+                    <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding CreateKeyCommand}">
                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                         <Button.ToolTip>
                             Create a new key
@@ -34,7 +34,7 @@
                 </DockPanel>
                 <DockPanel LastChildFill="False" Margin="2">
                     <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this zone :</TextBlock>
-                    <Button Height="50" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteZoneCommand}">
+                    <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteZoneCommand}">
                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
                         <Button.ToolTip>
                             Delete the zone

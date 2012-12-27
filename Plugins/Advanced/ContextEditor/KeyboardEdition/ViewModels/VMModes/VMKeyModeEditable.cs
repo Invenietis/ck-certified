@@ -26,9 +26,18 @@ namespace ContextEditor.ViewModels
         {
             _model = model;
             _commands = new ObservableCollection<string>();
-            //TODO : add the commands
-
+            
             foreach( var cmd in _model.OnKeyDownCommands.Commands )
+            {
+                _commands.Add( cmd );
+            }
+
+            foreach( var cmd in _model.OnKeyUpCommands.Commands )
+            {
+                _commands.Add( cmd );
+            }
+
+            foreach( var cmd in _model.OnKeyPressedCommands.Commands )
             {
                 _commands.Add( cmd );
             }
@@ -42,8 +51,13 @@ namespace ContextEditor.ViewModels
 
         #region Properties
 
+        //COMMON
+        public bool IsCurrent { get { return _model.IsCurrent; } }
+
+        //COMMON
         public bool IsEmpty { get { return _model.Mode.IsEmpty; } }
 
+        //COMMON
         public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? "Default mode" : _model.Mode.ToString(); } }
 
         /// <summary>
@@ -91,6 +105,7 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        //COMMON
         /// <summary>
         /// Returns this VMKeyModeEditable's parent's layout element
         /// </summary>
@@ -99,6 +114,7 @@ namespace ContextEditor.ViewModels
             get { return Parent.LayoutElement; }
         }
 
+        //COMMON
         VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _parent;
         /// <summary>
         /// Returns this VMKeyModeEditable's parent
@@ -112,8 +128,25 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        //COMMON
+        /// <summary>
+        /// Gets whether this LayoutKeyMode is a fallback or not.
+        /// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
+        /// This override checks the mode of the actual parent keyboard, instead of getting the current keyboard's mode
+        /// </summary>
+        public new bool IsFallback
+        {
+            get
+            {
+                IKeyboardMode keyboardMode = Context.KeyboardVM.CurrentMode;
+                return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
+            }
+        }
+
+        //COMMON
         private VMKeyEditable ActualParent { get { return Parent as VMKeyEditable; } }
 
+        //COMMON
         private IEnumerable<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> GetParents()
         {
             VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> elem = this;
@@ -187,8 +220,18 @@ namespace ContextEditor.ViewModels
                 {
                     _removeCommand = new VMCommand<string>( ( cmdString ) =>
                     {
-                        Debug.Assert( _model.OnKeyDownCommands.Commands.Contains( cmdString ) );
-                        _model.OnKeyDownCommands.Commands.Remove( cmdString );
+                        Debug.Assert( _model.OnKeyDownCommands.Commands.Contains( cmdString )
+                            || _model.OnKeyUpCommands.Commands.Contains( cmdString )
+                            || _model.OnKeyPressedCommands.Commands.Contains( cmdString ) );
+
+                        if( _model.OnKeyDownCommands.Commands.Contains( cmdString ) )
+                            _model.OnKeyDownCommands.Commands.Remove( cmdString );
+                        else if( _model.OnKeyUpCommands.Commands.Contains( cmdString ) )
+                            _model.OnKeyDownCommands.Commands.Remove( cmdString );
+                        else if( _model.OnKeyPressedCommands.Commands.Remove( cmdString ) )
+                            _model.OnKeyDownCommands.Commands.Remove( cmdString );
+                        else
+                            throw new ArgumentException( "Trying to remove a command that cannot be found in the key commands. Key : " + _model.UpLabel + ", command : " + cmdString );
                     } );
                 }
 
@@ -198,21 +241,23 @@ namespace ContextEditor.ViewModels
 
         #endregion
 
-        VMCommand<string> _deleteKeyModeCommand;
+        //COMMON
+        VMCommand _deleteKeyModeCommand;
         /// <summary>
         /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
         /// </summary>
-        public VMCommand<string> DeleteKeyModeCommand
+        public VMCommand DeleteKeyModeCommand
         {
             get
             {
                 if( _deleteKeyModeCommand == null )
                 {
-                    _deleteKeyModeCommand = new VMCommand<string>( ( type ) =>
+                    _deleteKeyModeCommand = new VMCommand( () =>
                     {
                         Context.KeyboardVM.CurrentMode = Context.KeyboardContext.EmptyMode;
+                        VMKeyEditable parent = ActualParent; //Keeping a ref to the parent, since the model will be detached from its parent when destroyed
                         _model.Destroy();
-                        ActualParent.RefreshKeyboardModelViewModels();
+                        parent.RefreshKeyboardModelViewModels();
 
                     } );
                 }
@@ -220,6 +265,7 @@ namespace ContextEditor.ViewModels
             }
         }
 
+        //COMMON
         public override string ToString()
         {
             return Name;
@@ -234,6 +280,7 @@ namespace ContextEditor.ViewModels
             base.OnDispose();
         }
 
+        //COMMON
         VMCommand _applyToCurrentModeCommand;
         /// <summary>
         /// Gets a command that sets the embedded <see cref="IKeyboardMode"/> as the holder's current one.

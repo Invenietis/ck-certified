@@ -161,8 +161,7 @@ namespace ContextEditor.ViewModels
         //Dispatches the property changed to the LayoutKeyMode if necessary
         private void DispatchPropertyChanged( string propertyName, string target )
         {
-            //TODO don't forget to uncomment that, for the SimpleSkin to update properly
-            //OnPropertyChanged( propertyName );
+            OnPropertyChanged( propertyName );
 
             if( target == "LayoutKeyMode" )
             {

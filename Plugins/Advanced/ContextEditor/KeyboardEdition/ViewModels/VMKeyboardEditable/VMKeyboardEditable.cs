@@ -237,7 +237,6 @@ namespace ContextEditor.ViewModels
                 {
                     _removeKeyboardModeCommand = new VMCommand<IKeyboardMode>( ( k ) =>
                     {
-                        Debug.Assert( k.IsAtomic, "Should not remove a non-atomic IKeyboardMode to the Current keyboard mode of the keyboard editor. Mode is : " + k.ToString() );
                         if( !CurrentMode.ContainsOne( k ) ) throw new KeyNotFoundException( String.Format( "Trying to remove the {0} mode, which can't be found in the {1} mode", k.ToString(), CurrentMode.ToString() ) );
                         {
                             CurrentMode = CurrentMode.Remove( k );

@@ -13,17 +13,19 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Width="Auto" Height="Auto">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.99,0.972" StartPoint="0.054,0.088">
-                <GradientStop Color="White" Offset="0.039"/>
-                <GradientStop Color="#FFC4D7EA" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-        <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/ContextEditor;component/Resources/Images/keyboard-background.png" Opacity="0.1"/>
-        <ContentControl Grid.Column="0" Width="Auto" Height="Auto" Name="ContentControl" VerticalAlignment="Top" Content="{Binding ActiveItem}"/>
-    </Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Width="Auto" Height="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.99,0.972" StartPoint="0.054,0.088">
+                    <GradientStop Color="White" Offset="0.039"/>
+                    <GradientStop Color="#FFC4D7EA" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/ContextEditor;component/Resources/Images/keyboard-background.png" Opacity="0.1"/>
+            <ContentControl Grid.Column="0" Width="Auto" Height="Auto" Name="ContentControl" VerticalAlignment="Top" Content="{Binding ActiveItem}"/>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

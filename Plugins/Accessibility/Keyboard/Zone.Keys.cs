@@ -67,9 +67,14 @@ namespace CK.Keyboard
 
         internal Key Create( int index )
         {
+            return InsertAt( new Key( this, index ), index );
+        }
+
+        internal Key InsertAt( Key k, int index )
+        {
             if( index < 0 ) index = 0;
             else if( index > _keys.Count ) index = _keys.Count;
-            Key k = new Key( this, index );
+
             _keys.Insert( index, k );
             while( ++index < _keys.Count ) _keys[index].SetIndex( this, index );
             KeyEventArgs e = new KeyEventArgs( k );
@@ -108,7 +113,7 @@ namespace CK.Keyboard
 
         IEnumerator<IKey> IEnumerable<IKey>.GetEnumerator()
         {
-            Converter<Key,IKey> conv = delegate(Key key) { return (IKey)key; };            
+            Converter<Key, IKey> conv = delegate( Key key ) { return (IKey)key; };
             return Wrapper<IKey>.CreateEnumerator( _keys, conv );
         }
 

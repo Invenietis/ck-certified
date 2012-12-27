@@ -144,30 +144,52 @@ namespace ContextEditor.ViewModels
 
                         if( mvm.ModalResult == ModalResult.Cancel ) return;
 
-                        if( mvm.ModalResult == ModalResult.Yes ) //Saving the key
-                        {
-                            foreach( var key in Model.Keys )
-                            {
-                                IKey newKey = key.Keyboard.Zones[""].Keys.Create();
-                                foreach( var keyMode in key.KeyModes )
-                                {
-                                    InsertKeyMode( keyMode, newKey ); //TODO : check the todos of this method
-                                }
-
-                                //TODOJL : copy all the LayoutKeyModes of the key (+ plugindatas)
-                                //TODOJL : copy the plugindatas of the key
-
-                            }
-                        }
-
-                        for( int i = Model.Keys.Count - 1; i >= 0; i-- )
-                        {
-                            if( Model.Keys[i] != null )
-                                Model.Keys[i].Destroy();
-                        }
+                        for (int i = Keys.Count-1; i >= 0 ; i--)
+			            {
+			             Keys[i].Model.Destroy();
+			            }
+                            
+                        
 
                         Context.SelectedElement = Parent;
-                        Model.Destroy(); //Deleting the key
+                        Model.Destroy();
+
+                        ////
+                        ////Putting the keys of the zone into the default zone, with visible = false
+                        ////
+                        //if( mvm.ModalResult == ModalResult.Yes ) //Saving the keys
+                        //{
+                        //    for( int i = Model.Keys.Count - 1; i >= 0; i-- )
+                        //    {
+                        //        Console.Out.WriteLine( "Touches dans previous Zone avant transfert : " + Model.Keys.Count );
+                        //        Console.Out.WriteLine( "Touches dans previous zone VM avant transfert : " + Keys.Count );
+                                
+                        //        Console.Out.WriteLine( "Touches dans target zone avant transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
+                        //        Console.Out.WriteLine( "Touches dans target zone VM avant transfert : " + Context.Obtain(Context.KeyboardVM.Model.Zones[""]).Keys.Count );
+                                
+                        //        IKey transferred = Model.Keys[i];
+                        //        Console.Out.WriteLine( "Zone de la touche : " + transferred.Current.UpLabel + ", avant transfert : " + transferred.Zone.Name );
+
+                        //        Model.Keys[i].SwapZones( Context.KeyboardVM.Model.Zones[""] );
+                        //        Console.Out.WriteLine( "Touches dans previous Zone avant transfert : " + Model.Keys.Count );
+                        //        Console.Out.WriteLine( "Touches dans previous zone VM avant transfert : " + Keys.Count );
+
+                        //        Console.Out.WriteLine( "Touches dans target zone avant transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
+                        //        Console.Out.WriteLine( "Touches dans target zone VM avant transfert : " + Context.Obtain( Context.KeyboardVM.Model.Zones[""] ).Keys.Count );
+                                
+                        //        Console.Out.WriteLine( "Zone de la touche : " + transferred.Current.UpLabel + ", après transfert : " + transferred.Zone.Name );
+                        //        Console.Out.WriteLine( "Transfert " + i + " done" );
+                        //    }
+
+                        //    Console.Out.WriteLine( "Fin" );
+
+                        //    Console.Out.WriteLine( "Touches dans target zone après transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
+                        //    Console.Out.WriteLine( "Touches dans target zone VM après transfert : " + Context.Obtain( Context.KeyboardVM.Model.Zones[""] ).Keys.Count );
+                        //    Console.Out.WriteLine( "Touches dans previous Zone après transfert : " + Model.Keys.Count );
+                        //    Console.Out.WriteLine( "Touches dans previous zone VM après transfert : " + Keys.Count );
+                        //}
+
+                        
 
                     } );
                 }
@@ -177,26 +199,27 @@ namespace ContextEditor.ViewModels
 
         private IKey InsertKeyMode( IKeyMode keyMode, IKey newKey )
         {
-            IKeyMode newKeyMode = newKey.KeyModes.Create( keyMode.Mode );
-            newKeyMode.UpLabel = keyMode.UpLabel;
-            newKeyMode.DownLabel = keyMode.DownLabel;
-            newKeyMode.Description = keyMode.Description;
-            newKeyMode.Enabled = keyMode.Enabled;
 
-            foreach (string keyProgram in keyMode.OnKeyDownCommands.Commands)
-	        {
-                newKeyMode.OnKeyDownCommands.Commands.Add( keyProgram );    
-	        }
+            //IKeyMode newKeyMode = newKey.KeyModes.Create( keyMode.Mode );
+            //newKeyMode.UpLabel = keyMode.UpLabel;
+            //newKeyMode.DownLabel = keyMode.DownLabel;
+            //newKeyMode.Description = keyMode.Description;
+            //newKeyMode.Enabled = keyMode.Enabled;
 
-            foreach( string keyProgram in keyMode.OnKeyPressedCommands.Commands )
-            {
-                newKeyMode.OnKeyPressedCommands.Commands.Add( keyProgram );
-            }
+            //foreach( string keyProgram in keyMode.OnKeyDownCommands.Commands )
+            //{
+            //    newKeyMode.OnKeyDownCommands.Commands.Add( keyProgram );
+            //}
 
-            foreach( string keyProgram in keyMode.OnKeyUpCommands.Commands )
-            {
-                newKeyMode.OnKeyUpCommands.Commands.Add( keyProgram );
-            }
+            //foreach( string keyProgram in keyMode.OnKeyPressedCommands.Commands )
+            //{
+            //    newKeyMode.OnKeyPressedCommands.Commands.Add( keyProgram );
+            //}
+
+            //foreach( string keyProgram in keyMode.OnKeyUpCommands.Commands )
+            //{
+            //    newKeyMode.OnKeyUpCommands.Commands.Add( keyProgram );
+            //}
 
             //TODOJL : copy all the plugindatas of the keymode onto the new keymode
 
@@ -224,7 +247,7 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public new string Name
         {
-            get { return Model.Name; }
+            get { return String.IsNullOrWhiteSpace( Model.Name ) ? "Default mode" : Model.Name; }
             set { Model.Rename( value ); }
         }
 

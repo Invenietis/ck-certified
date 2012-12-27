@@ -75,7 +75,7 @@
             <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
+        <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">-->
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -115,6 +115,6 @@
                     </DockPanel>
                 </DockPanel>
             </Grid>
-        </ScrollViewer>
+        <!--</ScrollViewer>-->
     </DataTemplate>
 </ResourceDictionary>

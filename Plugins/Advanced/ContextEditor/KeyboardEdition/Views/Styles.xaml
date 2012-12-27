@@ -12,10 +12,12 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
              mc:Ignorable="d">
+    <ctrls:StringIsNullOrWhiteSpaceToBoolean x:Key="stringnulltobool"/>
     <ctrls:NotNullConverter x:Key="notnull"/>
     <ctrls:NotConverter x:Key="notconverter"/>
     <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
+    <vm:ImageConverter x:Key="imageconverter"/>
 
     <Style TargetType="Border" x:Key="Rounded">
         <Setter Property="Background" Value="White"></Setter>
@@ -81,70 +83,6 @@
         <Setter Property="Command" Value="{Binding ClearPropertyCmd}"/>
     </Style>
 
-    <!-- Style for the element that displays the current mode (below the breadcrumb) -->
-    <!--<Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource CurrentModeDisplayerStyle}" x:Key="CurrentKeyModeDisplayerStyle">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsCurrent}" Value="False">
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <Button Height="20" VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding ApplyToCurrentModeCommand}" >
-                                <ContentControl Content="{Binding Name}" />
-                            </Button>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>-->
-
-
-    <!--<Style TargetType="{x:Type ContentControl}" x:Key="TestCurrentModeDisplayerStyle">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Mode.IsEmpty}" Value="True">
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock Text="Default mode" />
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Mode.IsEmpty}" Value="False">
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding Content}"></ContentControl>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource TestCurrentModeDisplayerStyle}" x:Key="TestCurrentKeyModeDisplayerStyle">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsHolderCurrent}" Value="False">
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <Button Margin="2 0" FontWeight="Bold" Command="{Binding ApplyToCurrentModeCommand}" >
-                                <ContentControl Content="{Binding Mode}">
-                                    <ContentControl.ContentTemplate>
-                                        <DataTemplate>
-                                            <ContentControl Content="{Binding Mode}" />
-                                        </DataTemplate>
-                                    </ContentControl.ContentTemplate>
-                                </ContentControl>
-                            </Button>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>-->
-
-
     <Style TargetType="{x:Type StackPanel}" x:Key="KeyModeDisplayStyle">
         <Setter Property="Control.Margin" Value="5"></Setter>
         <Setter Property="Orientation" Value="Horizontal"></Setter>
@@ -189,8 +127,6 @@
         <Setter Property="Height" Value="10"></Setter>
     </Style>
 
-    
-    
     <DataTemplate DataType="{x:Type vm:VMKeyEditable}">
         <Grid>
             <!-- The key -->
@@ -207,11 +143,11 @@
                 <view:StdKeyView.Foreground>
                     <SolidColorBrush Color="{Binding LetterColor}"/>
                 </view:StdKeyView.Foreground>
-                <i:Interaction.Triggers>
+                <!--<i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                         <cmd:EventToCommand Command="{Binding MouseLeftButtonDownCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
                     </i:EventTrigger>
-                </i:Interaction.Triggers>
+                </i:Interaction.Triggers>-->
             </view:StdKeyView>
 
             <!-- Resizing thumbs -->
@@ -309,13 +245,6 @@
     <!-- TreeViewItemFocusVisual -->
     <Style TargetType="{x:Type Control}" x:Key="TreeViewItemFocusVisual">
         <Setter Property="FontWeight" Value="Bold"/>
-        <!--<Setter Property="Control.Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Rectangle/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>-->
     </Style>
 
     <!-- HeaderedSelectableTVI -->
@@ -380,5 +309,21 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <ControlTemplate TargetType="{x:Type vm:ActionControl}" x:Key="SimpleActionControlTemplate">
+        <DockPanel LastChildFill="False" Margin="2">
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{TemplateBinding Text}" />
+            <Button x:Name="button" ToolTip="{TemplateBinding Text}" Height="24" Width="24" Margin="2"
+                    DockPanel.Dock="Right" HorizontalAlignment="Right" 
+                    VerticalAlignment="Center" Command="{TemplateBinding Action}"> <!--CommandParameter="{TemplateBinding ActionParameter}"-->
+                <Image Source="{TemplateBinding ImageSource, Converter={StaticResource imageconverter}}" Stretch="Fill" />
+            </Button>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActionParameter, Converter={StaticResource stringnulltobool}}" Value="True">
+                <Setter TargetName="button" Property="CommandParameter" Value="{x:Null}" />
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
 </ResourceDictionary>

@@ -56,10 +56,10 @@
                     </StackPanel>
                 </StackPanel>
 
-
                 <DockPanel LastChildFill="False" Margin="2" x:Name="zoneCreationMainButton">
+                    
                     <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new zone in this keyboard :</TextBlock>
-                    <Button Height="50" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnNewZoneClicked">
+                    <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnNewZoneClicked">
                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                         <Button.ToolTip>
                             Create a new zone

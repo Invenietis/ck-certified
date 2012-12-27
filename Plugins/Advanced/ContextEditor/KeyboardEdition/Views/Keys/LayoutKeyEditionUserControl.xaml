@@ -130,29 +130,19 @@
             <!-- Delete actions -->
             <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0">
                 <StackPanel>
-                    
-                    <!-- Delete the key -->
-                    <DockPanel LastChildFill="False" Margin="2">
-                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Delete this key :</TextBlock>
-                        <Button Height="24" Width="24" Margin="2" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Command="{Binding DeleteKeyCommand}">
-                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
-                            <Button.ToolTip>
-                                Delete this key
-                            </Button.ToolTip>
-                        </Button>
-                    </DockPanel>
+ 
+                    <!-- Key : Delete buttons -->
+                    <vm:ActionControl Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
+                                      ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png" 
+                                      Template="{StaticResource SimpleActionControlTemplate}" />
 
                     <!-- Delete the key mode -->
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center">Delete this mode : </TextBlock>
-                        <Button DockPanel.Dock="Right" Width="24" Height="24" Margin="2" HorizontalAlignment="Right" Command="{Binding LayoutKeyModeVM.DeleteKeyModeCommand}" CommandParameter="LayoutKeyMode">
-                            <Button.ToolTip>
-                                <ToolTip>Delete this parameters, the key will not behave in a special manner when in the current mode anymore.</ToolTip>
-                            </Button.ToolTip>
-                            <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
-                        </Button>
-                        <DockPanel.Style>
-                            <Style TargetType="{x:Type DockPanel}">
+                    <vm:ActionControl Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
+                                      ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"
+                                      Template="{StaticResource SimpleActionControlTemplate}"
+                                      Text="Delete this mode :">
+                        <vm:ActionControl.Style>
+                            <Style TargetType="{x:Type vm:ActionControl}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -162,8 +152,8 @@
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </DockPanel.Style>
-                    </DockPanel>
+                        </vm:ActionControl.Style>
+                    </vm:ActionControl>
                 </StackPanel>
             </GroupBox>
         </StackPanel>

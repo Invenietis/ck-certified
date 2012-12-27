@@ -13,6 +13,7 @@ using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices.Accessibility;
+using Host.Services;
 using Ionic.Zip;
 
 namespace OnlineHelp
@@ -32,6 +33,16 @@ namespace OnlineHelp
         [RequiredService]
         public IHostInformation HostInformations { get; set; }
 
+        [RequiredService]
+        public IContext Context { get; set; }
+
+        //Since the IHostHelp implementation is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the IHostHelp.
+        /// <summary>
+        /// The HostManipulator, enables minimizing the host.
+        /// </summary>
+        IHostHelp _hostHelp;
+        public IHostHelp HostHelp { get { return _hostHelp ?? (_hostHelp = Context.ServiceContainer.GetService<IHostHelp>()); } }
+
         public IPluginConfigAccessor Config { get; set; }
 
         List<string> _registeredHelps;
@@ -50,6 +61,11 @@ namespace OnlineHelp
 
         public void Start()
         {
+            HostHelp.ShowHostHelp += ( o, e ) =>
+            {
+                RegisterHelpContent( e.HostUniqueId, typeof( OnlineHelp ).Assembly.GetManifestResourceStream( "OnlineHelp.Res.hosthelpcontent.zip" ) );
+                ShowHelpFor( e.HostUniqueId, true );
+            };
             if( !RegisteredHelps.Contains( "default" ) )
             {
                 UnzipAndExtractStream( typeof( OnlineHelp ).Assembly.GetManifestResourceStream( "OnlineHelp.Res.helpbase.zip" ), LocalHelpBaseDirectory );

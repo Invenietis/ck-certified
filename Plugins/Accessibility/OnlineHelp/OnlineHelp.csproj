@@ -86,8 +86,13 @@
   <ItemGroup>
     <None Include="packages.config" />
     <EmbeddedResource Include="Res\helpbase.zip" />
+    <EmbeddedResource Include="Res\hosthelpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Host.Services\Host.Services.csproj">
+      <Project>{97c12498-7a6e-4a87-8889-c965509443e8}</Project>
+      <Name>Host.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>

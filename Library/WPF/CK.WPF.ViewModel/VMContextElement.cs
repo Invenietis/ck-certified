@@ -21,25 +21,96 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using CK.Keyboard.Model;
+using CK.Plugin.Config;
 namespace CK.WPF.ViewModel
 {
     /// <summary>
     /// </summary>
-    public abstract class VMContextElement<TC, TB, TZ, TK> : VMBase
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
+    public abstract class VMContextElement<TC, TB, TZ, TK, TKM, TLKM> : VMBase
+        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
+        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
+        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
+        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
+        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
         TC _context;
 
         protected VMContextElement( TC context )
         {
             _context = context;
+            if( _context.SkinConfiguration != null )
+                _context.SkinConfiguration.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnLayoutConfigChanged );
         }
 
         /// <summary>
-        /// Gets the <see cref="VMContext"/> to wich this element belongs.
+        /// Gets whether this element is being edited. 
+        /// An element is being edited if it IsSelected or one of its parents is being edited.
+        /// can be overidden
+        /// </summary>
+        public virtual bool IsBeingEdited
+        {
+            get
+            {
+                return IsSelected || Parent.IsBeingEdited;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the element is selected.
+        /// </summary>
+        public abstract bool IsSelected { get; set; }
+
+        bool _isExpanded;
+        /// <summary>
+        /// Gets whether the element is expanded. Used ot bind a treeview to a context element.
+        /// Should only be used on an editor.
+        /// </summary>
+        public virtual bool IsExpanded
+        {
+            get { return _isExpanded; }
+            set
+            {
+                _isExpanded = value;
+                if( value && Parent != null )
+                {
+                    Parent.IsExpanded = value;
+                }
+                OnPropertyChanged( "IsExpanded" );
+            }
+        }
+
+
+        private IEnumerable<VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> GetParents()
+        {
+            VMContextElement<TC, TB, TZ, TK, TKM, TLKM> elem = this;
+            while( elem != null )
+            {
+                elem = elem.Parent;
+
+                if( elem != null )
+                    yield return elem;
+            }
+        }
+
+        /// <summary>
+        /// Gets the parents of the element.
+        /// </summary>
+        public IEnumerable<VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> Parents { get { return GetParents().Reverse(); } }
+
+        /// <summary>
+        /// Gets the parent of the object.
+        /// </summary>
+        public abstract VMContextElement<TC, TB, TZ, TK, TKM, TLKM> Parent { get; }
+
+        /// <summary>
+        /// Gets the <see cref="VMContext"/> to which this element belongs.
         /// </summary>
         public TC Context { get { return _context; } }
 
@@ -54,6 +125,203 @@ namespace CK.WPF.ViewModel
         protected virtual void OnDispose()
         {
         }
+
+        void OnLayoutConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.MultiPluginId.Any( ( c ) => String.Compare( c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", true ) == 0 ) )
+            {
+                switch( e.Key )
+                {
+                    case "Background":
+                    case "HoverBackground":
+                    case "PressedBackground":
+                    case "FontSize":
+                    case "FontWeight":
+                    case "FontSizes":
+                    case "FontStyle":
+                    case "TextDecorations":
+                    case "FontColor":
+                    case "LetterColor":
+                        OnPropertyChanged( "TextDecorationsAsBool" );
+                        OnPropertyChanged( "PressedBackground" );
+                        OnPropertyChanged( "FontWeightAsBool" );
+                        OnPropertyChanged( "FontStyleAsBool" );
+                        OnPropertyChanged( "TextDecorations" );
+                        OnPropertyChanged( "HoverBackground" );
+                        OnPropertyChanged( "LetterColor" );
+                        OnPropertyChanged( "FontWeight" );
+                        OnPropertyChanged( "Background" );
+                        OnPropertyChanged( "FontWeight" );
+                        OnPropertyChanged( "FontStyle" );
+                        OnPropertyChanged( "FontSizes" );
+                        OnPropertyChanged( "FontStyle" );
+                        OnPropertyChanged( "FontSize" );
+                        OnPropertyChanged( "FontSize" );
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the element to which (IKeyboard) element plugindatas should be attached
+        /// </summary>
+        public abstract IKeyboardElement LayoutElement { get; }
+
+        #region Layout Edition elements
+
+        VMCommand<string> _clearCmd;
+        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd == null ? _clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty ) : _clearCmd; } }
+
+        void ClearProperty( string propertyName )
+        {
+            string[] names = propertyName.Split( ',' );
+            foreach( var pname in names ) _context.SkinConfiguration[LayoutElement].Remove( pname );
+        }
+
+        bool CanClearProperty( string propertyName )
+        {
+            string[] names = propertyName.Split( ',' );
+            // We can clear property if the property owns directly a value.
+            foreach( var pname in names ) if( _context.SkinConfiguration[LayoutElement][pname] != null ) return true;
+            return false;
+        }
+
+        public Color Background
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "Background", Colors.White ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["Background"] = value;
+            }
+        }
+
+        public Color HoverBackground
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HoverBackground", Background ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["HoverBackground"] = value;
+            }
+        }
+
+        public Color HighlightBackground
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HighlightBackground", Background ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["HighlightBackground"] = value;
+            }
+        }
+
+        public Color PressedBackground
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "PressedBackground", HoverBackground ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["PressedBackground"] = value;
+            }
+        }
+
+        public Color LetterColor
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "LetterColor", Colors.Black ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["LetterColor"] = value;
+            }
+        }
+
+        public FontStyle FontStyle
+        {
+            get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontStyle", FontStyles.Normal ).Value; }
+        }
+
+        public FontWeight FontWeight
+        {
+            get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontWeight", FontWeights.Normal ).Value; }
+        }
+
+        public TextDecorationCollection TextDecorations
+        {
+            get
+            {
+                return LayoutElement.GetWrappedPropertyValue<TextDecorationCollection>( _context.SkinConfiguration, "TextDecorations" ).Value;
+            }
+        }
+
+        #region FontPoperties used for edition
+        /// <summary>
+        /// Gets whether the FontStyle of the Current LayoutKeyMode is <see cref="FontStyles.Italic"/>.
+        /// Returns false otherwise.
+        /// Used to bind the FontStyle to a boolean control ( for example, a <see cref="ToggleButton"/>)
+        /// </summary>
+        public bool FontStyleAsBool
+        {
+            get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontStyle", FontStyles.Normal ).Value == FontStyles.Italic; }
+            set
+            {
+                if( value ) _context.SkinConfiguration[LayoutElement]["FontStyle"] = FontStyles.Italic;
+                else _context.SkinConfiguration[LayoutElement]["FontStyle"] = FontStyles.Normal;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the FontWeight of the Current LayoutKeyMode is <see cref="FontWeights.Bold"/>.
+        /// Returns false otherwise.
+        /// Used to bind the FontWeight to a boolean control ( for example, a <see cref="ToggleButton"/>)
+        /// </summary>
+        public bool FontWeightAsBool
+        {
+            get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontWeight", FontWeights.Normal ).Value == FontWeights.Bold; }
+            set
+            {
+                if( value ) _context.SkinConfiguration[LayoutElement]["FontWeight"] = FontWeights.Bold;
+                else _context.SkinConfiguration[LayoutElement]["FontWeight"] = FontWeights.Normal;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the TextDecorationCollection of the Current LayoutKeyMode has elements.
+        /// Returns false otherwise.
+        /// Used to bind the TextDecorationCollection to a boolean control ( for example, a <see cref="ToggleButton"/>)
+        /// </summary>
+        public bool TextDecorationsAsBool
+        {
+            get
+            {
+                var val = LayoutElement.GetWrappedPropertyValue<TextDecorationCollection>( _context.SkinConfiguration, "TextDecorations" );
+                return val.Value != null && val.Value.Count > 0;
+            }
+            set
+            {
+                if( value ) _context.SkinConfiguration[LayoutElement]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "Underline" );
+                else _context.SkinConfiguration[LayoutElement]["TextDecorations"] = TextDecorationCollectionConverter.ConvertFromString( "" );
+            }
+        }
+
+        IEnumerable<double> _sizes;
+        IEnumerable<double> GetSizes( int from, int to )
+        {
+            for( int i = from; i <= to; i++ ) yield return i;
+        }
+        public IEnumerable<double> FontSizes { get { return _sizes == null ? _sizes = GetSizes( 10, 30 ) : _sizes; } }
+
+
+        #endregion
+
+        public double FontSize
+        {
+            get { return LayoutElement.GetPropertyValue<double>( _context.SkinConfiguration, "FontSize", 15 ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["FontSize"] = value;
+            }
+        }
+
+        #endregion
+
 
     }
 }

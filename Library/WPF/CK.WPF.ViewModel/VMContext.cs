@@ -28,24 +28,40 @@ using System.Collections.ObjectModel;
 using CK.Keyboard.Model;
 using CK.Context;
 using System.ComponentModel;
+using CK.Plugin.Config;
+using CK.Core;
 
 namespace CK.WPF.ViewModel
 {
-    public abstract class VMContext<TC, TB, TZ, TK> : VMBase, IDisposable
-        where TC : VMContext<TC,TB,TZ,TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
+    public abstract class VMContext<TC, TB, TZ, TK, TKM, TLKM> : VMBase, IDisposable
+        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
+        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
+        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
+        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
+        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
-        IKeyboardContext _kbctx;
-        IContext _ctx;
-        Dictionary<object, VMContextElement<TC, TB, TZ, TK>> _dic;
-        TB _currentKeyboard;
-        EventHandler<KeyboardEventArgs> _evKeyboardCreated;
         EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
-        EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
+        Dictionary<object, VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> _dic;
         PropertyChangedEventHandler _evUserConfigurationChanged;
+        EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
+        EventHandler<KeyboardEventArgs> _evKeyboardCreated;
         ObservableCollection<TB> _keyboards;
+        IKeyboardContext _kbctx;
+        TB _currentKeyboard;
+        IContext _ctx;
+
+        IPluginConfigAccessor _config;
+        public IPluginConfigAccessor Config
+        {
+            get
+            {
+                return _config;
+            }
+            set { _config = value; }
+        }
+
+        public IPluginConfigAccessor SkinConfiguration { get; set; }
 
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
 
@@ -75,7 +91,7 @@ namespace CK.WPF.ViewModel
             }
             return z;
         }
-        
+
         public TK Obtain( IKey key )
         {
             TK k = FindViewModel<TK>( key );
@@ -89,12 +105,47 @@ namespace CK.WPF.ViewModel
             return k;
         }
 
-        public TB Keyboard { get { return _currentKeyboard; } }
-
-        public VMContext( IContext ctx, IKeyboardContext kbctx )
+        public TKM Obtain( IKeyMode keyMode )
         {
-            _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK>>();
+            TKM km = FindViewModel<TKM>( keyMode );
+            if( km == null )
+            {
+                if( keyMode.Context != _kbctx )
+                    throw new Exception( "Context mismatch." );
+                km = CreateKeyMode( keyMode );
+                if( km != null ) //the viewmodel can be null, if the implementation doesn't use this level of objects (SimpleSkin doesn't use these templates)
+                    _dic.Add( keyMode, km );
+            }
+            return km;
+        }
+
+        public TLKM Obtain( ILayoutKeyMode layoutKeyMode )
+        {
+            TLKM lkm = FindViewModel<TLKM>( layoutKeyMode );
+            if( lkm == null )
+            {
+                if( layoutKeyMode.Context != _kbctx )
+                    throw new Exception( "Context mismatch." );
+                lkm = CreateLayoutKeyMode( layoutKeyMode );
+                if( lkm != null ) //the viewmodel can be null, if the implementation doesn't use this level of objects (SimpleSkin doesn't use these templates)
+                    _dic.Add( layoutKeyMode, lkm );
+            }
+            return lkm;
+        }
+
+        public TB KeyboardVM
+        {
+            get { return _currentKeyboard; }
+            set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
+        }
+
+        public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
+        {
+            OnBeforeCreate();
+            _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK, TKM, TLKM>>();
             _keyboards = new ObservableCollection<TB>();
+            SkinConfiguration = skinConfiguration;
+            Config = config;
 
             _kbctx = kbctx;
             _ctx = ctx;
@@ -108,12 +159,12 @@ namespace CK.WPF.ViewModel
                 }
                 _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
             }
-            
+
             _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
             _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
             _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
             _evUserConfigurationChanged = new PropertyChangedEventHandler( OnUserConfigurationChanged );
-            
+
             _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
             _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
@@ -121,14 +172,20 @@ namespace CK.WPF.ViewModel
 
         }
 
+        protected virtual void OnBeforeCreate()
+        {
+        }
+
+        protected abstract TLKM CreateLayoutKeyMode( ILayoutKeyMode lkm );
+        protected abstract TKM CreateKeyMode( IKeyMode km );
         protected abstract TB CreateKeyboard( IKeyboard kb );
         protected abstract TZ CreateZone( IZone z );
         protected abstract TK CreateKey( IKey k );
 
         T FindViewModel<T>( object m )
-            where T : VMContextElement<TC, TB, TZ, TK>
+            where T : VMContextElement<TC, TB, TZ, TK, TKM, TLKM>
         {
-            VMContextElement<TC, TB, TZ, TK> vm;
+            VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm;
             _dic.TryGetValue( m, out vm );
             return (T)vm;
         }
@@ -140,7 +197,7 @@ namespace CK.WPF.ViewModel
             _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
             _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
-            foreach( VMContextElement<TC, TB, TZ, TK> vm in _dic.Values ) vm.Dispose();
+            foreach( VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm in _dic.Values ) vm.Dispose();
             _dic.Clear();
         }
 
@@ -148,9 +205,9 @@ namespace CK.WPF.ViewModel
         {
         }
 
-        internal void OnModelDestroy( object m )
+        internal virtual void OnModelDestroy( object m )
         {
-            VMContextElement<TC, TB, TZ, TK> vm;
+            VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm;
             if( _dic.TryGetValue( m, out vm ) )
             {
                 vm.Dispose();
@@ -159,34 +216,35 @@ namespace CK.WPF.ViewModel
         }
 
         #region OnXXXXXXXXX
-        void OnKeyboardCreated( object sender, KeyboardEventArgs e )
+        internal virtual void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
             TB k = CreateKeyboard( e.Keyboard );
             _dic.Add( e.Keyboard, k );
             _keyboards.Add( k );
         }
 
-        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        //This behavior is linked to the current keyboard.
+        //It should be overridden in the KeyboardEditor, for the KeyboardEditor is not linked to the application's current keyboard.
+        protected virtual void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             if( e.Current != null )
             {
                 _currentKeyboard = Obtain( e.Current );
-                OnPropertyChanged( "Keyboard" );
+                OnPropertyChanged( "KeyboardVM" );
                 _currentKeyboard.TriggerPropertyChanged();
-               
             }
         }
 
-        void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
+        internal virtual void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
         {
             //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
             if( e.PropertyName == "CurrentContextProfile" )
             {
-                OnPropertyChanged( "Keyboard" );
+                OnPropertyChanged( "KeyboardVM" );
             }
         }
 
-        void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
+        internal virtual void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
             _keyboards.Remove( Obtain( e.Keyboard ) );
             OnModelDestroy( e.Keyboard );

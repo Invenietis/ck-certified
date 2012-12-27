@@ -194,6 +194,17 @@ namespace Host
             }
         }
 
+        ICommand _showHelpCommand;
+        public ICommand ShowHelpCommand
+        {
+            get
+            {
+                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
+                {
+                    CivikeyHost.FireShowHostHelp();
+                } ));
+            }
+        }
         
         /// <summary>
         /// Gets whether the window is visible or not.

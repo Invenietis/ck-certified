@@ -38,6 +38,8 @@ using CK.Plugin.Config;
 using Caliburn.Micro;
 using System.Windows;
 using CommonServices;
+using CommonServices.Accessibility;
+using System.Windows.Controls;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -59,6 +61,7 @@ namespace CK.Plugins.ObjectExplorer
 
         public IContext Context { get; private set; }
         public IPluginConfigAccessor Config { get; private set; }
+        public IHelpService HelpService { get; private set; }
 
         PluginRunner _pluginRunner;
         PluginRunner PluginRunner { get { return _pluginRunner; } }
@@ -81,6 +84,8 @@ namespace CK.Plugins.ObjectExplorer
         public ICommand ShowLastReport { get; private set; }
 
         public ICommand Rediscover { get; private set; }
+
+        public ICommand ShowHelp { get; private set; }
 
         #endregion
 
@@ -105,12 +110,13 @@ namespace CK.Plugins.ObjectExplorer
             }
         }
 
-        public VMIContextViewModel( IContext context, IPluginConfigAccessor config, ILogService logService )
+        public VMIContextViewModel( IContext context, IPluginConfigAccessor config, ILogService logService, IHelpService helpService )
         {
             DisplayName = "Object explorer";
 
             Context = context;
             Config = config;
+            HelpService = helpService;
 
             InitializeCommands();
 
@@ -254,6 +260,12 @@ namespace CK.Plugins.ObjectExplorer
                 {
                     // TODO
                 } );
+            ShowHelp = new VMCommand(
+                () =>
+                {
+                    HelpService.ShowHelpFor( ObjectExplorer.PluginId );
+                } );
+
         }
 
         public void Dispose()
@@ -277,7 +289,7 @@ namespace CK.Plugins.ObjectExplorer
 
             if( !ManualStop )
             {
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( ObjectExplorer.StrPluginID ), ConfigUserAction.Stopped );
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( ObjectExplorer.PluginId.UniqueId, ConfigUserAction.Stopped );
                 if( !Context.GetService<ISimplePluginRunner>( true ).Apply() )
                 {
                     NotificationService.ShowNotification( Guid.Empty, R.ApplyDoneErrorCaption, R.ApplyDoneError, 4000, NotificationTypes.Warning );

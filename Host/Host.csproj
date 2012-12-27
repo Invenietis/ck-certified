@@ -355,6 +355,9 @@
   <ItemGroup>
     <Resource Include="Views\SplashTransparent.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\help.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
   </PropertyGroup>

@@ -354,11 +354,19 @@
                                               MouseEnterCommand="{Binding TogglePauseCommand}" Style="{StaticResource PauseButtonStyle}"                                              
                                               IsPaused="{Binding IsPaused, Mode=OneWay}" />-->
                 <!-- The Show/Hide Editor button -->
-                <views:ActionOnMouseEnterButton Selected="{Binding IsEditorOpened}"  DockPanel.Dock="Right"
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <views:ActionOnMouseEnterButton Selected="{Binding IsEditorOpened}"  
                                               MouseEnterCommand="{Binding ToggleEditorVisibilityCommand}"                                              
                                               Style="{StaticResource SelectedIsPressedButtonStyle}"
                                               Content="{StaticResource EditorHiddenContent}"
                                               Width="20" Height="20" />
+                    <views:ActionOnMouseEnterButton
+                                              MouseEnterCommand="{Binding ShowHelpCommand}"                                           
+                                              Style="{StaticResource SelectedIsPressedButtonStyle}"      
+                                              Width="20" Height="20">
+                        <Image Source="../../Res/Images/help.png" Width="16" Height="16"></Image>
+                    </views:ActionOnMouseEnterButton>
+                </StackPanel>
             </DockPanel>
 
             <!-- The pie-shaped progressbar -->

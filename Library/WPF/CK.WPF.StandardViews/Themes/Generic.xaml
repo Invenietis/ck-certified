@@ -5,7 +5,7 @@
     xmlns:controls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls">
 
     <controls:StringIsNullOrWhiteSpaceToBoolean x:Key="StringIsNullOrWhiteSpaceToBoolean" />
-    
+
 
     
     <Style TargetType="{x:Type local:StdKeyboardView}">
@@ -39,7 +39,6 @@
                                 Background="{TemplateBinding Background}">
                                 </Border>
                             </Border>
-
                             <ItemsControl ItemsSource="{TemplateBinding Keys}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -48,8 +47,9 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
-                                        <Setter Property="Canvas.Top" Value="{Binding Path=Y}"/>
-                                        <Setter Property="Canvas.Left" Value="{Binding Path=X}"/>
+                                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex, Mode=TwoWay}"/>
+                                        <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}"/>
+                                        <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}"/>
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                             </ItemsControl>
@@ -62,6 +62,7 @@
 
     <Style TargetType="{x:Type local:StdKeyView}">
         <!-- Border brush -->
+        <!--<Setter Property="Focusable" Value="False"/>-->
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -84,7 +85,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyView}">
-                    <Grid x:Name="buttonGrid">
+                    <Grid x:Name="buttonGrid" Canvas.ZIndex="{TemplateBinding ZIndex}">
+                        <Grid.ToolTip>
+                            <ToolTip x:Name="gridTooltip" Content="{TemplateBinding Description}"/>
+                        </Grid.ToolTip>
                         <Border x:Name="Border" CornerRadius="5"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1.5"
                                 Background="{TemplateBinding Background}" />
@@ -109,9 +113,9 @@
                         <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Description, Converter={StaticResource StringIsNullOrWhiteSpaceToBoolean}}" Value="False">
-                            <Setter TargetName="buttonGrid" Property="ToolTip" Value="{Binding Description}"/>
-                        </DataTrigger>
+                        <Trigger SourceName="gridTooltip" Property="Content" Value="">
+                            <Setter TargetName="gridTooltip" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
                         <!-- Trigger on : IsMouseOver -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>

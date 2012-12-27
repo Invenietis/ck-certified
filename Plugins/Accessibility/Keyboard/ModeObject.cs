@@ -165,18 +165,37 @@ namespace CK.Keyboard
         {
             Debug.Assert( Contains( o ), "It is one of our objects." );
             Debug.Assert( !o.Mode.IsEmpty, "It is not the default one." );
-
+            
+            RemoveFromList( o, GetNext( o ) );
             if( _current == o )
             {
-                _current = o.Prev;
+                _current = FindBest( _last, _current.Mode );
                 Debug.Assert( _current != null, "Since o is not the default (first) one." );
                 OnCurrentChanged();
             }
-            RemoveFromList( o, GetNext( o ) );
             --_count;
             Debug.Assert( _count > 0 );
             OnDestroyed( o );
         }
+
+        //TODOJL : Previous
+        //public void Destroy( T o )
+        //{
+        //    Debug.Assert( Contains( o ), "It is one of our objects." );
+        //    Debug.Assert( !o.Mode.IsEmpty, "It is not the default one." );
+
+            
+        //    if( _current == o )
+        //    {
+        //        _current = o.Prev;
+        //        Debug.Assert( _current != null, "Since o is not the default (first) one." );
+        //        OnCurrentChanged();
+        //    }
+        //    RemoveFromList( o, GetNext( o ) );
+        //    --_count;
+        //    Debug.Assert( _count > 0 );
+        //    OnDestroyed( o );
+        //}
 
         private T GetNext( T o )
         {

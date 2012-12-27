@@ -81,6 +81,7 @@
     <Compile Include="ColorPicker\Implementation\ColorPicker.cs" />
     <Compile Include="Converters\AndConverter.cs" />
     <Compile Include="Converters\BooleanToIsMinimizedConverter.cs" />
+    <Compile Include="Converters\FolderConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NXORConverter.cs" />
     <Compile Include="Converters\OrConverter.cs" />
@@ -101,6 +102,7 @@
     </Compile>
     <Compile Include="SimpleCommand.cs" />
     <Compile Include="TextBlockService.cs" />
+    <Compile Include="VMBase.cs" />
     <Page Include="Chromes\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

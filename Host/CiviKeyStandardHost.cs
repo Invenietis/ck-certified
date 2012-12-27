@@ -44,12 +44,21 @@ namespace Host
     /// Singleton host. Its private constructor is safe (no exceptions can be 
     /// thrown except an out of memory: we can safely ignore this pathological case).
     /// </summary>
-    public class CivikeyStandardHost : AbstractContextHost, IHostInformation
+    public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
     {
         Version _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
+        IVersionedUniqueId _fakeUniqueIdForTheHost;
+
+        public event EventHandler<HostHelpEventArgs> ShowHostHelp;
+
+        public void FireShowHostHelp()
+        {
+            if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
+            ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
+        }
 
         /// <summary>
         /// Gets the current version of the Civikey-Standard application.
@@ -86,6 +95,7 @@ namespace Host
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
+            hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
             
             //Optimisation
             //TODO : uncomment when the new brain is live
@@ -126,15 +136,16 @@ namespace Host
             // Initializes Services.
             {
                 ctx.ServiceContainer.Add<IHostInformation>( this );
+                ctx.ServiceContainer.Add<IHostHelp>( this );
                 // inject specific xaml serializers.
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Size> ), new XamlSerializer<Size>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Color> ), new XamlSerializer<Color>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<LinearGradientBrush> ), new XamlSerializer<LinearGradientBrush>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<TextDecorationCollection> ), new XamlSerializer<TextDecorationCollection>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontWeight> ), new XamlSerializer<FontWeight>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontStyle> ), new XamlSerializer<FontStyle>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Image> ), new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add( typeof( INotificationService ), _notificationMngr );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Size>>( new XamlSerializer<Size>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Color>>( new XamlSerializer<Color>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<LinearGradientBrush>>( new XamlSerializer<LinearGradientBrush>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<TextDecorationCollection>>( new XamlSerializer<TextDecorationCollection>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
+                ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );

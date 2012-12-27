@@ -38,7 +38,10 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Image Grid.Row="0" Height="100" Source="SplashTransparent.png"></Image>
-                <Label Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding AppVersion}"></Label>
+                <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
+                    <Label Grid.Row="0" Content="{Binding AppVersion}"></Label>
+                    <ckcontrols:ImageButton x:Uid="HelpButton" Source="Images/help.png" Width="16" Height="16" Margin="0 0 10 0" ToolTip="Help" Command="{Binding ShowHelpCommand}"></ckcontrols:ImageButton>
+                </StackPanel>
                 <ContentControl  Grid.Row="1" Content="{Binding ConfigManager}"/>
             </Grid>
         </StackPanel>

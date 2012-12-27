@@ -1735,6 +1735,7 @@
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IDynCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IHelpCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
@@ -3977,6 +3978,18 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="" Enabled="true" Description="">
+                        <KeyUp Label="Help" />
+                        <KeyDown>
+                          <KeyProgram xml:space="preserve">
+                            <Cmd>help:show</Cmd>
+                          </KeyProgram>
+                        </KeyDown>
+                      </KeyMode>
+                    </KeyModes>
+                  </Key>
+                  <Key>
+                    <KeyModes>
+                      <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="Fn" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -4623,7 +4636,18 @@
                   <Zone Name="CustomFunctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="fn" X="880" Y="50" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="880" Y="50" W="50" H="25" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/help.png" Width="16" Height="16" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
+                      </LayoutKey>
+                      <LayoutKey Index="1">
+                        <LayoutKeyMode Mode="fn" X="880" Y="75" W="50" H="25" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -4635,9 +4659,9 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="880" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="880" Y="75" W="50" H="25" Visible="true" />
                       </LayoutKey>
-                      <LayoutKey Index="1">
+                      <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="880" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4648,7 +4672,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="2">
+                      <LayoutKey Index="3">
                         <LayoutKeyMode Mode="" X="880" Y="160" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4659,7 +4683,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="3">
+                      <LayoutKey Index="4">
                         <LayoutKeyMode Mode="" X="880" Y="215" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
@@ -4670,7 +4694,7 @@
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
-                      <LayoutKey Index="4">
+                      <LayoutKey Index="5">
                         <LayoutKeyMode Mode="" X="880" Y="270" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">

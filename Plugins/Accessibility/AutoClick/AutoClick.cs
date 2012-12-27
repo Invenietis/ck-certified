@@ -37,6 +37,7 @@ using System.Windows.Forms;
 using CK.Windows;
 using System.Runtime.InteropServices;
 using CK.Windows.Helpers;
+using CommonServices.Accessibility;
 
 namespace CK.Plugins.AutoClick
 {
@@ -47,13 +48,16 @@ namespace CK.Plugins.AutoClick
         Guid PluginGuid = new Guid( PluginGuidString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "AutoClick Plugin";
-        public readonly INamedVersionedUniqueId PluginId;
+        public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IMouseWatcher> MouseWatcher { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IHelpService> HelpService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -62,6 +66,21 @@ namespace CK.Plugins.AutoClick
         private MouseProgressPieWindow _mouseWindow;
 
         public bool IsEditorOpened { get { return _editorWindow.IsVisible; } }
+
+        ICommand _showHelpCommand;
+        public ICommand ShowHelpCommand
+        {
+            get
+            {
+                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
+                {
+                    if( HelpService.Status == RunningStatus.Started )
+                    {
+                        HelpService.Service.ShowHelpFor( PluginId, true );
+                    }
+                } ));
+            }
+        }
 
         private ICommand _toggleEditorVisibilityCommand;
         public ICommand ToggleEditorVisibilityCommand
@@ -158,6 +177,8 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
+            if( HelpService.Status == RunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( AutoClick ).Assembly.GetManifestResourceStream( "AutoClick.Res.helpcontent.zip" ) );
+
             _isPaused = true;
             _selector = new StdClickTypeSelector( this );
             _wpfStandardClickTypeWindow = new WPFStdClickTypeWindow() { DataContext = this };

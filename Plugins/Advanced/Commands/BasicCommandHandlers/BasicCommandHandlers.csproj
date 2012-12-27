@@ -112,6 +112,7 @@
     <Compile Include="CommandParser.cs" />
     <Compile Include="ClicCommandHandler.cs" />
     <Compile Include="CommandViewer.cs" />
+    <Compile Include="HelpCommandHandler.cs" />
     <Compile Include="MoveMouse.cs" />
     <Compile Include="Keybd.cs" />
     <Compile Include="MonitorOnceCommandHandler.cs" />

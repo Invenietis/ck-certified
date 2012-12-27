@@ -129,7 +129,15 @@ namespace CK.Keyboard
                 if( changed != null ) changed( this, e );
             }
             Keyboard.OnKeyPropertyChanged( e );
-        }		
+        }
+
+        public void SwapZones( IZone targetZone )
+        {
+            Zone actualTargetZone = Keyboard.Zones[targetZone.Name];
+            Destroy();
+            _zone = actualTargetZone;
+            _zone.InsertAt( this, 0 );
+        }
 
         public void Destroy()
         {

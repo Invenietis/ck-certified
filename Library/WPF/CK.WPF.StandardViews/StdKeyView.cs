@@ -58,6 +58,54 @@ namespace CK.WPF.StandardViews
             Focusable = false;
         }
 
+        public int X
+        {
+            get { return (int)GetValue( XProperty ); }
+            set { SetValue( XProperty, value ); }
+        }
+        public static readonly DependencyProperty XProperty =
+        DependencyProperty.Register( "X", typeof( int ), typeof( StdKeyView ) );
+
+        public int Y
+        {
+            get { return (int)GetValue( YProperty ); }
+            set { SetValue( YProperty, value ); }
+        }
+        public static readonly DependencyProperty YProperty =
+        DependencyProperty.Register( "Y", typeof( int ), typeof( StdKeyView ) );
+
+        //public ICommand Width
+        //{
+        //    get { return (ICommand)GetValue( WidthProperty ); }
+        //    set { SetValue( WidthProperty, value ); }
+        //}
+        //public static readonly DependencyProperty WidthProperty =
+        //DependencyProperty.Register( "Width", typeof( int ), typeof( StdKeyView ) );
+
+        //public ICommand Height
+        //{
+        //    get { return (ICommand)GetValue( HeightProperty ); }
+        //    set { SetValue( HeightProperty, value ); }
+        //}
+        //public static readonly DependencyProperty HeightProperty =
+        //DependencyProperty.Register( "Height", typeof( int ), typeof( StdKeyView ) );
+
+        public ICommand Description
+        {
+            get { return (ICommand)GetValue( DescriptionProperty ); }
+            set { SetValue( DescriptionProperty, value ); }
+        }
+        public static readonly DependencyProperty DescriptionProperty =
+        DependencyProperty.Register( "Description", typeof( string ), typeof( StdKeyView ) );
+
+        public int ZIndex
+        {
+            get { return (int)GetValue( ZIndexProperty ); }
+            set { SetValue( ZIndexProperty, value ); }
+        }
+        public static readonly DependencyProperty ZIndexProperty =
+        DependencyProperty.Register( "ZIndex", typeof( int ), typeof( StdKeyView ) );
+
         public ICommand KeyDownCommand
         {
             get { return (ICommand)GetValue( KeyDownCommandProperty ); }

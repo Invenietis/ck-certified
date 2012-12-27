@@ -114,20 +114,20 @@ namespace SimpleSkin
                 Context.ServiceContainer.Add( Config );
 
                 _isStarted = true;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service );
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service, Config );
                 _skinWindow = new SkinWindow( _ctxVm );
 
                 Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
                 if( Highlighter.Status == RunningStatus.Started )
                 {
-                    Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+                    Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
                     Highlighter.Service.BeginHighlight += OnBeginHighlight;
                     Highlighter.Service.EndHighlight += OnEndHighlight;
                     Highlighter.Service.SelectElement += OnSelectElement;
                 }
 
-                int defaultWidth = _ctxVm.Keyboard.W;
-                int defaultHeight = _ctxVm.Keyboard.H;
+                int defaultWidth = _ctxVm.KeyboardVM.W;
+                int defaultHeight = _ctxVm.KeyboardVM.H;
 
                 if( !Config.User.Contains( PlacementString ) ) SetDefaultWindowPosition( defaultWidth, defaultHeight ); //first launch : places the skin in the default position
                 else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
@@ -196,14 +196,14 @@ namespace SimpleSkin
         {
             if( e.Current == RunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
                 Highlighter.Service.BeginHighlight += OnBeginHighlight;
                 Highlighter.Service.EndHighlight += OnEndHighlight;
                 Highlighter.Service.SelectElement += OnSelectElement;
             }
             else if( e.Current == RunningStatus.Stopping )
             {
-                Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
                 Highlighter.Service.BeginHighlight -= OnBeginHighlight;
                 Highlighter.Service.EndHighlight -= OnEndHighlight;
                 Highlighter.Service.SelectElement -= OnSelectElement;
@@ -222,7 +222,10 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
-            if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+            if( Highlighter.Status == RunningStatus.Started )
+            {
+                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+            }
              
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
@@ -265,7 +268,10 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.RegisterTree( _ctxVm.Keyboard );
+            if( Highlighter.Status == RunningStatus.Started )
+            {
+                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+            }
 
             if( e.Current != null && _skinWindow != null )
             {
@@ -276,7 +282,7 @@ namespace SimpleSkin
                     else placement.showCmd = 8; //Show without taking focus
                     _skinWindow.SetPlacement( placement );
                 }
-                else SetDefaultWindowPosition( _ctxVm.Keyboard.W, _ctxVm.Keyboard.H );
+                else SetDefaultWindowPosition( _ctxVm.KeyboardVM.W, _ctxVm.KeyboardVM.H );
             }
         }
 
@@ -359,7 +365,7 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
-                if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.Keyboard );
+                if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();

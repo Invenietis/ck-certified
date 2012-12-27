@@ -18,9 +18,9 @@ namespace ContextEditor.s
     /// <summary>
     /// Interaction logic for KeyboardEditionView.xaml
     /// </summary>
-    public partial class KeyboardEditionView : UserControl
+    public partial class KeyModeEditionUserControl : UserControl
     {
-        public KeyboardEditionView()
+        public KeyModeEditionUserControl()
         {
             InitializeComponent();
         }

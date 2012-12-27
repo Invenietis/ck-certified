@@ -35,6 +35,68 @@ namespace CK.WPF.ViewModel
     /// method is 'true'.
     /// From http://mvvmfoundation.codeplex.com/ open source project.
     /// </summary>
+    //public class VMCommand<T, T2> : ICommand
+    //{
+    //    readonly Action<T, T2> _execute = null;
+
+    //    [DebuggerStepThrough]
+    //    public bool CanExecute( object parameter )
+    //    {
+    //        return true;
+    //    }
+
+    //    /// <summary>
+    //    /// Creates a new command.
+    //    /// </summary>
+    //    /// <param name="execute">The execution logic.</param>
+    //    /// <param name="canExecute">The execution status logic.</param>
+    //    public VMCommand( Action<T, T2> execute )
+    //    {
+    //        if( execute == null )
+    //            throw new ArgumentNullException( "execute" );
+
+    //        _execute = execute;
+    //    }
+
+    //    public void Execute( T sender, T2 eventArgs )
+    //    {
+    //        _execute( sender, eventArgs );
+    //    }
+
+    //    public void Execute( object parameter )
+    //    {
+
+    //        _execute( (T)( ( (object[])parameter )[0] ), ( (T2)( (object[])parameter )[1] ) );
+    //    }
+
+    //    public event EventHandler CanExecuteChanged
+    //    {
+    //        add
+    //        {
+    //            if( _canExecute != null )
+    //                CommandManager.RequerySuggested += value;
+    //        }
+    //        remove
+    //        {
+    //            if( _canExecute != null )
+    //                CommandManager.RequerySuggested -= value;
+    //        }
+    //    }
+
+
+    //    readonly Predicate<T> _canExecute = null;
+
+    //}
+
+
+    /// <summary>
+    /// A command whose sole purpose is to 
+    /// relay its functionality to other
+    /// objects by invoking delegates. The
+    /// default return value for the CanExecute
+    /// method is 'true'.
+    /// From http://mvvmfoundation.codeplex.com/ open source project.
+    /// </summary>
     public class VMCommand<T> : ICommand
     {
         readonly Action<T> _execute = null;

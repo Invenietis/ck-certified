@@ -28,12 +28,15 @@ namespace CK.WPF.Controls
 { 
     /// <summary>
     /// Not operator on a boolean.
+    /// returns null if the vlaue is null.
     /// </summary>
     [ValueConversion( typeof( bool ), typeof( bool ) )]
     public class NotConverter : IValueConverter
     {
         public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
+            if( value == null ) return null;
+
             bool returnValue;
             if( Boolean.TryParse( value.ToString(), out returnValue ) )
                 return !returnValue;

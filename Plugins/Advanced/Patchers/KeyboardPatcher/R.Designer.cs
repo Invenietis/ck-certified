@@ -163,6 +163,15 @@ namespace KeyboardPatcher {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Skin&apos;s configuration object is null.
+        /// </summary>
+        internal static string SkinConfigurationNull {
+            get {
+                return ResourceManager.GetString("SkinConfigurationNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes, try again.
         /// </summary>
         internal static string TryAgain {

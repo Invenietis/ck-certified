@@ -96,6 +96,7 @@ namespace Host
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
             hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
+            //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
             
             //Optimisation
             //TODO : uncomment when the new brain is live

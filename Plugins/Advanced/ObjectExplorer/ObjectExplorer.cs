@@ -60,7 +60,7 @@ namespace CK.Plugins.ObjectExplorer
         [RequiredService( Required = true )]
         public IContext Context { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ILogService LogService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }

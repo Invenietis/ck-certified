@@ -41,6 +41,7 @@ namespace SimpleSkin.ViewModels
             : base( ctx, k )
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.SkinConfiguration.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -63,6 +64,11 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            if( LayoutKey.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                OnPropertyChanged( "Image" );
+            }
+
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 OnPropertyChanged( "Background" );
@@ -85,12 +91,9 @@ namespace SimpleSkin.ViewModels
         protected override void OnDispose()
         {
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            base.OnDispose();
-        }
+            Context.SkinConfiguration.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
-        public Image Image
-        {
-            get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
+            base.OnDispose();
         }
 
         public bool ShowLabel

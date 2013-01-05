@@ -27,6 +27,10 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using CK.Core;
 using CK.Keyboard.Model;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CK.WPF.ViewModel
 {
@@ -38,10 +42,12 @@ namespace CK.WPF.ViewModel
         where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
         where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
     {
+        TC _context;
         IKeyMode _model;
         public VMKeyMode( TC context, IKeyMode keyMode )
             : base( context )
         {
+            _context = context;
             _model = keyMode;
         }
 
@@ -88,6 +94,8 @@ namespace CK.WPF.ViewModel
         /// Gets a value indicating wether the current keymode is enabled or not.
         /// </summary>
         public bool Enabled { get { return _model.Enabled; } }
+
+        
 
     }
 }

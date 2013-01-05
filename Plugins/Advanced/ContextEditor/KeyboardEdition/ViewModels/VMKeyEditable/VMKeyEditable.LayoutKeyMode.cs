@@ -56,126 +56,57 @@ namespace ContextEditor.ViewModels
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
         }
 
-        /// <summary>
-        /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
-        /// </summary>
-        public object Image
-        {
-            get
-            {
-                object imageData = _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"];
-                Image image = new Image();
+        //ICommand _removeImageCommand;
+        //public ICommand RemoveImageCommand
+        //{
+        //    get
+        //    {
+        //        if( _removeImageCommand == null )
+        //        {
+        //            _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[Model.CurrentLayout.Current].Remove( "Image" ) );
+        //        }
+        //        return _removeImageCommand;
+        //    }
+        //}
 
-                if( imageData != null )
-                {
-                    return ProcessImage( imageData, image );
-                }
+        //ICommand _browseCommand;
+        //public ICommand BrowseCommand
+        //{
+        //    get
+        //    {
+        //        if( _browseCommand == null )
+        //        {
+        //            _browseCommand = new VMCommand<VMKeyEditable>( ( k ) =>
+        //            {
+        //                var fd = new OpenFileDialog();
+        //                fd.DefaultExt = ".png";
+        //                if( fd.ShowDialog() == true )
+        //                {
+        //                    if( !String.IsNullOrWhiteSpace( fd.FileName ) && File.Exists( fd.FileName ) && EnsureIsImage( Path.GetExtension( fd.FileName ) ) )
+        //                    {
+        //                        using( Stream str = fd.OpenFile() )
+        //                        {
+        //                            byte[] bytes = new byte[str.Length];
+        //                            str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
+        //                            string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
 
-                return null;
-            }
+        //                            Context.SkinConfiguration[Model.CurrentLayout.Current].GetOrSet( "Image", encodedImage );
+        //                        }
+        //                    }
+        //                }
+        //            } );
+        //        }
+        //        return _browseCommand;
+        //    }
+        //}
 
-            set { _ctx.SkinConfiguration[Model.CurrentLayout.Current]["Image"] = value; }
-        }
-
-        //This method handles the different ways an image can be stored in plugin datas
-        private object ProcessImage( object imageData, Image image )
-        {
-            string imageString = imageData.ToString();
-
-
-            if( imageData.GetType() == typeof( Image ) )
-            {
-                //If a WPF image was stored in the PluginDatas, we use its source to create a NEW image instance, to enable using it multiple times. 
-                Image img = new Image();
-                BitmapImage bitmapImage = new BitmapImage( new Uri( ( (Image)imageData ).Source.ToString() ) );
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                img.Source = bitmapImage;
-                return img;
-            }
-            else if( File.Exists( imageString ) ) //Handles URis
-            {
-                BitmapImage bitmapImage = new BitmapImage();
-
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri( imageString );
-                bitmapImage.EndInit();
-
-                image.Source = bitmapImage;
-
-                return image;
-            }
-            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF's pack:// protocol
-            {
-                ImageSourceConverter imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( imageString );
-            }
-            else
-            {
-                byte[] imageBytes = Convert.FromBase64String( imageData.ToString() ); //Handles base 64 encoded images
-                using( MemoryStream ms = new MemoryStream( imageBytes ) )
-                {
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = ms;
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                }
-                return image;
-            }
-        }
-
-        ICommand _removeImageCommand;
-        public ICommand RemoveImageCommand
-        {
-            get
-            {
-                if( _removeImageCommand == null )
-                {
-                    _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[Model.CurrentLayout.Current].Remove( "Image" ) );
-                }
-                return _removeImageCommand;
-            }
-        }
-
-        ICommand _browseCommand;
-        public ICommand BrowseCommand
-        {
-            get
-            {
-                if( _browseCommand == null )
-                {
-                    _browseCommand = new VMCommand<VMKeyEditable>( ( k ) =>
-                    {
-                        var fd = new OpenFileDialog();
-                        fd.DefaultExt = ".png";
-                        if( fd.ShowDialog() == true )
-                        {
-                            if( !String.IsNullOrWhiteSpace( fd.FileName ) && File.Exists( fd.FileName ) && EnsureIsImage( Path.GetExtension( fd.FileName ) ) )
-                            {
-                                using( Stream str = fd.OpenFile() )
-                                {
-                                    byte[] bytes = new byte[str.Length];
-                                    str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
-                                    string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
-
-                                    Context.SkinConfiguration[Model.CurrentLayout.Current].GetOrSet( "Image", encodedImage );
-                                }
-                            }
-                        }
-                    } );
-                }
-                return _browseCommand;
-            }
-        }
-
-        private bool EnsureIsImage( string extension )
-        {
-            return String.Compare( extension, ".jpeg", StringComparison.CurrentCultureIgnoreCase ) == 0
-                || String.Compare( extension, ".jpg", StringComparison.CurrentCultureIgnoreCase ) == 0
-                || String.Compare( extension, ".png", StringComparison.CurrentCultureIgnoreCase ) == 0
-                || String.Compare( extension, ".bmp", StringComparison.CurrentCultureIgnoreCase ) == 0;
-        }
+        //private bool EnsureIsImage( string extension )
+        //{
+        //    return String.Compare( extension, ".jpeg", StringComparison.CurrentCultureIgnoreCase ) == 0
+        //        || String.Compare( extension, ".jpg", StringComparison.CurrentCultureIgnoreCase ) == 0
+        //        || String.Compare( extension, ".png", StringComparison.CurrentCultureIgnoreCase ) == 0
+        //        || String.Compare( extension, ".bmp", StringComparison.CurrentCultureIgnoreCase ) == 0;
+        //}
 
         #endregion
 

@@ -218,7 +218,7 @@ namespace ContextEditor.ViewModels
                 LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
                 //LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
                 LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
-                KeyModeVM.TriggerPropertyChanged( "Image" );
+                //KeyModeVM.TriggerPropertyChanged( "Image" );
                 OnPropertyChanged( "Image" );
             }
         }

@@ -197,11 +197,15 @@ namespace ContextEditor
 
                         if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
 
-                        keyboardToRevert.Destroy();
+                        keyboardToRevert.Rename( Guid.NewGuid().ToString() );
 
                         _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
                         //Erasing all properties of the keyboard. We re-apply the backedup ones.
                         serializableKeyboard.ReadContent( reader );
+
+                        KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
+
+                        keyboardToRevert.Destroy();
                     }
                 }
             }
@@ -209,24 +213,6 @@ namespace ContextEditor
             {
                 KeyboardBackup.BackedUpKeyboard.Destroy();
             }
-
-            
-            //To work properly, there should be some kind of ReadContent with a configurable MergeMode, just like with the pluginsData
-            //if( !String.IsNullOrWhiteSpace( KeyboardBackup.BackUpFilePath ) )
-            //{
-            //    IStructuredSerializable serializableKeyboard = KeyboardBackup.BackedUpKeyboard as IStructuredSerializable;
-            //    if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
-
-            //    using( FileStream str = new FileStream( KeyboardBackup.BackUpFilePath, FileMode.Open ) )
-            //    {
-            //        using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
-            //        {
-            //            _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.ReplaceExisting );
-            //            //Erasing all properties of the keyboard. We re-apply the backedup ones.
-            //            serializableKeyboard.ReadContent( reader );
-            //        }
-            //    }
-            //}
             
             //After cancelling modifications, we have no backup left.
             EnsureBackupIsClean();

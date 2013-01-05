@@ -145,7 +145,7 @@ namespace ContextEditor.ViewModels
         /// <summary>
         /// Gets the Skin plugin's configuration accessor
         /// </summary>
-        public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
+        //public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
 
         VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _selectedElement;
         public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> SelectedElement

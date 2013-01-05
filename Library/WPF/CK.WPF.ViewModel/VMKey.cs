@@ -27,6 +27,10 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using CK.Core;
 using CK.Keyboard.Model;
+using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.IO;
 
 namespace CK.WPF.ViewModel
 {
@@ -57,6 +61,7 @@ namespace CK.WPF.ViewModel
         ICommand _keyDownCmd;
         ICommand _keyUpCmd;
         IKey _key;
+        TC _context;
 
         #region Properties
 
@@ -117,6 +122,74 @@ namespace CK.WPF.ViewModel
 
         #region Layout Properties
 
+        /// <summary>
+        /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
+        /// </summary>
+        public Image Image
+        {
+            get
+            {
+                object imageData = _context.SkinConfiguration[_key.Current]["Image"];
+
+                if( imageData != null )
+                {
+                    return ProcessImage( imageData );
+                }
+                
+                return null;
+            }
+
+            set { _context.Config[_key.Current]["Image"] = value; }
+        }
+
+        //This method handles the different ways an image can be stored in plugin datas
+        private Image ProcessImage( object imageData )
+        {
+            Image image = new Image();
+            string imageString = imageData.ToString();
+
+
+            if( imageData.GetType() == typeof( Image ) )
+            {
+                //If a WPF image was stored in the PluginDatas, we use its source to create a NEW image instance, to enable using it multiple times. 
+                Image img = new Image();
+                BitmapImage bitmapImage = new BitmapImage( new Uri( ( (Image)imageData ).Source.ToString() ) );
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                img.Source = bitmapImage;
+                return img;
+            }
+            else if( File.Exists( imageString ) ) //Handles URis
+            {
+                BitmapImage bitmapImage = new BitmapImage();
+
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = new Uri( imageString );
+                bitmapImage.EndInit();
+
+                image.Source = bitmapImage;
+
+                return image;
+            }
+            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF's pack:// protocol
+            {
+                ImageSourceConverter imsc = new ImageSourceConverter();
+                return (Image)imsc.ConvertFromString( imageString );
+            }
+            else
+            {
+                byte[] imageBytes = Convert.FromBase64String( imageData.ToString() ); //Handles base 64 encoded images
+                using( MemoryStream ms = new MemoryStream( imageBytes ) )
+                {
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = ms;
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                }
+                return image;
+            }
+        }
 
         /// <summary>
         /// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
@@ -317,6 +390,7 @@ namespace CK.WPF.ViewModel
             //By default, we show the fallback.
             ShowFallback = FallbackVisibility.FallbackOnLayout | FallbackVisibility.FallbackOnKeyMode;
 
+            _context = context;
             _key = key;
 
             if( presetPushBehavior )
@@ -330,6 +404,7 @@ namespace CK.WPF.ViewModel
                 DispatchPropertyChanged( "DownLabel", "KeyMode" );
                 DispatchPropertyChanged( "Enabled", "KeyMode" );
                 DispatchPropertyChanged( "Description", "KeyMode" );
+                DispatchPropertyChanged( "Image", "Image" );
             } );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
@@ -340,6 +415,7 @@ namespace CK.WPF.ViewModel
                 DispatchPropertyChanged( "Height", "LayoutKeyMode" );
                 DispatchPropertyChanged( "Visible", "LayoutKeyMode" );
                 DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Image", "Image" );
             } );
 
             SetActionOnPropertyChanged( "X", () => DispatchPropertyChanged( "X", "LayoutKeyMode" ) );
@@ -354,6 +430,7 @@ namespace CK.WPF.ViewModel
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
             SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "IsVisible" ); OnPropertyChanged( "Visible" ); } );
+            
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );

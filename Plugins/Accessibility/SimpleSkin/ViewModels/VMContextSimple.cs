@@ -26,6 +26,7 @@ using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using CK.Core;
 using CK.Context;
+using System;
 
 namespace SimpleSkin.ViewModels
 {
@@ -53,14 +54,14 @@ namespace SimpleSkin.ViewModels
 
         protected override VMKeyModeSimple CreateKeyMode( IKeyMode km )
         {
+            //"Simple skin implementation does not use VMKeyModes. Use VMKey."
             return null;
-            //return new VMKeyModeSimple(this, km);
         }
 
         protected override VMLayoutKeyModeSimple CreateLayoutKeyMode( ILayoutKeyMode lkm )
         {
+            //"Simple skin implementation does not use VMLayoutKeyModes. Use VMLayoutKey."
             return null;
-            //return new VMLayoutKeyModeSimple( this, lkm );
         }
     }
 }

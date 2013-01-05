@@ -143,11 +143,11 @@
                 <view:StdKeyView.Foreground>
                     <SolidColorBrush Color="{Binding LetterColor}"/>
                 </view:StdKeyView.Foreground>
-                <!--<i:Interaction.Triggers>
+                <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                         <cmd:EventToCommand Command="{Binding MouseLeftButtonDownCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
                     </i:EventTrigger>
-                </i:Interaction.Triggers>-->
+                </i:Interaction.Triggers>
             </view:StdKeyView>
 
             <!-- Resizing thumbs -->

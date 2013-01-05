@@ -138,6 +138,7 @@ namespace ContextEditor.ViewModels
         public void Initialize()
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.SkinConfiguration.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -206,6 +207,10 @@ namespace ContextEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                OnPropertyChanged( "Image" );
+            }
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
@@ -218,7 +223,7 @@ namespace ContextEditor.ViewModels
                 LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
                 //LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
                 LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
-                KeyModeVM.TriggerPropertyChanged( "Image" );
+                //KeyModeVM.TriggerPropertyChanged( "Image" );
                 OnPropertyChanged( "Image" );
             }
         }
@@ -240,6 +245,7 @@ namespace ContextEditor.ViewModels
             Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollections();
 
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.SkinConfiguration.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
             base.OnDispose();
         }
 

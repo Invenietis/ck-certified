@@ -91,7 +91,7 @@
                                 </RadioButton>
                                 <Grid IsEnabled="{Binding Path=IsChecked, ElementName=imagecheckbox}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition MinWidth="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="60"></ColumnDefinition>
                                         <ColumnDefinition Width="36"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>

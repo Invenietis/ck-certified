@@ -64,7 +64,7 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( LayoutKey.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 OnPropertyChanged( "Image" );
             }
@@ -81,7 +81,6 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "TextDecorations" );
                 OnPropertyChanged( "Opacity" );
-                OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );

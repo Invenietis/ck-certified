@@ -231,8 +231,6 @@ namespace ContextEditor
             
             KeyboardBackup = null;
         }
-
-        
     }
 }
 

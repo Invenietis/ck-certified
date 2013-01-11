@@ -27,10 +27,10 @@
             <!-- When editing a key -->
             <DataTemplate x:Key="KeyEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}" Width="Auto" Height="Auto" >
-                    <TabItem Header="Aspect et position" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Layout, Converter={StaticResource modeTypeToSelectedConverter}}">
+                    <TabItem x:Uid="keyboard-editor-key-tabitem-aspect" Header="Aspect et position" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Layout, Converter={StaticResource modeTypeToSelectedConverter}}">
                         <local:LayoutKeyEditionUserControl DataContext="{Binding}"  />
                     </TabItem>
-                    <TabItem Header="Configuration générale" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Mode, Converter={StaticResource modeTypeToSelectedConverter}}">
+                    <TabItem x:Uid="keyboard-editor-key-tabitem-config" Header="Configuration générale" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Mode, Converter={StaticResource modeTypeToSelectedConverter}}">
                         <local:KeyModeEditionUserControl DataContext="{Binding}"/>
                     </TabItem>
                 </TabControl>
@@ -39,7 +39,7 @@
             <!-- When editing a keyboard -->
             <DataTemplate x:Key="KeyboardEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Aspect">
+                    <TabItem x:Uid="keyboard-editor-keyboard-tabitem-aspect" Header="Aspect">
                         <local:KeyboardEditionUserControl DataContext="{Binding}"/>
                     </TabItem>
                 </TabControl>
@@ -48,7 +48,7 @@
             <!-- When editing a zone -->
             <DataTemplate x:Key="ZoneEditionDataTemplate">
                 <TabControl Style="{StaticResource KeyEditionUCStyle}">
-                    <TabItem Header="Aspect">
+                    <TabItem x:Uid="keyboard-editor-zone-tabitem-aspect" Header="Aspect">
                         <local:ZoneEditionUserControl DataContext="{Binding}" />
                     </TabItem>
                 </TabControl>

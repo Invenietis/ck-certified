@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
+using ContextEditor.Resources;
 using ContextEditor.ViewModels;
 using Microsoft.Win32;
 
@@ -57,7 +58,7 @@ namespace ContextEditor.ViewModels
         public bool IsEmpty { get { return _model.Mode.IsEmpty; } }
 
         //COMMON
-        public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? "Default mode" : _model.Mode.ToString(); } }
+        public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? R.DefaultMode : _model.Mode.ToString(); } }
 
         /// <summary>
         /// Gets whether the element is selected.

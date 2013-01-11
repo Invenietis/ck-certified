@@ -53,16 +53,16 @@
                             <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png"></Image>
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel>
-                                    <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
-                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
-                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+                                    <TextBlock x:Uid="keyboard-editor-key-mode-warning1" Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center" Text="The properties displayed are those of the key on the following mode :" />
+                                    <TextBlock x:Uid="keyboard-editor-key-mode-warning2" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="Click on the '+' button to edit the key for the mode selected above" />
+                                    <TextBlock x:Uid="keyboard-editor-key-mode-warning3" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="or click on the mode button to go back to this mode." />
                                 </StackPanel>
                                 <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding KeyModeVM.ApplyToCurrentModeCommand}" >
                                     <ContentControl Content="{Binding KeyModeVM.Name}" />
                                 </Button>
                                 <Button Height="24" Width="24" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="KeyMode">
                                     <Button.ToolTip>
-                                        <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                                        <ToolTip x:Uid="keyboard-editor-key-mode-new-key-mode-tooltip" ToolTip="Create a new whole set of parameters for this key when in the current mode" />
                                     </Button.ToolTip>
                                     <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png" />
                                 </Button>
@@ -72,7 +72,7 @@
 
                     <!-- Mode : current mode display -->
                     <StackPanel Style="{StaticResource KeyModeOKDisplayStyle}">
-                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
+                        <TextBlock x:Uid="keyboard-editor-key-mode-current-mode" TextWrapping="Wrap" VerticalAlignment="Center" Text="Current mode : " />
                         <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding KeyModeVM, Mode=OneWay}" />
                     </StackPanel>
 
@@ -85,13 +85,13 @@
                         <StackPanel>
                             <StackPanel Margin="5">
                                 <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="{Binding ShowImage, Mode=TwoWay, Converter={StaticResource notconverter} }">
-                                    <TextBlock Text="Texte affiché : " />
+                                    <TextBlock x:Uid="keyboard-editor-key-mode-display-text" Text="Displayed text : " />
                                 </RadioButton>
                                 <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding KeyModeVM.UpLabel, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox" IsChecked="{Binding ShowImage, Mode=TwoWay}">
-                                    <TextBlock Text="Image : " />
+                                    <TextBlock x:Uid="keyboard-editor-key-mode-image-text" Text="Image : " />
                                 </RadioButton>
                                 <Grid IsEnabled="{Binding Path=IsChecked, ElementName=imagecheckbox}">
                                     <Grid.ColumnDefinitions>
@@ -104,10 +104,10 @@
                                     </Grid.RowDefinitions>
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Image}" Grid.Column="0" Grid.RowSpan="2" />
                                     <Button Grid.Column="1" Grid.Row="0" Command="{Binding KeyModeVM.BrowseCommand}" Margin="2" >
-                                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/browse.png"></Image>
+                                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/browse.png" />
                                     </Button>
                                     <Button Grid.Column="1" Grid.Row="1" Command="{Binding KeyModeVM.RemoveImageCommand}" Margin="2">
-                                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png" />
                                     </Button>
                                 </Grid>
                             </StackPanel>
@@ -117,7 +117,7 @@
                     <!-- Commands -->
                     <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
                         <StackPanel Margin="5">
-                            <TextBlock Text="Key program : " Margin="8"/>
+                            <TextBlock x:Uid="keyboard-editor-key-mode-key-program" Text="Key program : " Margin="8"/>
                             <ItemsControl ItemsSource="{Binding KeyModeVM.Commands}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -156,9 +156,9 @@
                     <!-- Description -->
                     <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
                         <StackPanel Margin="5">
-                            <TextBlock Margin="0 0 0 5" Text="Description : ">
-                                <TextBlock.ToolTip>
-                                    Cette description sera visible lorsque la souris restera au-dessus de cette touche
+                            <TextBlock x:Uid="keyboard-editor-key-mode-description-title" Margin="0 0 0 5" Text="Description : ">
+                                <TextBlock.ToolTip >
+                                    <ToolTip x:Uid="keyboard-editor-key-mode-description-tooltip" ToolTip="This text will be displayed below the key if the mouse pointer stays over it" />
                                 </TextBlock.ToolTip>
                             </TextBlock>
                             <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding KeyModeVM.Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
@@ -169,19 +169,19 @@
             </StackPanel>
 
             <!-- Actions -->
-            <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0 0 0">
+            <GroupBox x:Uid="keyboard-editor-key-mode-actions" DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0 0 0">
                 <StackPanel>
 
                     <!-- Key : Delete buttons -->
-                    <vm:ActionControl Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
+                    <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-key-button" Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
                                       ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png" 
                                       Template="{StaticResource SimpleActionControlTemplate}" />
 
                     <!-- Mode : Delete buttons -->
-                    <vm:ActionControl Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
+                    <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-mode-button" Action="{Binding KeyModeVM.DeleteKeyModeCommand}" Text="Delete this mode :"
                                       ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"
                                       Template="{StaticResource SimpleActionControlTemplate}"
-                                      Text="Delete this mode :">
+                                      ActionParameter="KeyMode">
                         <vm:ActionControl.Style>
                             <Style TargetType="{x:Type vm:ActionControl}">
                                 <Style.Triggers>

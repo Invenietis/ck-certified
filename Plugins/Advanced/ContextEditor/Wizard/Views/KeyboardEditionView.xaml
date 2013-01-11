@@ -112,74 +112,72 @@
 
         </ResourceDictionary>
     </UserControl.Resources>
-    <!--<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
-        <Border DataContext="{Binding EditedContext}" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
-            <Border.Resources>
-                <!-- Override tree view items "selected" style -->
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
-            </Border.Resources>
+    <Border DataContext="{Binding EditedContext}" BorderThickness="1" BorderBrush="Black" CornerRadius="5">
+        <Border.Resources>
+            <!-- Override tree view items "selected" style -->
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+        </Border.Resources>
+        <StackPanel Orientation="Horizontal">
+            <!-- TreeView -->
+            <TreeView DataContext="{Binding KeyboardVM}" Padding="20 0" MinWidth="100" MaxHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
+                <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}"/>
+            </TreeView>
+            <ScrollViewer>
+                <Border Height="650">
+                    <StackPanel Orientation="Vertical">
+                        <!-- Mode selection panel -->
+                        <StackPanel Orientation="Horizontal" Margin="10 20">
+                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Mode : " Margin="5 0" />
+                            <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition SharedSizeGroup="ModeColumn" />
+                                            </Grid.ColumnDefinitions>
+                                            <ToggleButton Grid.Row="0" Padding="3 2" IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
+                        <!-- Edition panel -->
+                        <Viewbox Stretch="Uniform" Grid.Column="1">
+                            <view:StdKeyboardView DataContext="{Binding KeyboardVM}" x:Name="KeyboardContainer"/>
+                        </Viewbox>
 
-                <!-- TreeView -->
-                <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden">
-                    <TreeView DataContext="{Binding KeyboardVM}" Padding="20 0" MinWidth="100" MaxHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
-                        <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}"/>
-                    </TreeView>
-                </ScrollViewer>
-                <StackPanel Orientation="Vertical">
-
-                    <!-- Mode selection panel -->
-                    <StackPanel Orientation="Horizontal" Margin="10 20">
-                        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Mode : " Margin="5 0" />
-                        <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition SharedSizeGroup="ModeColumn" />
-                                        </Grid.ColumnDefinitions>
-                                        <ToggleButton Grid.Row="0" Padding="3 2" IsChecked="{Binding IsChecked}" Content="{Binding Mode, Mode=OneWay}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <!-- Breadcrumb -->
+                        <StackPanel Orientation="Horizontal">
+                            <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="5" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button VerticalAlignment="Center" Content="{Binding Name}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.SelectCommand}" CommandParameter="{Binding}" />
+                                            <TextBlock Text=">" VerticalAlignment="Center" Margin="5 0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button IsEnabled="False" VerticalAlignment="Center" Content="{Binding SelectedElement.Name}" />
+                        </StackPanel>
+                        <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}" />
                     </StackPanel>
+                    <!--</ScrollViewer>-->
+                </Border>
+            </ScrollViewer>
+        </StackPanel>
 
-                    <!-- Edition panel -->
-                    <Viewbox Stretch="Uniform" Grid.Column="1">
-                        <view:StdKeyboardView DataContext="{Binding KeyboardVM}" x:Name="KeyboardContainer"/>
-                    </Viewbox>
-
-                    <!-- Breadcrumb -->
-                    <StackPanel Orientation="Horizontal">
-                        <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="5" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button VerticalAlignment="Center" Content="{Binding Name}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.SelectCommand}" CommandParameter="{Binding}" />
-                                        <TextBlock Text=">" VerticalAlignment="Center" Margin="5 0" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <Button IsEnabled="False" VerticalAlignment="Center" Content="{Binding SelectedElement.Name}" />
-                    </StackPanel>
-                    <ContentControl ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}" />
-                </StackPanel>
-            </StackPanel>
-
-        </Border>
-    <!--</ScrollViewer>-->
+    </Border>
 </UserControl>

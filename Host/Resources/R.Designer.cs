@@ -61,6 +61,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced configuration.
+        /// </summary>
+        public static string AdvancedAppConfig {
+            get {
+                return ResourceManager.GetString("AdvancedAppConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (Advanced user).
         /// </summary>
         public static string AdvancedUserNotice {
@@ -525,6 +534,15 @@ namespace Host.Resources {
         public static string SkinAutohideTimeout {
             get {
                 return ResourceManager.GetString("SkinAutohideTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic configuration.
+        /// </summary>
+        public static string SkinBasicConfig {
+            get {
+                return ResourceManager.GetString("SkinBasicConfig", resourceCulture);
             }
         }
         

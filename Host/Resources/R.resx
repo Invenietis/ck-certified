@@ -297,4 +297,10 @@
   <data name="ScrollConfig" xml:space="preserve">
     <value>Edit scrolling configuration</value>
   </data>
+  <data name="AdvancedAppConfig" xml:space="preserve">
+    <value>Advanced configuration</value>
+  </data>
+  <data name="SkinBasicConfig" xml:space="preserve">
+    <value>Basic configuration</value>
+  </data>
 </root>

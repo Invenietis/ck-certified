@@ -63,22 +63,6 @@ namespace CK.WPF.StandardViews
         public static readonly DependencyProperty YProperty =
         DependencyProperty.Register( "Y", typeof( int ), typeof( StdKeyView ) );
 
-        //public ICommand Width
-        //{
-        //    get { return (ICommand)GetValue( WidthProperty ); }
-        //    set { SetValue( WidthProperty, value ); }
-        //}
-        //public static readonly DependencyProperty WidthProperty =
-        //DependencyProperty.Register( "Width", typeof( int ), typeof( StdKeyView ) );
-
-        //public ICommand Height
-        //{
-        //    get { return (ICommand)GetValue( HeightProperty ); }
-        //    set { SetValue( HeightProperty, value ); }
-        //}
-        //public static readonly DependencyProperty HeightProperty =
-        //DependencyProperty.Register( "Height", typeof( int ), typeof( StdKeyView ) );
-
         public ICommand Description
         {
             get { return (ICommand)GetValue( DescriptionProperty ); }
@@ -134,6 +118,15 @@ namespace CK.WPF.StandardViews
         }
         public static readonly DependencyProperty ShowLabelProperty = 
         DependencyProperty.Register( "ShowLabel", typeof( bool ), typeof( StdKeyView ), new PropertyMetadata( true ) );
+
+        public bool ShowImage
+        {
+            get { return (bool)GetValue( ShowImageProperty ); }
+            set { SetValue( ShowImageProperty, value ); }
+        }
+        public static readonly DependencyProperty ShowImageProperty =
+        DependencyProperty.Register( "ShowImage", typeof( bool ), typeof( StdKeyView ), new PropertyMetadata( true ) );
+
 
         public string UpLabel
         {

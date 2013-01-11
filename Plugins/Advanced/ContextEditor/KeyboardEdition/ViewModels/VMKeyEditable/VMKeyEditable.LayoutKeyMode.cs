@@ -51,7 +51,14 @@ namespace ContextEditor.ViewModels
 
         public bool ShowLabel
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
+            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.SkinConfiguration, "ShowLabel", true ); }
+            set { Context.SkinConfiguration[LayoutKeyMode]["ShowLabel"] = value; }
+        }
+
+        public bool ShowImage
+        {
+            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.SkinConfiguration, "ShowImage", false ); }
+            set { Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] = value; }
         }
 
         /// <summary>

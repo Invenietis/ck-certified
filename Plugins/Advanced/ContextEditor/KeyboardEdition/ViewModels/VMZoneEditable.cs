@@ -247,7 +247,7 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public new string Name
         {
-            get { return String.IsNullOrWhiteSpace( Model.Name ) ? "Default mode" : Model.Name; }
+            get { return String.IsNullOrWhiteSpace( Model.Name ) ? "Default zone" : Model.Name; }
             set { Model.Rename( value ); }
         }
 

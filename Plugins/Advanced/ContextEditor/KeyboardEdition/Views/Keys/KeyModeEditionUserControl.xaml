@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
             
             <ckc:NotNullConverter x:Key="notnullconverter"/>
+            <ckc:NotConverter x:Key="notconverter"/>
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
@@ -83,23 +84,13 @@
                     <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
                         <StackPanel>
                             <StackPanel Margin="5">
-                                <RadioButton GroupName="keyUplabel" x:Name="textcheckbox">
-                                    <RadioButton.IsChecked>
-                                        <Binding Path="Image" Mode="OneWay">
-                                            <Binding.Converter>
-                                                <ckc:ValueConverterGroup>
-                                                    <ckc:NotNullConverter/>
-                                                    <ckc:NotConverter/>
-                                                </ckc:ValueConverterGroup>
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </RadioButton.IsChecked>
+                                <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="{Binding ShowImage, Mode=TwoWay, Converter={StaticResource notconverter} }">
                                     <TextBlock Text="Texte affiché : " />
                                 </RadioButton>
                                 <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding KeyModeVM.UpLabel, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel Margin="5">
-                                <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox" IsChecked="{Binding Path=Image, Mode=OneWay, Converter={StaticResource notnullconverter}}">
+                                <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox" IsChecked="{Binding ShowImage, Mode=TwoWay}">
                                     <TextBlock Text="Image : " />
                                 </RadioButton>
                                 <Grid IsEnabled="{Binding Path=IsChecked, ElementName=imagecheckbox}">

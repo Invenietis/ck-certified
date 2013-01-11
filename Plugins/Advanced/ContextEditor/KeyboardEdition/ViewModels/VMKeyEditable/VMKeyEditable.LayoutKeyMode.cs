@@ -49,66 +49,10 @@ namespace ContextEditor.ViewModels
             get { return Model.CurrentLayout.Current; }
         }
 
-        #region Key Image management
-
         public bool ShowLabel
         {
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
         }
-
-        //ICommand _removeImageCommand;
-        //public ICommand RemoveImageCommand
-        //{
-        //    get
-        //    {
-        //        if( _removeImageCommand == null )
-        //        {
-        //            _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[Model.CurrentLayout.Current].Remove( "Image" ) );
-        //        }
-        //        return _removeImageCommand;
-        //    }
-        //}
-
-        //ICommand _browseCommand;
-        //public ICommand BrowseCommand
-        //{
-        //    get
-        //    {
-        //        if( _browseCommand == null )
-        //        {
-        //            _browseCommand = new VMCommand<VMKeyEditable>( ( k ) =>
-        //            {
-        //                var fd = new OpenFileDialog();
-        //                fd.DefaultExt = ".png";
-        //                if( fd.ShowDialog() == true )
-        //                {
-        //                    if( !String.IsNullOrWhiteSpace( fd.FileName ) && File.Exists( fd.FileName ) && EnsureIsImage( Path.GetExtension( fd.FileName ) ) )
-        //                    {
-        //                        using( Stream str = fd.OpenFile() )
-        //                        {
-        //                            byte[] bytes = new byte[str.Length];
-        //                            str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
-        //                            string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
-
-        //                            Context.SkinConfiguration[Model.CurrentLayout.Current].GetOrSet( "Image", encodedImage );
-        //                        }
-        //                    }
-        //                }
-        //            } );
-        //        }
-        //        return _browseCommand;
-        //    }
-        //}
-
-        //private bool EnsureIsImage( string extension )
-        //{
-        //    return String.Compare( extension, ".jpeg", StringComparison.CurrentCultureIgnoreCase ) == 0
-        //        || String.Compare( extension, ".jpg", StringComparison.CurrentCultureIgnoreCase ) == 0
-        //        || String.Compare( extension, ".png", StringComparison.CurrentCultureIgnoreCase ) == 0
-        //        || String.Compare( extension, ".bmp", StringComparison.CurrentCultureIgnoreCase ) == 0;
-        //}
-
-        #endregion
 
         /// <summary>
         /// Gets the opacity of the key.

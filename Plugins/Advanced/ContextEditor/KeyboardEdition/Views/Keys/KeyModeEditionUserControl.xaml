@@ -5,12 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:vm="clr-namespace:ContextEditor.ViewModels"
+             xmlns:ckc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <ckc:NotNullConverter x:Key="notnullconverter"/>
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
@@ -80,13 +83,23 @@
                     <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
                         <StackPanel>
                             <StackPanel Margin="5">
-                                <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="True">
+                                <RadioButton GroupName="keyUplabel" x:Name="textcheckbox">
+                                    <RadioButton.IsChecked>
+                                        <Binding Path="Image" Mode="OneWay">
+                                            <Binding.Converter>
+                                                <ckc:ValueConverterGroup>
+                                                    <ckc:NotNullConverter/>
+                                                    <ckc:NotConverter/>
+                                                </ckc:ValueConverterGroup>
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </RadioButton.IsChecked>
                                     <TextBlock Text="Texte affiché : " />
                                 </RadioButton>
                                 <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding KeyModeVM.UpLabel, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel Margin="5">
-                                <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox">
+                                <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox" IsChecked="{Binding Path=Image, Mode=OneWay, Converter={StaticResource notnullconverter}}">
                                     <TextBlock Text="Image : " />
                                 </RadioButton>
                                 <Grid IsEnabled="{Binding Path=IsChecked, ElementName=imagecheckbox}">
@@ -167,10 +180,7 @@
             <!-- Actions -->
             <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0 0 0">
                 <StackPanel>
-                    
-                    <!-- Key : Delete buttons -->
 
-                    <!-- Mode : Delete buttons -->
                     <!-- Key : Delete buttons -->
                     <vm:ActionControl Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
                                       ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png" 

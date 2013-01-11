@@ -14,7 +14,6 @@ using CK.WPF.ViewModel;
 using ContextEditor.ViewModels;
 using Microsoft.Win32;
 
-//TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
 namespace ContextEditor.ViewModels
 {
     public class VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel

@@ -107,9 +107,9 @@ namespace SimpleSkin
 
         public void Start()
         {
-            if( HelpService.Status == RunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" ) );
+            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" ) );
 
-            if( KeyboardContext.Status == RunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
+            if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 Context.ServiceContainer.Add( Config );
 
@@ -118,7 +118,7 @@ namespace SimpleSkin
                 _skinWindow = new SkinWindow( _ctxVm );
 
                 Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
-                if( Highlighter.Status == RunningStatus.Started )
+                if( Highlighter.Status == InternalRunningStatus.Started )
                 {
                     Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
                     Highlighter.Service.BeginHighlight += OnBeginHighlight;
@@ -194,14 +194,14 @@ namespace SimpleSkin
 
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Started )
+            if( e.Current == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
                 Highlighter.Service.BeginHighlight += OnBeginHighlight;
                 Highlighter.Service.EndHighlight += OnEndHighlight;
                 Highlighter.Service.SelectElement += OnSelectElement;
             }
-            else if( e.Current == RunningStatus.Stopping )
+            else if( e.Current == InternalRunningStatus.Stopping )
             {
                 Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
                 Highlighter.Service.BeginHighlight -= OnBeginHighlight;
@@ -222,7 +222,7 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
-            if( Highlighter.Status == RunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
             }
@@ -268,7 +268,7 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( Highlighter.Status == RunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
             }
@@ -365,7 +365,7 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
-                if( Highlighter.Status == RunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                if( Highlighter.Status == InternalRunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();

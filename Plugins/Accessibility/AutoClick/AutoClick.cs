@@ -74,7 +74,7 @@ namespace CK.Plugins.AutoClick
             {
                 return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
                 {
-                    if( HelpService.Status == RunningStatus.Started )
+                    if( HelpService.Status == InternalRunningStatus.Started )
                     {
                         HelpService.Service.ShowHelpFor( PluginId, true );
                     }
@@ -177,7 +177,7 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
-            if( HelpService.Status == RunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( AutoClick ).Assembly.GetManifestResourceStream( "AutoClick.Res.helpcontent.zip" ) );
+            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( AutoClick ).Assembly.GetManifestResourceStream( "AutoClick.Res.helpcontent.zip" ) );
 
             _isPaused = true;
             _selector = new StdClickTypeSelector( this );
@@ -286,7 +286,7 @@ namespace CK.Plugins.AutoClick
 
         void OnMouseDriverServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Stopped )
+            if( e.Current == InternalRunningStatus.Stopped )
             {
                 MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
             }
@@ -359,10 +359,10 @@ namespace CK.Plugins.AutoClick
         }
         private void UnregisterEvents()
         {
-            if( MouseDriver.Status != RunningStatus.Stopped && MouseDriver.Status != RunningStatus.Disabled )
+            if( MouseDriver.Status != InternalRunningStatus.Stopped && MouseDriver.Status != InternalRunningStatus.Disabled )
                 MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
 
-            if( MouseWatcher.Status != RunningStatus.Stopped && MouseWatcher.Status != RunningStatus.Disabled )
+            if( MouseWatcher.Status != InternalRunningStatus.Stopped && MouseWatcher.Status != InternalRunningStatus.Disabled )
             {
                 MouseWatcher.Service.LaunchClick -= new EventHandler( OnClickAsked );
                 MouseWatcher.Service.ProgressValueChanged -= new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );

@@ -35,32 +35,29 @@
     <DocumentationFile>..\..\..\Output\Release\Plugins\CK.Keyboard.Model.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Core, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Core.2.7.43\lib\net40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection">
-      <HintPath>..\..\..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Reflection, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Reflection.2.7.43\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.9.0-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage">
-      <HintPath>..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Storage, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Storage.2.7.43\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

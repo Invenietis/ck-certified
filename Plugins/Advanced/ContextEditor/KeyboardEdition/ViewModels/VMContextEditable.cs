@@ -226,7 +226,7 @@ namespace ContextEditor.ViewModels
 
         protected override void OnDispose()
         {
-            if( PointerDeviceDriver != null && PointerDeviceDriver.Status == RunningStatus.Started )
+            if( PointerDeviceDriver != null && PointerDeviceDriver.Status == InternalRunningStatus.Started )
             {
                 PointerDeviceDriver.Service.PointerMove -= OnMouseMove;
                 PointerDeviceDriver.Service.PointerButtonUp -= OnPointerButtonUp;

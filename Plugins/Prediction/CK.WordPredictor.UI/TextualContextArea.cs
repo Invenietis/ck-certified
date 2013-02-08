@@ -61,8 +61,8 @@ namespace CK.WordPredictor.UI
         {
             if( e.PropertyName == "DisplayContextEditor" )
             {
-                if( Feature.DisplayContextEditor && (_window == null || !_window.IsVisible) ) EnableEditor();
-                if( Feature.DisplayContextEditor == false && (_window != null && _window.IsVisible) ) DisableEditor();
+                if( Feature.DisplayContextEditor ) EnableEditor();
+                if( Feature.DisplayContextEditor == false ) DisableEditor();
             }
         }
 
@@ -96,7 +96,7 @@ namespace CK.WordPredictor.UI
         {
             if( zone != null )
             {
-                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords + 1 );
+                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords );
 
                 _sendContextKey.Current.UpLabel = "Envoyer";
                 _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendPredictionAreaContent" );

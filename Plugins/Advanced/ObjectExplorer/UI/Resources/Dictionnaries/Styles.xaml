@@ -271,7 +271,7 @@
                         </Grid.RowDefinitions>
                         <ToggleButton x:Name="Expander" Style="{StaticResource ExpandCollapseToggleStyle}" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"/>
                         <Border x:Name="Bd" SnapsToDevicePixels="true" Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" Margin="3">
                                 <Image Stretch="Fill" StretchDirection="Both" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0,0,3,0" Source="{Binding Path=(oe:TreeViewItemImage.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
                                 <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"/>
                             </StackPanel>

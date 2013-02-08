@@ -329,11 +329,11 @@ namespace CK.WordPredictor
 
         void OnCommandTextualContextServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
             }
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 CommandTextualContextService.Service.TextualContextClear += OnTextualContextClear;
             }
@@ -341,12 +341,12 @@ namespace CK.WordPredictor
 
         private void OnPredictionAreaServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 PredictionTextAreaService.Service.TextSent -= OnPredictionAreaContentSent;
                 PredictionTextAreaService.Service.PropertyChanged -= OnPredictionAreaServicePropertyChanged;
             }
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 PredictionTextAreaService.Service.TextSent += OnPredictionAreaContentSent;
                 PredictionTextAreaService.Service.PropertyChanged += OnPredictionAreaServicePropertyChanged;
@@ -356,11 +356,11 @@ namespace CK.WordPredictor
         
         void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 SendStringService.Service.StringSent -= OnStringSent;
             }
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 SendStringService.Service.StringSent += OnStringSent;
             }
@@ -368,11 +368,11 @@ namespace CK.WordPredictor
 
         void OnSendKeyServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 SendKeyService.Service.KeySent -= OnKeySent;
             }
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 SendKeyService.Service.KeySent += OnKeySent;
             }

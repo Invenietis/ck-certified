@@ -47,59 +47,51 @@
     </Reference>
     <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Context.2.8.47-develop\lib\net40\CK.Context.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.Context.2.9.0-develop\lib\net40\CK.Context.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core">
-      <HintPath>..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CK.Interop, Version=2.7.40.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Interop.2.7.40\lib\net40\CK.Interop.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.Core.2.7.43\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Interop, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Interop.2.7.43\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Plugin.Config.2.8.47-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.Plugin.Config.2.9.0-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection">
-      <HintPath>..\..\..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Reflection, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Reflection.2.7.43\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.8.47-develop\lib\net40\CK.SharedDic.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.9.0-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage">
-      <HintPath>..\..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Storage, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Storage.2.7.43\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.8.47-develop\lib\net40\CK.Windows.Core.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.9.0-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Interop.2.8.47-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.9.0-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -135,7 +127,6 @@
     <Compile Include="Editor\EditorViewModel.cs" />
     <Compile Include="Editor\EditorViewModel.FontProperties.cs" />
     <Compile Include="Editor\SimpleSkinEditor.cs" />
-    <Compile Include="Helpers\PropertyLookupExtentions.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>
@@ -144,7 +135,8 @@
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\VMContextElementSimple.cs" />
+    <Compile Include="ViewModels\VMLayoutKeyModeSimple.cs" />
+    <Compile Include="ViewModels\VMKeyModeSimple.cs" />
     <Compile Include="ViewModels\VMContextSimple.cs" />
     <Compile Include="ViewModels\VMKeyboardSimple.cs" />
     <Compile Include="ViewModels\VMKeySimple.cs" />
@@ -251,6 +243,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Res\helpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\EditorLogo.png" />
@@ -270,6 +263,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\kb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

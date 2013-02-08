@@ -44,12 +44,21 @@ namespace Host
     /// Singleton host. Its private constructor is safe (no exceptions can be 
     /// thrown except an out of memory: we can safely ignore this pathological case).
     /// </summary>
-    public class CivikeyStandardHost : AbstractContextHost, IHostInformation
+    public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
     {
         Version _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
+        IVersionedUniqueId _fakeUniqueIdForTheHost;
+
+        public event EventHandler<HostHelpEventArgs> ShowHostHelp;
+
+        public void FireShowHostHelp()
+        {
+            if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
+            ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
+        }
 
         /// <summary>
         /// Gets the current version of the Civikey-Standard application.
@@ -86,55 +95,26 @@ namespace Host
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
-            
-            //Optimisation
-            //TODO : uncomment when the new brain is live
-            //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
-
-            //Optimisation
-            //TODO : remove when the new brain is live
+            hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ED1562F-2416-45cb-9FC8-EEF941E3EDBC}" ), RunningRequirement.MustExistAndRun );
-
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "E93C53AC-1621-4767-8489-097767205C87" ), ConfigUserAction.Stopped );//CommonTimer
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "B9C6CCB0-BA03-477a-94D6-6035D39156E5" ), ConfigUserAction.Stopped );//CommonTimerEditor
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "62C9697A-95A1-475e-AFDE-1094B018382A" ), ConfigUserAction.Stopped );//CommonTimerWindow
-
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "402C9FF7-545A-4E3C-AD35-70ED37497805" ), ConfigUserAction.Stopped );//SkinEditor (colors)
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "66AD1D1C-BF19-405D-93D3-30CA39B9E52F" ), ConfigUserAction.Stopped );//KeyboardEditor
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "4BF2616D-ED41-4E9F-BB60-72661D71D4AF" ), ConfigUserAction.Stopped );//ObjectExplorer
-
-
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "04B1B7F5-6CD8-4691-B5FD-2C4401C3AC0C" ), ConfigUserAction.Started );//ChangeKeyboard
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "4EDBED5A-C38E-4A94-AD34-18720B09F3B7" ), ConfigUserAction.Started );//ClicCommandHandler 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "376ADF69-7D43-423D-93CE-30CB75B24069" ), ConfigUserAction.Stopped );//Commandviewer 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "0628E093-A9C6-4EC6-83C8-F684352B5B37" ), ConfigUserAction.Started );//DynCommandHandler 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "4A3F1565-E127-473c-B169-0022A3EDB58D" ), ConfigUserAction.Started );//ModeCommandHandler 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "E9EAB9C1-8F46-4DE1-AAED-0F6371C49F50" ), ConfigUserAction.Started );//MonitorOncecommandHandler 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF" ), ConfigUserAction.Started );//MoveOnceCommandHandler 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "3B38A879-4968-4fec-8AE8-81D9EBBB7D69" ), ConfigUserAction.Started );//SendKey 
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "7CCD8104-FB8A-4495-8855-3E7B56EE5100" ), ConfigUserAction.Started );//CommandManager
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "11C83441-6818-4A8B-97A0-1761E1A54251" ), ConfigUserAction.Started );//UpdateChecker
-
-            Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "0F740086-85AC-46EB-87ED-12A4CA2D12D9" ), ConfigUserAction.Stopped );//KeyboardPatcher
-
             ctx.PluginRunner.Add( hostRequirements );
-
-
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
             // Initializes Services.
             {
                 ctx.ServiceContainer.Add<IHostInformation>( this );
+                ctx.ServiceContainer.Add<IHostHelp>( this );
                 // inject specific xaml serializers.
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Size> ), new XamlSerializer<Size>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Color> ), new XamlSerializer<Color>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<LinearGradientBrush> ), new XamlSerializer<LinearGradientBrush>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<TextDecorationCollection> ), new XamlSerializer<TextDecorationCollection>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontWeight> ), new XamlSerializer<FontWeight>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontStyle> ), new XamlSerializer<FontStyle>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Image> ), new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add( typeof( INotificationService ), _notificationMngr );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Size>>( new XamlSerializer<Size>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Color>>( new XamlSerializer<Color>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<LinearGradientBrush>>( new XamlSerializer<LinearGradientBrush>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<TextDecorationCollection>>( new XamlSerializer<TextDecorationCollection>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
+                ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );

@@ -101,6 +101,11 @@ namespace KeyboardPatcher
                     IKey lastKey = keys.LastOrDefault();
                     if( lastKey != null && lastKey.Current.UpLabel != "MinimizeHost" )
                     {
+                        if( EditedConfiguration == null )
+                        {
+                            errorMessage = R.SkinConfigurationNull;
+                            return false;
+                        }
                         return true;
                     }
                     else errorMessage = String.Format( R.MinimizeHostKeyAlreadyAdded, DateTime.Now );

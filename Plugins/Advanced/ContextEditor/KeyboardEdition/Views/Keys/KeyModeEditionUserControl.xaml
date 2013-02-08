@@ -1,0 +1,201 @@
+﻿<UserControl x:Class="ContextEditor.s.KeyModeEditionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeOKDisplayStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="True">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Rounded}" x:Key="WarningRoundedStyle">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border BorderThickness="1" CornerRadius="5" Background="White" Padding="5">
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <DockPanel LastChildFill="False">
+
+                    <!-- Mode : Fallback warning -->
+                    <Border Style="{StaticResource WarningRoundedStyle}" Background="#FFFCF8E3">
+                        <StackPanel Style="{StaticResource KeyModeWarningDisplayStyle}">
+                            <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png"></Image>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
+                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
+                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+                                </StackPanel>
+                                <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding KeyModeVM.ApplyToCurrentModeCommand}" >
+                                    <ContentControl Content="{Binding KeyModeVM.Name}" />
+                                </Button>
+                                <Button Height="24" Width="24" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="KeyMode">
+                                    <Button.ToolTip>
+                                        <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                                    </Button.ToolTip>
+                                    <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Mode : current mode display -->
+                    <StackPanel Style="{StaticResource KeyModeOKDisplayStyle}">
+                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
+                        <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding}" DataContext="{Binding KeyModeVM, Mode=OneWay}" />
+                    </StackPanel>
+
+                </DockPanel>
+
+                <DockPanel LastChildFill="True" IsEnabled="{Binding KeyModeVM.IsFallback, Converter={StaticResource notconverter}}">
+
+                    <!-- KeyMode display text & image -->
+                    <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
+                        <StackPanel>
+                            <StackPanel Margin="5">
+                                <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="True">
+                                    <TextBlock Text="Texte affiché : " />
+                                </RadioButton>
+                                <TextBox IsEnabled="{Binding Path=IsChecked, ElementName=textcheckbox}" Text="{Binding KeyModeVM.UpLabel, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Margin="5">
+                                <RadioButton GroupName="keyUplabel" x:Name="imagecheckbox">
+                                    <TextBlock Text="Image : " />
+                                </RadioButton>
+                                <Grid IsEnabled="{Binding Path=IsChecked, ElementName=imagecheckbox}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="36"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Image}" Grid.Column="0" Grid.RowSpan="2" />
+                                    <Button Grid.Column="1" Grid.Row="0" Command="{Binding KeyModeVM.BrowseCommand}" Margin="2" >
+                                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/browse.png"></Image>
+                                    </Button>
+                                    <Button Grid.Column="1" Grid.Row="1" Command="{Binding KeyModeVM.RemoveImageCommand}" Margin="2">
+                                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Commands -->
+                    <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
+                        <StackPanel Margin="5">
+                            <TextBlock Text="Key program : " Margin="8"/>
+                            <ItemsControl ItemsSource="{Binding KeyModeVM.Commands}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel LastChildFill="False">
+                                            <TextBlock Text="{Binding}" DockPanel.Dock="Left"/>
+                                            <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.KeyModeVM.RemoveCommandCommand}" CommandParameter="{Binding}">
+                                                <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/delete.png"></Image>
+                                            </Button>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <DockPanel LastChildFill="True" Margin="0 5 0 0">
+                                <Button DockPanel.Dock="Right" Width="24" Height="24" VerticalAlignment="Center" Command="{Binding KeyModeVM.AddCommandCommand}" CommandParameter="{Binding ElementName=addTxtBox, Path=Text}">
+                                    <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=addTxtBox, Path=Text, Converter={StaticResource stringnulltobool}}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <TextBox DockPanel.Dock="Left" MinWidth="100" Name="addTxtBox" Margin="0 0 5 0"></TextBox>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Description -->
+                    <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Background="#FFF9F9F9">
+                        <StackPanel Margin="5">
+                            <TextBlock Margin="0 0 0 5" Text="Description : ">
+                                <TextBlock.ToolTip>
+                                    Cette description sera visible lorsque la souris restera au-dessus de cette touche
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding KeyModeVM.Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
+                        </StackPanel>
+                    </Border>
+
+                </DockPanel>
+            </StackPanel>
+
+            <!-- Actions -->
+            <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0 0 0">
+                <StackPanel>
+                    
+                    <!-- Key : Delete buttons -->
+
+                    <!-- Mode : Delete buttons -->
+                    <!-- Key : Delete buttons -->
+                    <vm:ActionControl Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
+                                      ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png" 
+                                      Template="{StaticResource SimpleActionControlTemplate}" />
+
+                    <!-- Mode : Delete buttons -->
+                    <vm:ActionControl Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
+                                      ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"
+                                      Template="{StaticResource SimpleActionControlTemplate}"
+                                      Text="Delete this mode :">
+                        <vm:ActionControl.Style>
+                            <Style TargetType="{x:Type vm:ActionControl}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding KeyModeVM.IsFallback}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </vm:ActionControl.Style>
+                    </vm:ActionControl>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </Border>
+</UserControl>

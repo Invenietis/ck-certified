@@ -10,6 +10,7 @@ Plugins/Advanced/Patchers/KeyboardPatcher/bin/
 Plugins/Advanced/ContextEditor/bin/*
 **/bin/*
 Library/CK.WordPredictor.Model/bin/
+bin/
 Plugins/Accessibility/CK.WordPredictor.UI/bin/
 Plugins/Accessibility/CK.WordPredictor/bin/
 Tests/WordPredictorTest/bin/

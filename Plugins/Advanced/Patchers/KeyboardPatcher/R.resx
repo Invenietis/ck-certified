@@ -153,6 +153,9 @@ Would you like to install it ?</value>
   <data name="RememberMyDecision" xml:space="preserve">
     <value>Remember my decision</value>
   </data>
+  <data name="SkinConfigurationNull" xml:space="preserve">
+    <value>The Skin's configuration object is null</value>
+  </data>
   <data name="TryAgain" xml:space="preserve">
     <value>Yes, try again</value>
   </data>

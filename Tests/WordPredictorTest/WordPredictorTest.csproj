@@ -36,29 +36,37 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ThirdParty\AdvancedCommandHandler.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core">
-      <HintPath>..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
+    <Reference Include="CK.Core, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK.Core.2.7.43\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config">
-      <HintPath>..\..\packages\CK.Plugin.Config.2.8.44\lib\net40\CK.Plugin.Config.dll</HintPath>
+    <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK.Plugin.Config.2.9.0-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Model">
-      <HintPath>..\..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Model.dll</HintPath>
+    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection">
-      <HintPath>..\..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
+    <Reference Include="CK.Reflection, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK.Reflection.2.7.43\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.SharedDic">
-      <HintPath>..\..\packages\CK.SharedDic.2.8.44\lib\net40\CK.SharedDic.dll</HintPath>
+    <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK.SharedDic.2.9.0-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage">
-      <HintPath>..\..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
+    <Reference Include="CK.Storage, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\CK.Storage.2.7.43\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>

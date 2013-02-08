@@ -124,11 +124,11 @@ namespace CK.WordPredictor.UI
 
         private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 Feature.PropertyChanged += OnFeaturePropertyChanged;
             }
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }

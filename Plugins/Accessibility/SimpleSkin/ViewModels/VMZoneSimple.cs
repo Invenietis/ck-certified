@@ -32,7 +32,7 @@ using System;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
     {
         public VMZoneSimple( VMContextSimple ctx, IZone zone ) 
             : base( ctx, zone )
@@ -78,6 +78,36 @@ namespace SimpleSkin.ViewModels
                 }
                 return SkippingBehavior.None;
             }
+        }
+
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
+        {
+            get { return Context.KeyboardVM; }
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Model.CurrentLayout; }
+        }
+
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// an element is beingedited if it is selected or one of its parents is being edited
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets whether this element is selected.
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsSelected
+        {
+            get { return false; }
+            set { }
         }
 
         bool _isHighlighting;

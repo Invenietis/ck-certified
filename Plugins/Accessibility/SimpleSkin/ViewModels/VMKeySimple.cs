@@ -35,12 +35,13 @@ using CK.Core;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
     {
         public VMKeySimple( VMContextSimple ctx, IKey k ) 
             : base( ctx, k )
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.SkinConfiguration.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -56,11 +57,18 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "IsVisible" );
+                OnPropertyChanged( "Visible" );
             } );
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                OnPropertyChanged( "Image" );
+            }
+
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 OnPropertyChanged( "Background" );
@@ -73,65 +81,18 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "TextDecorations" );
                 OnPropertyChanged( "Opacity" );
-                OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "IsVisible" );
+                OnPropertyChanged( "Visible" );
             }
         }
 
         protected override void OnDispose()
         {
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.SkinConfiguration.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+
             base.OnDispose();
-        }
-
-        public Image Image
-        {
-            get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
-        }
-
-        public Color Background
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
-        }
-        
-        public Color HoverBackground
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
-        }
-
-        public Color HighlightBackground
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
-        }
-
-        public Color PressedBackground
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
-        }
-
-        public Color LetterColor
-        {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
-        }
-
-        public FontStyle FontStyle
-        {
-            get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
-        }
-
-        public FontWeight FontWeight
-        {
-            get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
-        }
-
-        public double FontSize
-        {
-            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
-        }
-
-        public TextDecorationCollection TextDecorations
-        {
-            get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
         }
 
         public bool ShowLabel
@@ -155,6 +116,44 @@ namespace SimpleSkin.ViewModels
                     _isHighlighting = value;
                     OnPropertyChanged( "IsHighlighting" );
                 }
+            }
+        }
+
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
+        {
+            get { return Context.Obtain( Model.Zone ); }
+        }
+
+        public override IKeyboardElement LayoutElement
+        {
+            get { return Model.CurrentLayout.Current; }
+        }
+
+        /// <summary>
+        /// Gets whether this element is being edited.
+        /// an element is beingedited if it is selected or one of its parents is being edited
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsBeingEdited
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets whether this element is selected.
+        /// This implementation is readonly. It always returns false
+        /// </summary>
+        public override bool IsSelected
+        {
+            get { return false; }
+            set { }
+        }
+
+        public double ZIndex
+        {
+            get { return 100; }
+            set
+            {
             }
         }
 

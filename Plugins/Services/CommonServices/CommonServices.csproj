@@ -40,19 +40,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Core">
-      <HintPath>..\..\..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="CK.Core, Version=2.7.43.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Core.2.7.43\lib\net40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.8.47-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.0-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -71,9 +69,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accessibility\IHelpService.cs" />
     <Compile Include="Accessibility\IKeyboardDriver.cs" />
     <Compile Include="Accessibility\IHighlighterService.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
+    <Compile Include="Advanced\Commands\IHelpCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IChangeKeyboardCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IClicCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IMoveMouseCommandHandlerService.cs" />

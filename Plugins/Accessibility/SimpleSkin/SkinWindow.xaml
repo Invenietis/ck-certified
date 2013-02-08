@@ -17,9 +17,6 @@
             <Setter Property="Height" Value="{Binding H}" />
             <Setter Property="Keys" Value="{Binding Keys}" />
             <Style.Triggers>
-                <!--<DataTrigger Binding="{Binding Path=Background, Converter={StaticResource notnull}}" Value="true">
-                    <Setter Property="Background" Value="{Binding Background}"/>
-                </DataTrigger>-->
                 <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
                 </DataTrigger>
@@ -31,6 +28,7 @@
             <Setter Property="TextDecorations" Value="{Binding TextDecorations}"/>
             <Setter Property="KeyDownCommand" Value="{Binding KeyDownCommand}"/>
             <Setter Property="KeyUpCommand" Value="{Binding KeyUpCommand}"/>
+            <Setter Property="Description" Value="{Binding Description}"/>
             <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
             <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
             <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
@@ -72,12 +70,12 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        
+
     </Window.Resources>
     <Grid>
-        <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding Keyboard.BackgroundImagePath}" />
+        <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
         <Viewbox Stretch="Fill">
-            <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding Keyboard}" />
+            <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
         </Viewbox>
     </Grid>
 </ckwincore:NoFocusWindow>

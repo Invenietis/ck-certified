@@ -67,13 +67,10 @@ namespace CK.Keyboard
 
         internal Key Create( int index )
         {
-            return InsertAt( new Key( this, index ), index );
-        }
-
-        internal Key InsertAt( Key k, int index )
-        {
             if( index < 0 ) index = 0;
             else if( index > _keys.Count ) index = _keys.Count;
+            
+            var k =  new Key( this, index );
 
             _keys.Insert( index, k );
             while( ++index < _keys.Count ) _keys[index].SetIndex( this, index );

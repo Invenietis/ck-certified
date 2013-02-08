@@ -135,7 +135,5 @@ namespace CK.Keyboard.Model
         /// Gets the current actual key (depends on the current <see cref="IKeyboard.CurrentMode">mode</see>).
         /// </summary>
         IKeyModeCurrent Current { get; }
-
-        void SwapZones( IZone targetZone );
     }
 }

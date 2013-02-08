@@ -8,7 +8,8 @@
     WindowStartupLocation="Manual"
     Background="Transparent"
     WindowStyle="None"
-    Topmost="True"
+    Topmost="True" 
+    Focusable="False"
     Title="Simple skin">
     <Window.Resources>
         <ctrls:NotNullConverter x:Key="notnull"/>
@@ -72,10 +73,10 @@
         </DataTemplate>
 
     </Window.Resources>
-    <Grid>
+    <Grid  Focusable="False" >
         <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
         <Viewbox Stretch="Fill">
-            <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
+            <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
         </Viewbox>
     </Grid>
 </ckwincore:NoFocusWindow>

@@ -52,7 +52,7 @@ namespace CK.WordPredictor
 
         public void SendText()
         {
-            if( TextSent != null )
+            if( TextSent != null && Text != null )
                 TextSent( this, new PredictionAreaContentEventArgs( Text ) );
         }
 

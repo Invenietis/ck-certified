@@ -45,9 +45,10 @@ namespace Host.VM
     {
         string _stopReminderPath;
         AutoClickViewModel _acVm;
-        SkinViewModel _sVm;
+        SkinConfigViewModel _sVm;
         WordPredictionViewModel _wpVm;
         AppViewModel _app;
+        AppAdvancedConfigViewModel _appAdvcVm;
 
         public AppConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -69,8 +70,11 @@ namespace Host.VM
             g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
             g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
 
+            this.AddLink( _appAdvcVm ?? ( _appAdvcVm = new AppAdvancedConfigViewModel( _app ) ) );
+            this.AddLink( _sVm ?? ( _sVm = new SkinConfigViewModel( _app ) ) );
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             this.AddLink( _sVm ?? (_sVm = new SkinViewModel( _app )) );
+            this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
 
             string stopReminderFolderPath = Path.Combine( _app.CivikeyHost.ApplicationDataPath, "Updates" );
@@ -81,6 +85,11 @@ namespace Host.VM
             base.OnInitialize();
         }
 
+        public void StartObjectExplorer()
+        {
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.PluginRunner.Apply();
+        }
         bool _remindMeOfNewUpdates;
         public bool RemindMeOfNewUpdates
         {

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DefaultMode" xml:space="preserve">
+    <value>Default mode</value>
+  </data>
+  <data name="DefaultZone" xml:space="preserve">
+    <value>Default zone</value>
+  </data>
   <data name="EndingStepDesc" xml:space="preserve">
     <value>Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard.</value>
   </data>

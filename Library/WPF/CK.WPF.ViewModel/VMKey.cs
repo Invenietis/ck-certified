@@ -135,7 +135,7 @@ namespace CK.WPF.ViewModel
                 {
                     return ProcessImage( imageData );
                 }
-                
+
                 return null;
             }
 
@@ -158,7 +158,7 @@ namespace CK.WPF.ViewModel
                 img.Source = bitmapImage;
                 return img;
             }
-            else if( File.Exists( imageString ) ) //Handles URis
+            else if( Uri.IsWellFormedUriString( imageString, UriKind.RelativeOrAbsolute ) && File.Exists( imageString ) ) //Handles URis
             {
                 BitmapImage bitmapImage = new BitmapImage();
 
@@ -312,7 +312,6 @@ namespace CK.WPF.ViewModel
             set
             {
                 _key.Current.DownLabel = value;
-                //OnPropertyChanged( "DownLabel" );
             }
         }
 
@@ -325,7 +324,6 @@ namespace CK.WPF.ViewModel
             set
             {
                 _key.Current.Description = value;
-                //OnPropertyChanged( "Description" );
             }
         }
 
@@ -430,7 +428,7 @@ namespace CK.WPF.ViewModel
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
             SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "IsVisible" ); OnPropertyChanged( "Visible" ); } );
-            
+
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );

@@ -34,6 +34,7 @@
             <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
             <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
             <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
+            <Setter Property="ShowImage" Value="{Binding ShowImage}"/>
             <Setter Property="Visibility" Value="{Binding Visible}"/>
             <Setter Property="FontSize" Value="{Binding FontSize}"/>
             <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
@@ -58,10 +59,18 @@
                 </view:StdKeyView.Foreground>
             </view:StdKeyView>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true">
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
+                        <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
+                    </MultiDataTrigger.Conditions>
                     <Setter TargetName="key" Property="ShowLabel" Value="false"/>
                     <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
-                </DataTrigger>
+                </MultiDataTrigger>
+                <!--<DataTrigger Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true">-->
+                    <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
+                    <!--<Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />-->
+                <!--</DataTrigger>-->
                 <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
                     <Setter TargetName="key" Property="Background">
                         <Setter.Value>

@@ -111,6 +111,7 @@
         <Setter Property="Description" Value="{Binding KeyModeVM.Description}"/>
         <Setter Property="FontStyle" Value="{Binding LayoutKeyModeVM.FontStyle}"/>
         <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
+        <Setter Property="ShowImage" Value="{Binding ShowImage}"/>
         <Setter Property="Visibility" Value="{Binding LayoutKeyModeVM.Visible}"/>
         <Setter Property="FontSize" Value="{Binding LayoutKeyModeVM.FontSize}"/>
         <Setter Property="UpLabel" Value="{Binding KeyModeVM.UpLabel}"/>
@@ -200,10 +201,14 @@
             </DockPanel>
         </Grid>
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true">
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
+                    <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
+                </MultiDataTrigger.Conditions>
                 <Setter TargetName="key" Property="ShowLabel" Value="false"/>
                 <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
-            </DataTrigger>
+            </MultiDataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
 

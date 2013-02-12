@@ -214,12 +214,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AppConfigViewModel.cs" />
+    <Compile Include="ViewModels\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\FourthLevel\AppAdvancedConfigViewModel.cs" />
+    <Compile Include="ViewModels\AppAdvancedConfigViewModel.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
     <Compile Include="ViewModels\ConfigBase.cs" />
     <Compile Include="ViewModels\ConfigFeatureStarter.cs" />
-    <Compile Include="ViewModels\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\AppConfigViewModel.cs" />
+    <Compile Include="ViewModels\SkinBasicConfigViewModel.cs" />
+    <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
     <Compile Include="ViewModels\SkinViewModel.cs" />
     <Compile Include="ViewModels\WordPredictionViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
@@ -356,6 +360,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\Images\help.png" />
+    <Folder Include="ViewModels\FirstLevel\" />
+    <Folder Include="ViewModels\FourthLevel\" />
+    <Folder Include="ViewModels\SecondLevel\" />
+    <Folder Include="ViewModels\ThirdLevel\" />
+    <Folder Include="ViewModels\Tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

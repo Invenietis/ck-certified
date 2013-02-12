@@ -54,16 +54,16 @@
                             <StackPanel Orientation="Horizontal">
                             <Image Width="30" Height="30" Margin="5" Source="pack://application:,,,/ContextEditor;component/Resources/Images/warning.png" />
                                 <StackPanel>
-                                    <TextBlock Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center">The properties displayed are those of the key on the following mode :</TextBlock>
-                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">Click on the "+" button to edit the key for the mode selected above</TextBlock>
-                                    <TextBlock Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center">or click on the mode button to go back to this mode.</TextBlock>
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning1" Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center" Text="The properties displayed are those of the key on the following mode :" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning2" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="Click on the '+' button to edit the key for the mode selected above" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning3" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="or click on the mode button to go back to this mode." />
                                 </StackPanel>
                                 <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding LayoutKeyModeVM.ApplyToCurrentModeCommand}" >
                                     <ContentControl Content="{Binding LayoutKeyModeVM.Name}" />
                                 </Button>
                                 <Button Height="30" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
                                     <Button.ToolTip>
-                                        <ToolTip>Create a new whole set of parameters for this key when in the current mode</ToolTip>
+                                        <ToolTip x:Uid="keyboard-editor-layout-key-mode-new-key-mode-tooltip" ToolTip="Create a new whole set of parameters for this key when in the current mode" />
                                     </Button.ToolTip>
                                     <Image Width="20" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                                 </Button>
@@ -73,7 +73,7 @@
                     
                     <!-- Paenl shown when the displayed mode is not a fallback -->
                     <StackPanel Style="{StaticResource LayoutKeyModeOKDisplayStyle}" VerticalAlignment="Center">
-                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center">Current mode :</TextBlock>
+                        <TextBlock x:Uid="keyboard-editor-layout-key-mode-current-mode" TextWrapping="Wrap" VerticalAlignment="Center" Text="Current mode : " />
                         <ContentControl Margin="2 0" FontWeight="Bold" 
                                         DataContext="{Binding LayoutKeyModeVM, Mode=OneWay}" 
                                         Content="{Binding}" />
@@ -98,24 +98,24 @@
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0 5">
-                                    <TextBlock Grid.IsSharedSizeScope="True" VerticalAlignment="Center" Text="Visible : " Margin="2" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-visible-checkbox" Grid.IsSharedSizeScope="True" VerticalAlignment="Center" Text="Visible : " Margin="2" />
                                     <CheckBox  IsChecked="{Binding IsVisible, Mode=TwoWay}" VerticalAlignment="Center"  Margin="2" Width="50" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-x" Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
                                     <TextBox Text="{Binding LayoutKeyModeVM.X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                                 <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
-                                    <TextBlock Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-y" Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
                                     <TextBox Text="{Binding LayoutKeyModeVM.Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                                 <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
                                 <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-width" Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
                                     <TextBox Text="{Binding LayoutKeyModeVM.Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
-                                    <TextBlock Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
+                                    <TextBlock x:Uid="keyboard-editor-layout-key-height" Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
                                     <TextBox Text="{Binding LayoutKeyModeVM.Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
                                 </StackPanel>
                             </Grid>
@@ -128,16 +128,16 @@
             </StackPanel>
             
             <!-- Delete actions -->
-            <GroupBox DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+            <GroupBox x:Uid="keyboard-editor-layout-key-mode-actions" DockPanel.Dock="Right" Header="Actions" Background="#FFF9F9F9" Padding="0" Margin="5 0">
                 <StackPanel>
  
                     <!-- Key : Delete buttons -->
-                    <vm:ActionControl Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
+                    <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-key-button" Action="{Binding DeleteKeyCommand}" Text="Delete this key :" 
                                       ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png" 
                                       Template="{StaticResource SimpleActionControlTemplate}" />
 
                     <!-- Delete the key mode -->
-                    <vm:ActionControl Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
+                    <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-mode-button" Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
                                       ImageSource="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"
                                       Template="{StaticResource SimpleActionControlTemplate}"
                                       Text="Delete this mode :">

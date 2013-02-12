@@ -57,6 +57,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
             } );
@@ -82,6 +83,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "TextDecorations" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
             }
@@ -98,6 +100,11 @@ namespace SimpleSkin.ViewModels
         public bool ShowLabel
         {
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
+        }
+
+        public bool ShowImage
+        {
+            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", false ); }
         }
 
         public double Opacity

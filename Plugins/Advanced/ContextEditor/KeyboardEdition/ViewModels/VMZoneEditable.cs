@@ -30,6 +30,7 @@ using System.Collections.ObjectModel;
 using System;
 using System.Windows.Input;
 using CK.Windows.App;
+using ContextEditor.Resources;
 
 namespace ContextEditor.ViewModels
 {
@@ -247,7 +248,7 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public new string Name
         {
-            get { return String.IsNullOrWhiteSpace( Model.Name ) ? "Default mode" : Model.Name; }
+            get { return String.IsNullOrWhiteSpace( Model.Name ) ? R.DefaultZone : Model.Name; }
             set { Model.Rename( value ); }
         }
 

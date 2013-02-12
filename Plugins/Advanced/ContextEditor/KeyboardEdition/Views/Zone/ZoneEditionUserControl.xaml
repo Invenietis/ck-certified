@@ -21,23 +21,27 @@
         <Border BorderThickness="1" CornerRadius="5">
             <local:GenericLayoutEditionUserControl />
         </Border>
-        <GroupBox Header="Key creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+        <GroupBox x:Uid="keyboard-editor-zone-new-key-header" Header="Key creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
             <StackPanel>
                 <DockPanel LastChildFill="False" Margin="2">
-                    <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new key in this zone :</TextBlock>
+                    <TextBlock x:Uid="keyboard-editor-zone-new-key" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new key in this zone :</TextBlock>
                     <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding CreateKeyCommand}">
                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                         <Button.ToolTip>
-                            Create a new key
+                            <ToolTip x:Uid="keyboard-editor-zone-new-key-tooltip">
+                                Create a new key
+                            </ToolTip>
                         </Button.ToolTip>
                     </Button>
                 </DockPanel>
                 <DockPanel LastChildFill="False" Margin="2">
-                    <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this zone :</TextBlock>
+                    <TextBlock x:Uid="keyboard-editor-zone-delete-zone" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this zone :</TextBlock>
                     <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteZoneCommand}">
                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
                         <Button.ToolTip>
-                            Delete the zone
+                            <ToolTip x:Uid="keyboard-editor-zone-delete-zone-tooltip">
+                                Delete the zone
+                            </ToolTip>
                         </Button.ToolTip>
                     </Button>
                 </DockPanel>

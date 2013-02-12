@@ -35,6 +35,7 @@ using Host.VM;
 
 namespace Host
 {
+    //First level of the civikey host
     public class RootConfigViewModel : CK.Windows.Config.ConfigPage
     {
         AppViewModel _app;
@@ -110,12 +111,14 @@ namespace Host
             g.Items.Add( wordPredictionStarter );
 
             this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
-            this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
+            this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
+
             base.OnInitialize();
         }
 
         public CivikeyStandardHost CivikeyHost { get; private set; }
 
+        
         public void StartObjectExplorer()
         {
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );

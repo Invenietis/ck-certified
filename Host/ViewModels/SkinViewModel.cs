@@ -36,22 +36,23 @@ namespace Host.VM
 {
     public class SkinViewModel : ConfigBase
     {
+        IObjectPluginConfig _config;
+        IPluginProxy _skinPlugin;
         Guid _keyboardEditorId;
-        AppViewModel _app; 
+        AppViewModel _app;
+        Guid _skinId;
+        SkinBasicConfigViewModel _skinBasicConfVm;
 
-        public SkinViewModel( AppViewModel app )
+        public SkinConfigViewModel( AppViewModel app )
             : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
         {
             _app = app;
         }
-
         protected override void NotifyOfPropertiesChange()
         {
             base.NotifyOfPropertiesChange();
             NotifyOfPropertyChange( () => EnableAutoHide );
             NotifyOfPropertyChange( () => AutoHideTimeOut );
-        }
-
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             NotifyOfPropertyChange( () => EnableAutoHide );
@@ -70,6 +71,7 @@ namespace Host.VM
             set
             {
                 if( Config != null ) Config.Set( "autohide-timeout", value );
+       
             }
         }
 
@@ -105,6 +107,7 @@ namespace Host.VM
             var keyboardEditorStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _keyboardEditorId ) { DisplayName = R.SkinEditorSectionName };
             editionGroup.Items.Add( keyboardEditorStarter );
 
+            base.OnInitialize();
         }
 
         public void StartSkinEditor()

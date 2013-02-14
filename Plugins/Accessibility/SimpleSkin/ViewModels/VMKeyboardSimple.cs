@@ -33,6 +33,7 @@ using CK.Windows.Helpers;
 using HighlightModel;
 using CK.Core;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {
@@ -126,7 +127,11 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-                return new ReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
+                if( Zones.Count > 0 )
+                {
+                    return new ReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
+                }
+                return new ReadOnlyListOnIList<IHighlightableElement>( new List<IHighlightableElement>() );
             }
         }
 

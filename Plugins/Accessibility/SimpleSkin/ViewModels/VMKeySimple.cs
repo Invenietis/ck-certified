@@ -104,7 +104,7 @@ namespace SimpleSkin.ViewModels
 
         public bool ShowImage
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", false ); }
+            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ); }
         }
 
         public double Opacity

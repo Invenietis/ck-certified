@@ -98,6 +98,8 @@ namespace Host
             hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ED1562F-2416-45cb-9FC8-EEF941E3EDBC}" ), RunningRequirement.MustExistAndRun );
+            
+            
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.

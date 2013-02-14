@@ -57,8 +57,12 @@ namespace ContextEditor.ViewModels
 
         public bool ShowImage
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.SkinConfiguration, "ShowImage", false ); }
-            set { Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] = value; }
+            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.SkinConfiguration, "ShowImage", true ); }
+            set 
+            { 
+                if( Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] == null || (bool)Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] != value ) 
+                    Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] = value; 
+            }
         }
 
         /// <summary>

@@ -36,14 +36,10 @@ namespace Host.VM
 {
     public class SkinViewModel : ConfigBase
     {
-        IObjectPluginConfig _config;
-        IPluginProxy _skinPlugin;
         Guid _keyboardEditorId;
         AppViewModel _app;
-        Guid _skinId;
-        SkinBasicConfigViewModel _skinBasicConfVm;
 
-        public SkinConfigViewModel( AppViewModel app )
+        public SkinViewModel( AppViewModel app )
             : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
         {
             _app = app;
@@ -53,6 +49,8 @@ namespace Host.VM
             base.NotifyOfPropertiesChange();
             NotifyOfPropertyChange( () => EnableAutoHide );
             NotifyOfPropertyChange( () => AutoHideTimeOut );
+        }
+
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             NotifyOfPropertyChange( () => EnableAutoHide );
@@ -71,7 +69,7 @@ namespace Host.VM
             set
             {
                 if( Config != null ) Config.Set( "autohide-timeout", value );
-       
+
             }
         }
 

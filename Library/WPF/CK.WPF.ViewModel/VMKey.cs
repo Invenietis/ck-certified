@@ -129,7 +129,7 @@ namespace CK.WPF.ViewModel
         {
             get
             {
-                object imageData = _context.SkinConfiguration[_key.Current]["Image"];
+                object imageData = _context.SkinConfiguration[_key.CurrentLayout.Current]["Image"];
 
                 if( imageData != null )
                 {
@@ -287,7 +287,9 @@ namespace CK.WPF.ViewModel
             set
             {
                 _key.Current.UpLabel = value;
+                _key.Current.DownLabel = value;
                 OnPropertyChanged( "UpLabel" );
+                OnPropertyChanged( "DownLabel" );
             }
         }
 

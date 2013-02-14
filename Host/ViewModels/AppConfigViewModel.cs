@@ -43,11 +43,10 @@ namespace Host.VM
 {
     public class AppConfigViewModel : ConfigPage
     {
-        string _stopReminderPath;
-        AutoClickViewModel _acVm;
-        SkinConfigViewModel _sVm;
-        WordPredictionViewModel _wpVm;
         AppViewModel _app;
+        SkinViewModel _sVm;
+        AutoClickViewModel _acVm;
+        WordPredictionViewModel _wpVm;
         AppAdvancedConfigViewModel _appAdvcVm;
 
         public AppConfigViewModel( AppViewModel app )
@@ -65,23 +64,12 @@ namespace Host.VM
                 profiles.RefreshValues( s, e );
             };
 
-            var g = this.AddGroup();
-            g.AddProperty( R.ShowTaskbarIcon, _app, a => a.ShowTaskbarIcon );
-            g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
-            g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
-
             this.AddLink( _appAdvcVm ?? ( _appAdvcVm = new AppAdvancedConfigViewModel( _app ) ) );
-            this.AddLink( _sVm ?? ( _sVm = new SkinConfigViewModel( _app ) ) );
+            this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
-            this.AddLink( _sVm ?? (_sVm = new SkinViewModel( _app )) );
-            this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
-
-            string stopReminderFolderPath = Path.Combine( _app.CivikeyHost.ApplicationDataPath, "Updates" );
-            if( !Directory.Exists( stopReminderFolderPath ) ) Directory.CreateDirectory( stopReminderFolderPath );
-            _stopReminderPath = Path.Combine( stopReminderFolderPath, "StopReminder" );
-            _remindMeOfNewUpdates = !File.Exists( _stopReminderPath );
-
+            this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
+            
             base.OnInitialize();
         }
 
@@ -89,31 +77,6 @@ namespace Host.VM
         {
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
-        }
-        bool _remindMeOfNewUpdates;
-        public bool RemindMeOfNewUpdates
-        {
-            get { return _remindMeOfNewUpdates; }
-            set
-            {
-                if( value )
-                {
-                    File.Delete( _stopReminderPath );
-                }
-
-                else
-                {
-                    File.Create( _stopReminderPath ).Close();
-                    FileSecurity f = File.GetAccessControl( _stopReminderPath );
-                    var sid = new SecurityIdentifier( WellKnownSidType.BuiltinUsersSid, null );
-                    NTAccount account = (NTAccount)sid.Translate( typeof( NTAccount ) );
-                    f.AddAccessRule( new FileSystemAccessRule( account, FileSystemRights.Modify, AccessControlType.Allow ) );
-                    File.SetAccessControl( _stopReminderPath, f );
-                }
-
-                _remindMeOfNewUpdates = value;
-                NotifyOfPropertyChange( () => RemindMeOfNewUpdates );
-            }
         }
     }
 }

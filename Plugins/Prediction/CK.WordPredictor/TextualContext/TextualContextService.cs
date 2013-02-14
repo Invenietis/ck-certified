@@ -104,7 +104,19 @@ namespace CK.WordPredictor
 
         protected virtual void OnKeySent( object sender, KeySentEventArgs e )
         {
-            if( e.Key != null ) SetToken( e.Key );
+            if( !PredictionTextAreaService.Service.IsDriven )
+            {
+                if( e.Key == "{BACKSPACE}" && _rawContext != null && _rawContext.Length > 0 )
+                {
+                    var raw = _rawContext.Substring( 0, _rawContext.Length - 1 );
+                    _caretIndex = raw.Length;
+                    SetRawText( raw );
+                }
+                else if( e.Key == "{ENTER}" )
+                {
+                    ClearContext();
+                }
+            }
         }
 
         protected virtual void OnStringSent( object sender, StringSentEventArgs e )
@@ -123,6 +135,11 @@ namespace CK.WordPredictor
         }
 
         protected virtual void OnTextualContextClear( object sender, EventArgs e )
+        {
+            ClearContext();
+        }
+
+        private void ClearContext()
         {
             _rawContext = null;
             _tokenCollection.Clear();
@@ -186,6 +203,7 @@ namespace CK.WordPredictor
 
         /// <summary>
         /// aa gh|ijk lmn
+        /// In this case, returns "2", the caret offset has the token as start reference
         /// </summary>
         public int CaretOffset
         {
@@ -204,7 +222,7 @@ namespace CK.WordPredictor
                 }
                 else
                 {
-                    int i = 1, 
+                    int i = 1,
                         previousWordIndex = 0,
                         wordIndex = 0;
                     while( i < _tokenSeparatorIndexes.Length )
@@ -353,7 +371,6 @@ namespace CK.WordPredictor
             }
         }
 
-        
         void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Stopping )

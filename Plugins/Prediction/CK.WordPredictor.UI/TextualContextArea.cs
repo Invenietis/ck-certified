@@ -51,6 +51,7 @@ namespace CK.WordPredictor.UI
         {
             DisableEditor();
             Feature.PropertyChanged -= OnFeaturePropertyChanged;
+            _textArea.PropertyChanged -= OnTextAreaPropertyChanged;
         }
 
         public void Teardown()
@@ -66,10 +67,12 @@ namespace CK.WordPredictor.UI
             }
         }
 
+        TextualContextAreaViewModel _textArea;
         void EnableEditor()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
-            _window = new TextualContextAreaWindow( vm )
+            _textArea = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
+            _textArea.PropertyChanged += OnTextAreaPropertyChanged;
+            _window = new TextualContextAreaWindow( _textArea )
             {
                 Width = 600,
                 Height = 200
@@ -81,6 +84,14 @@ namespace CK.WordPredictor.UI
 
             var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
             CreateSendContextKeyInPredictionZone( zone );
+        }
+
+        void OnTextAreaPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "IsFocused" )
+            {
+                PredictionTextAreaService.IsDriven = _textArea.IsFocused;
+            }
         }
 
         void DisableEditor()

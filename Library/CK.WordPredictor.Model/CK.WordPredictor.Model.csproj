@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IsDrivenChangedEventArgs.cs" />
     <Compile Include="IKeyboardContextPredictionFactory.cs" />
     <Compile Include="ICommandTextualContextService.cs" />
     <Compile Include="IPredictionTextAreaService.cs" />

@@ -26,12 +26,9 @@ namespace CK.WordPredictor
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            CommandParser p = new CommandParser( e.Command );
-            string str;
-            if( p.IsIdentifier( out str ) && !e.Canceled && str == CMDSendPredictedWord )
+            if( e.Command != null && e.Command.StartsWith( CMDSendPredictedWord + ":" ) )
             {
-                p.GetNextToken();
-                WordHasBeenChosen( p.StringValue );
+                WordHasBeenChosen( e.Command.Substring( CMDSendPredictedWord.Length + 1 ) );
             }
         }
     }

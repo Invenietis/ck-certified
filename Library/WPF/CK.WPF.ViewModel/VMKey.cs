@@ -430,7 +430,7 @@ namespace CK.WPF.ViewModel
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
             SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "IsVisible" ); OnPropertyChanged( "Visible" ); } );
-
+            SetActionOnPropertyChanged( "Visible", () => { DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); } );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );

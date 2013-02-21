@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using CK.Core;
@@ -38,7 +39,39 @@ namespace BasicScroll
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public event EventHandler Triggered;
+        public event EventHandler Triggered
+        {
+            add { InternalTriggered += value; ListenToKeyDown = true; }
+            remove 
+            { 
+                InternalTriggered -= value; 
+                if(InternalTriggered == null) ListenToKeyDown = false; 
+            }
+        }
+
+        private bool _listenToKeyDown;
+        public bool ListenToKeyDown
+        {
+            set
+            {
+                if( _listenToKeyDown != value )
+                {
+                    _listenToKeyDown = value;
+                    if( _listenToKeyDown )
+                    {
+                        KeyboardDriver.Service.KeyDown += OnKeyDown;
+                        Console.Out.WriteLine( "Abonné au keydown !" );
+                    }
+                    else
+                    {
+                        KeyboardDriver.Service.KeyDown -= OnKeyDown;
+                        Console.Out.WriteLine( "Plus abonné au keydown !" );
+                    }
+                }
+            }
+        }
+
+        public event EventHandler InternalTriggered;
 
         int _keyCode;
 
@@ -56,7 +89,8 @@ namespace BasicScroll
             }
             SendStringService.ServiceStatusChanged += SendStringService_ServiceStatusChanged;
 
-            KeyboardDriver.Service.KeyDown += OnKeyDown;
+            //KeyboardDriver.Service.KeyDown += OnKeyDown;
+            ListenToKeyDown = true;
 
             _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 0x20 );
             KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
@@ -88,15 +122,18 @@ namespace BasicScroll
                 KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
             }
         }
-
         void OnKeyDown( object sender, KeyboardDriverEventArg e )
         {
+            Console.Out.WriteLine( "J'entre" );
             if( _stringSending == false && !_wasASpace && e.KeyCode == _keyCode ) // on spacebar pressed
             {
+                Console.Out.WriteLine( "Je passe en true" );
                 _wasASpace = true;
-                if( Triggered != null ) Triggered( this, EventArgs.Empty );
+                if( InternalTriggered != null ) InternalTriggered( this, EventArgs.Empty );
                 _wasASpace = false;
+                Console.Out.WriteLine( "Je passe en false" );
             }
+            Console.Out.WriteLine( "Je sors" );
         }
 
         public void Stop()
@@ -107,7 +144,8 @@ namespace BasicScroll
                 SendStringService.Service.StringSent -= OnStringSent;
             }
             SendStringService.ServiceStatusChanged -= SendStringService_ServiceStatusChanged;
-            KeyboardDriver.Service.KeyDown -= OnKeyDown;
+            //KeyboardDriver.Service.KeyDown -= OnKeyDown;
+            ListenToKeyDown = false;
             KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
         }
 

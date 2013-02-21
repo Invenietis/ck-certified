@@ -118,7 +118,9 @@ namespace PointerDeviceDriver
                 int vkCode = Marshal.ReadInt32( e.lParam );
                 if( _cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 ) )
                 {
-                    e.Cancel = true;
+                    //We only swallow the event if we are going to do something with it
+                    if(KeyDown != null) e.Cancel = true;
+                    
                     Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int>)FireEvent, vkCode );
                 }
             }

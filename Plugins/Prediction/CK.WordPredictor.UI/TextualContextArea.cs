@@ -51,7 +51,9 @@ namespace CK.WordPredictor.UI
         {
             DisableEditor();
             Feature.PropertyChanged -= OnFeaturePropertyChanged;
-            _textArea.PropertyChanged -= OnTextAreaPropertyChanged;
+
+            //The textarea can be null if we never enabled the editor
+            if( _textArea != null ) _textArea.PropertyChanged -= OnTextAreaPropertyChanged;
         }
 
         public void Teardown()

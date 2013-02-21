@@ -28,9 +28,6 @@ namespace BasicScroll
         const string PluginPublicName = "Keyboard Trigger";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
-        bool _wasASpace = false;
-        bool _stringSending = false;
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
 
@@ -42,15 +39,15 @@ namespace BasicScroll
         public event EventHandler Triggered
         {
             add { InternalTriggered += value; ListenToKeyDown = true; }
-            remove 
-            { 
-                InternalTriggered -= value; 
-                if(InternalTriggered == null) ListenToKeyDown = false; 
+            remove
+            {
+                InternalTriggered -= value;
+                if( InternalTriggered == null ) ListenToKeyDown = false;
             }
         }
 
         private bool _listenToKeyDown;
-        public bool ListenToKeyDown
+        private bool ListenToKeyDown
         {
             set
             {
@@ -58,15 +55,9 @@ namespace BasicScroll
                 {
                     _listenToKeyDown = value;
                     if( _listenToKeyDown )
-                    {
                         KeyboardDriver.Service.KeyDown += OnKeyDown;
-                        Console.Out.WriteLine( "Abonné au keydown !" );
-                    }
                     else
-                    {
                         KeyboardDriver.Service.KeyDown -= OnKeyDown;
-                        Console.Out.WriteLine( "Plus abonné au keydown !" );
-                    }
                 }
             }
         }
@@ -82,35 +73,12 @@ namespace BasicScroll
 
         public void Start()
         {
-            if( SendStringService.Service != null )
-            {
-                SendStringService.Service.StringSending += OnStringSending;
-                SendStringService.Service.StringSent += OnStringSent;
-            }
-            SendStringService.ServiceStatusChanged += SendStringService_ServiceStatusChanged;
-
-            //KeyboardDriver.Service.KeyDown += OnKeyDown;
             ListenToKeyDown = true;
 
-            _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 0x20 );
+            _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 222 );
             KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
 
             Configuration.ConfigChanged += OnConfigChanged;
-        }
-
-        void OnStringSending( object sender, StringSendingEventArgs e )
-        {
-            _stringSending = true;
-        }
-
-        void OnStringSent( object sender, StringSentEventArgs e )
-        {
-            _stringSending = false;
-        }
-
-
-        void SendStringService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -122,36 +90,25 @@ namespace BasicScroll
                 KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
             }
         }
+
         void OnKeyDown( object sender, KeyboardDriverEventArg e )
         {
-            Console.Out.WriteLine( "J'entre" );
-            if( _stringSending == false && !_wasASpace && e.KeyCode == _keyCode ) // on spacebar pressed
+            if( e.KeyCode == _keyCode ) // on spacebar pressed
             {
-                Console.Out.WriteLine( "Je passe en true" );
-                _wasASpace = true;
                 if( InternalTriggered != null ) InternalTriggered( this, EventArgs.Empty );
-                _wasASpace = false;
-                Console.Out.WriteLine( "Je passe en false" );
             }
-            Console.Out.WriteLine( "Je sors" );
         }
 
         public void Stop()
         {
-            if( SendStringService.Service != null )
-            {
-                SendStringService.Service.StringSending -= OnStringSending;
-                SendStringService.Service.StringSent -= OnStringSent;
-            }
-            SendStringService.ServiceStatusChanged -= SendStringService_ServiceStatusChanged;
-            //KeyboardDriver.Service.KeyDown -= OnKeyDown;
             ListenToKeyDown = false;
             KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
         }
 
         public void Teardown()
         {
-            
+
         }
     }
+
 }

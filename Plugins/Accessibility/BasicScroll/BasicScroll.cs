@@ -20,11 +20,11 @@ namespace BasicScroll
            Categories = new string[] { "Visual", "Accessibility" } )]
     public class BasicScrollPlugin : IPlugin, IHighlighterService
     {
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "BasicScroll";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         List<IHighlightableElement> _registeredElements;
         DefaultScrollingStrategy _scrollingStrategy;
@@ -57,14 +57,13 @@ namespace BasicScroll
                 }
             };
 
-            ExternalInput.Service.Triggered += ( o, e ) =>
-            {
-                _scrollingStrategy.OnExternalEvent();
-            };
+            ExternalInput.Service.Triggered += OnExternalInputTriggered;
         }
 
         public void Stop()
         {
+            ExternalInput.Service.Triggered -= OnExternalInputTriggered;
+
             _scrollingStrategy.Stop();
         }
 
@@ -108,6 +107,11 @@ namespace BasicScroll
         }
 
         #endregion
+
+        private void OnExternalInputTriggered( object sender, EventArgs e )
+        {
+            _scrollingStrategy.OnExternalEvent();
+        }
 
     }
 }

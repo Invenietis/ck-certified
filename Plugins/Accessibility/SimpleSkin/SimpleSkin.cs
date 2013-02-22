@@ -38,6 +38,7 @@ using CK.Windows.Helpers;
 using System.Linq;
 using CommonServices.Accessibility;
 using System.Diagnostics;
+using CK.Plugins.SendInput;
 
 namespace SimpleSkin
 {
@@ -69,6 +70,9 @@ namespace SimpleSkin
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<ISendStringService> SendStringService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IHelpService> HelpService { get; set; }

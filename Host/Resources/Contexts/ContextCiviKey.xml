@@ -1721,6 +1721,9 @@
                     <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFD3D3D3</Color>
                     </data>
+                    <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDB76B</Color>
+                    </data>
                   </p>
                 </PluginsData>
               </Layout>

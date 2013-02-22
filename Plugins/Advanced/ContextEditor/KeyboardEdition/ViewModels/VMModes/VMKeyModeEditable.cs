@@ -312,7 +312,7 @@ namespace ContextEditor.ViewModels
             {
                 if( _removeImageCommand == null )
                 {
-                    _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[_model].Remove( "Image" ) );
+                    _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[_model.Key.CurrentLayout.Current].Remove( "Image" ) );
                 }
                 return _removeImageCommand;
             }
@@ -339,7 +339,7 @@ namespace ContextEditor.ViewModels
                                     str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
                                     string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
 
-                                    Context.SkinConfiguration[_model]["Image"] = encodedImage;
+                                    Context.SkinConfiguration[_model.Key.CurrentLayout.Current]["Image"] = encodedImage;
                                 }
                             }
                         }

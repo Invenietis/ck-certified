@@ -67,7 +67,7 @@ namespace SimpleSkin.ViewModels
         {
             if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
             {
-                OnPropertyChanged( "Image" );
+                
             }
 
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
@@ -86,6 +86,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
+                OnPropertyChanged( "Image" );
             }
         }
 

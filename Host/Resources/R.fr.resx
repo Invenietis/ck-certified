@@ -299,9 +299,15 @@
   </data>
   <data name="WordPredictionConfig" xml:space="preserve">
     <value>Configuration de la Prédiction de mots</value>
+    </data>
+  <data name="AdvancedAppConfig" xml:space="preserve">
+    <value>Configuration avancée</value>
   </data>
   <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
     <value>Nombre de mots prédits (maximum)</value>
+    </data>
+  <data name="SkinBasicConfig" xml:space="preserve">
+    <value>Configuration basique</value>
   </data>
   <data name="WordPredictionInsertSpace" xml:space="preserve">
     <value>Insérer un espace après les mots prédits</value>

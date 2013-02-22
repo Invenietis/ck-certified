@@ -41,6 +41,7 @@ namespace SimpleSkin.ViewModels
             : base( ctx, k )
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.SkinConfiguration.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -56,6 +57,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
             } );
@@ -63,6 +65,11 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                
+            }
+
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 OnPropertyChanged( "Background" );
@@ -75,27 +82,30 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "TextDecorations" );
                 OnPropertyChanged( "Opacity" );
-                OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "IsVisible" );
                 OnPropertyChanged( "Visible" );
+                OnPropertyChanged( "Image" );
             }
         }
 
         protected override void OnDispose()
         {
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            base.OnDispose();
-        }
+            Context.SkinConfiguration.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
-        public Image Image
-        {
-            get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
+            base.OnDispose();
         }
 
         public bool ShowLabel
         {
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
+        }
+
+        public bool ShowImage
+        {
+            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ); }
         }
 
         public double Opacity

@@ -52,7 +52,7 @@ namespace CK.WordPredictor
 
         public void SendText()
         {
-            if( TextSent != null )
+            if( TextSent != null && Text != null )
                 TextSent( this, new PredictionAreaContentEventArgs( Text ) );
         }
 
@@ -60,6 +60,21 @@ namespace CK.WordPredictor
         {
             if( e.Command != null && e.Command.Contains( CMDSendPredictionAreaContent ) )
                 SendText();
+        }
+
+        public event EventHandler<IsDrivenChangedEventArgs> IsDrivenChanged;
+        bool _isDriven;
+        public bool IsDriven
+        {
+            get
+            {
+                return _isDriven;
+            }
+            set
+            {
+                _isDriven = value;
+                if( IsDrivenChanged != null ) IsDrivenChanged( this, new IsDrivenChangedEventArgs( value ) );
+            }
         }
     }
 }

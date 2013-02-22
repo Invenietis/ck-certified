@@ -11,10 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
+using ContextEditor.Resources;
 using ContextEditor.ViewModels;
 using Microsoft.Win32;
 
-//TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
 namespace ContextEditor.ViewModels
 {
     public class VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
@@ -58,7 +58,7 @@ namespace ContextEditor.ViewModels
         public bool IsEmpty { get { return _model.Mode.IsEmpty; } }
 
         //COMMON
-        public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? "Default mode" : _model.Mode.ToString(); } }
+        public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? R.DefaultMode : _model.Mode.ToString(); } }
 
         /// <summary>
         /// Gets whether the element is selected.
@@ -305,75 +305,6 @@ namespace ContextEditor.ViewModels
 
         #region Key Image management
 
-        /// <summary>
-        /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
-        /// </summary>
-        public object Image
-        {
-            get
-            {
-                object imageData = Context.SkinConfiguration[_model]["Image"];
-                Image image = new Image();
-
-                if( imageData != null )
-                {
-                    return ProcessImage( imageData, image );
-                }
-
-                return null;
-            }
-
-            set { Context.SkinConfiguration[_model]["Image"] = value; }
-        }
-
-        //This method handles the different ways an image can be stored in plugin datas
-        private object ProcessImage( object imageData, Image image )
-        {
-            string imageString = imageData.ToString();
-
-
-            if( imageData.GetType() == typeof( Image ) )
-            {
-                //If a WPF image was stored in the PluginDatas, we use its source to create a NEW image instance, to enable using it multiple times. 
-                Image img = new Image();
-                BitmapImage bitmapImage = new BitmapImage( new Uri( ( (Image)imageData ).Source.ToString() ) );
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                img.Source = bitmapImage;
-                return img;
-            }
-            else if( File.Exists( imageString ) ) //Handles URis
-            {
-                BitmapImage bitmapImage = new BitmapImage();
-
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri( imageString );
-                bitmapImage.EndInit();
-
-                image.Source = bitmapImage;
-
-                return image;
-            }
-            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF's pack:// protocol
-            {
-                ImageSourceConverter imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( imageString );
-            }
-            else
-            {
-                byte[] imageBytes = Convert.FromBase64String( imageData.ToString() ); //Handles base 64 encoded images
-                using( MemoryStream ms = new MemoryStream( imageBytes ) )
-                {
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = ms;
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                }
-                return image;
-            }
-        }
-
         ICommand _removeImageCommand;
         public ICommand RemoveImageCommand
         {
@@ -381,7 +312,7 @@ namespace ContextEditor.ViewModels
             {
                 if( _removeImageCommand == null )
                 {
-                    _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[_model].Remove( "Image" ) );
+                    _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[_model.Key.CurrentLayout.Current].Remove( "Image" ) );
                 }
                 return _removeImageCommand;
             }
@@ -408,7 +339,7 @@ namespace ContextEditor.ViewModels
                                     str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
                                     string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
 
-                                    Context.SkinConfiguration[_model].GetOrSet( "Image", encodedImage );
+                                    Context.SkinConfiguration[_model.Key.CurrentLayout.Current]["Image"] = encodedImage;
                                 }
                             }
                         }

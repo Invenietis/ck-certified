@@ -24,17 +24,20 @@
         <Border BorderThickness="1" CornerRadius="5" MaxHeight="300">
             <local:GenericLayoutEditionUserControl />
         </Border>
-        <GroupBox Header="Zone creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+        <GroupBox x:Uid="keyboard-editor-keyboard-new-zone-header" Header="Zone creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
             <StackPanel>
+                <!-- Zone creation -->
                 <StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock>Saisissez le nom de la zone puis validez :</TextBlock>
+                    <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-text">Type th enew zone's name then validate :</TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="0 5">
-                        <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0"></TextBox>
+                        <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0" />
                         <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked" 
-                                Command="{Binding CreateZoneCommand}" CommandParameter="{Binding Text, ElementName=zoneCreationTextBox}" >
+                                Command="{Binding CreateZoneCommand}" CommandParameter="{Binding Text, ElementName=zoneCreationTextBox}">
                             <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                             <Button.ToolTip>
-                                Confirmez la création de zone
+                                <ToolTip x:Uid="keyboard-editor-keyboard-new-zone-tooltip">
+                                    Confirm the zone's creation
+                                </ToolTip>
                             </Button.ToolTip>
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
@@ -50,19 +53,22 @@
                         <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked">
                             <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
                             <Button.ToolTip>
-                                Annuler la création de zone
+                                <ToolTip x:Uid="keyboard-editor-keyboard-new-zone-cancel-tooltip">
+                                    Cancel the zone's creation
+                                </ToolTip>
                             </Button.ToolTip>
                         </Button>
                     </StackPanel>
                 </StackPanel>
 
                 <DockPanel LastChildFill="False" Margin="2" x:Name="zoneCreationMainButton">
-                    
-                    <TextBlock DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new zone in this keyboard :</TextBlock>
+                    <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-button" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new zone in this keyboard :</TextBlock>
                     <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnNewZoneClicked">
                         <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                         <Button.ToolTip>
-                            Create a new zone
+                            <ToolTip  x:Uid="keyboard-editor-keyboard-new-zone-button-tooltip">
+                                Create a new zone
+                            </ToolTip>
                         </Button.ToolTip>
                     </Button>
                 </DockPanel>

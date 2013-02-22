@@ -1721,6 +1721,9 @@
                     <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFD3D3D3</Color>
                     </data>
+                    <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDB76B</Color>
+                    </data>
                   </p>
                 </PluginsData>
               </Layout>
@@ -1770,7 +1773,7 @@
                         <KeyUp Label="²" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"²"</Cmd>
+                            <Cmd>sendString:²</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1806,7 +1809,7 @@
                         <KeyUp Label="1" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"1"</Cmd>
+                            <Cmd>sendString:1</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1814,7 +1817,7 @@
                         <KeyUp Label="&amp;" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"&amp;"</Cmd>
+                            <Cmd>sendString:&amp;</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1859,7 +1862,7 @@
                         <KeyUp Label="2" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"2"</Cmd>
+                            <Cmd>sendString:2</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1867,7 +1870,7 @@
                         <KeyUp Label="é" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"é"</Cmd>
+                            <Cmd>sendString:é</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1911,7 +1914,7 @@
                         <KeyUp Label="3" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"3"</Cmd>
+                            <Cmd>sendString:3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1947,7 +1950,7 @@
                         <KeyUp Label="{" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"{"</Cmd>
+                            <Cmd>sendString:{</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1963,7 +1966,7 @@
                         <KeyUp Label="4" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"4"</Cmd>
+                            <Cmd>sendString:4</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1971,7 +1974,7 @@
                         <KeyUp Label="'" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"'"</Cmd>
+                            <Cmd>sendString:'</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2015,7 +2018,7 @@
                         <KeyUp Label="5" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"5"</Cmd>
+                            <Cmd>sendString:5</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2023,7 +2026,7 @@
                         <KeyUp Label="(" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"("</Cmd>
+                            <Cmd>sendString:(</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2051,7 +2054,7 @@
                         <KeyUp Label="|" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"|"</Cmd>
+                            <Cmd>sendString:|</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2067,7 +2070,7 @@
                         <KeyUp Label="6" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"6"</Cmd>
+                            <Cmd>sendString:6</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2075,7 +2078,7 @@
                         <KeyUp Label="-" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"-"</Cmd>
+                            <Cmd>sendString:-</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2120,7 +2123,7 @@
                         <KeyUp Label="7" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"7"</Cmd>
+                            <Cmd>sendString:7</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2128,7 +2131,7 @@
                         <KeyUp Label="è" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"è"</Cmd>
+                            <Cmd>sendString:è</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2172,7 +2175,7 @@
                         <KeyUp Label="8" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"8"</Cmd>
+                            <Cmd>sendString:8</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2180,7 +2183,7 @@
                         <KeyUp Label="_" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"_"</Cmd>
+                            <Cmd>sendString:_</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2208,7 +2211,7 @@
                         <KeyUp Label="^" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"^"</Cmd>
+                            <Cmd>sendString:^</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2232,7 +2235,7 @@
                         <KeyUp Label="ç" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ç"</Cmd>
+                            <Cmd>sendString:ç</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2276,7 +2279,7 @@
                         <KeyUp Label="0" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"0"</Cmd>
+                            <Cmd>sendString:0</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2284,7 +2287,7 @@
                         <KeyUp Label="à" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"à"</Cmd>
+                            <Cmd>sendString:à</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2328,7 +2331,7 @@
                         <KeyUp Label="°" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"°"</Cmd>
+                            <Cmd>sendString:°</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2336,7 +2339,7 @@
                         <KeyUp Label=")" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey")"</Cmd>
+                            <Cmd>sendString:)</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2364,7 +2367,7 @@
                         <KeyUp Label="}" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"}"</Cmd>
+                            <Cmd>sendString:}</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2380,7 +2383,7 @@
                         <KeyUp Label="+" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"+"</Cmd>
+                            <Cmd>sendString:+</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2388,7 +2391,7 @@
                         <KeyUp Label="=" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"="</Cmd>
+                            <Cmd>sendString:=</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2428,7 +2431,7 @@
                         <KeyUp Label="À" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"À"</Cmd>
+                            <Cmd>sendString:À</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2436,7 +2439,7 @@
                         <KeyUp Label="Â" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Â"</Cmd>
+                            <Cmd>sendString:Â</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2444,7 +2447,7 @@
                         <KeyUp Label="Ã" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ã"</Cmd>
+                            <Cmd>sendString:Ã</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2452,7 +2455,7 @@
                         <KeyUp Label="Ä" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ä"</Cmd>
+                            <Cmd>sendString:Ä</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2460,7 +2463,7 @@
                         <KeyUp Label="à" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"à"</Cmd>
+                            <Cmd>sendString:à</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2476,7 +2479,7 @@
                         <KeyUp Label="â" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"â"</Cmd>
+                            <Cmd>sendString:â</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2484,7 +2487,7 @@
                         <KeyUp Label="A" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"A"</Cmd>
+                            <Cmd>sendString:A</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2492,7 +2495,7 @@
                         <KeyUp Label="ã" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ã"</Cmd>
+                            <Cmd>sendString:ã</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2500,7 +2503,7 @@
                         <KeyUp Label="ä" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ä"</Cmd>
+                            <Cmd>sendString:ä</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2508,7 +2511,7 @@
                         <KeyUp Label="a" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"a"</Cmd>
+                            <Cmd>sendString:a</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2528,7 +2531,7 @@
                         <KeyUp Label="Z" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Z"</Cmd>
+                            <Cmd>sendString:Z</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2536,7 +2539,7 @@
                         <KeyUp Label="z" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"z"</Cmd>
+                            <Cmd>sendString:z</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2548,7 +2551,7 @@
                         <KeyUp Label="È" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"È"</Cmd>
+                            <Cmd>sendString:È</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2556,7 +2559,7 @@
                         <KeyUp Label="ê" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ê"</Cmd>
+                            <Cmd>sendString:ê</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2564,7 +2567,7 @@
                         <KeyUp Label="Ê" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ê"</Cmd>
+                            <Cmd>sendString:Ê</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2572,7 +2575,7 @@
                         <KeyUp Label="Ë" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ë"</Cmd>
+                            <Cmd>sendString:Ë</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2580,7 +2583,7 @@
                         <KeyUp Label="è" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"è"</Cmd>
+                            <Cmd>sendString:è</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2588,7 +2591,7 @@
                         <KeyUp Label="€" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"€"</Cmd>
+                            <Cmd>sendString:€</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2604,7 +2607,7 @@
                         <KeyUp Label="ê" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ê"</Cmd>
+                            <Cmd>sendString:ê</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2612,7 +2615,7 @@
                         <KeyUp Label="E" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"E"</Cmd>
+                            <Cmd>sendString:E</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2620,7 +2623,7 @@
                         <KeyUp Label="ë" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ë"</Cmd>
+                            <Cmd>sendString:ë</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2628,7 +2631,7 @@
                         <KeyUp Label="e" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"e"</Cmd>
+                            <Cmd>sendString:e</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2648,7 +2651,7 @@
                         <KeyUp Label="R" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"R"</Cmd>
+                            <Cmd>sendString:R</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2656,7 +2659,7 @@
                         <KeyUp Label="r" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"r"</Cmd>
+                            <Cmd>sendString:r</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2676,7 +2679,7 @@
                         <KeyUp Label="T" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"T"</Cmd>
+                            <Cmd>sendString:T</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2684,7 +2687,7 @@
                         <KeyUp Label="t" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"t"</Cmd>
+                            <Cmd>sendString:t</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2704,7 +2707,7 @@
                         <KeyUp Label="Y" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Y"</Cmd>
+                            <Cmd>sendString:Y</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2712,7 +2715,7 @@
                         <KeyUp Label="y" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"y"</Cmd>
+                            <Cmd>sendString:y</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2724,7 +2727,7 @@
                         <KeyUp Label="Ù" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ù"</Cmd>
+                            <Cmd>sendString:Ù</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2732,7 +2735,7 @@
                         <KeyUp Label="Û" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Û"</Cmd>
+                            <Cmd>sendString:Û</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2740,7 +2743,7 @@
                         <KeyUp Label="Ü" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ü"</Cmd>
+                            <Cmd>sendString:Ü</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2764,7 +2767,7 @@
                         <KeyUp Label="û" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"û"</Cmd>
+                            <Cmd>sendString:û</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2772,7 +2775,7 @@
                         <KeyUp Label="U" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"U"</Cmd>
+                            <Cmd>sendString:U</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2780,7 +2783,7 @@
                         <KeyUp Label="ü" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ü"</Cmd>
+                            <Cmd>sendString:ü</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2788,7 +2791,7 @@
                         <KeyUp Label="u" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"u"</Cmd>
+                            <Cmd>sendString:u</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2800,7 +2803,7 @@
                         <KeyUp Label="Ì" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ì"</Cmd>
+                            <Cmd>sendString:Ì</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2808,7 +2811,7 @@
                         <KeyUp Label="Î" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Î"</Cmd>
+                            <Cmd>sendString:Î</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2816,7 +2819,7 @@
                         <KeyUp Label="Ï" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ï"</Cmd>
+                            <Cmd>sendString:Ï</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2824,7 +2827,7 @@
                         <KeyUp Label="ì" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ì"</Cmd>
+                            <Cmd>sendString:ì</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2840,7 +2843,7 @@
                         <KeyUp Label="î" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"î"</Cmd>
+                            <Cmd>sendString:î</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2848,7 +2851,7 @@
                         <KeyUp Label="I" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"I"</Cmd>
+                            <Cmd>sendString:I</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2856,7 +2859,7 @@
                         <KeyUp Label="ï" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ï"</Cmd>
+                            <Cmd>sendString:ï</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2864,7 +2867,7 @@
                         <KeyUp Label="i" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"i"</Cmd>
+                            <Cmd>sendString:i</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2876,7 +2879,7 @@
                         <KeyUp Label="Ò" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ò"</Cmd>
+                            <Cmd>sendString:Ò</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2884,7 +2887,7 @@
                         <KeyUp Label="Ô" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ô"</Cmd>
+                            <Cmd>sendString:Ô</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2892,7 +2895,7 @@
                         <KeyUp Label="Õ" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Õ"</Cmd>
+                            <Cmd>sendString:Õ</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2900,7 +2903,7 @@
                         <KeyUp Label="Ö" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ö"</Cmd>
+                            <Cmd>sendString:Ö</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2908,7 +2911,7 @@
                         <KeyUp Label="ò" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ò"</Cmd>
+                            <Cmd>sendString:ò</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2924,7 +2927,7 @@
                         <KeyUp Label="ô" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ô"</Cmd>
+                            <Cmd>sendString:ô</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2932,7 +2935,7 @@
                         <KeyUp Label="O" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"O"</Cmd>
+                            <Cmd>sendString:O</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2940,7 +2943,7 @@
                         <KeyUp Label="õ" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"õ"</Cmd>
+                            <Cmd>sendString:õ</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2948,7 +2951,7 @@
                         <KeyUp Label="ö" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ö"</Cmd>
+                            <Cmd>sendString:ö</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2956,7 +2959,7 @@
                         <KeyUp Label="o" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"o"</Cmd>
+                            <Cmd>sendString:o</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2976,7 +2979,7 @@
                         <KeyUp Label="P" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"P"</Cmd>
+                            <Cmd>sendString:P</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2984,7 +2987,7 @@
                         <KeyUp Label="p" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"p"</Cmd>
+                            <Cmd>sendString:p</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3020,7 +3023,7 @@
                         <KeyUp Label="¤" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"¤"</Cmd>
+                            <Cmd>sendString:¤</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3028,7 +3031,7 @@
                         <KeyUp Label="£" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"£"</Cmd>
+                            <Cmd>sendString:£</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3036,7 +3039,7 @@
                         <KeyUp Label="$" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"$"</Cmd>
+                            <Cmd>sendString:$</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3084,7 +3087,7 @@
                         <KeyUp Label="Q" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Q"</Cmd>
+                            <Cmd>sendString:Q</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3092,7 +3095,7 @@
                         <KeyUp Label="q" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"q"</Cmd>
+                            <Cmd>sendString:q</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3112,7 +3115,7 @@
                         <KeyUp Label="S" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"S"</Cmd>
+                            <Cmd>sendString:S</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3120,7 +3123,7 @@
                         <KeyUp Label="s" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"s"</Cmd>
+                            <Cmd>sendString:s</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3140,7 +3143,7 @@
                         <KeyUp Label="D" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"D"</Cmd>
+                            <Cmd>sendString:D</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3148,7 +3151,7 @@
                         <KeyUp Label="d" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"d"</Cmd>
+                            <Cmd>sendString:d</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3168,7 +3171,7 @@
                         <KeyUp Label="F" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"F"</Cmd>
+                            <Cmd>sendString:F</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3176,7 +3179,7 @@
                         <KeyUp Label="f" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"f"</Cmd>
+                            <Cmd>sendString:f</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3196,7 +3199,7 @@
                         <KeyUp Label="G" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"G"</Cmd>
+                            <Cmd>sendString:G</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3204,7 +3207,7 @@
                         <KeyUp Label="g" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"g"</Cmd>
+                            <Cmd>sendString:g</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3224,7 +3227,7 @@
                         <KeyUp Label="H" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"H"</Cmd>
+                            <Cmd>sendString:H</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3232,7 +3235,7 @@
                         <KeyUp Label="h" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"h"</Cmd>
+                            <Cmd>sendString:h</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3252,7 +3255,7 @@
                         <KeyUp Label="J" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"J"</Cmd>
+                            <Cmd>sendString:J</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3260,7 +3263,7 @@
                         <KeyUp Label="j" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"j"</Cmd>
+                            <Cmd>sendString:j</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3280,7 +3283,7 @@
                         <KeyUp Label="K" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"K"</Cmd>
+                            <Cmd>sendString:K</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3288,7 +3291,7 @@
                         <KeyUp Label="k" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"k"</Cmd>
+                            <Cmd>sendString:k</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3308,7 +3311,7 @@
                         <KeyUp Label="L" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"L"</Cmd>
+                            <Cmd>sendString:L</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3316,7 +3319,7 @@
                         <KeyUp Label="l" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"l"</Cmd>
+                            <Cmd>sendString:l</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3336,7 +3339,7 @@
                         <KeyUp Label="M" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"M"</Cmd>
+                            <Cmd>sendString:M</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3344,7 +3347,7 @@
                         <KeyUp Label="m" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"m"</Cmd>
+                            <Cmd>sendString:m</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3356,7 +3359,7 @@
                         <KeyUp Label="%" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"%"</Cmd>
+                            <Cmd>sendString:%</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3364,7 +3367,7 @@
                         <KeyUp Label="ù" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ù"</Cmd>
+                            <Cmd>sendString:ù</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3376,7 +3379,7 @@
                         <KeyUp Label="µ" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"µ"</Cmd>
+                            <Cmd>sendString:µ</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3384,7 +3387,7 @@
                         <KeyUp Label="*" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"*"</Cmd>
+                            <Cmd>sendString:*</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3413,7 +3416,7 @@
                         <KeyUp Label="&gt;" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"&gt;"</Cmd>
+                            <Cmd>sendString:&gt;</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3425,7 +3428,7 @@
                         <KeyUp Label="&lt;" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"&lt;"</Cmd>
+                            <Cmd>sendString:&lt;</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3445,7 +3448,7 @@
                         <KeyUp Label="W" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"W"</Cmd>
+                            <Cmd>sendString:W</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3453,7 +3456,7 @@
                         <KeyUp Label="w" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"w"</Cmd>
+                            <Cmd>sendString:w</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3473,7 +3476,7 @@
                         <KeyUp Label="X" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"X"</Cmd>
+                            <Cmd>sendString:X</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3481,7 +3484,7 @@
                         <KeyUp Label="x" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"x"</Cmd>
+                            <Cmd>sendString:x</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3501,7 +3504,7 @@
                         <KeyUp Label="C" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"C"</Cmd>
+                            <Cmd>sendString:C</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3509,7 +3512,7 @@
                         <KeyUp Label="c" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"c"</Cmd>
+                            <Cmd>sendString:c</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3529,7 +3532,7 @@
                         <KeyUp Label="V" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"V"</Cmd>
+                            <Cmd>sendString:V</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3537,7 +3540,7 @@
                         <KeyUp Label="v" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"v"</Cmd>
+                            <Cmd>sendString:v</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3557,7 +3560,7 @@
                         <KeyUp Label="B" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"B"</Cmd>
+                            <Cmd>sendString:B</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3565,7 +3568,7 @@
                         <KeyUp Label="b" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"b"</Cmd>
+                            <Cmd>sendString:b</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3577,7 +3580,7 @@
                         <KeyUp Label="Ñ" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"Ñ"</Cmd>
+                            <Cmd>sendString:Ñ</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3593,7 +3596,7 @@
                         <KeyUp Label="N" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"N"</Cmd>
+                            <Cmd>sendString:N</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3601,7 +3604,7 @@
                         <KeyUp Label="ñ" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"ñ"</Cmd>
+                            <Cmd>sendString:ñ</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3609,7 +3612,7 @@
                         <KeyUp Label="n" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"n"</Cmd>
+                            <Cmd>sendString:n</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3621,7 +3624,7 @@
                         <KeyUp Label="?" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"?"</Cmd>
+                            <Cmd>sendString:?</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3629,7 +3632,7 @@
                         <KeyUp Label="," />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey","</Cmd>
+                            <Cmd>sendString:,</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3641,7 +3644,7 @@
                         <KeyUp Label="." />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"."</Cmd>
+                            <Cmd>sendString:.</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3649,7 +3652,7 @@
                         <KeyUp Label=";" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey";"</Cmd>
+                            <Cmd>sendString:;</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3661,7 +3664,7 @@
                         <KeyUp Label="/" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"/"</Cmd>
+                            <Cmd>sendString:/</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3669,7 +3672,7 @@
                         <KeyUp Label=":" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey":"</Cmd>
+                            <Cmd>sendString::</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3681,7 +3684,7 @@
                         <KeyUp Label="§" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"§"</Cmd>
+                            <Cmd>sendString:§</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3689,7 +3692,7 @@
                         <KeyUp Label="!" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"!"</Cmd>
+                            <Cmd>sendString:!</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3767,35 +3770,35 @@
                       <KeyMode Mode="agrave" Enabled="true" Description="">
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"`"</Cmd>
+                            <Cmd>sendString:`</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="papo" Enabled="true" Description="">
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"^"</Cmd>
+                            <Cmd>sendString:^</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="tilde" Enabled="true" Description="">
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"~"</Cmd>
+                            <Cmd>sendString:~</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey"¨"</Cmd>
+                            <Cmd>sendString:¨</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey" "</Cmd>
+                            <Cmd>sendString: </Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>

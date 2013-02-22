@@ -14,6 +14,15 @@ namespace CK.WordPredictor.Model
         int CaretIndex { get; set; }
 
         /// <summary>
+        /// Gets or sets the fact that this service's implementations handle the caretIndex and prediction context
+        /// This value should ONLY be set by the plugin that holds the textarea.
+        /// Others should NOT set this value.
+        /// </summary>
+        bool IsDriven { get; set; }
+        event EventHandler<IsDrivenChangedEventArgs> IsDrivenChanged;
+
+
+        /// <summary>
         /// This event is raised when the <see cref="ITextualContextService"/> has been sent by the service.
         /// </summary>
         event EventHandler<PredictionAreaContentEventArgs> TextSent;

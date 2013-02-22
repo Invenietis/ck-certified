@@ -30,8 +30,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyboardView}">
-                    <Grid>
-                        <Grid Opacity="{TemplateBinding Opacity}">
+                    <Grid  Focusable="False" >
+                        <Grid Focusable="False" Opacity="{TemplateBinding Opacity}">
                             <Border x:Name="OutsideBorder" BorderThickness="{TemplateBinding OutsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding OutsideBorderColor}">
                                 <Border BorderThickness="{TemplateBinding InsideBorderThickness}" 
@@ -39,7 +39,7 @@
                                 Background="{TemplateBinding Background}">
                                 </Border>
                             </Border>
-                            <ItemsControl ItemsSource="{TemplateBinding Keys}">
+                            <ItemsControl  Focusable="False"  ItemsSource="{TemplateBinding Keys}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Canvas />
@@ -62,7 +62,7 @@
 
     <Style TargetType="{x:Type local:StdKeyView}">
         <!-- Border brush -->
-        <!--<Setter Property="Focusable" Value="False"/>-->
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -85,7 +85,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyView}">
-                    <Grid x:Name="buttonGrid" Canvas.ZIndex="{TemplateBinding ZIndex}">
+                    <Grid Focusable="False" x:Name="buttonGrid" Canvas.ZIndex="{TemplateBinding ZIndex}">
                         <Grid.ToolTip>
                             <ToolTip x:Name="gridTooltip" Content="{TemplateBinding Description}"/>
                         </Grid.ToolTip>
@@ -104,6 +104,7 @@
                         <TextBlock x:Name="Letter" 
                                    Foreground="{TemplateBinding Foreground}" 
                                    Text="{TemplateBinding UpLabel}" 
+                                   Focusable="False" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
                                FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"
                                TextTrimming="CharacterEllipsis" >
@@ -132,7 +133,7 @@
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="Letter" Property="Text" Value="{Binding RelativeSource={RelativeSource TemplatedParent},  Path=DownLabel}"/>
+                            <Setter TargetName="Letter" Property="Text" Value="{Binding RelativeSource={RelativeSource TemplatedParent},  Path=UpLabel}"/>
                         </Trigger>
                         <!-- Trigger on : ShowLabel -->
                         <Trigger Property="ShowLabel" Value="False">

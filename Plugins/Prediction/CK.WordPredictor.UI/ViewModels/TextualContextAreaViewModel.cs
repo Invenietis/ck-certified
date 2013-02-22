@@ -33,20 +33,25 @@ namespace CK.WordPredictor.UI.ViewModels
                 PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
         }
 
+        bool _isFocused;
         public bool IsFocused
         {
             set
             {
-                if( value == false )
-                {
-                    _commandTextualContextService.ClearTextualContext();
-                }
-                if( value == true )
+                _isFocused = value;
+                if( _isFocused )
                 {
                     _commandTextualContextService.ClearTextualContext();
                     _predictionTextArea.Text = _text;
                 }
+                else
+                {
+                    _commandTextualContextService.ClearTextualContext();
+                }
+
+                PropertyChanged( this, new PropertyChangedEventArgs( "IsFocused" ) );
             }
+            get { return _isFocused; }
         }
 
         public int CaretIndex

@@ -127,7 +127,6 @@ namespace ContextEditor.ViewModels
                     ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
 
                     OnPropertyChanged( "CurrentlyDisplayedModeType" );
-                    Console.Out.WriteLine( "Passage a la valeur : " + value.ToString() );
                 }
             } 
         }
@@ -145,7 +144,7 @@ namespace ContextEditor.ViewModels
         /// <summary>
         /// Gets the Skin plugin's configuration accessor
         /// </summary>
-        public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
+        //public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
 
         VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _selectedElement;
         public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> SelectedElement
@@ -226,7 +225,7 @@ namespace ContextEditor.ViewModels
 
         protected override void OnDispose()
         {
-            if( PointerDeviceDriver != null && PointerDeviceDriver.Status == RunningStatus.Started )
+            if( PointerDeviceDriver != null && PointerDeviceDriver.Status == InternalRunningStatus.Started )
             {
                 PointerDeviceDriver.Service.PointerMove -= OnMouseMove;
                 PointerDeviceDriver.Service.PointerButtonUp -= OnPointerButtonUp;

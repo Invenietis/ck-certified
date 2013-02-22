@@ -8,7 +8,8 @@
     WindowStartupLocation="Manual"
     Background="Transparent"
     WindowStyle="None"
-    Topmost="True"
+    Topmost="True" 
+    Focusable="False"
     Title="Simple skin">
     <Window.Resources>
         <ctrls:NotNullConverter x:Key="notnull"/>
@@ -33,6 +34,7 @@
             <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
             <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
             <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
+            <Setter Property="ShowImage" Value="{Binding ShowImage}"/>
             <Setter Property="Visibility" Value="{Binding Visible}"/>
             <Setter Property="FontSize" Value="{Binding FontSize}"/>
             <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
@@ -57,10 +59,18 @@
                 </view:StdKeyView.Foreground>
             </view:StdKeyView>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true">
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
+                        <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
+                    </MultiDataTrigger.Conditions>
                     <Setter TargetName="key" Property="ShowLabel" Value="false"/>
                     <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
-                </DataTrigger>
+                </MultiDataTrigger>
+                <!--<DataTrigger Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true">-->
+                    <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
+                    <!--<Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />-->
+                <!--</DataTrigger>-->
                 <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
                     <Setter TargetName="key" Property="Background">
                         <Setter.Value>
@@ -72,10 +82,10 @@
         </DataTemplate>
 
     </Window.Resources>
-    <Grid>
+    <Grid  Focusable="False" >
         <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
         <Viewbox Stretch="Fill">
-            <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
+            <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
         </Viewbox>
     </Grid>
 </ckwincore:NoFocusWindow>

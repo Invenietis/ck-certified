@@ -61,6 +61,24 @@ namespace ContextEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default mode.
+        /// </summary>
+        internal static string DefaultMode {
+            get {
+                return ResourceManager.GetString("DefaultMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default zone.
+        /// </summary>
+        internal static string DefaultZone {
+            get {
+                return ResourceManager.GetString("DefaultZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard..
         /// </summary>
         internal static string EndingStepDesc {

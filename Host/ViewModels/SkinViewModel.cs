@@ -37,14 +37,13 @@ namespace Host.VM
     public class SkinViewModel : ConfigBase
     {
         Guid _keyboardEditorId;
-        AppViewModel _app; 
+        AppViewModel _app;
 
         public SkinViewModel( AppViewModel app )
             : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
         {
             _app = app;
         }
-
         protected override void NotifyOfPropertiesChange()
         {
             base.NotifyOfPropertiesChange();
@@ -70,6 +69,7 @@ namespace Host.VM
             set
             {
                 if( Config != null ) Config.Set( "autohide-timeout", value );
+
             }
         }
 
@@ -105,6 +105,7 @@ namespace Host.VM
             var keyboardEditorStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _keyboardEditorId ) { DisplayName = R.SkinEditorSectionName };
             editionGroup.Items.Add( keyboardEditorStarter );
 
+            base.OnInitialize();
         }
 
         public void StartSkinEditor()

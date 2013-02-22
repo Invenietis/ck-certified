@@ -51,6 +51,9 @@ namespace CK.WordPredictor.UI
         {
             DisableEditor();
             Feature.PropertyChanged -= OnFeaturePropertyChanged;
+
+            //The textarea can be null if we never enabled the editor
+            if( _textArea != null ) _textArea.PropertyChanged -= OnTextAreaPropertyChanged;
         }
 
         public void Teardown()
@@ -61,15 +64,17 @@ namespace CK.WordPredictor.UI
         {
             if( e.PropertyName == "DisplayContextEditor" )
             {
-                if( Feature.DisplayContextEditor && (_window == null || !_window.IsVisible) ) EnableEditor();
-                if( Feature.DisplayContextEditor == false && (_window != null && _window.IsVisible) ) DisableEditor();
+                if( Feature.DisplayContextEditor ) EnableEditor();
+                if( Feature.DisplayContextEditor == false ) DisableEditor();
             }
         }
 
+        TextualContextAreaViewModel _textArea;
         void EnableEditor()
         {
-            TextualContextAreaViewModel vm = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
-            _window = new TextualContextAreaWindow( vm )
+            _textArea = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
+            _textArea.PropertyChanged += OnTextAreaPropertyChanged;
+            _window = new TextualContextAreaWindow( _textArea )
             {
                 Width = 600,
                 Height = 200
@@ -81,6 +86,14 @@ namespace CK.WordPredictor.UI
 
             var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
             CreateSendContextKeyInPredictionZone( zone );
+        }
+
+        void OnTextAreaPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "IsFocused" )
+            {
+                PredictionTextAreaService.IsDriven = _textArea.IsFocused;
+            }
         }
 
         void DisableEditor()
@@ -96,7 +109,7 @@ namespace CK.WordPredictor.UI
         {
             if( zone != null )
             {
-                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords + 1 );
+                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords );
 
                 _sendContextKey.Current.UpLabel = "Envoyer";
                 _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendPredictionAreaContent" );
@@ -124,11 +137,11 @@ namespace CK.WordPredictor.UI
 
         private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 Feature.PropertyChanged += OnFeaturePropertyChanged;
             }
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }

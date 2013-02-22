@@ -54,7 +54,7 @@ namespace BasicCommandHandlers
 
         public void ShowHelp()
         {
-            if( HelpService.Status == RunningStatus.Started ) HelpService.Service.ShowHelpFor( skinUniqueId, true );
+            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.ShowHelpFor( skinUniqueId, true );
         }
     }
 }

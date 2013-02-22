@@ -51,8 +51,6 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        int _maxSuggestedWords;
-
         void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "MaxSuggestedWords" )
@@ -72,6 +70,7 @@ namespace CK.WordPredictor.UI
             if( Context != null )
             {
                 DestroyPredictionZones();
+                Context.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
             }
         }
 
@@ -91,11 +90,11 @@ namespace CK.WordPredictor.UI
 
         void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == RunningStatus.Stopping )
+            if( e.Current == InternalRunningStatus.Stopping )
             {
                 WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
             }
-            if( e.Current == RunningStatus.Starting )
+            if( e.Current == InternalRunningStatus.Starting )
             {
                 WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }

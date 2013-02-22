@@ -86,12 +86,14 @@ namespace CK.WordPredictor
 
         private void FeedPredictedList()
         {
-            Debug.Assert( _engine != null );
-            _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
+            if( _engine != null )
             {
-                _predictedList.Clear();
-                foreach( var w in words.Result ) _predictedList.Add( w );
-            } );
+                _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
+                {
+                    _predictedList.Clear();
+                    foreach( var w in words.Result ) _predictedList.Add( w );
+                } );
+            }
         }
 
         public virtual void Stop()

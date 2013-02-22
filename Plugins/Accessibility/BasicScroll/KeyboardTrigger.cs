@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using CK.Core;
@@ -27,9 +28,6 @@ namespace BasicScroll
         const string PluginPublicName = "Keyboard Trigger";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
-        bool _wasASpace = false;
-        bool _stringSending = false;
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
 
@@ -38,7 +36,33 @@ namespace BasicScroll
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public event EventHandler Triggered;
+        public event EventHandler Triggered
+        {
+            add { InternalTriggered += value; ListenToKeyDown = true; }
+            remove
+            {
+                InternalTriggered -= value;
+                if( InternalTriggered == null ) ListenToKeyDown = false;
+            }
+        }
+
+        private bool _listenToKeyDown;
+        private bool ListenToKeyDown
+        {
+            set
+            {
+                if( _listenToKeyDown != value )
+                {
+                    _listenToKeyDown = value;
+                    if( _listenToKeyDown )
+                        KeyboardDriver.Service.KeyDown += OnKeyDown;
+                    else
+                        KeyboardDriver.Service.KeyDown -= OnKeyDown;
+                }
+            }
+        }
+
+        public event EventHandler InternalTriggered;
 
         int _keyCode;
 
@@ -49,34 +73,12 @@ namespace BasicScroll
 
         public void Start()
         {
-            if( SendStringService.Service != null )
-            {
-                SendStringService.Service.StringSending += OnStringSending;
-                SendStringService.Service.StringSent += OnStringSent;
-            }
-            SendStringService.ServiceStatusChanged += SendStringService_ServiceStatusChanged;
+            ListenToKeyDown = true;
 
-            KeyboardDriver.Service.KeyDown += OnKeyDown;
-
-            _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 0x20 );
+            _keyCode = Configuration.User.GetOrSet( "TriggerKeyCode", 222 );
             KeyboardDriver.Service.RegisterCancellableKey( _keyCode );
 
             Configuration.ConfigChanged += OnConfigChanged;
-        }
-
-        void OnStringSending( object sender, StringSendingEventArgs e )
-        {
-            _stringSending = true;
-        }
-
-        void OnStringSent( object sender, StringSentEventArgs e )
-        {
-            _stringSending = false;
-        }
-
-
-        void SendStringService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -91,29 +93,22 @@ namespace BasicScroll
 
         void OnKeyDown( object sender, KeyboardDriverEventArg e )
         {
-            if( _stringSending == false && !_wasASpace && e.KeyCode == _keyCode ) // on spacebar pressed
+            if( e.KeyCode == _keyCode ) // on spacebar pressed
             {
-                _wasASpace = true;
-                if( Triggered != null ) Triggered( this, EventArgs.Empty );
-                _wasASpace = false;
+                if( InternalTriggered != null ) InternalTriggered( this, EventArgs.Empty );
             }
         }
 
         public void Stop()
         {
-            if( SendStringService.Service != null )
-            {
-                SendStringService.Service.StringSending -= OnStringSending;
-                SendStringService.Service.StringSent -= OnStringSent;
-            }
-            SendStringService.ServiceStatusChanged -= SendStringService_ServiceStatusChanged;
-            KeyboardDriver.Service.KeyDown -= OnKeyDown;
+            ListenToKeyDown = false;
             KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
         }
 
         public void Teardown()
         {
-            
+
         }
     }
+
 }

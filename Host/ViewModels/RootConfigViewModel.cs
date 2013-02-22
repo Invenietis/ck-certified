@@ -35,12 +35,15 @@ using Host.VM;
 
 namespace Host
 {
+    //First level of the civikey host
     public class RootConfigViewModel : CK.Windows.Config.ConfigPage
     {
         AppViewModel _app;
         AppConfigViewModel _appConfigVm;
         Guid _autoclicId;
         Guid _skinId;
+        Guid _basicScrollId;
+        ConfigItemCurrent<IKeyboard> _keyboards;
 
         public RootConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -49,39 +52,53 @@ namespace Host
             _app = app;
             _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
             _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+        }
+
+        private void RefreshKeyboardValues( object o, EventArgs e )
+        {
+            //JL : that fix stinks like hell.
+            //When calling RefreshValues, the current selected item is set to null. (actually setting the current keyboard to null)
+            //Can't figure out why yet.
+            IKeyboard k = _app.KeyboardContext.CurrentKeyboard;
+            _keyboards.RefreshValues( o, e );
+            _keyboards.Values.MoveCurrentTo( k );
         }
 
         protected override void OnInitialize()
         {
             if( _app.KeyboardContext != null )
             {
-                var keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards, false, "" );
-                keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
+                _keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards, false, "" );
+                _keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
 
-                _app.KeyboardContext.Keyboards.KeyboardCreated += ( s, e ) => { keyboards.RefreshValues( s, e ); };
+                _app.KeyboardContext.Keyboards.KeyboardCreated += ( s, e ) =>
+                {
+                    RefreshKeyboardValues( s, e );
+                };
+
                 _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) =>
                 {
-                    //JL : that fix stinks like bloody hell.
-                    //When calling RefreshValues, the current selected item is set to null. (actually setting the current keyboard to null)
-                    //Can't figure out why yet.
-                    IKeyboard k = _app.KeyboardContext.CurrentKeyboard;
-                    keyboards.RefreshValues( s, e );
-                    keyboards.Values.MoveCurrentTo( k );
+                    RefreshKeyboardValues( s, e );
                 };
 
                 _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) =>
                 {
-                    keyboards.RefreshValues( s, e );
                     //When renaming a keyboard, the value is removed and then added back.
                     //The ConfigItemCurrent object cannot handle that on its own, so we set the current back to the keyboard which has been renamed.
-                    keyboards.Values.MoveCurrentTo( _app.KeyboardContext.CurrentKeyboard );
+                    RefreshKeyboardValues( s, e );
                 };
-                _app.KeyboardContext.Keyboards.CurrentChanged += ( s, e ) => { keyboards.RefreshCurrent( s, e ); };
+                _app.KeyboardContext.Keyboards.CurrentChanged += ( s, e ) => { _keyboards.RefreshCurrent( s, e ); };
             }
 
             var g = this.AddGroup();
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
+            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId,
+                                                new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ),
+                                                new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ),
+                                                new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" ) ) { DisplayName = "Défilement clavier" };
+
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
                 new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), // SybilleWordPredictorService
@@ -99,13 +116,15 @@ namespace Host
             g.Items.Add( skinStarter );
             g.Items.Add( autoClicStarter );
             g.Items.Add( wordPredictionStarter );
+            g.Items.Add( basicScrollStarter );
 
-            this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
-            this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
+            this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
+
             base.OnInitialize();
         }
 
         public CivikeyStandardHost CivikeyHost { get; private set; }
+
 
         public void StartObjectExplorer()
         {

@@ -81,7 +81,7 @@ namespace CK.WordPredictor
 
         public virtual bool IsKeyboardSupported( IKeyboard keyboard )
         {
-            return keyboard.Name == CompatibilityKeyboardName;
+            return keyboard != null ? keyboard.Name == CompatibilityKeyboardName : false;
         }
 
         protected virtual void CustomizePredictionKey( IKey key )

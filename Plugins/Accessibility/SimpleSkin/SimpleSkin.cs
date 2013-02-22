@@ -365,7 +365,15 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
-                if( Highlighter.Status == InternalRunningStatus.Started ) Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                if( Highlighter.Status == InternalRunningStatus.Started )
+                {
+                    Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                    Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+                    Highlighter.Service.EndHighlight -= OnEndHighlight;
+                    Highlighter.Service.SelectElement -= OnSelectElement;
+                }
+                Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();

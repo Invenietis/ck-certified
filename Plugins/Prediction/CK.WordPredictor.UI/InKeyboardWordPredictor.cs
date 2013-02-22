@@ -51,8 +51,6 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        int _maxSuggestedWords;
-
         void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "MaxSuggestedWords" )
@@ -72,6 +70,7 @@ namespace CK.WordPredictor.UI
             if( Context != null )
             {
                 DestroyPredictionZones();
+                Context.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
             }
         }
 

@@ -127,7 +127,6 @@ namespace ContextEditor.ViewModels
                     ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
 
                     OnPropertyChanged( "CurrentlyDisplayedModeType" );
-                    Console.Out.WriteLine( "Passage a la valeur : " + value.ToString() );
                 }
             } 
         }

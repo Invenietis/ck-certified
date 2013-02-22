@@ -18,13 +18,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="Black" CornerRadius="5">
-        <Grid DataContext="{Binding SelectedElement}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <local:LayoutKeyEditionUserControl Grid.Column="0" />
-            <local:KeyModeEditionUserControl Grid.Column="1"/>
-        </Grid>
+        <StackPanel Orientation="Horizontal" DataContext="{Binding SelectedElement}">
+            <local:LayoutKeyEditionUserControl />
+            <local:KeyModeEditionUserControl />
+        </StackPanel>
     </Border>
 </UserControl>

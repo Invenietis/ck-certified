@@ -28,7 +28,7 @@
             <StackPanel>
                 <!-- Zone creation -->
                 <StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-text">Type th enew zone's name then validate :</TextBlock>
+                    <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-text">Type the new zone's name then validate :</TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="0 5">
                         <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0" />
                         <Button Width="50" Height="50" Click="OnConfirmCreateNewZoneClicked" 

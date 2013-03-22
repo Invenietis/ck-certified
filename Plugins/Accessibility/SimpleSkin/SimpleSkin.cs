@@ -160,7 +160,11 @@ namespace SimpleSkin
 
         void OnSelectElement( object sender, HighlightEventArgs e )
         {
-            if( e.Element is VMKeySimple ) {
+            if( _viewHidden )
+            {
+                RestoreSkin();
+            }
+            else if( e.Element is VMKeySimple ) {
                 VMKeySimple key = (VMKeySimple)e.Element;
                 if( key.KeyDownCommand.CanExecute( null ) )
                 {

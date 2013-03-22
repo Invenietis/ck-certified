@@ -82,7 +82,7 @@ ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.Text	Text	True	True		Apputyez sur le bouton &apos;+&apos; pour modifier les valeurs pour le mode actuel
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.Text	Text	True	True		"Apputyez sur le bouton &apos;+&apos; pour modifier les valeurs pour le mode actuel"
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.$Content	Text	True	True		
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFD59853
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
@@ -123,16 +123,16 @@ ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-actions:System.Windows.FrameworkElement.Margin	None	False	True		5 0
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer cette touche :
-ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ActionParameter	None	False	True		KeyMode
-ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
 ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer les valeurs pour le mode actuel :
 ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.Button.$Content	Button	True	True		
 ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.DockPanel.Dock	Button	True	False		Left
-ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.ContentControl.Content	Button	True	True		Back
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.ContentControl.Content	Button	True	True		Retour
 ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.Text	Text	True	True		New name for the keyboard :
+ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.Text	Text	True	True		Nom du nouveau clavier :
 ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.Controls.TextBlock.$Content	Text	True	True		
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFC28C4E
@@ -144,7 +144,7 @@ ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-k
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.Text	Text	True	True		Apputyez sur le bouton &apos;+&apos; pour modifier les valeurs pour le mode actuel
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.Text	Text	True	True		"Appuyez sur le bouton &apos;+&apos; pour modifier les valeurs pour le mode actuel"
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.$Content	Text	True	True		
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFD59853
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
@@ -176,8 +176,8 @@ ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-k
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-actions:System.Windows.FrameworkElement.Margin	None	False	True		5 0 0 0
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer cette touche :
-ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer ce mode :
-ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
 ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ActionParameter	None	False	True		KeyMode

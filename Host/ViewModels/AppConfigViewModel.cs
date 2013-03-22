@@ -43,6 +43,7 @@ namespace Host.VM
 {
     public class AppConfigViewModel : ConfigPage
     {
+        Guid _keyboardEditorId;
         AppViewModel _app;
         SkinViewModel _sVm;
         AutoClickViewModel _acVm;
@@ -58,6 +59,8 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
+            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" );
+
             var profiles = this.AddCurrentItem( R.Profile, "", _app.CivikeyHost.Context.ConfigManager.SystemConfiguration, a => a.CurrentUserProfile, a => a.UserProfiles, false, "" );
             _app.CivikeyHost.Context.ConfigManager.SystemConfiguration.UserProfiles.CollectionChanged += ( s, e ) =>
             {
@@ -68,6 +71,21 @@ namespace Host.VM
             this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
+
+            {
+                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
+                action.ImagePath = "edit.png";
+                action.DisplayName = R.ScrollConfig;
+                this.Items.Add( action );
+            }
+
+            {
+                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
+                action.ImagePath = "edit.png";
+                action.DisplayName = R.SkinEditorSectionName;
+                this.Items.Add( action );
+            }
+
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             
             base.OnInitialize();
@@ -76,6 +94,18 @@ namespace Host.VM
         public void StartObjectExplorer()
         {
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.PluginRunner.Apply();
+        }
+
+        public void StartKeyboardEditor()
+        {
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( _keyboardEditorId, ConfigPluginStatus.AutomaticStart );
+            _app.CivikeyHost.Context.PluginRunner.Apply();
+        }
+
+        public void StartScrollEditor()
+        {
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{48D3977C-EC26-48EF-8E47-806E11A1C041}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }

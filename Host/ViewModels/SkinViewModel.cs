@@ -36,7 +36,6 @@ namespace Host.VM
 {
     public class SkinViewModel : ConfigBase
     {
-        Guid _keyboardEditorId;
         AppViewModel _app;
 
         public SkinViewModel( AppViewModel app )
@@ -76,7 +75,6 @@ namespace Host.VM
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" );
 
             var skinGroup = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig );
 
@@ -87,37 +85,9 @@ namespace Host.VM
 
             skinGroup.Items.Add( p );
 
-            {
-                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartSkinEditor ) );
-                action.ImagePath = "edit.png";
-                action.DisplayName = R.SkinViewConfig;
-                action.Description = R.AdvancedUserNotice;
-                this.Items.Add( action );
-            }
-            {
-                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
-                action.ImagePath = "edit.png";
-                action.DisplayName = R.ScrollConfig;
-                action.Description = R.AdvancedUserNotice;
-                this.Items.Add( action );
-            }
-            var editionGroup = this.AddGroup();
-            var keyboardEditorStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _keyboardEditorId ) { DisplayName = R.SkinEditorSectionName };
-            editionGroup.Items.Add( keyboardEditorStarter );
-
             base.OnInitialize();
         }
 
-        public void StartSkinEditor()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{402C9FF7-545A-4E3C-AD35-70ED37497805}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
-        }
-
-        public void StartScrollEditor()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{48D3977C-EC26-48EF-8E47-806E11A1C041}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
-        }
+        
     }
 }

@@ -631,7 +631,7 @@
                     <data key="PositionX" type="Int32">561</data>
                     <data key="PositionY" type="Int32">735</data>
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">319,115</Size>
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">240,85</Size>
                     </data>
                     <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
                     <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -3980,7 +3980,7 @@
                 <Keys>
                   <Key>
                     <KeyModes>
-                      <KeyMode Mode="" Enabled="true" Description="">
+                      <KeyMode Mode="" Enabled="true" Description="Afficher l'aide du clavier">
                         <KeyUp Label="Help" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">

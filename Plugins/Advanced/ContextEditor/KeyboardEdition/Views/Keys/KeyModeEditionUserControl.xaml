@@ -77,10 +77,10 @@
                     </StackPanel>
 
                 </DockPanel>
-
-                <DockPanel LastChildFill="True" IsEnabled="{Binding KeyModeVM.IsFallback, Converter={StaticResource notconverter}}">
-
-                    <!-- KeyMode display text & image -->
+                
+                    <DockPanel LastChildFill="True" IsEnabled="{Binding KeyModeVM.IsFallback, Converter={StaticResource notconverter}}">
+                    
+                        <!-- KeyMode display text & image -->
                     <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
                         <StackPanel>
                             <StackPanel Margin="5">
@@ -161,11 +161,12 @@
                                     <ToolTip x:Uid="keyboard-editor-key-mode-description-tooltip" ToolTip="This text will be displayed below the key if the mouse pointer stays over it" />
                                 </TextBlock.ToolTip>
                             </TextBlock>
-                            <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding KeyModeVM.Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="130" />
+                            <TextBox MinWidth="200" Margin="5 0 5 5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding KeyModeVM.Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Height="80" />
                         </StackPanel>
                     </Border>
 
                 </DockPanel>
+                
             </StackPanel>
 
             <!-- Actions -->

@@ -57,6 +57,13 @@ namespace BasicCommandHandlers
                     case "double":
                         DoubleClic();
                         return;
+                    case "leftpush":
+                        
+                        LeftPush();
+                        return;
+                    case "leftrelease":
+                        LeftRelease();
+                        return;
                 }
             }
         }
@@ -79,6 +86,18 @@ namespace BasicCommandHandlers
         {
             PointerDriver.Service.SimulateButtonDown( ButtonInfo.XButton, "Right" );
             PointerDriver.Service.SimulateButtonUp( ButtonInfo.XButton, "Right" );
+        }
+
+        public void LeftPush()
+        {
+            Console.Out.WriteLine("J'enfonce le gauche");
+            PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
+        }
+
+        public void LeftRelease()
+        {
+            Console.Out.WriteLine( "Je release le gauche" );
+            PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
         }
 
         #endregion

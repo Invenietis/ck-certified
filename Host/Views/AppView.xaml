@@ -10,7 +10,7 @@
             Icon="pack://application:,,,/CiviKey;component/Resources/Icons/CiviKey.ico"    
             ShowInTaskbar="{Binding ShowTaskbarIcon}" mc:Ignorable="d" 
             MaxHeight="800" MaxWidth="800" MinWidth="400" MinHeight="302"
-            SizeToContent="WidthAndHeight">
+            SizeToContent="WidthAndHeight" Topmost="True">
     <Window.Resources>
         <ckwc:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <ckcontrols:BooleanToIsMinimizedConverter x:Key="BooleanToIsMinimizedConverter"/>

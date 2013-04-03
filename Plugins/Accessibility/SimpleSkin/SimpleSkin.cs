@@ -133,7 +133,17 @@ namespace SimpleSkin
                 int defaultWidth = _ctxVm.KeyboardVM.W;
                 int defaultHeight = _ctxVm.KeyboardVM.H;
 
-                if( !Config.User.Contains( PlacementString ) ) SetDefaultWindowPosition( defaultWidth, defaultHeight ); //first launch : places the skin in the default position
+                if( !Config.User.Contains( PlacementString ) )
+                {
+                    var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
+                    if( viewPortSize != null )
+                    {
+                        Size size = (Size)viewPortSize;
+                        SetDefaultWindowPosition( (int)size.Width, (int)size.Height );
+                    }
+                    else
+                        SetDefaultWindowPosition( defaultWidth, defaultHeight ); //first launch : places the skin in the default position
+                }
                 else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
 
                 _skinWindow.Show();
@@ -141,7 +151,9 @@ namespace SimpleSkin
                 if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
 
                 //Placing the skin at the same location as the last launch.
-                _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User[PlacementString] );
+
+                WINDOWPLACEMENT plac = (WINDOWPLACEMENT)Config.User[PlacementString];
+                _skinWindow.SetPlacement( plac );
 
                 //autohide
                 UpdateAutoHideConfig();
@@ -290,7 +302,17 @@ namespace SimpleSkin
                     else placement.showCmd = 8; //Show without taking focus
                     _skinWindow.SetPlacement( placement );
                 }
-                else SetDefaultWindowPosition( _ctxVm.KeyboardVM.W, _ctxVm.KeyboardVM.H );
+                else
+                {
+                     var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
+                    if( viewPortSize != null )
+                    {
+                        Size size = (Size)viewPortSize;
+                        SetDefaultWindowPosition( (int)size.Width, (int)size.Height );
+                    }
+                    else
+                        SetDefaultWindowPosition( _ctxVm.KeyboardVM.W, _ctxVm.KeyboardVM.H );
+                }
             }
         }
 

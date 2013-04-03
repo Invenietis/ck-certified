@@ -693,7 +693,7 @@
                     <data key="PositionX" type="Int32">561</data>
                     <data key="PositionY" type="Int32">735</data>
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">240,85</Size>
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">200,200</Size>
                     </data>
                     <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
                     <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -1777,7 +1777,7 @@
                     <data key="PositionX" type="Int32">561</data>
                     <data key="PositionY" type="Int32">735</data>
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">319,115</Size>
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">500,200</Size>
                     </data>
                     <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFD3D3D3</Color>
@@ -4775,7 +4775,7 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">1048,310</Size>
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">1000,310</Size>
                     </data>
                     <data key="InsideBorderColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FF66AC1B</Color>

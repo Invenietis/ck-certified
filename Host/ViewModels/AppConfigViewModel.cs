@@ -74,14 +74,14 @@ namespace Host.VM
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
-                action.ImagePath = "edit.png";
+                action.ImagePath = "Forward.png";
                 action.DisplayName = R.ScrollConfig;
                 this.Items.Add( action );
             }
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
-                action.ImagePath = "edit.png";
+                action.ImagePath = "Forward.png";
                 action.DisplayName = R.SkinEditorSectionName;
                 this.Items.Add( action );
             }

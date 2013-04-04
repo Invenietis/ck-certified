@@ -1807,7 +1807,7 @@
               <Mode>alt</Mode>
               <Mode>ctrl</Mode>
               <Mode>fn</Mode>
-              <Mode>papo</Mode>
+              <Mode>circonflexe</Mode>
               <Mode>shift</Mode>
               <Mode>tilde</Mode>
               <Mode>trema</Mode>
@@ -2496,7 +2496,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo+shift" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe+shift" Enabled="true" Description="">
                         <KeyUp Label="Â" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2536,7 +2536,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe" Enabled="true" Description="">
                         <KeyUp Label="â" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2616,7 +2616,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="alt+papo" Enabled="true" Description="">
+                      <KeyMode Mode="alt+circonflexe" Enabled="true" Description="">
                         <KeyUp Label="ê" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2624,7 +2624,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo+shift" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe+shift" Enabled="true" Description="">
                         <KeyUp Label="Ê" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2664,7 +2664,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe" Enabled="true" Description="">
                         <KeyUp Label="ê" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2792,7 +2792,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo+shift" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe+shift" Enabled="true" Description="">
                         <KeyUp Label="Û" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2824,7 +2824,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe" Enabled="true" Description="">
                         <KeyUp Label="û" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2868,7 +2868,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo+shift" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe+shift" Enabled="true" Description="">
                         <KeyUp Label="Î" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2900,7 +2900,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe" Enabled="true" Description="">
                         <KeyUp Label="î" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2944,7 +2944,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo+shift" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe+shift" Enabled="true" Description="">
                         <KeyUp Label="Ô" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -2984,7 +2984,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe" Enabled="true" Description="">
                         <KeyUp Label="ô" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
@@ -3071,8 +3071,8 @@
                         <KeyUp Label="^" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>Mode.Toggle("papo")</Cmd>
-                            <Cmd>MonitorOnce.SendKey("autoclose-papo"):Mode.Remove("papo")</Cmd>
+                            <Cmd>Mode.Toggle("circonflexe")</Cmd>
+                            <Cmd>MonitorOnce.SendKey("autoclose-circonflexe"):Mode.Remove("circonflexe")</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3835,7 +3835,7 @@
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
-                      <KeyMode Mode="papo" Enabled="true" Description="">
+                      <KeyMode Mode="circonflexe" Enabled="true" Description="">
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>sendString:^</Cmd>
@@ -4204,7 +4204,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="papo" X="105" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="105" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -4246,7 +4246,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="papo" X="215" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="215" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -4285,7 +4285,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="papo" X="435" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="435" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -4315,7 +4315,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="papo" X="490" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="490" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -4345,7 +4345,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="papo" X="545" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="545" Y="105" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">

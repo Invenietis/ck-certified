@@ -20,11 +20,11 @@ ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-size:S
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-styles:System.Windows.Controls.TextBlock.$Content	Text	True	True		Style de police : 
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-styles:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-styles:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
-ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	bold:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Bold
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	bold:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Gras
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	bold:System.Windows.Controls.Control.Padding	None	False	True		3 2
-ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	Italic:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Italic
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	Italic:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Italique
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	Italic:System.Windows.Controls.Control.Padding	None	False	True		3 2
-ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Underline
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Souligné
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Control.Padding	None	False	True		3 2
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de police : 
 ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center

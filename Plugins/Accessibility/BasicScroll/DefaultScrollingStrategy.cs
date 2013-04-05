@@ -35,6 +35,22 @@ namespace BasicScroll
 
         internal event EventHandler<HighlightEventArgs> SelectElement;
 
+        /// <summary>
+        /// Used when the 
+        /// </summary>
+        public void ElementUnregistered( IHighlightableElement unregisteredElement, bool getNext )
+        {
+            if( _currentElementParents.Contains( unregisteredElement ) )
+            {
+                //The unregistered element is one of the parents of the current element, so we need to stop iterating on this element and start on the next one.
+                if( _currentElement != null ) FireEndHighlight();
+
+                //We flush the parent list. When we call the next element, we'll be on the next registered tree
+                _currentElementParents = new Stack<IHighlightableElement>();
+                if( getNext ) GetNextElement( ActionType.Normal );
+            }
+        }
+
         public DefaultScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements )
         {
             _elements = elements;
@@ -46,15 +62,15 @@ namespace BasicScroll
 
         internal IReadOnlyList<IHighlightableElement> RegisteredElements
         {
-            get { return _roElements ?? (_roElements = new ReadOnlyListOnIList<IHighlightableElement>( _elements )); }
+            get { return _roElements ?? ( _roElements = new ReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
         }
 
         void OnInternalBeat( object sender, EventArgs e )
         {
             if( _currentElement != null ) FireEndHighlight();
-            
+
             // highlight the next element
-            _currentElement = GetNextElement(_actionType);
+            _currentElement = GetNextElement( _actionType );
             FireBeginHighlight();
         }
 
@@ -70,18 +86,24 @@ namespace BasicScroll
         {
             if( _timer.IsEnabled )
             {
-                if( _currentElement != null ) FireEndHighlight();
+                if( _currentElement != null )
+                {
+                    FireEndHighlight();
+                }
                 _timer.IsEnabled = false;
             }
         }
 
         internal void OnExternalEvent()
         {
-            if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
-            else
+            if( _currentElement != null )
             {
-                SelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.StayOnTheSame;
+                if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
+                else
+                {
+                    SelectElement( this, new HighlightEventArgs( _currentElement ) );
+                    _actionType = ActionType.StayOnTheSame;
+                }
             }
         }
 

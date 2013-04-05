@@ -39,6 +39,9 @@ using System.Linq;
 using CommonServices.Accessibility;
 using System.Diagnostics;
 using CK.Plugins.SendInput;
+using HighlightModel;
+using System.Collections.Generic;
+using CK.WPF.ViewModel;
 
 namespace SimpleSkin
 {
@@ -58,6 +61,7 @@ namespace SimpleSkin
         VMContextSimple _ctxVm;
         SkinWindow _skinWindow;
         DispatcherTimer _timer;
+        MiniViewVM _miniViewVm;
         MiniView _miniView;
         bool _forceClose;
         bool _viewHidden;
@@ -83,7 +87,7 @@ namespace SimpleSkin
         [RequiredService]
         public INotificationService Notification { get; set; }
 
-        //Since the IHotsManipulator implementaiton is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
+        //Since the IHotsManipulator implementation is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
         /// <summary>
         /// The HostManipulator, enables minimizing the host.
         /// </summary>
@@ -94,19 +98,13 @@ namespace SimpleSkin
         /// </summary>
         public IPluginConfigAccessor Config { get; set; }
 
+        public bool IsViewHidden { get { return _viewHidden; } }
+
+        #region IPlugin Implementation
+
         public bool Setup( IPluginSetupInfo info )
         {
             return true;
-        }
-
-        private string PlacementString
-        {
-            get
-            {
-                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null )
-                    return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
-                return "";
-            }
         }
 
         public void Start()
@@ -170,75 +168,47 @@ namespace SimpleSkin
             }
         }
 
-        void OnSelectElement( object sender, HighlightEventArgs e )
+        public void Stop()
         {
-            if( _viewHidden )
+            if( _isStarted )
             {
-                RestoreSkin();
-            }
-            else if( e.Element is VMKeySimple ) {
-                VMKeySimple key = (VMKeySimple)e.Element;
-                if( key.KeyDownCommand.CanExecute( null ) )
+                if( Highlighter.Status == InternalRunningStatus.Started )
                 {
-                    key.KeyDownCommand.Execute( null );
-                    if( key.KeyUpCommand.CanExecute( null ) )
-                    {
-                        key.KeyUpCommand.Execute( null );
-                    }
+                    Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                    Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+                    Highlighter.Service.EndHighlight -= OnEndHighlight;
+                    Highlighter.Service.SelectElement -= OnSelectElement;
                 }
+                Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+
+                Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
+
+                UnregisterEvents();
+
+                Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+
+                _forceClose = true;
+                _skinWindow.Close();
+
+                if( _miniView != null )
+                {
+                    _miniView.Close();
+                    _miniView = null;
+                    _viewHidden = false;
+                }
+                _miniViewVm.Dispose();
+
+                _ctxVm.Dispose();
+                _ctxVm = null;
+                _isStarted = false;
             }
         }
 
-        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        public void Teardown()
         {
-            VMZoneSimple vm = e.Element as VMZoneSimple;
-            if( vm != null ) vm.IsHighlighting = true;
-            else
-            {
-                VMKeySimple vmk = e.Element as VMKeySimple;
-                if( vmk != null ) vmk.IsHighlighting = true;
-            }
-
         }
 
-        void OnEndHighlight( object sender, HighlightEventArgs e )
-        {
-            VMZoneSimple vm = e.Element as VMZoneSimple;
-            if( vm != null ) vm.IsHighlighting = false;
-            else
-            {
-                VMKeySimple vmk = e.Element as VMKeySimple;
-                if( vmk != null ) vmk.IsHighlighting = false;
-            }
-        }
-
-        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
-                Highlighter.Service.BeginHighlight += OnBeginHighlight;
-                Highlighter.Service.EndHighlight += OnEndHighlight;
-                Highlighter.Service.SelectElement += OnSelectElement;
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-                Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-                Highlighter.Service.EndHighlight -= OnEndHighlight;
-                Highlighter.Service.SelectElement -= OnSelectElement;
-            }
-        }
-
-        private void RegisterEvents()
-        {
-            _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
-            _skinWindow.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-            _skinWindow.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-            _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
-            _ctxVm.KeyboardContext.CurrentKeyboardChanging += new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
-            _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-        }
+        #endregion
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
@@ -246,7 +216,7 @@ namespace SimpleSkin
             {
                 Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
             }
-             
+
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
@@ -304,7 +274,7 @@ namespace SimpleSkin
                 }
                 else
                 {
-                     var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
+                    var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
                     if( viewPortSize != null )
                     {
                         Size size = (Size)viewPortSize;
@@ -314,6 +284,16 @@ namespace SimpleSkin
                         SetDefaultWindowPosition( _ctxVm.KeyboardVM.W, _ctxVm.KeyboardVM.H );
                 }
             }
+        }
+
+        private void RegisterEvents()
+        {
+            _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
+            _skinWindow.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
+            _skinWindow.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
+            _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanging += new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
         }
 
         private void UnregisterEvents()
@@ -391,44 +371,79 @@ namespace SimpleSkin
             }
         }
 
-        public void Stop()
+        private string PlacementString
         {
-            if( _isStarted )
+            get
             {
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-                    Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-                    Highlighter.Service.EndHighlight -= OnEndHighlight;
-                    Highlighter.Service.SelectElement -= OnSelectElement;
-                }
-                Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
-
-                Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
-
-                UnregisterEvents();
-
-                Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
-
-                _forceClose = true;
-                _skinWindow.Close();
-
-                if( _miniView != null )
-                {
-                    _miniView.Close();
-                    _miniView = null;
-                    _viewHidden = false;
-                }
-
-                _ctxVm.Dispose();
-                _ctxVm = null;
-                _isStarted = false;
+                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null )
+                    return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
+                return "";
             }
         }
 
-        public void Teardown()
+        #region Hightlight Methods
+
+        void OnSelectElement( object sender, HighlightEventArgs e )
         {
+
+            if( e.Element is VMKeySimple )
+            {
+                VMKeySimple key = (VMKeySimple)e.Element;
+                if( key.KeyDownCommand.CanExecute( null ) )
+                {
+                    key.KeyDownCommand.Execute( null );
+                    if( key.KeyUpCommand.CanExecute( null ) )
+                    {
+                        key.KeyUpCommand.Execute( null );
+                    }
+                }
+            }
         }
+
+        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        {
+            VMZoneSimple vm = e.Element as VMZoneSimple;
+            if( vm != null ) vm.IsHighlighting = true;
+            else
+            {
+                VMKeySimple vmk = e.Element as VMKeySimple;
+                if( vmk != null ) vmk.IsHighlighting = true;
+            }
+
+        }
+
+        void OnEndHighlight( object sender, HighlightEventArgs e )
+        {
+            VMZoneSimple vm = e.Element as VMZoneSimple;
+            if( vm != null ) vm.IsHighlighting = false;
+            else
+            {
+                VMKeySimple vmk = e.Element as VMKeySimple;
+                if( vmk != null ) vmk.IsHighlighting = false;
+            }
+        }
+
+        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+                Highlighter.Service.BeginHighlight += OnBeginHighlight;
+                Highlighter.Service.EndHighlight += OnEndHighlight;
+                Highlighter.Service.SelectElement += OnSelectElement;
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+                Highlighter.Service.EndHighlight -= OnEndHighlight;
+                Highlighter.Service.SelectElement -= OnSelectElement;
+            }
+        }
+
+        #endregion
+
+        #region MiniView methods & properties
 
         /// <summary>
         /// Toggles minimization of the application's host, the configuration window.
@@ -454,6 +469,10 @@ namespace SimpleSkin
                 _skinWindow.Hide();
                 ShowMiniView();
 
+                Highlighter.Service.RegisterTree( _miniViewVm );
+                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+
+
                 if( _timer != null ) _timer.Stop();
             }
         }
@@ -467,14 +486,93 @@ namespace SimpleSkin
             {
                 _viewHidden = false;
                 _miniView.Hide();
+
+                //this would be an ugly fix. The scrolling strategy should launch "EndHighlight" before going to the next element ot highlight (even if it is not on the same tree) 
+                //_miniViewVm.IsHighlighted = false;
+
                 _skinWindow.Show();
+
+                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+                Highlighter.Service.UnregisterTree( _miniViewVm );
             }
         }
 
-        /// <summary>
-        /// Gets or sets the MiniView's X position
-        /// </summary>
-        public double MiniViewPositionX
+        void ShowMiniView()
+        {
+            if( _miniView == null )
+            {
+                _miniViewVm = new MiniViewVM( this );
+                _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
+                _miniView.Closing += new CancelEventHandler( OnWindowClosing );
+
+                _miniView.Show();
+
+                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth / 2 ), _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
+                    !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth ), _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
+                {
+                    _miniView.Left = 0;
+                    _miniView.Top = 0;
+                }
+            }
+            else
+                _miniView.Show();
+        }
+
+        #endregion
+    }
+
+    public class MiniViewVM : VMBase, IHighlightableElement, IDisposable
+    {
+        public SimpleSkin Parent { get; set; }
+        IPluginConfigAccessor Config { get { return Parent.Config; } }
+
+        bool _isHighlighted;
+        public bool IsHighlighted
+        {
+            get { return _isHighlighted; }
+            set { _isHighlighted = value; OnPropertyChanged( "IsHighlighted" ); Console.Out.WriteLine( "Is highlighted : " + IsHighlighted ); }
+        }
+
+        public MiniViewVM( SimpleSkin parent )
+        {
+            _isHighlighted = false;
+
+            Parent = parent;
+            Parent.Highlighter.Service.SelectElement += OnSelectElement;
+            Parent.Highlighter.Service.BeginHighlight += OnBeginHighlight;
+            Parent.Highlighter.Service.EndHighlight += OnEndHighlight;
+        }
+
+        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        {
+            if( Parent.IsViewHidden && e.Element == this )
+            {
+                IsHighlighted = true;
+            }
+        }
+
+        void OnEndHighlight( object sender, HighlightEventArgs e )
+        {
+            if( Parent.IsViewHidden && e.Element == this )
+            {
+                IsHighlighted = false;
+            }
+        }
+
+        void OnSelectElement( object sender, HighlightEventArgs e )
+        {
+            if( Parent.IsViewHidden && e.Element == this )
+            {
+                Parent.RestoreSkin();
+            }
+        }
+
+        public IReadOnlyList<IHighlightableElement> Children
+        {
+            get { return ReadOnlyListEmpty<IHighlightableElement>.Empty; }
+        }
+
+        public int X
         {
             get
             {
@@ -487,15 +585,12 @@ namespace SimpleSkin
                     return p.X;
                 }
                 else
-                    return (double)position;
+                    return ( Int32.Parse( position.ToString() ) );
             }
             set { Config.Context["MiniViewPositionX"] = value; }
         }
 
-        /// <summary>
-        /// Gets or sets the MiniView's Y position
-        /// </summary>
-        public double MiniViewPositionY
+        public int Y
         {
             get
             {
@@ -503,30 +598,41 @@ namespace SimpleSkin
                 if( position == null )
                     return 0;
                 else
-                    return (double)position;
+                    return ( Int32.Parse( position.ToString() ) );
 
             }
             set { Config.Context["MiniViewPositionY"] = value; }
         }
 
-        void ShowMiniView()
+        int _width = 160;
+        public int Width
         {
-            if( _miniView == null )
+            get { return _width; }
+            set { _width = value; OnPropertyChanged( "Width" ); }
+        }
+
+        int _height = 160;
+        public int Height
+        {
+            get { return _height; }
+            set
             {
-                _miniView = new MiniView( RestoreSkin ) { DataContext = this };
-                _miniView.Closing += new CancelEventHandler( OnWindowClosing );
-
-                _miniView.Show();
-
-                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( MiniViewPositionX + (int)_miniView.ActualWidth / 2 ), (int)MiniViewPositionY + (int)_miniView.ActualHeight / 2 ) ) ||
-                    !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( MiniViewPositionX + (int)_miniView.ActualWidth ), (int)MiniViewPositionY + (int)_miniView.ActualHeight ) ) )
-                {
-                    _miniView.Left = 0;
-                    _miniView.Top = 0;
-                }
+                _height = value;
+                OnPropertyChanged( "Height" );
             }
-            else
-                _miniView.Show();
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.None; }
+        }
+
+        public void Dispose()
+        {
+            Parent.Highlighter.Service.SelectElement -= OnSelectElement;
+            Parent.Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+            Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
         }
     }
+
 }

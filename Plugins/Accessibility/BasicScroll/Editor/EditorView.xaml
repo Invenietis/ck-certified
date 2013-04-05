@@ -26,7 +26,7 @@
             <DockPanel>
                 <TextBlock x:Uid="target" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Configure trigger key :</TextBlock>
                 <StackPanel>
-                    <ToggleButton x:Uid="start-reccording" x:Name="StartReccording" IsChecked="{Binding IsRecording}">Start reccording</ToggleButton>
+                    <ToggleButton x:Uid="start-reccording" x:Name="StartReccording" IsChecked="{Binding IsRecording}">Start recording</ToggleButton>
                     <TextBlock x:Uid="select-zone" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SelectedKey}" />
                 </StackPanel>
             </DockPanel>

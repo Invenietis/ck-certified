@@ -34,10 +34,6 @@ namespace CK.WPF.ViewModel
         public T ThisValue { get; internal set; }
 
         public T Value { get; internal set; }
-
-        //public T DefaultValue { get; internal set; }
-
-        //public bool IsInherited { get { return !ThisValue.Equals( Value ) && !ThisValue.Equals( DefaultValue ); } }
     }
 
     public static class PropertyLookupExtentions

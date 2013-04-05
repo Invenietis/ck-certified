@@ -17,7 +17,7 @@ namespace CK.WordPredictor.Engines
         {
             _wordPredictionFeature = wordPredictionFeature;
             _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
-            
+
         }
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
@@ -53,19 +53,29 @@ namespace CK.WordPredictor.Engines
 
         public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
         {
-            return _sybille
-                .Predict( ObtainContext( textualService ), maxSuggestedWords )
-                .Select( t => new WeightlessWordPredicted( t ) );
+            //This call can sometimes raise an ArgumentException
+            //TODO : log it and catch it to go on.
+            IEnumerable<WeightlessWordPredicted> result = new List<WeightlessWordPredicted>();
+            try
+            {
+                result = _sybille
+                    .Predict( ObtainContext( textualService ), maxSuggestedWords )
+                    .Select( t => new WeightlessWordPredicted( t ) );
+            }
+            catch( ArgumentException e )
+            {
+            }
+            return result;
         }
 
         public string ObtainContext( ITextualContextService textualService )
         {
             if( textualService.Tokens.Count > 1 )
             {
-                string tokenPhrase =  String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
+                string tokenPhrase = String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
                 tokenPhrase += " ";
                 tokenPhrase += textualService.Tokens.Count >= textualService.CurrentTokenIndex ?
-                    (textualService.Tokens[textualService.CurrentTokenIndex].Value.Substring( 0, textualService.CaretOffset )) : String.Empty;
+                    ( textualService.Tokens[textualService.CurrentTokenIndex].Value.Substring( 0, textualService.CaretOffset ) ) : String.Empty;
                 return tokenPhrase;
             }
             if( textualService.Tokens.Count == 1 )

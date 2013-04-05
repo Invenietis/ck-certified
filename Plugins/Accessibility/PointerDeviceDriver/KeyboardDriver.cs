@@ -37,7 +37,7 @@ namespace PointerDeviceDriver
     /// </summary>
     [Plugin( "{484FD138-A311-40F4-9482-37879D6A1F0E}", PublicName = "Keyboard driver", Version = "0.1",
      Categories = new string[] { "Advanced" },
-     Description = "A plugin that catch keybaord events." )]
+     Description = "A plugin that catches keyboard events." )]
     public class KeyboardDriver : IPlugin, IKeyboardDriver
     {
         private const int WM_KEYDOWN = 0x0100;

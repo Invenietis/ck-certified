@@ -50,16 +50,13 @@ namespace CK.WPF.ViewModel
         }
 
         /// <summary>
-        /// Gets whether this element is being edited. 
+        /// Gets whether this element is being edited.
         /// An element is being edited if it IsSelected or one of its parents is being edited.
-        /// can be overidden
+        /// can be overidden.
         /// </summary>
         public virtual bool IsBeingEdited
-        {
-            get
-            {
-                return IsSelected || Parent.IsBeingEdited;
-            }
+        { 
+            get {  return IsSelected || Parent.IsBeingEdited; }
         }
 
         /// <summary>
@@ -69,7 +66,7 @@ namespace CK.WPF.ViewModel
 
         bool _isExpanded;
         /// <summary>
-        /// Gets whether the element is expanded. Used ot bind a treeview to a context element.
+        /// Gets whether the element is expanded. Used to bind a treeview to a context element.
         /// Should only be used on an editor.
         /// </summary>
         public virtual bool IsExpanded
@@ -183,6 +180,7 @@ namespace CK.WPF.ViewModel
         bool CanClearProperty( string propertyName )
         {
             string[] names = propertyName.Split( ',' );
+
             // We can clear property if the property owns directly a value.
             foreach( var pname in names ) if( _context.SkinConfiguration[LayoutElement][pname] != null ) return true;
             return false;
@@ -191,46 +189,31 @@ namespace CK.WPF.ViewModel
         public Color Background
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "Background", Colors.White ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement]["Background"] = value;
-            }
+            set { _context.SkinConfiguration[LayoutElement]["Background"] = value; }
         }
 
         public Color HoverBackground
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HoverBackground", Background ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement]["HoverBackground"] = value;
-            }
+            set { _context.SkinConfiguration[LayoutElement]["HoverBackground"] = value; }
         }
 
         public Color HighlightBackground
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HighlightBackground", Background ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement]["HighlightBackground"] = value;
-            }
+            set { _context.SkinConfiguration[LayoutElement]["HighlightBackground"] = value; }
         }
 
         public Color PressedBackground
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "PressedBackground", HoverBackground ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement]["PressedBackground"] = value;
-            }
+            set { _context.SkinConfiguration[LayoutElement]["PressedBackground"] = value; }
         }
 
         public Color LetterColor
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "LetterColor", Colors.Black ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement]["LetterColor"] = value;
-            }
+            set { _context.SkinConfiguration[LayoutElement]["LetterColor"] = value; }
         }
 
         public FontStyle FontStyle
@@ -245,11 +228,18 @@ namespace CK.WPF.ViewModel
 
         public TextDecorationCollection TextDecorations
         {
-            get
+            get { return LayoutElement.GetWrappedPropertyValue<TextDecorationCollection>( _context.SkinConfiguration, "TextDecorations" ).Value; }
+        }
+
+        public double FontSize
+        {
+            get { return LayoutElement.GetPropertyValue<double>( _context.SkinConfiguration, "FontSize", 15 ); }
+            set
             {
-                return LayoutElement.GetWrappedPropertyValue<TextDecorationCollection>( _context.SkinConfiguration, "TextDecorations" ).Value;
+                _context.SkinConfiguration[LayoutElement]["FontSize"] = value;
             }
         }
+
 
         #region FontPoperties used for edition
         /// <summary>
@@ -311,17 +301,8 @@ namespace CK.WPF.ViewModel
 
         #endregion
 
-        public double FontSize
-        {
-            get { return LayoutElement.GetPropertyValue<double>( _context.SkinConfiguration, "FontSize", 15 ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement]["FontSize"] = value;
-            }
-        }
 
         #endregion
-
 
     }
 }

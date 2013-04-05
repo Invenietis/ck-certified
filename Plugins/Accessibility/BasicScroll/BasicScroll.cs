@@ -35,6 +35,7 @@ namespace BasicScroll
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
 
+
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new DispatcherTimer();

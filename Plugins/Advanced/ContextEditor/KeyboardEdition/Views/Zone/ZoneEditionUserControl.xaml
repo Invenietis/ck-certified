@@ -25,8 +25,8 @@
             <StackPanel>
                 <DockPanel LastChildFill="False" Margin="2">
                     <TextBlock x:Uid="keyboard-editor-zone-new-key" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new key in this zone :</TextBlock>
-                    <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding CreateKeyCommand}">
-                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                    <Button Height="24" Width="24" Margin="5" Padding="0" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding CreateKeyCommand}">
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
                         <Button.ToolTip>
                             <ToolTip x:Uid="keyboard-editor-zone-new-key-tooltip">
                                 Create a new key
@@ -37,7 +37,7 @@
                 <DockPanel LastChildFill="False" Margin="2">
                     <TextBlock x:Uid="keyboard-editor-zone-delete-zone" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Delete this zone :</TextBlock>
                     <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding DeleteZoneCommand}">
-                        <Image Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
                         <Button.ToolTip>
                             <ToolTip x:Uid="keyboard-editor-zone-delete-zone-tooltip">
                                 Delete the zone

@@ -23,7 +23,7 @@
         <Border BorderThickness="1" CornerRadius="5">
             <local:GenericLayoutEditionUserControl />
         </Border>
-        <Border x:Uid="keyboard-editor-zone-new-key-header" Style="{StaticResource GrayRounded}" Padding="0">
+        <Border x:Uid="keyboard-editor-zone-new-key-header" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
             <StackPanel Margin="5">
                 <DockPanel LastChildFill="False" Margin="2">
                     <TextBlock x:Uid="keyboard-editor-zone-new-key" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new key in this zone :</TextBlock>

@@ -24,7 +24,7 @@
         <Border BorderThickness="1" CornerRadius="5" MaxHeight="300">
             <local:GenericLayoutEditionUserControl />
         </Border>
-        <GroupBox x:Uid="keyboard-editor-keyboard-new-zone-header" Header="Zone creation" Background="#FFF9F9F9" Padding="0" Margin="5 0">
+        <Border Background="#FFF9F9F9" Padding="0" Margin="5" Style="{StaticResource GrayRounded}">
             <StackPanel>
                 <!-- Zone creation -->
                 <StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -73,6 +73,6 @@
                     <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-button" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new zone in this keyboard :</TextBlock>
                 </DockPanel>
             </StackPanel>
-        </GroupBox>
+        </Border>
     </StackPanel>
 </UserControl>

@@ -123,8 +123,8 @@ namespace CK.WordPredictor.UI
                         {
                             key.Current.DownLabel = wordPredicted.Word;
                             key.Current.UpLabel = wordPredicted.Word;
-                            key.Current.OnKeyPressedCommands.Commands.Clear();
-                            key.Current.OnKeyPressedCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+                            key.Current.OnKeyDownCommands.Commands.Clear();
+                            key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
                             key.CurrentLayout.Current.Visible = true;
                         }
                     }

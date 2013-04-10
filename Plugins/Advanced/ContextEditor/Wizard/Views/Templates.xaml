@@ -93,8 +93,8 @@
                 <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                 <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
             </StackPanel>
-            
-            <DockPanel Width="500" Height="70" HorizontalAlignment="Center" DockPanel.Dock="Bottom" LastChildFill="True" Margin="0 10 0 0">
+
+            <DockPanel Height="70" Width="500" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 10 0 0">
                 <!--Back button-->
                 <Button x:Uid="wizard-manager-template-back-button" 
                             Style="{StaticResource BackButtonStyle}" 

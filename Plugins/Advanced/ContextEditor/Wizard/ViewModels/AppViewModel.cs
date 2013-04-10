@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class AppViewModel : Conductor<IScreen>
     {

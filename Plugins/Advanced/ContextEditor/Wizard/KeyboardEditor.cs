@@ -17,10 +17,10 @@ using CK.Storage;
 using CK.Windows.App;
 using CK.Windows.Config;
 using CommonServices;
-using ContextEditor.Resources;
-using ContextEditor.ViewModels;
+using KeyboardEditor.Resources;
+using KeyboardEditor.ViewModels;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     [Plugin( KeyboardEditor.PluginIdString,
         PublicName = PluginPublicName,
@@ -185,6 +185,7 @@ namespace ContextEditor
             if( KeyboardBackup == null || KeyboardBackup.BackedUpKeyboard == null ) throw new NullReferenceException( "Can't cancel modifications on a null KeyboardBackup" );
 
             IKeyboard keyboardToRevert = KeyboardBackup.BackedUpKeyboard as IKeyboard;
+            bool keyboardToRevertIsCurrent = KeyboardContext.Service.CurrentKeyboard.Name == keyboardToRevert.Name;
 
             if( !String.IsNullOrWhiteSpace( KeyboardBackup.BackUpFilePath ) )
             {
@@ -203,7 +204,8 @@ namespace ContextEditor
                         //Erasing all properties of the keyboard. We re-apply the backedup ones.
                         serializableKeyboard.ReadContent( reader );
 
-                        KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
+                        if(keyboardToRevertIsCurrent)
+                            KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
 
                         keyboardToRevert.Destroy();
                     }

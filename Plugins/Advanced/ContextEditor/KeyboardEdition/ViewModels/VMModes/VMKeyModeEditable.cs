@@ -11,11 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
-using ContextEditor.Resources;
-using ContextEditor.ViewModels;
+using KeyboardEditor.Resources;
+using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
     {
@@ -26,7 +26,7 @@ namespace ContextEditor.ViewModels
         {
             _model = model;
             _commands = new ObservableCollection<string>();
-            
+
             foreach( var cmd in _model.OnKeyDownCommands.Commands )
             {
                 _commands.Add( cmd );
@@ -164,7 +164,7 @@ namespace ContextEditor.ViewModels
         #region KeyPrograms
 
         const string vmCollectionOutOfRangeErrorMessage = "The index of the command that has been {0} is out of range in the corresponding viewmodel's Command collection";
-        const string ownCollectionOutOfRangeErrorMessage = "The index of the command that has been {0} is out of range in its own Command collection";
+        const string ownCollectionOutOfRangeErrorMessage = "The index of the command that has been {0} is out of range in the viewmodel's own Command collection";
 
         void OnKeyDownCommands_CommandUpdated( object sender, KeyProgramCommandsEventArgs e )
         {
@@ -194,16 +194,17 @@ namespace ContextEditor.ViewModels
         ObservableCollection<string> _commands;
         public ObservableCollection<string> Commands { get { return _commands; } }
 
-        VMCommand<string> _addCommand;
-        public VMCommand<string> AddCommandCommand
+        VMCommand _addCommand;
+        public VMCommand AddCommandCommand
         {
             get
             {
                 if( _addCommand == null )
                 {
-                    _addCommand = new VMCommand<string>( ( cmdString ) =>
+                    _addCommand = new VMCommand( () =>
                     {
-                        _model.OnKeyDownCommands.Commands.Add( cmdString );
+                        _model.OnKeyDownCommands.Commands.Add( _temporaryKeyProgram );
+                        TemporaryKeyProgram = String.Empty;
                     } );
                 }
 
@@ -236,6 +237,21 @@ namespace ContextEditor.ViewModels
                 }
 
                 return _removeCommand;
+            }
+        }
+
+        string _temporaryKeyProgram = String.Empty;
+        public string TemporaryKeyProgram
+        {
+            get
+            { 
+                return _temporaryKeyProgram; 
+            }
+            set
+            {
+                _temporaryKeyProgram = value;
+                OnPropertyChanged( "TemporaryKeyProgram" );
+                Console.Out.WriteLine("tmpkey : " + value );
             }
         }
 
@@ -277,6 +293,7 @@ namespace ContextEditor.ViewModels
             _model.OnKeyDownCommands.CommandsCleared -= OnKeyDownCommands_CommandsCleared;
             _model.OnKeyDownCommands.CommandDeleted -= OnKeyDownCommands_CommandDeleted;
             _model.OnKeyDownCommands.CommandUpdated -= OnKeyDownCommands_CommandUpdated;
+
             base.OnDispose();
         }
 
@@ -293,7 +310,7 @@ namespace ContextEditor.ViewModels
                 {
                     _applyToCurrentModeCommand = new VMCommand( () =>
                     {
-                        if( !Context.KeyboardVM.CurrentMode.ContainsAll(_model.Mode) || !_model.Mode.ContainsAll(Context.KeyboardVM.CurrentMode) )
+                        if( !Context.KeyboardVM.CurrentMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( Context.KeyboardVM.CurrentMode ) )
                         {
                             Context.KeyboardVM.CurrentMode = _model.Mode;
                         }

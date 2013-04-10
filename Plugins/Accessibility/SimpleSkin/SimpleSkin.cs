@@ -340,7 +340,7 @@ namespace SimpleSkin
             if( _autohide )
             {
                 if( _timer == null )
-                    _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, ( o, args ) => Hide(), _skinWindow.Dispatcher );
+                    _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, ( o, args ) => HideSkin(), _skinWindow.Dispatcher );
                 else
                     _timer.Interval = TimeSpan.FromMilliseconds( timeout );
 
@@ -461,7 +461,7 @@ namespace SimpleSkin
         /// <summary>
         /// Hides the skin and shows the keyboard's MiniView
         /// </summary>
-        public void Hide()
+        public void HideSkin()
         {
             if( !_viewHidden )
             {
@@ -469,9 +469,11 @@ namespace SimpleSkin
                 _skinWindow.Hide();
                 ShowMiniView();
 
-                Highlighter.Service.RegisterTree( _miniViewVm );
-                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-
+                if( Highlighter.Status == InternalRunningStatus.Started )
+                {
+                    Highlighter.Service.RegisterTree( _miniViewVm );
+                    Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                }
 
                 if( _timer != null ) _timer.Stop();
             }
@@ -487,13 +489,12 @@ namespace SimpleSkin
                 _viewHidden = false;
                 _miniView.Hide();
 
-                //this would be an ugly fix. The scrolling strategy should launch "EndHighlight" before going to the next element ot highlight (even if it is not on the same tree) 
-                //_miniViewVm.IsHighlighted = false;
-
                 _skinWindow.Show();
-
-                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
-                Highlighter.Service.UnregisterTree( _miniViewVm );
+                if( Highlighter.Status == InternalRunningStatus.Started )
+                {
+                    Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+                    Highlighter.Service.UnregisterTree( _miniViewVm );
+                }
             }
         }
 
@@ -538,9 +539,15 @@ namespace SimpleSkin
             _isHighlighted = false;
 
             Parent = parent;
-            Parent.Highlighter.Service.SelectElement += OnSelectElement;
-            Parent.Highlighter.Service.BeginHighlight += OnBeginHighlight;
-            Parent.Highlighter.Service.EndHighlight += OnEndHighlight;
+
+
+            if( Parent.Highlighter.Status == InternalRunningStatus.Started )
+            {
+                Parent.Highlighter.Service.SelectElement += OnSelectElement;
+                Parent.Highlighter.Service.BeginHighlight += OnBeginHighlight;
+                Parent.Highlighter.Service.EndHighlight += OnEndHighlight;
+            }
+            Parent.Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
         }
 
         void OnBeginHighlight( object sender, HighlightEventArgs e )
@@ -564,6 +571,22 @@ namespace SimpleSkin
             if( Parent.IsViewHidden && e.Element == this )
             {
                 Parent.RestoreSkin();
+            }
+        }
+
+        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                Parent.Highlighter.Service.BeginHighlight += OnBeginHighlight;
+                Parent.Highlighter.Service.EndHighlight += OnEndHighlight;
+                Parent.Highlighter.Service.SelectElement += OnSelectElement;
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                Parent.Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+                Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
+                Parent.Highlighter.Service.SelectElement -= OnSelectElement;
             }
         }
 
@@ -629,9 +652,13 @@ namespace SimpleSkin
 
         public void Dispose()
         {
-            Parent.Highlighter.Service.SelectElement -= OnSelectElement;
-            Parent.Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-            Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
+            Parent.Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+            if( Parent.Highlighter.Status == InternalRunningStatus.Started )
+            {
+                Parent.Highlighter.Service.SelectElement -= OnSelectElement;
+                Parent.Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+                Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
+            }
         }
     }
 

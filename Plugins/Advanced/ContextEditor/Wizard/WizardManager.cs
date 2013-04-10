@@ -7,9 +7,9 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Windows;
-using ContextEditor.ViewModels;
+using KeyboardEditor.ViewModels;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     /// <summary>
     /// This specialization of the StackConductor implements the "GoFurther" (Go to the next view) and "Restart" actions.

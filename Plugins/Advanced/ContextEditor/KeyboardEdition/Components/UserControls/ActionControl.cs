@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class ActionControl : Control
     {
@@ -39,6 +39,14 @@ namespace ContextEditor.ViewModels
         }
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register( "Text", typeof( string ), typeof( ActionControl ) );
+
+        public string TooltipText
+        {
+            get { return (string)GetValue( TooltipTextProperty ); }
+            set { SetValue( TooltipTextProperty, value ); }
+        }
+        public static readonly DependencyProperty TooltipTextProperty =
+            DependencyProperty.Register( "TooltipText", typeof( string ), typeof( ActionControl ) );
 
         public string ImageSource
         {

@@ -30,9 +30,9 @@ using System.Collections.ObjectModel;
 using System;
 using System.Windows.Input;
 using CK.Windows.App;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
@@ -248,8 +248,13 @@ namespace ContextEditor.ViewModels
         /// </summary>
         public new string Name
         {
-            get { return String.IsNullOrWhiteSpace( Model.Name ) ? R.DefaultZone : Model.Name; }
+            get { return IsDefaultZone ? R.DefaultZone : Model.Name; }
             set { Model.Rename( value ); }
+        }
+
+        public bool IsDefaultZone 
+        {
+            get { return String.IsNullOrWhiteSpace( Model.Name ); } 
         }
 
         /// <summary>

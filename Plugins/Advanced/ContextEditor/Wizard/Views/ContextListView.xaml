@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ContextEditor.s.ContextListView"
+﻿<UserControl x:Class="KeyboardEditor.s.ContextListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -31,7 +31,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="80"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="1" HorizontalAlignment="Right" Margin="20 0 0 0" Source="pack://application:,,,/ContextEditor;component/Resources/keyboard.png"></Image>
+                            <Image Grid.Column="1" HorizontalAlignment="Right" Margin="20 0 0 0" Source="pack://application:,,,/KeyboardEditor;component/Resources/keyboard.png"></Image>
                             <StackPanel Orientation="Vertical" Margin="5 0">
                                 <TextBlock FontWeight="Bold" FontSize="20" HorizontalAlignment="Left">
                                     <TextBlock.Text>

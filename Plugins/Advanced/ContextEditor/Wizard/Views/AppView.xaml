@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ContextEditor.s.AppView"
+﻿<UserControl x:Class="KeyboardEditor.s.AppView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,7 +24,7 @@
                     <GradientStop Color="#FFC4D7EA" Offset="1"/>
                 </LinearGradientBrush>
             </Grid.Background>
-            <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/ContextEditor;component/Resources/Images/keyboard-background.png" Opacity="0.1"/>
+            <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/keyboard-background.png" Opacity="0.1"/>
             <ContentControl Grid.Column="0" Width="Auto" Height="Auto" Name="ContentControl" VerticalAlignment="Top" Content="{Binding ActiveItem}"/>
         </Grid>
     <!--</ScrollViewer>-->

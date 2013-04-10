@@ -32,6 +32,7 @@ using Host.Resources;
 using CK.Keyboard.Model;
 using CK.Windows.Config;
 using Host.VM;
+using Host.ViewModels;
 
 namespace Host
 {
@@ -43,7 +44,7 @@ namespace Host
         Guid _autoclicId;
         Guid _skinId;
         Guid _basicScrollId;
-        ConfigItemCurrent<IKeyboard> _keyboards;
+        ConfigItemCurrent<KeyboardModel> _keyboards;
 
         public RootConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -55,40 +56,14 @@ namespace Host
             _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
         }
 
-        private void RefreshKeyboardValues( object o, EventArgs e )
-        {
-            //JL : that fix stinks like hell.
-            //When calling RefreshValues, the current selected item is set to null. (actually setting the current keyboard to null)
-            //Can't figure out why yet.
-            IKeyboard k = _app.KeyboardContext.CurrentKeyboard;
-            _keyboards.RefreshValues( o, e );
-            _keyboards.Values.MoveCurrentTo( k );
-        }
-
         protected override void OnInitialize()
         {
             if( _app.KeyboardContext != null )
             {
-                _keyboards = this.AddCurrentItem( R.Keyboard, null, _app.KeyboardContext, c => c.CurrentKeyboard, c => c.Keyboards, false, "" );
+                ContextModel ctxModel = new ContextModel( _app.KeyboardContext );
+
+                _keyboards = this.AddCurrentItem( R.Keyboard, null, ctxModel, ctx => ctx.Current, ctx => ctx.Keyboards, false, "" );
                 _keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
-
-                _app.KeyboardContext.Keyboards.KeyboardCreated += ( s, e ) =>
-                {
-                    RefreshKeyboardValues( s, e );
-                };
-
-                _app.KeyboardContext.Keyboards.KeyboardDestroyed += ( s, e ) =>
-                {
-                    RefreshKeyboardValues( s, e );
-                };
-
-                _app.KeyboardContext.Keyboards.KeyboardRenamed += ( s, e ) =>
-                {
-                    //When renaming a keyboard, the value is removed and then added back.
-                    //The ConfigItemCurrent object cannot handle that on its own, so we set the current back to the keyboard which has been renamed.
-                    RefreshKeyboardValues( s, e );
-                };
-                _app.KeyboardContext.Keyboards.CurrentChanged += ( s, e ) => { _keyboards.RefreshCurrent( s, e ); };
             }
 
             var g = this.AddGroup();

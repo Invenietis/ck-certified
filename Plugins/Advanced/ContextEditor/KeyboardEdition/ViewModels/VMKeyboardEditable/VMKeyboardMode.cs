@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
-using ContextEditor.ViewModels;
+using KeyboardEditor.ViewModels;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     /// <summary>
     /// Wrapper on a <see cref="IKeyboardMode"/> that enables setting the <see cref="IsChecked"/> property, 

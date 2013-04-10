@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     public interface IKeyboardBackupManager
     {

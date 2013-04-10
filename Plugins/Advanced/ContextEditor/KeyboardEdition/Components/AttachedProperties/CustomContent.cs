@@ -24,7 +24,7 @@
 using System.Windows.Media;
 using System.Windows;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class CustomContent
     {

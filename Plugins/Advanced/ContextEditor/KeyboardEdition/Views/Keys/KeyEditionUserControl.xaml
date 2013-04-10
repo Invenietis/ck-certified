@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ContextEditor.s.KeyEditionUserControl"
+﻿<UserControl x:Class="KeyboardEditor.s.KeyEditionUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,9 +6,9 @@
              xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
              xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
-             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
+             xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
              xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
-             xmlns:local="clr-namespace:ContextEditor.s"
+             xmlns:local="clr-namespace:KeyboardEditor.s"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>

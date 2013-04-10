@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     /// <summary>
     /// A button to display on a wizard.

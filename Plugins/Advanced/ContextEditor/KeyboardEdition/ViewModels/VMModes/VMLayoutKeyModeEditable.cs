@@ -12,11 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
-using ContextEditor.ViewModels;
+using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
 
 //TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class VMLayoutKeyModeEditable : VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
     {

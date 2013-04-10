@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     internal class KeyboardEditorBootstrapper : Bootstrapper
     {

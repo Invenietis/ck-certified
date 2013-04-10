@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CK.Keyboard.Model;
 using CK.Windows;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class DeletionKeyboardListViewModel : KeyboardListViewModel
     {

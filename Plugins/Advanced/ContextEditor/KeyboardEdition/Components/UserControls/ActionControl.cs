@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class ActionControl : Control
     {

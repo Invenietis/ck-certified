@@ -8,7 +8,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     public interface IKeyboardEditorRoot : IKeyboardBackupManager
     {

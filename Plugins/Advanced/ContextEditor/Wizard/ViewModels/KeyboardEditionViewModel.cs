@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CK.Keyboard.Model;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 using CK.WPF.ViewModel;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class KeyboardEditionViewModel : WizardPage
     {

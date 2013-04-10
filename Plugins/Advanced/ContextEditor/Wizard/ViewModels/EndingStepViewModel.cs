@@ -8,9 +8,9 @@ using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Windows;
 using CK.Windows.Config;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class EndingStepViewModel : WizardPage
     {
@@ -29,8 +29,8 @@ namespace ContextEditor.ViewModels
             HideNext = true;
             HideBack = true;
 
-            Buttons.Add( new WizardButtonViewModel( R.Quit, R.EndingStepQuitDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/exit.png", CloseWizard ) );
-            Buttons.Add( new WizardButtonViewModel( R.StartOver, R.EndingStepStartOverDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/restart.png", RestartWizard ) );
+            Buttons.Add( new WizardButtonViewModel( R.Quit, R.EndingStepQuitDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/exit.png", CloseWizard ) );
+            Buttons.Add( new WizardButtonViewModel( R.StartOver, R.EndingStepStartOverDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/restart.png", RestartWizard ) );
 
             _root = root;
             Title = R.EndingStepTitle;

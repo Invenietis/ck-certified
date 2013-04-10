@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ContextEditor.s.KeyboardEditionUserControl"
+﻿<UserControl x:Class="KeyboardEditor.s.KeyboardEditionUserControl"
              xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
              xmlns:ckctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
@@ -9,8 +9,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
-             xmlns:local="clr-namespace:ContextEditor.s"
+             xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
+             xmlns:local="clr-namespace:KeyboardEditor.s"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -33,7 +33,7 @@
                         <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0" />
                         <Button Width="24" Height="24" Click="OnConfirmCreateNewZoneClicked" 
                                 Command="{Binding CreateZoneCommand}" CommandParameter="{Binding Text, ElementName=zoneCreationTextBox}">
-                            <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                            <Image Stretch="Fill" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
                             <Button.ToolTip>
                                 <ToolTip x:Uid="keyboard-editor-keyboard-new-zone-tooltip">
                                     Confirm the zone's creation
@@ -51,7 +51,7 @@
                             </Button.Style>
                         </Button>
                         <Button Width="24" Height="24" Click="OnConfirmCreateNewZoneClicked">
-                            <Image Stretch="Fill" Source="pack://application:,,,/ContextEditor;component/Resources/Images/cancel.png"></Image>
+                            <Image Stretch="Fill" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/cancel.png"></Image>
                             <Button.ToolTip>
                                 <ToolTip x:Uid="keyboard-editor-keyboard-new-zone-cancel-tooltip">
                                     Cancel the zone's creation
@@ -63,7 +63,7 @@
 
                 <DockPanel LastChildFill="True" Margin="2" x:Name="zoneCreationMainButton">
                     <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnNewZoneClicked">
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="pack://application:,,,/ContextEditor;component/Resources/Images/plus.png"></Image>
+                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
                         <Button.ToolTip>
                             <ToolTip  x:Uid="keyboard-editor-keyboard-new-zone-button-tooltip">
                                 Create a new zone

@@ -11,11 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
-using ContextEditor.Resources;
-using ContextEditor.ViewModels;
+using KeyboardEditor.Resources;
+using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
     {

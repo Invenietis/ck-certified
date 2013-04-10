@@ -37,7 +37,7 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public enum KeyboardEditorMouseEvent
     {

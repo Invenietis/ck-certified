@@ -1,6 +1,6 @@
 ﻿        #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (CK.Windows.Core\Converter\BooleanToVisibilityConverter.cs) is part of CiviKey. 
+* This file (CK.Windows.Core\Converter\StringIsNullOrWhiteSpaceToBoolean.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -19,7 +19,7 @@
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
-#endregion
+        #endregion
 
 using System;
 using System.Collections.Generic;

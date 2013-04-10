@@ -8,7 +8,7 @@ using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Windows;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class KeyboardViewModel : PropertyChangedBase
     {

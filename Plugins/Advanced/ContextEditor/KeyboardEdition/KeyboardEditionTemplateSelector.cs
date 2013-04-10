@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class KeyboardEditionTemplateSelector : DataTemplateSelector
     {

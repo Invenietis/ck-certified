@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Windows.App;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     /// <summary>
     /// The <see cref="WizardPage"/> enables editing a keyboards basic properties : its name, width and height.

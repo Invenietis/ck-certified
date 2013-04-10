@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using CK.Keyboard.Model;
 using CK.Windows;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class HomeViewModel : WizardPage
     {
@@ -41,10 +41,10 @@ namespace ContextEditor.ViewModels
             _keyboardCtx = keyboardCtx;
             Buttons = new List<WizardButtonViewModel>();
 
-            Buttons.Add( new WizardButtonViewModel( R.HomeEditCurrentKeyboard, R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-keyboard.png", EditCurrentKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.HomeEditNewKeyboard, R.HomeEditNewKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/create-keyboard.png", CreateNewKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.HomeEditOtherKeyboard, R.HomeEditOtherKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/edit-other-keyboard.png", EditOtherKeyboard ) );
-            Buttons.Add( new WizardButtonViewModel( R.HomeDestroyKeyboardTitle, R.HomeDestroyKeyboardDesc, "pack://application:,,,/ContextEditor;component/Resources/Images/destroy-keyboard.png", DestroyKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditCurrentKeyboard, R.HomeEditCurrentKeyboardDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/edit-keyboard.png", EditCurrentKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditNewKeyboard, R.HomeEditNewKeyboardDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/create-keyboard.png", CreateNewKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeEditOtherKeyboard, R.HomeEditOtherKeyboardDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/edit-other-keyboard.png", EditOtherKeyboard ) );
+            Buttons.Add( new WizardButtonViewModel( R.HomeDestroyKeyboardTitle, R.HomeDestroyKeyboardDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/destroy-keyboard.png", DestroyKeyboard ) );
             Title = R.HomeStepTitle;
             Description = R.HomeStepDescription;
             HideNext = true;

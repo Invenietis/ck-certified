@@ -9,9 +9,9 @@ using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Windows.App;
 using CK.WPF.Controls;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class SaveAsStepViewModel : WizardPage
     {

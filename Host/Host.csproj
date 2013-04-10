@@ -214,6 +214,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />

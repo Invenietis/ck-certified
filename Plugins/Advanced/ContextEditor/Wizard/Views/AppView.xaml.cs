@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ContextEditor.s
+namespace KeyboardEditor.s
 {
     /// <summary>
     /// Interaction logic for AppView.xaml

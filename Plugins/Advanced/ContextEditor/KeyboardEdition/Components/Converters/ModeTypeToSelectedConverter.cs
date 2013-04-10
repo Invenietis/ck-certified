@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Data;
-using ContextEditor.ViewModels;
+using KeyboardEditor.ViewModels;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class ModeTypeToSelectedConverter : IValueConverter
     {

@@ -47,6 +47,7 @@ namespace BasicScroll
 
                 //We flush the parent list. When we call the next element, we'll be on the next registered tree
                 _currentElementParents = new Stack<IHighlightableElement>();
+                _currentId = 0;
                 if( getNext ) GetNextElement( ActionType.Normal );
             }
         }

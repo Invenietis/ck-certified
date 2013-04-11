@@ -5,6 +5,7 @@
             Background="#FFEFEFEF"
             MinWidth="350"
             MinHeight="165"
+            Topmost="True"
             SizeToContent="WidthAndHeight">
     <Window.Resources>
         <Style TargetType="Border" x:Key="Rounded">

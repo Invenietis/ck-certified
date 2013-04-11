@@ -8,7 +8,7 @@
     <PluginData>
       <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
         <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Keyboard Name="Mouse Keyboard" IsCurrent="1">
+          <Keyboard Name="Mouse Keyboard">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
@@ -1790,7 +1790,7 @@
               </Layout>
             </Layouts>
           </Keyboard>
-          <Keyboard Name="Azerty">
+          <Keyboard Name="Azerty" IsCurrent="1">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>

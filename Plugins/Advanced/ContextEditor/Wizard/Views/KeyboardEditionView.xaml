@@ -123,7 +123,7 @@
             <TreeView DataContext="{Binding KeyboardVM}" Padding="20 0" MinWidth="100" MaxHeight="670">
                 <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}"/>
             </TreeView>
-            <ScrollViewer>
+            <!--<ScrollViewer>-->
                 <Border>
                     
                     <!-- Modes -->
@@ -178,7 +178,7 @@
                         </Viewbox>
                     </DockPanel>
                 </Border>
-            </ScrollViewer>
+            <!--</ScrollViewer>-->
         </StackPanel>
 
     </Border>

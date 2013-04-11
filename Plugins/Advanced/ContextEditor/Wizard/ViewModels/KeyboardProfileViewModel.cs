@@ -174,6 +174,14 @@ namespace KeyboardEditor.ViewModels
             _model.CurrentLayout.H = Height;
             _model.CurrentLayout.W = Width;
 
+            //If the EditedContext is not null, it means that we were modifying a keyboard before finishing and going back all the way to modifying another keyboard.
+            //We dispose the previous KeyboardEditionViewModel, to unregister events before setting it to null.
+            if( _root.EditedContext != null )
+            {
+                _root.EditedContext.Dispose();
+                _root.EditedContext = null;
+            }
+
             Next = new KeyboardEditionViewModel( _root, WizardManager, _model );
             _stepAchieved = true;
 

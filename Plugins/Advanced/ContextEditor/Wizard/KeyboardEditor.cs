@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using CK.Context;
@@ -18,6 +19,8 @@ using CK.Windows.App;
 using CK.Windows.Config;
 using CommonServices;
 using KeyboardEditor.Resources;
+using KeyboardEditor.s;
+using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
 
 namespace KeyboardEditor
@@ -25,7 +28,7 @@ namespace KeyboardEditor
     [Plugin( KeyboardEditor.PluginIdString,
         PublicName = PluginPublicName,
         Version = KeyboardEditor.PluginIdVersion )]
-    public class KeyboardEditor : IPlugin, IKeyboardEditorRoot
+    public partial class KeyboardEditor : IPlugin, IKeyboardEditorRoot
     {
         const string PluginIdString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -47,27 +50,37 @@ namespace KeyboardEditor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
 
-        KeyboardEditorBootstrapper bootstrap;
+        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        //public IService<IKeyboardDriver> KeyboardDriver { get; set; }
+
+        public VMContextEditable EditedContext { get; set; }
+        internal AppViewModel AppViewModel { get { return _appViewModel; } }
+
+        WindowInteropHelper _interopHelper;
         WindowManager _windowManager;
         AppViewModel _appViewModel;
         Window _mainWindow;
         bool _stopping;
 
+        #region IPlugin implementation
+
         public bool Setup( IPluginSetupInfo info )
         {
-            bootstrap = new KeyboardEditorBootstrapper();
-            return bootstrap != null;
+            return true;
         }
 
         public void Start()
         {
-            _windowManager = new WindowManager();
+            _windowManager = new CustomWindowManager();
             _appViewModel = new AppViewModel( this );
             var dic = new Dictionary<string, object>();
             dic.Add("TopMost", false);
             _windowManager.ShowWindow( _appViewModel, null, dic );
 
             _mainWindow = _appViewModel.GetView( null ) as Window;
+            _interopHelper = new WindowInteropHelper( _mainWindow );
+            RegisterHotKeys();
+
             _mainWindow.Closing += OnWindowClosing;
             _mainWindow.Topmost = false;
         }
@@ -78,6 +91,11 @@ namespace KeyboardEditor
 
             if( _mainWindow != null )
                 _mainWindow.Close();
+
+            if( EditedContext != null )
+                EditedContext.Dispose();
+
+            UnregisterAllHotKeys();
         }
             
         public void Teardown()
@@ -85,7 +103,6 @@ namespace KeyboardEditor
             _stopping = false;
             _appViewModel = null;
             _windowManager = null;
-            bootstrap = null;
         }
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
@@ -124,7 +141,19 @@ namespace KeyboardEditor
             if( _mainWindow != null )
                 _mainWindow.Closing -= OnWindowClosing;
         }
-     
+
+        #endregion
+
+        void KeyboardEditor_HookInvoqued( object sender, HookInvokedEventArgs e )
+        {
+            Console.Out.WriteLine( String.Format( "Hook invoked ! msg = {0}, lParam = {1}, wParam = {2}", e.Message, e.LParam, e.WParam ) );
+            if( HookInvoqued != null ) HookInvoqued( this, e );
+        }
+
+        public event HookInvokedEventHandler HookInvoqued;
+        public delegate void HookInvokedEventHandler( object sender, HookInvokedEventArgs e );
+
+        #region Keyboard backup
 
         /// <summary>
         /// This property holds the version of the keyboard that is being edited, before any modification.
@@ -233,6 +262,8 @@ namespace KeyboardEditor
             
             KeyboardBackup = null;
         }
+
+        #endregion
     }
 }
 

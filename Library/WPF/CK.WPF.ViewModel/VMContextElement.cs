@@ -55,8 +55,8 @@ namespace CK.WPF.ViewModel
         /// can be overidden.
         /// </summary>
         public virtual bool IsBeingEdited
-        { 
-            get {  return IsSelected || Parent.IsBeingEdited; }
+        {
+            get { return IsSelected || Parent.IsBeingEdited; }
         }
 
         /// <summary>
@@ -83,6 +83,13 @@ namespace CK.WPF.ViewModel
             }
         }
 
+        /// <summary>
+        /// Override this method to trigger certain actions when the user presses keys while this ContextElement is selected
+        /// </summary>
+        /// <param name="keyCode">The keycode of the key that has been pressed and retrieved from the message pump</param>
+        public virtual void OnKeyDownAction( int keyCode, int multiplier )
+        {
+        }
 
         private IEnumerable<VMContextElement<TC, TB, TZ, TK, TKM, TLKM>> GetParents()
         {

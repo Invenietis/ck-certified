@@ -169,8 +169,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\HotKeyTools.cs" />
     <Compile Include="Wizard\BackupFeature\IKeyboardBackupAware.cs" />
     <Compile Include="Wizard\BackupFeature\KeyboardBackup.cs" />
+    <Compile Include="Wizard\CustomWindowManager.cs" />
     <Compile Include="Wizard\KeyboardEditorBootstrapper.cs" />
     <Compile Include="Wizard\IKeyboardEditorRoot.cs" />
     <Compile Include="Wizard\KeyboardEditor.cs" />
@@ -224,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="Wizard\KeyboardEditor.HotKey.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml">

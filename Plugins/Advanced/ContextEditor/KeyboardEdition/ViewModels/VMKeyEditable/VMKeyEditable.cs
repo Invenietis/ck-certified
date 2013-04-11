@@ -40,6 +40,7 @@ using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
 using System.Collections.ObjectModel;
+using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -60,14 +61,14 @@ namespace KeyboardEditor.ViewModels
             : base( ctx, k, false )
         {
             _ctx = ctx;
-            KeyDownCommand = new VMCommand( () => _ctx.SelectedElement = this );
+            KeyDownCommand = new CK.Windows.App.VMCommand( () => _ctx.SelectedElement = this );
             _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.Current.Mode );
             _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, k.CurrentLayout.Current.Mode );
 
             _layoutKeyModes = new ObservableCollection<VMLayoutKeyModeEditable>();
             _keyModes = new ObservableCollection<VMKeyModeEditable>();
 
-            Model.KeyModes.KeyModeCreated += (obj, sender) => RefreshKeyModeCollections();
+            Model.KeyModes.KeyModeCreated += ( obj, sender ) => RefreshKeyModeCollections();
             Model.KeyModes.KeyModeDestroyed += ( obj, sender ) => RefreshKeyModeCollections();
 
             Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated += ( obj, sender ) => RefreshKeyModeCollections();
@@ -117,7 +118,7 @@ namespace KeyboardEditor.ViewModels
                     if( value ) ZIndex = 100;
                     else ZIndex = 1;
 
-                    if(value) Parent.IsExpanded = value;
+                    if( value ) Parent.IsExpanded = value;
                     OnPropertyChanged( "IsSelected" );
                     OnPropertyChanged( "IsBeingEdited" );
                     OnPropertyChanged( "Opacity" );
@@ -205,6 +206,48 @@ namespace KeyboardEditor.ViewModels
 
         #region OnXXX
 
+        public override void OnKeyDownAction( int keyCode, int delta )
+        {
+            switch( keyCode )
+            {
+                case VMContextEditable.suppr:
+                    DeleteKey();
+                    break;
+                case VMContextEditable.left:
+                    MoveLeft( delta );
+                    break;
+                case VMContextEditable.up:
+                    MoveUp( delta );
+                    break;
+                case VMContextEditable.right:
+                    MoveRight( delta );
+                    break;
+                case VMContextEditable.down:
+                    MoveDown( delta );
+                    break;
+            }
+        }
+
+        public void MoveUp( int pixels )
+        {
+            Y -= pixels;
+        }
+
+        public void MoveLeft( int pixels )
+        {
+            X -= pixels;
+        }
+
+        public void MoveDown( int pixels )
+        {
+            Y += pixels;
+        }
+
+        public void MoveRight( int pixels )
+        {
+            X += pixels;
+        }
+
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
@@ -252,21 +295,35 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
-        VMCommand _deleteKeyCommand;
-
-        public VMCommand DeleteKeyCommand
+        CK.Windows.App.VMCommand _deleteKeyCommand;
+        public CK.Windows.App.VMCommand DeleteKeyCommand
         {
             get
             {
                 if( _deleteKeyCommand == null )
                 {
-                    _deleteKeyCommand = new VMCommand( () =>
+                    _deleteKeyCommand = new CK.Windows.App.VMCommand( () =>
                     {
-                        Context.SelectedElement = Parent;
-                        Model.Destroy();
+                        DeleteKey();
                     } );
                 }
                 return _deleteKeyCommand;
+            }
+        }
+
+        private void DeleteKey()
+        {
+            ModalViewModel mvm = new ModalViewModel( "Delete a key", "Are you sure that you want to delete this key ?", false, String.Empty, CustomMsgBoxIcon.Warning, 1 );
+            mvm.Buttons.Add( new ModalButton( mvm, "Yes", ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, "No", ModalResult.No ) );
+
+            CustomMsgBox msg = new CustomMsgBox( ref mvm );
+            msg.ShowDialog();
+
+            if( mvm.ModalResult == ModalResult.Yes )
+            {
+                Context.SelectedElement = Parent;
+                Model.Destroy();
             }
         }
     }

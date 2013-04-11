@@ -79,9 +79,9 @@ namespace Host.VM
             p.DisplayName = R.WordPredictionInsertSpace;
             Items.Add( p );
 
-            var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
-            engine.DisplayName = R.WordPredictionUseSemanticPrediction;
-            Items.Add( engine );
+            //var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
+            //engine.DisplayName = R.WordPredictionUseSemanticPrediction;
+            //Items.Add( engine );
 
             var filter = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.FilterAlreadyShownWords ) );
             filter.DisplayName = R.WordPredictionFilterAlreadySuggestedWord;

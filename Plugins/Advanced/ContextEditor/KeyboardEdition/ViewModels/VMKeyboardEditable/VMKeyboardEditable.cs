@@ -37,7 +37,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
@@ -179,6 +179,57 @@ namespace ContextEditor.ViewModels
 
         #region OnXXX
 
+        public override void OnKeyDownAction( int keyCode, int delta )
+        {
+            switch( keyCode )
+            {
+                case VMContextEditable.left:
+                    MoveLeft( delta );
+                    break;
+                case VMContextEditable.up:
+                    MoveUp( delta );
+                    break;
+                case VMContextEditable.right:
+                    MoveRight( delta );
+                    break;
+                case VMContextEditable.down:
+                    MoveDown( delta );
+                    break;
+            }
+        }
+
+        void MoveUp( int pixels )
+        {
+            foreach( VMZoneEditable zone in Zones )
+            {
+                zone.MoveUp( pixels );
+            }
+        }
+
+        void MoveLeft( int pixels )
+        {
+            foreach( VMZoneEditable zone in Zones )
+            {
+                zone.MoveLeft( pixels );
+            }
+        }
+
+        void MoveDown( int pixels )
+        {
+            foreach( VMZoneEditable zone in Zones )
+            {
+                zone.MoveDown( pixels );
+            }
+        }
+
+        void MoveRight( int pixels )
+        {
+            foreach( VMZoneEditable zone in Zones )
+            {
+                zone.MoveRight( pixels );
+            }
+        }
+
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( e.Obj == Layout )
@@ -249,20 +300,20 @@ namespace ContextEditor.ViewModels
         }
 
         VMCommand<string> _createZoneCommand;
-        public VMCommand<string> CreateZoneCommand 
-        { 
-            get 
+        public VMCommand<string> CreateZoneCommand
+        {
+            get
             {
                 if( _createZoneCommand == null )
                 {
-                    _createZoneCommand = new VMCommand<string>( ( name ) => 
+                    _createZoneCommand = new VMCommand<string>( ( name ) =>
                     {
-                         Model.Zones.Create( name );
+                        Model.Zones.Create( name );
                     } );
                 }
 
                 return _createZoneCommand;
-            } 
+            }
         }
 
         #endregion

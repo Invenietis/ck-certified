@@ -50,7 +50,7 @@ namespace BasicCommandHandlers
         {
             _actions = new Dictionary<string, Action>();
             _actions.Add( "ShutDown", () => Context.RaiseExitApplication( true ) );
-            _actions.Add( "HideSkin", () => SkinService.Hide() );
+            _actions.Add( "HideSkin", () => SkinService.HideSkin() );
             _actions.Add( "ToggleHostMinimized", () => SkinService.ToggleHostMinimized() );
             _actions.Add(
                 "WindowsKey",

@@ -37,7 +37,7 @@ namespace PointerDeviceDriver
     /// </summary>
     [Plugin( "{484FD138-A311-40F4-9482-37879D6A1F0E}", PublicName = "Keyboard driver", Version = "0.1",
      Categories = new string[] { "Advanced" },
-     Description = "A plugin that catch keybaord events." )]
+     Description = "A plugin that catches keyboard events." )]
     public class KeyboardDriver : IPlugin, IKeyboardDriver
     {
         private const int WM_KEYDOWN = 0x0100;
@@ -47,7 +47,7 @@ namespace PointerDeviceDriver
         HashSet<int> _cancellableKeys;
 
         public event EventHandler<KeyboardDriverEventArg> KeyDown;
-        
+
         public KeyboardDriver()
         {
             _syncCtx = SynchronizationContext.Current;
@@ -60,11 +60,22 @@ namespace PointerDeviceDriver
             }
         }
 
+                                    //TODO : add a counter
+        /// <summary>
+        /// Register a keyCode. Once registered, the key will be swallowed and propagated through the <see cref="KeyDown"/> event.
+        /// </summary>
+        /// <param name="keyCode">The keycode to register (ex : "a" is 65)</param>
         public void RegisterCancellableKey( int keyCode )
         {
             _cancellableKeys.Add( keyCode );
         }
 
+                                    //TODO : add a counter
+        /// <summary>
+        /// Unregister a keyCode. The keyCode won't be be swallowed and propagated anymore.
+        /// Note : doesn't handle a counter yet, which means that unregistering this keyCode will unregister it for any plugin using this service.
+        /// </summary>
+        /// <param name="keyCode">The keycode to register (ex : "a" is 65)</param>
         public void UnregisterCancellableKey( int keyCode )
         {
             _cancellableKeys.Remove( keyCode );
@@ -119,8 +130,8 @@ namespace PointerDeviceDriver
                 if( _cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 ) )
                 {
                     //We only swallow the event if we are going to do something with it
-                    if(KeyDown != null) e.Cancel = true;
-                    
+                    if( KeyDown != null ) e.Cancel = true;
+
                     Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int>)FireEvent, vkCode );
                 }
             }

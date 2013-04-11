@@ -1,0 +1,183 @@
+﻿ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-header:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Creation de zones
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-header:System.Windows.Controls.Control.Background	None	False	True		\#FFF9F9F9
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-header:System.Windows.Controls.Control.Padding	None	False	True		0
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-header:System.Windows.FrameworkElement.Margin	None	False	True		5 0
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-text:System.Windows.Controls.TextBlock.$Content	Text	True	True		Saisissez le nom de la zone puis validez :
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		Confirmez la création de zone
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-cancel-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		Annuler la création de zone
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-button:System.Windows.Controls.TextBlock.$Content	Text	True	True		Ajouter une nouvelle zone :
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-button:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-button:System.Windows.FrameworkElement.Margin	None	False	True		5
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-button:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-editor-keyboard-new-zone-button-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		Ajouter une nouvelle zone
+ContextEditor.g.en-US.resources:keyboardeditionview.baml	keyboard-editor-key-tabitem-aspect:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Aspect et position
+ContextEditor.g.en-US.resources:keyboardeditionview.baml	keyboard-editor-key-tabitem-config:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Configuration générale
+ContextEditor.g.en-US.resources:keyboardeditionview.baml	keyboard-editor-keyboard-tabitem-aspect:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Aspect
+ContextEditor.g.en-US.resources:keyboardeditionview.baml	keyboard-editor-zone-tabitem-aspect:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Aspect
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-size:System.Windows.Controls.TextBlock.$Content	Text	True	True		Taille de police : 
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-size:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-size:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-styles:System.Windows.Controls.TextBlock.$Content	Text	True	True		Style de police : 
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-styles:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-styles:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	bold:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Gras
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	bold:System.Windows.Controls.Control.Padding	None	False	True		3 2
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	Italic:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Italique
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	Italic:System.Windows.Controls.Control.Padding	None	False	True		3 2
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Souligné
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Control.Padding	None	False	True		3 2
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de police : 
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	normal-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche en état normal
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	normal-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	hover-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche survolée
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	hover-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	pressed-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche pressée
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	pressed-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche en surbrillance
+ContextEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Property	None	False	False		ContentControl.Content
+ContextEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Value	None	False	True		Exit
+ContextEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Property	None	False	False		ContentControl.Content
+ContextEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Value	None	False	True		Next
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-header:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Création de touche
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-header:System.Windows.Controls.Control.Background	None	False	True		\#FFF9F9F9
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-header:System.Windows.Controls.Control.Padding	None	False	True		0
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-header:System.Windows.FrameworkElement.Margin	None	False	True		5 0
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key:System.Windows.Controls.TextBlock.$Content	Text	True	True		Ajouter une touche à cette zone :
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key:System.Windows.FrameworkElement.Margin	None	False	True		5
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		Ajouter une nouvelle touche : 
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-delete-zone:System.Windows.Controls.TextBlock.$Content	Text	True	True		Supprimer cette zone :
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-delete-zone:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-delete-zone:System.Windows.FrameworkElement.Margin	None	False	True		5
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-delete-zone:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-delete-zone-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		Supprimer cette zone
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Nom du clavier :
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.FrameworkElement.Width	None	False	True		200
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-name-textblock:System.Windows.Controls.TextBlock.FontSize	None	True	True		20
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Largeur :
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.FrameworkElement.Width	None	False	True		200
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-width-textblock:System.Windows.Controls.TextBlock.FontSize	None	True	True		20
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		Hauteur :
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.FrameworkElement.Width	None	False	True		200
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.TextBlock.FontWeight	None	True	True		Bold
+ContextEditor.g.en-US.resources:keyboardprofileview.baml	keyboard-profile-keyboard-height-textblock:System.Windows.Controls.TextBlock.FontSize	None	True	True		20
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning1:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning1:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFC28C4E
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning1:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning1:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning1:System.Windows.Controls.TextBlock.Text	Text	True	True		Les valeurs affichées sont celles de la touche lorsque le mode suivant est activé :
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFD59853
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning2:System.Windows.Controls.TextBlock.Text	Text	True	True		"Apputyez sur le bouton &apos;+&apos; pour modifier les valeurs pour le mode actuel"
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFD59853
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-warning3:System.Windows.Controls.TextBlock.Text	Text	True	True		ou bien cliquez sur le bouton à droite pour revenir au mode affiché.
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-new-key-mode-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-new-key-mode-tooltip:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Permettre de séléctionner des valeurs différentes pour le mode actuel
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-current-mode:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-current-mode:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-current-mode:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-current-mode:System.Windows.Controls.TextBlock.Text	Text	True	True		Mode actuel : 
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-visible-checkbox:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-visible-checkbox:System.Windows.Controls.Grid.IsSharedSizeScope	None	False	True		True
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-visible-checkbox:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-visible-checkbox:System.Windows.Controls.TextBlock.Text	Text	True	True		Visible : 
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-visible-checkbox:System.Windows.FrameworkElement.Margin	None	False	True		2
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-x:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-x:System.Windows.Controls.Grid.IsSharedSizeScope	None	False	True		True
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-x:System.Windows.Controls.TextBlock.Text	Text	True	True		X : 
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-x:System.Windows.FrameworkElement.Margin	None	False	True		2
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-y:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-y:System.Windows.Controls.Grid.IsSharedSizeScope	None	False	True		True
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-y:System.Windows.Controls.TextBlock.Text	Text	True	True		Y : 
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-y:System.Windows.FrameworkElement.Margin	None	False	True		2
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-width:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-width:System.Windows.Controls.Grid.IsSharedSizeScope	None	False	True		True
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-width:System.Windows.Controls.TextBlock.Text	Text	True	True		Largeur : 
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-width:System.Windows.FrameworkElement.Margin	None	False	True		2
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-height:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-height:System.Windows.Controls.Grid.IsSharedSizeScope	None	False	True		True
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-height:System.Windows.Controls.TextBlock.Text	Text	True	True		Hauteur : 
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-height:System.Windows.FrameworkElement.Margin	None	False	True		2
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-actions:System.Windows.Controls.DockPanel.Dock	None	True	False		Right
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-actions:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Actions
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-actions:System.Windows.Controls.Control.Background	None	False	True		\#FFF9F9F9
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-actions:System.Windows.Controls.Control.Padding	None	False	True		0
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-actions:System.Windows.FrameworkElement.Margin	None	False	True		5 0
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer cette touche :
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ActionParameter	None	False	True		KeyMode
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
+ContextEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer les valeurs pour le mode actuel :
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.Button.$Content	Button	True	True		
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.DockPanel.Dock	Button	True	False		Left
+ContextEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.ContentControl.Content	Button	True	True		Retour
+ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.Text	Text	True	True		Nom du nouveau clavier :
+ContextEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFC28C4E
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning1:System.Windows.Controls.TextBlock.Text	Text	True	True		Les valeurs affichées sont celles de la touche lorsque le mode suivant est activé :
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFD59853
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning2:System.Windows.Controls.TextBlock.Text	Text	True	True		"Appuyez sur le bouton &apos;+&apos; pour modifier les valeurs pour le mode actuel"
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.Foreground	None	False	True		\#FFD59853
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.FontSize	None	True	True		10
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-warning3:System.Windows.Controls.TextBlock.Text	Text	True	True		ou bien cliquez sur le bouton à droite pour revenir au mode affiché.
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-new-key-mode-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-new-key-mode-tooltip:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Permettre de séléctionner des valeurs différentes pour le mode actuel
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-current-mode:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-current-mode:System.Windows.Controls.TextBlock.TextWrapping	None	False	True		Wrap
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-current-mode:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-current-mode:System.Windows.Controls.TextBlock.Text	Text	True	True		Mode actuel : 
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-display-text:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-display-text:System.Windows.Controls.TextBlock.Text	Text	True	True		Texte affiché : 
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-image-text:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-image-text:System.Windows.Controls.TextBlock.Text	Text	True	True		Image : 
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.Text	Text	True	True		Script : 
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.FrameworkElement.Margin	None	False	True		8
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-description-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-description-title:System.Windows.FrameworkElement.Margin	None	False	True		0 0 0 5
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-description-title:System.Windows.Controls.TextBlock.Text	Text	True	True		Description : 
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-description-tooltip:System.Windows.Controls.ToolTip.$Content	ToolTip	True	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-description-tooltip:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Cette description sera visible lorsque la souris restera au-dessus de cette touche
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-actions:System.Windows.Controls.DockPanel.Dock	None	True	False		Right
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-actions:System.Windows.Controls.HeaderedContentControl.Header	Label	True	True		Actions
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-actions:System.Windows.Controls.Control.Background	None	False	True		\#FFF9F9F9
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-actions:System.Windows.Controls.Control.Padding	None	False	True		0
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-actions:System.Windows.FrameworkElement.Margin	None	False	True		5 0 0 0
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer cette touche :
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-key-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.$Content	None	False	True		
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.Text	None	False	True		Supprimer ce mode :
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ImageSource	None	False	True		"pack://application:,,,/ContextEditor\;component/Resources/Images/cancel.png"
+ContextEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:ContextEditor.ViewModels.ActionControl.ActionParameter	None	False	True		KeyMode

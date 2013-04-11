@@ -7,7 +7,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Windows;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     /// <summary>
     /// This class is used to fill the <see cref="WizardManager"/>'s stack.

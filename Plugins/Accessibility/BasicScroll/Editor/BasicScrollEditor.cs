@@ -36,6 +36,9 @@ namespace BasicScroll.Editor
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardDriver KeyboardHook { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IPointerDeviceDriver> PointerInput { get; set; }
         
         #region IPlugin Members
 
@@ -47,7 +50,7 @@ namespace BasicScroll.Editor
         public void Start()
         {
             IWindowManager wnd = IoC.Get<WindowManager>();
-            _editor = new EditorViewModel( BasicScrollConfiguration, KeyboardTriggerConfiguration, KeyboardHook ) { Context = Context };
+            _editor = new EditorViewModel( BasicScrollConfiguration, KeyboardTriggerConfiguration, KeyboardHook, PointerInput.Service ) { Context = Context };
             KeyboardHook.KeyDown += _editor.OnKeyboardHookInvoked;
             wnd.ShowWindow( _editor );
         }

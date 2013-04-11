@@ -7,8 +7,9 @@ using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
+using KeyboardEditor.ViewModels;
 
-namespace ContextEditor
+namespace KeyboardEditor
 {
     public interface IKeyboardEditorRoot : IKeyboardBackupManager
     {
@@ -17,6 +18,13 @@ namespace ContextEditor
         /// Gives access to all the keyboards and their layouts, zones, keys etc..
         /// </summary>
         IService<IKeyboardContext> KeyboardContext { get; }
+
+        /// <summary>
+        /// Gets a service that enables hooking windows' low level keyboard inputs
+        /// </summary>
+        //IService<IKeyboardDriver> KeyboardDriver { get; }
+
+        event KeyboardEditor.HookInvokedEventHandler HookInvoqued;
 
         /// <summary>
         /// Gets the Context.
@@ -38,5 +46,11 @@ namespace ContextEditor
         /// Gets the PointerDeviceDriver service , is used to hook mouse events to enable drag n drop for keys
         /// </summary>
         IService<IPointerDeviceDriver> PointerDeviceDriver { get; }
+
+        /// <summary>
+        /// Gets the Viewmodels of the keyboard that is being edited.
+        /// Used to trigger Dispose on viewmodels when stopping the plugin
+        /// </summary>
+        VMContextEditable EditedContext { get; set; }
     }
 }

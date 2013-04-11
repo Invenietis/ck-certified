@@ -35,7 +35,7 @@ namespace CommonServices
         /// <summary>
         /// Hides the skin window
         /// </summary>
-        void Hide();
+        void HideSkin();
 
         /// <summary>
         /// Restores the skin window.

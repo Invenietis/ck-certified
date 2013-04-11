@@ -15,9 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CK.WPF.StandardViews;
 using CK.WPF.ViewModel;
-using ContextEditor.ViewModels;
+using KeyboardEditor.ViewModels;
 
-namespace ContextEditor.s
+namespace KeyboardEditor.s
 {
     /// <summary>
     /// Interaction logic for KeyboardEditionView.xaml

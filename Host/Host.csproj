@@ -143,11 +143,11 @@
     </Reference>
     <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Config.2.9.1-develop\lib\net40\CK.Windows.Config.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Config.2.9.3-develop\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Core.2.9.1-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Core.2.9.3-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -214,16 +214,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\RootConfigViewModel.cs" />
-    <Compile Include="ViewModels\AppAdvancedConfigViewModel.cs" />
-    <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
+    <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
+    <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
-    <Compile Include="ViewModels\ConfigBase.cs" />
-    <Compile Include="ViewModels\ConfigFeatureStarter.cs" />
-    <Compile Include="ViewModels\AppConfigViewModel.cs" />
-    <Compile Include="ViewModels\SkinBasicConfigViewModel.cs" />
-    <Compile Include="ViewModels\SkinViewModel.cs" />
-    <Compile Include="ViewModels\WordPredictionViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ConfigBase.cs" />
+    <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
+    <Compile Include="ViewModels\SecondLevel\AppConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\SkinBasicConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\SkinViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
@@ -362,11 +363,7 @@
     <Resource Include="Views\Images\help.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\FirstLevel\" />
     <Folder Include="ViewModels\FourthLevel\" />
-    <Folder Include="ViewModels\SecondLevel\" />
-    <Folder Include="ViewModels\ThirdLevel\" />
-    <Folder Include="ViewModels\Tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

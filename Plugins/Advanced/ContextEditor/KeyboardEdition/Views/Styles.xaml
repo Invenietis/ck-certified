@@ -6,9 +6,9 @@
              xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
              xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
-             xmlns:vm="clr-namespace:ContextEditor.ViewModels"
+             xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
              xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
-             xmlns:local="clr-namespace:ContextEditor.s"
+             xmlns:local="clr-namespace:KeyboardEditor.s"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
              mc:Ignorable="d">
@@ -37,7 +37,8 @@
         <Setter Property="Padding" Value="5"/>
         <Setter Property="MinHeight" Value="40"/>
     </Style>
-    <Style TargetType="{x:Type Button}">
+
+    <Style TargetType="{x:Type Button}" x:Key="StandardButtonStyle">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="OverridesDefaultStyle" Value="false"/>
         <Setter Property="Template">
@@ -70,13 +71,14 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style TargetType="{x:Type cce:ColorPicker}">
         <Setter Property="Width" Value="41"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="Margin" Value="0 0 10 0"/>
     </Style>
     <Style TargetType="ctrls:ImageButton">
-        <Setter Property="Source" Value="/ContextEditor;component/Resources/Images/delete.png"/>
+        <Setter Property="Source" Value="/KeyboardEditor;component/Resources/Images/delete.png"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Width" Value="12"/>
         <Setter Property="Margin" Value="5 0 10 0" />
@@ -316,13 +318,13 @@
     </Style>
 
     <ControlTemplate TargetType="{x:Type vm:ActionControl}" x:Key="SimpleActionControlTemplate">
-        <DockPanel LastChildFill="False" Margin="2">
-            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{TemplateBinding Text}" />
+        <DockPanel LastChildFill="True" Margin="2">
             <Button x:Name="button" ToolTip="{TemplateBinding Text}" Height="24" Width="24" Margin="2"
                     DockPanel.Dock="Right" HorizontalAlignment="Right" 
-                    VerticalAlignment="Center" Command="{TemplateBinding Action}"> <!--CommandParameter="{TemplateBinding ActionParameter}"-->
+                    VerticalAlignment="Center" Command="{TemplateBinding Action}">
                 <Image Source="{TemplateBinding ImageSource, Converter={StaticResource imageconverter}}" Stretch="Fill" />
             </Button>
+            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{TemplateBinding Text}" TextWrapping="Wrap" />
         </DockPanel>
         <ControlTemplate.Triggers>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActionParameter, Converter={StaticResource stringnulltobool}}" Value="True">

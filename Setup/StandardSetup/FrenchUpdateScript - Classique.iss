@@ -32,6 +32,9 @@ AppMutex=CiviKeyMutex
 VersionInfoVersion={#CKVersion}
 VersionInfoProductName={#ApplicationName}-{#DistribName}
 
+[Languages]
+Name: Francais; MessagesFile: "compiler:Languages/French.isl"
+
 [Files]
 Source: "..\..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *.xml, *.ck, *.vshost.exe.*, *.manifest, *.iss, \Setup, \Tests"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "Resources/CiviKey.ico"; DestDir: "{app}\resources"; Permissions: users-modify;

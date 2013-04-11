@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Windows.App;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     /// <summary>
     /// The <see cref="WizardPage"/> enables editing a keyboards basic properties : its name, width and height.
@@ -173,6 +173,14 @@ namespace ContextEditor.ViewModels
 
             _model.CurrentLayout.H = Height;
             _model.CurrentLayout.W = Width;
+
+            //If the EditedContext is not null, it means that we were modifying a keyboard before finishing and going back all the way to modifying another keyboard.
+            //We dispose the previous KeyboardEditionViewModel, to unregister events before setting it to null.
+            if( _root.EditedContext != null )
+            {
+                _root.EditedContext.Dispose();
+                _root.EditedContext = null;
+            }
 
             Next = new KeyboardEditionViewModel( _root, WizardManager, _model );
             _stepAchieved = true;

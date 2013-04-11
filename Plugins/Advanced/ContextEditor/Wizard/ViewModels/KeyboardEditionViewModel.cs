@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CK.Keyboard.Model;
-using ContextEditor.Resources;
+using KeyboardEditor.Resources;
 using CK.WPF.ViewModel;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class KeyboardEditionViewModel : WizardPage
     {
-        public VMContextEditable EditedContext { get; set; }
+        public VMContextEditable EditedContext { get { return _root.EditedContext; } }
         IKeyboardEditorRoot _root;
 
         public KeyboardEditionViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard editedKeyboard )
             : base( wizardManager, false )
         {
             _root = root;
-            EditedContext = new VMContextEditable( root, editedKeyboard, _root.Config, root.SkinConfiguration );
+            _root.EditedContext = new VMContextEditable( root, editedKeyboard, _root.Config, root.SkinConfiguration );
             Next = new SavingStepViewModel(_root, WizardManager, EditedContext.KeyboardVM.Model );
 
             Title = String.Format( R.KeyboardEditionStepTitle, editedKeyboard.Name );
@@ -57,6 +57,5 @@ namespace ContextEditor.ViewModels
                 return null;
             } 
         }
-
     }
 }

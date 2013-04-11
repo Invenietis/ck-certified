@@ -65,11 +65,6 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
-            {
-                
-            }
-
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 OnPropertyChanged( "Background" );

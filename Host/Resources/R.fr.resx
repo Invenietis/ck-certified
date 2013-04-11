@@ -292,20 +292,20 @@
     <value>Oui</value>
   </data>
   <data name="SkinEditorSectionName" xml:space="preserve">
-    <value>l'éditeur de claviers</value>
+    <value>Modification du clavier</value>
   </data>
   <data name="ScrollConfig" xml:space="preserve">
     <value>Configuration du défilement</value>
   </data>
   <data name="WordPredictionConfig" xml:space="preserve">
     <value>Configuration de la Prédiction de mots</value>
-    </data>
+  </data>
   <data name="AdvancedAppConfig" xml:space="preserve">
     <value>Configuration avancée</value>
   </data>
   <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
     <value>Nombre de mots prédits (maximum)</value>
-    </data>
+  </data>
   <data name="SkinBasicConfig" xml:space="preserve">
     <value>Configuration basique</value>
   </data>
@@ -322,6 +322,6 @@
     <value>Masquer les mots déja présentés</value>
   </data>
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
-    <value>Utiliser la prédiction sémantique</value>
+    <value>Activer la prédiction sémantique (analyse de la structure de la phrase)</value>
   </data>
 </root>

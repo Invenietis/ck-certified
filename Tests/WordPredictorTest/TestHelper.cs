@@ -89,7 +89,7 @@ namespace WordPredictorTest
                 mockKeyProgram.Setup( e => e.Commands ).Returns( new List<string>() );
 
                 mockKeyModeCurrent.SetupAllProperties();
-                mockKeyModeCurrent.Setup( e => e.OnKeyPressedCommands ).Returns( mockKeyProgram.Object );
+                mockKeyModeCurrent.Setup( e => e.OnKeyDownCommands ).Returns( mockKeyProgram.Object );
 
                 mockedKey.Setup( e => e.CurrentLayout ).Returns( mockLayoutKey.Object );
                 mockedKey.Setup( e => e.Current ).Returns( mockKeyModeCurrent.Object );

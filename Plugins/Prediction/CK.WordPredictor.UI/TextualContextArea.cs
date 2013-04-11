@@ -112,7 +112,7 @@ namespace CK.WordPredictor.UI
                 _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords );
 
                 _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyPressedCommands.Commands.Add( "sendPredictionAreaContent" );
+                _sendContextKey.Current.OnKeyDownCommands.Commands.Add( "sendPredictionAreaContent" );
                 _sendContextKey.CurrentLayout.Current.Visible = true;
             }
         }

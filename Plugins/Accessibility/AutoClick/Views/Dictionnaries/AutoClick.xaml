@@ -363,7 +363,7 @@
                     <views:ActionOnMouseEnterButton
                                               MouseEnterCommand="{Binding ShowHelpCommand}"                                           
                                               Style="{StaticResource SelectedIsPressedButtonStyle}"      
-                                              Width="20" Height="20">
+                                              Width="20" Height="20" ToolTip="Afficher l'aide de l'auto-click">
                         <Image Source="../../Res/Images/help.png" Width="16" Height="16"></Image>
                     </views:ActionOnMouseEnterButton>
                 </StackPanel>

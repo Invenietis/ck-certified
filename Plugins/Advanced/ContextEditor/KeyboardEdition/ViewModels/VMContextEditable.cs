@@ -36,8 +36,12 @@ using CommonServices;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Diagnostics;
+using KeyboardEditor.s;
+using System.Windows.Forms;
+using KeyboardEditor.Tools;
+using System.Runtime.InteropServices;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public enum KeyboardEditorMouseEvent
     {
@@ -52,11 +56,19 @@ namespace ContextEditor.ViewModels
         Layout = 2
     }
 
+
+
     public class VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
         Dictionary<object, VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> _dic;
         ModeTypes _currentlyDisplayedModeType = ModeTypes.Mode;
         IKeyboardEditorRoot _root;
+
+        public const int suppr = 46;
+        public const int up = 38;
+        public const int down = 40;
+        public const int left = 37;
+        public const int right = 39;
 
         public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
             : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, config, skinConfiguration )
@@ -70,9 +82,70 @@ namespace ContextEditor.ViewModels
 
         private void Initialize()
         {
-            PointerDeviceDriver.Service.PointerMove += OnMouseMove;
-            PointerDeviceDriver.Service.PointerButtonUp += OnPointerButtonUp;
+            RegisterEvents();
             KeyboardVM.Initialize();
+        }
+
+        void RegisterEvents()
+        {
+            if( PointerDeviceDriver.Status == InternalRunningStatus.Started )
+            {
+                PointerDeviceDriver.Service.PointerMove += OnMouseMove;
+                PointerDeviceDriver.Service.PointerButtonUp += OnPointerButtonUp;
+            }
+
+            //KL
+            //if( KeyboardDriver.Status == InternalRunningStatus.Started )
+            //{
+            //    KeyboardDriver.Service.KeyDown += OnKeyDown;
+            //    KeyboardDriver.Service.RegisterCancellableKey( suppr );
+            //    KeyboardDriver.Service.RegisterCancellableKey( up );
+            //    KeyboardDriver.Service.RegisterCancellableKey( down );
+            //    KeyboardDriver.Service.RegisterCancellableKey( left );
+            //    KeyboardDriver.Service.RegisterCancellableKey( right );
+            //}
+
+            _root.HookInvoqued += OnKeyDown;
+        }
+
+        void _root_HookInvoqued( object sender, HookInvokedEventArgs e )
+        {
+            throw new NotImplementedException();
+        }
+
+        void UnregisterEvents()
+        {
+            if( PointerDeviceDriver != null && PointerDeviceDriver.Status != InternalRunningStatus.Stopped )
+            {
+                PointerDeviceDriver.Service.PointerMove -= OnMouseMove;
+                PointerDeviceDriver.Service.PointerButtonUp -= OnPointerButtonUp;
+            }
+
+            //KL
+            //if( KeyboardDriver != null && KeyboardDriver.Status != InternalRunningStatus.Stopped )
+            //{
+            //    KeyboardDriver.Service.KeyDown -= OnKeyDown;
+            //    KeyboardDriver.Service.UnregisterCancellableKey( suppr );
+            //    KeyboardDriver.Service.UnregisterCancellableKey( up );
+            //    KeyboardDriver.Service.UnregisterCancellableKey( down );
+            //    KeyboardDriver.Service.UnregisterCancellableKey( left );
+            //    KeyboardDriver.Service.UnregisterCancellableKey( right );
+            //}
+        }
+
+        private void OnKeyDown( object sender, HookInvokedEventArgs e )
+        {
+            Keys key = (Keys)( ( (int)e.LParam >> 16 ) & 0xFFFF );
+            //Keys key = (Keys)Marshal.ReadInt32( e.LParam );
+
+            //int modifier = (int)e.LParam & 0xFFFF;
+            int modifier = (int)e.LParam & 0xFFFF;
+
+            Console.Out.WriteLine( String.Format( "Parsing done. vkey = {2}, key = {0}, modifier = {1}", key, modifier, (int)key ) );
+
+            int delta = modifier == Constants.SHIFT ? 10 : 1;
+
+            SelectedElement.OnKeyDownAction( (int)key, delta );
         }
 
         //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
@@ -108,15 +181,15 @@ namespace ContextEditor.ViewModels
                 }
             }
         }
-        
+
         /// <summary>
         /// The fact that we are displaying the LayoutKeyMode or the KeyMode, on a IKey edition panel must be handled at a higher level.
         /// This property gets whether we should display the KeyMode or the LayoutKeyMode panel.
         /// </summary>
-        public ModeTypes CurrentlyDisplayedModeType 
-        { 
-            get { return _currentlyDisplayedModeType; } 
-            set 
+        public ModeTypes CurrentlyDisplayedModeType
+        {
+            get { return _currentlyDisplayedModeType; }
+            set
             {
                 if( _currentlyDisplayedModeType != value )
                 {
@@ -128,7 +201,7 @@ namespace ContextEditor.ViewModels
 
                     OnPropertyChanged( "CurrentlyDisplayedModeType" );
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -142,9 +215,9 @@ namespace ContextEditor.ViewModels
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get { return _root.PointerDeviceDriver; } }
 
         /// <summary>
-        /// Gets the Skin plugin's configuration accessor
+        /// Gets the keyboard driver, can be used to hook events
         /// </summary>
-        //public new IPluginConfigAccessor SkinConfiguration { get { return _root.SkinConfiguration; } }
+        //public IService<IKeyboardDriver> KeyboardDriver { get { return _root.KeyboardDriver; } }
 
         VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _selectedElement;
         public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> SelectedElement
@@ -160,9 +233,9 @@ namespace ContextEditor.ViewModels
             }
             set
             {
-                if( _selectedElement != value && value != null)
+                if( _selectedElement != value && value != null )
                 {
-                    if(_selectedElement != null)
+                    if( _selectedElement != null )
                         _selectedElement.IsSelected = false;
                     _selectedElement = value;
                     _selectedElement.IsSelected = true;
@@ -225,11 +298,7 @@ namespace ContextEditor.ViewModels
 
         protected override void OnDispose()
         {
-            if( PointerDeviceDriver != null && PointerDeviceDriver.Status == InternalRunningStatus.Started )
-            {
-                PointerDeviceDriver.Service.PointerMove -= OnMouseMove;
-                PointerDeviceDriver.Service.PointerButtonUp -= OnPointerButtonUp;
-            }
+            UnregisterEvents();
         }
 
         VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> _selectCommand;

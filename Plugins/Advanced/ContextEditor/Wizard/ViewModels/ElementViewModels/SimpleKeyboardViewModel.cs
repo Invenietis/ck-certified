@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CK.Keyboard.Model;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     /// <summary>
     /// This class is the viewmodel that corresponds to the "Profile" of a keyboard.

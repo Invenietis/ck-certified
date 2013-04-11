@@ -10,7 +10,7 @@ using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using CK.Windows;
 
-namespace ContextEditor.ViewModels
+namespace KeyboardEditor.ViewModels
 {
     public class ContextListViewModel : WizardPage
     {

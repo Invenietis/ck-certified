@@ -11,9 +11,9 @@ namespace KeyboardEditor
     {
         protected override Window EnsureWindow( object model, object view, bool isDialog )
         {
-            Console.Out.WriteLine( "Ensure window called" ); 
             Window window = base.EnsureWindow( model, view, isDialog );
             window.SizeToContent = SizeToContent.WidthAndHeight;
+            window.Topmost = true;
             return window;
         }
     }

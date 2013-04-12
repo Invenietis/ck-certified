@@ -130,7 +130,8 @@ namespace BasicScroll
                 {
                     if( InternalTriggered != null )
                     {
-                        e.Cancel = true;
+                        //We don't cancel the event, in order no to block the user when he selects the left click as the trigger.
+                        //e.Cancel = true;
                         InternalTriggered( this, EventArgs.Empty );
                     }
                 }

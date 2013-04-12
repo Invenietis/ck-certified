@@ -49,7 +49,7 @@ namespace Host
         }
 
         /// <summary>
-        /// Used to launch WPF UI Thread when the window goes from the minimized state to the normal state, in XP.
+        /// Used to launch WPF UI Thread when the window goes from the minimized state to the normal state, on XP.
         /// Without that, half the window remains black until it is resized.
         /// </summary>
         /// <param name="e"></param>

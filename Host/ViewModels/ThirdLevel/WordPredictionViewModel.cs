@@ -17,7 +17,7 @@ namespace Host.VM
 
         public int MaxSuggestedWords
         {
-            get { return Config != null ? Config.GetOrSet( "MaxSuggestedWords", 10 ) : 10; }
+            get { return Config != null ? Config.GetOrSet( "MaxSuggestedWords", 5 ) : 5; }
             set
             {
                 if( Config != null ) Config.Set( "MaxSuggestedWords", value );
@@ -71,25 +71,29 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
+            var g = this.AddActivableSection( R.WordPredictionSectionName.ToLower(), R.WordPredictionConfig );
+
             var c = new ConfigItemProperty<int>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.MaxSuggestedWords ) );
             c.DisplayName = R.WordPredictionMaxSuggestedWords;
-            Items.Add( c );
+            g.Items.Add( c );
 
             var p = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.InsertSpaceAfterPredictedWord ) );
             p.DisplayName = R.WordPredictionInsertSpace;
-            Items.Add( p );
+            g.Items.Add( p );
 
-            //var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
-            //engine.DisplayName = R.WordPredictionUseSemanticPrediction;
-            //Items.Add( engine );
+            var engine = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.UsesSemanticPrediction ) );
+            engine.DisplayName = R.WordPredictionUseSemanticPrediction;
+            g.Items.Add( engine );
 
             var filter = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.FilterAlreadyShownWords ) );
             filter.DisplayName = R.WordPredictionFilterAlreadySuggestedWord;
-            Items.Add( filter );
+            g.Items.Add( filter );
 
-            var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
-            contextEditor.DisplayName = R.WordPredictionDisplayPredictionEditorWindow;
-            Items.Add( contextEditor );
+            //Hidden, we'll wait for the feature to have less bugs
+            //var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
+            //contextEditor.DisplayName = R.WordPredictionDisplayPredictionEditorWindow;
+            //g.Items.Add( contextEditor );
+
 
             base.OnInitialize();
         }

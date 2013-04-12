@@ -33,9 +33,9 @@ KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	pressed-bg
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche en surbrillance
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 KeyboardEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Property	None	False	False		ContentControl.Content
-KeyboardEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Value	None	False	True		Exit
+KeyboardEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-exit:System.Windows.Setter.Value	None	False	True		Quitter
 KeyboardEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Property	None	False	False		ContentControl.Content
-KeyboardEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Value	None	False	True		Next
+KeyboardEditor.g.en-US.resources:styles.baml	wizard-manager-template-forward-button-next:System.Windows.Setter.Value	None	False	True		Suivant
 KeyboardEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-header:System.Windows.Controls.Border.Padding	None	False	True		0
 KeyboardEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key-header:System.Windows.FrameworkElement.Margin	None	False	True		5
 KeyboardEditor.g.en-US.resources:zoneeditionusercontrol.baml	keyboard-editor-zone-new-key:System.Windows.Controls.TextBlock.$Content	Text	True	True		Ajouter une touche à cette zone :
@@ -121,7 +121,7 @@ KeyboardEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-edito
 KeyboardEditor.g.en-US.resources:layoutkeyeditionusercontrol.baml	keyboard-editor-layout-key-mode-delete-mode-button:KeyboardEditor.ViewModels.ActionControl.TooltipText	None	True	True		Les paramètres de cette touche pour le mode actuel seront supprimée. La touche elle-même ne le sera pas.
 KeyboardEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.Button.$Content	Button	True	True		
 KeyboardEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.DockPanel.Dock	Button	True	False		Left
-KeyboardEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.ContentControl.Content	Button	True	True		Back
+KeyboardEditor.g.en-US.resources:templates.baml	wizard-manager-template-back-button:System.Windows.Controls.ContentControl.Content	Button	True	True		Retour
 KeyboardEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.$Content	Text	True	True		
 KeyboardEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.Controls.TextBlock.Text	Text	True	True		Nom du nouveau clavier :
 KeyboardEditor.g.en-US.resources:saveasview.baml	save-as-step-new-name-textblock:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center

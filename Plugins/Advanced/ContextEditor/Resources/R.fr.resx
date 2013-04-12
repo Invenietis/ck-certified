@@ -117,11 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
   <data name="DefaultMode" xml:space="preserve">
     <value>Mode par défaut</value>
   </data>
   <data name="DefaultZone" xml:space="preserve">
     <value>Zone par défaut</value>
+  </data>
+  <data name="DeleteKey" xml:space="preserve">
+    <value>Supprimer une touche</value>
+  </data>
+  <data name="DeleteKeyConfirmation" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir supprimer cette touche ?</value>
+  </data>
+  <data name="DeleteKeys" xml:space="preserve">
+    <value>Supprimer les touches</value>
+  </data>
+  <data name="DeleteZone" xml:space="preserve">
+    <value>Supprimer une zone</value>
+  </data>
+  <data name="DeleteZoneConfirmation" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer une zone. Voulez-vous que les touches contenues dans cette zone soient stockées dans la zone par défaut ? Dans le cas contraire, elles seront détruites.</value>
   </data>
   <data name="EndingStepDesc" xml:space="preserve">
     <value>Vos modifications ont bien été sauvegardées, vous pouvez maintenant quitter l'assistant ou bien retourner à la page d'accueil pour faire d'autres modifications.</value>
@@ -221,6 +239,9 @@ Etes-vous sur de vouloir faire cela ?</value>
   </data>
   <data name="SaveAsStepTitle" xml:space="preserve">
     <value>Sauvegarde sous..</value>
+  </data>
+  <data name="SaveKeys" xml:space="preserve">
+    <value>Sauver les touches</value>
   </data>
   <data name="SavingStepCancelAndQuitDesc" xml:space="preserve">
     <value>Annuler toutes les modifications faites sur ce clavier et quitter l'assistant.</value>

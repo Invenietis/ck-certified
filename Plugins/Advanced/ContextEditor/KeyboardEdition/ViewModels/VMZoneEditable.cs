@@ -144,10 +144,10 @@ namespace KeyboardEditor.ViewModels
         {
             _deleteZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
             {
-                ModalViewModel mvm = new ModalViewModel( "Supprimer une zone", "Vous êtes sur le point de supprimer une zone. Voulez-vous que les touches contenues dans cette zone soient stockées dans la zone par défaut ? Dans le cas contraire, elles seront détruites." );
-                mvm.Buttons.Add( new ModalButton( mvm, "Sauver les touches", ModalResult.Yes ) );
-                mvm.Buttons.Add( new ModalButton( mvm, "Détruire les touches", ModalResult.No ) );
-                mvm.Buttons.Add( new ModalButton( mvm, "Annuler", ModalResult.Cancel ) );
+                ModalViewModel mvm = new ModalViewModel( R.DeleteZone, R.DeleteZoneConfirmation );
+                mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
+                mvm.Buttons.Add( new ModalButton( mvm, R.DeleteKeys, ModalResult.No ) );
+                mvm.Buttons.Add( new ModalButton( mvm, R.Cancel, ModalResult.Cancel ) );
                 CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
                 msgBox.ShowDialog();
 

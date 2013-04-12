@@ -61,6 +61,15 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default mode.
         /// </summary>
         internal static string DefaultMode {
@@ -75,6 +84,51 @@ namespace KeyboardEditor.Resources {
         internal static string DefaultZone {
             get {
                 return ResourceManager.GetString("DefaultZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete a key.
+        /// </summary>
+        internal static string DeleteKey {
+            get {
+                return ResourceManager.GetString("DeleteKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure that you want to delete this key ?.
+        /// </summary>
+        internal static string DeleteKeyConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteKeyConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the keys.
+        /// </summary>
+        internal static string DeleteKeys {
+            get {
+                return ResourceManager.GetString("DeleteKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete a zone.
+        /// </summary>
+        internal static string DeleteZone {
+            get {
+                return ResourceManager.GetString("DeleteZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are yout sure that you want to delete this zone ?.
+        /// </summary>
+        internal static string DeleteZoneConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteZoneConfirmation", resourceCulture);
             }
         }
         
@@ -368,6 +422,15 @@ namespace KeyboardEditor.Resources {
         internal static string SaveAsStepTitle {
             get {
                 return ResourceManager.GetString("SaveAsStepTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save the keys.
+        /// </summary>
+        internal static string SaveKeys {
+            get {
+                return ResourceManager.GetString("SaveKeys", resourceCulture);
             }
         }
         

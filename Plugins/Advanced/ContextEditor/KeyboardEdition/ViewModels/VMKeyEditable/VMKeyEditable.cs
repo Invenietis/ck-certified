@@ -41,6 +41,7 @@ using System.Windows.Controls.Primitives;
 using CommonServices;
 using System.Collections.ObjectModel;
 using CK.Windows.App;
+using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -313,9 +314,9 @@ namespace KeyboardEditor.ViewModels
 
         private void DeleteKey()
         {
-            ModalViewModel mvm = new ModalViewModel( "Delete a key", "Are you sure that you want to delete this key ?", false, String.Empty, CustomMsgBoxIcon.Warning, 1 );
-            mvm.Buttons.Add( new ModalButton( mvm, "Yes", ModalResult.Yes ) );
-            mvm.Buttons.Add( new ModalButton( mvm, "No", ModalResult.No ) );
+            ModalViewModel mvm = new ModalViewModel( R.DeleteKey, R.DeleteKeyConfirmation, false, String.Empty, CustomMsgBoxIcon.Warning, 1 );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.No, ModalResult.No ) );
 
             CustomMsgBox msg = new CustomMsgBox( ref mvm );
             msg.ShowDialog();

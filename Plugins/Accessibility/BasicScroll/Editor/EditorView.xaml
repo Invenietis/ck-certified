@@ -27,7 +27,7 @@
             <DockPanel>
                 <StackPanel  DockPanel.Dock="Left">
                 <TextBlock x:Uid="target" VerticalAlignment="Center" Margin="0 0 10 0">Configure trigger key :</TextBlock>
-                <TextBlock x:Uid="target" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">(default key : F11)</TextBlock>
+                <TextBlock x:Uid="target-default" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">(default key : F11)</TextBlock>
                 </StackPanel>
                 <StackPanel>
                     <ToggleButton x:Uid="start-reccording" x:Name="StartReccording" IsChecked="{Binding IsRecording}">Start recording</ToggleButton>

@@ -216,10 +216,10 @@ Etes-vos sûr de vouloir continuer ?</value>
     <value>Oui, perdre les modifications</value>
   </data>
   <data name="KeyboardProfileDesc" xml:space="preserve">
-    <value>Cette page vous permet d'éditer les propriétés de base d'un clavier : son nom, sa hauteur et sa largeur.</value>
+    <value>Cette page vous permet d'éditer le nom du clavier.</value>
   </data>
   <data name="KeyboardProfileTitle" xml:space="preserve">
-    <value>Edition des propriétés de base d'un clavier</value>
+    <value>Modification du nom du clavier</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Non</value>

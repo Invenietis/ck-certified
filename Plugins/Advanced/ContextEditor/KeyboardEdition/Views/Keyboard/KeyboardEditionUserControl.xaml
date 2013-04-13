@@ -21,13 +21,32 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Border BorderThickness="1" CornerRadius="5" MaxHeight="300">
+        <Border Style="{StaticResource GrayRounded}" DockPanel.Dock="Right" Margin="5" MinWidth="150">
+            <StackPanel Margin="5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Uid="keyboard-editor-keyboard-width" Text="Width : " />
+                    <!--<StackPanel Orientation="Horizontal">-->
+                    <TextBox Text="{Binding W, Mode=TwoWay}"/>
+                    <TextBlock x:Uid="keyboard-editor-keyboard-width-pixels" Text="pixels" Margin="5 0 0 0" />
+                    <!--</StackPanel>-->
+                </StackPanel>
+                <StackPanel Margin="0 5 0 0 " Orientation="Horizontal">
+                    <TextBlock x:Uid="keyboard-editor-keyboard-height" Text="Height : " />
+                    <!--<StackPanel Orientation="Horizontal">-->
+                    <TextBox Text="{Binding H, Mode=TwoWay}"/>
+                    <TextBlock x:Uid="keyboard-editor-keyboard-height-pixels" Text="pixels" Margin="5 0 0 0" />
+                    <!--</StackPanel>-->
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border BorderThickness="1" CornerRadius="5" DockPanel.Dock="Right">
             <local:GenericLayoutEditionUserControl />
         </Border>
-        <Border Background="#FFF9F9F9" Padding="0" Margin="5" Style="{StaticResource GrayRounded}">
-            <StackPanel>
+
+        <Border Background="#FFF9F9F9" Padding="0" Margin="5" Style="{StaticResource GrayRounded}" DockPanel.Dock="Right">
+            <StackPanel Margin="5">
                 <!-- Zone creation -->
-                <StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Visibility="Collapsed" x:Name="zoneCreationPanel">
                     <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-text">Type the new zone's name then validate :</TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="0 5">
                         <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0" />
@@ -61,17 +80,19 @@
                     </StackPanel>
                 </StackPanel>
 
-                <DockPanel LastChildFill="True" Margin="2" x:Name="zoneCreationMainButton">
-                    <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OnNewZoneClicked">
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
-                        <Button.ToolTip>
-                            <ToolTip  x:Uid="keyboard-editor-keyboard-new-zone-button-tooltip">
-                                Create a new zone
-                            </ToolTip>
-                        </Button.ToolTip>
-                    </Button>
-                    <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-button" DockPanel.Dock="Left" Margin="5" VerticalAlignment="Center">Create a new zone in this keyboard :</TextBlock>
-                </DockPanel>
+                <Border Width="200">
+                    <DockPanel x:Name="zoneCreationMainButton">
+                        <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" VerticalAlignment="Top" Click="OnNewZoneClicked">
+                            <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
+                            <Button.ToolTip>
+                                <ToolTip  x:Uid="keyboard-editor-keyboard-new-zone-button-tooltip">
+                                    Create a new zone
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                        <TextBlock x:Uid="keyboard-editor-keyboard-new-zone-button" DockPanel.Dock="Left" Margin="5" TextWrapping="Wrap">Create a new zone in this keyboard :</TextBlock>
+                    </DockPanel>
+                </Border>
             </StackPanel>
         </Border>
     </StackPanel>

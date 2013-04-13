@@ -27,24 +27,26 @@ namespace KeyboardEditor.s
         public event HookInvokedEventHandler HookInvoqued;
         public delegate void HookInvokedEventHandler( object sender, HookInvokedEventArgs e );
 
-        protected override void OnSourceInitialized( EventArgs e )
-        {
-            base.OnSourceInitialized( e );
-            HwndSource source = PresentationSource.FromVisual( this ) as HwndSource;
-            source.AddHook( WndProc );
-        }
 
-        private IntPtr WndProc( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
-        {
-            if( msg == Constants.WM_HOTKEY_MSG_ID )
-            {
-                if( HookInvoqued != null )
-                {
-                    HookInvoqued( this, new HookInvokedEventArgs( msg, lParam, wParam ) );
-                }
-            }
-            return IntPtr.Zero;
-        }
+        //These are global hooks, which are not what we need for this type of interface.
+        //protected override void OnSourceInitialized( EventArgs e )
+        //{
+        //    base.OnSourceInitialized( e );
+        //    HwndSource source = PresentationSource.FromVisual( this ) as HwndSource;
+        //    source.AddHook( WndProc );
+        //}
+
+        //private IntPtr WndProc( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
+        //{
+        //    if( msg == Constants.WM_HOTKEY_MSG_ID )
+        //    {
+        //        if( HookInvoqued != null )
+        //        {
+        //            HookInvoqued( this, new HookInvokedEventArgs( msg, lParam, wParam ) );
+        //        }
+        //    }
+        //    return IntPtr.Zero;
+        //}
 
         public AppView()
         {

@@ -352,7 +352,7 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This page enables you to modify the basic properties of a keyboard : its name, width and height..
+        ///   Looks up a localized string similar to This page enables you to modify the name of the keyboard..
         /// </summary>
         internal static string KeyboardProfileDesc {
             get {
@@ -361,7 +361,7 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Basic keyboard properties edition.
+        ///   Looks up a localized string similar to Keyboard&apos;s name edition.
         /// </summary>
         internal static string KeyboardProfileTitle {
             get {

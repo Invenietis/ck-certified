@@ -217,10 +217,10 @@ Are you sure you want to go back ?</value>
     <value>Yes, revert modifications</value>
   </data>
   <data name="KeyboardProfileDesc" xml:space="preserve">
-    <value>This page enables you to modify the basic properties of a keyboard : its name, width and height.</value>
+    <value>This page enables you to modify the name of the keyboard.</value>
   </data>
   <data name="KeyboardProfileTitle" xml:space="preserve">
-    <value>Basic keyboard properties edition</value>
+    <value>Keyboard's name edition</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>

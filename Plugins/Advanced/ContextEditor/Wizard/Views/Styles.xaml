@@ -40,18 +40,11 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style TargetType="{x:Type Button}" x:Key="NoFocusSelectableButtonStyle">
+    <Style TargetType="{x:Type Button}" x:Key="EditorRoundButtonStyle">
         <Setter Property="Control.Template" Value="{StaticResource NoFocusButtonTemplate}" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter Property="Button.Background" Value="{StaticResource ButtonOverBrush}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsSelected}" Value="False">
-                <Setter Property="Button.Background" Value="Transparent"/>
-            </DataTrigger>
             <Trigger Property="Button.IsMouseOver" Value="True">
                 <Setter Property="Background">
-                    <!--Value="#FFA3C9D6"-->
                     <Setter.Value>
                         <LinearGradientBrush StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">
                             <LinearGradientBrush.GradientStops>
@@ -65,7 +58,30 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="NavigationButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource NoFocusSelectableButtonStyle}">
+    <Style TargetType="{x:Type Button}" x:Key="NoFocusSelectableButtonStyle" BasedOn="{StaticResource EditorRoundButtonStyle}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter Property="Button.Background" Value="{StaticResource ButtonOverBrush}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                <Setter Property="Button.Background" Value="Transparent"/>
+            </DataTrigger>
+            <Trigger Property="Button.IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Color="#FFD8D8D8" Offset="0"/>
+                                <GradientStop Color="#FFFFFFFF" Offset="1"/>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NavigationButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource EditorRoundButtonStyle}">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="150"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>

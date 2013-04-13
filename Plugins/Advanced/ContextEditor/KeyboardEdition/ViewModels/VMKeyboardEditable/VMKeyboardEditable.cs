@@ -171,7 +171,7 @@ namespace KeyboardEditor.ViewModels
             get
             {
                 if( imsc == null ) imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/EditableSkin;component/Images/skinBackground.png" ) );
+                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
             }
         }
 

@@ -8,7 +8,7 @@
     <PluginData>
       <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
         <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Keyboard Name="Mouse Keyboard">
+          <Keyboard Name="Clavier-souris">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
@@ -27,7 +27,7 @@
             </Modes>
             <Zones>
               <Zone Name="" />
-              <Zone Name="Up">
+              <Zone Name="Haut">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -139,7 +139,7 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="Middle">
+              <Zone Name="Milieu">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -215,7 +215,7 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="Bottom">
+              <Zone Name="Bas">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -440,7 +440,7 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="Return">
+              <Zone Name="Changer de clavier">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -467,7 +467,7 @@
                   <Zone Name="">
                     <LayoutKeys />
                   </Zone>
-                  <Zone Name="Up">
+                  <Zone Name="Haut">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="5" W="100" H="100" Visible="true">
@@ -504,7 +504,7 @@
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
-                  <Zone Name="Middle">
+                  <Zone Name="Milieu">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="110" W="100" H="100" Visible="true">
@@ -530,7 +530,7 @@
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
-                  <Zone Name="Bottom">
+                  <Zone Name="Bas">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="215" W="100" H="100" Visible="true">
@@ -672,7 +672,7 @@
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
-                  <Zone Name="Return">
+                  <Zone Name="Changer de clavier">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="330" Y="330" W="100" H="50" Visible="true">
@@ -703,7 +703,7 @@
               </Layout>
             </Layouts>
           </Keyboard>
-          <Keyboard Name="Ergonomic">
+          <Keyboard Name="Ergonomique">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements></ServiceRequirements>
@@ -1814,7 +1814,7 @@
             </Modes>
             <Zones>
               <Zone Name="" />
-              <Zone Name="Numbers">
+              <Zone Name="Numéros">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -3905,7 +3905,7 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="Arrows">
+              <Zone Name="Fleches">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -4037,7 +4037,7 @@
                   </Key>
                 </Keys>
               </Zone>
-              <Zone Name="CustomFunctions">
+              <Zone Name="Fonctions">
                 <Keys>
                   <Key>
                     <KeyModes>
@@ -4124,7 +4124,7 @@
                   <Zone Name="">
                     <LayoutKeys />
                   </Zone>
-                  <Zone Name="Numbers">
+                  <Zone Name="Numéros">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="2" Y="50" W="75" H="50" Visible="true" />
@@ -4649,7 +4649,7 @@
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
-                  <Zone Name="Arrows">
+                  <Zone Name="Fleches">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="765" Y="215" W="50" H="50" Visible="true">
@@ -4697,7 +4697,7 @@
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
-                  <Zone Name="CustomFunctions">
+                  <Zone Name="Fonctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="880" Y="50" W="50" H="25" Visible="true">

@@ -83,7 +83,12 @@ namespace BasicScroll.Editor
                     Enum.TryParse<TriggerDevice>( triggerDevice.ToString(), out device );
 
                     if( device == TriggerDevice.Keyboard )
+                    {
+                        System.Windows.Forms.Keys keyName;
+                        if( Enum.TryParse<System.Windows.Forms.Keys>( selectedKey.ToString(), out keyName ) )
+                            return string.Format( BasicScroll.Resources.R.Listening, keyName.ToString() );
                         return string.Format( BasicScroll.Resources.R.Listening, selectedKey.ToString() );
+                    }
                     else if( device == TriggerDevice.Pointer )
                         return string.Format( BasicScroll.Resources.R.PointerListening, MouseClicFromCode( Int32.Parse( selectedKey.ToString() ) ) );
                 }

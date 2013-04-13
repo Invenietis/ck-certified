@@ -121,10 +121,10 @@
     <value>clic gauche</value>
   </data>
   <data name="Listening" xml:space="preserve">
-    <value>Ecoute de la touche n°"{0}"</value>
+    <value>Ecoute de la touche "{0}"</value>
   </data>
   <data name="MiddleClick" xml:space="preserve">
-    <value>clic milieu</value>
+    <value>clic du milieu</value>
   </data>
   <data name="NothingSelected" xml:space="preserve">
     <value>Aucune touche selectionnée</value>

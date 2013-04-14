@@ -77,7 +77,7 @@ namespace KeyboardEditor
 
             _mainWindow = _appViewModel.GetView( null ) as Window;
             _interopHelper = new WindowInteropHelper( _mainWindow );
-            RegisterHotKeys();
+            //RegisterHotKeys();
 
             _mainWindow.Closing += OnWindowClosing;
             //_mainWindow.Topmost = true;
@@ -144,8 +144,8 @@ namespace KeyboardEditor
 
         void KeyboardEditor_HookInvoqued( object sender, HookInvokedEventArgs e )
         {
-            Console.Out.WriteLine( String.Format( "Hook invoked ! msg = {0}, lParam = {1}, wParam = {2}", e.Message, e.LParam, e.WParam ) );
-            if( HookInvoqued != null ) HookInvoqued( this, e );
+            //Console.Out.WriteLine( String.Format( "Hook invoked ! msg = {0}, lParam = {1}, wParam = {2}", e.Message, e.LParam, e.WParam ) );
+            //if( HookInvoqued != null ) HookInvoqued( this, e );
         }
 
         public event HookInvokedEventHandler HookInvoqued;

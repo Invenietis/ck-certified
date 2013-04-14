@@ -135,4 +135,7 @@
   <data name="RightClick" xml:space="preserve">
     <value>right click</value>
   </data>
+  <data name="ScrollEditor" xml:space="preserve">
+    <value>Scroll editor</value>
+  </data>
 </root>

@@ -30,7 +30,7 @@ namespace BasicScroll.Editor
             _keyboardHook = keyboardHook;
             _pointerHook = pointerHook;
 
-            this.DisplayName = "Scroll editor";
+            this.DisplayName = R.ScrollEditor;
         }
 
         public IContext Context { get; set; }

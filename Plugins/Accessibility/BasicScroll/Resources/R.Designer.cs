@@ -113,5 +113,14 @@ namespace BasicScroll.Resources {
                 return ResourceManager.GetString("RightClick", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scroll editor.
+        /// </summary>
+        public static string ScrollEditor {
+            get {
+                return ResourceManager.GetString("ScrollEditor", resourceCulture);
+            }
+        }
     }
 }

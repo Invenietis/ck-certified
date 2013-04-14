@@ -15,24 +15,24 @@ namespace KeyboardEditor
 
         private void RegisterHotKeys()
         {
-            ( (AppView)_mainWindow ).HookInvoqued += KeyboardEditor_HookInvoqued;
+            //( (AppView)_mainWindow ).HookInvoqued += KeyboardEditor_HookInvoqued;
 
-            _dic = new Dictionary<HookKey, int>();
+            //_dic = new Dictionary<HookKey, int>();
 
-            RegisterKey( Constants.NOMOD, (int)Keys.Up );
-            RegisterKey( Constants.SHIFT, (int)Keys.Up );
+            //RegisterKey( Constants.NOMOD, (int)Keys.Up );
+            //RegisterKey( Constants.SHIFT, (int)Keys.Up );
 
-            RegisterKey( Constants.NOMOD, (int)Keys.Down );
-            RegisterKey( Constants.SHIFT, (int)Keys.Down );
+            //RegisterKey( Constants.NOMOD, (int)Keys.Down );
+            //RegisterKey( Constants.SHIFT, (int)Keys.Down );
 
-            RegisterKey( Constants.NOMOD, (int)Keys.Delete );
-            RegisterKey( Constants.SHIFT, (int)Keys.Delete );
+            //RegisterKey( Constants.NOMOD, (int)Keys.Delete );
+            //RegisterKey( Constants.SHIFT, (int)Keys.Delete );
 
-            RegisterKey( Constants.NOMOD, (int)Keys.Left );
-            RegisterKey( Constants.SHIFT, (int)Keys.Left );
+            //RegisterKey( Constants.NOMOD, (int)Keys.Left );
+            //RegisterKey( Constants.SHIFT, (int)Keys.Left );
 
-            RegisterKey( Constants.NOMOD, (int)Keys.Right );
-            RegisterKey( Constants.SHIFT, (int)Keys.Right );
+            //RegisterKey( Constants.NOMOD, (int)Keys.Right );
+            //RegisterKey( Constants.SHIFT, (int)Keys.Right );
         }
 
         private bool RegisterKey( int modifier, int keyCode )

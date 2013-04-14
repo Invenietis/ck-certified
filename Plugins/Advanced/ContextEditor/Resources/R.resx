@@ -179,7 +179,7 @@
   </data>
   <data name="HomeStepDescription" xml:space="preserve">
     <value>Welcome to CiviKey's keyboard creation and modification wizard.
-You can choose between the three following actions to chose the keyboard you want to modify.</value>
+You can choose between the four following actions to chose the keyboard you want to modify.</value>
   </data>
   <data name="HomeStepTitle" xml:space="preserve">
     <value>Keyboard creation and modification</value>

@@ -178,7 +178,7 @@
     <value>Modifier un autre clavier ou partez de celui-ci pour en créer un nouveau.</value>
   </data>
   <data name="HomeStepDescription" xml:space="preserve">
-    <value>Bienvenue dans l'assistant de création et de modification de claviers pour CiviKey. Cliquez sur l'un des trois boutons suivants, en fonction de l'action que vous voulez entreprendre.</value>
+    <value>Bienvenue dans l'assistant de création et de modification de claviers pour CiviKey. Cliquez sur l'un des quatre boutons suivants, en fonction de l'action que vous voulez entreprendre.</value>
   </data>
   <data name="HomeStepTitle" xml:space="preserve">
     <value>Création et modification de claviers</value>

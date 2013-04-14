@@ -242,7 +242,7 @@ namespace KeyboardEditor.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Welcome to CiviKey&apos;s keyboard creation and modification wizard.
-        ///You can choose between the three following actions to chose the keyboard you want to modify..
+        ///You can choose between the four following actions to chose the keyboard you want to modify..
         /// </summary>
         internal static string HomeStepDescription {
             get {

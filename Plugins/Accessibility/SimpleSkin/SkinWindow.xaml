@@ -67,10 +67,6 @@
                     <Setter TargetName="key" Property="ShowLabel" Value="false"/>
                     <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
                 </MultiDataTrigger>
-                <!--<DataTrigger Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true">-->
-                    <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
-                    <!--<Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />-->
-                <!--</DataTrigger>-->
                 <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
                     <Setter TargetName="key" Property="Background">
                         <Setter.Value>

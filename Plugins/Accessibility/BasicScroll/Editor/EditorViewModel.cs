@@ -74,8 +74,8 @@ namespace BasicScroll.Editor
         {
             get
             {
-                var selectedKey = _keyboardTriggerConfig.User["TriggerCode"];
-                var triggerDevice = _keyboardTriggerConfig.User["TriggerDevice"];
+                var selectedKey = _keyboardTriggerConfig.User.GetOrSet( "TriggerCode", 122 );
+                var triggerDevice = _keyboardTriggerConfig.User.GetOrSet( "TriggerDevice", TriggerDevice.Keyboard );
 
                 if( selectedKey != null && triggerDevice != null )
                 {

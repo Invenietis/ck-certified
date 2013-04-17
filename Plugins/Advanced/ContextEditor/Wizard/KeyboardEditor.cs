@@ -93,7 +93,12 @@ namespace KeyboardEditor
             if( EditedContext != null )
                 EditedContext.Dispose();
 
-            UnregisterAllHotKeys();
+            if( _cancelOnStop )
+            {
+                CancelModifications();
+                _cancelOnStop = false;
+            }
+            //UnregisterAllHotKeys();
         }
             
         public void Teardown()
@@ -102,6 +107,8 @@ namespace KeyboardEditor
             _appViewModel = null;
             _windowManager = null;
         }
+
+        bool _cancelOnStop = false;
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
@@ -124,7 +131,8 @@ namespace KeyboardEditor
                     }
 
                     //If the user really wants to quit the wizard, cancel all modifications
-                    CancelModifications();
+                    _cancelOnStop = true;
+                    //CancelModifications();
                 }
 
                 System.Action stop = () =>
@@ -135,6 +143,8 @@ namespace KeyboardEditor
                 e.Cancel = true;
                 Dispatcher.CurrentDispatcher.BeginInvoke( stop, null );
             }
+
+            EditedContext.Dispose();
 
             if( _mainWindow != null )
                 _mainWindow.Closing -= OnWindowClosing;

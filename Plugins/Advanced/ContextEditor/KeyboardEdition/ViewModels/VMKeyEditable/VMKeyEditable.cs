@@ -69,24 +69,24 @@ namespace KeyboardEditor.ViewModels
             _layoutKeyModes = new ObservableCollection<VMLayoutKeyModeEditable>();
             _keyModes = new ObservableCollection<VMKeyModeEditable>();
 
-            Model.KeyModes.KeyModeCreated += ( obj, sender ) => RefreshKeyModeCollections();
-            Model.KeyModes.KeyModeDestroyed += ( obj, sender ) => RefreshKeyModeCollections();
+            Model.KeyModes.KeyModeCreated += OnKeyModelCollectionChanged;
+            Model.KeyModes.KeyModeDestroyed += OnKeyModelCollectionChanged;
 
-            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated += ( obj, sender ) => RefreshKeyModeCollections();
-            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed += ( obj, sender ) => RefreshKeyModeCollections();
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated += OnLayoutKeyModelCollectionChanged;
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed += OnLayoutKeyModelCollectionChanged;
 
-            RefreshKeyModeCollections();
+            RefreshKeyModeCollection();
+            RefreshLayoutKeyModeCollection();
         }
 
-        private void RefreshKeyModeCollections()
+        private void OnLayoutKeyModelCollectionChanged( object sender, LayoutKeyModeEventArgs e )
         {
-            _keyModes.Clear();
-            _layoutKeyModes.Clear();
+            RefreshLayoutKeyModeCollection();
+        }
 
-            foreach( var km in Model.KeyModes )
-            {
-                _keyModes.Add( Context.Obtain( km ) );
-            }
+        private void RefreshLayoutKeyModeCollection()
+        {
+            _layoutKeyModes.Clear();
 
             foreach( var lkm in Model.CurrentLayout.LayoutKeyModes )
             {
@@ -94,6 +94,20 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        private void OnKeyModelCollectionChanged( object sender, KeyModeEventArgs e )
+        {
+            RefreshKeyModeCollection();
+        }
+
+        private void RefreshKeyModeCollection()
+        {
+            _keyModes.Clear();
+
+            foreach( var km in Model.KeyModes )
+            {
+                _keyModes.Add( Context.Obtain( km ) );
+            }
+        }
 
         #region Properties
 
@@ -139,8 +153,8 @@ namespace KeyboardEditor.ViewModels
 
         public void Initialize()
         {
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Context.SkinConfiguration.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.Config.ConfigChanged += OnConfigChanged;
+            Context.SkinConfiguration.ConfigChanged +=  OnConfigChanged;
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -158,7 +172,7 @@ namespace KeyboardEditor.ViewModels
                 OnPropertyChanged( "Image" );
             } );
 
-            this.PropertyChanged += new PropertyChangedEventHandler( OnPropertyChangedTriggered );
+            this.PropertyChanged += OnPropertyChangedTriggered;
         }
 
         //Dispatches the property changed to the LayoutKeyMode if necessary
@@ -283,14 +297,16 @@ namespace KeyboardEditor.ViewModels
 
         protected override void OnDispose()
         {
-            Model.KeyModes.KeyModeCreated -= ( obj, sender ) => RefreshKeyModeCollections();
-            Model.KeyModes.KeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollections();
+            Model.KeyModes.KeyModeCreated -= ( obj, sender ) => RefreshKeyModeCollection();
+            Model.KeyModes.KeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollection();
 
-            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated -= ( obj, sender ) => RefreshKeyModeCollections();
-            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollections();
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated -= ( obj, sender ) => RefreshLayoutKeyModeCollection();
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed -= ( obj, sender ) => RefreshLayoutKeyModeCollection();
 
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Context.SkinConfiguration.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            Context.Config.ConfigChanged -= OnConfigChanged;
+            Context.SkinConfiguration.ConfigChanged -= OnConfigChanged;
+
+            this.PropertyChanged -= OnPropertyChangedTriggered;
             base.OnDispose();
         }
 

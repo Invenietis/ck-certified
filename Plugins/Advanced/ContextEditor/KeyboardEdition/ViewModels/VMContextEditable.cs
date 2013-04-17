@@ -131,6 +131,8 @@ namespace KeyboardEditor.ViewModels
             //    KeyboardDriver.Service.UnregisterCancellableKey( left );
             //    KeyboardDriver.Service.UnregisterCancellableKey( right );
             //}
+
+            _root.HookInvoqued -= OnKeyDown;
         }
 
         private void OnKeyDown( object sender, HookInvokedEventArgs e )

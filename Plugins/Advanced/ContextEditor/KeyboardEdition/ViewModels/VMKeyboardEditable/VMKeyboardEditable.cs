@@ -51,12 +51,17 @@ namespace KeyboardEditor.ViewModels
             Model = kb;
             _keyboardModes = new ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>();
 
-            Model.AvailableModeChanged += ( s, e ) => RefreshModes();
-            Model.CurrentModeChanged += ( s, e ) => RefreshModes();
+            Model.AvailableModeChanged += OnModeChanged;
+            Model.CurrentModeChanged += OnModeChanged;
             RefreshModes();
         }
 
         #region Methods
+
+        private void OnModeChanged( object sender, KeyboardModeChangedEventArgs e )
+        {
+            RefreshModes();
+        }
 
         private void RefreshModes()
         {
@@ -248,9 +253,9 @@ namespace KeyboardEditor.ViewModels
 
         protected override void OnDispose()
         {
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Model.AvailableModeChanged -= ( s, e ) => RefreshModes();
-            Model.CurrentModeChanged -= ( s, e ) => RefreshModes();
+            Context.Config.ConfigChanged -= OnConfigChanged;
+            Model.AvailableModeChanged -= OnModeChanged;
+            Model.CurrentModeChanged -= OnModeChanged;
             base.OnDispose();
         }
 

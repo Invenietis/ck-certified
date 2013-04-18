@@ -253,9 +253,12 @@ namespace KeyboardEditor.ViewModels
 
         protected override void OnDispose()
         {
+            _keyboardModes.Clear();
+            
             Context.Config.ConfigChanged -= OnConfigChanged;
             Model.AvailableModeChanged -= OnModeChanged;
             Model.CurrentModeChanged -= OnModeChanged;
+
             base.OnDispose();
         }
 

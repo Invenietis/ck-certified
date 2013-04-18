@@ -294,6 +294,7 @@ namespace KeyboardEditor.ViewModels
             get { return Keys.Max( k => k.Y + k.Height ) - Y; }
         }
 
+        #region move through arrows
 
         public override void OnKeyDownAction( int keyCode, int delta )
         {
@@ -347,6 +348,13 @@ namespace KeyboardEditor.ViewModels
             {
                 key.MoveRight( pixels );
             }
+        }
+
+        #endregion
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
         }
     }
 }

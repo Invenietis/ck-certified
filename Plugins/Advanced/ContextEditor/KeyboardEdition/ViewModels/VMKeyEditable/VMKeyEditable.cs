@@ -77,6 +77,8 @@ namespace KeyboardEditor.ViewModels
 
             RefreshKeyModeCollection();
             RefreshLayoutKeyModeCollection();
+
+            //Console.Out.WriteLine( "Creating VMKeyEditable : " + UpLabel );
         }
 
         private void OnLayoutKeyModelCollectionChanged( object sender, LayoutKeyModeEventArgs e )
@@ -297,16 +299,19 @@ namespace KeyboardEditor.ViewModels
 
         protected override void OnDispose()
         {
-            Model.KeyModes.KeyModeCreated -= ( obj, sender ) => RefreshKeyModeCollection();
-            Model.KeyModes.KeyModeDestroyed -= ( obj, sender ) => RefreshKeyModeCollection();
+            //Console.Out.WriteLine( "Disposing VMKeyEditable : " + UpLabel );
 
-            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated -= ( obj, sender ) => RefreshLayoutKeyModeCollection();
-            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed -= ( obj, sender ) => RefreshLayoutKeyModeCollection();
+            Model.KeyModes.KeyModeCreated -= OnKeyModelCollectionChanged;
+            Model.KeyModes.KeyModeDestroyed -= OnKeyModelCollectionChanged;
+
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeCreated -= OnLayoutKeyModelCollectionChanged;
+            Model.CurrentLayout.LayoutKeyModes.LayoutKeyModeDestroyed -= OnLayoutKeyModelCollectionChanged;
 
             Context.Config.ConfigChanged -= OnConfigChanged;
             Context.SkinConfiguration.ConfigChanged -= OnConfigChanged;
 
             this.PropertyChanged -= OnPropertyChangedTriggered;
+
             base.OnDispose();
         }
 

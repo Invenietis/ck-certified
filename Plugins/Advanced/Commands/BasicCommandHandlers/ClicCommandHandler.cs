@@ -90,13 +90,11 @@ namespace BasicCommandHandlers
 
         public void LeftPush()
         {
-            Console.Out.WriteLine("J'enfonce le gauche");
             PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
         }
 
         public void LeftRelease()
         {
-            Console.Out.WriteLine( "Je release le gauche" );
             PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
         }
 

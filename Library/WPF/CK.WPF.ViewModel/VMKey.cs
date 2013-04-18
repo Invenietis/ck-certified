@@ -432,8 +432,8 @@ namespace CK.WPF.ViewModel
             SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "IsVisible" ); OnPropertyChanged( "Visible" ); } );
             SetActionOnPropertyChanged( "Visible", () => { DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); } );
 
-            _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+            _key.KeyPropertyChanged += OnKeyPropertyChanged;
+            _key.Keyboard.CurrentModeChanged += OnModeChanged;
         }
 
         //Dispatches the property changed to the LayoutKeyMode if necessary
@@ -505,8 +505,9 @@ namespace CK.WPF.ViewModel
 
         protected override void OnDispose()
         {
-            _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+            //Console.Out.WriteLine("Disposing VMKey : " + UpLabel);
+            _key.KeyPropertyChanged -= OnKeyPropertyChanged;
+            _key.Keyboard.CurrentModeChanged -= OnModeChanged;
         }
     }
 

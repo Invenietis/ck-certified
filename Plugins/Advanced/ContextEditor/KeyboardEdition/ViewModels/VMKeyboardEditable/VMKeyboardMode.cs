@@ -14,7 +14,7 @@ namespace KeyboardEditor.ViewModels
     /// automatically triggering a command on the holder that activates or deactivates the current mode. 
     /// Also has a command setting the holder's current mode to the one embedded in this class. (deactivates all mode that is not contained in the embedded one)
     /// </summary>
-    public class VMKeyboardMode<TC, TB, TZ, TK> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IDisposable
+    public class VMKeyboardMode<TC, TB, TZ, TK> : VMBase
     {
         VMContextEditable _holder;
 
@@ -38,7 +38,6 @@ namespace KeyboardEditor.ViewModels
         }
 
         public VMKeyboardMode( VMContextEditable holder, IKeyboardMode keyboardMode )
-            : base( holder )
         {
             Mode = keyboardMode;
             _holder = holder;
@@ -69,46 +68,6 @@ namespace KeyboardEditor.ViewModels
                 }
                 return _applyToCurrentModeCommand;
             }
-        }
-
-        /// <summary>
-        /// The Parent of a VMKeyboardMode is the currently selected element
-        /// </summary>
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
-        {
-            get { return _holder.SelectedElement; }
-        }
-
-        /// <summary>
-        /// A VMKeyboardMode has no LayoutElement, this proeprty returns null
-        /// </summary>
-        public override IKeyboardElement LayoutElement
-        {
-            get { return null; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is being edited.
-        /// For this implementation, alsways return false.
-        /// </summary>
-        public override bool IsBeingEdited
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is being edited. 
-        /// An element is being edited if it IsSelected or one of its parents is.
-        /// Therefore with this implementation, IsBeingEdited is the same as IsSelected
-        /// </summary>
-        public override bool IsSelected
-        {
-            get { return false; }
-            set { }
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

@@ -251,7 +251,6 @@ namespace KeyboardEditor.ViewModels
             {
                 _temporaryKeyProgram = value;
                 OnPropertyChanged( "TemporaryKeyProgram" );
-                Console.Out.WriteLine("tmpkey : " + value );
             }
         }
 

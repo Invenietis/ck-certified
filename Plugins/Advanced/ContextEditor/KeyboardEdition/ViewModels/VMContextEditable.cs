@@ -71,12 +71,11 @@ namespace KeyboardEditor.ViewModels
         public const int right = 39;
 
         public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
-            : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, config, skinConfiguration )
+            : base( root.Context, root.KeyboardContext.Service.Keyboards.Context, config, skinConfiguration, keyboardToEdit )
         {
             _root = root;
             Model = root.KeyboardContext.Service;
             KeyboardVM = Obtain( keyboardToEdit );
-            _dic = new Dictionary<object, VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>>();
             Initialize();
         }
 
@@ -143,7 +142,7 @@ namespace KeyboardEditor.ViewModels
             //int modifier = (int)e.LParam & 0xFFFF;
             int modifier = (int)e.LParam & 0xFFFF;
 
-            Console.Out.WriteLine( String.Format( "Parsing done. vkey = {2}, key = {0}, modifier = {1}", key, modifier, (int)key ) );
+            //Console.Out.WriteLine( String.Format( "Parsing done. vkey = {2}, key = {0}, modifier = {1}", key, modifier, (int)key ) );
 
             int delta = modifier == Constants.SHIFT ? 10 : 1;
 

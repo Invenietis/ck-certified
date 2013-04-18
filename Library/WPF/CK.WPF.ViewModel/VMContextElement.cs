@@ -46,7 +46,7 @@ namespace CK.WPF.ViewModel
         {
             _context = context;
             if( _context.SkinConfiguration != null )
-                _context.SkinConfiguration.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnLayoutConfigChanged );
+                _context.SkinConfiguration.ConfigChanged += OnLayoutConfigChanged;
         }
 
         /// <summary>
@@ -130,6 +130,8 @@ namespace CK.WPF.ViewModel
         /// </summary>
         internal void Dispose()
         {
+            //Console.Out.WriteLine( "Disposing VMContextElement : " + this.GetType() );
+            _context.SkinConfiguration.ConfigChanged -= OnLayoutConfigChanged;
             OnDispose();
         }
 

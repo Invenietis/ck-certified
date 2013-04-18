@@ -153,5 +153,10 @@ namespace KeyboardEditor.ViewModels
         {
             return Name;
         }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+        }
     }
 }

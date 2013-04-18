@@ -139,8 +139,21 @@ namespace CK.WPF.ViewModel
             set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
         }
 
+
         public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
+            : this( ctx, kbctx, config, skinConfiguration, new List<IKeyboard>() { } )
         {
+        }
+
+        public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration, IKeyboard keyboardToCreate )
+            : this( ctx, kbctx, config, skinConfiguration, new List<IKeyboard>() { keyboardToCreate } )
+        {
+        }
+
+        public VMContext( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration, IList<IKeyboard> keyboardsToCreate )
+        {
+            if( keyboardsToCreate == null ) throw new ArgumentException( "The keyboardToCreate list must not be null. Use another constructor." );
+
             OnBeforeCreate();
             _dic = new Dictionary<object, VMContextElement<TC, TB, TZ, TK, TKM, TLKM>>();
             _keyboards = new ObservableCollection<TB>();
@@ -151,13 +164,23 @@ namespace CK.WPF.ViewModel
             _ctx = ctx;
             if( _kbctx.Keyboards.Count() > 0 )
             {
-                foreach( IKeyboard keyboard in _kbctx.Keyboards )
+                IKeyboard _tempKeyboard;
+                if( keyboardsToCreate.Count == 0 )
+                {
+                    keyboardsToCreate = _kbctx.Keyboards.ToList();
+                    _tempKeyboard = _kbctx.CurrentKeyboard;
+                }
+                else _tempKeyboard = keyboardsToCreate.First();
+
+                foreach( IKeyboard keyboard in keyboardsToCreate )
                 {
                     TB kb = CreateKeyboard( keyboard );
                     _dic.Add( keyboard, kb );
                     _keyboards.Add( kb );
                 }
-                _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
+
+                _currentKeyboard = Obtain( _tempKeyboard );
+
             }
 
             _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
@@ -197,7 +220,14 @@ namespace CK.WPF.ViewModel
             _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
             _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
-            foreach( VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm in _dic.Values ) vm.Dispose();
+            
+            foreach( var keyboard in _keyboards )
+            {
+                keyboard.Dispose();
+            }
+
+            //foreach( VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm in _dic.Values ) vm.Dispose();
+            _keyboards.Clear();
             _dic.Clear();
         }
 

@@ -531,7 +531,7 @@ namespace SimpleSkin
         public bool IsHighlighted
         {
             get { return _isHighlighted; }
-            set { _isHighlighted = value; OnPropertyChanged( "IsHighlighted" ); Console.Out.WriteLine( "Is highlighted : " + IsHighlighted ); }
+            set { _isHighlighted = value; OnPropertyChanged( "IsHighlighted" ); }
         }
 
         public MiniViewVM( SimpleSkin parent )

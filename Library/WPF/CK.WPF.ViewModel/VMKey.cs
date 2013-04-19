@@ -508,6 +508,7 @@ namespace CK.WPF.ViewModel
             //Console.Out.WriteLine("Disposing VMKey : " + UpLabel);
             _key.KeyPropertyChanged -= OnKeyPropertyChanged;
             _key.Keyboard.CurrentModeChanged -= OnModeChanged;
+            base.OnDispose();
         }
     }
 

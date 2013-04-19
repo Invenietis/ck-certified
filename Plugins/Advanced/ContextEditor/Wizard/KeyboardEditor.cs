@@ -91,7 +91,10 @@ namespace KeyboardEditor
                 _mainWindow.Close();
 
             if( EditedContext != null )
+            {
                 EditedContext.Dispose();
+                EditedContext = null;
+            }
 
             if( _cancelOnStop )
             {

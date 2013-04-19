@@ -81,10 +81,10 @@ namespace KeyboardEditor.ViewModels
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
-            foreach( VMZoneEditable zone in Zones )
-            {
-                zone.Initialize();
-            }
+            //foreach( VMZoneEditable zone in Zones )
+            //{
+            //    zone.Initialize();
+            //}
         }
 
         #endregion

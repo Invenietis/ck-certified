@@ -143,5 +143,10 @@ namespace CK.WPF.ViewModel
             }
         }
 
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+        }
+
     }
 }

@@ -44,10 +44,10 @@ namespace KeyboardEditor.ViewModels
 
         public void Initialize()
         {
-            foreach( VMKeyEditable key in Keys )
-            {
-                key.Initialize();
-            }
+            //foreach( VMKeyEditable key in Keys )
+            //{
+            //    key.Initialize();
+            //}
         }
 
         public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent

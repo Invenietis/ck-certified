@@ -95,7 +95,10 @@ namespace CK.WPF.ViewModel
         /// </summary>
         public bool Enabled { get { return _model.Enabled; } }
 
-        
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+        }
 
     }
 }

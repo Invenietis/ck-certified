@@ -156,7 +156,7 @@ namespace KeyboardEditor.ViewModels
         public void Initialize()
         {
             Context.Config.ConfigChanged += OnConfigChanged;
-            Context.SkinConfiguration.ConfigChanged +=  OnConfigChanged;
+            Context.SkinConfiguration.ConfigChanged += OnConfigChanged;
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -311,6 +311,16 @@ namespace KeyboardEditor.ViewModels
             Context.SkinConfiguration.ConfigChanged -= OnConfigChanged;
 
             this.PropertyChanged -= OnPropertyChangedTriggered;
+
+            foreach( var item in KeyModes )
+            {
+                item.Dispose();
+            }
+
+            foreach( var item in LayoutKeyModes )
+            {
+                item.Dispose();
+            }
 
             base.OnDispose();
         }

@@ -122,6 +122,8 @@ namespace CK.WPF.ViewModel
             _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
             _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+
+            base.OnDispose();
         }
 
         public void TriggerPropertyChanged()

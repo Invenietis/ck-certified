@@ -63,6 +63,8 @@ namespace CK.WPF.ViewModel
             {
                 key.Dispose();
             }
+
+            base.OnDispose();
         }
     }
 }

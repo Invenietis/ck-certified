@@ -130,13 +130,13 @@ namespace CK.WPF.ViewModel
         /// </summary>
         internal void Dispose()
         {
-            //Console.Out.WriteLine( "Disposing VMContextElement : " + this.GetType() );
-            _context.SkinConfiguration.ConfigChanged -= OnLayoutConfigChanged;
             OnDispose();
         }
 
         protected virtual void OnDispose()
         {
+            Console.Out.WriteLine( "Disposing VMContextElement : " + this.GetType() );
+            _context.SkinConfiguration.ConfigChanged -= OnLayoutConfigChanged;
         }
 
         void OnLayoutConfigChanged( object sender, ConfigChangedEventArgs e )

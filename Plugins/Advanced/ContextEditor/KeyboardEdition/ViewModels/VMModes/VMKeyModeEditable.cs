@@ -244,8 +244,8 @@ namespace KeyboardEditor.ViewModels
         public string TemporaryKeyProgram
         {
             get
-            { 
-                return _temporaryKeyProgram; 
+            {
+                return _temporaryKeyProgram;
             }
             set
             {
@@ -286,6 +286,11 @@ namespace KeyboardEditor.ViewModels
             return Name;
         }
 
+        public void Dispose()
+        {
+            OnDispose();
+        }
+
         protected override void OnDispose()
         {
             _model.OnKeyDownCommands.CommandInserted -= OnKeyDownCommands_CommandInserted;
@@ -295,6 +300,11 @@ namespace KeyboardEditor.ViewModels
 
             base.OnDispose();
         }
+
+        //public void Dispose()
+        //{
+        //    OnDispose();
+        //}
 
         //COMMON
         VMCommand _applyToCurrentModeCommand;

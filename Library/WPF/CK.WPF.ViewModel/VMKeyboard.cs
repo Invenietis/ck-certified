@@ -28,13 +28,11 @@ using CK.Keyboard.Model;
 
 namespace CK.WPF.ViewModel
 {
-    public abstract class VMKeyboard<TC, TB, TZ, TK, TKM, TLKM> : VMContextElement<TC, TB, TZ, TK, TKM, TLKM>
-        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
-        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
-        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
-        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
-        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
-        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+    public abstract class VMKeyboard<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
+        where TC : VMContext<TC, TB, TZ, TK>
+        where TB : VMKeyboard<TC, TB, TZ, TK>
+        where TZ : VMZone<TC, TB, TZ, TK>
+        where TK : VMKey<TC, TB, TZ, TK>
     {
         IKeyboard _keyboard;
         ObservableCollection<TZ> _zones;
@@ -46,36 +44,27 @@ namespace CK.WPF.ViewModel
         public ILayout Layout { get { return _keyboard.CurrentLayout; } }
 
         /// <summary>
-        /// Gets or sets the width of the current layout.
+        /// Gets the width of the current layout.
         /// </summary>
-        public int W
-        {
-            get { return _keyboard.CurrentLayout.W; }
-            set { _keyboard.CurrentLayout.W = value; }
+        public int W 
+        { 
+            get 
+            { 
+                return _keyboard.CurrentLayout.W; 
+            } 
         }
 
         /// <summary>
-        /// Gets or sets the height of the current layout.
+        /// Gets the height of the current layout.
         /// </summary>
-        public int H
-        {
-            get { return _keyboard.CurrentLayout.H; }
-            set { _keyboard.CurrentLayout.H = value; }
+        public int H { 
+            get 
+            { 
+                return _keyboard.CurrentLayout.H; 
+            } 
         }
-
-        /// <summary>
-        /// Gets the available modes, concatenated as one, seperated by "+" characters.
-        /// </summary>
-        public IKeyboardMode Modes { get { return _keyboard.AvailableMode; } }
-
-        /// <summary>
-        /// Gets the viewmodels for each <see cref="IZone"/> of the linked <see cref="IKeyboard"/>
-        /// </summary>
+        
         public ObservableCollection<TZ> Zones { get { return _zones; } }
-
-        /// <summary>
-        /// Gets the viewmodels for each  <see cref="IKey"/> of the linked <see cref="IKeyboard"/>
-        /// </summary>
         public ObservableCollection<TK> Keys { get { return _keys; } }
 
         public VMKeyboard( TC context, IKeyboard keyboard )
@@ -88,18 +77,14 @@ namespace CK.WPF.ViewModel
 
             _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
             _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );            
             _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
             _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
 
             foreach( IZone zone in _keyboard.Zones )
             {
-                var vmz = Context.Obtain( zone );
-                // TODO: find a better way....
-                if( zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
-                else Zones.Add( vmz );
-
+                Zones.Add( Context.Obtain( zone ) );
                 foreach( IKey key in zone.Keys )
                 {
                     _keys.Add( Context.Obtain( key ) );
@@ -122,8 +107,6 @@ namespace CK.WPF.ViewModel
             _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
             _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-
-            base.OnDispose();
         }
 
         public void TriggerPropertyChanged()
@@ -143,21 +126,11 @@ namespace CK.WPF.ViewModel
             TK kvm = Context.Obtain( e.Key );
             Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
             _keys.Add( kvm );
-            OnTriggerKeyCreated();
-        }
-
-        protected virtual void OnTriggerKeyCreated()
-        {
         }
 
         void OnKeyMoved( object sender, KeyMovedEventArgs e )
         {
             Context.Obtain( e.Key ).PositionChanged();
-            OnTriggerKeyMoved();
-        }
-
-        protected virtual void OnTriggerKeyMoved()
-        {
         }
 
         void OnKeyDestroyed( object sender, KeyEventArgs e )
@@ -165,48 +138,17 @@ namespace CK.WPF.ViewModel
             Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
             _keys.Remove( Context.Obtain( e.Key ) );
             Context.OnModelDestroy( e.Key );
-            OnTriggerKeyDestroyed();
-        }
-
-
-        protected virtual void OnTriggerKeyDestroyed()
-        {
         }
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            //TODO
-            var vmz = Context.Obtain( e.Zone );
-            if( e.Zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
-            else Zones.Add( vmz);
-            OnTriggerZoneCreated();
-        }
-
-
-        protected virtual void OnTriggerZoneCreated()
-        {
+            Zones.Add( Context.Obtain( e.Zone ) );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            var zone = Context.Obtain( e.Zone );
-            if( zone != null )
-            {
-                foreach( var k in e.Zone.Keys )
-                {
-                    var mk = Context.Obtain( k );
-                    Keys.Remove( mk );
-                    Context.OnModelDestroy( k );
-                }
-
-                Zones.Remove( zone );
-                Context.OnModelDestroy( e.Zone );
-                OnTriggerZoneDestroyed();
-            }
-        }
-
-        protected virtual void OnTriggerZoneDestroyed()
-        {
+            Zones.Remove( Context.Obtain( e.Zone ) );
+            Context.OnModelDestroy( e.Zone );
         }
 
         void OnLayoutSizeChanged( object sender, LayoutEventArgs e )
@@ -215,14 +157,8 @@ namespace CK.WPF.ViewModel
             {
                 OnPropertyChanged( "W" );
                 OnPropertyChanged( "H" );
-                OnTriggerLayoutSizeChanged();
             }
         }
-
-        protected virtual void OnTriggerLayoutSizeChanged()
-        {
-        }
-
         #endregion
     }
 }

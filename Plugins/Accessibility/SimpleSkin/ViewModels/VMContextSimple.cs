@@ -30,7 +30,7 @@ using System;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMContextSimple : VMContext<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>
+    internal class VMContextSimple : VMContext<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
     {
         public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
             : base( ctx, kbctx.Keyboards.Context, config, config )
@@ -50,18 +50,6 @@ namespace SimpleSkin.ViewModels
         protected override VMKeyboardSimple CreateKeyboard( IKeyboard kb )
         {
             return new VMKeyboardSimple( this, kb );
-        }
-
-        protected override VMKeyModeSimple CreateKeyMode( IKeyMode km )
-        {
-            //"Simple skin implementation does not use VMKeyModes. Use VMKey."
-            return null;
-        }
-
-        protected override VMLayoutKeyModeSimple CreateLayoutKeyMode( ILayoutKeyMode lkm )
-        {
-            //"Simple skin implementation does not use VMLayoutKeyModes. Use VMLayoutKey."
-            return null;
         }
     }
 }

@@ -23,32 +23,25 @@
 
 using System.Collections.ObjectModel;
 using CK.Keyboard.Model;
-using CK.Core;
 
 namespace CK.WPF.ViewModel
 {
-    public abstract class VMZone<TC, TB, TZ, TK, TKM, TLKM> : VMContextElement<TC, TB, TZ, TK, TKM, TLKM>
-        where TC : VMContext<TC, TB, TZ, TK, TKM, TLKM>
-        where TB : VMKeyboard<TC, TB, TZ, TK, TKM, TLKM>
-        where TZ : VMZone<TC, TB, TZ, TK, TKM, TLKM>
-        where TK : VMKey<TC, TB, TZ, TK, TKM, TLKM>
-        where TKM : VMKeyMode<TC, TB, TZ, TK, TKM, TLKM>
-        where TLKM : VMLayoutKeyMode<TC, TB, TZ, TK, TKM, TLKM>
+    public abstract class VMZone<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
+        where TC : VMContext<TC, TB, TZ, TK>
+        where TB : VMKeyboard<TC, TB, TZ, TK>
+        where TZ : VMZone<TC, TB, TZ, TK>
+        where TK : VMKey<TC, TB, TZ, TK>
     {
         IZone _zone;
-        ObservableSortedArrayKeyList<TK,int> _keys;
+        ObservableCollection<TK> _keys;
 
-        public IZone Model { get { return _zone; } }
-
-        public ObservableSortedArrayKeyList<TK, int> Keys { get { return _keys; } }
-
-        public string Name { get { return _zone.Name; } }
+        public ObservableCollection<TK> Keys { get { return _keys; } }
 
         public VMZone( TC context, IZone zone )
             : base( context )
         {
             _zone = zone;
-            _keys = new ObservableSortedArrayKeyList<TK, int>( k => k.Index );
+            _keys = new ObservableCollection<TK>();
 
             foreach( IKey key in _zone.Keys )
             {
@@ -63,8 +56,6 @@ namespace CK.WPF.ViewModel
             {
                 key.Dispose();
             }
-
-            base.OnDispose();
         }
     }
 }

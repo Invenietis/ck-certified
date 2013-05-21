@@ -35,7 +35,7 @@ using CK.Core;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
+    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         public VMKeySimple( VMContextSimple ctx, IKey k ) 
             : base( ctx, k )
@@ -120,16 +120,6 @@ namespace SimpleSkin.ViewModels
                     OnPropertyChanged( "IsHighlighting" );
                 }
             }
-        }
-
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
-        {
-            get { return Context.Obtain( Model.Zone ); }
-        }
-
-        public override IKeyboardElement LayoutElement
-        {
-            get { return Model.CurrentLayout.Current; }
         }
 
         /// <summary>

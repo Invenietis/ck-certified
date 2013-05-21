@@ -32,7 +32,7 @@ using System;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
+    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         public VMZoneSimple( VMContextSimple ctx, IZone zone ) 
             : base( ctx, zone )
@@ -80,7 +80,7 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
+        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> Parent
         {
             get { return Context.KeyboardVM; }
         }

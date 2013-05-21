@@ -47,9 +47,9 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
-                                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex, Mode=TwoWay}"/>
-                                        <Setter Property="Canvas.Top" Value="{Binding Y, Mode=TwoWay}"/>
-                                        <Setter Property="Canvas.Left" Value="{Binding X, Mode=TwoWay}"/>
+                                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+                                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                             </ItemsControl>

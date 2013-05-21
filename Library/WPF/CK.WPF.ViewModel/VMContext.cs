@@ -177,7 +177,7 @@ namespace CK.WPF.ViewModel
             if( e.Current != null )
             {
                 _currentKeyboard = Obtain( e.Current );
-                OnPropertyChanged( "Keyboard" );
+                OnPropertyChanged( "KeyboardVM" );
                 _currentKeyboard.TriggerPropertyChanged();
                
             }
@@ -188,7 +188,7 @@ namespace CK.WPF.ViewModel
             //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
             if( e.PropertyName == "CurrentContextProfile" )
             {
-                OnPropertyChanged( "Keyboard" );
+                OnPropertyChanged( "KeyboardVM" );
             }
         }
 

@@ -90,6 +90,51 @@ namespace SimpleSkin.ViewModels
             base.OnDispose();
         }
 
+        public Image Image
+        {
+            get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
+        }
+
+        public Color Background
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
+        }
+
+        public Color HoverBackground
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+        }
+
+        public Color PressedBackground
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
+        }
+
+        public Color LetterColor
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
+        }
+
+        public FontStyle FontStyle
+        {
+            get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
+        }
+
+        public FontWeight FontWeight
+        {
+            get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
+        }
+
+        public double FontSize
+        {
+            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
+        }
+
+        public TextDecorationCollection TextDecorations
+        {
+            get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
+        }
+
         public bool ShowLabel
         {
             get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }

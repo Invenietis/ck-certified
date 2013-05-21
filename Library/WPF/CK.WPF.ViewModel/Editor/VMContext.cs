@@ -226,7 +226,6 @@ namespace CK.WPF.ViewModel
                 keyboard.Dispose();
             }
 
-            //foreach( VMContextElement<TC, TB, TZ, TK, TKM, TLKM> vm in _dic.Values ) vm.Dispose();
             _keyboards.Clear();
             _dic.Clear();
         }

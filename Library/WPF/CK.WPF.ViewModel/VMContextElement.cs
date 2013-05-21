@@ -21,11 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 namespace CK.WPF.ViewModel
 {
     /// <summary>
     /// </summary>
-    public abstract class VMContextElement<TC, TB, TZ, TK> : VMBase
+    public abstract class VMContextElement<TC, TB, TZ, TK> : VMBase, IDisposable
         where TC : VMContext<TC, TB, TZ, TK>
         where TB : VMKeyboard<TC, TB, TZ, TK>
         where TZ : VMZone<TC, TB, TZ, TK>
@@ -43,17 +44,13 @@ namespace CK.WPF.ViewModel
         /// </summary>
         public TC Context { get { return _context; } }
 
-        /// <summary>
-        /// Internal method called by this <see cref="Context"/> only.
-        /// </summary>
-        internal void Dispose()
-        {
-            OnDispose();
-        }
-
         protected virtual void OnDispose()
         {
         }
 
+        public void Dispose()
+        {
+            OnDispose();
+        }
     }
 }

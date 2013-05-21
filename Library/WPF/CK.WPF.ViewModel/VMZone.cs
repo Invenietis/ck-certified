@@ -33,31 +33,35 @@ namespace CK.WPF.ViewModel
         where TZ : VMZone<TC, TB, TZ, TK>
         where TK : VMKey<TC, TB, TZ, TK>
     {
-        IZone _zone;
-        ObservableSortedArrayKeyList<TK, int> _keys;
-        public string Name { get { return _zone.Name; } }
-
-        public ObservableSortedArrayKeyList<TK, int> Keys { get { return _keys; } }
-
         public VMZone( TC context, IZone zone )
             : base( context )
         {
-            _zone = zone;
-            _keys = new ObservableSortedArrayKeyList<TK, int>( k => k.Index );
-
-            foreach( IKey key in _zone.Keys )
-            {
-                TK k = Context.Obtain( key );
-                Keys.Add( k );
-            }
         }
+        //IZone _zone;
+        //ObservableSortedArrayKeyList<TK, int> _keys;
+        //public string Name { get { return _zone.Name; } }
 
-        protected override void OnDispose()
-        {
-            foreach( TK key in Keys )
-            {
-                key.Dispose();
-            }
-        }
+        //public ObservableSortedArrayKeyList<TK, int> Keys { get { return _keys; } }
+
+        //public VMZone( TC context, IZone zone )
+        //    : base( context )
+        //{
+        //    _zone = zone;
+        //    _keys = new ObservableSortedArrayKeyList<TK, int>( k => k.Index );
+
+        //    foreach( IKey key in _zone.Keys )
+        //    {
+        //        TK k = Context.Obtain( key );
+        //        Keys.Add( k );
+        //    }
+        //}
+
+        //protected override void OnDispose()
+        //{
+        //    foreach( TK key in Keys )
+        //    {
+        //        key.Dispose();
+        //    }
+        //}
     }
 }

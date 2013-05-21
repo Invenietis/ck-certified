@@ -34,9 +34,30 @@ namespace SimpleSkin.ViewModels
 {
     internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
+        public ObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
+        ObservableSortedArrayKeyList<VMKeySimple, int> _keys;
+        public string Name { get { return _zone.Name; } }
+        IZone _zone;
+
         public VMZoneSimple( VMContextSimple ctx, IZone zone ) 
             : base( ctx, zone )
         {
+             _zone = zone;
+            _keys = new ObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
+
+            foreach( IKey key in _zone.Keys )
+            {
+                VMKeySimple k = Context.Obtain( key );
+                Keys.Add( k );
+            }
+        }
+
+        protected override void OnDispose()
+        {
+            foreach( VMKeySimple key in Keys )
+            {
+                key.Dispose();
+            }
         }
 
         public IReadOnlyList<IHighlightableElement> Children

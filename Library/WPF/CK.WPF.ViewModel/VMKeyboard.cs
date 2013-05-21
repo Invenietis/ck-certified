@@ -26,16 +26,16 @@ using System.Drawing;
 using System;
 using CK.Keyboard.Model;
 
-namespace CK.WPF.ViewModel
-{
-    public abstract class VMKeyboard<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
-    {
-        public VMKeyboard( TC context, IKeyboard keyboard )
-            : base( context ) { }
+//namespace CK.WPF.ViewModel
+//{
+    //public abstract class VMKeyboard<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
+    //    where TC : VMContext<TC, TB, TZ, TK>
+    //    where TB : VMKeyboard<TC, TB, TZ, TK>
+    //    where TZ : VMZone<TC, TB, TZ, TK>
+    //    where TK : VMKey<TC, TB, TZ, TK>
+    //{
+    //    public VMKeyboard( TC context, IKeyboard keyboard )
+    //        : base( context ) { }
 
         //IKeyboard _keyboard;
         //ObservableCollection<TZ> _zones;
@@ -163,5 +163,5 @@ namespace CK.WPF.ViewModel
         //    }
         //}
         //#endregion
-    }
-}
+//    }
+//}

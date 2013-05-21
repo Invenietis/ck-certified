@@ -37,7 +37,7 @@ using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMKey<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    internal class VMKeySimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
         IKey _key;
         ICommand _keyDownCmd;

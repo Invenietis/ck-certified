@@ -33,7 +33,7 @@ using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMContextSimple : VMContext<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+    internal class VMContextSimple : VMBase
     {
         Dictionary<object, VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>> _dic;
         EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
@@ -72,8 +72,8 @@ namespace SimpleSkin.ViewModels
             VMZoneSimple z = FindViewModel<VMZoneSimple>( zone );
             if( z == null )
             {
-                if( zone.Context != _kbctx )
-                    throw new Exception( "Context mismatch." );
+                //if( zone.Context != _kbctx )
+                //    throw new Exception( "Context mismatch." );
                 z = CreateZone( zone );
                 _dic.Add( zone, z );
             }
@@ -85,8 +85,8 @@ namespace SimpleSkin.ViewModels
             VMKeySimple k = FindViewModel<VMKeySimple>( key );
             if( k == null )
             {
-                if( key.Context != _kbctx )
-                    throw new Exception( "Context mismatch." );
+                //if( key.Context != _kbctx )
+                //    throw new Exception( "Context mismatch." );
                 k = CreateKey( key );
                 _dic.Add( key, k );
             }

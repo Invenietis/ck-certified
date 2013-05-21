@@ -38,12 +38,10 @@ using System.Collections.ObjectModel;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    internal class VMKeyboardSimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
-
-
         public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
-            : base( ctx, kb )
+            : base( ctx )
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 

@@ -28,18 +28,18 @@ using System.Collections.Generic;
 using CK.Core;
 using CK.Keyboard.Model;
 
-namespace CK.WPF.ViewModel
-{
-    public abstract class VMKey<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
-    {
-        public VMKey( TC context )
-            : base( context )
-        {
-        }
+//namespace CK.WPF.ViewModel
+//{
+    //public abstract class VMKey<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
+    //    where TC : VMContext<TC, TB, TZ, TK>
+    //    where TB : VMKeyboard<TC, TB, TZ, TK>
+    //    where TZ : VMZone<TC, TB, TZ, TK>
+    //    where TK : VMKey<TC, TB, TZ, TK>
+    //{
+    //    public VMKey( TC context )
+    //        : base( context )
+    //    {
+    //    }
 
         //IKey _key;
         //ICommand _keyDownCmd;
@@ -243,6 +243,6 @@ namespace CK.WPF.ViewModel
         //    _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
         //    _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
         //}
-    }
+//    }
 
-}
+//}

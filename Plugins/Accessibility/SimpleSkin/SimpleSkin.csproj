@@ -139,6 +139,7 @@
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\VMContextElementSimple.cs" />
     <Compile Include="ViewModels\VMContextSimple.cs" />
     <Compile Include="ViewModels\VMKeyboardSimple.cs" />
     <Compile Include="ViewModels\VMKeySimple.cs" />

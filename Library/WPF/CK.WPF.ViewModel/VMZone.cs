@@ -25,18 +25,18 @@ using System.Collections.ObjectModel;
 using CK.Core;
 using CK.Keyboard.Model;
 
-namespace CK.WPF.ViewModel
-{
-    public abstract class VMZone<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
-    {
-        public VMZone( TC context, IZone zone )
-            : base( context )
-        {
-        }
+//namespace CK.WPF.ViewModel
+//{
+    //public abstract class VMZone<TC, TB, TZ, TK> : VMContextElement<TC, TB, TZ, TK>
+    //    where TC : VMContext<TC, TB, TZ, TK>
+    //    where TB : VMKeyboard<TC, TB, TZ, TK>
+    //    where TZ : VMZone<TC, TB, TZ, TK>
+    //    where TK : VMKey<TC, TB, TZ, TK>
+    //{
+    //    public VMZone( TC context, IZone zone )
+    //        : base( context )
+    //    {
+    //    }
         //IZone _zone;
         //ObservableSortedArrayKeyList<TK, int> _keys;
         //public string Name { get { return _zone.Name; } }
@@ -63,5 +63,5 @@ namespace CK.WPF.ViewModel
         //        key.Dispose();
         //    }
         //}
-    }
-}
+//    }
+//}

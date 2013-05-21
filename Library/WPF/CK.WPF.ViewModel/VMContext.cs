@@ -31,12 +31,12 @@ using System.ComponentModel;
 
 namespace CK.WPF.ViewModel
 {
-    public abstract class VMContext<TC, TB, TZ, TK> : VMBase, IDisposable
-        where TC : VMContext<TC, TB, TZ, TK>
-        where TB : VMKeyboard<TC, TB, TZ, TK>
-        where TZ : VMZone<TC, TB, TZ, TK>
-        where TK : VMKey<TC, TB, TZ, TK>
-    {
+    //public abstract class VMContext<TC, TB, TZ, TK> : VMBase, IDisposable
+    //    where TC : VMContext<TC, TB, TZ, TK>
+    //    where TB : VMKeyboard<TC, TB, TZ, TK>
+    //    where TZ : VMZone<TC, TB, TZ, TK>
+    //    where TK : VMKey<TC, TB, TZ, TK>
+    //{
 
         //IKeyboardContext _kbctx;
         //IContext _ctx;
@@ -199,8 +199,8 @@ namespace CK.WPF.ViewModel
         //    OnModelDestroy( e.Keyboard );
         //}
         //#endregion
-        public void Dispose()
-        {
-        }
-    }
+        //public void Dispose()
+        //{
+        //}
+    //}
 }

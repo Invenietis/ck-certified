@@ -102,6 +102,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\VMContext.cs" />
+    <Compile Include="Editor\VMContextElement.cs" />
+    <Compile Include="Editor\VMKey.cs" />
+    <Compile Include="Editor\VMKeyboard.cs" />
+    <Compile Include="Editor\VMKeyMode.cs" />
+    <Compile Include="Editor\VMLayoutKeyMode.cs" />
+    <Compile Include="Editor\VMZone.cs" />
     <Compile Include="VMLayoutKeyMode.cs" />
     <Compile Include="VMKeyMode.cs" />
     <Compile Include="Helpers\PropertyLookupExtentions.cs" />

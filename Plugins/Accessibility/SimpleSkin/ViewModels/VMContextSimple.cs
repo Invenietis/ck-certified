@@ -32,8 +32,18 @@ namespace SimpleSkin.ViewModels
 {
     internal class VMContextSimple : VMContext<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
     {
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
-            : base( ctx, kbctx.Keyboards.Context, config, config )
+        IPluginConfigAccessor _config;
+        public IPluginConfigAccessor Config
+        {
+            get
+            {
+                if( _config == null ) _config = Context.GetService<IPluginConfigAccessor>( true );
+                return _config;
+            }
+        }
+
+        public VMContextSimple( IContext ctx, IKeyboardContext kbctx )
+            : base( ctx, kbctx.Keyboards.Context )
         {
         }
 

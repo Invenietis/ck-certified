@@ -39,6 +39,8 @@ namespace SimpleSkin.ViewModels
 {
     internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
+        
+
         public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
             : base( ctx, kb )
         {
@@ -85,40 +87,6 @@ namespace SimpleSkin.ViewModels
                 if( imsc == null ) imsc = new ImageSourceConverter();
                 return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
             }
-        }
-
-        /// <summary>
-        /// Returns the parent of the element.
-        /// </summary>
-        /// <returns></returns>
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> Parent
-        {
-            get { return null; }
-        }
-
-        public override IKeyboardElement LayoutElement
-        {
-            get { return Layout; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is being edited.
-        /// an element is beingedited if it is selected or one of its parents is being edited
-        /// This implementation is readonly. It always returns false
-        /// </summary>
-        public override bool IsBeingEdited
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is selected.
-        /// This implementation is readonly. It always returns false
-        /// </summary>
-        public override bool IsSelected
-        {
-            get { return false; }
-            set { }
         }
 
         #region IHighlightableElement Members

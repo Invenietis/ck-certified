@@ -32,9 +32,8 @@ namespace SimpleSkin
     /// </summary>
     public partial class SkinWindow : NoFocusWindow
     {
-        public SkinWindow( object dc )
+        public SkinWindow( )
         {
-            this.DataContext = dc;
             InitializeComponent();
         }
     }

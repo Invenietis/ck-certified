@@ -109,8 +109,6 @@
     <Compile Include="Editor\VMKeyMode.cs" />
     <Compile Include="Editor\VMLayoutKeyMode.cs" />
     <Compile Include="Editor\VMZone.cs" />
-    <Compile Include="VMLayoutKeyMode.cs" />
-    <Compile Include="VMKeyMode.cs" />
     <Compile Include="Helpers\PropertyLookupExtentions.cs" />
     <Compile Include="IDraggableResizableElement.cs" />
     <Compile Include="VMCollection.cs" />

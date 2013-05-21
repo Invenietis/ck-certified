@@ -41,7 +41,6 @@ namespace SimpleSkin.ViewModels
             : base( ctx, k )
         {
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Context.SkinConfiguration.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
@@ -88,8 +87,6 @@ namespace SimpleSkin.ViewModels
         protected override void OnDispose()
         {
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            Context.SkinConfiguration.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-
             base.OnDispose();
         }
 
@@ -120,26 +117,6 @@ namespace SimpleSkin.ViewModels
                     OnPropertyChanged( "IsHighlighting" );
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets whether this element is being edited.
-        /// an element is beingedited if it is selected or one of its parents is being edited
-        /// This implementation is readonly. It always returns false
-        /// </summary>
-        public override bool IsBeingEdited
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is selected.
-        /// This implementation is readonly. It always returns false
-        /// </summary>
-        public override bool IsSelected
-        {
-            get { return false; }
-            set { }
         }
 
         public double ZIndex

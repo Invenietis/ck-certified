@@ -128,6 +128,19 @@ namespace CK.WPF.ViewModel
         }
 
         /// <summary>
+        /// Gets the logical position of the <see cref="IKey"/> in the zone.
+        /// </summary>
+        public int Index
+        {
+            get { return _key.Index; }
+            set
+            {
+                _key.Index = value;
+                OnPropertyChanged( "Index" );
+            }
+        }
+
+        /// <summary>
         /// Gets if the current keymode is a fallback or not.
         /// </summary>
         public bool IsFallback { get { return _key.Current.IsFallBack; } }

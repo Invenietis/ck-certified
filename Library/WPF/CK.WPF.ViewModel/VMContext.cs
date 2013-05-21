@@ -48,6 +48,12 @@ namespace CK.WPF.ViewModel
         ObservableCollection<TB> _keyboards;
 
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
+        
+        public TB KeyboardVM
+        {
+            get { return _currentKeyboard; }
+            set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
+        }
 
         public IContext Context { get { return _ctx; } }
 

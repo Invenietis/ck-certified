@@ -511,26 +511,4 @@ namespace CK.WPF.ViewModel
             base.OnDispose();
         }
     }
-
-    internal class KeyCommand : ICommand
-    {
-        Action _del;
-
-        public KeyCommand( Action del )
-        {
-            _del = del;
-        }
-
-        public bool CanExecute( object parameter )
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute( object parameter )
-        {
-            _del();
-        }
-    }
 }

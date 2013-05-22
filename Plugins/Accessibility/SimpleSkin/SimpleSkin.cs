@@ -109,7 +109,7 @@ namespace SimpleSkin
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 _isStarted = true;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service, Config );
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config );
                 _skinWindow = new SkinWindow() { DataContext = _ctxVm };
 
                 InitializeHighligther();
@@ -117,13 +117,10 @@ namespace SimpleSkin
 
                 _skinWindow.Show();
 
-                if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
                 //Placing the skin at the same location as the last launch.
-                _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User[PlacementString] );
+                _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, _skinWindow.GetPlacement() ) );
 
                 UpdateAutoHideConfig();
-
-               
 
                 RegisterEvents();
             }

@@ -40,36 +40,14 @@ namespace SimpleSkin.ViewModels
 {
     internal class VMKeyboardSimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
-        public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
-            : base( ctx )
-        {
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        #region Properties & variables
 
-            _zones = new ObservableCollection<VMZoneSimple>();
-            _keys = new ObservableCollection<VMKeySimple>();
-
-            _keyboard = kb;
-
-            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-
-            foreach( IZone zone in _keyboard.Zones )
-            {
-                Zones.Add( Context.Obtain( zone ) );
-                foreach( IKey key in zone.Keys )
-                {
-                    _keys.Add( Context.Obtain( key ) );
-                }
-            }
-        }
-
-        IKeyboard _keyboard;
         ObservableCollection<VMZoneSimple> _zones;
         ObservableCollection<VMKeySimple> _keys;
+        IKeyboard _keyboard;
+
+        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
+        public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
 
         /// <summary>
         /// Gets the current layout used by the current keyboard.
@@ -86,13 +64,30 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int H { get { return _keyboard.CurrentLayout.H; } }
 
-        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
-        public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
+        #endregion
+
+        public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
+            : base( ctx )
+        {
+            _zones = new ObservableCollection<VMZoneSimple>();
+            _keys = new ObservableCollection<VMKeySimple>();
+
+            _keyboard = kb;
+
+            RegisterEvents();
+
+            foreach( IZone zone in _keyboard.Zones )
+            {
+                Zones.Add( Context.Obtain( zone ) );
+                foreach( IKey key in zone.Keys )
+                {
+                    _keys.Add( Context.Obtain( key ) );
+                }
+            }
+        }
 
         protected override void OnDispose()
         {
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-
             foreach( VMZoneSimple zone in Zones )
             {
                 zone.Dispose();
@@ -100,26 +95,17 @@ namespace SimpleSkin.ViewModels
             _zones.Clear();
             _keys.Clear();
 
-            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyMoved -= new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
-            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            UnregisterEvents();
         }
 
         public void TriggerPropertyChanged()
         {
-            OnTriggerPropertyChanged();
             OnPropertyChanged( "Keys" );
             OnPropertyChanged( "BackgroundImagePath" );
         }
 
-        protected virtual void OnTriggerPropertyChanged()
-        {
-        }
-
         #region OnXXXXX
+
         void OnKeyCreated( object sender, KeyEventArgs e )
         {
             VMKeySimple kvm = Context.Obtain( e.Key );
@@ -158,7 +144,6 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "H" );
             }
         }
-        #endregion
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
@@ -175,6 +160,32 @@ namespace SimpleSkin.ViewModels
                 }
             }
         }
+
+        private void RegisterEvents()
+        {
+            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
+            _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
+            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
+            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
+            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        }
+
+        private void UnregisterEvents()
+        {
+            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
+            _keyboard.KeyMoved -= new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
+            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
+            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
+            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        }
+
+        #endregion
+
+        #region "Design" properties
 
         public Brush InsideBorderColor
         {
@@ -195,6 +206,8 @@ namespace SimpleSkin.ViewModels
                 return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
             }
         }
+
+        #endregion
 
         #region IHighlightableElement Members
 

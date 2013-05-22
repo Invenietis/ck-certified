@@ -6,7 +6,7 @@ using CK.WPF.ViewModel;
 
 namespace SimpleSkin.ViewModels
 {
-    public abstract class VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> : VMBase, IDisposable
+    public abstract class VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> : VMBase
     {
         VMContextSimple _context;
 
@@ -16,7 +16,7 @@ namespace SimpleSkin.ViewModels
         }
 
         /// <summary>
-        /// Gets the <see cref="VMContext"/> to wich this element belongs.
+        /// Gets the <see cref="VMContext"/> to which this element belongs.
         /// </summary>
         public VMContextSimple Context { get { return _context; } }
 

@@ -39,18 +39,119 @@ namespace SimpleSkin.ViewModels
 {
     internal class VMKeySimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
     {
-        IKey _key;
+        Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
+        ICommand _keyPressedCmd;
         ICommand _keyDownCmd;
         ICommand _keyUpCmd;
-        ICommand _keyPressedCmd;
-        Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
+        IKey _key;
+     
+        public VMKeySimple( VMContextSimple ctx, IKey k )
+            : base( ctx )
+        {
+            _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
+            _key = k;
+
+            ResetCommands();
+            RegisterEvents();
+        }
+
+        #region OnXXX
+
+        public void OnKeyPropertyChanged( object sender, KeyPropertyChangedEventArgs e )
+        {
+            if( _actionsOnPropertiesChanged.ContainsKey( e.PropertyName ) )
+                _actionsOnPropertiesChanged[e.PropertyName].Run();
+        }
+
+        protected override void OnDispose()
+        {
+            UnregisterEvents();
+        }
 
         void OnModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
             OnPropertyChanged( "IsFallback" );
         }
 
-        protected void SetActionOnPropertyChanged( string propertyName, Action action )
+        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                PropertyChangedTriggers();
+            }
+        }
+
+        private void RegisterEvents()
+        {
+            SetActionOnPropertyChanged( "Current", () =>
+            {
+                OnPropertyChanged( "UpLabel" );
+                OnPropertyChanged( "DownLabel" );
+                OnPropertyChanged( "Enabled" );
+            } );
+
+            SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
+            SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
+            SetActionOnPropertyChanged( "Width", () => OnPropertyChanged( "Width" ) );
+            SetActionOnPropertyChanged( "Height", () => OnPropertyChanged( "Height" ) );
+            SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
+            SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
+            SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
+            SetActionOnPropertyChanged( "DownLabel", () => OnPropertyChanged( "DownLabel" ) );
+            SetActionOnPropertyChanged( "CurrentLayout", () => { PropertyChangedTriggers(); } );
+
+            _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
+            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        }
+
+        private void UnregisterEvents()
+        {
+            _actionsOnPropertiesChanged.Clear();
+
+            _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
+            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        }
+
+        private void PropertyChangedTriggers()
+        {
+            OnPropertyChanged( "X" );
+            OnPropertyChanged( "Y" );
+            OnPropertyChanged( "Width" );
+            OnPropertyChanged( "Image" );
+            OnPropertyChanged( "Height" );
+            OnPropertyChanged( "Opacity" );
+            OnPropertyChanged( "Visible" );
+            OnPropertyChanged( "FontSize" );
+            OnPropertyChanged( "FontStyle" );
+            OnPropertyChanged( "ShowLabel" );
+            OnPropertyChanged( "ShowImage" );
+            OnPropertyChanged( "IsVisible" );
+            OnPropertyChanged( "FontWeight" );
+            OnPropertyChanged( "Background" );
+            OnPropertyChanged( "LetterColor" );
+            OnPropertyChanged( "HoverBackground" );
+            OnPropertyChanged( "TextDecorations" );
+            OnPropertyChanged( "PressedBackground" );
+            OnPropertyChanged( "HighlightBackground" );
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Called by <see cref="VMKeyboardSimple"/> to warn that the key's position has changed.
+        /// TODO : check that the key itself cannot handle this change
+        /// </summary>
+        internal void PositionChanged()
+        {
+            OnPropertyChanged( "X" );
+            OnPropertyChanged( "Y" );
+        }
+
+        #region Tool methods
+
+        void SetActionOnPropertyChanged( string propertyName, Action action )
         {
             if( !_actionsOnPropertiesChanged.ContainsKey( propertyName ) )
             {
@@ -68,18 +169,6 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        internal void PositionChanged()
-        {
-            OnPropertyChanged( "X" );
-            OnPropertyChanged( "Y" );
-        }
-
-        public void OnKeyPropertyChanged( object sender, KeyPropertyChangedEventArgs e )
-        {
-            if( _actionsOnPropertiesChanged.ContainsKey( e.PropertyName ) )
-                _actionsOnPropertiesChanged[e.PropertyName].Run();
-        }
-
         void ResetCommands()
         {
             _keyDownCmd = new KeyCommand( () => { if( !_key.IsDown )_key.Push(); } );
@@ -87,84 +176,7 @@ namespace SimpleSkin.ViewModels
             _keyPressedCmd = new KeyCommand( () => { if( _key.IsDown )_key.Release( true ); } );
         }
 
-        protected void OnDispose()
-        {
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
-        }
-
-        public VMKeySimple( VMContextSimple ctx, IKey k )
-            : base( ctx )
-        {
-            _key = k;
-
-            ResetCommands();
-
-            _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
-
-            SetActionOnPropertyChanged( "Current", () =>
-            {
-                OnPropertyChanged( "UpLabel" );
-                OnPropertyChanged( "DownLabel" );
-                OnPropertyChanged( "Enabled" );
-            } );
-
-            SetActionOnPropertyChanged( "CurrentLayout", () =>
-            {
-                OnPropertyChanged( "X" );
-                OnPropertyChanged( "Y" );
-                OnPropertyChanged( "Width" );
-                OnPropertyChanged( "Height" );
-                OnPropertyChanged( "Visible" );
-            } );
-
-            SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
-            SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
-            SetActionOnPropertyChanged( "Width", () => OnPropertyChanged( "Width" ) );
-            SetActionOnPropertyChanged( "Height", () => OnPropertyChanged( "Height" ) );
-            SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
-            SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
-            SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
-            SetActionOnPropertyChanged( "DownLabel", () => OnPropertyChanged( "DownLabel" ) );
-
-            _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
-
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-
-            SetActionOnPropertyChanged( "CurrentLayout", () =>
-            {
-                PropertyChangedTriggers();
-            } );
-        }
-
-        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
-        {
-            if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
-            {
-                PropertyChangedTriggers();
-            }
-        }
-
-        private void PropertyChangedTriggers()
-        {
-            OnPropertyChanged( "Background" );
-            OnPropertyChanged( "HoverBackground" );
-            OnPropertyChanged( "HighlightBackground" );
-            OnPropertyChanged( "PressedBackground" );
-            OnPropertyChanged( "LetterColor" );
-            OnPropertyChanged( "FontStyle" );
-            OnPropertyChanged( "FontWeight" );
-            OnPropertyChanged( "FontSize" );
-            OnPropertyChanged( "TextDecorations" );
-            OnPropertyChanged( "Opacity" );
-            OnPropertyChanged( "Image" );
-            OnPropertyChanged( "ShowLabel" );
-            OnPropertyChanged( "ShowImage" );
-            OnPropertyChanged( "IsVisible" );
-            OnPropertyChanged( "Visible" );
-        }
+        #endregion
 
         #region "Design" properties
 

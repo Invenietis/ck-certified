@@ -58,7 +58,10 @@ namespace SimpleSkin.ViewModels
             {
                 key.Dispose();
             }
+            _keys.Clear();
         }
+
+        #region IHighlightable members
 
         public IReadOnlyList<IHighlightableElement> Children
         {
@@ -118,5 +121,6 @@ namespace SimpleSkin.ViewModels
                 }
             }
         }
+        #endregion
     }
 }

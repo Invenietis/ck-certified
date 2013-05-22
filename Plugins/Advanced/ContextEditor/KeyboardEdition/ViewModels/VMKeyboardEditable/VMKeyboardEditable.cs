@@ -75,7 +75,7 @@ namespace KeyboardEditor.ViewModels
 
         /// <summary>
         /// Initialization's second step.
-        /// Used to make sure configuration accessors and service (like th PointerDeviceDriver) are available before using them
+        /// Used to make sure configuration accessors and service (like the PointerDeviceDriver) are available before using them
         /// </summary>
         public void Initialize()
         {
@@ -325,5 +325,14 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
+
+
+
+
+
+
+
+
+
     }
 }

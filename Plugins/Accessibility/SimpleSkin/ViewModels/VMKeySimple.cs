@@ -68,7 +68,7 @@ namespace SimpleSkin.ViewModels
             UnregisterEvents();
         }
 
-        void OnModeChanged( object sender, KeyboardModeChangedEventArgs e )
+        void OnCurrentModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
             OnPropertyChanged( "IsFallback" );
         }
@@ -92,8 +92,8 @@ namespace SimpleSkin.ViewModels
 
             SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
             SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
-            SetActionOnPropertyChanged( "Width", () => OnPropertyChanged( "Width" ) );
-            SetActionOnPropertyChanged( "Height", () => OnPropertyChanged( "Height" ) );
+            SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
+            SetActionOnPropertyChanged( "W", () => OnPropertyChanged( "Width" ) );
             SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
             SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
             SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
@@ -101,7 +101,7 @@ namespace SimpleSkin.ViewModels
             SetActionOnPropertyChanged( "CurrentLayout", () => { PropertyChangedTriggers(); } );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
             Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
         }
 
@@ -110,7 +110,7 @@ namespace SimpleSkin.ViewModels
             _actionsOnPropertiesChanged.Clear();
 
             _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnModeChanged );
+            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
         }
 
@@ -138,16 +138,6 @@ namespace SimpleSkin.ViewModels
         }
 
         #endregion
-
-        /// <summary>
-        /// Called by <see cref="VMKeyboardSimple"/> to warn that the key's position has changed.
-        /// TODO : check that the key itself cannot handle this change
-        /// </summary>
-        internal void PositionChanged()
-        {
-            OnPropertyChanged( "X" );
-            OnPropertyChanged( "Y" );
-        }
 
         #region Tool methods
 
@@ -279,7 +269,6 @@ namespace SimpleSkin.ViewModels
         /// Gets if the current keymode is a fallback or not.
         /// </summary>
         public bool IsFallback { get { return _key.Current.IsFallBack; } }
-
 
         public Image Image
         {

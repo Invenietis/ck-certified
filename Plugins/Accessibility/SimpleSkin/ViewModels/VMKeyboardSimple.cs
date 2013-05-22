@@ -113,11 +113,6 @@ namespace SimpleSkin.ViewModels
             _keys.Add( kvm );
         }
 
-        void OnKeyMoved( object sender, KeyMovedEventArgs e )
-        {
-            Context.Obtain( e.Key ).PositionChanged();
-        }
-
         void OnKeyDestroyed( object sender, KeyEventArgs e )
         {
             Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
@@ -164,7 +159,6 @@ namespace SimpleSkin.ViewModels
         private void RegisterEvents()
         {
             _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
             _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
             _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
@@ -175,7 +169,6 @@ namespace SimpleSkin.ViewModels
         private void UnregisterEvents()
         {
             _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyMoved -= new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
             _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
             _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
             _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );

@@ -60,12 +60,12 @@ namespace SimpleSkin.ViewModels
 
         public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
         {
-            _config = config;
             _dic = new Dictionary<object, VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();
-
+            _config = config;
             _kbctx = kbctx;
             _ctx = ctx;
+            
             if( _kbctx.Keyboards.Count > 0 )
             {
                 foreach( IKeyboard keyboard in _kbctx.Keyboards )

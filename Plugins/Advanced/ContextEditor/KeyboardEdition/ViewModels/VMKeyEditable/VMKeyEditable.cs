@@ -59,7 +59,7 @@ namespace KeyboardEditor.ViewModels
         FallbackOnKeyMode = 2
     }
 
-    public partial class VMKeyEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElementEditable
     {
         //internal IModeViewModel SelectedModeViewModel { get; set; }
         Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
@@ -144,7 +144,7 @@ namespace KeyboardEditor.ViewModels
         ObservableCollection<VMKeyModeEditable> _keyModes;
         public ObservableCollection<VMKeyModeEditable> KeyModes { get { return _keyModes; } }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
+        public override VMContextElementEditable Parent
         {
             get { return Context.Obtain( Model.Zone ); }
         }
@@ -248,63 +248,15 @@ namespace KeyboardEditor.ViewModels
 
                 if( imageData != null )
                 {
-                    return ProcessImage( imageData );
+                    return WPFImageProcessingHelper.ProcessImage( imageData );
                 }
 
                 return null;
             }
-
             set { _context.Config[_key.Current]["Image"] = value; }
         }
 
-        //This method handles the different ways an image can be stored in plugin datas
-        private Image ProcessImage( object imageData )
-        {
-            Image image = new Image();
-            string imageString = imageData.ToString();
-
-
-            if( imageData.GetType() == typeof( Image ) )
-            {
-                //If a WPF image was stored in the PluginDatas, we use its source to create a NEW image instance, to enable using it multiple times. 
-                Image img = new Image();
-                BitmapImage bitmapImage = new BitmapImage( new Uri( ( (Image)imageData ).Source.ToString() ) );
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                img.Source = bitmapImage;
-                return img;
-            }
-            else if( Uri.IsWellFormedUriString( imageString, UriKind.RelativeOrAbsolute ) && File.Exists( imageString ) ) //Handles URis
-            {
-                BitmapImage bitmapImage = new BitmapImage();
-
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri( imageString );
-                bitmapImage.EndInit();
-
-                image.Source = bitmapImage;
-
-                return image;
-            }
-            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF's pack:// protocol
-            {
-                ImageSourceConverter imsc = new ImageSourceConverter();
-                return (Image)imsc.ConvertFromString( imageString );
-            }
-            else
-            {
-                byte[] imageBytes = Convert.FromBase64String( imageData.ToString() ); //Handles base 64 encoded images
-                using( MemoryStream ms = new MemoryStream( imageBytes ) )
-                {
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = ms;
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                }
-                return image;
-            }
-        }
+       
 
         /// <summary>
         /// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.

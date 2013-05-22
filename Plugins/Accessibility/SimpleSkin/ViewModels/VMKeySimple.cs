@@ -37,14 +37,14 @@ using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeySimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    public class VMKeySimple : VMContextElement, IHighlightableElement
     {
         Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
         ICommand _keyPressedCmd;
         ICommand _keyDownCmd;
         ICommand _keyUpCmd;
         IKey _key;
-     
+
         public VMKeySimple( VMContextSimple ctx, IKey k )
             : base( ctx )
         {
@@ -92,8 +92,9 @@ namespace SimpleSkin.ViewModels
 
             SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
             SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
-            SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
             SetActionOnPropertyChanged( "W", () => OnPropertyChanged( "Width" ) );
+            SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
+            SetActionOnPropertyChanged( "Image", () => OnPropertyChanged( "Image" ) );
             SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
             SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
             SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
@@ -127,7 +128,6 @@ namespace SimpleSkin.ViewModels
             OnPropertyChanged( "FontStyle" );
             OnPropertyChanged( "ShowLabel" );
             OnPropertyChanged( "ShowImage" );
-            OnPropertyChanged( "IsVisible" );
             OnPropertyChanged( "FontWeight" );
             OnPropertyChanged( "Background" );
             OnPropertyChanged( "LetterColor" );
@@ -272,7 +272,18 @@ namespace SimpleSkin.ViewModels
 
         public Image Image
         {
-            get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
+            get
+            {
+                object imageData = Context.Config[LayoutKeyMode]["Image"];
+
+                if( imageData != null )
+                {
+                    return WPFImageProcessingHelper.ProcessImage( imageData );
+                }
+
+                return null;
+            }
+            //get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
         }
 
         public Color Background
@@ -283,6 +294,11 @@ namespace SimpleSkin.ViewModels
         public Color HoverBackground
         {
             get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+        }
+
+        public Color HighlightBackground
+        {
+            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
         }
 
         public Color PressedBackground

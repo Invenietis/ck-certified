@@ -33,9 +33,9 @@ using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMContextSimple : VMBase
+    public class VMContextSimple : VMBase
     {
-        Dictionary<object, VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>> _dic;
+        Dictionary<object, VMContextElement> _dic;
         EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
         PropertyChangedEventHandler _evUserConfigurationChanged;
         EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
@@ -60,7 +60,7 @@ namespace SimpleSkin.ViewModels
 
         public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
         {
-            _dic = new Dictionary<object, VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>>();
+            _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();
             _config = config;
             _kbctx = kbctx;
@@ -114,9 +114,9 @@ namespace SimpleSkin.ViewModels
         }
 
         T FindViewModel<T>( object m )
-            where T : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+            where T : VMContextElement
         {
-            VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> vm;
+            VMContextElement vm;
             _dic.TryGetValue( m, out vm );
             return (T)vm;
         }
@@ -124,7 +124,7 @@ namespace SimpleSkin.ViewModels
         public void Dispose()
         {
             UnregisterEvents();
-            foreach( VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> vm in _dic.Values ) vm.Dispose();
+            foreach( VMContextElement vm in _dic.Values ) vm.Dispose();
             _dic.Clear();
         }
 
@@ -132,7 +132,7 @@ namespace SimpleSkin.ViewModels
 
         internal void OnModelDestroy( object m )
         {
-            VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> vm;
+            VMContextElement vm;
             if( _dic.TryGetValue( m, out vm ) )
             {
                 vm.Dispose();

@@ -42,7 +42,7 @@ using CommonServices;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElementEditable
     {
         const int thumbWidth = 10;
         const int thumbHeight = 10;

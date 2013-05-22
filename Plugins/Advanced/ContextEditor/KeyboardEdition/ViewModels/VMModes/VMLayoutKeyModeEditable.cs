@@ -19,7 +19,7 @@ using Microsoft.Win32;
 //TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
 namespace KeyboardEditor.ViewModels
 {
-    public class VMLayoutKeyModeEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
+    public class VMLayoutKeyModeEditable : VMContextElementEditable, IModeViewModel
     {
         ILayoutKeyMode _model;
         public VMLayoutKeyModeEditable( VMContextEditable context, ILayoutKeyMode model )
@@ -148,11 +148,11 @@ namespace KeyboardEditor.ViewModels
         private VMKeyEditable ActualParent { get { return Parent as VMKeyEditable; } }
 
         //COMMON
-        VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _parent;
+        VMContextElementEditable _parent;
         /// <summary>
         /// Returns this VMKeyModeEditable's parent
         /// </summary>
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
+        public override VMContextElementEditable Parent
         {
             get
             {

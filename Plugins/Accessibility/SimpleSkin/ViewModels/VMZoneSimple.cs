@@ -32,7 +32,7 @@ using System;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMZoneSimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    public class VMZoneSimple : VMContextElement, IHighlightableElement
     {
         public ObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
         ObservableSortedArrayKeyList<VMKeySimple, int> _keys;

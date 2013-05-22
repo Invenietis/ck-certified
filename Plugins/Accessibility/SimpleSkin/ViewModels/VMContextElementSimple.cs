@@ -6,11 +6,11 @@ using CK.WPF.ViewModel;
 
 namespace SimpleSkin.ViewModels
 {
-    public abstract class VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> : VMBase
+    public abstract class VMContextElement : VMBase
     {
         VMContextSimple _context;
 
-        protected VMContextElement( VMContextSimple context )
+        public VMContextElement( VMContextSimple context )
         {
             _context = context;
         }

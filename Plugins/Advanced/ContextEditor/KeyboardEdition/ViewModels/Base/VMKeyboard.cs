@@ -29,7 +29,7 @@ using CK.Keyboard.Model;
 namespace KeyboardEditor.ViewModels
 {
     public abstract class VMKeyboard 
-        : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+        : VMContextElementEditable
     {
         //IKeyboard _keyboard;
         //ObservableCollection<VMZoneEditable> _zones;

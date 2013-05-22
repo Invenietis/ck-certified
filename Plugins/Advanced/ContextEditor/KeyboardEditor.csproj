@@ -129,7 +129,7 @@
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\Base\VMContextElement.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\Base\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\Base\VMKeyboard.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -43,7 +43,7 @@ using System.Collections.ObjectModel;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElementEditable
     {
         protected void OnTriggerModeChanged()
         {

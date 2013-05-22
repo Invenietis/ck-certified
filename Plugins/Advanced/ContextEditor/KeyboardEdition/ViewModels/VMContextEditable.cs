@@ -52,7 +52,7 @@ namespace KeyboardEditor.ViewModels
 
     public class VMContextEditable : VMBase
     {
-        Dictionary<object, VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> _dic;
+        Dictionary<object, VMContextElementEditable> _dic;
         ModeTypes _currentlyDisplayedModeType = ModeTypes.Mode;
         IKeyboardEditorRoot _root;
 
@@ -77,21 +77,20 @@ namespace KeyboardEditor.ViewModels
         {
             if( keyboardToEdit == null ) throw new ArgumentException( "The keyboardToEdit must not be null" );
 
-            _dic = new Dictionary<object, VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>>();
+            _dic = new Dictionary<object, VMContextElementEditable>();
             _keyboards = new ObservableCollection<VMKeyboardEditable>();
             _kbctx = root.KeyboardContext.Service.Keyboards.Context;
             _ctx = root.Context;
             _config = config;
             _root = root;
 
-            KeyboardVM = CreateKeyboard( keyboardToEdit );
             SkinConfiguration = skinConfiguration;
+            KeyboardVM = CreateKeyboard( keyboardToEdit );
 
             _dic.Add( keyboardToEdit, _currentKeyboard );
             _keyboards.Add( _currentKeyboard );
 
             RegisterEvents();
-            KeyboardVM.Initialize();
         }
 
         #region Properties
@@ -132,8 +131,8 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         //public IService<IKeyboardDriver> KeyboardDriver { get { return _root.KeyboardDriver; } }
 
-        VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _selectedElement;
-        public VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> SelectedElement
+        VMContextElementEditable _selectedElement;
+        public VMContextElementEditable SelectedElement
         {
             get
             {
@@ -297,7 +296,7 @@ namespace KeyboardEditor.ViewModels
 
         internal void OnModelDestroy( object m )
         {
-            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> vm;
+            VMContextElementEditable vm;
             if( _dic.TryGetValue( m, out vm ) )
             {
                 vm.Dispose();
@@ -331,14 +330,14 @@ namespace KeyboardEditor.ViewModels
 
         #region Components Create & Obtain Methods
 
-        VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> _selectCommand;
-        public VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> SelectCommand
+        VMCommand<VMContextElementEditable> _selectCommand;
+        public VMCommand<VMContextElementEditable> SelectCommand
         {
             get
             {
                 if( _selectCommand == null )
                 {
-                    _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>>( ( elem ) =>
+                    _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElementEditable>( ( elem ) =>
                     {
                         SelectedElement = elem;
                     } );
@@ -376,7 +375,6 @@ namespace KeyboardEditor.ViewModels
         protected VMKeyboardEditable CreateKeyboard( IKeyboard kb )
         {
             VMKeyboardEditable vmKeyboard = new VMKeyboardEditable( this, kb );
-            vmKeyboard.Initialize();
             return vmKeyboard;
         }
 
@@ -442,9 +440,9 @@ namespace KeyboardEditor.ViewModels
         }
 
         T FindViewModel<T>( object m )
-            where T : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+            where T : VMContextElementEditable
         {
-            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> vm;
+            VMContextElementEditable vm;
             _dic.TryGetValue( m, out vm );
             return (T)vm;
         }

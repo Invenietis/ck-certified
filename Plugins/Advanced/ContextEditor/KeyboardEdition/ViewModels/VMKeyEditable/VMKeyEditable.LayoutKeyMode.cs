@@ -42,7 +42,7 @@ using CommonServices;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElementEditable
     {
         public override IKeyboardElement LayoutElement
         {

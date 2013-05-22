@@ -38,7 +38,7 @@ using System.Collections.ObjectModel;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeyboardSimple : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>, IHighlightableElement
+    public class VMKeyboardSimple : VMContextElement, IHighlightableElement
     {
         #region Properties & variables
 

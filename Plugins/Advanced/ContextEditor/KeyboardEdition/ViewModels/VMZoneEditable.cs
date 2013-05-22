@@ -34,7 +34,7 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMZoneEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public class VMZoneEditable : VMContextElementEditable
     {
         IZone _zone;
         ObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
@@ -75,7 +75,7 @@ namespace KeyboardEditor.ViewModels
             //}
         }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
+        public override VMContextElementEditable Parent
         {
             get { return Context.Obtain( Model.Keyboard ); }
         }

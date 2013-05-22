@@ -33,11 +33,11 @@ namespace KeyboardEditor.ViewModels
 {
     /// <summary>
     /// </summary>
-    public abstract class VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> : VMBase
+    public abstract class VMContextElementEditable : VMBase
     {
         VMContextEditable _context;
 
-        protected VMContextElement( VMContextEditable context )
+        protected VMContextElementEditable( VMContextEditable context )
         {
             _context = context;
             if( _context.SkinConfiguration != null )
@@ -87,9 +87,9 @@ namespace KeyboardEditor.ViewModels
         {
         }
 
-        private IEnumerable<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> GetParents()
+        private IEnumerable<VMContextElementEditable> GetParents()
         {
-            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> elem = this;
+            VMContextElementEditable elem = this;
             while( elem != null )
             {
                 elem = elem.Parent;
@@ -102,12 +102,12 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Gets the parents of the element.
         /// </summary>
-        public IEnumerable<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> Parents { get { return GetParents().Reverse(); } }
+        public IEnumerable<VMContextElementEditable> Parents { get { return GetParents().Reverse(); } }
 
         /// <summary>
         /// Gets the parent of the object.
         /// </summary>
-        public abstract VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent { get; }
+        public abstract VMContextElementEditable Parent { get; }
 
         /// <summary>
         /// Gets the <see cref="VMContext"/> to which this element belongs.

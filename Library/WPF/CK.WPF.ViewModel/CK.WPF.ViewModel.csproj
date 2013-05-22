@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\PropertyLookupExtentions.cs" />
+    <Compile Include="Helpers\WPFImageProcessingHelper.cs" />
     <Compile Include="IDraggableResizableElement.cs" />
     <Compile Include="VMCollection.cs" />
     <Compile Include="VMCommand.cs" />

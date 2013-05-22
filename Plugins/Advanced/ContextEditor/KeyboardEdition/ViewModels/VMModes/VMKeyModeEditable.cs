@@ -17,7 +17,7 @@ using Microsoft.Win32;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMKeyModeEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
+    public class VMKeyModeEditable : VMContextElementEditable, IModeViewModel
     {
         IKeyMode _model;
 
@@ -148,11 +148,11 @@ namespace KeyboardEditor.ViewModels
         }
 
         //COMMON
-        VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> _parent;
+        VMContextElementEditable _parent;
         /// <summary>
         /// Returns this VMKeyModeEditable's parent
         /// </summary>
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
+        public override VMContextElementEditable Parent
         {
             get
             {
@@ -165,9 +165,9 @@ namespace KeyboardEditor.ViewModels
         private VMKeyEditable ActualParent { get { return Parent as VMKeyEditable; } }
 
         //COMMON
-        private IEnumerable<VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>> GetParents()
+        private IEnumerable<VMContextElementEditable> GetParents()
         {
-            VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> elem = this;
+            VMContextElementEditable elem = this;
             while( elem != null )
             {
                 elem = elem.Parent;

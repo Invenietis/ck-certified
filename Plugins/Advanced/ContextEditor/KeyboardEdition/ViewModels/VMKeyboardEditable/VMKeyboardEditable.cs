@@ -39,7 +39,7 @@ using System.ComponentModel;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMKeyboardEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public class VMKeyboardEditable : VMContextElementEditable
     {
         ObservableCollection<VMZoneEditable> _zones;
         ObservableCollection<VMKeyEditable> _keys;
@@ -110,17 +110,16 @@ namespace KeyboardEditor.ViewModels
             {
                 zone.Dispose();
             }
+            
             _zones.Clear();
             _keys.Clear();
+            _keyboardModes.Clear();
 
             UnregisterEvents();
-
-            base.OnDispose();
         }
 
         public void TriggerPropertyChanged()
         {
-            OnTriggerPropertyChanged();
             OnPropertyChanged( "Keys" );
             OnPropertyChanged( "BackgroundImagePath" );
         }
@@ -140,15 +139,6 @@ namespace KeyboardEditor.ViewModels
                 _keyboardModes.Add( new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _holder, item ) );
             }
             OnPropertyChanged( "KeyboardModes" );
-        }
-
-        /// <summary>
-        /// Initialization's second step.
-        /// Used to make sure configuration accessors and service (like the PointerDeviceDriver) are available before using them
-        /// </summary>
-        public void Initialize()
-        {
-
         }
 
         #endregion
@@ -216,7 +206,7 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
+        public override VMContextElementEditable Parent
         {
             get { return null; }
         }
@@ -415,12 +405,6 @@ namespace KeyboardEditor.ViewModels
                         break;
                 }
             }
-        }
-
-        protected override void OnDispose()
-        {
-            _keyboardModes.Clear();
-            base.OnDispose();
         }
 
         #endregion

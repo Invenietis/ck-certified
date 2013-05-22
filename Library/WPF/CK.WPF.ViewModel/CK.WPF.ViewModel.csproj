@@ -115,11 +115,6 @@
     <Compile Include="VMCommand.cs" />
     <Compile Include="VMBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VMContext.cs" />
-    <Compile Include="VMContextElement.cs" />
-    <Compile Include="VMKey.cs" />
-    <Compile Include="VMKeyboard.cs" />
-    <Compile Include="VMZone.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">

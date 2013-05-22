@@ -57,6 +57,8 @@ namespace SimpleSkin
         const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
+        public bool IsViewHidden { get { return _viewHidden; } }
+        public IPluginConfigAccessor Config { get; set; }
         IHostManipulator _hostManipulator;
         VMContextSimple _ctxVm;
         SkinWindow _skinWindow;
@@ -69,11 +71,11 @@ namespace SimpleSkin
         bool _autohide;
         int _timeout;
 
-        [DynamicService( Requires = RunningRequirement.Optional )]
-        public IService<IHighlighterService> Highlighter { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IKeyboardContext> KeyboardContext { get; set; }
+        //Since the IHotsManipulator implementation is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
+        /// <summary>
+        /// The HostManipulator, enables minimizing the host.
+        /// </summary>
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendStringService> SendStringService { get; set; }
@@ -81,24 +83,17 @@ namespace SimpleSkin
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IHelpService> HelpService { get; set; }
 
-        [RequiredService]
-        public IContext Context { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IKeyboardContext> KeyboardContext { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.Optional )]
+        public IService<IHighlighterService> Highlighter { get; set; }
 
         [RequiredService]
         public INotificationService Notification { get; set; }
 
-        //Since the IHotsManipulator implementation is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
-        /// <summary>
-        /// The HostManipulator, enables minimizing the host.
-        /// </summary>
-        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
-
-        /// <summary>
-        /// Acessor to the CK config object.
-        /// </summary>
-        public IPluginConfigAccessor Config { get; set; }
-
-        public bool IsViewHidden { get { return _viewHidden; } }
+        [RequiredService]
+        public IContext Context { get; set; }
 
         #region IPlugin Implementation
 
@@ -113,50 +108,22 @@ namespace SimpleSkin
 
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                Context.ServiceContainer.Add( Config );
-
                 _isStarted = true;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service );
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service, Config );
                 _skinWindow = new SkinWindow() { DataContext = _ctxVm };
 
-                Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
-                    Highlighter.Service.BeginHighlight += OnBeginHighlight;
-                    Highlighter.Service.EndHighlight += OnEndHighlight;
-                    Highlighter.Service.SelectElement += OnSelectElement;
-                }
-
-                int defaultWidth = _ctxVm.KeyboardVM.W;
-                int defaultHeight = _ctxVm.KeyboardVM.H;
-
-                if( !Config.User.Contains( PlacementString ) )
-                {
-                    var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
-                    if( viewPortSize != null )
-                    {
-                        Size size = (Size)viewPortSize;
-                        SetDefaultWindowPosition( (int)size.Width, (int)size.Height );
-                    }
-                    else
-                        SetDefaultWindowPosition( defaultWidth, defaultHeight ); //first launch : places the skin in the default position
-                }
-                else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
+                InitializeHighligther();
+                InitializeWindowLayout();
 
                 _skinWindow.Show();
 
                 if( !Config.User.Contains( PlacementString ) ) Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
-
                 //Placing the skin at the same location as the last launch.
+                _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User[PlacementString] );
 
-                WINDOWPLACEMENT plac = (WINDOWPLACEMENT)Config.User[PlacementString];
-                _skinWindow.SetPlacement( plac );
-
-                //autohide
                 UpdateAutoHideConfig();
 
-                Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
+               
 
                 RegisterEvents();
             }
@@ -172,14 +139,7 @@ namespace SimpleSkin
         {
             if( _isStarted )
             {
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-                    Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-                    Highlighter.Service.EndHighlight -= OnEndHighlight;
-                    Highlighter.Service.SelectElement -= OnSelectElement;
-                }
-                Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+                UnInitializeHighlighter();
 
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
@@ -208,7 +168,84 @@ namespace SimpleSkin
         {
         }
 
+        #region ToolMethods
+
+        private void InitializeWindowLayout()
+        {
+            int defaultWidth = _ctxVm.KeyboardVM.W;
+            int defaultHeight = _ctxVm.KeyboardVM.H;
+
+            if( !Config.User.Contains( PlacementString ) )
+            {
+                var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
+                if( viewPortSize != null )
+                {
+                    Size size = (Size)viewPortSize;
+                    SetDefaultWindowPosition( (int)size.Width, (int)size.Height );
+                }
+                else
+                    SetDefaultWindowPosition( defaultWidth, defaultHeight ); //first launch : places the skin in the default position
+            }
+            else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
+        }
+
+        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
+        {
+            _skinWindow.Top = 0;
+            _skinWindow.Left = 0;
+            _skinWindow.Width = defaultWidth;
+            _skinWindow.Height = defaultHeight;
+        }
+
+        void UpdateAutoHideConfig()
+        {
+            var autohideCfg = Config.User["autohide"];
+            var timeoutCfg = Config.User["autohide-timeout"];
+
+            if( autohideCfg != null && Boolean.TryParse( autohideCfg.ToString(), out _autohide ) )
+            {
+                if( !_autohide && _timer != null ) _timer.Stop();
+                if( timeoutCfg != null ) Int32.TryParse( timeoutCfg.ToString(), out _timeout );
+            }
+        }
+
+        private string PlacementString
+        {
+            get
+            {
+                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null )
+                    return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
+                return "";
+            }
+        }
+
         #endregion
+
+        #endregion
+
+        #region OnXXXX
+
+        private void RegisterEvents()
+        {
+            Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
+            _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
+            _skinWindow.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
+            _skinWindow.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
+            _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanging += new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
+        }
+
+        private void UnregisterEvents()
+        {
+            Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanging -= new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
+            _ctxVm.KeyboardContext.CurrentKeyboardChanged -= new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
+            _skinWindow.Closing -= new CancelEventHandler( OnWindowClosing );
+            _skinWindow.MouseLeave -= new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
+            _skinWindow.MouseEnter -= new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
+            _skinWindow.SizeChanged -= new SizeChangedEventHandler( OnWindowResized );
+        }
 
         void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         {
@@ -286,51 +323,11 @@ namespace SimpleSkin
             }
         }
 
-        private void RegisterEvents()
-        {
-            _skinWindow.Closing += new CancelEventHandler( OnWindowClosing );
-            _skinWindow.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-            _skinWindow.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-            _skinWindow.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
-            _ctxVm.KeyboardContext.CurrentKeyboardChanging += new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
-            _ctxVm.KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-        }
-
-        private void UnregisterEvents()
-        {
-            _ctxVm.KeyboardContext.CurrentKeyboardChanging -= new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
-            _ctxVm.KeyboardContext.CurrentKeyboardChanged -= new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-            _skinWindow.Closing -= new CancelEventHandler( OnWindowClosing );
-            _skinWindow.MouseLeave -= new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-            _skinWindow.MouseEnter -= new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-            _skinWindow.SizeChanged -= new SizeChangedEventHandler( OnWindowResized );
-        }
-
-        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
-        {
-            _skinWindow.Top = 0;
-            _skinWindow.Left = 0;
-            _skinWindow.Width = defaultWidth;
-            _skinWindow.Height = defaultHeight;
-        }
-
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
-            }
-        }
-
-        void UpdateAutoHideConfig()
-        {
-            var autohideCfg = Config.User["autohide"];
-            var timeoutCfg = Config.User["autohide-timeout"];
-
-            if( autohideCfg != null && Boolean.TryParse( autohideCfg.ToString(), out _autohide ) )
-            {
-                if( !_autohide && _timer != null ) _timer.Stop();
-                if( timeoutCfg != null ) Int32.TryParse( timeoutCfg.ToString(), out _timeout );
             }
         }
 
@@ -371,15 +368,7 @@ namespace SimpleSkin
             }
         }
 
-        private string PlacementString
-        {
-            get
-            {
-                if( _ctxVm.KeyboardContext != null && _ctxVm.KeyboardContext.CurrentKeyboard != null )
-                    return _ctxVm.KeyboardContext.CurrentKeyboard.Name + ".WindowPlacement";
-                return "";
-            }
-        }
+        #endregion
 
         #region Hightlight Methods
 
@@ -427,18 +416,46 @@ namespace SimpleSkin
         {
             if( e.Current == InternalRunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
-                Highlighter.Service.BeginHighlight += OnBeginHighlight;
-                Highlighter.Service.EndHighlight += OnEndHighlight;
-                Highlighter.Service.SelectElement += OnSelectElement;
+                RegisterHighlighter();
             }
             else if( e.Current == InternalRunningStatus.Stopping )
             {
-                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-                Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-                Highlighter.Service.EndHighlight -= OnEndHighlight;
-                Highlighter.Service.SelectElement -= OnSelectElement;
+                UnregisterHighlighter();
             }
+        }
+
+        private void InitializeHighligther()
+        {
+            Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
+            if( Highlighter.Status == InternalRunningStatus.Started )
+            {
+                RegisterHighlighter();
+            }
+        }
+
+        private void UnInitializeHighlighter()
+        {
+            if( Highlighter.Status == InternalRunningStatus.Started )
+            {
+                UnregisterHighlighter();
+            }
+            Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+        }
+
+        private void UnregisterHighlighter()
+        {
+            Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+            Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+            Highlighter.Service.EndHighlight -= OnEndHighlight;
+            Highlighter.Service.SelectElement -= OnSelectElement;
+        }
+
+        private void RegisterHighlighter()
+        {
+            Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+            Highlighter.Service.BeginHighlight += OnBeginHighlight;
+            Highlighter.Service.EndHighlight += OnEndHighlight;
+            Highlighter.Service.SelectElement += OnSelectElement;
         }
 
         #endregion
@@ -660,6 +677,8 @@ namespace SimpleSkin
                 Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
             }
         }
+
+
     }
 
 }

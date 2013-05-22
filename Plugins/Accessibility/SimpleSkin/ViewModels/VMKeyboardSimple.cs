@@ -67,9 +67,6 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-
-
-
         IKeyboard _keyboard;
         ObservableCollection<VMZoneSimple> _zones;
         ObservableCollection<VMKeySimple> _keys;

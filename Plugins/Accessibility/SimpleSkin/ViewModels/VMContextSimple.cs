@@ -42,10 +42,15 @@ namespace SimpleSkin.ViewModels
         EventHandler<KeyboardEventArgs> _evKeyboardCreated;
         ObservableCollection<VMKeyboardSimple> _keyboards;
         VMKeyboardSimple _currentKeyboard;
+        IPluginConfigAccessor _config;
         IKeyboardContext _kbctx;
         IContext _ctx;
 
+        public ObservableCollection<VMKeyboardSimple> Keyboards { get { return _keyboards; } }
+        public VMKeyboardSimple Keyboard { get { return _currentKeyboard; } }
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
+        public IPluginConfigAccessor Config { get { return _config; } }
+        public IContext Context { get { return _ctx; } }
 
         public VMKeyboardSimple KeyboardVM
         {
@@ -53,11 +58,26 @@ namespace SimpleSkin.ViewModels
             set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
         }
 
-        public IContext Context { get { return _ctx; } }
-
-        public ObservableCollection<VMKeyboardSimple> Keyboards
+        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
         {
-            get { return _keyboards; }
+            _config = config;
+            _dic = new Dictionary<object, VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>>();
+            _keyboards = new ObservableCollection<VMKeyboardSimple>();
+
+            _kbctx = kbctx;
+            _ctx = ctx;
+            if( _kbctx.Keyboards.Count > 0 )
+            {
+                foreach( IKeyboard keyboard in _kbctx.Keyboards )
+                {
+                    VMKeyboardSimple kb = CreateKeyboard( keyboard );
+                    _dic.Add( keyboard, kb );
+                    _keyboards.Add( kb );
+                }
+                _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
+            }
+
+            RegisterEvents();
         }
 
         public VMKeyboardSimple Obtain( IKeyboard keyboard )
@@ -93,8 +113,6 @@ namespace SimpleSkin.ViewModels
             return k;
         }
 
-        public VMKeyboardSimple Keyboard { get { return _currentKeyboard; } }
-
         T FindViewModel<T>( object m )
             where T : VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
         {
@@ -105,13 +123,12 @@ namespace SimpleSkin.ViewModels
 
         public void Dispose()
         {
-            _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
-            _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
-            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
+            UnregisterEvents();
             foreach( VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple> vm in _dic.Values ) vm.Dispose();
             _dic.Clear();
         }
+
+        #region OnXXXXXXXXX
 
         internal void OnModelDestroy( object m )
         {
@@ -123,7 +140,6 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        #region OnXXXXXXXXX
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
             VMKeyboardSimple k = CreateKeyboard( e.Keyboard );
@@ -156,36 +172,9 @@ namespace SimpleSkin.ViewModels
             _keyboards.Remove( Obtain( e.Keyboard ) );
             OnModelDestroy( e.Keyboard );
         }
-        #endregion
 
-        IPluginConfigAccessor _config;
-        public IPluginConfigAccessor Config
+        private void RegisterEvents()
         {
-            get
-            {
-                if( _config == null ) _config = Context.GetService<IPluginConfigAccessor>( true );
-                return _config;
-            }
-        }
-
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx )
-        {
-            _dic = new Dictionary<object, VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>>();
-            _keyboards = new ObservableCollection<VMKeyboardSimple>();
-
-            _kbctx = kbctx;
-            _ctx = ctx;
-            if( _kbctx.Keyboards.Count > 0 )
-            {
-                foreach( IKeyboard keyboard in _kbctx.Keyboards )
-                {
-                    VMKeyboardSimple kb = CreateKeyboard( keyboard );
-                    _dic.Add( keyboard, kb );
-                    _keyboards.Add( kb );
-                }
-                _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
-            }
-
             _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
             _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
             _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
@@ -197,19 +186,30 @@ namespace SimpleSkin.ViewModels
             _ctx.ConfigManager.UserConfiguration.PropertyChanged += _evUserConfigurationChanged;
         }
 
-        protected VMKeySimple CreateKey( IKey k )
+        private void UnregisterEvents()
         {
-            return new VMKeySimple( this, k );
+            _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
         }
 
-        protected VMZoneSimple CreateZone( IZone z )
+        #endregion
+
+        private VMKeyboardSimple CreateKeyboard( IKeyboard kb )
+        {
+            return new VMKeyboardSimple( this, kb );
+        }
+        
+        private VMZoneSimple CreateZone( IZone z )
         {
             return new VMZoneSimple( this, z );
         }
 
-        protected VMKeyboardSimple CreateKeyboard( IKeyboard kb )
+        private VMKeySimple CreateKey( IKey k )
         {
-            return new VMKeyboardSimple( this, kb );
+            return new VMKeySimple( this, k );
         }
+
     }
 }

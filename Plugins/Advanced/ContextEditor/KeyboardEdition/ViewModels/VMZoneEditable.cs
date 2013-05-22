@@ -34,12 +34,37 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public class VMZoneEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
+        IZone _zone;
+        ObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
+
+        public IZone Model { get { return _zone; } }
+
+        public ObservableSortedArrayKeyList<VMKeyEditable, int> Keys { get { return _keys; } }
+
         public VMZoneEditable( VMContextEditable ctx, IZone zone )
-            : base( ctx, zone )
+            : base( ctx )
         {
             _ctx = ctx;
+            _zone = zone;
+            _keys = new ObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
+
+            foreach( IKey key in _zone.Keys )
+            {
+                VMKeyEditable k = Context.Obtain( key );
+                Keys.Add( k );
+            }
+        }
+
+        protected override void OnDispose()
+        {
+            foreach( VMKeyEditable key in Keys )
+            {
+                key.Dispose();
+            }
+
+            base.OnDispose();
         }
 
         public void Initialize()
@@ -251,7 +276,7 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>
         /// </summary>
-        public new string Name
+        public string Name
         {
             get { return IsDefaultZone ? R.DefaultZone : Model.Name; }
             set { Model.Rename( value ); }
@@ -351,10 +376,5 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-        }
     }
 }

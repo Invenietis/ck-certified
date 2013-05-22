@@ -43,17 +43,17 @@ using System.Collections.ObjectModel;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
-        protected override void OnTriggerModeChanged()
+        protected void OnTriggerModeChanged()
         {
             RefreshKeyboardModelViewModels();
         }
 
         internal void RefreshKeyboardModelViewModels()
         {   
-            _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.CurrentLayout.Current.Mode );
-            _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.Current.Mode );
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _context, Model.CurrentLayout.Current.Mode );
+            _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _context, Model.Current.Mode );
 
             OnPropertyChanged( "KeyModeVM" );
             OnPropertyChanged( "LayoutKeyModeVM" );

@@ -39,21 +39,90 @@ using System.ComponentModel;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public class VMKeyboardEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
+        ObservableCollection<VMZoneEditable> _zones;
+        ObservableCollection<VMKeyEditable> _keys;
         VMContextEditable _holder;
+        IKeyboard _keyboard;
         bool _isSelected;
 
         public VMKeyboardEditable( VMContextEditable ctx, IKeyboard kb )
-            : base( ctx, kb )
+            : base( ctx )
         {
+            _zones = new ObservableCollection<VMZoneEditable>();
+            _keys = new ObservableCollection<VMKeyEditable>();
+            _keyboard = kb;
             _holder = ctx;
             Model = kb;
             _keyboardModes = new ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>();
 
+            foreach( IZone zone in _keyboard.Zones )
+            {
+                var vmz = Context.Obtain( zone );
+                // TODO: find a better way....
+                if( zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
+                else Zones.Add( vmz );
+
+                foreach( IKey key in zone.Keys )
+                {
+                    _keys.Add( Context.Obtain( key ) );
+                }
+            }
+
+            RegisterEvents();
+
+            RefreshModes();
+        }
+
+        private void RegisterEvents()
+        {
+            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
+            _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
+            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
+            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
+            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+
+            Context.Config.ConfigChanged += OnConfigChanged;
             Model.AvailableModeChanged += OnModeChanged;
             Model.CurrentModeChanged += OnModeChanged;
-            RefreshModes();
+        }
+
+
+        private void UnregisterEvents()
+        {
+            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
+            _keyboard.KeyMoved -= new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
+            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
+            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
+            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+
+            Context.Config.ConfigChanged -= OnConfigChanged;
+            Model.AvailableModeChanged -= OnModeChanged;
+            Model.CurrentModeChanged -= OnModeChanged;
+        }
+
+        protected override void OnDispose()
+        {
+            foreach( VMZoneEditable zone in Zones )
+            {
+                zone.Dispose();
+            }
+            _zones.Clear();
+            _keys.Clear();
+
+            UnregisterEvents();
+
+            base.OnDispose();
+        }
+
+        public void TriggerPropertyChanged()
+        {
+            OnTriggerPropertyChanged();
+            OnPropertyChanged( "Keys" );
+            OnPropertyChanged( "BackgroundImagePath" );
         }
 
         #region Methods
@@ -79,17 +148,51 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void Initialize()
         {
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
 
-            //foreach( VMZoneEditable zone in Zones )
-            //{
-            //    zone.Initialize();
-            //}
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets the current layout used by the current keyboard.
+        /// </summary>
+        public ILayout Layout { get { return _keyboard.CurrentLayout; } }
+
+        /// <summary>
+        /// Gets or sets the width of the current layout.
+        /// </summary>
+        public int W
+        {
+            get { return _keyboard.CurrentLayout.W; }
+            set { _keyboard.CurrentLayout.W = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the current layout.
+        /// </summary>
+        public int H
+        {
+            get { return _keyboard.CurrentLayout.H; }
+            set { _keyboard.CurrentLayout.H = value; }
+        }
+
+        /// <summary>
+        /// Gets the available modes, concatenated as one, seperated by "+" characters.
+        /// </summary>
+        public IKeyboardMode Modes { get { return _keyboard.AvailableMode; } }
+
+        /// <summary>
+        /// Gets the viewmodels for each <see cref="IZone"/> of the linked <see cref="IKeyboard"/>
+        /// </summary>
+        public ObservableCollection<VMZoneEditable> Zones { get { return _zones; } }
+
+        /// <summary>
+        /// Gets the viewmodels for each  <see cref="IKey"/> of the linked <see cref="IKeyboard"/>
+        /// </summary>
+        public ObservableCollection<VMKeyEditable> Keys { get { return _keys; } }
+
 
         #region Modes
 
@@ -184,6 +287,69 @@ namespace KeyboardEditor.ViewModels
 
         #region OnXXX
 
+        void OnKeyCreated( object sender, KeyEventArgs e )
+        {
+            VMKeyEditable kvm = Context.Obtain( e.Key );
+            Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
+            _keys.Add( kvm );
+        }
+
+        void OnKeyMoved( object sender, KeyMovedEventArgs e )
+        {
+            Context.Obtain( e.Key ).PositionChanged();
+        }
+
+        void OnKeyDestroyed( object sender, KeyEventArgs e )
+        {
+            Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
+            _keys.Remove( Context.Obtain( e.Key ) );
+            Context.OnModelDestroy( e.Key );
+        }
+
+        void OnZoneCreated( object sender, ZoneEventArgs e )
+        {
+            //TODO
+            var vmz = Context.Obtain( e.Zone );
+            if( e.Zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
+            else Zones.Add( vmz );
+        }
+
+        void OnZoneDestroyed( object sender, ZoneEventArgs e )
+        {
+            var zone = Context.Obtain( e.Zone );
+            if( zone != null )
+            {
+                foreach( var k in e.Zone.Keys )
+                {
+                    var mk = Context.Obtain( k );
+                    Keys.Remove( mk );
+                    Context.OnModelDestroy( k );
+                }
+
+                Zones.Remove( zone );
+                Context.OnModelDestroy( e.Zone );
+                OnTriggerZoneDestroyed();
+            }
+        }
+
+        protected virtual void OnTriggerZoneDestroyed()
+        {
+        }
+
+        void OnLayoutSizeChanged( object sender, LayoutEventArgs e )
+        {
+            if( e.Layout == _keyboard.CurrentLayout )
+            {
+                OnPropertyChanged( "W" );
+                OnPropertyChanged( "H" );
+                OnTriggerLayoutSizeChanged();
+            }
+        }
+
+        protected virtual void OnTriggerLayoutSizeChanged()
+        {
+        }
+
         public override void OnKeyDownAction( int keyCode, int delta )
         {
             switch( keyCode )
@@ -254,11 +420,6 @@ namespace KeyboardEditor.ViewModels
         protected override void OnDispose()
         {
             _keyboardModes.Clear();
-            
-            Context.Config.ConfigChanged -= OnConfigChanged;
-            Model.AvailableModeChanged -= OnModeChanged;
-            Model.CurrentModeChanged -= OnModeChanged;
-
             base.OnDispose();
         }
 
@@ -325,14 +486,5 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
-
-
-
-
-
-
-
-
-
     }
 }

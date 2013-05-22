@@ -34,71 +34,66 @@ using System.Windows.Media;
 
 namespace KeyboardEditor.ViewModels
 {
-    public abstract class VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMLayoutKeyModeEditable : VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public abstract class VMKeyMode 
+        : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
-        VMContextEditable _context;
-        IKeyMode _model;
-        public VMKeyMode( VMContextEditable context, IKeyMode keyMode )
-            : base( context )
-        {
-            _context = context;
-            _model = keyMode;
-        }
+        //VMContextEditable _context;
+        //IKeyMode _model;
+        //public VMKeyMode( VMContextEditable context, IKeyMode keyMode )
+        //    : base( context )
+        //{
+        //    _context = context;
+        //    _model = keyMode;
+        //}
 
-        public void TriggerPropertyChanged( string propertyName )
-        {
-            OnPropertyChanged( propertyName );
-        }
+        //public void TriggerPropertyChanged( string propertyName )
+        //{
+        //    OnPropertyChanged( propertyName );
+        //}
 
-        /// <summary>
-        /// Gets whether this LayoutKeyMode is a fallback or not.
-        /// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
-        /// </summary>
-        public bool IsFallback
-        {
-            get
-            {
-                IKeyboardMode keyboardMode = Context.KeyboardContext.CurrentKeyboard.CurrentMode;
-                return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
-            }
-        }
+        ///// <summary>
+        ///// Gets whether this LayoutKeyMode is a fallback or not.
+        ///// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
+        ///// </summary>
+        //public bool IsFallback
+        //{
+        //    get
+        //    {
+        //        IKeyboardMode keyboardMode = Context.KeyboardContext.CurrentKeyboard.CurrentMode;
+        //        return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
+        //    }
+        //}
 
-        ///Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
-        public string UpLabel
-        {
-            get { return _model.UpLabel; }
-            set { _model.UpLabel = value; }
-        }
+        /////Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
+        //public string UpLabel
+        //{
+        //    get { return _model.UpLabel; }
+        //    set { _model.UpLabel = value; }
+        //}
 
-        ///Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
-        public string DownLabel
-        {
-            get { return _model.DownLabel; }
-            set { _model.DownLabel = value; }
-        }
+        /////Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
+        //public string DownLabel
+        //{
+        //    get { return _model.DownLabel; }
+        //    set { _model.DownLabel = value; }
+        //}
 
-        ///Gets the Description of the underling <see cref="IKeyMode"/>
-        public string Description
-        {
-            get { return _model.Description; }
-            set { _model.Description = value; }
-        }
+        /////Gets the Description of the underling <see cref="IKeyMode"/>
+        //public string Description
+        //{
+        //    get { return _model.Description; }
+        //    set { _model.Description = value; }
+        //}
 
-        /// <summary>
-        /// Gets a value indicating wether the current keymode is enabled or not.
-        /// </summary>
-        public bool Enabled { get { return _model.Enabled; } }
+        ///// <summary>
+        ///// Gets a value indicating wether the current keymode is enabled or not.
+        ///// </summary>
+        //public bool Enabled { get { return _model.Enabled; } }
 
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-        }
+        //protected override void OnDispose()
+        //{
+        //    base.OnDispose();
+        //}
 
     }
 }

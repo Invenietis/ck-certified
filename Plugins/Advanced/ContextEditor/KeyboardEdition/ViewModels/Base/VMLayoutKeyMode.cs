@@ -30,123 +30,118 @@ using CK.Keyboard.Model;
 
 namespace KeyboardEditor.ViewModels
 {
-    public abstract class VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMLayoutKeyModeEditable : VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public abstract class VMLayoutKeyMode
+        
     {
-        ILayoutKeyMode _model;
-        private VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> ActualParent { get { return Parent as VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>; } }
+        //ILayoutKeyMode _model;
+        //private VMKey ActualParent { get { return Parent as VMKey; } }
 
-        public VMLayoutKeyMode( VMContextEditable context, ILayoutKeyMode keyMode )
-            : base( context )
-        {
-            _model = keyMode;
-        }
+        //public VMLayoutKeyMode( VMContextEditable context, ILayoutKeyMode keyMode )
+        //    : base( context )
+        //{
+        //    _model = keyMode;
+        //}
 
-        public void TriggerPropertyChanged( string propertyName )
-        {
-            OnPropertyChanged( propertyName );
-        }
+        //public void TriggerPropertyChanged( string propertyName )
+        //{
+        //    OnPropertyChanged( propertyName );
+        //}
 
-        /// <summary>
-        /// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
-        /// </summary>
-        public int X
-        {
-            get { return _model.X; }
-            set
-            {
-                _model.X = value;
-                OnPropertyChanged( "X" );
-            }
-        }
+        ///// <summary>
+        ///// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
+        ///// </summary>
+        //public int X
+        //{
+        //    get { return _model.X; }
+        //    set
+        //    {
+        //        _model.X = value;
+        //        OnPropertyChanged( "X" );
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets the Y coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
-        /// </summary>
-        public int Y
-        {
-            get { return _model.Y; }
-            set
-            {
-                _model.Y = value;
-                OnPropertyChanged( "Y" );
-            }
-        }
+        ///// <summary>
+        ///// Gets the Y coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
+        ///// </summary>
+        //public int Y
+        //{
+        //    get { return _model.Y; }
+        //    set
+        //    {
+        //        _model.Y = value;
+        //        OnPropertyChanged( "Y" );
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets or sets the width of this key, for the current <see cref="ILayoutKeyMode"/>.
-        /// </summary>
-        public int Width
-        {
-            get { return _model.Width; }
-            set
-            {
-                _model.Width = value;
-                OnPropertyChanged( "Width" );
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets the width of this key, for the current <see cref="ILayoutKeyMode"/>.
+        ///// </summary>
+        //public int Width
+        //{
+        //    get { return _model.Width; }
+        //    set
+        //    {
+        //        _model.Width = value;
+        //        OnPropertyChanged( "Width" );
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets or sets the height of this key, for the current <see cref="ILayoutKeyMode"/>.
-        /// </summary>
-        public int Height
-        {
-            get { return _model.Height; }
-            set
-            {
-                _model.Height = value;
-                OnPropertyChanged( "Height" );
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets the height of this key, for the current <see cref="ILayoutKeyMode"/>.
+        ///// </summary>
+        //public int Height
+        //{
+        //    get { return _model.Height; }
+        //    set
+        //    {
+        //        _model.Height = value;
+        //        OnPropertyChanged( "Height" );
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
-        /// </summary>
-        public Visibility Visible
-        {
-            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
-            set
-            {
-                IsVisible = ( value == Visibility.Visible );
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
+        ///// </summary>
+        //public Visibility Visible
+        //{
+        //    get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
+        //    set
+        //    {
+        //        IsVisible = ( value == Visibility.Visible );
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
-        /// </summary>
-        public bool IsVisible
-        {
-            get { return _model.Visible; }
-            set
-            {
-                _model.Visible = value;
-                OnPropertyChanged( "IsVisible" );
-                OnPropertyChanged( "Visible" );
-            }
-        }
+        ///// <summary>
+        ///// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
+        ///// </summary>
+        //public bool IsVisible
+        //{
+        //    get { return _model.Visible; }
+        //    set
+        //    {
+        //        _model.Visible = value;
+        //        OnPropertyChanged( "IsVisible" );
+        //        OnPropertyChanged( "Visible" );
+        //    }
+        //}
 
-        /// <summary>
-        /// Gets whether this LayoutKeyMode is a fallback or not.
-        /// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
-        /// </summary>
-        public bool IsFallback
-        {
-            get
-            {
-                IKeyboardMode keyboardMode = Context.KeyboardContext.CurrentKeyboard.CurrentMode;
-                return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
-            }
-        }
+        ///// <summary>
+        ///// Gets whether this LayoutKeyMode is a fallback or not.
+        ///// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
+        ///// </summary>
+        //public bool IsFallback
+        //{
+        //    get
+        //    {
+        //        IKeyboardMode keyboardMode = Context.KeyboardContext.CurrentKeyboard.CurrentMode;
+        //        return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
+        //    }
+        //}
 
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-        }
+        //protected override void OnDispose()
+        //{
+        //    base.OnDispose();
+        //}
 
     }
 }

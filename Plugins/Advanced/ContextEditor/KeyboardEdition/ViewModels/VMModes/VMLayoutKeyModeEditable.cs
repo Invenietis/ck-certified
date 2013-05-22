@@ -19,13 +19,93 @@ using Microsoft.Win32;
 //TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
 namespace KeyboardEditor.ViewModels
 {
-    public class VMLayoutKeyModeEditable : VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
+    public class VMLayoutKeyModeEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
     {
         ILayoutKeyMode _model;
         public VMLayoutKeyModeEditable( VMContextEditable context, ILayoutKeyMode model )
-            : base( context, model )
+            : base( context )
         {
             _model = model;
+        }
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
+        /// </summary>
+        public int X
+        {
+            get { return _model.X; }
+            set
+            {
+                _model.X = value;
+                OnPropertyChanged( "X" );
+            }
+        }
+
+        /// <summary>
+        /// Gets the Y coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
+        /// </summary>
+        public int Y
+        {
+            get { return _model.Y; }
+            set
+            {
+                _model.Y = value;
+                OnPropertyChanged( "Y" );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the width of this key, for the current <see cref="ILayoutKeyMode"/>.
+        /// </summary>
+        public int Width
+        {
+            get { return _model.Width; }
+            set
+            {
+                _model.Width = value;
+                OnPropertyChanged( "Width" );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of this key, for the current <see cref="ILayoutKeyMode"/>.
+        /// </summary>
+        public int Height
+        {
+            get { return _model.Height; }
+            set
+            {
+                _model.Height = value;
+                OnPropertyChanged( "Height" );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
+        /// </summary>
+        public Visibility Visible
+        {
+            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
+            set
+            {
+                IsVisible = ( value == Visibility.Visible );
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this actual key is visible or not, for the current <see cref="IKeyMode"/>.
+        /// </summary>
+        public bool IsVisible
+        {
+            get { return _model.Visible; }
+            set
+            {
+                _model.Visible = value;
+                OnPropertyChanged( "IsVisible" );
+                OnPropertyChanged( "Visible" );
+            }
         }
 
         //COMMON
@@ -87,7 +167,7 @@ namespace KeyboardEditor.ViewModels
         /// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
         /// This override checks the mode of the actual parent keyboard, instead of getting the current keyboard's mode
         /// </summary>
-        public new bool IsFallback
+        public bool IsFallback
         {
             get
             {
@@ -95,6 +175,8 @@ namespace KeyboardEditor.ViewModels
                 return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
             }
         }
+
+        #endregion
 
         //COMMON
         VMCommand _deleteKeyModeCommand;
@@ -154,14 +236,9 @@ namespace KeyboardEditor.ViewModels
             return Name;
         }
 
-        public void Dispose()
+        public void TriggerPropertyChanged( string propertyName )
         {
-            OnDispose();
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
+            OnPropertyChanged( propertyName );
         }
     }
 }

@@ -42,7 +42,7 @@ using CommonServices;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
         const int thumbWidth = 10;
         const int thumbHeight = 10;
@@ -108,7 +108,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _isDown = true;
 
-                    _startPoint = new Point( _ctx.PointerDeviceDriver.Service.CurrentPointerXLocation, _ctx.PointerDeviceDriver.Service.CurrentPointerYLocation );
+                    _startPoint = new Point( _context.PointerDeviceDriver.Service.CurrentPointerXLocation, _context.PointerDeviceDriver.Service.CurrentPointerYLocation );
 
                     _originalLeft = X;
                     _originalTop = Y;
@@ -142,7 +142,7 @@ namespace KeyboardEditor.ViewModels
         {
             if( _isDown )
             {
-                Point position = new Point( _ctx.PointerDeviceDriver.Service.CurrentPointerXLocation, _ctx.PointerDeviceDriver.Service.CurrentPointerYLocation );
+                Point position = new Point( _context.PointerDeviceDriver.Service.CurrentPointerXLocation, _context.PointerDeviceDriver.Service.CurrentPointerYLocation );
 
                 if( ( _isDragging == false ) &&
                     ( ( Math.Abs( position.X - _startPoint.X ) > SystemParameters.MinimumHorizontalDragDistance ) ||

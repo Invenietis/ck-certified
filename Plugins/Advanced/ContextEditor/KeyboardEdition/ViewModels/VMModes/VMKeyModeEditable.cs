@@ -17,12 +17,12 @@ using Microsoft.Win32;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
+    public class VMKeyModeEditable : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>, IModeViewModel
     {
         IKeyMode _model;
 
         public VMKeyModeEditable( VMContextEditable context, IKeyMode model )
-            : base( context, model )
+            : base( context )
         {
             _model = model;
             _commands = new ObservableCollection<string>();
@@ -42,14 +42,52 @@ namespace KeyboardEditor.ViewModels
                 _commands.Add( cmd );
             }
 
-            _model.OnKeyDownCommands.CommandInserted += OnKeyDownCommands_CommandInserted;
-            _model.OnKeyDownCommands.CommandsCleared += OnKeyDownCommands_CommandsCleared;
-            _model.OnKeyDownCommands.CommandDeleted += OnKeyDownCommands_CommandDeleted;
-            _model.OnKeyDownCommands.CommandUpdated += OnKeyDownCommands_CommandUpdated;
+            RegisterEvents();
 
         }
 
         #region Properties
+
+        //COMMON
+        /// <summary>
+        /// Gets whether this LayoutKeyMode is a fallback or not.
+        /// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
+        /// This override checks the mode of the actual parent keyboard, instead of getting the current keyboard's mode
+        /// </summary>
+        public bool IsFallback
+        {
+            get
+            {
+                IKeyboardMode keyboardMode = Context.KeyboardVM.CurrentMode;
+                return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
+            }
+        }
+
+        ///Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
+        public string UpLabel
+        {
+            get { return _model.UpLabel; }
+            set { _model.UpLabel = value; }
+        }
+
+        ///Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
+        public string DownLabel
+        {
+            get { return _model.DownLabel; }
+            set { _model.DownLabel = value; }
+        }
+
+        ///Gets the Description of the underling <see cref="IKeyMode"/>
+        public string Description
+        {
+            get { return _model.Description; }
+            set { _model.Description = value; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating wether the current keymode is enabled or not.
+        /// </summary>
+        public bool Enabled { get { return _model.Enabled; } }
 
         //COMMON
         public bool IsCurrent { get { return _model.IsCurrent; } }
@@ -86,10 +124,8 @@ namespace KeyboardEditor.ViewModels
 
                 Context.CurrentlyDisplayedModeType = ModeTypes.Mode;
                 Context.KeyboardVM.CurrentMode = _model.Mode;
-                //if( value ) Context.SelectedElement = Parent;
 
                 if( value ) Parent.IsSelected = value;
-                //Parent.IsSelected = value;
 
                 if( previousKeyMode != null && previousLayoutKeyMode != null )
                 {
@@ -99,9 +135,6 @@ namespace KeyboardEditor.ViewModels
 
                 ( Context.SelectedElement as VMKeyEditable ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
                 ( Context.SelectedElement as VMKeyEditable ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
-
-                //OnPropertyChanged( "IsSelected" );
-
             }
         }
 
@@ -125,21 +158,6 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _parent == null ) _parent = Context.Obtain( _model.Key );
                 return _parent;
-            }
-        }
-
-        //COMMON
-        /// <summary>
-        /// Gets whether this LayoutKeyMode is a fallback or not.
-        /// see <see cref="IKeyboardMode"/> for more explanations on the fallback concept
-        /// This override checks the mode of the actual parent keyboard, instead of getting the current keyboard's mode
-        /// </summary>
-        public new bool IsFallback
-        {
-            get
-            {
-                IKeyboardMode keyboardMode = Context.KeyboardVM.CurrentMode;
-                return !keyboardMode.ContainsAll( _model.Mode ) || !_model.Mode.ContainsAll( keyboardMode );
             }
         }
 
@@ -256,6 +274,32 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
+        #region OnXXX
+
+        protected override void OnDispose()
+        {
+            UnregisterEvents();
+            base.OnDispose();
+        }
+
+        private void RegisterEvents()
+        {
+            _model.OnKeyDownCommands.CommandInserted += OnKeyDownCommands_CommandInserted;
+            _model.OnKeyDownCommands.CommandsCleared += OnKeyDownCommands_CommandsCleared;
+            _model.OnKeyDownCommands.CommandDeleted += OnKeyDownCommands_CommandDeleted;
+            _model.OnKeyDownCommands.CommandUpdated += OnKeyDownCommands_CommandUpdated;
+        }
+
+        private void UnregisterEvents()
+        {
+            _model.OnKeyDownCommands.CommandInserted -= OnKeyDownCommands_CommandInserted;
+            _model.OnKeyDownCommands.CommandsCleared -= OnKeyDownCommands_CommandsCleared;
+            _model.OnKeyDownCommands.CommandDeleted -= OnKeyDownCommands_CommandDeleted;
+            _model.OnKeyDownCommands.CommandUpdated -= OnKeyDownCommands_CommandUpdated;
+        }
+
+        #endregion
+
         //COMMON
         VMCommand _deleteKeyModeCommand;
         /// <summary>
@@ -286,26 +330,6 @@ namespace KeyboardEditor.ViewModels
             return Name;
         }
 
-        public void Dispose()
-        {
-            OnDispose();
-        }
-
-        protected override void OnDispose()
-        {
-            _model.OnKeyDownCommands.CommandInserted -= OnKeyDownCommands_CommandInserted;
-            _model.OnKeyDownCommands.CommandsCleared -= OnKeyDownCommands_CommandsCleared;
-            _model.OnKeyDownCommands.CommandDeleted -= OnKeyDownCommands_CommandDeleted;
-            _model.OnKeyDownCommands.CommandUpdated -= OnKeyDownCommands_CommandUpdated;
-
-            base.OnDispose();
-        }
-
-        //public void Dispose()
-        //{
-        //    OnDispose();
-        //}
-
         //COMMON
         VMCommand _applyToCurrentModeCommand;
         /// <summary>
@@ -327,6 +351,11 @@ namespace KeyboardEditor.ViewModels
                 }
                 return _applyToCurrentModeCommand;
             }
+        }
+
+        public void TriggerPropertyChanged( string propertyName )
+        {
+            OnPropertyChanged( propertyName );
         }
 
         #region Key Image management
@@ -384,5 +413,6 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
+
     }
 }

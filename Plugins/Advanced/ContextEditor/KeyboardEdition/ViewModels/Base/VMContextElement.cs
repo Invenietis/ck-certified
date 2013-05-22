@@ -34,12 +34,6 @@ namespace KeyboardEditor.ViewModels
     /// <summary>
     /// </summary>
     public abstract class VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> : VMBase
-        where VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMLayoutKeyModeEditable : VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
     {
         VMContextEditable _context;
 
@@ -84,12 +78,6 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="keyCode"></param>
-        /// 
-       
         /// <summary>
         /// Override this method to trigger certain actions when the user presses keys while this ContextElement is selected
         /// </summary>
@@ -136,7 +124,11 @@ namespace KeyboardEditor.ViewModels
 
         protected virtual void OnDispose()
         {
-            Console.Out.WriteLine( "Disposing VMContextElement : " + this.GetType() );
+            UnregisterEvents();
+        }
+
+        private void UnregisterEvents()
+        {
             _context.SkinConfiguration.ConfigChanged -= OnLayoutConfigChanged;
         }
 

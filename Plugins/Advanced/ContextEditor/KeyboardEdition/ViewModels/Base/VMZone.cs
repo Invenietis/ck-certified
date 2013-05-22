@@ -27,44 +27,39 @@ using CK.Core;
 
 namespace KeyboardEditor.ViewModels
 {
-    public abstract class VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMContextEditable : VMContext<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyboardEditable : VMKeyboard<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMKeyModeEditable : VMKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-        where VMLayoutKeyModeEditable : VMLayoutKeyMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
-    {
-        IZone _zone;
-        ObservableSortedArrayKeyList<VMKeyEditable,int> _keys;
+    //public abstract class VMZone
+    //    : VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    //{
+    //    //IZone _zone;
+    //    //ObservableSortedArrayKeyList<VMKeyEditable,int> _keys;
 
-        public IZone Model { get { return _zone; } }
+    //    //public IZone Model { get { return _zone; } }
 
-        public ObservableSortedArrayKeyList<VMKeyEditable, int> Keys { get { return _keys; } }
+    //    //public ObservableSortedArrayKeyList<VMKeyEditable, int> Keys { get { return _keys; } }
 
-        public string Name { get { return _zone.Name; } }
+    //    //public string Name { get { return _zone.Name; } }
 
-        public VMZone( VMContextEditable context, IZone zone )
-            : base( context )
-        {
-            _zone = zone;
-            _keys = new ObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
+    //    //public VMZone( VMContextEditable context, IZone zone )
+    //    //    : base( context )
+    //    //{
+    //        //_zone = zone;
+    //        //_keys = new ObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
 
-            foreach( IKey key in _zone.Keys )
-            {
-                VMKeyEditable k = Context.Obtain( key );
-                Keys.Add( k );
-            }
-        }
+    //        //foreach( IKey key in _zone.Keys )
+    //        //{
+    //        //    VMKeyEditable k = Context.Obtain( key );
+    //        //    Keys.Add( k );
+    //        //}
+    //    //}
 
-        protected override void OnDispose()
-        {
-            foreach( VMKeyEditable key in Keys )
-            {
-                key.Dispose();
-            }
+    //    //protected override void OnDispose()
+    //    //{
+    //    //    foreach( VMKeyEditable key in Keys )
+    //    //    {
+    //    //        key.Dispose();
+    //    //    }
 
-            base.OnDispose();
-        }
-    }
+    //    //    base.OnDispose();
+    //    //}
+    //}
 }

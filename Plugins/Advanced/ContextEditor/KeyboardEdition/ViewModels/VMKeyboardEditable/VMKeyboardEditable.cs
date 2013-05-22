@@ -75,6 +75,20 @@ namespace KeyboardEditor.ViewModels
             RefreshModes();
         }
 
+        internal override void Dispose()
+        {
+            //foreach( VMZoneEditable zone in Zones )
+            //{
+            //    zone.Dispose();
+            //}
+
+            _zones.Clear();
+            _keys.Clear();
+            _keyboardModes.Clear();
+
+            UnregisterEvents();
+        }
+
         private void RegisterEvents()
         {
             _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
@@ -104,19 +118,7 @@ namespace KeyboardEditor.ViewModels
             Model.CurrentModeChanged -= OnModeChanged;
         }
 
-        protected override void OnDispose()
-        {
-            foreach( VMZoneEditable zone in Zones )
-            {
-                zone.Dispose();
-            }
-            
-            _zones.Clear();
-            _keys.Clear();
-            _keyboardModes.Clear();
-
-            UnregisterEvents();
-        }
+       
 
         public void TriggerPropertyChanged()
         {

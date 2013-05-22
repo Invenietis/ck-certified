@@ -396,17 +396,10 @@ namespace KeyboardEditor.ViewModels
 
         #region Methods
 
-        public void Initialize()
-        {
-
-        }
-
-
         internal void TriggerOnPropertyChanged( string propertyName )
         {
             OnPropertyChanged( propertyName );
         }
-
 
         public void TriggerMouseEvent( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
         {
@@ -624,20 +617,20 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "Visible", () => { DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); } );
         }
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
-            foreach( var item in KeyModes )
-            {
-                item.Dispose();
-            }
+            //foreach( var item in KeyModes )
+            //{
+            //    item.Dispose();
+            //}
 
-            foreach( var item in LayoutKeyModes )
-            {
-                item.Dispose();
-            }
+            //foreach( var item in LayoutKeyModes )
+            //{
+            //    item.Dispose();
+            //}
 
             UnregisterEvents();
-            base.OnDispose();
+            base.Dispose();
         }
 
         #endregion

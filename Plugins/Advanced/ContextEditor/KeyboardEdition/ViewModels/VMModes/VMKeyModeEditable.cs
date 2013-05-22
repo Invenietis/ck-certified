@@ -276,10 +276,10 @@ namespace KeyboardEditor.ViewModels
 
         #region OnXXX
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
             UnregisterEvents();
-            base.OnDispose();
+            base.Dispose();
         }
 
         private void RegisterEvents()

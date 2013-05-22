@@ -52,12 +52,8 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
-            foreach( VMKeySimple key in Keys )
-            {
-                key.Dispose();
-            }
             _keys.Clear();
         }
 

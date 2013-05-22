@@ -57,22 +57,14 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
             foreach( VMKeyEditable key in Keys )
             {
                 key.Dispose();
             }
 
-            base.OnDispose();
-        }
-
-        public void Initialize()
-        {
-            //foreach( VMKeyEditable key in Keys )
-            //{
-            //    key.Initialize();
-            //}
+            base.Dispose();
         }
 
         public override VMContextElementEditable Parent

@@ -20,13 +20,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public VMContextSimple Context { get { return _context; } }
 
-        protected virtual void OnDispose()
-        {
-        }
-
-        public void Dispose()
-        {
-            OnDispose();
-        }
+        internal abstract void Dispose();
     }
 }

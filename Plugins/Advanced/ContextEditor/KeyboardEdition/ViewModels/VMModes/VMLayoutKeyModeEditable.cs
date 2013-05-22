@@ -240,5 +240,11 @@ namespace KeyboardEditor.ViewModels
         {
             OnPropertyChanged( propertyName );
         }
+
+        internal override void Dispose()
+        {
+            base.Dispose();
+        }
+
     }
 }

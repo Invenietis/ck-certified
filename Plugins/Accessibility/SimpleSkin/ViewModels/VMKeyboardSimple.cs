@@ -86,12 +86,8 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
-            foreach( VMZoneSimple zone in Zones )
-            {
-                zone.Dispose();
-            }
             _zones.Clear();
             _keys.Clear();
 

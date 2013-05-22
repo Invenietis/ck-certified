@@ -117,12 +117,7 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Internal method called by this <see cref="Context"/> only.
         /// </summary>
-        internal void Dispose()
-        {
-            OnDispose();
-        }
-
-        protected virtual void OnDispose()
+        internal virtual void Dispose()
         {
             UnregisterEvents();
         }

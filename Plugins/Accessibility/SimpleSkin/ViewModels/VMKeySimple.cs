@@ -63,7 +63,7 @@ namespace SimpleSkin.ViewModels
                 _actionsOnPropertiesChanged[e.PropertyName].Run();
         }
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
             UnregisterEvents();
         }

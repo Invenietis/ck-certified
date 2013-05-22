@@ -50,7 +50,7 @@ namespace KeyboardEditor.ViewModels
         Layout = 2
     }
 
-    public class VMContextEditable : VMBase
+    public class VMContextEditable : VMBase, IDisposable
     {
         Dictionary<object, VMContextElementEditable> _dic;
         ModeTypes _currentlyDisplayedModeType = ModeTypes.Mode;
@@ -278,15 +278,15 @@ namespace KeyboardEditor.ViewModels
 
         public void Dispose()
         {
-            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
-            _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
-            _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
-
-            foreach( var keyboard in _keyboards )
+            foreach( var item in _dic )
             {
-                keyboard.Dispose();
+                item.Value.Dispose();
             }
+
+            //foreach( var keyboard in _keyboards )
+            //{
+            //    keyboard.Dispose();
+            //}
 
             _keyboards.Clear();
             _dic.Clear();
@@ -361,14 +361,12 @@ namespace KeyboardEditor.ViewModels
         protected VMKeyEditable CreateKey( IKey k )
         {
             VMKeyEditable vmKey = new VMKeyEditable( this, k );
-            vmKey.Initialize();
             return vmKey;
         }
 
         protected VMZoneEditable CreateZone( IZone z )
         {
             VMZoneEditable vmZone = new VMZoneEditable( this, z );
-            vmZone.Initialize();
             return vmZone;
         }
 
@@ -449,6 +447,5 @@ namespace KeyboardEditor.ViewModels
 
 
         #endregion
-
     }
 }

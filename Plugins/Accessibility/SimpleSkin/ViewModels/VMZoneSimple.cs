@@ -39,7 +39,7 @@ namespace SimpleSkin.ViewModels
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
-        public VMZoneSimple( VMContextSimple ctx, IZone zone ) 
+        internal VMZoneSimple( VMContextSimple ctx, IZone zone ) 
             : base( ctx )
         {
              _zone = zone;
@@ -54,7 +54,7 @@ namespace SimpleSkin.ViewModels
 
         internal override void Dispose()
         {
-            _keys.Clear();
+            Keys.Clear();
         }
 
         #region IHighlightable members

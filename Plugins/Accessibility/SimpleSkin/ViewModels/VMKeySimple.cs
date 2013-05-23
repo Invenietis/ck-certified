@@ -45,7 +45,7 @@ namespace SimpleSkin.ViewModels
         ICommand _keyUpCmd;
         IKey _key;
 
-        public VMKeySimple( VMContextSimple ctx, IKey k )
+        internal VMKeySimple( VMContextSimple ctx, IKey k )
             : base( ctx )
         {
             _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
@@ -77,7 +77,7 @@ namespace SimpleSkin.ViewModels
         {
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
-                PropertyChangedTriggers();
+                PropertyChangedTriggers( e.Key );
             }
         }
 
@@ -115,7 +115,7 @@ namespace SimpleSkin.ViewModels
             Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
         }
 
-        private void PropertyChangedTriggers()
+        private void PropertyChangedTriggers( string propertyName = "" )
         {
             OnPropertyChanged( "X" );
             OnPropertyChanged( "Y" );
@@ -135,6 +135,63 @@ namespace SimpleSkin.ViewModels
             OnPropertyChanged( "TextDecorations" );
             OnPropertyChanged( "PressedBackground" );
             OnPropertyChanged( "HighlightBackground" );
+
+            //todo : do this to improve perfs ?
+            //if( String.IsNullOrWhiteSpace( propertyName ) )
+            //{
+            //    OnPropertyChanged( "X" );
+            //    OnPropertyChanged( "Y" );
+            //    OnPropertyChanged( "Width" );
+            //    OnPropertyChanged( "Image" );
+            //    OnPropertyChanged( "Height" );
+            //    OnPropertyChanged( "Opacity" );
+            //    OnPropertyChanged( "Visible" );
+            //    OnPropertyChanged( "FontSize" );
+            //    OnPropertyChanged( "FontStyle" );
+            //    OnPropertyChanged( "ShowLabel" );
+            //    OnPropertyChanged( "ShowImage" );
+            //    OnPropertyChanged( "FontWeight" );
+            //    OnPropertyChanged( "Background" );
+            //    OnPropertyChanged( "LetterColor" );
+            //    OnPropertyChanged( "HoverBackground" );
+            //    OnPropertyChanged( "TextDecorations" );
+            //    OnPropertyChanged( "PressedBackground" );
+            //    OnPropertyChanged( "HighlightBackground" );
+            //}
+            //else
+            //{
+            //    switch( propertyName )
+            //    {
+            //        case "X":
+            //            OnPropertyChanged( "X" );
+            //            break;
+            //        case "Y":
+            //            OnPropertyChanged( "Y" );
+            //            break;
+            //        case "Width":
+            //            OnPropertyChanged( "Width" );
+            //            break;
+            //        //etc..
+            //        default:
+            //            break;
+            //    }
+                
+            //    OnPropertyChanged( "Image" );
+            //    OnPropertyChanged( "Height" );
+            //    OnPropertyChanged( "Opacity" );
+            //    OnPropertyChanged( "Visible" );
+            //    OnPropertyChanged( "FontSize" );
+            //    OnPropertyChanged( "FontStyle" );
+            //    OnPropertyChanged( "ShowLabel" );
+            //    OnPropertyChanged( "ShowImage" );
+            //    OnPropertyChanged( "FontWeight" );
+            //    OnPropertyChanged( "Background" );
+            //    OnPropertyChanged( "LetterColor" );
+            //    OnPropertyChanged( "HoverBackground" );
+            //    OnPropertyChanged( "TextDecorations" );
+            //    OnPropertyChanged( "PressedBackground" );
+            //    OnPropertyChanged( "HighlightBackground" );
+            //}
         }
 
         #endregion

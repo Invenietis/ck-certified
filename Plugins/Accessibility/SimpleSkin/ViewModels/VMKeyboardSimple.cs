@@ -54,19 +54,9 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public ILayout Layout { get { return _keyboard.CurrentLayout; } }
 
-        /// <summary>
-        /// Gets the width of the current layout.
-        /// </summary>
-        public int W { get { return _keyboard.CurrentLayout.W; } }
-
-        /// <summary>
-        /// Gets the height of the current layout.
-        /// </summary>
-        public int H { get { return _keyboard.CurrentLayout.H; } }
-
         #endregion
 
-        public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
+        internal VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
             : base( ctx )
         {
             _zones = new ObservableCollection<VMZoneSimple>();
@@ -175,6 +165,17 @@ namespace SimpleSkin.ViewModels
         #endregion
 
         #region "Design" properties
+
+
+        /// <summary>
+        /// Gets the width of the current layout.
+        /// </summary>
+        public int W { get { return _keyboard.CurrentLayout.W; } }
+
+        /// <summary>
+        /// Gets the height of the current layout.
+        /// </summary>
+        public int H { get { return _keyboard.CurrentLayout.H; } }
 
         public Brush InsideBorderColor
         {

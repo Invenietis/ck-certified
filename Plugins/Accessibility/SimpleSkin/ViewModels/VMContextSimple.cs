@@ -45,18 +45,12 @@ namespace SimpleSkin.ViewModels
         IPluginConfigAccessor _config;
         IKeyboardContext _kbctx;
         IContext _ctx;
-
+        
         public ObservableCollection<VMKeyboardSimple> Keyboards { get { return _keyboards; } }
-        public VMKeyboardSimple Keyboard { get { return _currentKeyboard; } }
+        public VMKeyboardSimple KeyboardVM { get { return _currentKeyboard; } }
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
-
-        public VMKeyboardSimple KeyboardVM
-        {
-            get { return _currentKeyboard; }
-            set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
-        }
 
         public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
         {
@@ -65,7 +59,7 @@ namespace SimpleSkin.ViewModels
             _config = config;
             _kbctx = kbctx;
             _ctx = ctx;
-            
+
             if( _kbctx.Keyboards.Count > 0 )
             {
                 foreach( IKeyboard keyboard in _kbctx.Keyboards )
@@ -75,6 +69,10 @@ namespace SimpleSkin.ViewModels
                     _keyboards.Add( kb );
                 }
                 _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
+            }
+            else
+            {
+                //TODO : send a notification telling the user that there are no keyboards in the current context.
             }
 
             RegisterEvents();
@@ -200,7 +198,7 @@ namespace SimpleSkin.ViewModels
         {
             return new VMKeyboardSimple( this, kb );
         }
-        
+
         private VMZoneSimple CreateZone( IZone z )
         {
             return new VMZoneSimple( this, z );

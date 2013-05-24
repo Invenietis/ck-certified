@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,6 +12,23 @@ namespace CK.WPF.ViewModel
 {
     public class WPFImageProcessingHelper
     {
+        public static Image CloneImage( Image img )
+        {
+            using( var stream = new MemoryStream() )
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize( stream, img );
+                stream.Position = 0;
+                return (Image)formatter.Deserialize( stream );
+            }
+        }
+
+        public static Image GetImageFromStream( Stream stream )
+        {
+            var formatter = new BinaryFormatter();
+            return (Image)formatter.Deserialize( stream );
+        }
+
         //This method handles the different ways an image can be stored in plugin datas
         public static Image ProcessImage( object imageData )
         {
@@ -39,10 +57,13 @@ namespace CK.WPF.ViewModel
 
                 return image;
             }
-            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF's pack:// protocol
+            else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF "pack://" protocol
             {
+                Image img = new Image();
+                
                 ImageSourceConverter imsc = new ImageSourceConverter();
-                return (Image)imsc.ConvertFromString( imageString );
+                img.Source = (ImageSource)imsc.ConvertFromString( imageString );
+                return img;
             }
             else
             {

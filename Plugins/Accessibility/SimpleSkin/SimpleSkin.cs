@@ -42,9 +42,47 @@ using CK.Plugins.SendInput;
 using HighlightModel;
 using System.Collections.Generic;
 using CK.WPF.ViewModel;
+using System.Threading;
 
 namespace SimpleSkin
 {
+    public class WPFThread
+    {
+        public readonly Dispatcher Dispatcher;
+        readonly object _lock;
+
+        public WPFThread( string name )
+        {
+            _lock = new object();
+            Thread t = new Thread( StartDispatcher );
+            t.Name = name;
+            t.SetApartmentState( ApartmentState.STA );
+            lock( _lock )
+            {
+                t.Start();
+                Monitor.Wait( _lock );
+            }
+            Dispatcher = Dispatcher.FromThread( t );
+        }
+
+        void StartDispatcher()
+        {
+            // This creates the Dispatcher and pushes the job.
+            Dispatcher.CurrentDispatcher.BeginInvoke( (System.Action)DispatcherStarted, null );
+            // Initializes a SynchronizationContext (for tasks ot other components that would require one). 
+            SynchronizationContext.SetSynchronizationContext( new DispatcherSynchronizationContext( Dispatcher.CurrentDispatcher ) );
+            Dispatcher.Run();
+        }
+
+        void DispatcherStarted()
+        {
+            lock( _lock )
+            {
+                Monitor.Pulse( _lock );
+            }
+        }
+    }
+
     [Plugin( SimpleSkin.PluginIdString,
         PublicName = PluginPublicName,
         Version = SimpleSkin.PluginIdVersion,
@@ -95,6 +133,8 @@ namespace SimpleSkin
         [RequiredService]
         public IContext Context { get; set; }
 
+        WPFThread _secondThread;
+
         #region IPlugin Implementation
 
         public bool Setup( IPluginSetupInfo info )
@@ -108,21 +148,31 @@ namespace SimpleSkin
 
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                _isStarted = true;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config );
-                _skinWindow = new SkinWindow() { DataContext = _ctxVm };
+                _secondThread = new WPFThread( "SkinThread" );
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config, _secondThread );
 
+                _secondThread.Dispatcher.Invoke( (System.Action)( () =>
+                {
+                    _isStarted = true;
+                    _skinWindow = new SkinWindow() { DataContext = _ctxVm };
+
+                    //while( true ) { }
+
+                    InitializeWindowLayout();
+
+
+                    _skinWindow.Show();
+
+                    //Placing the skin at the same location as the last launch.
+                    _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, _skinWindow.GetPlacement() ) );
+                } ), null );
                 InitializeHighligther();
-                InitializeWindowLayout();
-
-                _skinWindow.Show();
-
-                //Placing the skin at the same location as the last launch.
-                _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, _skinWindow.GetPlacement() ) );
-
                 UpdateAutoHideConfig();
 
                 RegisterEvents();
+
+
+
             }
             else
             {
@@ -142,10 +192,10 @@ namespace SimpleSkin
 
                 UnregisterEvents();
 
-                Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+                _secondThread.Dispatcher.BeginInvoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ) );
 
                 _forceClose = true;
-                _skinWindow.Close();
+                _secondThread.Dispatcher.BeginInvoke( (Action)( () => _skinWindow.Close() ) );
 
                 if( _miniView != null )
                 {
@@ -153,7 +203,8 @@ namespace SimpleSkin
                     _miniView = null;
                     _viewHidden = false;
                 }
-                _miniViewVm.Dispose();
+                if( _miniView != null )
+                    _miniViewVm.Dispose();
 
                 _ctxVm.Dispose();
                 _ctxVm = null;

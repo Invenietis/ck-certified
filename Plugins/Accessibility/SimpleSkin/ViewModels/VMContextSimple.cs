@@ -52,8 +52,12 @@ namespace SimpleSkin.ViewModels
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
 
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
+        public WPFThread Thread { get; private set; }
+
+        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, WPFThread thread )
         {
+            Thread = thread;
+
             _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();
             _config = config;

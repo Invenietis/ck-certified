@@ -34,6 +34,10 @@ using HighlightModel;
 using CK.Core;
 using System.Windows.Input;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Xaml;
+using System.Diagnostics;
 
 namespace SimpleSkin.ViewModels
 {
@@ -53,6 +57,8 @@ namespace SimpleSkin.ViewModels
 
             ResetCommands();
             RegisterEvents();
+
+            SafeUpdateImage();
         }
 
         #region OnXXX
@@ -90,15 +96,14 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Enabled" );
             } );
 
-            SetActionOnPropertyChanged( "X", () => OnPropertyChanged( "X" ) );
-            SetActionOnPropertyChanged( "Y", () => OnPropertyChanged( "Y" ) );
-            SetActionOnPropertyChanged( "W", () => OnPropertyChanged( "Width" ) );
-            SetActionOnPropertyChanged( "H", () => OnPropertyChanged( "Height" ) );
-            SetActionOnPropertyChanged( "Image", () => OnPropertyChanged( "Image" ) );
-            SetActionOnPropertyChanged( "Visible", () => OnPropertyChanged( "Visible" ) );
-            SetActionOnPropertyChanged( "Enabled", () => OnPropertyChanged( "Enabled" ) );
-            SetActionOnPropertyChanged( "UpLabel", () => OnPropertyChanged( "UpLabel" ) );
-            SetActionOnPropertyChanged( "DownLabel", () => OnPropertyChanged( "DownLabel" ) );
+            SetActionOnPropertyChanged( "X", () => { SafeUpdateX(); OnPropertyChanged( "X" ); } );
+            SetActionOnPropertyChanged( "Y", () => { SafeUpdateY(); OnPropertyChanged( "Y" ); } );
+            SetActionOnPropertyChanged( "W", () => { SafeUpdateWidth(); OnPropertyChanged( "Width" ); } );
+            SetActionOnPropertyChanged( "H", () => { SafeUpdateHeight(); OnPropertyChanged( "Height" ); } );
+            SetActionOnPropertyChanged( "Visible", () => { SafeUpdateVisible(); OnPropertyChanged( "Visible" ); } );
+            SetActionOnPropertyChanged( "Enabled", () => { SafeUpdateIsEnabled(); OnPropertyChanged( "Enabled" ); } );
+            SetActionOnPropertyChanged( "UpLabel", () => { SafeUpdateUpLabel(); OnPropertyChanged( "UpLabel" ); } );
+            SetActionOnPropertyChanged( "DownLabel", () => { SafeUpdateDownLabel(); OnPropertyChanged( "DownLabel" ); } );
             SetActionOnPropertyChanged( "CurrentLayout", () => { PropertyChangedTriggers(); } );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
@@ -117,81 +122,64 @@ namespace SimpleSkin.ViewModels
 
         private void PropertyChangedTriggers( string propertyName = "" )
         {
-            OnPropertyChanged( "X" );
-            OnPropertyChanged( "Y" );
-            OnPropertyChanged( "Width" );
-            OnPropertyChanged( "Image" );
-            OnPropertyChanged( "Height" );
-            OnPropertyChanged( "Opacity" );
-            OnPropertyChanged( "Visible" );
-            OnPropertyChanged( "FontSize" );
-            OnPropertyChanged( "FontStyle" );
-            OnPropertyChanged( "ShowLabel" );
-            OnPropertyChanged( "ShowImage" );
-            OnPropertyChanged( "FontWeight" );
-            OnPropertyChanged( "Background" );
-            OnPropertyChanged( "LetterColor" );
-            OnPropertyChanged( "HoverBackground" );
-            OnPropertyChanged( "TextDecorations" );
-            OnPropertyChanged( "PressedBackground" );
-            OnPropertyChanged( "HighlightBackground" );
+            //todo : do this to improve perfs !
+            if( String.IsNullOrWhiteSpace( propertyName ) )
+            {
+                SafeUpdateImage();
 
-            //todo : do this to improve perfs ?
-            //if( String.IsNullOrWhiteSpace( propertyName ) )
-            //{
-            //    OnPropertyChanged( "X" );
-            //    OnPropertyChanged( "Y" );
-            //    OnPropertyChanged( "Width" );
-            //    OnPropertyChanged( "Image" );
-            //    OnPropertyChanged( "Height" );
-            //    OnPropertyChanged( "Opacity" );
-            //    OnPropertyChanged( "Visible" );
-            //    OnPropertyChanged( "FontSize" );
-            //    OnPropertyChanged( "FontStyle" );
-            //    OnPropertyChanged( "ShowLabel" );
-            //    OnPropertyChanged( "ShowImage" );
-            //    OnPropertyChanged( "FontWeight" );
-            //    OnPropertyChanged( "Background" );
-            //    OnPropertyChanged( "LetterColor" );
-            //    OnPropertyChanged( "HoverBackground" );
-            //    OnPropertyChanged( "TextDecorations" );
-            //    OnPropertyChanged( "PressedBackground" );
-            //    OnPropertyChanged( "HighlightBackground" );
-            //}
-            //else
-            //{
-            //    switch( propertyName )
-            //    {
-            //        case "X":
-            //            OnPropertyChanged( "X" );
-            //            break;
-            //        case "Y":
-            //            OnPropertyChanged( "Y" );
-            //            break;
-            //        case "Width":
-            //            OnPropertyChanged( "Width" );
-            //            break;
-            //        //etc..
-            //        default:
-            //            break;
-            //    }
-                
-            //    OnPropertyChanged( "Image" );
-            //    OnPropertyChanged( "Height" );
-            //    OnPropertyChanged( "Opacity" );
-            //    OnPropertyChanged( "Visible" );
-            //    OnPropertyChanged( "FontSize" );
-            //    OnPropertyChanged( "FontStyle" );
-            //    OnPropertyChanged( "ShowLabel" );
-            //    OnPropertyChanged( "ShowImage" );
-            //    OnPropertyChanged( "FontWeight" );
-            //    OnPropertyChanged( "Background" );
-            //    OnPropertyChanged( "LetterColor" );
-            //    OnPropertyChanged( "HoverBackground" );
-            //    OnPropertyChanged( "TextDecorations" );
-            //    OnPropertyChanged( "PressedBackground" );
-            //    OnPropertyChanged( "HighlightBackground" );
-            //}
+                //These propoerties are on the LayoutKeyMode (not in the key's plugindatas), so we won't have the Config telling us that they have changed
+                //OnPropertyChanged( "X" );
+                //OnPropertyChanged( "Y" );
+                //OnPropertyChanged( "Width" );
+                //OnPropertyChanged( "Height" );
+                //OnPropertyChanged( "Visible" );
+
+                OnPropertyChanged( "Opacity" );
+                OnPropertyChanged( "Image" );
+                OnPropertyChanged( "FontSize" );
+                OnPropertyChanged( "FontStyle" );
+                OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
+                OnPropertyChanged( "FontWeight" );
+                OnPropertyChanged( "Background" );
+                OnPropertyChanged( "LetterColor" );
+                OnPropertyChanged( "HoverBackground" );
+                OnPropertyChanged( "TextDecorations" );
+                OnPropertyChanged( "PressedBackground" );
+                OnPropertyChanged( "HighlightBackground" );
+            }
+            else
+            {
+                switch( propertyName )
+                {
+                    case "Opacity":
+                        //
+                        OnPropertyChanged( "Opacity" );
+                        break;
+                    case "Image":
+                        SafeUpdateImage();
+                        OnPropertyChanged( "Image" );
+                        break;
+
+                    default:
+                        break;
+                }
+
+                OnPropertyChanged( "Opacity" );//
+                //OnPropertyChanged( "Image" );
+                OnPropertyChanged( "Visible" );//
+                OnPropertyChanged( "FontSize" );
+                OnPropertyChanged( "FontStyle" );
+                OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
+                OnPropertyChanged( "FontWeight" );
+                OnPropertyChanged( "Background" );
+                OnPropertyChanged( "LetterColor" );
+                OnPropertyChanged( "HoverBackground" );
+                OnPropertyChanged( "TextDecorations" );
+                OnPropertyChanged( "PressedBackground" );
+                OnPropertyChanged( "HighlightBackground" );
+            }
         }
 
         #endregion
@@ -223,98 +211,202 @@ namespace SimpleSkin.ViewModels
             _keyPressedCmd = new KeyCommand( () => { if( _key.IsDown )_key.Release( true ); } );
         }
 
+
+        private void SafeUpdateX()
+        {
+            ThreadSafeSet<int>( _key.CurrentLayout.Current.X, ( v ) => _x = v );
+        }
+
+        private void SafeUpdateY()
+        {
+            ThreadSafeSet<int>( _key.CurrentLayout.Current.Y, ( v ) => _y = v );
+        }
+
+        private void SafeUpdateHeight()
+        {
+            ThreadSafeSet<int>( _key.CurrentLayout.Current.Height, ( v ) => _height = v );
+        }
+
+        private void SafeUpdateWidth()
+        {
+            ThreadSafeSet<int>( _key.CurrentLayout.Current.Width, ( v ) => _width = v );
+        }
+
+        private void SafeUpdateIsEnabled()
+        {
+            ThreadSafeSet<bool>( _key.Current.Enabled, ( v ) => _isEnabled = v );
+        }
+
+        private void SafeUpdateUpLabel()
+        {
+            ThreadSafeSet<string>( _key.Current.UpLabel, ( v ) => _upLabel = v );
+        }
+
+        private void SafeUpdateDownLabel()
+        {
+            ThreadSafeSet<string>( _key.Current.DownLabel, ( v ) => _downLabel = v );
+        }
+
+        private void SafeUpdateDescription()
+        {
+            ThreadSafeSet<string>( _key.Current.Description, ( v ) => _description = v );
+        }
+
+        private void SafeUpdateIndex()
+        {
+            ThreadSafeSet<int>( _key.Index, ( v ) => _index = v );
+        }
+
+        private void SafeUpdateIsFallback()
+        {
+            ThreadSafeSet<bool>( _key.Current.IsFallBack, ( v ) => _isFallback = v );
+        }
+
+        private void SafeUpdateVisible()
+        {
+            ThreadSafeSet<bool>( LayoutKeyMode.Visible, ( v ) => _visible = v );
+        }
+
+        private void SafeUpdateImage()
+        {
+            object o = Context.Config[LayoutKeyMode].GetOrSet<object>( "Image", null );
+
+            if( o != null )
+            {
+                string source = String.Empty;
+
+                if( o.GetType() == typeof( Image ) ) //If there is an image in the config, the SkinThread needs to deserialize the image, in order to be its owner.
+                {
+                    source = ( (Image)o ).Source.ToString();
+                }
+                else //otherwise, the config only held a string. ProcessImage will therefor work properly.
+                {
+                    source = o.ToString();
+                }
+
+                ThreadSafeSet<string>( source, ( v ) =>
+                {
+                    _image = WPFImageProcessingHelper.ProcessImage( v );
+                } );
+            }
+            else _image = null;
+        }
+
+
         #endregion
 
         #region "Design" properties
 
-        /// <summary>
-        /// Gets the current actualKey layout.
-        /// </summary>
+        //TODO : other way
         public ILayoutKeyMode LayoutKeyMode
         {
             get { return _key.CurrentLayout.Current; }
         }
 
+        //TODO : other way
         public ILayoutKey LayoutKey
         {
             get { return _key.CurrentLayout; }
         }
 
+        private int _x;
         /// <summary>
         /// Gets the X coordinate of this key.
         /// </summary>
         public int X
         {
-            get { return _key.CurrentLayout.Current.X; }
+            //get { return _key.CurrentLayout.Current.X; }
+            get { return _x; }
         }
 
+        private int _y;
         /// <summary>
         /// Gets the Y coordinate of this key.
         /// </summary>
         public int Y
         {
-            get { return _key.CurrentLayout.Current.Y; }
+            //get { return _key.CurrentLayout.Current.Y; }
+            get { return _y; }
         }
 
+        private int _width;
         /// <summary>
         /// Gets the width of this key.
         /// </summary>
         public int Width
         {
-            get { return _key.CurrentLayout.Current.Width; }
+            //get { return _key.CurrentLayout.Current.Width; }
+            get { return _width; }
         }
 
+        private int _height;
         /// <summary>
         /// Gets the height of this key.
         /// </summary>
         public int Height
         {
-            get { return _key.CurrentLayout.Current.Height; ; }
+            //get { return _key.CurrentLayout.Current.Height; }
+            get { return _height; }
         }
 
+        private bool _visible;
         /// <summary>
         /// Gets a value indicating whether this actual key is visible or not.
         /// </summary>
         public Visibility Visible
         {
-            get { return LayoutKeyMode.Visible ? Visibility.Visible : Visibility.Collapsed; }
+            //get { return LayoutKeyMode.Visible ? Visibility.Visible : Visibility.Collapsed; }
+            get { return _visible ? Visibility.Visible : Visibility.Collapsed; }
         }
 
+        bool _isEnabled;
         /// <summary>
         /// Gets a value indicating wether the current keymode is enabled or not.
         /// </summary>
-        public bool Enabled { get { return _key.Current.Enabled; } }
+        public bool Enabled
+        {
+            //get { return _key.Current.Enabled; } 
+            get { return _isEnabled; }
+        }
 
+        private string _upLabel;
         /// <summary>
         /// Gets the label that must be used when the key is up.
         /// </summary>
         public string UpLabel
         {
-            get { return _key.Current.UpLabel; }
+            //get { return _key.Current.UpLabel; }
+            get { return _upLabel; }
         }
 
+        private string _downLabel;
         /// <summary>
         /// Gets the label that must be used when the key is down.
         /// </summary>
         public string DownLabel
         {
-            get { return _key.Current.DownLabel; }
+            //get { return _key.Current.DownLabel; }
+            get { return _downLabel; }
         }
 
+        private string _description;
         /// <summary>
         /// Gets the description of the key
         /// </summary>
         public string Description
         {
-            get { return _key.Current.Description; }
+            //get { return _key.Current.Description; }
+            get { return _description; }
         }
 
+        private int _index;
         /// <summary>
         /// Gets the logical position of the <see cref="IKey"/> in the zone.
         /// </summary>
         public int Index
         {
-            get { return _key.Index; }
+            //get { return _key.Index; }
+            get { return _index; }
             set
             {
                 _key.Index = value;
@@ -322,65 +414,74 @@ namespace SimpleSkin.ViewModels
             }
         }
 
+        private bool _isFallback;
         /// <summary>
         /// Gets if the current keymode is a fallback or not.
         /// </summary>
-        public bool IsFallback { get { return _key.Current.IsFallBack; } }
-
-        public Image Image
+        public bool IsFallback
         {
-            get
-            {
-                object imageData = Context.Config[LayoutKeyMode]["Image"];
+            //get { return _key.Current.IsFallBack; } 
+            get { return _isFallback; }
 
-                if( imageData != null )
-                {
-                    return WPFImageProcessingHelper.ProcessImage( imageData );
-                }
-
-                return null;
-            }
-            //get { return LayoutKeyMode.GetPropertyValue<Image>( Context.Config, "Image" ); }
         }
 
+        Image _image;
+        public Image Image { get { return _image; } }
+
+        Color _background;
         public Color Background
         {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
+            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
+            get { return _background; }
         }
 
+        Color _hoverBackground;
         public Color HoverBackground
         {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
+            get { return _hoverBackground; }
         }
 
+        Color _highlightBackground;
         public Color HighlightBackground
         {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
+            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
+            get { return _highlightBackground; }
         }
 
+        Color _pressedBackground;
         public Color PressedBackground
         {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
+            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
+            get { return _pressedBackground; }
         }
 
+        Color _letterColor;
         public Color LetterColor
         {
-            get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
+            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
+            get { return _letterColor; }
         }
 
+        FontStyle _fontStyle;
         public FontStyle FontStyle
         {
-            get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
+            //get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
+            get { return _fontStyle; }
         }
 
+        FontWeight _fontWeight;
         public FontWeight FontWeight
         {
-            get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
+            //get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
+            get { return _fontWeight; }
         }
 
+        double _fontSize;
         public double FontSize
         {
-            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
+            //get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
+            get { return _fontSize; }
         }
 
         public TextDecorationCollection TextDecorations
@@ -388,19 +489,25 @@ namespace SimpleSkin.ViewModels
             get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
         }
 
+        bool _showLabel;
         public bool ShowLabel
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
+            //get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
+            get { return _showLabel; }
         }
 
+        bool _showImage;
         public bool ShowImage
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ); }
+            //get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ); }
+            get { return _showImage; }
         }
 
+        double _opacity;
         public double Opacity
         {
-            get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
+            //get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
+            get { return _opacity; }
         }
 
         public double ZIndex

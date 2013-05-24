@@ -144,6 +144,7 @@
     <Compile Include="ViewModels\VMKeyboardSimple.cs" />
     <Compile Include="ViewModels\VMKeySimple.cs" />
     <Compile Include="ViewModels\VMZoneSimple.cs" />
+    <Compile Include="WPFThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Host.Services\Host.Services.csproj">

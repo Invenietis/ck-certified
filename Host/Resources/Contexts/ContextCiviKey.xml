@@ -1779,9 +1779,6 @@
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">500,200</Size>
                     </data>
-                    <data key="KeyboardBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFD3D3D3</Color>
-                    </data>
                     <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDB76B</Color>
                     </data>
@@ -4172,9 +4169,7 @@
                         <LayoutKeyMode Mode="" X="795" Y="50" W="75" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
-                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/retarr.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                              </data>
+                              <data key="Image" type="String">pack://application:,,,/SimpleSkin;component/Images/retarr.png</data>
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>

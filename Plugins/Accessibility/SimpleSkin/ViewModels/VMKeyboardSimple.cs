@@ -35,6 +35,8 @@ using CK.Core;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Linq.Expressions;
 
 namespace SimpleSkin.ViewModels
 {
@@ -74,6 +76,11 @@ namespace SimpleSkin.ViewModels
                     _keys.Add( Context.Obtain( key ) );
                 }
             }
+
+            SafeUpdateW();
+            SafeUpdateH();
+            SafeUpdateInsideBorderColor();
+            UpdateBackgroundPath();
         }
 
         internal override void Dispose()
@@ -121,8 +128,10 @@ namespace SimpleSkin.ViewModels
         {
             if( e.Layout == _keyboard.CurrentLayout )
             {
-                OnPropertyChanged( "W" );
+                SafeUpdateH();
                 OnPropertyChanged( "H" );
+                SafeUpdateW();
+                OnPropertyChanged( "W" );
             }
         }
 
@@ -133,9 +142,12 @@ namespace SimpleSkin.ViewModels
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
+                        //UpdateBackgroundPath();
                         OnPropertyChanged( "BackgroundImagePath" );
+
                         break;
                     case "InsideBorderColor":
+                        //SafeUpdateInsideBorderColor();
                         OnPropertyChanged( "InsideBorderColor" );
                         break;
                 }
@@ -167,35 +179,34 @@ namespace SimpleSkin.ViewModels
         #region "Design" properties
 
 
+        private int _w;
         /// <summary>
         /// Gets the width of the current layout.
         /// </summary>
-        public int W { get { return _keyboard.CurrentLayout.W; } }
+        public int W { get { return _w; } }
 
+
+        private int _h;
         /// <summary>
         /// Gets the height of the current layout.
         /// </summary>
-        public int H { get { return _keyboard.CurrentLayout.H; } }
+        public int H { get { return _h; } }
 
-        public Brush InsideBorderColor
+        private Brush _insideBorderColor;
+        public Brush InsideBorderColor { get { return _insideBorderColor; } }
+
+        ImageSourceConverter _imsc;
+        ImageSourceConverter Imsc
         {
             get
             {
-                if( Context.Config[Layout]["InsideBorderColor"] != null )
-                    return new SolidColorBrush( (Color)Context.Config[Layout]["InsideBorderColor"] );
-                return null;
+                if( _imsc == null ) _imsc = new ImageSourceConverter();
+                return _imsc;
             }
         }
 
-        ImageSourceConverter imsc;
-        public object BackgroundImagePath
-        {
-            get
-            {
-                if( imsc == null ) imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
-            }
-        }
+        object _backgroundImagePath;
+        public object BackgroundImagePath { get { return _backgroundImagePath; } }
 
         #endregion
 
@@ -239,5 +250,40 @@ namespace SimpleSkin.ViewModels
         }
 
         #endregion
+
+        #region Threadsafe updates
+
+        private void UpdateBackgroundPath()
+        {
+            string s = Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" );
+            ThreadSafeSet<string>( s, ( v ) =>
+            {
+                if( String.IsNullOrWhiteSpace( s ) ) _backgroundImagePath = null;
+                else _backgroundImagePath = Imsc.ConvertFromString( v );
+            } );
+        }
+
+        private void SafeUpdateInsideBorderColor()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "InsideBorderColor", null );
+            ThreadSafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _insideBorderColor = null;
+                else _insideBorderColor = new SolidColorBrush( v );
+            } );
+        }
+
+        private void SafeUpdateH()
+        {
+            ThreadSafeSet<int>( _keyboard.CurrentLayout.H, ( v ) => _h = v );
+        }
+
+        private void SafeUpdateW()
+        {
+            ThreadSafeSet<int>( _keyboard.CurrentLayout.W, ( v ) => _w = v );
+        }
+
+        #endregion
+
     }
 }

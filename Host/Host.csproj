@@ -304,6 +304,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKeySmall.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Resource Include="Resources\Icons\CiviKey.ico" />
     <Resource Include="Resources\Icons\logo_16x16.ico" />
     <Resource Include="Resources\Images\accept.png" />
@@ -350,11 +354,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\SplashTransparent.png" />

@@ -498,6 +498,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            //TODO : OPTIMIZE
             if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 OnPropertyChanged( "Image" );

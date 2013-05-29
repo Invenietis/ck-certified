@@ -102,25 +102,37 @@ namespace SimpleSkin.ViewModels
         void OnKeyCreated( object sender, KeyEventArgs e )
         {
             VMKeySimple kvm = Context.Obtain( e.Key );
-            Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
-            _keys.Add( kvm );
+            Context.Thread.Dispatcher.Invoke( (Action)( () =>
+            {
+                Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
+                _keys.Add( kvm );
+            } ) );
         }
 
         void OnKeyDestroyed( object sender, KeyEventArgs e )
         {
-            Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
-            _keys.Remove( Context.Obtain( e.Key ) );
+            Context.Thread.Dispatcher.Invoke( (Action)( () =>
+            {
+                Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
+                _keys.Remove( Context.Obtain( e.Key ) );
+            } ) );
             Context.OnModelDestroy( e.Key );
         }
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            Zones.Add( Context.Obtain( e.Zone ) );
+            Context.Thread.Dispatcher.Invoke( (Action)( () =>
+           {
+               Zones.Add( Context.Obtain( e.Zone ) );
+           } ) );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            Zones.Remove( Context.Obtain( e.Zone ) );
+            Context.Thread.Dispatcher.Invoke( (Action)( () =>
+           {
+               Zones.Remove( Context.Obtain( e.Zone ) );
+           } ) );
             Context.OnModelDestroy( e.Zone );
         }
 
@@ -130,6 +142,7 @@ namespace SimpleSkin.ViewModels
             {
                 SafeUpdateH();
                 OnPropertyChanged( "H" );
+
                 SafeUpdateW();
                 OnPropertyChanged( "W" );
             }
@@ -142,12 +155,11 @@ namespace SimpleSkin.ViewModels
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
-                        //UpdateBackgroundPath();
+                        UpdateBackgroundPath();
                         OnPropertyChanged( "BackgroundImagePath" );
-
                         break;
                     case "InsideBorderColor":
-                        //SafeUpdateInsideBorderColor();
+                        SafeUpdateInsideBorderColor();
                         OnPropertyChanged( "InsideBorderColor" );
                         break;
                 }

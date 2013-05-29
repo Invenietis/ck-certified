@@ -108,7 +108,7 @@ namespace SimpleSkin.ViewModels
             {
                 if( value != _isHighlighting )
                 {
-                    _isHighlighting = value;
+                    ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
                     OnPropertyChanged( "IsHighlighting" );
                     foreach( var key in Keys )
                     {

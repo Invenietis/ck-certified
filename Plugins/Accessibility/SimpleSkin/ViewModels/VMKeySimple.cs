@@ -58,7 +58,29 @@ namespace SimpleSkin.ViewModels
             ResetCommands();
             RegisterEvents();
 
+            SafeUpdateBackground();
+            SafeUpdateDescription();
+            SafeUpdateDownLabel();
+            SafeUpdateFontStyle();
+            SafeUpdateFontWeight();
+            SafeUpdateHeight();
+            SafeUpdateHighlightBackground();
+            SafeUpdateHoverBackground();
             SafeUpdateImage();
+            SafeUpdateIndex();
+            SafeUpdateIsEnabled();
+            SafeUpdateIsFallback();
+            SafeUpdateLetterColor();
+            SafeUpdateOpacity();
+            SafeUpdatePressedBackground();
+            SafeUpdateShowImage();
+            SafeUpdateShowLabel();
+            SafeUpdateUpLabel();
+            SafeUpdateVisible();
+            SafeUpdateWidth();
+            SafeUpdateX();
+            SafeUpdateY();
+
         }
 
         #region OnXXX
@@ -122,12 +144,22 @@ namespace SimpleSkin.ViewModels
 
         private void PropertyChangedTriggers( string propertyName = "" )
         {
-            //todo : do this to improve perfs !
             if( String.IsNullOrWhiteSpace( propertyName ) )
             {
-                SafeUpdateImage();
+                SafeUpdateOpacity();
+                SafeUpdateFontSize();
+                SafeUpdateFontStyle();
+                SafeUpdateShowLabel();
+                SafeUpdateShowImage();
+                SafeUpdateFontWeight();
+                SafeUpdateBackground();
+                SafeUpdateLetterColor();
+                SafeUpdateHoverBackground();
+                SafeUpdateTextDecorations();
+                SafeUpdatePressedBackground();
+                SafeUpdateHighlightBackground();
 
-                //These propoerties are on the LayoutKeyMode (not in the key's plugindatas), so we won't have the Config telling us that they have changed
+                //These properties are on the LayoutKeyMode (not in the key's plugindatas), so we won't have the Config telling us that they have changed
                 //OnPropertyChanged( "X" );
                 //OnPropertyChanged( "Y" );
                 //OnPropertyChanged( "Width" );
@@ -153,32 +185,64 @@ namespace SimpleSkin.ViewModels
                 switch( propertyName )
                 {
                     case "Opacity":
-                        //
+                        SafeUpdateOpacity();
                         OnPropertyChanged( "Opacity" );
                         break;
                     case "Image":
                         SafeUpdateImage();
                         OnPropertyChanged( "Image" );
                         break;
-
+                    case "Visible":
+                        SafeUpdateVisible();
+                        OnPropertyChanged( "Visible" );
+                        break;
+                    case "FontSize":
+                        SafeUpdateFontSize();
+                        OnPropertyChanged( "FontSize" );
+                        break;
+                    case "FontStyle":
+                        SafeUpdateFontStyle();
+                        OnPropertyChanged( "FontStyle" );
+                        break;
+                    case "ShowLabel":
+                        SafeUpdateShowLabel();
+                        OnPropertyChanged( "ShowLabel" );
+                        break;
+                    case "ShowImage":
+                        SafeUpdateShowImage();
+                        OnPropertyChanged( "ShowImage" );
+                        break;
+                    case "FontWeight":
+                        SafeUpdateFontWeight();
+                        OnPropertyChanged( "FontWeight" );
+                        break;
+                    case "Background":
+                        SafeUpdateBackground();
+                        OnPropertyChanged( "Background" );
+                        break;
+                    case "LetterColor":
+                        SafeUpdateLetterColor();
+                        OnPropertyChanged( "LetterColor" );
+                        break;
+                    case "HoverBackground":
+                        SafeUpdateHoverBackground();
+                        OnPropertyChanged( "HoverBackground" );
+                        break;
+                    case "TextDecorations":
+                        SafeUpdateTextDecorations();
+                        OnPropertyChanged( "TextDecorations" );
+                        break;
+                    case "PressedBackground":
+                        SafeUpdatePressedBackground();
+                        OnPropertyChanged( "PressedBackground" );
+                        break;
+                    case "HighlightBackground":
+                        SafeUpdateHighlightBackground();
+                        OnPropertyChanged( "HighlightBackground" );
+                        break;
                     default:
                         break;
                 }
-
-                OnPropertyChanged( "Opacity" );//
-                //OnPropertyChanged( "Image" );
-                OnPropertyChanged( "Visible" );//
-                OnPropertyChanged( "FontSize" );
-                OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "ShowLabel" );
-                OnPropertyChanged( "ShowImage" );
-                OnPropertyChanged( "FontWeight" );
-                OnPropertyChanged( "Background" );
-                OnPropertyChanged( "LetterColor" );
-                OnPropertyChanged( "HoverBackground" );
-                OnPropertyChanged( "TextDecorations" );
-                OnPropertyChanged( "PressedBackground" );
-                OnPropertyChanged( "HighlightBackground" );
             }
         }
 
@@ -210,7 +274,6 @@ namespace SimpleSkin.ViewModels
             _keyUpCmd = new KeyCommand( () => { if( _key.IsDown ) _key.Release(); } );
             _keyPressedCmd = new KeyCommand( () => { if( _key.IsDown )_key.Release( true ); } );
         }
-
 
         private void SafeUpdateX()
         {
@@ -279,7 +342,7 @@ namespace SimpleSkin.ViewModels
                 {
                     source = ( (Image)o ).Source.ToString();
                 }
-                else //otherwise, the config only held a string. ProcessImage will therefor work properly.
+                else //otherwise, the config only holds a string. ProcessImage will therefor work properly.
                 {
                     source = o.ToString();
                 }
@@ -292,6 +355,77 @@ namespace SimpleSkin.ViewModels
             else _image = null;
         }
 
+        private void SafeUpdateBackground()
+        {
+            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ), ( v ) => _background = v );
+        }
+
+        private void SafeUpdateHoverBackground()
+        {
+            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ), ( v ) => _hoverBackground = v );
+        }
+
+        private void SafeUpdateHighlightBackground()
+        {
+            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ), ( v ) => _highlightBackground = v );
+        }
+
+        private void SafeUpdatePressedBackground()
+        {
+            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ), ( v ) => _pressedBackground = v );
+        }
+
+        private void SafeUpdateLetterColor()
+        {
+            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ), ( v ) => _letterColor = v );
+        }
+
+        private void SafeUpdateFontSize()
+        {
+            ThreadSafeSet<double>( LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ), ( v ) => _fontSize = v );
+        }
+
+        private void SafeUpdateFontStyle()
+        {
+            ThreadSafeSet<FontStyle>( LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ), ( v ) => _fontStyle = v );
+        }
+
+        private void SafeUpdateFontWeight()
+        {
+            ThreadSafeSet<FontWeight>( LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ), ( v ) => _fontWeight = v );
+        }
+
+        private void SafeUpdateShowLabel()
+        {
+            ThreadSafeSet<bool>( LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ), ( v ) => _showLabel = v );
+        }
+
+        private void SafeUpdateShowImage()
+        {
+            ThreadSafeSet<bool>( LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ), ( v ) => _showImage = v );
+        }
+
+        private void SafeUpdateOpacity()
+        {
+            ThreadSafeSet<double>( LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ), ( v ) => _opacity = v );
+        }
+
+        private void SafeUpdateTextDecorations()
+        {
+            MemoryStream stream = new MemoryStream();
+            TextDecorationCollection obj = LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" );
+            if( obj != null ) System.Windows.Markup.XamlWriter.Save( obj, stream );
+            stream.Seek( 0, SeekOrigin.Begin );
+            ThreadSafeSet<Stream>( stream, ( v ) =>
+            {
+                if( stream.Length > 0 )
+                    _textDecorations = (TextDecorationCollection)System.Windows.Markup.XamlReader.Load( stream );
+                else
+                    _textDecorations = null;
+
+                stream.Dispose();
+            } );
+        }
 
         #endregion
 
@@ -300,7 +434,7 @@ namespace SimpleSkin.ViewModels
         //TODO : other way
         public ILayoutKeyMode LayoutKeyMode
         {
-            get { return _key.CurrentLayout.Current; }
+            get { return LayoutKey.Current; }
         }
 
         //TODO : other way
@@ -409,7 +543,7 @@ namespace SimpleSkin.ViewModels
             get { return _index; }
             set
             {
-                _key.Index = value;
+                ThreadSafeSet<int>( value, ( v ) => _key.Index = v );
                 OnPropertyChanged( "Index" );
             }
         }
@@ -484,9 +618,11 @@ namespace SimpleSkin.ViewModels
             get { return _fontSize; }
         }
 
+        TextDecorationCollection _textDecorations;
         public TextDecorationCollection TextDecorations
         {
-            get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
+            //get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
+            get { return _textDecorations; }
         }
 
         bool _showLabel;
@@ -537,7 +673,7 @@ namespace SimpleSkin.ViewModels
             {
                 if( value != _isHighlighting )
                 {
-                    _isHighlighting = value;
+                    ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
                     OnPropertyChanged( "IsHighlighting" );
                 }
             }

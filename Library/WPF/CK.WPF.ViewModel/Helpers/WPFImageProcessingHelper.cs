@@ -45,10 +45,9 @@ namespace CK.WPF.ViewModel
                 img.Source = bitmapImage;
                 return img;
             }
-            else if( Uri.IsWellFormedUriString( imageString, UriKind.RelativeOrAbsolute ) && File.Exists( imageString ) ) //Handles URis
+            else if( imageString.Length <= 260 && Uri.IsWellFormedUriString( imageString, UriKind.RelativeOrAbsolute ) && !imageString.StartsWith( "pack://" ) && File.Exists( imageString ) ) //Handles URis
             {
                 BitmapImage bitmapImage = new BitmapImage();
-
                 bitmapImage.BeginInit();
                 bitmapImage.UriSource = new Uri( imageString );
                 bitmapImage.EndInit();
@@ -60,7 +59,7 @@ namespace CK.WPF.ViewModel
             else if( imageString.StartsWith( "pack://" ) ) //Handles the WPF "pack://" protocol
             {
                 Image img = new Image();
-                
+
                 ImageSourceConverter imsc = new ImageSourceConverter();
                 img.Source = (ImageSource)imsc.ConvertFromString( imageString );
                 return img;
@@ -75,7 +74,9 @@ namespace CK.WPF.ViewModel
                     bitmapImage.StreamSource = ms;
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
+                    bitmapImage.Freeze();
                     image.Source = bitmapImage;
+                    
                 }
                 return image;
             }

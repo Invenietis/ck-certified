@@ -157,7 +157,6 @@ namespace KeyboardEditor.ViewModels
                         OnPropertyChanged( "FontSizes" );
                         OnPropertyChanged( "FontStyle" );
                         OnPropertyChanged( "FontSize" );
-                        OnPropertyChanged( "FontSize" );
                         break;
                     default:
                         break;

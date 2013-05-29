@@ -81,8 +81,6 @@ namespace KeyboardEditor.ViewModels
 
             _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
 
-            RegisterEvents();
-
             _context = ctx;
             KeyDownCommand = new CK.Windows.App.VMCommand( () => _context.SelectedElement = this );
             _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _context, k.Current.Mode );
@@ -94,12 +92,10 @@ namespace KeyboardEditor.ViewModels
             RefreshKeyModeCollection();
             RefreshLayoutKeyModeCollection();
 
-            RegisterEvents();
-            
             GetImageSourceCache();
-        }
 
-        
+            RegisterEvents();
+        }
 
         #region Properties
 
@@ -249,7 +245,7 @@ namespace KeyboardEditor.ViewModels
                 image.Source = _imageSource;
                 return image;
             }
-            set 
+            set
             {
                 _context.Config[_key.Current]["Image"] = value;
                 GetImageSourceCache();
@@ -537,8 +533,8 @@ namespace KeyboardEditor.ViewModels
                             LayoutKeyModeVM.TriggerPropertyChanged( "Opacity" );
                             break;
                         case "Image":
-                             GetImageSourceCache();
-                             OnPropertyChanged( "Image" );
+                            GetImageSourceCache();
+                            OnPropertyChanged( "Image" );
                             break;
                         case "Visible":
                             LayoutKeyModeVM.TriggerPropertyChanged( "Visible" );
@@ -678,7 +674,6 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "DownLabel", "KeyMode" );
                 DispatchPropertyChanged( "Enabled", "KeyMode" );
                 DispatchPropertyChanged( "Description", "KeyMode" );
-                DispatchPropertyChanged( "Image", "Image" );
             } );
 
             SetActionOnPropertyChanged( "X", () => DispatchPropertyChanged( "X", "LayoutKeyMode" ) );
@@ -692,21 +687,22 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "DownLabel", () => DispatchPropertyChanged( "DownLabel", "KeyMode" ) );
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
-            SetActionOnPropertyChanged( "Visible", () => { OnPropertyChanged( "IsVisible" ); OnPropertyChanged( "Visible" ); } );
             SetActionOnPropertyChanged( "Visible", () => { DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); } );
         }
 
         internal override void Dispose()
         {
-            //foreach( var item in KeyModes )
-            //{
-            //    item.Dispose();
-            //}
+            foreach( var item in _layoutKeyModes )
+            {
+                item.Dispose();
+            }
+            _layoutKeyModes.Clear();
 
-            //foreach( var item in LayoutKeyModes )
-            //{
-            //    item.Dispose();
-            //}
+            foreach( var item in _keyModes )
+            {
+                item.Dispose();
+            }
+            _keyModes.Clear();
 
             UnregisterEvents();
             base.Dispose();

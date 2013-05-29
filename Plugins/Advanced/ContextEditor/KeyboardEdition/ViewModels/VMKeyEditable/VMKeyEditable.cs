@@ -22,26 +22,26 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CK.WPF.ViewModel;
-using CK.Keyboard.Model;
-using System.Windows.Controls;
-using System.Windows;
-using CK.Plugin.Config;
 using CK.Core;
-using Microsoft.Win32;
-using System.Windows.Input;
-using System.IO;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Windows.Controls.Primitives;
-using CommonServices;
-using System.Collections.ObjectModel;
+using CK.Keyboard.Model;
+using CK.Plugin.Config;
 using CK.Windows.App;
+using CK.WPF.ViewModel;
+using CommonServices;
 using KeyboardEditor.Resources;
+using Microsoft.Win32;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -91,12 +91,12 @@ namespace KeyboardEditor.ViewModels
             _layoutKeyModes = new ObservableCollection<VMLayoutKeyModeEditable>();
             _keyModes = new ObservableCollection<VMKeyModeEditable>();
 
-
             RefreshKeyModeCollection();
             RefreshLayoutKeyModeCollection();
 
             RegisterEvents();
-            //Console.Out.WriteLine( "Creating VMKeyEditable : " + UpLabel );
+            
+            GetImageSourceCache();
         }
 
         
@@ -237,6 +237,7 @@ namespace KeyboardEditor.ViewModels
 
         #region Layout Properties
 
+        ImageSource _imageSource;
         /// <summary>
         /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
         /// </summary>
@@ -244,19 +245,31 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                object imageData = _context.SkinConfiguration[_key.CurrentLayout.Current]["Image"];
-
-                if( imageData != null )
-                {
-                    return WPFImageProcessingHelper.ProcessImage( imageData );
-                }
-
-                return null;
+                Image image = new Image();
+                image.Source = _imageSource;
+                return image;
             }
-            set { _context.Config[_key.Current]["Image"] = value; }
+            set 
+            {
+                _context.Config[_key.Current]["Image"] = value;
+                GetImageSourceCache();
+            }
         }
 
-       
+        /// <summary>
+        /// We save the bitmapImage that is the source of the image set to this key.
+        /// Thanks to that, we can call the Image property from multiple components.
+        /// If we save the Image itself in a cache, it can only be used in one component at a time.
+        /// </summary>
+        private void GetImageSourceCache()
+        {
+            object o = _context.SkinConfiguration[_key.CurrentLayout.Current]["Image"];
+            if( o != null )
+            {
+                _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
+            }
+            else _imageSource = null;
+        }
 
         /// <summary>
         /// Gets the X coordinate of this key, for the current <see cref="ILayoutKeyMode"/>.
@@ -498,26 +511,91 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            //TODO : OPTIMIZE
-            if( Model.Current.GetPropertyLookupPath().Contains( e.Obj ) )
-            {
-                OnPropertyChanged( "Image" );
-            }
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
-                LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "PressedBackground" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "HoverBackground" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "TextDecorations" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "LetterColor" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "Background" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "FontWeight" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
-                LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
+                if( String.IsNullOrWhiteSpace( e.Key ) )
+                {
+                    OnPropertyChanged( "Opacity" );
+                    OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "FontSize" );
+                    OnPropertyChanged( "FontStyle" );
+                    OnPropertyChanged( "ShowLabel" );
+                    OnPropertyChanged( "ShowImage" );
+                    OnPropertyChanged( "FontWeight" );
+                    OnPropertyChanged( "Background" );
+                    OnPropertyChanged( "LetterColor" );
+                    OnPropertyChanged( "HoverBackground" );
+                    OnPropertyChanged( "TextDecorations" );
+                    OnPropertyChanged( "PressedBackground" );
+                    OnPropertyChanged( "HighlightBackground" );
+                }
+                else
+                {
+                    switch( e.Key )
+                    {
+                        case "Opacity":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "Opacity" );
+                            break;
+                        case "Image":
+                             GetImageSourceCache();
+                             OnPropertyChanged( "Image" );
+                            break;
+                        case "Visible":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "Visible" );
+                            break;
+                        case "FontSize":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
+                            break;
+                        case "FontStyle":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
+                            break;
+                        case "ShowLabel":
+                            OnPropertyChanged( "ShowLabel" );
+                            break;
+                        case "ShowImage":
+                            OnPropertyChanged( "ShowImage" );
+                            break;
+                        case "FontWeight":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "FontWeight" );
+                            break;
+                        case "Background":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "Background" );
+                            break;
+                        case "LetterColor":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "LetterColor" );
+                            break;
+                        case "HoverBackground":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "HoverBackground" );
+                            break;
+                        case "TextDecorations":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "TextDecorations" );
+                            break;
+                        case "PressedBackground":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "PressedBackground" );
+                            break;
+                        case "HighlightBackground":
+                            LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
-                OnPropertyChanged( "ShowImage" );
-                OnPropertyChanged( "ShowLabel" );
-                OnPropertyChanged( "Image" );
+                //Not optimized way
+                //LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "PressedBackground" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "HoverBackground" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "TextDecorations" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "LetterColor" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "Background" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "FontWeight" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
+                //LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
+
+                //OnPropertyChanged( "ShowImage" );
+                //OnPropertyChanged( "ShowLabel" );
+                //GetImageCache();
+                //OnPropertyChanged( "Image" );
             }
         }
 

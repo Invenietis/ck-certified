@@ -92,7 +92,7 @@ namespace CK.StandardPlugins.CommandManager
             }
         }
 
-        public void SendCommands( object sender, IReadOnlyList<string> commands )
+        public void SendCommands( object sender, ICKReadOnlyList<string> commands )
         {
             if( _runningCommands == null ) _runningCommands = new Queue<DictionaryEntry>();
             bool isRunning = _runningCommands.Count > 0;

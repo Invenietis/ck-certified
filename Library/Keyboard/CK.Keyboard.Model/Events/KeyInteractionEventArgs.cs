@@ -67,7 +67,7 @@ namespace CK.Keyboard.Model
         /// be made to the <see cref="IKeyProgram"/> associated to the key without interfering
         /// with these commands.
         /// </summary>
-        public IReadOnlyList<string> Commands { get; private set; }
+        public ICKReadOnlyList<string> Commands { get; private set; }
 
         public KeyInteractionEventArgs( IKey k, IKeyProgram p, KeyInteractionEventType eventType )
             : base( k )
@@ -76,7 +76,7 @@ namespace CK.Keyboard.Model
             // Clone the commands: the emitted commands is a snapshot of the commands
             // at the time of the event.
             string[] copy = p.Commands.ToArray();
-            Commands = new ReadOnlyListOnIList<string>( copy );
+            Commands = new CKReadOnlyListOnIList<string>( copy );
         }
     }
 

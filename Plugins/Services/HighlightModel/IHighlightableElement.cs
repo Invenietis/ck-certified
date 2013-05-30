@@ -11,7 +11,7 @@ namespace HighlightModel
         /// <summary>
         /// Gets the collection of inner children of this element.
         /// </summary>
-        IReadOnlyList<IHighlightableElement> Children { get; }
+        ICKReadOnlyList<IHighlightableElement> Children { get; }
 
         /// <summary>
         /// Gets the X position of this element. This property can be used by scroll algorythms to determine the scroll scenario.

@@ -37,6 +37,7 @@ using System.Windows.Media.Imaging;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
+using CK.Storage;
 using CK.Windows.App;
 using CK.WPF.ViewModel;
 using CommonServices;

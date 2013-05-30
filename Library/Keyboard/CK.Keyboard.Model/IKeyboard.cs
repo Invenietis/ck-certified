@@ -123,7 +123,7 @@ namespace CK.Keyboard.Model
         /// <summary>
         /// Gets all the <see cref="IKey"/> that this keyboard contains.
         /// </summary>
-        IReadOnlyList<IKey> Keys { get; }
+        ICKReadOnlyList<IKey> Keys { get; }
 
         /// <summary>
         /// Fires when a new <see cref="IKey">key</see> has been created in a one 

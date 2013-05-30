@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CK-Structured version="2.5.5">
   <CKContext>
-   <RequirementLayer Name="Keyboard">
-              <PluginRequirements></PluginRequirements>
-              <ServiceRequirements></ServiceRequirements>
-            </RequirementLayer>
+    <RequirementLayer Name="Keyboard">
+      <PluginRequirements></PluginRequirements>
+      <ServiceRequirements></ServiceRequirements>
+    </RequirementLayer>
     <PluginData>
       <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
         <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Keyboard Name="Ergonomic">
+          <Keyboard Name="Ergonomic" IsCurrent="1">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IDynCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IHelpCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IDynCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
@@ -88,16 +88,42 @@
                   <Zone Name="">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="5" Y="0" W="80" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="5" Y="0" W="80" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="String">pack://application:,,,/SimpleSkin;component/Images/retarr.png</data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="175" Y="0" W="505" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="175" Y="0" W="505" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="String">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADTSURBVFhH7VTBCcMwDAylI2aQ7tFHx8gja2WLFhodRGBMJCv4DHlI4IfxSXc+W5qmjHQgHUgH4g7MAn0H4MAASw0U/Mr6y/o4lXEGDLA0ESU5ilsilFwxNBHLQaqFz0TU5IpBbnc8pcLqiLDIkYNcSngiamewp5LrDaIihpBHRVwmf1x8oJ/gNycHZ8AMC+vDlf/AmxNdwiLk3pwYQo4391q0i1STW33emhPdIl4nQ6j+7ZYI5FKiFGG1Wi2CRq43QMFWn6sIOjnFxiySDqQDt3RgB1MciXsHCwQQAAAAAElFTkSuQmCC</data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="90" Y="0" W="80" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="90" Y="0" W="80" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="String">pack://application:,,,/SimpleSkin;component/Images/retarr.png</data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="685" Y="0" W="80" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="685" Y="0" W="80" H="50" Visible="true">
+                          <PluginsData>
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.0.0" name="SimpleSkin">
+                              <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                                <Image Source="pack://application:,,,/SimpleSkin;component/Images/tab.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+                              </data>
+                            </p>
+                          </PluginsData>
+                        </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -109,7 +135,14 @@
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">519,115</Size>
                     </data>
-				          </p>
+                    <data key="InsideBorderColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#00000000</Color>
+                    </data>
+                    <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
+                  </p>
+                  <p guid="66ad1d1c-bf19-405d-93d3-30ca39b9e52f" version="1.0.0" name="Keyboard editor">
+                    <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
+                  </p>
                 </PluginsData>
               </Layout>
             </Layouts>

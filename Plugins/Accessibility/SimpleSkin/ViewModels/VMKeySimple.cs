@@ -38,6 +38,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xaml;
 using System.Diagnostics;
+using CK.Storage;
 
 namespace SimpleSkin.ViewModels
 {
@@ -679,9 +680,9 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        public IReadOnlyList<IHighlightableElement> Children
+        public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return ReadOnlyListEmpty<IHighlightableElement>.Empty; }
+            get { return CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         public SkippingBehavior Skip

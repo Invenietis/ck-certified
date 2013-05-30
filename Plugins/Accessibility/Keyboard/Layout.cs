@@ -193,7 +193,7 @@ namespace CK.Keyboard
             return l;
         }
 
-        internal void OnAvailableModeRemoved( IReadOnlyList<IKeyboardMode> modes )
+        internal void OnAvailableModeRemoved( ICKReadOnlyList<IKeyboardMode> modes )
         {
             foreach( LayoutZone zl in LayoutZones )
             {
@@ -283,7 +283,7 @@ namespace CK.Keyboard
             get { return FindOrCreate( Keyboard.Zones.Default ); }
         }
 
-        bool IReadOnlyCollection<ILayoutZone>.Contains( object item )
+        bool ICKReadOnlyCollection<ILayoutZone>.Contains( object item )
         {
             ILayoutZone l = item as ILayoutZone;
             return l != null ? l.Layout == this : false;

@@ -33,7 +33,7 @@ namespace CK.Keyboard.Model
     /// layout object (for zone and key) is automatically available for a any existing <see cref="ILayout"/> (their life cycle 
     /// is automatically handled by the kernel).
     /// </summary>
-    public interface ILayoutZoneCollection : IReadOnlyCollection<ILayoutZone>
+    public interface ILayoutZoneCollection : ICKReadOnlyCollection<ILayoutZone>
     {
         /// <summary>
         /// Gets the <see cref="ILayout"/> to which this collection belongs. 

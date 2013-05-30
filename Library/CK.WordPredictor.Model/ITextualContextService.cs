@@ -17,7 +17,7 @@ namespace CK.WordPredictor.Model
         EndToken
     };
 
-    public interface ITokenCollection : INotifyCollectionChanged, IReadOnlyList<IToken>
+    public interface ITokenCollection : INotifyCollectionChanged, ICKReadOnlyList<IToken>
     {
     }
 

@@ -21,7 +21,7 @@ namespace BasicScroll
     {
         DispatcherTimer _timer;
         List<IHighlightableElement> _elements;
-        IReadOnlyList<IHighlightableElement> _roElements;
+        ICKReadOnlyList<IHighlightableElement> _roElements;
 
         int _currentId = -1;
         Stack<IHighlightableElement> _currentElementParents = null;
@@ -61,9 +61,9 @@ namespace BasicScroll
             _timer.Tick += OnInternalBeat;
         }
 
-        internal IReadOnlyList<IHighlightableElement> RegisteredElements
+        internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
-            get { return _roElements ?? ( _roElements = new ReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
+            get { return _roElements ?? ( _roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
         }
 
         void OnInternalBeat( object sender, EventArgs e )
@@ -121,7 +121,7 @@ namespace BasicScroll
                 if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
                 IHighlightableElement parent = _currentElementParents.Pop();
-                IReadOnlyList<IHighlightableElement> parentSibblings = null;
+                ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
                 if( _currentElementParents.Count > 0 ) parentSibblings = _currentElementParents.Peek().Children;
                 else parentSibblings = RegisteredElements;
 
@@ -137,7 +137,7 @@ namespace BasicScroll
             }
             else
             {
-                IReadOnlyList<IHighlightableElement> elements = null;
+                ICKReadOnlyList<IHighlightableElement> elements = null;
                 // get the sibblings of the current elements
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;

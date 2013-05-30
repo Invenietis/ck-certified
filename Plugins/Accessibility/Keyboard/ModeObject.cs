@@ -43,19 +43,19 @@ namespace CK.Keyboard
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TI"></typeparam>
-    abstract class ModeObjectRoot<T,TI> : IReadOnlyCollection<TI>
+    abstract class ModeObjectRoot<T,TI> : ICKReadOnlyCollection<TI>
         where T : class, IModeDependantObjectImpl<T>, TI
     {
         T _first;
         T _last;
         T _current;
         int _count;
-        IReadOnlyCollection<T> _enumObjects;
+        ICKReadOnlyCollection<T> _enumObjects;
 
         protected T First { get { return _first; } }
         protected T Last { get { return _last; } }
         public T Current { get { return _current; } }
-        protected IReadOnlyCollection<T> Objects { get { return _enumObjects; } }
+        protected ICKReadOnlyCollection<T> Objects { get { return _enumObjects; } }
 
 
         protected void Initialize( IKeyboardContextMode contextMode )
@@ -329,7 +329,7 @@ namespace CK.Keyboard
             return true;
         }
 
-        internal void OnAvailableModeRemoved( IReadOnlyList<IKeyboardMode> modes )
+        internal void OnAvailableModeRemoved( ICKReadOnlyList<IKeyboardMode> modes )
         {
             Debug.Assert( modes.Count > 0, "Not called if useless." );
 
@@ -426,7 +426,7 @@ namespace CK.Keyboard
 
         protected abstract void OnModeChanged( T o, IKeyboardMode prevMode );
 
-        #region Collections Objects & IReadOnlyCollection<TI> implementations
+        #region Collections Objects & ICKReadOnlyCollection<TI> implementations
 
         /// <summary>
         /// Enumerator implementation with an exposed TOut type.
@@ -484,7 +484,7 @@ namespace CK.Keyboard
         /// <summary>
         /// Enumerable implementation.
         /// </summary>
-        sealed class EO : IReadOnlyCollection<T>
+        sealed class EO : ICKReadOnlyCollection<T>
         {
             ModeObjectRoot<T,TI> _list;
 
@@ -514,7 +514,7 @@ namespace CK.Keyboard
             }
         }
 
-        #region IReadOnlyCollection<TI>
+        #region ICKReadOnlyCollection<TI>
 
         public int Count
         {

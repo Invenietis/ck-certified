@@ -71,7 +71,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         VMLogServiceConfig _holder;
         IList<ILogParameterInfo> _parameters;
-        IReadOnlyList<ILogParameterInfo> _parametersEx;
+        ICKReadOnlyList<ILogParameterInfo> _parametersEx;
         bool _doLogErrors;
         bool _doLogStartRaise;
         bool _doLogParameters;
@@ -128,7 +128,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         }
 
         public IList<ILogParameterInfo> Parameters { get { return _parameters; } }
-        Core.IReadOnlyList<ILogParameterInfo> ILogEventConfig.Parameters
+        Core.ICKReadOnlyList<ILogParameterInfo> ILogEventConfig.Parameters
         {
             get { return _parametersEx; }
         }
@@ -153,7 +153,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             _logOptionsDataPath = _dataPath + "-EventLogOptions";
 
             _parameters = parameters;
-            _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>( _parameters );
+            _parametersEx = new CKReadOnlyListOnIList<ILogParameterInfo>( _parameters );
 
             _doLogErrors = ( ( logOptions & ServiceLogEventOptions.LogErrors ) == ServiceLogEventOptions.LogErrors );
             _doLogStartRaise = ( ( logOptions & ServiceLogEventOptions.StartRaise ) == ServiceLogEventOptions.StartRaise );

@@ -37,18 +37,18 @@ namespace KeyboardEditor.ViewModels
     public class VMZoneEditable : VMContextElementEditable
     {
         IZone _zone;
-        ObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
+        CKObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
 
         public IZone Model { get { return _zone; } }
 
-        public ObservableSortedArrayKeyList<VMKeyEditable, int> Keys { get { return _keys; } }
+        public CKObservableSortedArrayKeyList<VMKeyEditable, int> Keys { get { return _keys; } }
 
         public VMZoneEditable( VMContextEditable ctx, IZone zone )
             : base( ctx )
         {
             _ctx = ctx;
             _zone = zone;
-            _keys = new ObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
+            _keys = new CKObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
             {

@@ -34,17 +34,17 @@ namespace CK.Plugins.ObjectExplorer
         }
         public object Data { get { return this; } }
 
-        public string OSName { get { return OSVersionInfo.Name; } }
+        public string OSName { get { return OSVersionInfo.OSLevelDisplayName; } }
 
-        public string OSEditionName { get { return OSVersionInfo.Edition; } }
+        public string OSEditionName { get { return OSVersionInfo.OSLevelDisplayName; } }
 
-        public string OSServicePack { get { return OSVersionInfo.ServicePack; } }
+        public string OSServicePack { get { return OSVersionInfo.OSVersion.ServicePack; } }
 
-        public int OSBuildVersion { get { return OSVersionInfo.BuildVersion; } }
+        public int OSBuildVersion { get { return OSVersion.Build; } }
 
-        public int OSRevisionVersion { get { return OSVersionInfo.RevisionVersion; } }
+        public int OSRevisionVersion { get { return OSVersion.Revision; } }
 
-        public Version OSVersion { get { return OSVersionInfo.Version; } }
+        public Version OSVersion { get { return OSVersionInfo.OSVersion.Version; } }
 
         public string MachineName { get { return Environment.MachineName; } }
 
@@ -54,6 +54,6 @@ namespace CK.Plugins.ObjectExplorer
 
         public OSVersionInfo.ProcessorArchitecture MachineBits { get { return OSVersionInfo.ProcessorBits; } }
 
-        public OSVersionInfo.SoftwareArchitecture SoftBits { get { return OSVersionInfo.ProgramBits; } }
+        public OSVersionInfo.SoftwareArchitecture SoftBits { get { return OSVersionInfo.ProcessBits; } }
     }
 }

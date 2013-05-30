@@ -31,7 +31,7 @@ namespace CK.Keyboard.Model
     /// <summary>
     /// Collection containing all the zones corresponding to a keyboard.
     /// </summary>
-    public interface IZoneCollection : IReadOnlyCollection<IZone>
+    public interface IZoneCollection : ICKReadOnlyCollection<IZone>
     {
         /// <summary>
         /// Gets the <see cref="IKeyboardContext"/> that hold the <see cref="Keyboard"/>. 

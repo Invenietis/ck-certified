@@ -34,8 +34,8 @@ namespace SimpleSkin.ViewModels
 {
     public class VMZoneSimple : VMContextElement, IHighlightableElement
     {
-        public ObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
-        ObservableSortedArrayKeyList<VMKeySimple, int> _keys;
+        public CKObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
+        CKObservableSortedArrayKeyList<VMKeySimple, int> _keys;
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
@@ -43,7 +43,7 @@ namespace SimpleSkin.ViewModels
             : base( ctx )
         {
              _zone = zone;
-            _keys = new ObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
+             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
             {
@@ -59,7 +59,7 @@ namespace SimpleSkin.ViewModels
 
         #region IHighlightable members
 
-        public IReadOnlyList<IHighlightableElement> Children
+        public ICKReadOnlyList<IHighlightableElement> Children
         {
             get { return Keys; }
         }

@@ -28,7 +28,7 @@ using CK.Core;
 
 namespace CK.Keyboard.Model
 {
-    public interface IKeyboardCollection : IReadOnlyCollection<IKeyboard>
+    public interface IKeyboardCollection : ICKReadOnlyCollection<IKeyboard>
     {
         /// <summary>
         /// Gets the <see cref="IKeyboardContext"/> to which these keyboards belong.

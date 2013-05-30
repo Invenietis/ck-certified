@@ -7,7 +7,7 @@ using CK.Core;
 
 namespace CK.WordPredictor.Model
 {
-    public interface IWordPredictedCollection : IReadOnlyList<IWordPredicted>, INotifyCollectionChanged
+    public interface IWordPredictedCollection : ICKReadOnlyList<IWordPredicted>, INotifyCollectionChanged
     {
     }
 }

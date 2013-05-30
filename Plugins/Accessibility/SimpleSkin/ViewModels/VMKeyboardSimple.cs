@@ -224,15 +224,15 @@ namespace SimpleSkin.ViewModels
 
         #region IHighlightableElement Members
 
-        public IReadOnlyList<IHighlightableElement> Children
+        public ICKReadOnlyList<IHighlightableElement> Children
         {
             get
             {
                 if( Zones.Count > 0 )
                 {
-                    return new ReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
+                    return new CKReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
                 }
-                return new ReadOnlyListOnIList<IHighlightableElement>( new List<IHighlightableElement>() );
+                return new CKReadOnlyListOnIList<IHighlightableElement>( new List<IHighlightableElement>() );
             }
         }
 

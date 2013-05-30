@@ -31,7 +31,7 @@ namespace CK.Keyboard.Model
     /// <summary>
     /// The collection of <see cref="IKey"/> accessible from <see cref="IZone.Keys"/>.
     /// </summary>
-    public interface IKeyCollection : IReadOnlyList<IKey>
+    public interface IKeyCollection : ICKReadOnlyList<IKey>
     {
         /// <summary>
         /// Gets the <see cref="IZone"/> to which these keys belong.

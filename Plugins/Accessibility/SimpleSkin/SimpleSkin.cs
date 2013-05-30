@@ -170,9 +170,6 @@ namespace SimpleSkin
                 UpdateAutoHideConfig();
 
                 RegisterEvents();
-
-
-
             }
             else
             {
@@ -515,7 +512,8 @@ namespace SimpleSkin
         /// </summary>
         public void ToggleHostMinimized()
         {
-            HostManipulator.ToggleMinimize( _skinWindow.LastFocusedWindowHandle );
+            //TODOJL
+            //HostManipulator.ToggleMinimize( _skinWindow.LastFocusedWindowHandle );
         }
 
         /// <summary>
@@ -655,9 +653,9 @@ namespace SimpleSkin
             }
         }
 
-        public IReadOnlyList<IHighlightableElement> Children
+        public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return ReadOnlyListEmpty<IHighlightableElement>.Empty; }
+            get { return CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         public int X

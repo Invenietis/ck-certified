@@ -71,7 +71,7 @@ namespace SimpleSkin
         {
             _interopHelper = new WindowInteropHelper( this );
 
-            Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (uint)Win.WS_EX.NOACTIVATE );
+            Win.Functions.SetWindowLong( _interopHelper.Handle, Win.WindowLongIndex.GWL_EXSTYLE, (uint)CK.Windows.Interop.Win.WS_EX_NOACTIVATE );
 
             HwndSource mainWindowSrc = HwndSource.FromHwnd( _interopHelper.Handle );
 
@@ -83,13 +83,13 @@ namespace SimpleSkin
 
         IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
         {
-            switch( (Win.WM)msg )
+            switch( msg )
             {
-                case Win.WM.NCLBUTTONDOWN:
+                case Win.WM_NCLBUTTONDOWN:
                     _ncbuttondown = true;
                     GetFocus();
                     break;
-                case Win.WM.NCMOUSEMOVE:
+                case Win.WM_NCMOUSEMOVE:
                     if( _ncbuttondown )
                     {
                         ReleaseFocus();

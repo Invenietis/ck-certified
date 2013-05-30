@@ -36,7 +36,7 @@ namespace CK.Keyboard.Model
     /// <summary>
     /// This collection is hold by <see cref="ILayoutKey"/>.
     /// </summary>
-    public interface ILayoutKeyModeCollection : IReadOnlyCollection<ILayoutKeyMode>
+    public interface ILayoutKeyModeCollection : ICKReadOnlyCollection<ILayoutKeyMode>
     {
         /// <summary>
         /// Gets the <see cref="ILayoutKey"/>.

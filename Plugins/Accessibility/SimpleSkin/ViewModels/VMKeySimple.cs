@@ -114,6 +114,9 @@ namespace SimpleSkin.ViewModels
         {
             SetActionOnPropertyChanged( "Current", () =>
             {
+                SafeUpdateUpLabel();
+                SafeUpdateDownLabel();
+                SafeUpdateIsEnabled();
                 OnPropertyChanged( "UpLabel" );
                 OnPropertyChanged( "DownLabel" );
                 OnPropertyChanged( "Enabled" );

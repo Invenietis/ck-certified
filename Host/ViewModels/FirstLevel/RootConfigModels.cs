@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using CK.Keyboard.Model;
 using CK.WPF.Controls;
 
@@ -66,7 +67,9 @@ namespace Host.ViewModels
 
         void Keyboards_CurrentChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            OnPropertyChanged( "Current" );
+            //This call is made on the Application Main Thread as it triggers changes in the host, which has been created by the main thread.
+            Application.Current.Dispatcher.BeginInvoke( (Action)( () =>
+            OnPropertyChanged( "Current" ) ), null );
         }
 
         private void UnregisterEvents()

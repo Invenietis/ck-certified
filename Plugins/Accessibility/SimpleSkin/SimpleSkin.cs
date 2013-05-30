@@ -302,7 +302,8 @@ namespace SimpleSkin
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
-                Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+                _ctxVm.Thread.Dispatcher.BeginInvoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ), null );
+                //Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
             }
 
             if( e.Next == null )
@@ -356,14 +357,22 @@ namespace SimpleSkin
                 }
                 else
                 {
+                    int w;
+                    int h;
                     var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
                     if( viewPortSize != null )
                     {
                         Size size = (Size)viewPortSize;
-                        SetDefaultWindowPosition( (int)size.Width, (int)size.Height );
+                        w = (int)size.Width;
+                        h = (int)size.Height;
                     }
                     else
-                        SetDefaultWindowPosition( _ctxVm.KeyboardVM.W, _ctxVm.KeyboardVM.H );
+                    {
+                        w = _ctxVm.KeyboardVM.W;
+                        h = _ctxVm.KeyboardVM.H;
+                    }
+
+                    SetDefaultWindowPosition( w, h );
                 }
             }
         }

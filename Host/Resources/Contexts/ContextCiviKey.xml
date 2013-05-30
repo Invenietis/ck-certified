@@ -4067,7 +4067,7 @@
                         <KeyUp Label="Clavier souris" />
                         <KeyPressed>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>keyboardswitch:Mouse Keyboard</Cmd>
+                            <Cmd>keyboardswitch:Clavier-souris</Cmd>
                           </KeyProgram>
                         </KeyPressed>
                       </KeyMode>

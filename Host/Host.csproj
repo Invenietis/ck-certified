@@ -369,7 +369,9 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(SolutionDir)ThirdParty\SendInputDriver.dll $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y</PostBuildEvent>
+    <PostBuildEvent>xcopy $(SolutionDir)ThirdParty\SendInputDriver.dll $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y
+xcopy $(SolutionDir)ThirdParty\SendInputDriver.pdb $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y
+xcopy $(SolutionDir)ThirdParty\SendInputDriver.xml $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

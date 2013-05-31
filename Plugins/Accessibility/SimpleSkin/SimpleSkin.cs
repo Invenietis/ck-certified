@@ -38,7 +38,7 @@ using CK.Windows.Helpers;
 using System.Linq;
 using CommonServices.Accessibility;
 using System.Diagnostics;
-using CK.Plugins.SendInput;
+using CK.Plugins.SendInputDriver;
 using HighlightModel;
 using System.Collections.Generic;
 using CK.WPF.ViewModel;

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using CK.Plugins.SendInput;
+using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI.ViewModels

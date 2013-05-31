@@ -11,7 +11,7 @@ using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Plugins.SendInput;
+using CK.Plugins.SendInputDriver;
 using CommonServices;
 
 namespace BasicScroll

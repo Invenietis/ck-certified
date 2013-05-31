@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BasicCommandHandlers;
 using CK.Plugin;
-using CK.Plugins.SendInput;
+using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
 

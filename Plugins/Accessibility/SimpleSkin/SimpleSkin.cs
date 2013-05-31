@@ -46,42 +46,6 @@ using System.Threading;
 
 namespace SimpleSkin
 {
-    public class WPFThread
-    {
-        public readonly Dispatcher Dispatcher;
-        readonly object _lock;
-
-        public WPFThread( string name )
-        {
-            _lock = new object();
-            Thread t = new Thread( StartDispatcher );
-            t.Name = name;
-            t.SetApartmentState( ApartmentState.STA );
-            lock( _lock )
-            {
-                t.Start();
-                Monitor.Wait( _lock );
-            }
-            Dispatcher = Dispatcher.FromThread( t );
-        }
-
-        void StartDispatcher()
-        {
-            // This creates the Dispatcher and pushes the job.
-            Dispatcher.CurrentDispatcher.BeginInvoke( (System.Action)DispatcherStarted, null );
-            // Initializes a SynchronizationContext (for tasks ot other components that would require one). 
-            SynchronizationContext.SetSynchronizationContext( new DispatcherSynchronizationContext( Dispatcher.CurrentDispatcher ) );
-            Dispatcher.Run();
-        }
-
-        void DispatcherStarted()
-        {
-            lock( _lock )
-            {
-                Monitor.Pulse( _lock );
-            }
-        }
-    }
 
     [Plugin( SimpleSkin.PluginIdString,
         PublicName = PluginPublicName,
@@ -133,7 +97,9 @@ namespace SimpleSkin
         [RequiredService]
         public IContext Context { get; set; }
 
-        WPFThread _secondThread;
+        CKNoFocusWindowManager _noFocusWindowManager;
+        ISimpleDispatcher _dispatcher;
+        //_secondThread;
 
         #region IPlugin Implementation
 
@@ -148,18 +114,20 @@ namespace SimpleSkin
 
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                _secondThread = new WPFThread( "SkinThread" );
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config, _secondThread );
+                _noFocusWindowManager = new CKNoFocusWindowManager();
+                _dispatcher = _noFocusWindowManager.NoFocusWindowThreadDispatcher;
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config, _dispatcher );
 
-                _secondThread.Dispatcher.Invoke( (System.Action)( () =>
+                _isStarted = true;
+                _skinWindow = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( (Func<SkinWindow>)( () =>
                 {
-                    _isStarted = true;
-                    _skinWindow = new SkinWindow() { DataContext = _ctxVm };
+                    return new SkinWindow() { DataContext = _ctxVm };
+                } ) );
 
-                    //while( true ) { }
 
+                _dispatcher.Invoke( (System.Action)( () =>
+                {
                     InitializeWindowLayout();
-
 
                     _skinWindow.Show();
 
@@ -189,10 +157,10 @@ namespace SimpleSkin
 
                 UnregisterEvents();
 
-                _secondThread.Dispatcher.BeginInvoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ) );
+                _dispatcher.Invoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ) );
 
                 _forceClose = true;
-                _secondThread.Dispatcher.BeginInvoke( (Action)( () => _skinWindow.Close() ) );
+                _dispatcher.BeginInvoke( (Action)( () => _skinWindow.Close() ) );
 
                 if( _miniView != null )
                 {
@@ -211,6 +179,9 @@ namespace SimpleSkin
 
         public void Teardown()
         {
+            //TODO : remove when the NoFocusWindowManager is exported to a service.
+            //Then register the Shutdown call to the ApplicationExiting event.
+            _noFocusWindowManager.Shutdown();
         }
 
         #region ToolMethods
@@ -302,8 +273,7 @@ namespace SimpleSkin
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
-                _ctxVm.Thread.Dispatcher.BeginInvoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ), null );
-                //Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+                _ctxVm.SkinDispatcher.BeginInvoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ), null );
             }
 
             if( e.Next == null )
@@ -521,8 +491,7 @@ namespace SimpleSkin
         /// </summary>
         public void ToggleHostMinimized()
         {
-            //TODOJL
-            //HostManipulator.ToggleMinimize( _skinWindow.LastFocusedWindowHandle );
+            HostManipulator.ToggleMinimize( _skinWindow.ThisWindowHandle );
         }
 
         /// <summary>
@@ -538,8 +507,12 @@ namespace SimpleSkin
             if( !_viewHidden )
             {
                 _viewHidden = true;
-                _skinWindow.Hide();
-                ShowMiniView();
+
+                _dispatcher.Invoke( (Action)( () =>
+                {
+                    ShowMiniView();
+                    _skinWindow.Hide();
+                } ), null );
 
                 if( Highlighter.Status == InternalRunningStatus.Started )
                 {
@@ -559,9 +532,12 @@ namespace SimpleSkin
             if( _viewHidden )
             {
                 _viewHidden = false;
-                _miniView.Hide();
 
-                _skinWindow.Show();
+                _dispatcher.Invoke( (Action)( () =>
+                {
+                    _miniView.Hide();
+                    _skinWindow.Show();
+                } ), null );
                 if( Highlighter.Status == InternalRunningStatus.Started )
                 {
                     Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );

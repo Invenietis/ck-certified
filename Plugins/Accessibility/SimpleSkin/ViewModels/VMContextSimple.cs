@@ -30,6 +30,7 @@ using System;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
@@ -52,11 +53,11 @@ namespace SimpleSkin.ViewModels
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
 
-        public WPFThread Thread { get; private set; }
+        public ISimpleDispatcher SkinDispatcher { get; private set; }
 
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, WPFThread thread )
+        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, ISimpleDispatcher skinDispatecher )
         {
-            Thread = thread;
+            SkinDispatcher = skinDispatecher;
 
             _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();

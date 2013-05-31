@@ -55,7 +55,7 @@ namespace KeyboardEditor.ViewModels
             _keyboard = kb;
             _holder = ctx;
             Model = kb;
-            _keyboardModes = new ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>>();
+            _keyboardModes = new ObservableCollection<VMKeyboardMode>();
 
             foreach( IZone zone in _keyboard.Zones )
             {
@@ -138,7 +138,7 @@ namespace KeyboardEditor.ViewModels
             _keyboardModes.Clear();
             foreach( var item in AvailableModes )
             {
-                _keyboardModes.Add( new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _holder, item ) );
+                _keyboardModes.Add( new VMKeyboardMode( _holder, item ) );
             }
             OnPropertyChanged( "KeyboardModes" );
         }
@@ -191,9 +191,9 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/>'s AtomicModes, wrapped in <see cref="VMKeyboardMode"/>.
         /// </summary>
-        public ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> KeyboardModes { get { return _keyboardModes; } }
+        public ObservableCollection<VMKeyboardMode> KeyboardModes { get { return _keyboardModes; } }
 
-        ObservableCollection<VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>> _keyboardModes;
+        ObservableCollection<VMKeyboardMode> _keyboardModes;
 
         private IEnumerable<IKeyboardMode> AvailableModes { get { return Model.AvailableMode.AtomicModes; } }
 

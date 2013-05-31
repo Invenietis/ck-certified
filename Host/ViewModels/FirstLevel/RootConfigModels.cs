@@ -68,8 +68,7 @@ namespace Host.ViewModels
         void Keyboards_CurrentChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             //This call is made on the Application Main Thread as it triggers changes in the host, which has been created by the main thread.
-            Application.Current.Dispatcher.BeginInvoke( (Action)( () =>
-            OnPropertyChanged( "Current" ) ), null );
+            Application.Current.Dispatcher.BeginInvoke( (Action)( () => OnPropertyChanged( "Current" ) ), null );
         }
 
         private void UnregisterEvents()

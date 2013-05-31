@@ -26,14 +26,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace System.Runtime.CompilerServices
-{
-    [AttributeUsage( AttributeTargets.Parameter, AllowMultiple = false, Inherited = true )]
-    public sealed class CallerMemberNameAttribute : Attribute
-    {
-    }
-}
-
 namespace CK.WPF.ViewModel
 {
     /// <summary>

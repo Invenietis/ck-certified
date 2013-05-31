@@ -1,4 +1,4 @@
-﻿<ckwincore:NoFocusWindow x:Class="SimpleSkin.SkinWindow"
+﻿<ckwincore:CKWindow x:Class="SimpleSkin.SkinWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="http://schemas.civikey.org/StandardViews"
@@ -9,9 +9,12 @@
     Background="Transparent"
     WindowStyle="None"
     Topmost="True" 
+    ShowActivated="False"                
     Focusable="False"
     Title="Simple skin">
     <Window.Resources>
+        <!-- AllowsTransparency="True"
+         -->
         <ctrls:NotNullConverter x:Key="notnull"/>
         <Style TargetType="{x:Type view:StdKeyboardView}">
             <Setter Property="Width" Value="{Binding W}" />
@@ -80,8 +83,8 @@
     </Window.Resources>
     <Grid  Focusable="False" >
         <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
-        <Viewbox Stretch="Fill">
+        <Viewbox Stretch="Fill" ><!--Margin="-10,10,10,-10"-->
             <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
         </Viewbox>
     </Grid>
-</ckwincore:NoFocusWindow>
+</ckwincore:CKWindow>

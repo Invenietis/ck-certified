@@ -132,10 +132,14 @@ namespace Host
 
         void ExitHost( bool hostShouldExit )
         {
+            var thisView = GetView( null ) as Window;
             if( hostShouldExit )
             {
-                var thisView = GetView( null ) as Window;
-                if( thisView != null ) thisView.Hide();
+                if( thisView != null )
+                {
+
+                    thisView.Dispatcher.Invoke( (System.Action)( () => thisView.Hide() ), null );
+                }
             }
 
             CivikeyHost.SaveContext();
@@ -145,7 +149,7 @@ namespace Host
             if( hostShouldExit )
             {
                 _forceClose = true;
-                this.TryClose();
+                thisView.Dispatcher.Invoke( (System.Action)( () => TryClose() ), null );
             }
         }
 
@@ -177,7 +181,7 @@ namespace Host
                 e.Cancel = mvm.ModalResult != ModalResult.Yes;
 
                 _closing = !e.Cancel;
-                if( !_closing && bestParent != thisView ) thisView.Activate();
+                if( !_closing && bestParent != thisView ) thisView.Dispatcher.Invoke( (System.Action)( () => thisView.Activate() ), null );
             }
             else
                 e.Cancel = true;
@@ -199,13 +203,13 @@ namespace Host
         {
             get
             {
-                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
+                return _showHelpCommand ?? ( _showHelpCommand = new VMCommand( () =>
                 {
                     CivikeyHost.FireShowHostHelp();
-                } ));
+                } ) );
             }
         }
-        
+
         /// <summary>
         /// Gets whether the window is visible or not.
         /// This boolean is only valid when <see cref="Host.AppViewModel.ShowTaskbarIcon"/> is set to false, otherwise it doesn't track the actual visibility of the window.
@@ -233,10 +237,16 @@ namespace Host
         /// <param name="lastFocusedWindowsHandle"></param>
         public void ToggleMinimize( IntPtr lastFocusedWindowsHandle )
         {
-            if( !IsMinimized && new WindowInteropHelper( (Window)this.GetView( null ) ).Handle != lastFocusedWindowsHandle )
+            IntPtr hostWindowHandle = IntPtr.Zero;
+            Application.Current.Dispatcher.Invoke( (System.Action)( () =>
+            {
+                hostWindowHandle = new WindowInteropHelper( (Window)this.GetView( null ) ).Handle;
+            } ), null );
+
+            if( !IsMinimized && hostWindowHandle != lastFocusedWindowsHandle )
             {
                 //If the window is not minimized but doesn't have the focus, it is activated.
-                App.Current.MainWindow.Activate();
+                Application.Current.Dispatcher.Invoke( (System.Action)( () => App.Current.MainWindow.Activate() ), null );
             }
             else
             {

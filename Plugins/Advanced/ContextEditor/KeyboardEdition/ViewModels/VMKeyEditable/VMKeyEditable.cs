@@ -84,8 +84,8 @@ namespace KeyboardEditor.ViewModels
 
             _context = ctx;
             KeyDownCommand = new CK.Windows.App.VMCommand( () => _context.SelectedElement = this );
-            _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _context, k.Current.Mode );
-            _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _context, k.CurrentLayout.Current.Mode );
+            _currentKeyModeModeVM = new VMKeyboardMode( _context, k.Current.Mode );
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode( _context, k.CurrentLayout.Current.Mode );
 
             _layoutKeyModes = new ObservableCollection<VMLayoutKeyModeEditable>();
             _keyModes = new ObservableCollection<VMKeyModeEditable>();
@@ -100,15 +100,15 @@ namespace KeyboardEditor.ViewModels
 
         #region Properties
 
-        /// <summary>
-        /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
-        /// </summary>
-        private IKeyboardMode CurrentKeyModeMode { get { return _key.Current.Mode; } }
+        ///// <summary>
+        ///// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
+        ///// </summary>
+        //private IKeyboardMode CurrentKeyModeMode { get { return _key.Current.Mode; } }
 
-        /// <summary>
-        /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="ILayoutKeyMode"/>
-        /// </summary>
-        private IKeyboardMode CurrentLayoutKeyModeMode { get { return _key.CurrentLayout.Current.Mode; } }
+        ///// <summary>
+        ///// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="ILayoutKeyMode"/>
+        ///// </summary>
+        //private IKeyboardMode CurrentLayoutKeyModeMode { get { return _key.CurrentLayout.Current.Mode; } }
 
         /// <summary>
         /// Gets if the current <see cref="IKeyMode"/> is a fallback or not.

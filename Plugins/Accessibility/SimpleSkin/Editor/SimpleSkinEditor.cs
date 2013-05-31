@@ -37,10 +37,13 @@ using CK.Context;
 
 namespace SimpleSkinEditor
 {
-    [Plugin( SimpleSkinEditor.PluginIdString,
-        PublicName = PluginPublicName,
-        Version = SimpleSkinEditor.PluginIdVersion,
-        Categories = new string[] { "Visual", "Accessibility" } )]
+    //The KeyboardEditor plugin has taken this plugin's place
+    //[Plugin( SimpleSkinEditor.PluginIdString,
+    //    PublicName = PluginPublicName,
+    //    Version = SimpleSkinEditor.PluginIdVersion,
+    //    Categories = new string[] { "Visual", "Accessibility" } )]
+
+    [Obsolete( "The KeyboardEditor plugin has taken this plugin's place" )]
     public class SimpleSkinEditor : IPlugin
     {
         public const string PluginIdString = "{402C9FF7-545A-4E3C-AD35-70ED37497805}";

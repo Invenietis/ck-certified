@@ -14,7 +14,7 @@ namespace KeyboardEditor.ViewModels
     /// automatically triggering a command on the holder that activates or deactivates the current mode. 
     /// Also has a command setting the holder's current mode to the one embedded in this class. (deactivates all mode that is not contained in the embedded one)
     /// </summary>
-    public class VMKeyboardMode<TC, TB, TZ, TK> : VMBase
+    public class VMKeyboardMode : VMBase
     {
         VMContextEditable _holder;
 

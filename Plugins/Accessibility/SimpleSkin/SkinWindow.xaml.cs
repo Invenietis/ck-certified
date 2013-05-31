@@ -30,7 +30,7 @@ namespace SimpleSkin
     /// <summary>
     /// Logique d'interaction pour SkinWindow.xaml
     /// </summary>
-    public partial class SkinWindow : NoFocusWindow
+    public partial class SkinWindow : CKWindow
     {
         public SkinWindow( )
         {

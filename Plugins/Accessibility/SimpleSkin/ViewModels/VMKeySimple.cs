@@ -62,6 +62,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateBackground();
             SafeUpdateDescription();
             SafeUpdateDownLabel();
+            SafeUpdateFontSize();
             SafeUpdateFontStyle();
             SafeUpdateFontWeight();
             SafeUpdateHeight();

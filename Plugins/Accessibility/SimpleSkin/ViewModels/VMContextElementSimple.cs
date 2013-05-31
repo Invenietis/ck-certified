@@ -29,7 +29,7 @@ namespace SimpleSkin.ViewModels
         internal void ThreadSafeSet<T>( T value, Action<T> setter )
         {
             T val = value;
-            Context.Thread.Dispatcher.Invoke( setter, val );
+            Context.SkinDispatcher.Invoke( setter, val );
         }
 
         //internal void FreezableThreadSafeSet<T>( T value, Action<T> setter )

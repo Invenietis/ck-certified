@@ -79,8 +79,8 @@ namespace SimpleSkin
         /// </summary>
         public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<ISendStringService> SendStringService { get; set; }
+        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        //public IService<ISendStringService> SendStringService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IHelpService> HelpService { get; set; }
@@ -323,7 +323,7 @@ namespace SimpleSkin
                     WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];
                     if( _viewHidden ) placement.showCmd = 0;
                     else placement.showCmd = 8; //Show without taking focus
-                    _skinWindow.SetPlacement( placement );
+                    _ctxVm.SkinDispatcher.Invoke( (Action)( () => _skinWindow.SetPlacement( placement ) ), null );
                 }
                 else
                 {
@@ -342,7 +342,7 @@ namespace SimpleSkin
                         h = _ctxVm.KeyboardVM.H;
                     }
 
-                    SetDefaultWindowPosition( w, h );
+                    _ctxVm.SkinDispatcher.Invoke( (Action)( () => SetDefaultWindowPosition( w, h ) ), null );
                 }
             }
         }

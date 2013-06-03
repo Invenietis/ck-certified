@@ -202,12 +202,10 @@ namespace SimpleSkin.ViewModels
                         SafeUpdateFontStyle();
                         OnPropertyChanged( "FontStyle" );
                         break;
-                    case "ShowLabel":
+                    case "DisplayType":
                         SafeUpdateShowLabel();
-                        OnPropertyChanged( "ShowLabel" );
-                        break;
-                    case "ShowImage":
                         SafeUpdateShowImage();
+                        OnPropertyChanged( "ShowLabel" );
                         OnPropertyChanged( "ShowImage" );
                         break;
                     case "FontWeight":
@@ -406,12 +404,12 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateShowLabel()
         {
-            ThreadSafeSet<bool>( LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ), ( v ) => _showLabel = v );
+            ThreadSafeSet<string>( LayoutKeyMode.GetPropertyValue<string>( Context.Config, "DisplayType", Context.Config[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = ( v == "Label" ) );
         }
 
         private void SafeUpdateShowImage()
         {
-            ThreadSafeSet<bool>( LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ), ( v ) => _showImage = v );
+            ThreadSafeSet<string>( LayoutKeyMode.GetPropertyValue<string>( Context.Config, "DisplayType", Context.Config[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = ( v == "Image" ) );
         }
 
         private void SafeUpdateOpacity()

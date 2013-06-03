@@ -548,12 +548,10 @@ namespace KeyboardEditor.ViewModels
                         case "FontStyle":
                             OnPropertyChanged( "FontStyle" );
                             break;
-                        case "ShowLabel":
+                        case "DisplayType":
+                            OnPropertyChanged( "ShowImage" );
                             OnPropertyChanged( "ShowLabel" );
                             LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
-                            break;
-                        case "ShowImage":
-                            OnPropertyChanged( "ShowImage" );
                             break;
                         case "FontWeight":
                             OnPropertyChanged( "FontWeight" );

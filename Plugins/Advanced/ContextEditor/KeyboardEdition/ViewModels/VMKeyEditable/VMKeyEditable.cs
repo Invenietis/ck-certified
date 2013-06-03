@@ -510,7 +510,7 @@ namespace KeyboardEditor.ViewModels
             
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
-                Console.Out.WriteLine( e.Key );
+                //Console.Out.WriteLine( e.Key );
                 if( String.IsNullOrWhiteSpace( e.Key ) )
                 {
                     OnPropertyChanged( "Image" );

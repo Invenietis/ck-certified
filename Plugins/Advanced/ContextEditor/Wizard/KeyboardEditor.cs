@@ -50,9 +50,6 @@ namespace KeyboardEditor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        //public IService<IKeyboardDriver> KeyboardDriver { get; set; }
-
         public VMContextEditable EditedContext { get; set; }
         internal AppViewModel AppViewModel { get { return _appViewModel; } }
 
@@ -76,11 +73,10 @@ namespace KeyboardEditor
             _windowManager.ShowWindow( _appViewModel, null, null );
 
             _mainWindow = _appViewModel.GetView( null ) as Window;
-            _interopHelper = new WindowInteropHelper( _mainWindow );
+            //_interopHelper = new WindowInteropHelper( _mainWindow );
             //RegisterHotKeys();
 
             _mainWindow.Closing += OnWindowClosing;
-            //_mainWindow.Topmost = true;
         }
 
         public void Stop()

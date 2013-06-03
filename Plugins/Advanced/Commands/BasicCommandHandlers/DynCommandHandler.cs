@@ -25,9 +25,7 @@ using System;
 using System.Collections.Generic;
 using CommonServices;
 using CK.Plugin;
-using CK.Core;
 using CK.Context;
-using System.Windows;
 
 namespace BasicCommandHandlers
 {
@@ -50,12 +48,8 @@ namespace BasicCommandHandlers
         public override bool Setup( IPluginSetupInfo info )
         {
             _actions = new Dictionary<string, Action>();
-            _actions.Add( "ShutDown", () =>
-            {
-                NewMethod();
-            } );
-
             _actions.Add( "HideSkin", () => SkinService.HideSkin() );
+            _actions.Add( "ShutDown", () => Context.RaiseExitApplication( true ) );
             _actions.Add( "ToggleHostMinimized", () => SkinService.ToggleHostMinimized() );
             _actions.Add(
                 "WindowsKey",
@@ -80,11 +74,6 @@ namespace BasicCommandHandlers
             );
 
             return base.Setup( info );
-        }
-
-        private void NewMethod()
-        {
-            Application.Current.Dispatcher.BeginInvoke( (Action)( () => Context.RaiseExitApplication( true ) ), null );
         }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )

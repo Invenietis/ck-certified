@@ -164,15 +164,8 @@ namespace SimpleSkin.ViewModels
                 SafeUpdatePressedBackground();
                 SafeUpdateHighlightBackground();
 
-                //These properties are on the LayoutKeyMode (not in the key's plugindatas), so we won't have the Config telling us that they have changed
-                //OnPropertyChanged( "X" );
-                //OnPropertyChanged( "Y" );
-                //OnPropertyChanged( "Width" );
-                //OnPropertyChanged( "Height" );
-                //OnPropertyChanged( "Visible" );
-
-                OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
+                OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "FontStyle" );
                 OnPropertyChanged( "ShowLabel" );
@@ -275,9 +268,20 @@ namespace SimpleSkin.ViewModels
 
         void ResetCommands()
         {
-            _keyDownCmd = new KeyCommand( () => { if( !_key.IsDown )_key.Push(); } );
-            _keyUpCmd = new KeyCommand( () => { if( _key.IsDown ) _key.Release(); } );
-            _keyPressedCmd = new KeyCommand( () => { if( _key.IsDown )_key.Release( true ); } );
+            _keyDownCmd = new KeyCommand( () =>
+            {
+                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Push() ), null );
+            } );
+
+            _keyUpCmd = new KeyCommand( () =>
+            {
+                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Release() ), null );
+            } );
+
+            _keyPressedCmd = new KeyCommand( () =>
+            {
+                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Release( true ) ), null );
+            } );
         }
 
         private void SafeUpdateX()
@@ -454,7 +458,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int X
         {
-            //get { return _key.CurrentLayout.Current.X; }
             get { return _x; }
         }
 
@@ -464,7 +467,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int Y
         {
-            //get { return _key.CurrentLayout.Current.Y; }
             get { return _y; }
         }
 
@@ -474,7 +476,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int Width
         {
-            //get { return _key.CurrentLayout.Current.Width; }
             get { return _width; }
         }
 
@@ -484,7 +485,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int Height
         {
-            //get { return _key.CurrentLayout.Current.Height; }
             get { return _height; }
         }
 
@@ -494,7 +494,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public Visibility Visible
         {
-            //get { return LayoutKeyMode.Visible ? Visibility.Visible : Visibility.Collapsed; }
             get { return _visible ? Visibility.Visible : Visibility.Collapsed; }
         }
 
@@ -504,7 +503,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public bool Enabled
         {
-            //get { return _key.Current.Enabled; } 
             get { return _isEnabled; }
         }
 
@@ -514,7 +512,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public string UpLabel
         {
-            //get { return _key.Current.UpLabel; }
             get { return _upLabel; }
         }
 
@@ -524,7 +521,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public string DownLabel
         {
-            //get { return _key.Current.DownLabel; }
             get { return _downLabel; }
         }
 
@@ -534,7 +530,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public string Description
         {
-            //get { return _key.Current.Description; }
             get { return _description; }
         }
 
@@ -544,7 +539,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int Index
         {
-            //get { return _key.Index; }
             get { return _index; }
             set
             {
@@ -559,7 +553,6 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public bool IsFallback
         {
-            //get { return _key.Current.IsFallBack; } 
             get { return _isFallback; }
 
         }
@@ -570,84 +563,72 @@ namespace SimpleSkin.ViewModels
         Color _background;
         public Color Background
         {
-            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ); }
             get { return _background; }
         }
 
         Color _hoverBackground;
         public Color HoverBackground
         {
-            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ); }
             get { return _hoverBackground; }
         }
 
         Color _highlightBackground;
         public Color HighlightBackground
         {
-            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ); }
             get { return _highlightBackground; }
         }
 
         Color _pressedBackground;
         public Color PressedBackground
         {
-            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ); }
             get { return _pressedBackground; }
         }
 
         Color _letterColor;
         public Color LetterColor
         {
-            //get { return LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ); }
             get { return _letterColor; }
         }
 
         FontStyle _fontStyle;
         public FontStyle FontStyle
         {
-            //get { return LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ); }
             get { return _fontStyle; }
         }
 
         FontWeight _fontWeight;
         public FontWeight FontWeight
         {
-            //get { return LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ); }
             get { return _fontWeight; }
         }
 
         double _fontSize;
         public double FontSize
         {
-            //get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ); }
             get { return _fontSize; }
         }
 
         TextDecorationCollection _textDecorations;
         public TextDecorationCollection TextDecorations
         {
-            //get { return LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" ); }
             get { return _textDecorations; }
         }
 
         bool _showLabel;
         public bool ShowLabel
         {
-            //get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowLabel", true ); }
             get { return _showLabel; }
         }
 
         bool _showImage;
         public bool ShowImage
         {
-            //get { return LayoutKeyMode.GetPropertyValue<bool>( Context.Config, "ShowImage", true ); }
             get { return _showImage; }
         }
 
         double _opacity;
         public double Opacity
         {
-            //get { return LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ); }
             get { return _opacity; }
         }
 

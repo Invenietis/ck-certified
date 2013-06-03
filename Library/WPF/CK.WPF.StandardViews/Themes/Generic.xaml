@@ -108,7 +108,6 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
                                FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"
                                TextTrimming="CharacterEllipsis" >
-                                
                         </TextBlock>
                         
                         <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>

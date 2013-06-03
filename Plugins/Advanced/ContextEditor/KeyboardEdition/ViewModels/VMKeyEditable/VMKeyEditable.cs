@@ -62,7 +62,6 @@ namespace KeyboardEditor.ViewModels
 
     public partial class VMKeyEditable : VMContextElementEditable
     {
-        //internal IModeViewModel SelectedModeViewModel { get; set; }
         Dictionary<string, ActionSequence> _actionsOnPropertiesChanged;
         VMContextEditable _context;
         ICommand _keyPressedCmd;
@@ -508,12 +507,14 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
+                Console.Out.WriteLine( e.Key );
                 if( String.IsNullOrWhiteSpace( e.Key ) )
                 {
-                    OnPropertyChanged( "Opacity" );
                     OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "Opacity" );
                     OnPropertyChanged( "FontSize" );
                     OnPropertyChanged( "FontStyle" );
                     OnPropertyChanged( "ShowLabel" );
@@ -531,68 +532,54 @@ namespace KeyboardEditor.ViewModels
                     switch( e.Key )
                     {
                         case "Opacity":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "Opacity" );
+                            OnPropertyChanged( "Opacity" );
                             break;
                         case "Image":
                             GetImageSourceCache();
                             OnPropertyChanged( "Image" );
                             break;
                         case "Visible":
+                            OnPropertyChanged( "Visible" );
                             LayoutKeyModeVM.TriggerPropertyChanged( "Visible" );
                             break;
                         case "FontSize":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
+                            OnPropertyChanged( "FontSize" );
                             break;
                         case "FontStyle":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
+                            OnPropertyChanged( "FontStyle" );
                             break;
                         case "ShowLabel":
                             OnPropertyChanged( "ShowLabel" );
+                            LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
                             break;
                         case "ShowImage":
                             OnPropertyChanged( "ShowImage" );
                             break;
                         case "FontWeight":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "FontWeight" );
+                            OnPropertyChanged( "FontWeight" );
                             break;
                         case "Background":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "Background" );
+                            OnPropertyChanged( "Background" );
                             break;
                         case "LetterColor":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "LetterColor" );
+                            OnPropertyChanged( "LetterColor" );
                             break;
                         case "HoverBackground":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "HoverBackground" );
+                            OnPropertyChanged( "HoverBackground" );
                             break;
                         case "TextDecorations":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "TextDecorations" );
+                            OnPropertyChanged( "TextDecorations" );
                             break;
                         case "PressedBackground":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "PressedBackground" );
+                            OnPropertyChanged( "PressedBackground" );
                             break;
                         case "HighlightBackground":
-                            LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
+                            OnPropertyChanged( "HighlightBackground" );
                             break;
                         default:
                             break;
                     }
                 }
-
-                //Not optimized way
-                //LayoutKeyModeVM.TriggerPropertyChanged( "HighlightBackground" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "PressedBackground" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "HoverBackground" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "TextDecorations" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "LetterColor" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "Background" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "FontWeight" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "FontStyle" );
-                //LayoutKeyModeVM.TriggerPropertyChanged( "FontSize" );
-
-                //OnPropertyChanged( "ShowImage" );
-                //OnPropertyChanged( "ShowLabel" );
-                //GetImageCache();
-                //OnPropertyChanged( "Image" );
             }
         }
 
@@ -688,7 +675,11 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "DownLabel", () => DispatchPropertyChanged( "DownLabel", "KeyMode" ) );
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
-            SetActionOnPropertyChanged( "Visible", () => { DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "Visible", () => 
+            { 
+                DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); 
+                DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); 
+            } );
         }
 
         internal override void Dispose()

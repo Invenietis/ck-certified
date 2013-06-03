@@ -79,8 +79,8 @@ namespace SimpleSkin
         /// </summary>
         public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
 
-        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        //public IService<ISendStringService> SendStringService { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<ISendStringService> SendStringService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IHelpService> HelpService { get; set; }
@@ -134,6 +134,7 @@ namespace SimpleSkin
                     //Placing the skin at the same location as the last launch.
                     _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, _skinWindow.GetPlacement() ) );
                 } ), null );
+
                 InitializeHighligther();
                 UpdateAutoHideConfig();
 
@@ -156,11 +157,13 @@ namespace SimpleSkin
                 Context.ServiceContainer.Remove( typeof( IPluginConfigAccessor ) );
 
                 UnregisterEvents();
-
-                _dispatcher.Invoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ) );
-
                 _forceClose = true;
-                _dispatcher.BeginInvoke( (Action)( () => _skinWindow.Close() ) );
+
+                _dispatcher.Invoke( (Action)( () =>
+                {
+                    Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
+                    _skinWindow.Close();
+                } ) );
 
                 if( _miniView != null )
                 {

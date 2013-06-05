@@ -28,7 +28,7 @@ using CK.Keyboard.Model;
 
 namespace CK.Keyboard
 {
-    sealed partial class Keyboard : IReadOnlyList<IKey>
+    sealed partial class Keyboard : ICKReadOnlyList<IKey>
     {
         public event EventHandler<KeyEventArgs> KeyCreated;
         public event EventHandler<KeyEventArgs> KeyDestroyed;
@@ -49,7 +49,7 @@ namespace CK.Keyboard
         public event EventHandler<KeyInteractionEventArgs> KeyDown;
         public event EventHandler<KeyPressedEventArgs> KeyPressed;
 
-        public IReadOnlyList<IKey> Keys 
+        public ICKReadOnlyList<IKey> Keys 
         {
             get { return this; } 
         }
@@ -177,12 +177,12 @@ namespace CK.Keyboard
             if( h != null ) h( this, e );
         }
 
-        #region IReadOnlyList<IKey> Members
+        #region ICKReadOnlyList<IKey> Members
 
         /// <summary>
         /// Zones are not ordered so indicies can change after each change in zones collection.
         /// </summary>
-        int IReadOnlyList<IKey>.IndexOf( object key )
+        int ICKReadOnlyList<IKey>.IndexOf( object key )
         {
             IKey k = key as IKey;
             if( k != null )
@@ -215,7 +215,7 @@ namespace CK.Keyboard
             }
         }
 
-        bool IReadOnlyCollection<IKey>.Contains( object key )
+        bool ICKReadOnlyCollection<IKey>.Contains( object key )
         {
             IKey k = key as IKey;
             return k != null ? k.Keyboard == this : false;
@@ -250,6 +250,5 @@ namespace CK.Keyboard
         }
 
         #endregion
-
     }
 }

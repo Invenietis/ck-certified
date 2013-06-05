@@ -97,7 +97,7 @@ namespace CK.Keyboard
             get { return _keys[i]; }
         }
 
-        bool IReadOnlyCollection<IKey>.Contains( object item )
+        bool ICKReadOnlyCollection<IKey>.Contains( object item )
         {
             IKey k = item as IKey;
             return k != null ? k.Zone == this : false;

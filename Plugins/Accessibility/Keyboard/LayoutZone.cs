@@ -95,7 +95,7 @@ namespace CK.Keyboard
             get { return _layout.FindOrCreate( _zone[i] ); }
         }
 
-        internal void OnAvailableModeRemoved( IReadOnlyList<IKeyboardMode> modes )
+        internal void OnAvailableModeRemoved( ICKReadOnlyList<IKeyboardMode> modes )
         {
             foreach( LayoutKey kl in this )
             {
@@ -123,7 +123,7 @@ namespace CK.Keyboard
             get { return this; }
         }
 
-        int IReadOnlyList<ILayoutKey>.IndexOf( object item )
+        int ICKReadOnlyList<ILayoutKey>.IndexOf( object item )
         {
             ILayoutKey l = item as ILayoutKey;
             return l != null ? _zone.IndexOf( l.Key ) : -1;
@@ -134,7 +134,7 @@ namespace CK.Keyboard
             get { return _layout.FindOrCreate( _zone[i] ); }
         }
 
-        bool IReadOnlyCollection<ILayoutKey>.Contains( object item )
+        bool ICKReadOnlyCollection<ILayoutKey>.Contains( object item )
         {
             ILayoutKey l = item as ILayoutKey;
             return l != null ? l.LayoutZone == this : false;

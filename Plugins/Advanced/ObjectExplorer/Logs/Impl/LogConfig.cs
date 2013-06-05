@@ -32,10 +32,10 @@ namespace CK.Plugins.ObjectExplorer
     internal class LogConfig : ILogConfig
     {
         List<ILogServiceConfig> _services;
-        ReadOnlyCollectionOnICollection<ILogServiceConfig> _servicesEx;
+        CKReadOnlyCollectionOnICollection<ILogServiceConfig> _servicesEx;
         bool _doLog;
 
-        IReadOnlyCollection<ILogServiceConfig> ILogConfig.Services { get { return _servicesEx; } }
+        ICKReadOnlyCollection<ILogServiceConfig> ILogConfig.Services { get { return _servicesEx; } }
 
         public List<ILogServiceConfig> Services
         {
@@ -57,7 +57,7 @@ namespace CK.Plugins.ObjectExplorer
         {
             _doLog = doLog;
             _services = services;
-            _servicesEx = new ReadOnlyCollectionOnICollection<ILogServiceConfig>(_services);
+            _servicesEx = new CKReadOnlyCollectionOnICollection<ILogServiceConfig>( _services );
         }
     }
 }

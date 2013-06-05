@@ -50,7 +50,7 @@ namespace CommonServices
         /// <param name="commands">The commands</param>
         /// <exception cref="CommandException">When an error occurs. 
         /// The exception gives access to the command line that triggered the error.</exception>
-        void SendCommands( object sender, IReadOnlyList<string> commands );
+        void SendCommands( object sender, ICKReadOnlyList<string> commands );
 
         void SendCommand( object sender, string command );
 

@@ -86,13 +86,13 @@ namespace PointerDeviceDriver
             }
         }
 
-        public int CurrentPointerYLocation 
-        { 
-            get 
+        public int CurrentPointerYLocation
+        {
+            get
             {
                 EnsurePositionRetrieval();
-                return _lastPointerPosition.Y; 
-            } 
+                return _lastPointerPosition.Y;
+            }
         }
 
         // Definition of the ExtraInfo used by this implementation
@@ -124,7 +124,7 @@ namespace PointerDeviceDriver
 
             //Versions above Vista unhook the mousehook as soon as there is a CPU overload. So we must use a simple timer to get the cursor position
             //We still use the mousehook to process the mouse clicks, which are less heavy to process
-            if( CK.Core.OSVersionInfo.IsWindowsVistaOrGreater )
+            if( CK.Core.OSVersionInfo.OSLevel >= CK.Core.OSVersionInfo.SimpleOSLevel.WindowsVista )
             {
                 _pointerPositionViaTimer = true;
                 _pointerPosGetter = new SimpleDispatchTimerWrapper( new TimeSpan( 150000 ), GetCurrentPointerPos );

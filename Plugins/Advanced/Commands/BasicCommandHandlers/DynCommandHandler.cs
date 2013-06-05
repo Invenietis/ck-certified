@@ -25,18 +25,17 @@ using System;
 using System.Collections.Generic;
 using CommonServices;
 using CK.Plugin;
-using CK.Core;
 using CK.Context;
 
 namespace BasicCommandHandlers
 {
-    [Plugin("{0628E093-A9C6-4EC6-83C8-F684352B5B37}", Categories = new string[] { "Advanced" },
+    [Plugin( "{0628E093-A9C6-4EC6-83C8-F684352B5B37}", Categories = new string[] { "Advanced" },
         PublicName = "Dynamic command handler",
-        Description="Allows the system to execute simple actions for specific commands",
-        Version = "1.0.0")]
+        Description = "Allows the system to execute simple actions for specific commands",
+        Version = "1.0.0" )]
     public class DynCommandHandlerPlugin : BasicCommandHandler, IDynCommandHandlerService
     {
-        Dictionary<string,Action> _actions;
+        Dictionary<string, Action> _actions;
 
         private const string CMD = "DynCommand";
 
@@ -49,12 +48,12 @@ namespace BasicCommandHandlers
         public override bool Setup( IPluginSetupInfo info )
         {
             _actions = new Dictionary<string, Action>();
-            _actions.Add( "ShutDown", () => Context.RaiseExitApplication( true ) );
             _actions.Add( "HideSkin", () => SkinService.HideSkin() );
+            _actions.Add( "ShutDown", () => Context.RaiseExitApplication( true ) );
             _actions.Add( "ToggleHostMinimized", () => SkinService.ToggleHostMinimized() );
             _actions.Add(
                 "WindowsKey",
-                () => 
+                () =>
                 {
                     Keybd.Event( VKeyCode.VK_WIN, (byte)0, Keybd.KEYEVENTF.KEYDOWN, UIntPtr.Zero );
                     Keybd.Event( VKeyCode.VK_WIN, (byte)0, Keybd.KEYEVENTF.KEYUP, UIntPtr.Zero );
@@ -65,7 +64,7 @@ namespace BasicCommandHandlers
                 {
                     Keybd.Event( VKeyCode.VK_APPS, (byte)0, Keybd.KEYEVENTF.KEYDOWN, UIntPtr.Zero );
                     Keybd.Event( VKeyCode.VK_APPS, (byte)0, Keybd.KEYEVENTF.KEYUP, UIntPtr.Zero );
-                } 
+                }
             );
             _actions.Add( "PressAltGr",
                 () => Keybd.Event( VKeyCode.VK_ALTGR, (byte)VKeyCode.SC_ALTGR_FR, Keybd.KEYEVENTF.EXTENDEDKEY | 0, (UIntPtr)0 )

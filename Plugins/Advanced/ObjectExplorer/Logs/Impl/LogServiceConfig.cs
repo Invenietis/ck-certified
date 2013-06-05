@@ -30,16 +30,16 @@ namespace CK.Plugins.ObjectExplorer
     {
 
         List<ILogMethodConfig> _methods;
-        ReadOnlyCollectionOnICollection<ILogMethodConfig> _methodsEx;
-        IReadOnlyCollection<ILogMethodConfig> ILogServiceConfig.Methods { get { return _methodsEx; } }
+        CKReadOnlyCollectionOnICollection<ILogMethodConfig> _methodsEx;
+        ICKReadOnlyCollection<ILogMethodConfig> ILogServiceConfig.Methods { get { return _methodsEx; } }
 
         List<ILogEventConfig> _events;
-        ReadOnlyCollectionOnICollection<ILogEventConfig> _eventsEx;
-        IReadOnlyCollection<ILogEventConfig> ILogServiceConfig.Events { get { return _eventsEx; } }
+        CKReadOnlyCollectionOnICollection<ILogEventConfig> _eventsEx;
+        ICKReadOnlyCollection<ILogEventConfig> ILogServiceConfig.Events { get { return _eventsEx; } }
 
         List<ILogPropertyConfig> _properties;
-        ReadOnlyCollectionOnICollection<ILogPropertyConfig> _propertiesEx;
-        IReadOnlyCollection<ILogPropertyConfig> ILogServiceConfig.Properties { get { return _propertiesEx; } }
+        CKReadOnlyCollectionOnICollection<ILogPropertyConfig> _propertiesEx;
+        ICKReadOnlyCollection<ILogPropertyConfig> ILogServiceConfig.Properties { get { return _propertiesEx; } }
 
         bool _doLog;
         string _name;
@@ -62,13 +62,13 @@ namespace CK.Plugins.ObjectExplorer
             Name = name;
 
             _methods = new List<ILogMethodConfig>();
-            _methodsEx = new ReadOnlyCollectionOnICollection<ILogMethodConfig>(_methods);
+            _methodsEx = new CKReadOnlyCollectionOnICollection<ILogMethodConfig>( _methods );
 
             _events = new List<ILogEventConfig>();
-            _eventsEx = new ReadOnlyCollectionOnICollection<ILogEventConfig>(_events);
+            _eventsEx = new CKReadOnlyCollectionOnICollection<ILogEventConfig>( _events );
 
             _properties = new List<ILogPropertyConfig>();
-            _propertiesEx = new ReadOnlyCollectionOnICollection<ILogPropertyConfig>(_properties);
+            _propertiesEx = new CKReadOnlyCollectionOnICollection<ILogPropertyConfig>( _properties );
         }        
     }
 }

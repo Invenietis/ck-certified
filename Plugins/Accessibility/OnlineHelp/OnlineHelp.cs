@@ -41,7 +41,7 @@ namespace OnlineHelp
         /// The HostManipulator, enables minimizing the host.
         /// </summary>
         IHostHelp _hostHelp;
-        public IHostHelp HostHelp { get { return _hostHelp ?? (_hostHelp = Context.ServiceContainer.GetService<IHostHelp>()); } }
+        public IHostHelp HostHelp { get { return _hostHelp ?? ( _hostHelp = Context.ServiceContainer.GetService<IHostHelp>() ); } }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -50,7 +50,7 @@ namespace OnlineHelp
         {
             get
             {
-                return _registeredHelps ?? (_registeredHelps = Config.User.GetOrSet( "registeredHelps", new List<string>() ));
+                return _registeredHelps ?? ( _registeredHelps = Config.User.GetOrSet( "registeredHelps", new List<string>() ) );
             }
         }
 
@@ -106,15 +106,18 @@ namespace OnlineHelp
             bool found = url != NoContentFilePath;
             if( found || force )
             {
-                HelpBrowser._browser.Navigate( url );
-                HelpBrowser.Show();
+                Application.Current.Dispatcher.BeginInvoke( (Action)( () =>
+                {
+                    HelpBrowser._browser.Navigate( url );
+                    HelpBrowser.Show();
+                } ), null );
             }
             return found;
         }
 
         public void RegisterHelpContent( IVersionedUniqueId pluginName, Stream zipContent )
         {
-            string key = pluginName.UniqueId.ToString("B")+pluginName.Version.ToString();
+            string key = pluginName.UniqueId.ToString( "B" ) + pluginName.Version.ToString();
             if( !RegisteredHelps.Contains( key ) )
             {
                 UnzipAndExtractStream( zipContent, GetBaseHelpDirectoryForPlugin( pluginName ) );
@@ -153,7 +156,7 @@ namespace OnlineHelp
         string GetHelpLocalContentFilePath( IVersionedUniqueId pluginName, string culture = null )
         {
             if( culture == null ) culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
-            
+
             // try to load the help of the plugin in the good culture (current or given)
             string localhelp = Path.Combine( GetBaseHelpDirectoryForPlugin( pluginName ), culture, "index.html" );
             if( !File.Exists( localhelp ) )

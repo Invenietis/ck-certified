@@ -42,7 +42,7 @@ using CommonServices;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElementEditable
     {
         public override IKeyboardElement LayoutElement
         {
@@ -51,17 +51,21 @@ namespace KeyboardEditor.ViewModels
 
         public bool ShowLabel
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.SkinConfiguration, "ShowLabel", true ); }
-            set { Context.SkinConfiguration[LayoutKeyMode]["ShowLabel"] = value; }
+            get { return LayoutKeyMode.GetPropertyValue<string>( Context.SkinConfiguration, "DisplayType", Context.SkinConfiguration[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ) == "Label"; }
+            set 
+            { 
+                if(value) Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Label";
+                else Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Image"; 
+            }
         }
 
         public bool ShowImage
         {
-            get { return LayoutKeyMode.GetPropertyValue<bool>( Context.SkinConfiguration, "ShowImage", true ); }
+            get { return LayoutKeyMode.GetPropertyValue<string>( Context.SkinConfiguration, "DisplayType", Context.SkinConfiguration[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ) == "Image"; }
             set 
             { 
-                if( Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] == null || (bool)Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] != value ) 
-                    Context.SkinConfiguration[LayoutKeyMode]["ShowImage"] = value; 
+                if(value) Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Image";
+                else Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Label"; 
             }
         }
 

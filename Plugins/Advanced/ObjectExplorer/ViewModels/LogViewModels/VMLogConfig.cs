@@ -46,7 +46,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         #region Variables & Properties
 
         ObservableCollection<VMLogServiceConfig> _services;
-        IReadOnlyCollection<ILogServiceConfig> _servicesEx;
+        ICKReadOnlyCollection<ILogServiceConfig> _servicesEx;
         ServiceHostConfiguration _hostConfiguration;
         VMLogServiceConfig _selectedService;
         VMIContextViewModel _vmiContext;
@@ -60,7 +60,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         ICommand _cancelCommand;
 
         public ObservableCollection<VMLogServiceConfig> Services { get { return _services; } }
-        IReadOnlyCollection<ILogServiceConfig> ILogConfig.Services { get { return _servicesEx; } }
+        ICKReadOnlyCollection<ILogServiceConfig> ILogConfig.Services { get { return _servicesEx; } }
         public IPluginConfigAccessor Config { get { return VMIContext.Config; } }
         public VMLogOutputContainer LogEntriesContainer { get; private set; }
         public string Icon { get { return "../LogImages/LogIcon.png"; } }
@@ -171,7 +171,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         {
             _vmiContext = ctx;
             _services = new ObservableCollection<VMLogServiceConfig>();
-            _servicesEx = new ReadOnlyCollectionTypeConverter<ILogServiceConfig, VMLogServiceConfig>( _services, ( c ) => { return (ILogServiceConfig)c; } );
+            _servicesEx = new CKReadOnlyCollectionTypeConverter<ILogServiceConfig, VMLogServiceConfig>( _services, ( c ) => { return (ILogServiceConfig)c; } );
             _logService = logService;
             LogEntriesContainer = new VMLogOutputContainer();
         }

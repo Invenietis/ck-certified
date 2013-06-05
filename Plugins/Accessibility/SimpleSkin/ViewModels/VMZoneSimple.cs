@@ -32,14 +32,34 @@ using System;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMZoneSimple : VMZone<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple>, IHighlightableElement
+    public class VMZoneSimple : VMContextElement, IHighlightableElement
     {
-        public VMZoneSimple( VMContextSimple ctx, IZone zone ) 
-            : base( ctx, zone )
+        public CKObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
+        CKObservableSortedArrayKeyList<VMKeySimple, int> _keys;
+        public string Name { get { return _zone.Name; } }
+        IZone _zone;
+
+        internal VMZoneSimple( VMContextSimple ctx, IZone zone ) 
+            : base( ctx )
         {
+             _zone = zone;
+             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
+
+            foreach( IKey key in _zone.Keys )
+            {
+                VMKeySimple k = Context.Obtain( key );
+                Keys.Add( k );
+            }
         }
 
-        public IReadOnlyList<IHighlightableElement> Children
+        internal override void Dispose()
+        {
+            Keys.Clear();
+        }
+
+        #region IHighlightable members
+
+        public ICKReadOnlyList<IHighlightableElement> Children
         {
             get { return Keys; }
         }
@@ -80,36 +100,6 @@ namespace SimpleSkin.ViewModels
             }
         }
 
-        public override VMContextElement<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple, VMKeyModeSimple, VMLayoutKeyModeSimple> Parent
-        {
-            get { return Context.KeyboardVM; }
-        }
-
-        public override IKeyboardElement LayoutElement
-        {
-            get { return Model.CurrentLayout; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is being edited.
-        /// an element is beingedited if it is selected or one of its parents is being edited
-        /// This implementation is readonly. It always returns false
-        /// </summary>
-        public override bool IsBeingEdited
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets whether this element is selected.
-        /// This implementation is readonly. It always returns false
-        /// </summary>
-        public override bool IsSelected
-        {
-            get { return false; }
-            set { }
-        }
-
         bool _isHighlighting;
         public bool IsHighlighting
         {
@@ -118,7 +108,7 @@ namespace SimpleSkin.ViewModels
             {
                 if( value != _isHighlighting )
                 {
-                    _isHighlighting = value;
+                    ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
                     OnPropertyChanged( "IsHighlighting" );
                     foreach( var key in Keys )
                     {
@@ -127,5 +117,6 @@ namespace SimpleSkin.ViewModels
                 }
             }
         }
+        #endregion
     }
 }

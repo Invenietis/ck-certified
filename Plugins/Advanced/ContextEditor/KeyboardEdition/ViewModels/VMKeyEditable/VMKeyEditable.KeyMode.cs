@@ -43,17 +43,17 @@ using System.Collections.ObjectModel;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMKey<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public partial class VMKeyEditable : VMContextElementEditable
     {
-        protected override void OnTriggerModeChanged()
+        protected void OnTriggerModeChanged()
         {
             RefreshKeyboardModelViewModels();
         }
 
         internal void RefreshKeyboardModelViewModels()
         {   
-            _currentLayoutKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.CurrentLayout.Current.Mode );
-            _currentKeyModeModeVM = new VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable>( _ctx, Model.Current.Mode );
+            _currentLayoutKeyModeModeVM = new VMKeyboardMode( _context, Model.CurrentLayout.Current.Mode );
+            _currentKeyModeModeVM = new VMKeyboardMode( _context, Model.Current.Mode );
 
             OnPropertyChanged( "KeyModeVM" );
             OnPropertyChanged( "LayoutKeyModeVM" );
@@ -79,17 +79,17 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         #region KeyMode properties overrides
 
-        VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _currentKeyModeModeVM;
+        VMKeyboardMode _currentKeyModeModeVM;
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
         /// </summary>
-        public VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> CurrentKeyModeModeVM { get { return _currentKeyModeModeVM; } }
+        public VMKeyboardMode CurrentKeyModeModeVM { get { return _currentKeyModeModeVM; } }
 
-        VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> _currentLayoutKeyModeModeVM;
+        VMKeyboardMode _currentLayoutKeyModeModeVM;
         /// <summary>
         /// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
         /// </summary>
-        public VMKeyboardMode<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable> CurrentLayoutKeyModeModeVM { get { return _currentLayoutKeyModeModeVM; } }
+        public VMKeyboardMode CurrentLayoutKeyModeModeVM { get { return _currentLayoutKeyModeModeVM; } }
 
         VMCommand<string> _createKeyModeCommand;
         /// <summary>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using CK.Keyboard.Model;
 using CK.WPF.Controls;
 
@@ -41,7 +42,8 @@ namespace Host.ViewModels
             set
             {
                 _ctx.CurrentKeyboard = value.Model;
-                OnPropertyChanged( "Current" );
+                //TODOJL : why should we BeginInvoke that ?
+                Application.Current.Dispatcher.BeginInvoke( (Action)( () => OnPropertyChanged( "Current" ) ), null );
             }
         }
 
@@ -49,12 +51,12 @@ namespace Host.ViewModels
         {
             var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
             destroyedKeyboard.Dispose();
-            _keyboards.Remove( destroyedKeyboard );
+            Application.Current.Dispatcher.BeginInvoke( (Action)( () => _keyboards.Remove( destroyedKeyboard ) ), null );
         }
 
         void Keyboards_KeyboardCreated( object sender, KeyboardEventArgs e )
         {
-            _keyboards.Add( new KeyboardModel( e.Keyboard ) );
+            Application.Current.Dispatcher.BeginInvoke( (Action)( () => _keyboards.Add( new KeyboardModel( e.Keyboard ) ) ), null );
         }
 
         private void RegisterEvents()
@@ -66,7 +68,9 @@ namespace Host.ViewModels
 
         void Keyboards_CurrentChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            OnPropertyChanged( "Current" );
+            //This call is made on the Application Main Thread as it triggers changes in the host, which has been created by the main thread.
+            //TODOJL : why should we BeginInvoke that ?
+            Application.Current.Dispatcher.BeginInvoke( (Action)( () => OnPropertyChanged( "Current" ) ), null );
         }
 
         private void UnregisterEvents()

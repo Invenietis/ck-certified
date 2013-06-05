@@ -25,6 +25,18 @@ namespace KeyboardEditor.ViewModels
             Description = R.KeyboardEditionStepDesc;
         }
 
+        public override bool OnBeforeNext()
+        {
+            _root.EditedContext.Dispose();
+            return base.OnBeforeNext();
+        }
+
+        public override bool OnBeforeGoBack()
+        {
+            _root.EditedContext.Dispose();
+            return base.OnBeforeGoBack();
+        }
+
         object _selectedHolder;
         // Used by the binding
         public object SelectedHolder

@@ -27,7 +27,7 @@ namespace CK.WordPredictor
             }
         }
 
-        #region IReadOnlyList<IWordPredicted> Members
+        #region ICKReadOnlyList<IWordPredicted> Members
 
         public int IndexOf( object item )
         {
@@ -41,7 +41,7 @@ namespace CK.WordPredictor
 
         #endregion
 
-        #region IReadOnlyCollection<IWordPredicted> Members
+        #region ICKReadOnlyCollection<IWordPredicted> Members
 
         public bool Contains( object item )
         {

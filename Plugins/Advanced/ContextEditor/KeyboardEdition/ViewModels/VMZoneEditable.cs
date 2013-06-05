@@ -34,23 +34,40 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMZoneEditable : VMZone<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable>
+    public class VMZoneEditable : VMContextElementEditable
     {
+        IZone _zone;
+        CKObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
+
+        public IZone Model { get { return _zone; } }
+
+        public CKObservableSortedArrayKeyList<VMKeyEditable, int> Keys { get { return _keys; } }
+
         public VMZoneEditable( VMContextEditable ctx, IZone zone )
-            : base( ctx, zone )
+            : base( ctx )
         {
             _ctx = ctx;
-        }
+            _zone = zone;
+            _keys = new CKObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
 
-        public void Initialize()
-        {
-            foreach( VMKeyEditable key in Keys )
+            foreach( IKey key in _zone.Keys )
             {
-                key.Initialize();
+                VMKeyEditable k = Context.Obtain( key );
+                Keys.Add( k );
             }
         }
 
-        public override VMContextElement<VMContextEditable, VMKeyboardEditable, VMZoneEditable, VMKeyEditable, VMKeyModeEditable, VMLayoutKeyModeEditable> Parent
+        internal override void Dispose()
+        {
+            foreach( VMKeyEditable key in Keys )
+            {
+                key.Dispose();
+            }
+
+            base.Dispose();
+        }
+
+        public override VMContextElementEditable Parent
         {
             get { return Context.Obtain( Model.Keyboard ); }
         }
@@ -251,7 +268,7 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>
         /// </summary>
-        public new string Name
+        public string Name
         {
             get { return IsDefaultZone ? R.DefaultZone : Model.Name; }
             set { Model.Rename( value ); }
@@ -294,6 +311,7 @@ namespace KeyboardEditor.ViewModels
             get { return Keys.Max( k => k.Y + k.Height ) - Y; }
         }
 
+        #region move through arrows
 
         public override void OnKeyDownAction( int keyCode, int delta )
         {
@@ -348,5 +366,7 @@ namespace KeyboardEditor.ViewModels
                 key.MoveRight( pixels );
             }
         }
+
+        #endregion
     }
 }

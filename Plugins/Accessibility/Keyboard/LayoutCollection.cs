@@ -86,13 +86,13 @@ namespace CK.Keyboard
 
         public IEnumerator<ILayout> GetEnumerator()
         {
-            Converter<Layout,ILayout> conv = delegate( Layout l ) { return (ILayout)l; }; 
-            return _layouts == null ? new EnumMono<ILayout>( _defaultLayout ) : Wrapper<ILayout>.CreateEnumerator( _layouts.Values, conv );
+            Converter<Layout,ILayout> conv = delegate( Layout l ) { return (ILayout)l; };
+            return _layouts == null ? new CKEnumeratorMono<ILayout>( _defaultLayout ) : Wrapper<ILayout>.CreateEnumerator( _layouts.Values, conv );
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _layouts == null ? (IEnumerator)(new EnumMono<ILayout>( _defaultLayout )) : (IEnumerator)_layouts.Values.GetEnumerator();
+            return _layouts == null ? (IEnumerator)(new CKEnumeratorMono<ILayout>( _defaultLayout )) : (IEnumerator)_layouts.Values.GetEnumerator();
         }
         
         ILayout ILayoutCollection.this[string name]
@@ -233,7 +233,7 @@ namespace CK.Keyboard
             }
         }	
 
-        internal void OnAvailableModeRemoved( IReadOnlyList<IKeyboardMode> modes )
+        internal void OnAvailableModeRemoved( ICKReadOnlyList<IKeyboardMode> modes )
         {
             if( _layouts == null ) _defaultLayout.OnAvailableModeRemoved( modes );
             else

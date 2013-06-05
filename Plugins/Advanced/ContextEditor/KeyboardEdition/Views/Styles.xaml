@@ -209,7 +209,7 @@
                     <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
                     <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
                 </MultiDataTrigger.Conditions>
-                <Setter TargetName="key" Property="ShowLabel" Value="false"/>
+                <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
                 <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
             </MultiDataTrigger>
         </DataTemplate.Triggers>

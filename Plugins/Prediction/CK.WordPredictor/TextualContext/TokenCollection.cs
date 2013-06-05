@@ -52,7 +52,7 @@ namespace CK.WordPredictor
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        #region IReadOnlyList<IToken> Members
+        #region ICKReadOnlyList<IToken> Members
 
         public int IndexOf( object item )
         {
@@ -67,7 +67,7 @@ namespace CK.WordPredictor
 
         #endregion
 
-        #region IReadOnlyCollection<IToken> Members
+        #region ICKReadOnlyCollection<IToken> Members
 
         public bool Contains( object item )
         {

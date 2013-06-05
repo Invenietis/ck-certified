@@ -32,7 +32,7 @@ namespace CK.Keyboard.Model
     /// Collection containing all the layouts corresponding to a keyboard.
     /// These layouts are automatically synchronized with the keyboard itself.
     /// </summary>
-    public interface ILayoutCollection : IReadOnlyCollection<ILayout>
+    public interface ILayoutCollection : ICKReadOnlyCollection<ILayout>
     {
         /// <summary>
         /// Gets the <see cref="IKeyboardContext"/> that hold this <see cref="ILayoutCollection"/>. 

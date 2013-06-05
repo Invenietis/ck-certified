@@ -48,7 +48,7 @@ namespace CK.Keyboard
             get { return this; }
         }
 
-        internal IReadOnlyCollection<KeyMode> KeyModes
+        internal ICKReadOnlyCollection<KeyMode> KeyModes
         {
             get { return Objects; }
         }

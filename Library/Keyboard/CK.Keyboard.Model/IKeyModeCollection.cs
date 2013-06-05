@@ -28,7 +28,7 @@ using CK.Core;
 
 namespace CK.Keyboard.Model
 {
-    public interface IKeyModeCollection : IReadOnlyCollection<IKeyMode>
+    public interface IKeyModeCollection : ICKReadOnlyCollection<IKeyMode>
     {
         /// <summary>
         /// Gets the <see cref="IKey"/> that holds this collection.

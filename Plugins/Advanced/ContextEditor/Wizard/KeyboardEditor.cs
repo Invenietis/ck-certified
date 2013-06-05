@@ -50,9 +50,6 @@ namespace KeyboardEditor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        //public IService<IKeyboardDriver> KeyboardDriver { get; set; }
-
         public VMContextEditable EditedContext { get; set; }
         internal AppViewModel AppViewModel { get { return _appViewModel; } }
 
@@ -76,11 +73,10 @@ namespace KeyboardEditor
             _windowManager.ShowWindow( _appViewModel, null, null );
 
             _mainWindow = _appViewModel.GetView( null ) as Window;
-            _interopHelper = new WindowInteropHelper( _mainWindow );
+            //_interopHelper = new WindowInteropHelper( _mainWindow );
             //RegisterHotKeys();
 
             _mainWindow.Closing += OnWindowClosing;
-            //_mainWindow.Topmost = true;
         }
 
         public void Stop()
@@ -91,9 +87,17 @@ namespace KeyboardEditor
                 _mainWindow.Close();
 
             if( EditedContext != null )
+            {
                 EditedContext.Dispose();
+                EditedContext = null;
+            }
 
-            UnregisterAllHotKeys();
+            if( _cancelOnStop )
+            {
+                CancelModifications();
+                _cancelOnStop = false;
+            }
+            //UnregisterAllHotKeys();
         }
             
         public void Teardown()
@@ -102,6 +106,8 @@ namespace KeyboardEditor
             _appViewModel = null;
             _windowManager = null;
         }
+
+        bool _cancelOnStop = false;
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
@@ -124,7 +130,8 @@ namespace KeyboardEditor
                     }
 
                     //If the user really wants to quit the wizard, cancel all modifications
-                    CancelModifications();
+                    _cancelOnStop = true;
+                    //CancelModifications();
                 }
 
                 System.Action stop = () =>
@@ -135,6 +142,8 @@ namespace KeyboardEditor
                 e.Cancel = true;
                 Dispatcher.CurrentDispatcher.BeginInvoke( stop, null );
             }
+
+            EditedContext.Dispose();
 
             if( _mainWindow != null )
                 _mainWindow.Closing -= OnWindowClosing;

@@ -66,7 +66,7 @@ namespace Host
         /// </summary>
         public Version AppVersion
         {
-            get { return _appVersion ?? (_appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) )); }
+            get { return _appVersion ?? ( _appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) ) ); }
         }
 
         /// <summary>
@@ -97,9 +97,7 @@ namespace Host
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
             hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ED1562F-2416-45cb-9FC8-EEF941E3EDBC}" ), RunningRequirement.MustExistAndRun );
-            
-            
+
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
@@ -143,23 +141,8 @@ namespace Host
                 Context.ConfigManager.Extended.HostUserConfig.Clear();
                 LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
 
-
-                //Cloning the current context
-                //string newContextAdress = Path.GetDirectoryName( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
-                //                           + Path.DirectorySeparatorChar
-                //                           + Path.GetFileNameWithoutExtension( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
-                //                           + " - "
-                //                           + DateTime.UtcNow.ToFileTime() + ".xml";
-
-                //Uri newContextUri = new Uri( "file:///" + newContextAdress );
-                //File.Copy( previousContextAdress.AbsolutePath, newContextAdress, true );
-                //IUriHistory newContext = Context.ConfigManager.UserConfiguration.ContextProfiles.FindOrCreate( newContextUri );
-                //Context.ConfigManager.UserConfiguration.CurrentContextProfile = newContext;
-
-
                 Context.ConfigManager.Extended.Container.Clear( Context );
                 LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
-
 
                 Context.PluginRunner.Apply( true );
             }

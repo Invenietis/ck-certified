@@ -37,8 +37,8 @@ namespace CK.Keyboard
     {
         IKeyboardContext _context;
         string _mode;
-        IReadOnlyList<IKeyboardMode> _modes;
-        IReadOnlyList<IKeyboardMode> _fallbacks;
+        ICKReadOnlyList<IKeyboardMode> _modes;
+        ICKReadOnlyList<IKeyboardMode> _fallbacks;
 
         /// <summary>
         /// Initializes the new empty mode of a Context.
@@ -48,8 +48,8 @@ namespace CK.Keyboard
             Debug.Assert( ctx.EmptyMode == null, "There is only one empty mode per context." );
             _context = ctx;
             _mode = String.Empty;
-            _modes = ReadOnlyListEmpty<IKeyboardMode>.Empty;
-            _fallbacks = new ReadOnlyListMono<IKeyboardMode>( this );
+            _modes = CKReadOnlyListEmpty<IKeyboardMode>.Empty;
+            _fallbacks = new CKReadOnlyListMono<IKeyboardMode>( this );
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace CK.Keyboard
         {
             _context = ctx;
             _mode = atomicMode;
-            _modes = new ReadOnlyListMono<IKeyboardMode>( this );
+            _modes = new CKReadOnlyListMono<IKeyboardMode>( this );
             _fallbacks = ctx.EmptyMode.Fallbacks;
         }
 
         /// <summary>
         /// Initializes a new combined mode.
         /// </summary>
-        internal KeyboardMode( IKeyboardContext ctx, string combinedMode, IReadOnlyList<IKeyboardMode> modes )
+        internal KeyboardMode( IKeyboardContext ctx, string combinedMode, ICKReadOnlyList<IKeyboardMode> modes )
         {
             Debug.Assert( combinedMode.IndexOf( '+' ) > 0 && modes.Count > 1, "There is more than one mode in a Combined Mode." );
             Debug.Assert( modes.All( m => m.IsAtomic ), "Provided modes are all atomic." );
@@ -91,7 +91,7 @@ namespace CK.Keyboard
             return _mode;
         }
         
-        public IReadOnlyList<IKeyboardMode> AtomicModes 
+        public ICKReadOnlyList<IKeyboardMode> AtomicModes 
         {
             get { return _modes; } 
         }
@@ -137,14 +137,14 @@ namespace CK.Keyboard
         IKeyboardMode IKeyboardMode.Intersect( IKeyboardMode mode )
         {
             List<IKeyboardMode> m = new List<IKeyboardMode>();
-            Process( this, mode, null, null, Adapter.AlwaysTrue<IKeyboardMode>( m.Add ) );
+            Process( this, mode, null, null, Util.AlwaysTrue<IKeyboardMode>( m.Add ) );
             return Context.ObtainMode( m );
         }
         
         IKeyboardMode IKeyboardMode.Add( IKeyboardMode mode )
         {
             List<IKeyboardMode> m = new List<IKeyboardMode>();
-            var add = Adapter.AlwaysTrue<IKeyboardMode>( m.Add );
+            var add = Util.AlwaysTrue<IKeyboardMode>( m.Add );
             Process( this, mode, add, add, add );
             return Context.ObtainMode( m );
         }
@@ -152,14 +152,14 @@ namespace CK.Keyboard
        IKeyboardMode IKeyboardMode.Remove( IKeyboardMode mode )
         {
             List<IKeyboardMode> m = new List<IKeyboardMode>();
-            Process( this, mode, Adapter.AlwaysTrue<IKeyboardMode>( m.Add ), null, null );
+            Process( this, mode, Util.AlwaysTrue<IKeyboardMode>( m.Add ), null, null );
             return Context.ObtainMode( m );
         }
 
         IKeyboardMode IKeyboardMode.Toggle( IKeyboardMode mode )
         {
             List<IKeyboardMode> m = new List<IKeyboardMode>();
-            var add = Adapter.AlwaysTrue<IKeyboardMode>( m.Add );
+            var add = Util.AlwaysTrue<IKeyboardMode>( m.Add );
             Process( this, mode, add, add, null );
             return Context.ObtainMode( m );
         }
@@ -186,10 +186,10 @@ namespace CK.Keyboard
         /// </remarks>
         static void Process( IKeyboardMode left, IKeyboardMode right, Predicate<IKeyboardMode> onLeft, Predicate<IKeyboardMode> onRight,  Predicate<IKeyboardMode> onBoth )
         {
-            IReadOnlyList<IKeyboardMode> l = left.AtomicModes;
+            ICKReadOnlyList<IKeyboardMode> l = left.AtomicModes;
             int cL = l.Count;
             int iL = 0;
-            IReadOnlyList<IKeyboardMode> r = right.AtomicModes;
+            ICKReadOnlyList<IKeyboardMode> r = right.AtomicModes;
             int cR = r.Count;
             int iR = 0;
             for( ; ; )
@@ -241,7 +241,7 @@ namespace CK.Keyboard
             }
         }
 
-        public IReadOnlyList<IKeyboardMode> Fallbacks
+        public ICKReadOnlyList<IKeyboardMode> Fallbacks
         {
             get
             {
@@ -249,7 +249,7 @@ namespace CK.Keyboard
                 {
                     IKeyboardMode[] f = new IKeyboardMode[ (1 << _modes.Count) - 1 ];
                     ComputeFallbacks( f );
-                    _fallbacks = new ReadOnlyListOnIList<IKeyboardMode>( f );
+                    _fallbacks = new CKReadOnlyListOnIList<IKeyboardMode>( f );
                 }
                 return _fallbacks;
             }
@@ -317,7 +317,46 @@ namespace CK.Keyboard
             }
             return true;
         }
+    }
+}
 
+namespace CK.Core
+{
+    /// <summary>
+    /// Simple wrapper: <see cref="Inner"/> property is the wrapped object.
+    /// </summary>
+    /// <typeparam name="T">Type of wrapped object.</typeparam>
+    public class Wrapper<T>
+    {
+        T _inner;
+
+        /// <summary>
+        /// Initializes a wrapper around an object.
+        /// </summary>
+        /// <param name="inner">Wrapped object.</param>
+        public Wrapper( T inner )
+        {
+            if( inner == null ) throw new ArgumentNullException();
+            _inner = inner;
+        }
+
+        /// <summary>
+        /// Gets the wrapped object.
+        /// </summary>
+        public T Inner { get { return _inner; } }
+
+        /// <summary>
+        /// Creates a <see cref="IEnumerator"/> on a <see cref="IEnumerable"/> of another type.
+        /// </summary>
+        /// <typeparam name="TInner">Actual entity.</typeparam>
+        /// <param name="e">Source enumerable.</param>
+        /// <param name="converter">Converter from <typeparamref name="TInner"/> to <typeparamref name="T"/>.</param>
+        /// <returns>An enumerator for the more abstract type.</returns>
+        static public IEnumerator<T> CreateEnumerator<TInner>( IEnumerable<TInner> e, Converter<TInner, T> converter )
+        {
+            return new CK.Core.CKEnumerableConverter<T, TInner>( e, converter ).GetEnumerator();
+        }
 
     }
+
 }

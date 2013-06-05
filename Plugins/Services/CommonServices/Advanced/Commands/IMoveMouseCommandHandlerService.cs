@@ -35,6 +35,6 @@ namespace CommonServices
         /// <summary>
         /// Move the mouse in the given direction for the given distance (step).
         /// </summary>
-        void MoveMouse( string direction, int step );
+        void BeginMouseMotion( string direction, int step );
     }
 }

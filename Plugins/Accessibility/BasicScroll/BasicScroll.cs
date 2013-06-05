@@ -35,7 +35,6 @@ namespace BasicScroll
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
 
-
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new DispatcherTimer();
@@ -74,6 +73,8 @@ namespace BasicScroll
 
         #region Service implementation
 
+        public bool IsHighlighting { get { return _timer.IsEnabled; } }
+
         public void RegisterTree( IHighlightableElement element )
         {
             if( !_registeredElements.Contains( element ) )
@@ -94,6 +95,16 @@ namespace BasicScroll
             }
             
             _scrollingStrategy.ElementUnregistered( element, getNext );
+        }
+
+        public void Pause( bool forceEndHighlight = false )
+        {
+            _scrollingStrategy.Pause( forceEndHighlight );
+        }
+
+        public void Resume()
+        {
+            _scrollingStrategy.Start();
         }
 
         public event EventHandler<HighlightEventArgs> BeginHighlight

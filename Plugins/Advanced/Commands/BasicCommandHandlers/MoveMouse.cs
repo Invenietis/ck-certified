@@ -27,77 +27,147 @@ using CommonServices;
 using CK.Plugin;
 using CK.Core;
 using CK.Context;
+using CommonServices.Accessibility;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace BasicCommandHandlers
 {
     [Plugin( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}", Categories = new string[] { "Advanced" },
         PublicName = "Move mouse command handler",
-        Version = "1.0.0")]
+        Version = "1.0.0" )]
     public class MoveMouseCommandHandler : BasicCommandHandler, IMoveMouseCommandHandlerService
     {
         const string PROTOCOL = "movemouse:";
+        const int STEP = 5;
+
+        DispatcherTimer _timer;
+        Action _currentMotionFunction;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IHighlighterService> HighlighterService { get; set; }
+
+        public override bool Setup( IPluginSetupInfo info )
+        {
+            _timer = new DispatcherTimer();
+            _timer.Tick += OnInternalBeat;
+
+            return base.Setup( info );
+        }
+
+        void OnInternalBeat( object sender, EventArgs e )
+        {
+            if( _currentMotionFunction != null )
+                _currentMotionFunction();
+        }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( e.Command.StartsWith( PROTOCOL ) )
             {
-                string[] parameters = e.Command.Substring( PROTOCOL.Length ).Trim().Split( ',' );
-                string direction = parameters[0];
-                int step = int.Parse( parameters[1] );
+                if( HighlighterService.Service.IsHighlighting )
+                {
+                    HighlighterService.Service.Pause();
 
-                MoveMouse( direction, step );
+                    string[] parameters = e.Command.Substring( PROTOCOL.Length ).Trim().Split( ',' );
+                    string direction = parameters[0];
+                    int speed = int.Parse( parameters[1] );
+
+                    BeginMouseMotion( direction, speed );
+                }
+                else
+                {
+                    HighlighterService.Service.Resume();
+                    EndMouseMotion();
+                }
             }
         }
 
-        public void MoveMouse( string direction, int step )
+        public void BeginMouseMotion( string direction, int speed )
         {
+            // timer should not be enabled. If it is enabled it could be due to 
+            if( _timer.IsEnabled ) _timer.Stop();
+            
+            // setup speed
+            _timer.Interval = new TimeSpan( 0, 0, 0, 0, speed );
+
+            Action motion = null;
+            #region create motion function based on the direction
             switch( direction )
             {
                 case "U":
-                    PointerDriver.Service.MovePointer(
-                        PointerDriver.Service.CurrentPointerXLocation,
-                        PointerDriver.Service.CurrentPointerYLocation - step );
-                    return;
+                    motion = () =>
+                    {
+                        PointerDriver.Service.MovePointer(
+                            PointerDriver.Service.CurrentPointerXLocation,
+                            PointerDriver.Service.CurrentPointerYLocation - STEP );
+                    };
+                    break;
                 case "R":
-                    PointerDriver.Service.MovePointer(
-                        PointerDriver.Service.CurrentPointerXLocation + step,
-                        PointerDriver.Service.CurrentPointerYLocation );
-                    return;
+                    motion = () =>
+                    {
+                        PointerDriver.Service.MovePointer(
+                            PointerDriver.Service.CurrentPointerXLocation + STEP,
+                            PointerDriver.Service.CurrentPointerYLocation );
+                    };
+                    break;
                 case "B":
-                    PointerDriver.Service.MovePointer(
-                        PointerDriver.Service.CurrentPointerXLocation,
-                        PointerDriver.Service.CurrentPointerYLocation + step );
-                    return;
+                    motion = () =>
+                    {
+                        PointerDriver.Service.MovePointer(
+                            PointerDriver.Service.CurrentPointerXLocation,
+                            PointerDriver.Service.CurrentPointerYLocation + STEP );
+                    };
+                    break;
                 case "L":
-                    PointerDriver.Service.MovePointer(
-                        PointerDriver.Service.CurrentPointerXLocation - step,
-                        PointerDriver.Service.CurrentPointerYLocation );
-                    return;
+                    motion = () =>
+                    {
+                        PointerDriver.Service.MovePointer(
+                            PointerDriver.Service.CurrentPointerXLocation - STEP,
+                            PointerDriver.Service.CurrentPointerYLocation );
+                    };
+                    break;
             }
 
-            double angle = 0.0;
-            switch( direction )
+            if( motion == null )
             {
-                case "UL":
-                    angle = -((3 * Math.PI) / 4);
-                    break;
-                case "BL":
-                    angle = (3 * Math.PI) / 4;
-                    break;
-                case "BR":
-                    angle = Math.PI / 4;
-                    break;
-                case "UR":
-                    angle = -(Math.PI / 4);
-                    break;
-            }
 
-            int x = (int)(PointerDriver.Service.CurrentPointerXLocation + (step * Math.Cos( angle )));
-            int y = (int)(PointerDriver.Service.CurrentPointerYLocation + (step * Math.Sin( angle )));
-            PointerDriver.Service.MovePointer( x, y );
+                double angle = 0.0;
+                switch( direction )
+                {
+                    case "UL":
+                        angle = -((3 * Math.PI) / 4);
+                        break;
+                    case "BL":
+                        angle = (3 * Math.PI) / 4;
+                        break;
+                    case "BR":
+                        angle = Math.PI / 4;
+                        break;
+                    case "UR":
+                        angle = -(Math.PI / 4);
+                        break;
+                }
+
+                motion = () =>
+                {
+                    int x = (int)(PointerDriver.Service.CurrentPointerXLocation + (STEP * Math.Cos( angle )));
+                    int y = (int)(PointerDriver.Service.CurrentPointerYLocation + (STEP * Math.Sin( angle )));
+                    PointerDriver.Service.MovePointer( x, y );
+                };
+            }
+            #endregion
+
+            _currentMotionFunction = motion;
+            _timer.Start();
+        }
+
+        public void EndMouseMotion()
+        {
+            _timer.Stop();
         }
     }
 }

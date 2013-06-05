@@ -105,7 +105,11 @@ namespace Host
         /// </summary>
         public bool ShowSystrayIcon
         {
-            get { return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true ); }
+            get 
+            {
+
+                return CK.Core.OSVersionInfo.OSLevel < OSVersionInfo.SimpleOSLevel.Windows8 && CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true ); 
+            }
             set
             {
                 if( CivikeyStandardHost.Instance.UserConfig.Set( "ShowSystrayIcon", value ) != ChangeStatus.None )
@@ -210,6 +214,20 @@ namespace Host
             }
         }
 
+        ICommand _exitHostCommand;
+        public ICommand ExitHostCommand
+        {
+            get
+            {
+                if( _exitHostCommand == null )
+                {
+                    _exitHostCommand = new VMCommand( () => CivikeyHost.Context.RaiseExitApplication( true ) );
+                }
+
+                return _exitHostCommand;
+            }
+        }
+
         /// <summary>
         /// Gets whether the window is visible or not.
         /// This boolean is only valid when <see cref="Host.AppViewModel.ShowTaskbarIcon"/> is set to false, otherwise it doesn't track the actual visibility of the window.
@@ -288,6 +306,7 @@ namespace Host
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Stopped );
             runner.Apply();
         }
+
         internal bool IsPluginRunning( IPluginInfo plugin )
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );

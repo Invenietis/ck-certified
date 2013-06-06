@@ -35,7 +35,7 @@
                         <KeyUp Label="Up-Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 5</Cmd>
+                            <Cmd>movemouse:UL, 40</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -43,7 +43,7 @@
                         <KeyUp Label="Up-Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 100</Cmd>
+                            <Cmd>movemouse:UL, 20</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -51,7 +51,7 @@
                         <KeyUp Label="Up-Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 200</Cmd>
+                            <Cmd>movemouse:UL, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -59,7 +59,7 @@
                         <KeyUp Label="Up-Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 50</Cmd>
+                            <Cmd>movemouse:UL, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -71,7 +71,7 @@
                         <KeyUp Label="Up" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 5</Cmd>
+                            <Cmd>movemouse:U, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -79,7 +79,7 @@
                         <KeyUp Label="Up" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 100</Cmd>
+                            <Cmd>movemouse:U, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -87,7 +87,7 @@
                         <KeyUp Label="Up" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 200</Cmd>
+                            <Cmd>movemouse:U, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -95,7 +95,7 @@
                         <KeyUp Label="Up" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 50</Cmd>
+                            <Cmd>movemouse:U, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -107,7 +107,7 @@
                         <KeyUp Label="Up-Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 5</Cmd>
+                            <Cmd>movemouse:UR, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -115,7 +115,7 @@
                         <KeyUp Label="Up-Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 100</Cmd>
+                            <Cmd>movemouse:UR, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -123,7 +123,7 @@
                         <KeyUp Label="Up-Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 200</Cmd>
+                            <Cmd>movemouse:UR, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -131,7 +131,7 @@
                         <KeyUp Label="Up-Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 50</Cmd>
+                            <Cmd>movemouse:UR, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -147,7 +147,7 @@
                         <KeyUp Label="Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 5</Cmd>
+                            <Cmd>movemouse:L, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -155,7 +155,7 @@
                         <KeyUp Label="Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 100</Cmd>
+                            <Cmd>movemouse:L, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -163,7 +163,7 @@
                         <KeyUp Label="Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 200</Cmd>
+                            <Cmd>movemouse:L, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -171,7 +171,7 @@
                         <KeyUp Label="Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 50</Cmd>
+                            <Cmd>movemouse:L, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -183,7 +183,7 @@
                         <KeyUp Label="Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 5</Cmd>
+                            <Cmd>movemouse:R, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -191,7 +191,7 @@
                         <KeyUp Label="Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 100</Cmd>
+                            <Cmd>movemouse:R, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -199,7 +199,7 @@
                         <KeyUp Label="Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 200</Cmd>
+                            <Cmd>movemouse:R, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -207,7 +207,7 @@
                         <KeyUp Label="Right" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 50</Cmd>
+                            <Cmd>movemouse:R, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -223,7 +223,7 @@
                         <KeyUp Label="Left-Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 5</Cmd>
+                            <Cmd>movemouse:BL, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -231,7 +231,7 @@
                         <KeyUp Label="Bottom-Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 100</Cmd>
+                            <Cmd>movemouse:BL, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -239,7 +239,7 @@
                         <KeyUp Label="Bottom-Left" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 200</Cmd>
+                            <Cmd>movemouse:BL, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -247,7 +247,7 @@
                         <KeyUp Label="Left-Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 50</Cmd>
+                            <Cmd>movemouse:BL, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -259,7 +259,7 @@
                         <KeyUp Label="Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 5</Cmd>
+                            <Cmd>movemouse:B, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -267,7 +267,7 @@
                         <KeyUp Label="Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 100</Cmd>
+                            <Cmd>movemouse:B, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -275,7 +275,7 @@
                         <KeyUp Label="Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 200</Cmd>
+                            <Cmd>movemouse:B, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -283,7 +283,7 @@
                         <KeyUp Label="Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 50</Cmd>
+                            <Cmd>movemouse:B, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -295,7 +295,7 @@
                         <KeyUp Label="Right-Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 5</Cmd>
+                            <Cmd>movemouse:BR, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -303,7 +303,7 @@
                         <KeyUp Label="Right-Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 100</Cmd>
+                            <Cmd>movemouse:BR, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -311,7 +311,7 @@
                         <KeyUp Label="Right-Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 200</Cmd>
+                            <Cmd>movemouse:BR, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -319,7 +319,7 @@
                         <KeyUp Label="Right-Bottom" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 50</Cmd>
+                            <Cmd>movemouse:BR, 15</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>

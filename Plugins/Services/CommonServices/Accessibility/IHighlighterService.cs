@@ -13,6 +13,11 @@ namespace CommonServices.Accessibility
     public interface IHighlighterService : IDynamicService
     {
         /// <summary>
+        /// Gets if the highlighter is running or not (maybe stopped, or just paused)
+        /// </summary>
+        bool IsHighlighting { get; }
+
+        /// <summary>
         /// Register a highlightable tree in the service in order to be available for the highlighting
         /// </summary>
         /// <param name="root"></param>
@@ -23,6 +28,17 @@ namespace CommonServices.Accessibility
         /// </summary>
         /// <param name="element"></param>
         void UnregisterTree( IHighlightableElement element );
+
+        /// <summary>
+        /// Pause the highlighter scroller. Call Resume to resume the execution where it was paused.
+        /// </summary>
+        /// <param name="forceEndHighlight">If set to true, the highlighter will manually fire Endhighlight event to unselect the potentially highlighted current element</param>
+        void Pause( bool forceEndHighlight = false );
+
+        /// <summary>
+        /// Resume the highlighter scroller.
+        /// </summary>
+        void Resume();
 
         /// <summary>
         /// Event fired to trigger the highlightment of a particular element (or tree).

@@ -35,9 +35,6 @@ namespace BasicScroll
 
         internal event EventHandler<HighlightEventArgs> SelectElement;
 
-        /// <summary>
-        /// Used when the 
-        /// </summary>
         public void ElementUnregistered( IHighlightableElement unregisteredElement, bool getNext )
         {
             if( _currentElementParents.Contains( unregisteredElement ) )
@@ -92,6 +89,18 @@ namespace BasicScroll
                     FireEndHighlight();
                 }
                 _timer.IsEnabled = false;
+            }
+        }
+
+        internal void Pause( bool forceEndHighlight )
+        {
+            if( _timer.IsEnabled )
+            {
+                if( forceEndHighlight && _currentElement != null )
+                {
+                    FireEndHighlight();
+                }
+                _timer.Stop();
             }
         }
 

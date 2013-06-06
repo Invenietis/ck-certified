@@ -31,20 +31,5 @@ namespace SimpleSkin.ViewModels
             T val = value;
             Context.SkinDispatcher.Invoke( setter, val );
         }
-
-        //internal void FreezableThreadSafeSet<T>( T value, Action<T> setter )
-        //    where T : Freezable
-        //{
-        //    T val = (T)value.Clone();
-        //    Context.Thread.Dispatcher.Invoke( setter, val );
-        //}
-
-        //internal void ImageThreadSafeSet<T>( T value, Action<T> setter )
-        //    where T : Image
-        //{
-        //    Context.Thread.Dispatcher.Invoke( setter, WPFImageProcessingHelper.CloneImage( value ) );
-        //}
-
-        
     }
 }

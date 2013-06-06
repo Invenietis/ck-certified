@@ -98,12 +98,12 @@ namespace SimpleSkin
         public IContext Context { get; set; }
 
         CKNoFocusWindowManager _noFocusWindowManager;
-        ISimpleDispatcher _dispatcher;
+        Dispatcher _skinDispatcher;
         //_secondThread;
 
         #region IPlugin Implementation
 
-        public bool Setup( IPluginSetupInfo info )
+        public bool Setup(IPluginSetupInfo info)
         {
             return true;
         }
@@ -115,8 +115,8 @@ namespace SimpleSkin
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 _noFocusWindowManager = new CKNoFocusWindowManager();
-                _dispatcher = _noFocusWindowManager.NoFocusWindowThreadDispatcher;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config, _dispatcher );
+                _skinDispatcher = _noFocusWindowManager.NoFocusWindowThreadDispatcher;
+                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config, _skinDispatcher );
 
                 _isStarted = true;
                 _skinWindow = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( (Func<SkinWindow>)( () =>
@@ -124,11 +124,9 @@ namespace SimpleSkin
                     return new SkinWindow() { DataContext = _ctxVm };
                 } ) );
 
-
-                _dispatcher.Invoke( (System.Action)( () =>
+                _skinDispatcher.Invoke( (System.Action)( () =>
                 {
                     InitializeWindowLayout();
-
                     _skinWindow.Show();
 
                     //Placing the skin at the same location as the last launch.
@@ -159,7 +157,7 @@ namespace SimpleSkin
                 UnregisterEvents();
                 _forceClose = true;
 
-                _dispatcher.Invoke( (Action)( () =>
+                _skinDispatcher.Invoke( (Action)( () =>
                 {
                     Config.User.Set( PlacementString, _skinWindow.GetPlacement() );
                     _skinWindow.Close();
@@ -167,11 +165,15 @@ namespace SimpleSkin
 
                 if( _miniView != null )
                 {
-                    _miniView.Close();
-                    _miniView = null;
+                    _skinDispatcher.BeginInvoke( (Action)( () =>
+                    {
+                        _miniView.Close();
+                        _miniView = null;
+                    } ), null );
                     _viewHidden = false;
                 }
-                if( _miniView != null )
+
+                if( _miniViewVm != null )
                     _miniViewVm.Dispose();
 
                 _ctxVm.Dispose();
@@ -189,6 +191,9 @@ namespace SimpleSkin
 
         #region ToolMethods
 
+        /// <summary>
+        /// Must be called from the skin thread
+        /// </summary>
         private void InitializeWindowLayout()
         {
             int defaultWidth = _ctxVm.KeyboardVM.W;
@@ -208,7 +213,12 @@ namespace SimpleSkin
             else _skinWindow.Width = _skinWindow.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
         }
 
-        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
+        /// <summary>
+        /// Must be called from the skin thread
+        /// </summary>
+        /// <param name="defaultWidth"></param>
+        /// <param name="defaultHeight"></param>
+        private void SetDefaultWindowPosition(int defaultWidth, int defaultHeight)
         {
             _skinWindow.Top = 0;
             _skinWindow.Left = 0;
@@ -266,7 +276,7 @@ namespace SimpleSkin
             _skinWindow.SizeChanged -= new SizeChangedEventHandler( OnWindowResized );
         }
 
-        void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
+        void OnCurrentKeyboardChanging(object sender, CurrentKeyboardChangingEventArgs e)
         {
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
@@ -276,43 +286,50 @@ namespace SimpleSkin
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
-                _ctxVm.SkinDispatcher.BeginInvoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ), null );
+                //Invoke instead of beginInvoke because we need to save this configuration BEFORE the keyboard is changed.
+                _skinDispatcher.Invoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ), null );
             }
 
             if( e.Next == null )
             {
-                if( _miniView != null && _miniView.IsVisible )
+                _skinDispatcher.BeginInvoke( (Action)( () =>
                 {
-                    Debug.Assert( !_viewHidden, "The miniview is visible yet _viewHidden is false" );
-                    _miniView.Hide();
-                }
+                    if( _miniView != null && _miniView.IsVisible )
+                    {
+                        Debug.Assert( !_viewHidden, "The miniview is visible yet _viewHidden is false" );
+                        _miniView.Hide();
+                    }
 
-                if( _skinWindow != null && _skinWindow.IsVisible )
-                {
-                    _skinWindow.Hide();
-                }
+                    if( _skinWindow != null && _skinWindow.IsVisible )
+                    {
+                        _skinWindow.Hide();
+                    }
+                } ), null );
             }
             else
             {
                 //if the previous keyboard was null
                 if( e.Current == null )
                 {
-                    //if the view was not hidden before setting the keyboard to null
-                    if( _skinWindow != null && !_viewHidden )
+                    _skinDispatcher.BeginInvoke( (Action)( () =>
                     {
-                        Debug.Assert( !_skinWindow.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the skin view was already visible" );
-                        _skinWindow.Show();
-                    }
-                    else if( _miniView != null )
-                    {
-                        Debug.Assert( !_miniView.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the miniview was already visible" );
-                        _miniView.Show();
-                    }
+                        //if the view was not hidden before setting the keyboard to null
+                        if( _skinWindow != null && !_viewHidden )
+                        {
+                            Debug.Assert( !_skinWindow.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the skin view was already visible" );
+                            _skinWindow.Show();
+                        }
+                        else if( _miniView != null )
+                        {
+                            Debug.Assert( !_miniView.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the miniview was already visible" );
+                            _miniView.Show();
+                        }
+                    } ), null );
                 }
             }
         }
 
-        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        void OnCurrentKeyboardChanged(object sender, CurrentKeyboardChangedEventArgs e)
         {
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
@@ -326,7 +343,8 @@ namespace SimpleSkin
                     WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];
                     if( _viewHidden ) placement.showCmd = 0;
                     else placement.showCmd = 8; //Show without taking focus
-                    _ctxVm.SkinDispatcher.Invoke( (Action)( () => _skinWindow.SetPlacement( placement ) ), null );
+
+                    _skinDispatcher.BeginInvoke( (Action)( () => _skinWindow.SetPlacement( placement ) ), null );
                 }
                 else
                 {
@@ -345,26 +363,26 @@ namespace SimpleSkin
                         h = _ctxVm.KeyboardVM.H;
                     }
 
-                    _ctxVm.SkinDispatcher.Invoke( (Action)( () => SetDefaultWindowPosition( w, h ) ), null );
+                    _skinDispatcher.BeginInvoke( (Action)( () => SetDefaultWindowPosition( w, h ) ), null );
                 }
             }
         }
 
-        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        void OnConfigChanged(object sender, ConfigChangedEventArgs e)
         {
-            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( (c) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
             }
         }
 
-        void OnMouseLeaveWindow( object sender, System.Windows.Input.MouseEventArgs e )
+        void OnMouseLeaveWindow(object sender, System.Windows.Input.MouseEventArgs e)
         {
             int timeout = _timeout == 0 ? 6000 : _timeout;
             if( _autohide )
             {
                 if( _timer == null )
-                    _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, ( o, args ) => HideSkin(), _skinWindow.Dispatcher );
+                    _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, (o, args) => HideSkin(), _skinWindow.Dispatcher );
                 else
                     _timer.Interval = TimeSpan.FromMilliseconds( timeout );
 
@@ -372,17 +390,17 @@ namespace SimpleSkin
             }
         }
 
-        void OnMouseEnterWindow( object sender, System.Windows.Input.MouseEventArgs e )
+        void OnMouseEnterWindow(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if( _timer != null ) _timer.Stop();
         }
 
-        void OnWindowResized( object sender, SizeChangedEventArgs e )
+        void OnWindowResized(object sender, SizeChangedEventArgs e)
         {
             if( _timer != null ) _timer.Stop();
         }
 
-        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if( !_forceClose && !e.Cancel )
             {
@@ -399,7 +417,7 @@ namespace SimpleSkin
 
         #region Hightlight Methods
 
-        void OnSelectElement( object sender, HighlightEventArgs e )
+        void OnSelectElement(object sender, HighlightEventArgs e)
         {
 
             if( e.Element is VMKeySimple )
@@ -416,7 +434,7 @@ namespace SimpleSkin
             }
         }
 
-        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        void OnBeginHighlight(object sender, HighlightEventArgs e)
         {
             VMZoneSimple vm = e.Element as VMZoneSimple;
             if( vm != null ) vm.IsHighlighting = true;
@@ -428,7 +446,7 @@ namespace SimpleSkin
 
         }
 
-        void OnEndHighlight( object sender, HighlightEventArgs e )
+        void OnEndHighlight(object sender, HighlightEventArgs e)
         {
             VMZoneSimple vm = e.Element as VMZoneSimple;
             if( vm != null ) vm.IsHighlighting = false;
@@ -439,7 +457,7 @@ namespace SimpleSkin
             }
         }
 
-        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        void OnHighlighterServiceStatusChanged(object sender, ServiceStatusChangedEventArgs e)
         {
             if( e.Current == InternalRunningStatus.Started )
             {
@@ -494,7 +512,9 @@ namespace SimpleSkin
         /// </summary>
         public void ToggleHostMinimized()
         {
-            HostManipulator.ToggleMinimize( _skinWindow.ThisWindowHandle );
+            IntPtr ptr = IntPtr.Zero;
+            _skinDispatcher.Invoke( (Action)( () => ptr = _skinWindow.ThisWindowHandle ), null );
+            Application.Current.Dispatcher.Invoke( (Action)( () => HostManipulator.ToggleMinimize( ptr ) ), null );
         }
 
         /// <summary>
@@ -511,19 +531,19 @@ namespace SimpleSkin
             {
                 _viewHidden = true;
 
-                _dispatcher.Invoke( (Action)( () =>
+                _skinDispatcher.Invoke( (Action)( () =>
                 {
                     ShowMiniView();
                     _skinWindow.Hide();
+
+                    if( Highlighter.Status == InternalRunningStatus.Started )
+                    {
+                        Highlighter.Service.RegisterTree( _miniViewVm );
+                        Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                    }
+
+                    if( _timer != null ) _timer.Stop();
                 } ), null );
-
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    Highlighter.Service.RegisterTree( _miniViewVm );
-                    Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-                }
-
-                if( _timer != null ) _timer.Stop();
             }
         }
 
@@ -536,11 +556,12 @@ namespace SimpleSkin
             {
                 _viewHidden = false;
 
-                _dispatcher.Invoke( (Action)( () =>
+                _skinDispatcher.BeginInvoke( (Action)( () =>
                 {
                     _miniView.Hide();
                     _skinWindow.Show();
                 } ), null );
+
                 if( Highlighter.Status == InternalRunningStatus.Started )
                 {
                     Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
@@ -551,23 +572,28 @@ namespace SimpleSkin
 
         void ShowMiniView()
         {
-            if( _miniView == null )
-            {
-                _miniViewVm = new MiniViewVM( this );
-                _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
-                _miniView.Closing += new CancelEventHandler( OnWindowClosing );
-
-                _miniView.Show();
-
-                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth / 2 ), _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
-                    !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth ), _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
+            //_skinDispatcher.Invoke( (Action)( () =>
+            //{
+                if( _miniView == null )
                 {
-                    _miniView.Left = 0;
-                    _miniView.Top = 0;
+                    _miniViewVm = new MiniViewVM( this );
+
+                    _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
+                    _miniView.Closing += new CancelEventHandler( OnWindowClosing );
+                    _miniView.Show();
+
+                    if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth / 2 ), _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
+                    !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth ), _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
+                    {
+                        _miniView.Left = 0;
+                        _miniView.Top = 0;
+                    }
                 }
-            }
-            else
-                _miniView.Show();
+                else
+                {
+                    _miniView.Show();
+                }
+            //} ), null );
         }
 
         #endregion
@@ -585,7 +611,7 @@ namespace SimpleSkin
             set { _isHighlighted = value; OnPropertyChanged( "IsHighlighted" ); }
         }
 
-        public MiniViewVM( SimpleSkin parent )
+        public MiniViewVM(SimpleSkin parent)
         {
             _isHighlighted = false;
 
@@ -601,7 +627,7 @@ namespace SimpleSkin
             Parent.Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
         }
 
-        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        void OnBeginHighlight(object sender, HighlightEventArgs e)
         {
             if( Parent.IsViewHidden && e.Element == this )
             {
@@ -609,7 +635,7 @@ namespace SimpleSkin
             }
         }
 
-        void OnEndHighlight( object sender, HighlightEventArgs e )
+        void OnEndHighlight(object sender, HighlightEventArgs e)
         {
             if( Parent.IsViewHidden && e.Element == this )
             {
@@ -617,7 +643,7 @@ namespace SimpleSkin
             }
         }
 
-        void OnSelectElement( object sender, HighlightEventArgs e )
+        void OnSelectElement(object sender, HighlightEventArgs e)
         {
             if( Parent.IsViewHidden && e.Element == this )
             {
@@ -625,7 +651,7 @@ namespace SimpleSkin
             }
         }
 
-        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        void OnHighlighterServiceStatusChanged(object sender, ServiceStatusChangedEventArgs e)
         {
             if( e.Current == InternalRunningStatus.Started )
             {

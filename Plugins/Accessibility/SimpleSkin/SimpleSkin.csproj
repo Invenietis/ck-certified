@@ -132,11 +132,9 @@
     <Compile Include="Editor\EditorViewModel.cs" />
     <Compile Include="Editor\EditorViewModel.FontProperties.cs" />
     <Compile Include="Editor\SimpleSkinEditor.cs" />
-    <Compile Include="ISimpleDispatcher.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DispatcherWrapper.cs" />
     <Compile Include="SimpleSkin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkinWindow.xaml.cs">
@@ -276,6 +274,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\clics\doubleleftclick.png" />
+    <Resource Include="Images\clics\dragdrop.png" />
+    <Resource Include="Images\clics\leftclick.png" />
+    <Resource Include="Images\clics\rightclick.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

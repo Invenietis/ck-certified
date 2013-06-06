@@ -55,7 +55,7 @@ namespace Host
             IsVisible = true;
             IsMinimized = true;
 
-            CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
+            CivikeyHost.Context.ApplicationExited += (o, e) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );
 
             CivikeyHost.Context.ServiceContainer.Add<IHostManipulator>( this );
@@ -105,10 +105,10 @@ namespace Host
         /// </summary>
         public bool ShowSystrayIcon
         {
-            get 
+            get
             {
 
-                return CK.Core.OSVersionInfo.OSLevel < OSVersionInfo.SimpleOSLevel.Windows8 && CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true ); 
+                return CK.Core.OSVersionInfo.OSLevel < OSVersionInfo.SimpleOSLevel.Windows8 && CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
             }
             set
             {
@@ -120,7 +120,7 @@ namespace Host
             }
         }
 
-        protected override void OnViewLoaded( object view )
+        protected override void OnViewLoaded(object view)
         {
             // Ensures that the view is actually the main application window:
             // since the application is configured with ShutdownMode="OnMainWindowClose", 
@@ -129,20 +129,19 @@ namespace Host
             base.OnViewLoaded( view );
         }
 
-        public override void CanClose( Action<bool> callback )
+        public override void CanClose(Action<bool> callback)
         {
             callback( _forceClose || CivikeyHost.Context.RaiseExitApplication( false ) );
         }
 
-        void ExitHost( bool hostShouldExit )
+        void ExitHost(bool hostShouldExit)
         {
             var thisView = GetView( null ) as Window;
             if( hostShouldExit )
             {
                 if( thisView != null )
                 {
-
-                    thisView.Dispatcher.Invoke( (System.Action)( () => thisView.Hide() ), null );
+                    thisView.Hide();
                 }
             }
 
@@ -153,7 +152,7 @@ namespace Host
             if( hostShouldExit )
             {
                 _forceClose = true;
-                thisView.Dispatcher.Invoke( (System.Action)( () => TryClose() ), null );
+                TryClose();
             }
         }
 
@@ -168,7 +167,7 @@ namespace Host
             return result;
         }
 
-        void OnBeforeExitApplication( object sender, CK.Context.ApplicationExitingEventArgs e )
+        void OnBeforeExitApplication(object sender, CK.Context.ApplicationExitingEventArgs e)
         {
             if( !_closing )
             {
@@ -185,7 +184,10 @@ namespace Host
                 e.Cancel = mvm.ModalResult != ModalResult.Yes;
 
                 _closing = !e.Cancel;
-                if( !_closing && bestParent != thisView ) thisView.Dispatcher.Invoke( (System.Action)( () => thisView.Activate() ), null );
+                if( !_closing && bestParent != thisView )
+                {
+                    thisView.Activate();
+                }
             }
             else
                 e.Cancel = true;
@@ -251,20 +253,18 @@ namespace Host
         /// <summary>
         /// Toggle the Minimized state of the MainApplicationWindow.
         /// If the window should not appear in the Taskbar, it is hidden instead of minimized.
+        /// This method must be called from the Application's Main Thread
         /// </summary>
         /// <param name="lastFocusedWindowsHandle"></param>
-        public void ToggleMinimize( IntPtr lastFocusedWindowsHandle )
+        public void ToggleMinimize(IntPtr lastFocusedWindowsHandle)
         {
             IntPtr hostWindowHandle = IntPtr.Zero;
-            Application.Current.Dispatcher.Invoke( (System.Action)( () =>
-            {
-                hostWindowHandle = new WindowInteropHelper( (Window)this.GetView( null ) ).Handle;
-            } ), null );
+            hostWindowHandle = new WindowInteropHelper( (Window)this.GetView( null ) ).Handle;
 
             if( !IsMinimized && hostWindowHandle != lastFocusedWindowsHandle )
             {
                 //If the window is not minimized but doesn't have the focus, it is activated.
-                Application.Current.Dispatcher.Invoke( (System.Action)( () => App.Current.MainWindow.Activate() ), null );
+                App.Current.MainWindow.Activate();
             }
             else
             {
@@ -293,21 +293,21 @@ namespace Host
             }
         }
 
-        internal void StartPlugin( Guid pluginId )
+        internal void StartPlugin(Guid pluginId)
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Started );
             runner.Apply();
         }
 
-        internal void StopPlugin( Guid pluginId )
+        internal void StopPlugin(Guid pluginId)
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Stopped );
             runner.Apply();
         }
 
-        internal bool IsPluginRunning( IPluginInfo plugin )
+        internal bool IsPluginRunning(IPluginInfo plugin)
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             return runner.PluginHost.IsPluginRunning( plugin );
@@ -324,7 +324,7 @@ namespace Host
         Window _owner;
         Cursor _previousCursor;
 
-        public WaitHandle( Window owner )
+        public WaitHandle(Window owner)
         {
             Debug.Assert( owner != null );
             _owner = owner;

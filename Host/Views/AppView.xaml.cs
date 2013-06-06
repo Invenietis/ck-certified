@@ -49,11 +49,11 @@ namespace Host
             InitializeComponent();
         }
 
-        TaskbarIcon tbi;
+        //TaskbarIcon tbi;
 
         protected override void OnClosing( System.ComponentModel.CancelEventArgs e )
         {
-            tbi.Dispose();
+            //tbi.Dispose();
             base.OnClosing( e );
         }
 

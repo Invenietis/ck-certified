@@ -42,42 +42,40 @@ namespace Host.ViewModels
             set
             {
                 _ctx.CurrentKeyboard = value.Model;
-                //TODOJL : why should we BeginInvoke that ?
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => OnPropertyChanged( "Current" ) ), null );
+                OnPropertyChanged( "Current" );
             }
         }
 
-        void Keyboards_KeyboardDestroyed( object sender, KeyboardEventArgs e )
+        void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
             var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
             destroyedKeyboard.Dispose();
-            Application.Current.Dispatcher.BeginInvoke( (Action)( () => _keyboards.Remove( destroyedKeyboard ) ), null );
+            
+            _keyboards.Remove( destroyedKeyboard );
         }
 
-        void Keyboards_KeyboardCreated( object sender, KeyboardEventArgs e )
+        void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
-            Application.Current.Dispatcher.BeginInvoke( (Action)( () => _keyboards.Add( new KeyboardModel( e.Keyboard ) ) ), null );
+            _keyboards.Add( new KeyboardModel( e.Keyboard ) );
         }
 
         private void RegisterEvents()
         {
-            _ctx.Keyboards.KeyboardCreated += Keyboards_KeyboardCreated;
-            _ctx.Keyboards.KeyboardDestroyed += Keyboards_KeyboardDestroyed;
-            _ctx.Keyboards.CurrentChanged += Keyboards_CurrentChanged;
+            _ctx.Keyboards.KeyboardCreated += OnKeyboardCreated;
+            _ctx.Keyboards.KeyboardDestroyed += OnKeyboardDestroyed;
+            _ctx.Keyboards.CurrentChanged += OnCurrentChanged;
         }
 
-        void Keyboards_CurrentChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        void OnCurrentChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            //This call is made on the Application Main Thread as it triggers changes in the host, which has been created by the main thread.
-            //TODOJL : why should we BeginInvoke that ?
-            Application.Current.Dispatcher.BeginInvoke( (Action)( () => OnPropertyChanged( "Current" ) ), null );
+            OnPropertyChanged( "Current" );
         }
 
         private void UnregisterEvents()
         {
-            _ctx.Keyboards.KeyboardCreated -= Keyboards_KeyboardCreated;
-            _ctx.Keyboards.KeyboardDestroyed -= Keyboards_KeyboardDestroyed;
-            _ctx.Keyboards.CurrentChanged -= Keyboards_CurrentChanged;
+            _ctx.Keyboards.KeyboardCreated -= OnKeyboardCreated;
+            _ctx.Keyboards.KeyboardDestroyed -= OnKeyboardDestroyed;
+            _ctx.Keyboards.CurrentChanged -= OnCurrentChanged;
         }
 
         public void Dispose()

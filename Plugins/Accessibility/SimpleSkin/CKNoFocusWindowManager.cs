@@ -11,7 +11,6 @@ namespace SimpleSkin
     public class CKNoFocusWindowManager
     {
         Dispatcher _innerDispatcher;
-        ISimpleDispatcher _dispatcherWrapper;
 
         private void FindOrCreateThread()
         {
@@ -19,23 +18,22 @@ namespace SimpleSkin
             {
                 WPFThread secondThread = new WPFThread( "CiviKey NoFocusWindow Thread" );
                 _innerDispatcher = secondThread.Dispatcher;
-                _dispatcherWrapper = new DispatcherWrapper( _innerDispatcher );
             }
         }
 
         /// <summary>
         /// Gets the dispatcher of the NoFocusWindow Thread.
         /// </summary>
-        public ISimpleDispatcher NoFocusWindowThreadDispatcher
+        public Dispatcher NoFocusWindowThreadDispatcher
         {
             get
             {
-                if( _dispatcherWrapper == null )
+                if( _innerDispatcher == null )
                 {
                     FindOrCreateThread();
                 }
 
-                return _dispatcherWrapper;
+                return _innerDispatcher;
             }
         }
 

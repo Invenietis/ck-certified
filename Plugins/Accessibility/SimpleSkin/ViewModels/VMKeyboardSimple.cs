@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Linq.Expressions;
+using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
@@ -102,7 +103,8 @@ namespace SimpleSkin.ViewModels
         void OnKeyCreated( object sender, KeyEventArgs e )
         {
             VMKeySimple kvm = Context.Obtain( e.Key );
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+
+            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
             {
                 Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
                 _keys.Add( kvm );
@@ -111,7 +113,7 @@ namespace SimpleSkin.ViewModels
 
         void OnKeyDestroyed( object sender, KeyEventArgs e )
         {
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
             {
                 Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
                 _keys.Remove( Context.Obtain( e.Key ) );
@@ -121,7 +123,7 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
            {
                Zones.Add( Context.Obtain( e.Zone ) );
            } ) );
@@ -129,10 +131,10 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            Context.SkinDispatcher.Invoke( (Action)( () =>
-           {
-               Zones.Remove( Context.Obtain( e.Zone ) );
-           } ) );
+            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
+            {
+                Zones.Remove( Context.Obtain( e.Zone ) );
+            } ) );
             Context.OnModelDestroy( e.Zone );
         }
 

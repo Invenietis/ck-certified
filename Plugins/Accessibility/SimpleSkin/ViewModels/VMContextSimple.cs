@@ -53,11 +53,11 @@ namespace SimpleSkin.ViewModels
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
 
-        public ISimpleDispatcher SkinDispatcher { get; private set; }
+        public Dispatcher SkinDispatcher { get; private set; }
 
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, ISimpleDispatcher skinDispatecher )
+        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
         {
-            SkinDispatcher = skinDispatecher;
+            SkinDispatcher = skinDispatcher;
 
             _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();

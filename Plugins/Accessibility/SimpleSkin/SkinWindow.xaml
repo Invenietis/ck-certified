@@ -77,12 +77,6 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        
-        <!--<Style TargetType="Image">
-            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
-            <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
-            <Setter Property="Stretch" Value="Uniform"/>
-        </Style>-->
 
     </Window.Resources>
     <Grid  Focusable="False" >

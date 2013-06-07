@@ -43,7 +43,7 @@ namespace KeyboardEditor
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
-        
+
         [RequiredService( Required = true )]
         public IContext Context { get; set; }
 
@@ -61,7 +61,7 @@ namespace KeyboardEditor
 
         #region IPlugin implementation
 
-        public bool Setup( IPluginSetupInfo info )
+        public bool Setup(IPluginSetupInfo info)
         {
             return true;
         }
@@ -99,7 +99,7 @@ namespace KeyboardEditor
             }
             //UnregisterAllHotKeys();
         }
-            
+
         public void Teardown()
         {
             _stopping = false;
@@ -109,7 +109,7 @@ namespace KeyboardEditor
 
         bool _cancelOnStop = false;
 
-        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //If we are already stopping. We do nothing.
             if( !_stopping )
@@ -143,7 +143,8 @@ namespace KeyboardEditor
                 Dispatcher.CurrentDispatcher.BeginInvoke( stop, null );
             }
 
-            EditedContext.Dispose();
+            if( EditedContext != null )
+                EditedContext.Dispose();
 
             if( _mainWindow != null )
                 _mainWindow.Closing -= OnWindowClosing;
@@ -151,14 +152,14 @@ namespace KeyboardEditor
 
         #endregion
 
-        void KeyboardEditor_HookInvoqued( object sender, HookInvokedEventArgs e )
+        void KeyboardEditor_HookInvoqued(object sender, HookInvokedEventArgs e)
         {
             //Console.Out.WriteLine( String.Format( "Hook invoked ! msg = {0}, lParam = {1}, wParam = {2}", e.Message, e.LParam, e.WParam ) );
             //if( HookInvoqued != null ) HookInvoqued( this, e );
         }
 
         public event HookInvokedEventHandler HookInvoqued;
-        public delegate void HookInvokedEventHandler( object sender, HookInvokedEventArgs e );
+        public delegate void HookInvokedEventHandler(object sender, HookInvokedEventArgs e);
 
         #region Keyboard backup
 
@@ -179,7 +180,7 @@ namespace KeyboardEditor
         /// </summary>
         /// <param name="keyboardToBackup">The keyboard ot backup</param>
         /// <returns>the path to the file in which the keyboard has been saved</returns>
-        public string BackupKeyboard( IKeyboard keyboardToBackup )
+        public string BackupKeyboard(IKeyboard keyboardToBackup)
         {
             string backupFileName = GenerateBackupFileName();
             IStructuredSerializable serializableModel = keyboardToBackup as IStructuredSerializable;
@@ -220,6 +221,13 @@ namespace KeyboardEditor
         {
             if( KeyboardBackup == null || KeyboardBackup.BackedUpKeyboard == null ) throw new NullReferenceException( "Can't cancel modifications on a null KeyboardBackup" );
 
+            if( EditedContext != null )
+            {
+                //Cancelling modifications : we flush the context.
+                EditedContext.Dispose();
+                EditedContext = null;
+            }
+
             IKeyboard keyboardToRevert = KeyboardBackup.BackedUpKeyboard as IKeyboard;
             bool keyboardToRevertIsCurrent = KeyboardContext.Service.CurrentKeyboard.Name == keyboardToRevert.Name;
 
@@ -229,21 +237,35 @@ namespace KeyboardEditor
                 {
                     using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
-                        IKeyboard keyboard = KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
-                        IStructuredSerializable serializableKeyboard = keyboard as IStructuredSerializable;
+                        /*Previous way
+                            IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
+                            if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
 
+                            keyboardToRevert.Rename( Guid.NewGuid().ToString() );
+
+                            _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
+                            //Erasing all properties of the keyboard. We re-apply the backedup ones.
+                            serializableKeyboard.ReadContent( reader );
+
+                            if( keyboardToRevertIsCurrent )
+                                KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
+
+                            keyboardToRevert.Destroy();
+                         */
+
+                        string name = keyboardToRevert.Name;
+                        keyboardToRevert.Destroy();
+
+                        IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( name );
                         if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
-
-                        keyboardToRevert.Rename( Guid.NewGuid().ToString() );
 
                         _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
                         //Erasing all properties of the keyboard. We re-apply the backedup ones.
                         serializableKeyboard.ReadContent( reader );
 
-                        if(keyboardToRevertIsCurrent)
+                        if( keyboardToRevertIsCurrent )
                             KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
-
-                        keyboardToRevert.Destroy();
+                        
                     }
                 }
             }
@@ -251,7 +273,7 @@ namespace KeyboardEditor
             {
                 KeyboardBackup.BackedUpKeyboard.Destroy();
             }
-            
+
             //After cancelling modifications, we have no backup left.
             EnsureBackupIsClean();
         }
@@ -266,7 +288,7 @@ namespace KeyboardEditor
             {
                 File.Delete( KeyboardBackup.BackUpFilePath );
             }
-            
+
             KeyboardBackup = null;
         }
 

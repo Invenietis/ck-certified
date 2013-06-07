@@ -27,13 +27,11 @@ namespace KeyboardEditor.ViewModels
 
         public override bool OnBeforeNext()
         {
-            _root.EditedContext.Dispose();
             return base.OnBeforeNext();
         }
 
         public override bool OnBeforeGoBack()
         {
-            _root.EditedContext.Dispose();
             return base.OnBeforeGoBack();
         }
 

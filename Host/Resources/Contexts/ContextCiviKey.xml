@@ -704,7 +704,8 @@
                     <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDB76B</Color>
                     </data>
-                  </p><p guid="66ad1d1c-bf19-405d-93d3-30ca39b9e52f" version="1.0.0" name="Keyboard editor"><data key="KeyboardBackground" type="String">pack://application:,,,/EditableSkin;component/Images/skinBackground.png</data></p></PluginsData>
+                  </p>
+                </PluginsData>
               </Layout>
             </Layouts>
           </Keyboard>

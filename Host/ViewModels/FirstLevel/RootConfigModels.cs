@@ -41,7 +41,9 @@ namespace Host.ViewModels
             }
             set
             {
-                _ctx.CurrentKeyboard = value.Model;
+                if( value != null )
+                    _ctx.CurrentKeyboard = value.Model;
+                else _ctx.CurrentKeyboard = null;
                 OnPropertyChanged( "Current" );
             }
         }

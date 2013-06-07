@@ -301,6 +301,12 @@ namespace CK.Keyboard
             ReadKeyState( sr, "KeyDown", ref _downLabel, ref _onKeyDown );
             string sArtifact = String.Empty;
             ReadKeyState( sr, "KeyPressed", ref sArtifact, ref _onKeyPressed );
+
+            OnPropertyChanged( "Enabled" );
+            OnPropertyChanged( "Description" );
+            OnPropertyChanged( "UpLabel" );
+            OnPropertyChanged( "DownLabel" );
+
         }
 
         void IStructuredSerializable.WriteContent( IStructuredWriter sw )

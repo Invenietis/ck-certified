@@ -13,25 +13,22 @@ namespace CK.WordPredictor.Engines
         Sybille.WordPredictor _sybille;
         IWordPredictorFeature _wordPredictionFeature;
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature )
-        {
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
-
-        }
-
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
-            : this( wordPredictionFeature )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
             _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+
+            _wordPredictionFeature = wordPredictionFeature;
+            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
         }
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
-            : this( wordPredictionFeature )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
             _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+
+            _wordPredictionFeature = wordPredictionFeature;
+            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
         }
 
 
@@ -74,8 +71,15 @@ namespace CK.WordPredictor.Engines
             {
                 string tokenPhrase = String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
                 tokenPhrase += " ";
-                tokenPhrase += textualService.Tokens.Count >= textualService.CurrentTokenIndex ?
-                    ( textualService.Tokens[textualService.CurrentTokenIndex].Value.Substring( 0, textualService.CaretOffset ) ) : String.Empty;
+                if( textualService.Tokens.Count >= textualService.CurrentTokenIndex )
+                {
+                    string value = textualService.Tokens[textualService.CurrentTokenIndex].Value;
+                    if( value.Length >= textualService.CaretOffset )
+                    {
+                        tokenPhrase += (value.Substring( 0, textualService.CaretOffset ));
+                    }
+                }
+
                 return tokenPhrase;
             }
             if( textualService.Tokens.Count == 1 )

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
@@ -40,27 +41,44 @@ namespace CK.WordPredictor.Engines
             }
         }
 
+        Task<IEnumerable<IWordPredicted>> _currentlyRunningTask;
+        CancellationToken _currentlyRunningTaskCancellationToken;
+        CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+
         public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
         {
-            return Task.Factory.StartNew( () =>
+
+            if( _currentlyRunningTaskCancellationToken == null )
+            {
+                _currentlyRunningTaskCancellationToken = new System.Threading.CancellationToken( false );
+            }
+            if( _currentlyRunningTask.Status == TaskStatus.Running )
+            {
+                _cancellationSource.Cancel();
+                //_currentlyRunningTaskCancellationToken.Register(
+            }
+            _currentlyRunningTask = Task.Factory.StartNew( () =>
             {
                 return Predict( textualContext, maxSuggestedWords );
-            } );
+            }, _currentlyRunningTaskCancellationToken );
+            
+            return _currentlyRunningTask;
         }
 
         public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
         {
             //This call can sometimes raise an ArgumentException
             //TODO : log it and catch it to go on.
-            IEnumerable<WeightlessWordPredicted> result = new List<WeightlessWordPredicted>();
+            IEnumerable<WeightlessWordPredicted> result = null;
             try
             {
                 result = _sybille
                     .Predict( ObtainContext( textualService ), maxSuggestedWords )
                     .Select( t => new WeightlessWordPredicted( t ) );
             }
-            catch( ArgumentException e )
+            catch( ArgumentException )
             {
+                return Enumerable.Empty<IWordPredicted>();
             }
             return result;
         }

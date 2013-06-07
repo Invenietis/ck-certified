@@ -283,6 +283,8 @@ namespace SimpleSkin
                 Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
             }
 
+            UnInitializeHighlighter();
+
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
@@ -331,6 +333,8 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanged(object sender, CurrentKeyboardChangedEventArgs e)
         {
+            InitializeHighligther();
+
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );

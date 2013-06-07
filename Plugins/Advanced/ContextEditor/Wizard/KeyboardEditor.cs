@@ -61,7 +61,7 @@ namespace KeyboardEditor
 
         #region IPlugin implementation
 
-        public bool Setup(IPluginSetupInfo info)
+        public bool Setup( IPluginSetupInfo info )
         {
             return true;
         }
@@ -109,7 +109,7 @@ namespace KeyboardEditor
 
         bool _cancelOnStop = false;
 
-        void OnWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
             //If we are already stopping. We do nothing.
             if( !_stopping )
@@ -152,14 +152,14 @@ namespace KeyboardEditor
 
         #endregion
 
-        void KeyboardEditor_HookInvoqued(object sender, HookInvokedEventArgs e)
+        void KeyboardEditor_HookInvoqued( object sender, HookInvokedEventArgs e )
         {
             //Console.Out.WriteLine( String.Format( "Hook invoked ! msg = {0}, lParam = {1}, wParam = {2}", e.Message, e.LParam, e.WParam ) );
             //if( HookInvoqued != null ) HookInvoqued( this, e );
         }
 
         public event HookInvokedEventHandler HookInvoqued;
-        public delegate void HookInvokedEventHandler(object sender, HookInvokedEventArgs e);
+        public delegate void HookInvokedEventHandler( object sender, HookInvokedEventArgs e );
 
         #region Keyboard backup
 
@@ -180,7 +180,7 @@ namespace KeyboardEditor
         /// </summary>
         /// <param name="keyboardToBackup">The keyboard ot backup</param>
         /// <returns>the path to the file in which the keyboard has been saved</returns>
-        public string BackupKeyboard(IKeyboard keyboardToBackup)
+        public string BackupKeyboard( IKeyboard keyboardToBackup )
         {
             string backupFileName = GenerateBackupFileName();
             IStructuredSerializable serializableModel = keyboardToBackup as IStructuredSerializable;
@@ -265,7 +265,6 @@ namespace KeyboardEditor
 
                         if( keyboardToRevertIsCurrent )
                             KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
-                        
                     }
                 }
             }

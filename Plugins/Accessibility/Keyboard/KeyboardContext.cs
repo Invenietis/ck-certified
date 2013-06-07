@@ -35,10 +35,7 @@ using CK.Plugin;
 
 namespace CK.Keyboard
 {
-    [Plugin( KeyboardContext.PluginIdString, Version = KeyboardContext.PluginIdVersion, PublicName = PluginPublicName,
-        Categories = new string[] { "Accessibility", "Test" },
-        IconUri = "Resources/test.png",
-        RefUrl = "http://www.testUrl.com" )]
+    [Plugin( KeyboardContext.PluginIdString, Version = KeyboardContext.PluginIdVersion, PublicName = PluginPublicName )]
     public partial class KeyboardContext : IKeyboardContext, IPlugin, IStructuredSerializable, IStructuredSerializer<KeyboardCollection>
     {
         const string PluginIdString = "{2ED1562F-2416-45cb-9FC8-EEF941E3EDBC}";
@@ -61,7 +58,7 @@ namespace CK.Keyboard
             _empty = new KeyboardMode( this );
             _modes = new Dictionary<string, KeyboardMode>( StringComparer.Ordinal );
             _modes.Add( String.Empty, _empty );
-            
+
             if( sp != null ) sp.GetService<ISimpleServiceContainer>( true ).Add<IStructuredSerializer<KeyboardCollection>>( this );
         }
 
@@ -117,7 +114,7 @@ namespace CK.Keyboard
             Configuration.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
 
             var ctx = Configuration.Context.GetOrSet<KeyboardCollection>( "KeyboardCollection", new KeyboardCollection( this ) );
-            
+
             return true;
         }
 
@@ -142,7 +139,7 @@ namespace CK.Keyboard
 
         object IStructuredSerializer<KeyboardCollection>.ReadInlineContent( IStructuredReader sr, KeyboardCollection o )
         {
-            _keyboards.Clear(); 
+            _keyboards.Clear();
             _keyboards.ReadInlineContent( sr );
             return _keyboards;
         }

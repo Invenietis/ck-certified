@@ -19,7 +19,7 @@ namespace KeyboardEditor.ViewModels
         {
             _root = root;
             _root.EditedContext = new VMContextEditable( root, editedKeyboard, _root.Config, root.SkinConfiguration );
-            Next = new SavingStepViewModel(_root, WizardManager, EditedContext.KeyboardVM.Model );
+            Next = new SavingStepViewModel( _root, WizardManager, EditedContext.KeyboardVM.Model );
 
             Title = String.Format( R.KeyboardEditionStepTitle, editedKeyboard.Name );
             Description = R.KeyboardEditionStepDesc;
@@ -48,24 +48,24 @@ namespace KeyboardEditor.ViewModels
         }
 
         // Used to find the config
-        internal IKeyboardElement ConfigHolder 
-        { 
-            get 
+        internal IKeyboardElement ConfigHolder
+        {
+            get
             {
                 string holderType = _selectedHolder.GetType().ToString();
                 switch( holderType )
                 {
                     case "VMKeyboardEditable":
-                        return (_selectedHolder as VMKeyboardEditable).Model;
+                        return ( _selectedHolder as VMKeyboardEditable ).Model;
                     case "VMZoneEditable":
-                        return (_selectedHolder as VMZoneEditable).Model;
+                        return ( _selectedHolder as VMZoneEditable ).Model;
                     case "VMKeyEditable":
-                        return (_selectedHolder as VMKeyEditable).Model;
+                        return ( _selectedHolder as VMKeyEditable ).Model;
                     default:
                         break;
                 }
                 return null;
-            } 
+            }
         }
     }
 }

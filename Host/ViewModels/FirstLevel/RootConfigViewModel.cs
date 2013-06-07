@@ -58,9 +58,11 @@ namespace Host
 
         protected override void OnInitialize()
         {
+            _app.PluginRunner.IsDirtyChanged += OnPluginRunnerDirtyChanged;
+
             if( _app.KeyboardContext != null )
             {
-                ContextModel ctxModel = new ContextModel( _app.KeyboardContext );
+                ContextModel ctxModel = new ContextModel( _app );
 
                 _keyboards = this.AddCurrentItem( R.Keyboard, null, ctxModel, ctx => ctx.Current, ctx => ctx.Keyboards, false, "" );
                 _keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
@@ -100,6 +102,11 @@ namespace Host
 
         public CivikeyStandardHost CivikeyHost { get; private set; }
 
+        public void OnPluginRunnerDirtyChanged( object sender, EventArgs e )
+        {
+            if( _app.PluginRunner.IsDirty )
+                _app.PluginRunner.Apply();
+        }
 
         public void StartObjectExplorer()
         {

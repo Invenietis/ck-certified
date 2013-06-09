@@ -300,7 +300,6 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
-        //COMMON
         VMCommand _deleteKeyModeCommand;
         /// <summary>
         /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>

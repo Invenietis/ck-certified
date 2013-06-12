@@ -166,7 +166,7 @@ namespace SimpleSkin
                 {
                     placement = _skinWindow.GetPlacement();
                     _skinWindow.Close();
-                }  ) );
+                } ) );
 
                 Config.User.Set( PlacementString, placement );
 
@@ -295,8 +295,11 @@ namespace SimpleSkin
             //Saving the state of the window before doing anything (if the current keyboard is not null)
             if( e.Current != null && _skinWindow != null )
             {
+                WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+
                 //Invoke instead of beginInvoke because we need to save this configuration BEFORE the keyboard is changed.
-                _skinDispatcher.Invoke( (Action)( () => Config.User.Set( PlacementString, _skinWindow.GetPlacement() ) ), null );
+                _skinDispatcher.Invoke( (Action)( () => placement = _skinWindow.GetPlacement() ), null );
+                Config.User.Set( PlacementString, placement );
             }
 
             if( e.Next == null )

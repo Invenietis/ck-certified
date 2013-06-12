@@ -420,6 +420,9 @@ namespace KeyboardEditor.ViewModels
                 case KeyboardEditorMouseEvent.PointerButtonUp:
                     OnPointerButtonUp( args );
                     break;
+                case KeyboardEditorMouseEvent.PointerButtonDown:
+                    //Console.Out.WriteLine("Down from context");
+                    break;
                 default: //ButtonDown is handler by a Command, we don't use the pointer device driver for that. (yet ?)
                     break;
             }

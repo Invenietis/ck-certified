@@ -43,7 +43,7 @@ namespace BasicScroll
 
             _registeredElements = new List<IHighlightableElement>();
             _scrollingStrategy = new DefaultScrollingStrategy( _timer, _registeredElements );
-            
+
             return true;
         }
 
@@ -87,13 +87,13 @@ namespace BasicScroll
         public void UnregisterTree( IHighlightableElement element )
         {
             _registeredElements.Remove( element );
-            bool getNext = true; 
+            bool getNext = true;
             if( _registeredElements.Count == 0 )
             {
                 _scrollingStrategy.Stop();
                 getNext = false;
             }
-            
+
             _scrollingStrategy.ElementUnregistered( element, getNext );
         }
 
@@ -127,9 +127,10 @@ namespace BasicScroll
 
         #endregion
 
-        private void OnExternalInputTriggered( object sender, EventArgs e )
+        private void OnExternalInputTriggered( object sender, InputTriggerEventArgs e )
         {
-            _scrollingStrategy.OnExternalEvent();
+            if( e.Source != InputSource.CiviKey )
+                _scrollingStrategy.OnExternalEvent();
         }
 
     }

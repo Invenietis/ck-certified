@@ -45,11 +45,20 @@ namespace CommonServices
 
     public class KeyboardDriverEventArg : EventArgs
     {
-        public KeyboardDriverEventArg( int keyCode )
+        public KeyboardDriverEventArg( int keyCode, InputSource inputSource )
         {
             KeyCode = keyCode;
+            InputSource = inputSource;
         }
 
         public int KeyCode { get; private set; }
+        public InputSource InputSource { get; private set; }
+    }
+
+    public enum InputSource
+    {
+        Unknown = 0,
+        CiviKey = 1,
+        Other = 2
     }
 }

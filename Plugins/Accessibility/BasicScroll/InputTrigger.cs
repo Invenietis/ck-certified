@@ -39,7 +39,7 @@ namespace BasicScroll
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public event EventHandler Triggered
+        public event EventHandler<InputTriggerEventArgs> Triggered
         {
             add { InternalTriggered += value; ListenToKeyDown = true; }
             remove
@@ -71,7 +71,7 @@ namespace BasicScroll
             }
         }
 
-        public event EventHandler InternalTriggered;
+        public event EventHandler<InputTriggerEventArgs> InternalTriggered;
 
         int _keyCode;
         TriggerDevice _currentDevice = TriggerDevice.None;
@@ -118,7 +118,7 @@ namespace BasicScroll
         {
             if( _currentDevice == TriggerDevice.Keyboard && e.KeyCode == _keyCode ) // when the right keycode is pressed
             {
-                if( InternalTriggered != null ) InternalTriggered( this, EventArgs.Empty );
+                if( InternalTriggered != null ) InternalTriggered( this, new InputTriggerEventArgs( e.InputSource ) );
             }
         }
 
@@ -132,7 +132,7 @@ namespace BasicScroll
                     {
                         //We don't cancel the event, in order no to block the user when he selects the left click as the trigger.
                         //e.Cancel = true;
-                        InternalTriggered( this, EventArgs.Empty );
+                        InternalTriggered( this, new InputTriggerEventArgs() ); //We don't know the input source (yet)
                     }
                 }
             }

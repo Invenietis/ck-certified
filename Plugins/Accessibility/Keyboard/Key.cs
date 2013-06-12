@@ -146,11 +146,15 @@ namespace CK.Keyboard
 
         public void Push()
         {
-            if( _repeatCount >= 0 )
-            {
-                throw new InvalidOperationException( R.KeyPushWhenDown );
-            }
-            Debug.Assert( _repeatCount == -1, "Since Push has not been called yet, repeatCount must be -1." );
+            //if( _repeatCount >= 0 )
+            //{
+                //This case can happen without any "bugs" as running on a slow computer or clicking with both the mouse and the trackpad can 
+                //send a push/push -> release/release sequence.
+                //Throwing an exception here is not the right answer.
+                //The repeatcount seems therefor rather useless.
+                //throw new InvalidOperationException( R.KeyPushWhenDown );
+            //}
+            //Debug.Assert( _repeatCount == -1, "Since Push has not been called yet, repeatCount must be -1." );
             _repeatCount = 0;
             KeyInteractionEventArgs e = new KeyInteractionEventArgs( this, Current.OnKeyDownCommands, KeyInteractionEventType.Down  );
             EventHandler<KeyInteractionEventArgs> keyDown = KeyDown;
@@ -167,7 +171,7 @@ namespace CK.Keyboard
         {
             if( _repeatCount < 0 )
             {
-                throw new InvalidOperationException( R.KeyRepeatPressedWhenUp );
+                //throw new InvalidOperationException( R.KeyRepeatPressedWhenUp );
             }
             OnKeyPressed();
         }
@@ -187,10 +191,14 @@ namespace CK.Keyboard
 
         public void Release( bool doPress )
         {
-            if( _repeatCount < 0 )
-            {
-                throw new InvalidOperationException( R.KeyReleaseWhenUp );
-            }
+            //if( _repeatCount < 0 )
+            //{
+                //This case can happen without any "bugs" as running on a slow computer or clicking with both the mouse and the trackpad can 
+                //send a push/push -> release/release sequence.
+                //Throwing an exception here is not the right answer.
+                //The repeatcount seems therefor rather useless.
+                //throw new InvalidOperationException( R.KeyReleaseWhenUp );
+            //}
             if( doPress ) OnKeyPressed();
             _repeatCount = -1;
             // Last event: KeyUp

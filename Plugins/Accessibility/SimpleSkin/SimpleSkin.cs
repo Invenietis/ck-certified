@@ -124,14 +124,25 @@ namespace SimpleSkin
                     return new SkinWindow() { DataContext = _ctxVm };
                 } ) );
 
+                WINDOWPLACEMENT defaultPlacement = new WINDOWPLACEMENT();
+
                 _skinDispatcher.Invoke( (System.Action)( () =>
                 {
                     InitializeWindowLayout();
                     _skinWindow.Show();
-
-                    //Placing the skin at the same location as the last launch.
-                    _skinWindow.SetPlacement( (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, _skinWindow.GetPlacement() ) );
+                    defaultPlacement = _skinWindow.GetPlacement();
                 } ), null );
+
+                //Sets on the Config must always be done on the main UI thread
+                WINDOWPLACEMENT actualPlacement = (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, defaultPlacement );
+
+                //Placing the skin at the same location as the last launch.
+                _skinDispatcher.Invoke( (System.Action)( () =>
+                {
+                    _skinWindow.SetPlacement( actualPlacement );
+                } ), null );
+
+                SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S);
 
                 InitializeHighligther();
                 UpdateAutoHideConfig();

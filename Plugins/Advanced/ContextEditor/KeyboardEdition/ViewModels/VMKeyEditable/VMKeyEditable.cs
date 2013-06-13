@@ -510,7 +510,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            
+
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 //Console.Out.WriteLine( e.Key );
@@ -655,6 +655,8 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "FontSize", "LayoutKeyMode" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
+
+                PositionChanged();
             } );
 
             SetActionOnPropertyChanged( "Current", () =>
@@ -663,12 +665,17 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "DownLabel", "KeyMode" );
                 DispatchPropertyChanged( "Enabled", "KeyMode" );
                 DispatchPropertyChanged( "Description", "KeyMode" );
+
+                //DispatchPropertyChanged( "X", "LayoutKeyMode" );
+                //DispatchPropertyChanged( "Y", "LayoutKeyMode" );
+                //DispatchPropertyChanged( "Width", "LayoutKeyMode" );
+                //DispatchPropertyChanged( "Height", "LayoutKeyMode" );
             } );
 
-            SetActionOnPropertyChanged( "X", () => DispatchPropertyChanged( "X", "LayoutKeyMode" ) );
-            SetActionOnPropertyChanged( "Y", () => DispatchPropertyChanged( "Y", "LayoutKeyMode" ) );
-            SetActionOnPropertyChanged( "W", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
-            SetActionOnPropertyChanged( "H", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "X", () => { OnPropertyChanged( "X" ); DispatchPropertyChanged( "X", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "Y", () => { OnPropertyChanged( "Y" ); DispatchPropertyChanged( "Y", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "W", () => { OnPropertyChanged( "Width" ); DispatchPropertyChanged( "Width", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "H", () => { OnPropertyChanged( "Height" ); DispatchPropertyChanged( "Height", "LayoutKeyMode" ); } );
             SetActionOnPropertyChanged( "Width", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
             SetActionOnPropertyChanged( "Height", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
             SetActionOnPropertyChanged( "Enabled", () => DispatchPropertyChanged( "Enabled", "KeyMode" ) );
@@ -676,10 +683,10 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "DownLabel", () => DispatchPropertyChanged( "DownLabel", "KeyMode" ) );
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
-            SetActionOnPropertyChanged( "Visible", () => 
-            { 
-                DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); 
-                DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); 
+            SetActionOnPropertyChanged( "Visible", () =>
+            {
+                DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Visible", "LayoutKeyMode" );
             } );
         }
 

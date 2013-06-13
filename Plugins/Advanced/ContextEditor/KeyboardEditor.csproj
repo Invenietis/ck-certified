@@ -228,6 +228,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Compile Include="Wizard\KeyboardEditor.HotKey.cs" />
+    <EmbeddedResource Include="Resources\helpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml">

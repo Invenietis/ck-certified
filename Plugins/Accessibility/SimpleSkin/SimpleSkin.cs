@@ -55,7 +55,7 @@ namespace SimpleSkin
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
         Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginIdVersion = "1.0.1";
         const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
@@ -97,6 +97,11 @@ namespace SimpleSkin
         [RequiredService]
         public IContext Context { get; set; }
 
+        public IVersionedUniqueId PluginUniqueId
+        {
+            get { return PluginId; }
+        }
+
         CKNoFocusWindowManager _noFocusWindowManager;
         Dispatcher _skinDispatcher;
         //_secondThread;
@@ -110,7 +115,7 @@ namespace SimpleSkin
 
         public void Start()
         {
-            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" ) );
+            if( HelpService.Status.IsStartingOrStarted ) HelpService.Service.RegisterHelpContent( PluginId, typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" ) );
 
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
@@ -142,7 +147,7 @@ namespace SimpleSkin
                     _skinWindow.SetPlacement( actualPlacement );
                 } ), null );
 
-                SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S);
+                SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S );
 
                 InitializeHighligther();
                 UpdateAutoHideConfig();
@@ -622,6 +627,7 @@ namespace SimpleSkin
         }
 
         #endregion
+
     }
 
     public class MiniViewVM : VMBase, IHighlightableElement, IDisposable

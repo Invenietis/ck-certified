@@ -22,6 +22,7 @@ using KeyboardEditor.Resources;
 using KeyboardEditor.s;
 using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
+using CommonServices.Accessibility;
 
 namespace KeyboardEditor
 {
@@ -41,6 +42,9 @@ namespace KeyboardEditor
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IHelpService> HelpService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -77,6 +81,12 @@ namespace KeyboardEditor
             //RegisterHotKeys();
 
             _mainWindow.Closing += OnWindowClosing;
+
+            if( HelpService.Status == InternalRunningStatus.Started )
+            {
+                HelpService.Service.RegisterHelpContent( PluginId, typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" ) );
+                HelpService.Service.ShowHelpFor( PluginId, true );
+            }
         }
 
         public void Stop()

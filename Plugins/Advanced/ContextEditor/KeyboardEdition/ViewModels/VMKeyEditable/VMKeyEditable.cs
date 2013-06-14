@@ -234,6 +234,8 @@ namespace KeyboardEditor.ViewModels
         #region Layout Properties
 
         ImageSource _imageSource;
+        public ImageSource ImageSource { get { return _imageSource; } }
+
         /// <summary>
         /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
         /// </summary>
@@ -517,6 +519,7 @@ namespace KeyboardEditor.ViewModels
                 if( String.IsNullOrWhiteSpace( e.Key ) )
                 {
                     OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "ImageSource" );
                     OnPropertyChanged( "Opacity" );
                     OnPropertyChanged( "FontSize" );
                     OnPropertyChanged( "FontStyle" );
@@ -540,6 +543,7 @@ namespace KeyboardEditor.ViewModels
                         case "Image":
                             GetImageSourceCache();
                             OnPropertyChanged( "Image" );
+                            OnPropertyChanged( "ImageSource" );
                             break;
                         case "Visible":
                             OnPropertyChanged( "Visible" );
@@ -655,6 +659,7 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "FontSize", "LayoutKeyMode" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
+                OnPropertyChanged( "ImageSource" );
 
                 PositionChanged();
             } );
@@ -665,11 +670,6 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "DownLabel", "KeyMode" );
                 DispatchPropertyChanged( "Enabled", "KeyMode" );
                 DispatchPropertyChanged( "Description", "KeyMode" );
-
-                //DispatchPropertyChanged( "X", "LayoutKeyMode" );
-                //DispatchPropertyChanged( "Y", "LayoutKeyMode" );
-                //DispatchPropertyChanged( "Width", "LayoutKeyMode" );
-                //DispatchPropertyChanged( "Height", "LayoutKeyMode" );
             } );
 
             SetActionOnPropertyChanged( "X", () => { OnPropertyChanged( "X" ); DispatchPropertyChanged( "X", "LayoutKeyMode" ); } );

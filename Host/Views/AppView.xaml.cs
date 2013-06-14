@@ -49,58 +49,9 @@ namespace Host
             InitializeComponent();
         }
 
-        //TaskbarIcon tbi;
-
         protected override void OnClosing( System.ComponentModel.CancelEventArgs e )
         {
-            //tbi.Dispose();
             base.OnClosing( e );
-        }
-
-        protected override void OnContentRendered( EventArgs e )
-        {
-            //The Hardcodet taskbar icon crashes on Windows 8.
-            //We need ot check the OS version before using it, so we have (for now) to rely on code behind
-            //if( CK.Core.OSVersionInfo.OSLevel <= CK.Core.OSVersionInfo.SimpleOSLevel.WindowsVista )
-            //{
-            //    AppViewModel app = (AppViewModel)DataContext;
-            //    tbi = new TaskbarIcon();
-            //    ImageSourceConverter imsc = new ImageSourceConverter();
-
-            //    tbi.IconSource = ( (ImageSource)imsc.ConvertFromString( "pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico" ) );
-            //    tbi.ToolTipText = "CiviKey";
-            //    tbi.MenuActivation = PopupActivationMode.LeftOrRightClick;
-
-            //    ContextMenu ctm = new System.Windows.Controls.ContextMenu();
-            //    Binding visibilityBinding = new Binding( "ShowSystrayIcon" );
-
-            //    visibilityBinding.Converter = new BooleanToVisibilityConverter();
-            //    visibilityBinding.Mode = BindingMode.OneWay;
-            //    ctm.SetBinding( UIElement.VisibilityProperty, visibilityBinding );
-
-            //    MenuItem mi = new MenuItem();
-            //    mi.Header = "Exit";
-            //    mi.Command = app.ExitHostCommand;
-            //    ctm.Items.Add( mi );
-            //    tbi.ContextMenu = ctm;
-            //    grid.Children.Add( tbi );
-            //}
-            //  <tb:TaskbarIcon 
-            //    x:Name="taskbarIcon"
-            //    IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico"
-            //    ToolTipText="CiviKey" 
-            //    MenuActivation="LeftOrRightClick"
-            //    DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}"
-            //    Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-            //    ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
-            //    <tb:TaskbarIcon.ContextMenu>
-            //        <ContextMenu>
-            //            <MenuItem Header="Exit" Command="{Binding ExitHostCommand}" />
-            //        </ContextMenu>
-            //    </tb:TaskbarIcon.ContextMenu>
-            //</tb:TaskbarIcon>
-
-            base.OnInitialized( e );
         }
 
         /// <summary>

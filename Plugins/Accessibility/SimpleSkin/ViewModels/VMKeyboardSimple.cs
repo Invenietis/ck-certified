@@ -133,18 +133,22 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
+
+            foreach( var k in e.Zone.Keys )
+            {
+                var mk = Context.Obtain( k );
+                Context.SkinDispatcher.Invoke( (Action)( () =>
+                {
+                    Keys.Remove( mk );
+                } ) );
+                Context.OnModelDestroy( k );
+            }
             Context.SkinDispatcher.Invoke( (Action)( () =>
             {
-                foreach( var k in e.Zone.Keys )
-                {
-                    var mk = Context.Obtain( k );
-                    Keys.Remove( mk );
-                    Context.OnModelDestroy( k );
-                }
-
                 Zones.Remove( Context.Obtain( e.Zone ) );
             } ) );
             Context.OnModelDestroy( e.Zone );
+
         }
 
         void OnLayoutSizeChanged( object sender, LayoutEventArgs e )

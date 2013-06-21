@@ -104,7 +104,7 @@ namespace Host
 
         public void OnPluginRunnerDirtyChanged( object sender, EventArgs e )
         {
-            if( _app.PluginRunner.IsDirty )
+            if( _app.PluginRunner.IsDirty && !_app.PluginRunner.Disabled)
                 _app.PluginRunner.Apply();
         }
 

@@ -1087,7 +1087,7 @@
                         <KeyUp Label="back" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Back</Cmd>
+                            <Cmd>sendKeyOld"{BACKSPACE}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1103,7 +1103,7 @@
                         <KeyUp Label="back" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Back</Cmd>
+                            <Cmd>sendKeyOld"{BACKSPACE}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1315,7 +1315,7 @@
                         <KeyUp Label="enter" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Enter</Cmd>
+                            <Cmd>sendKeyOld"{ENTER}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1573,7 +1573,7 @@
                         <KeyUp Label="back" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Back</Cmd>
+                            <Cmd>sendKeyOld"{BACKSPACE}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -1585,7 +1585,7 @@
                         <KeyUp Label="enter" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Enter</Cmd>
+                            <Cmd>sendKeyOld"{ENTER}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -2467,7 +2467,7 @@
                         <KeyUp Label="RetArr" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Back</Cmd>
+                            <Cmd>sendKeyOld"{BACKSPACE}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>
@@ -3115,7 +3115,7 @@
                         <KeyUp Label="Entrée" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>sendKey:Enter</Cmd>
+                            <Cmd>sendKeyOld"{ENTER}"</Cmd>
                           </KeyProgram>
                         </KeyDown>
                       </KeyMode>

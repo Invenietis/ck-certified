@@ -11,11 +11,10 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class KeyboardListViewModel : WizardPage
+    public class KeyboardListViewModel : HelpAwareWizardPage
     {
         public IList<KeyboardViewModel> KeyboardVms { get; set; }
         internal KeyboardViewModel _selectedKeyboard;
-        internal IKeyboardEditorRoot _root;
         IKeyboardCollection _keyboards;
         ICommand _selectionCommand;
 
@@ -25,9 +24,8 @@ namespace KeyboardEditor.ViewModels
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to create or modify</param>
         public KeyboardListViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboardCollection model )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
-            _root = root;
             _keyboards = model;
             KeyboardVms = new List<KeyboardViewModel>();
             foreach( var keyboard in _keyboards )

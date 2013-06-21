@@ -12,10 +12,9 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class EndingStepViewModel : WizardPage
+    public class EndingStepViewModel : HelpAwareWizardPage
     {
         public IList<WizardButtonViewModel> Buttons { get; set; }
-        IKeyboardEditorRoot _root;
 
         public override bool CheckCanGoFurther()
         {
@@ -23,7 +22,7 @@ namespace KeyboardEditor.ViewModels
         }
 
         public EndingStepViewModel( IKeyboardEditorRoot root, WizardManager wizardManager )
-            : base( wizardManager, true )
+            : base( root, wizardManager, true )
         {
             Buttons = new List<WizardButtonViewModel>();
             HideNext = true;
@@ -32,7 +31,6 @@ namespace KeyboardEditor.ViewModels
             Buttons.Add( new WizardButtonViewModel( R.Quit, R.EndingStepQuitDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/exit.png", CloseWizard ) );
             Buttons.Add( new WizardButtonViewModel( R.StartOver, R.EndingStepStartOverDesc, "pack://application:,,,/KeyboardEditor;component/Resources/Images/restart.png", RestartWizard ) );
 
-            _root = root;
             Title = R.EndingStepTitle;
             Description = R.EndingStepDesc;
         }
@@ -52,13 +50,13 @@ namespace KeyboardEditor.ViewModels
 
         public void CloseWizard()
         {
-            _root.EnsureBackupIsClean();
+            Root.EnsureBackupIsClean();
             WizardManager.Close();
         }
 
         public void RestartWizard()
         {
-            _root.EnsureBackupIsClean();
+            Root.EnsureBackupIsClean();
             WizardManager.Restart();
         }
     }

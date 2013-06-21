@@ -698,11 +698,11 @@
                     <data key="PositionX" type="Int32">561</data>
                     <data key="PositionY" type="Int32">735</data>
                     <data key="ViewPortSize" type="Structured" typeName="System.Windows.Size, WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">200,200</Size>
+                      <Size xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">270,250</Size>
                     </data>
                     <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
                     <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDB76B</Color>
+                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDCFF4</Color>
                     </data>
                   </p>
                 </PluginsData>
@@ -4786,7 +4786,7 @@
                     <data key="PositionY" type="Int32">456</data>
                     <data key="KeyboardBackgroundType" type="String">path</data>
                     <data key="HighlightBackground" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDB76B</Color>
+                      <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#FFBDCFF4</Color>
                     </data>
                   </p>
                 </PluginsData>

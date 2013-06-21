@@ -13,7 +13,7 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class SaveAsStepViewModel : WizardPage
+    public class SaveAsStepViewModel : HelpAwareWizardPage
     {
         /// <summary>
         /// Gets the list of keyboards of the current context, wrapped in KeyboardViewModels.
@@ -23,7 +23,6 @@ namespace KeyboardEditor.ViewModels
         IEnumerable<IKeyboard> _keyboards;
         ICommand _selectionCommand;
         IKeyboard _editedKeyboard;
-        IKeyboardEditorRoot _root;
         string _newName;
 
         /// <summary>
@@ -58,11 +57,10 @@ namespace KeyboardEditor.ViewModels
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to save</param>
         public SaveAsStepViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard editedKeyboard )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
-            _root = root;
             _editedKeyboard = editedKeyboard;
-            _keyboards = _root.KeyboardContext.Service.Keyboards.Except( _root.KeyboardContext.Service.Keyboards.Where( ( k ) => k.Name == editedKeyboard.Name ) );
+            _keyboards = Root.KeyboardContext.Service.Keyboards.Except( Root.KeyboardContext.Service.Keyboards.Where( ( k ) => k.Name == editedKeyboard.Name ) );
             KeyboardVms = new List<KeyboardViewModel>();
             foreach( var keyboard in _keyboards )
             {
@@ -121,7 +119,7 @@ namespace KeyboardEditor.ViewModels
             }
 
             //Flush the temporary file
-            _root.EnsureBackupIsClean();
+            Root.EnsureBackupIsClean();
 
             return true;
         }
@@ -144,7 +142,7 @@ namespace KeyboardEditor.ViewModels
 
             //Otherwise
 
-            if( _root.KeyboardBackup.IsNew ) //if we created a new keyboard, we can destroy the selected, and rename the new with the right name.
+            if( Root.KeyboardBackup.IsNew ) //if we created a new keyboard, we can destroy the selected, and rename the new with the right name.
             {
                 _selectedKeyboard.Keyboard.Destroy();
                 _editedKeyboard.Rename( keyboardName );
@@ -154,8 +152,8 @@ namespace KeyboardEditor.ViewModels
                 _selectedKeyboard.Keyboard.Rename( "TemporaryName" );
                 _editedKeyboard.Rename( keyboardName );
 
-                _root.KeyboardBackup = new KeyboardBackup( _selectedKeyboard.Keyboard, _root.KeyboardBackup.BackUpFilePath );
-                _root.CancelModifications();
+                Root.KeyboardBackup = new KeyboardBackup( _selectedKeyboard.Keyboard, Root.KeyboardBackup.BackUpFilePath );
+                Root.CancelModifications();
             }
             return true;
         }
@@ -173,19 +171,19 @@ namespace KeyboardEditor.ViewModels
             {
                 return true;
             }
-            else if( _root.KeyboardBackup.Name == NewName ) //The user wants to save this new keyboard under the name from which it has started. So we just rename it, we don't cancel the modifications
+            else if( Root.KeyboardBackup.Name == NewName ) //The user wants to save this new keyboard under the name from which it has started. So we just rename it, we don't cancel the modifications
             {
                 _editedKeyboard.Rename( NewName );
             }
-            else if( _root.KeyboardBackup.IsNew ) //If saving a new keyboard under another unused name, just rename the new keyboard.
+            else if( Root.KeyboardBackup.IsNew ) //If saving a new keyboard under another unused name, just rename the new keyboard.
                 _editedKeyboard.Rename( NewName );
             else //if we started from another keyboard, we must rename this modified one, and recreate another one, on which the backup will be applied
             {
                 _editedKeyboard.Rename( NewName );
-                IKeyboard rootKeyboard = _root.KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
+                IKeyboard rootKeyboard = Root.KeyboardContext.Service.Keyboards.Create( Guid.NewGuid().ToString() );
 
-                _root.KeyboardBackup = new KeyboardBackup( rootKeyboard, _root.KeyboardBackup.BackUpFilePath );
-                _root.CancelModifications();
+                Root.KeyboardBackup = new KeyboardBackup( rootKeyboard, Root.KeyboardBackup.BackUpFilePath );
+                Root.CancelModifications();
             }
             return true;
         }

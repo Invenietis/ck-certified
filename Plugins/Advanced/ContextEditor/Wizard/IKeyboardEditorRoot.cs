@@ -52,5 +52,7 @@ namespace KeyboardEditor
         /// Used to trigger Dispose on viewmodels when stopping the plugin
         /// </summary>
         VMContextEditable EditedContext { get; set; }
+
+        void ShowHelp();
     }
 }

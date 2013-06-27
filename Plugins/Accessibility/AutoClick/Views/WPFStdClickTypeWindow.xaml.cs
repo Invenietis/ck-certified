@@ -28,7 +28,7 @@ namespace CK.Plugins.AutoClick.Views
     /// <summary>
     /// Interaction logic for WPFStandardClickTypeWindow.xaml
     /// </summary>
-    public partial class WPFStdClickTypeWindow : NoFocusWindow
+    public partial class WPFStdClickTypeWindow : CKWindow
     {
         public WPFStdClickTypeWindow()
         {

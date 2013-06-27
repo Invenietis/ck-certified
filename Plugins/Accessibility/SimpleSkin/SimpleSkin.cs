@@ -43,6 +43,7 @@ using HighlightModel;
 using System.Collections.Generic;
 using CK.WPF.ViewModel;
 using System.Threading;
+using CK.Windows.Core;
 
 namespace SimpleSkin
 {
@@ -135,7 +136,7 @@ namespace SimpleSkin
                 {
                     InitializeWindowLayout();
                     _skinWindow.Show();
-                    defaultPlacement = _skinWindow.GetPlacement();
+                    defaultPlacement = CKWindowTools.GetPlacement( _skinWindow.Hwnd );
                 } ), null );
 
                 //Sets on the Config must always be done on the main UI thread
@@ -144,7 +145,7 @@ namespace SimpleSkin
                 //Placing the skin at the same location as the last launch.
                 _skinDispatcher.Invoke( (System.Action)( () =>
                 {
-                    _skinWindow.SetPlacement( actualPlacement );
+                    CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement );
                 } ), null );
 
                 SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S );
@@ -180,7 +181,7 @@ namespace SimpleSkin
                 WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
                 _skinDispatcher.Invoke( (Action)( () =>
                 {
-                    placement = _skinWindow.GetPlacement();
+                    placement = CKWindowTools.GetPlacement( _skinWindow.Hwnd );
                     _skinWindow.Close();
                 } ) );
 
@@ -314,7 +315,7 @@ namespace SimpleSkin
                 WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
 
                 //Invoke instead of beginInvoke because we need to save this configuration BEFORE the keyboard is changed.
-                _skinDispatcher.Invoke( (Action)( () => placement = _skinWindow.GetPlacement() ), null );
+                _skinDispatcher.Invoke( (Action)( () => placement = CKWindowTools.GetPlacement( _skinWindow.Hwnd ) ), null );
                 Config.User.Set( PlacementString, placement );
             }
 
@@ -374,7 +375,7 @@ namespace SimpleSkin
                     if( _viewHidden ) placement.showCmd = 0;
                     else placement.showCmd = 8; //Show without taking focus
 
-                    _skinDispatcher.BeginInvoke( (Action)( () => _skinWindow.SetPlacement( placement ) ), null );
+                    _skinDispatcher.BeginInvoke( (Action)( () => CKWindowTools.SetPlacement( _skinWindow.Hwnd, placement ) ), null );
                 }
                 else
                 {
@@ -543,7 +544,7 @@ namespace SimpleSkin
         public void ToggleHostMinimized()
         {
             IntPtr ptr = IntPtr.Zero;
-            _skinDispatcher.Invoke( (Action)( () => ptr = _skinWindow.ThisWindowHandle ), null );
+            _skinDispatcher.Invoke( (Action)( () => ptr = _skinWindow.Hwnd ), null );
             Application.Current.Dispatcher.Invoke( (Action)( () => HostManipulator.ToggleMinimize( ptr ) ), null );
         }
 
@@ -602,8 +603,6 @@ namespace SimpleSkin
 
         void ShowMiniView()
         {
-            //_skinDispatcher.Invoke( (Action)( () =>
-            //{
             if( _miniView == null )
             {
                 _miniViewVm = new MiniViewVM( this );
@@ -623,7 +622,6 @@ namespace SimpleSkin
             {
                 _miniView.Show();
             }
-            //} ), null );
         }
 
         #endregion

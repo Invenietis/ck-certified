@@ -15,7 +15,6 @@
         <Setter Property="InsideBorderColor" Value="WhiteSmoke"/>
         <Setter Property="InsideBorderThickness" Value="1"/>
         <Setter Property="Opacity" Value="1"/>
-        <!--<Setter Property="Background" Value="Transparent"/>-->
         <Setter Property="OutsideBorderColor">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -30,16 +29,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyboardView}">
-                    <Grid  Focusable="False" >
+                    <Grid Focusable="False">
                         <Grid Focusable="False" Opacity="{TemplateBinding Opacity}">
                             <Border x:Name="OutsideBorder" BorderThickness="{TemplateBinding OutsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding OutsideBorderColor}">
-                                <Border BorderThickness="{TemplateBinding InsideBorderThickness}" 
+                                <Border x:Name="InsideBorder" BorderThickness="{TemplateBinding InsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding InsideBorderColor}"
                                 Background="{TemplateBinding Background}">
                                 </Border>
                             </Border>
-                            <ItemsControl  Focusable="False"  ItemsSource="{TemplateBinding Keys}">
+                            <ItemsControl Focusable="False" ItemsSource="{TemplateBinding Keys}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Canvas />

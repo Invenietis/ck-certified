@@ -282,10 +282,18 @@ namespace SimpleSkin.ViewModels
 
         private void UpdateBackgroundPath()
         {
-            string s = Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" );
-            ThreadSafeSet<string>( s, ( v ) =>
+            object keyboardBackgroundObject = Context.Config[Layout]["KeyboardBackground"];
+            
+            //Some contexts have a color in the KeyboardBackground.
+            if( keyboardBackgroundObject == null || keyboardBackgroundObject is Color )
             {
-                if( String.IsNullOrWhiteSpace( s ) ) _backgroundImagePath = null;
+                keyboardBackgroundObject = "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png";
+                Context.Config[Layout].Set( "KeyboardBackground", keyboardBackgroundObject );
+            }
+
+            ThreadSafeSet<string>( keyboardBackgroundObject.ToString(), ( v ) =>
+            {
+                if( String.IsNullOrWhiteSpace( v ) ) _backgroundImagePath = null;
                 else _backgroundImagePath = Imsc.ConvertFromString( v );
             } );
         }

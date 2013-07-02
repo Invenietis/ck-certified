@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using CK.Core;
 using System.ComponentModel;
 using CK.Plugin.Config;
+using Common.Logging;
 
 namespace Host
 {
@@ -46,6 +47,8 @@ namespace Host
     /// </summary>
     public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
     {
+        static ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
+        Guid _guid;
         Version _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
@@ -58,6 +61,21 @@ namespace Host
         {
             if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
             ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
+        }
+
+        /// <summary>
+        /// Gets a unique identifier for a CiviKey application
+        /// Is mainly used to identify an instance of CiviKey in crashlogs
+        /// TODO : this hsould be put in the CK-Desktop layer in order to be transmitted directly to the crashlog web server, and stored in files corresponding to this GUID
+        /// </summary>
+        private Guid ApplicationGUID
+        {
+            get
+            {
+                if( _guid == Guid.Empty ) _guid = (Guid)SystemConfig.GetOrSet( "Guid", Guid.NewGuid() );
+
+                return _guid;
+            }
         }
 
         /// <summary>
@@ -86,6 +104,9 @@ namespace Host
         public override IContext CreateContext()
         {
             IContext ctx = base.CreateContext();
+
+            _log.Debug( "LAUNCHING" );
+            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationGUID ) );
 
             _notificationMngr = new NotificationManager();
 

@@ -11,9 +11,9 @@ using CommonServices;
 using System.Windows.Input;
 using CK.WPF.ViewModel;
 using System.Diagnostics;
-using BasicScroll.Resources;
+using KeyScroller.Resources;
 
-namespace BasicScroll.Editor
+namespace KeyScroller.Editor
 {
     class EditorViewModel : Screen
     {
@@ -21,7 +21,7 @@ namespace BasicScroll.Editor
         IPluginConfigAccessor _keyboardTriggerConfig;
         IKeyboardDriver _keyboardHook;
         IPointerDeviceDriver _pointerHook;
-
+        string _currentStrategy;
         public EditorViewModel( IPluginConfigAccessor scrollConfig, IPluginConfigAccessor keyboardTriggerConfig, IKeyboardDriver keyboardHook, IPointerDeviceDriver pointerHook )
         {
             _scrollConfig = scrollConfig;
@@ -29,7 +29,7 @@ namespace BasicScroll.Editor
 
             _keyboardHook = keyboardHook;
             _pointerHook = pointerHook;
-
+            _currentStrategy = _scrollConfig.User.GetOrSet( "Strategy", "BasicScrollingStrategy" );
             this.DisplayName = R.ScrollEditor;
         }
 
@@ -47,6 +47,42 @@ namespace BasicScroll.Editor
                 NotifyOfPropertyChange( () => FormatedSpeed );
             }
         }
+
+        public int TurboSpeed
+        {
+            get { return _scrollConfig.User.GetOrSet( "TurboSpeed", 100 ); }
+            set
+            {
+                _scrollConfig.User["TurboSpeed"] = value;
+                NotifyOfPropertyChange( () => TurboSpeed );
+                NotifyOfPropertyChange( () => FormatedTurboSpeed );
+            }
+        }
+        
+        public IEnumerable<string> AvailableStrategies
+        {
+            get
+            {
+                return KeyScrollerPlugin.AvalaibleStrategies;
+            }
+        }
+
+        public bool IsTurboStrategy
+        {
+            get { return CurrentStrategy == "TurboScrollingStrategy"; }
+        }
+        public string CurrentStrategy 
+        {
+            set
+            {
+                _scrollConfig.User["Strategy"] = value;
+                _currentStrategy = value;
+                NotifyOfPropertyChange( () => CurrentStrategy );
+                NotifyOfPropertyChange( () => IsTurboStrategy );
+            }
+            get { return _currentStrategy; }
+        }
+
 
         bool _isRecording = false;
         public bool IsRecording
@@ -86,13 +122,13 @@ namespace BasicScroll.Editor
                     {
                         System.Windows.Forms.Keys keyName;
                         if( Enum.TryParse<System.Windows.Forms.Keys>( selectedKey.ToString(), out keyName ) )
-                            return string.Format( BasicScroll.Resources.R.Listening, keyName.ToString() );
-                        return string.Format( BasicScroll.Resources.R.Listening, selectedKey.ToString() );
+                            return string.Format( KeyScroller.Resources.R.Listening, keyName.ToString() );
+                        return string.Format( KeyScroller.Resources.R.Listening, selectedKey.ToString() );
                     }
                     else if( device == TriggerDevice.Pointer )
-                        return string.Format( BasicScroll.Resources.R.PointerListening, MouseClicFromCode( Int32.Parse( selectedKey.ToString() ) ) );
+                        return string.Format( KeyScroller.Resources.R.PointerListening, MouseClicFromCode( Int32.Parse( selectedKey.ToString() ) ) );
                 }
-                return BasicScroll.Resources.R.NothingSelected;
+                return KeyScroller.Resources.R.NothingSelected;
             }
         }
 
@@ -100,6 +136,11 @@ namespace BasicScroll.Editor
         public string FormatedSpeed
         {
             get { return string.Format( _formatSpeed, Math.Round( Speed / 1000.0, 1 ).ToString() ); }
+        }
+        string _formatTurboSpeed = "{0} ms";
+        public string FormatedTurboSpeed
+        {
+            get { return string.Format( _formatTurboSpeed, TurboSpeed ); }
         }
 
         protected override void OnDeactivate( bool close )

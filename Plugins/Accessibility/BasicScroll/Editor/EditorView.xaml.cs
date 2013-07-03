@@ -35,7 +35,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BasicScroll.Editor
+namespace KeyScroller.Editor
 {
     /// <summary>
     /// Interaction logic for SkinEditorWindow.xaml

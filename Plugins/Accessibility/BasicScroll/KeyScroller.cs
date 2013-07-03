@@ -12,29 +12,37 @@ using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
 
-namespace BasicScroll
+namespace KeyScroller
 {
-    [Plugin( BasicScrollPlugin.PluginIdString,
+    [Plugin( KeyScrollerPlugin.PluginIdString,
            PublicName = PluginPublicName,
-           Version = BasicScrollPlugin.PluginIdVersion,
+           Version = KeyScrollerPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class BasicScrollPlugin : IPlugin, IHighlighterService
+    public class KeyScrollerPlugin : IPlugin, IHighlighterService
     {
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        public static List<string> AvalaibleStrategies = new List<string>();
+
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "BasicScroll";
+        const string PluginPublicName = "KeyScroller";
 
         List<IHighlightableElement> _registeredElements;
-        DefaultScrollingStrategy _scrollingStrategy;
+        IScrollingStrategy _scrollingStrategy;
         DispatcherTimer _timer;
 
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
-
+        static KeyScrollerPlugin()
+        {
+            foreach( Strategy s in Strategy.GetStrategies() )
+            {
+                AvalaibleStrategies.Add( s.Name );
+            }
+        }
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new DispatcherTimer();
@@ -42,16 +50,31 @@ namespace BasicScroll
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, timerSpeed );
 
             _registeredElements = new List<IHighlightableElement>();
-            _scrollingStrategy = new DefaultScrollingStrategy( _timer, _registeredElements );
-
+            _scrollingStrategy = GetStrategyByName(Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
+            
             return true;
+        }
+        
+        IScrollingStrategy GetStrategyByName(string name)
+        {
+            switch( name )
+            {
+                case "TurboScrollingStrategy":
+                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration.User.GetOrSet( "TurboSpeed", 100 ) );
+                  
+                case "SimpleScrollingStrategy":
+                    return new SimpleScrollingStrategy( _timer, _registeredElements );
+                
+                default:
+                    return new BasicScrollingStrategy( _timer, _registeredElements );
+            }
         }
 
         public void Start()
         {
             Configuration.ConfigChanged += ( o, e ) =>
             {
-                if( e.MultiPluginId.Any( u => u.UniqueId == BasicScrollPlugin.PluginId.UniqueId ) && e.Key == "Speed" )
+                if( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) && e.Key == "Speed" )
                 {
                     _timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                 }
@@ -87,14 +110,13 @@ namespace BasicScroll
         public void UnregisterTree( IHighlightableElement element )
         {
             _registeredElements.Remove( element );
-            bool getNext = true;
+
             if( _registeredElements.Count == 0 )
             {
                 _scrollingStrategy.Stop();
-                getNext = false;
             }
 
-            _scrollingStrategy.ElementUnregistered( element, getNext );
+            _scrollingStrategy.ElementUnregistered( element );
         }
 
         public void Pause( bool forceEndHighlight = false )
@@ -132,6 +154,5 @@ namespace BasicScroll
             if( e.Source != InputSource.CiviKey )
                 _scrollingStrategy.OnExternalEvent();
         }
-
     }
 }

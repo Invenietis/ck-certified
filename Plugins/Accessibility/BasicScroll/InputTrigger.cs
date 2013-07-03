@@ -14,7 +14,7 @@ using CK.Plugin.Config;
 using CK.Plugins.SendInputDriver;
 using CommonServices;
 
-namespace BasicScroll
+namespace KeyScroller
 {
     [Plugin( InputTrigger.PluginIdString,
            PublicName = PluginPublicName,

@@ -1,4 +1,4 @@
-﻿<Window x:Class="BasicScroll.Editor.EditorView"
+﻿<Window x:Class="KeyScroller.Editor.EditorView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:cal="http://www.caliburnproject.org"
@@ -21,6 +21,7 @@
             <Setter Property="Padding" Value="5"/>
             <Setter Property="MinHeight" Value="40"/>
         </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
     <StackPanel>
         <Border Style="{StaticResource Rounded}" Margin="5">
@@ -43,6 +44,24 @@
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedSpeed}" />
                 </StackPanel>
             </DockPanel>
+        </Border>
+        <Border Style="{StaticResource Rounded}" Margin="5">
+            <StackPanel>
+                <DockPanel >
+                    <TextBlock  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10 0 0 0">Scroll type :</TextBlock>
+                    <StackPanel>
+                        <ComboBox ItemsSource="{Binding AvailableStrategies}" SelectedValue="{Binding CurrentStrategy}" Margin="10 5" />
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Visibility="{Binding Path=IsTurboStrategy, Converter={StaticResource BoolToVis}}">
+                    <TextBlock  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
+                    <StackPanel>
+                        <Slider Minimum="10" Maximum="1000" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding TurboSpeed}"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedTurboSpeed}" />
+                    </StackPanel>
+                </DockPanel>
+
+            </StackPanel>
         </Border>
     </StackPanel>
 </Window>

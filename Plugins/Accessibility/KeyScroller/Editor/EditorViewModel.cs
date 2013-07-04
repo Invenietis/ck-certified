@@ -12,6 +12,7 @@ using System.Windows.Input;
 using CK.WPF.ViewModel;
 using System.Diagnostics;
 using KeyScroller.Resources;
+using System.Globalization;
 
 namespace KeyScroller.Editor
 {
@@ -21,7 +22,8 @@ namespace KeyScroller.Editor
         IPluginConfigAccessor _keyboardTriggerConfig;
         IKeyboardDriver _keyboardHook;
         IPointerDeviceDriver _pointerHook;
-        string _currentStrategy;
+
+        int _currentIndexStrategy;
         public EditorViewModel( IPluginConfigAccessor scrollConfig, IPluginConfigAccessor keyboardTriggerConfig, IKeyboardDriver keyboardHook, IPointerDeviceDriver pointerHook )
         {
             _scrollConfig = scrollConfig;
@@ -29,7 +31,7 @@ namespace KeyScroller.Editor
 
             _keyboardHook = keyboardHook;
             _pointerHook = pointerHook;
-            _currentStrategy = _scrollConfig.User.GetOrSet( "Strategy", "BasicScrollingStrategy" );
+            _currentIndexStrategy = KeyScrollerPlugin.AvailableStrategies.IndexOf(_scrollConfig.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
             this.DisplayName = R.ScrollEditor;
         }
 
@@ -63,26 +65,29 @@ namespace KeyScroller.Editor
         {
             get
             {
-                return KeyScrollerPlugin.AvalaibleStrategies;
+                foreach( string name in KeyScrollerPlugin.AvailableStrategies )
+                {
+                    yield return R.ResourceManager.GetString(name);
+                }
             }
         }
 
         public bool IsTurboStrategy
         {
-            get { return CurrentStrategy == "TurboScrollingStrategy"; }
+            get { return KeyScrollerPlugin.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
         }
-        public string CurrentStrategy 
+
+        public int CurrentIndexStrategy
         {
             set
             {
-                _scrollConfig.User["Strategy"] = value;
-                _currentStrategy = value;
-                NotifyOfPropertyChange( () => CurrentStrategy );
+                _scrollConfig.User["Strategy"] = KeyScrollerPlugin.AvailableStrategies[value];
+                _currentIndexStrategy = value;
+                NotifyOfPropertyChange( () => CurrentIndexStrategy );
                 NotifyOfPropertyChange( () => IsTurboStrategy );
             }
-            get { return _currentStrategy; }
+            get { return _currentIndexStrategy; }
         }
-
 
         bool _isRecording = false;
         public bool IsRecording

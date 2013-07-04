@@ -37,30 +37,29 @@
             </DockPanel>
         </Border>
         <Border Style="{StaticResource Rounded}" Margin="5">
-            <DockPanel>
-                <TextBlock x:Uid="scroll-speed" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
+            <DockPanel >
+                <TextBlock x:Uid="scroll-type" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10 0 0 0" Text="{}">Scroll type :</TextBlock>
                 <StackPanel>
-                    <Slider Minimum="300" Maximum="2000" TickFrequency="100" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Speed}"/>
-                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedSpeed}" />
+                    <ComboBox ItemsSource="{Binding AvailableStrategies}" Margin="10 5"  SelectedIndex="{Binding CurrentIndexStrategy}"/>
                 </StackPanel>
             </DockPanel>
         </Border>
         <Border Style="{StaticResource Rounded}" Margin="5">
             <StackPanel>
-                <DockPanel >
-                    <TextBlock  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="10 0 0 0">Scroll type :</TextBlock>
+                <DockPanel>
+                    <TextBlock x:Uid="scroll-speed" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
                     <StackPanel>
-                        <ComboBox ItemsSource="{Binding AvailableStrategies}" SelectedValue="{Binding CurrentStrategy}" Margin="10 5" />
+                        <Slider Minimum="300" Maximum="2000" TickFrequency="100" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Speed}"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedSpeed}" />
                     </StackPanel>
                 </DockPanel>
                 <DockPanel Visibility="{Binding Path=IsTurboStrategy, Converter={StaticResource BoolToVis}}">
-                    <TextBlock  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Scroll speed :</TextBlock>
+                    <TextBlock  x:Uid="turbo-speed"  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">Turbo speed :</TextBlock>
                     <StackPanel>
-                        <Slider Minimum="10" Maximum="1000" TickFrequency="10" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding TurboSpeed}"/>
+                        <Slider Minimum="10" Maximum="500" TickFrequency="10" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding TurboSpeed}"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedTurboSpeed}" />
                     </StackPanel>
                 </DockPanel>
-
             </StackPanel>
         </Border>
     </StackPanel>

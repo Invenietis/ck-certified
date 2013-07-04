@@ -21,7 +21,7 @@ namespace KeyScroller
     public class KeyScrollerPlugin : IPlugin, IHighlighterService
     {
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
-        public static List<string> AvalaibleStrategies = new List<string>();
+        public static List<string> AvailableStrategies = new List<string>();
 
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -31,18 +31,22 @@ namespace KeyScroller
         List<IHighlightableElement> _registeredElements;
         IScrollingStrategy _scrollingStrategy;
         DispatcherTimer _timer;
+        Dictionary<string, IScrollingStrategy> _strategies;
 
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
+        
+        //List the avalaible strategy at the class init
         static KeyScrollerPlugin()
         {
             foreach( Strategy s in Strategy.GetStrategies() )
             {
-                AvalaibleStrategies.Add( s.Name );
+                AvailableStrategies.Add( s.Name );
             }
         }
+
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new DispatcherTimer();
@@ -50,6 +54,12 @@ namespace KeyScroller
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, timerSpeed );
 
             _registeredElements = new List<IHighlightableElement>();
+            _strategies = new Dictionary<string, IScrollingStrategy>();
+
+            foreach( string name in AvailableStrategies )
+            {
+                _strategies.Add( name, GetStrategyByName( name ) );
+            }
             _scrollingStrategy = GetStrategyByName(Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
             
             return true;
@@ -60,13 +70,16 @@ namespace KeyScroller
             switch( name )
             {
                 case "TurboScrollingStrategy":
-                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration.User.GetOrSet( "TurboSpeed", 100 ) );
+                    if( _strategies.ContainsKey( name ) ) return _strategies[name];
+                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration);
                   
                 case "SimpleScrollingStrategy":
-                    return new SimpleScrollingStrategy( _timer, _registeredElements );
+                    if( _strategies.ContainsKey( name ) ) return _strategies[name];
+                    return new SimpleScrollingStrategy( _timer, _registeredElements, Configuration );
                 
                 default:
-                    return new BasicScrollingStrategy( _timer, _registeredElements );
+                    if( _strategies.ContainsKey( "BasicScrollingStrategy" ) ) return _strategies["BasicScrollingStrategy"];
+                    return new BasicScrollingStrategy( _timer, _registeredElements, Configuration );
             }
         }
 
@@ -74,9 +87,14 @@ namespace KeyScroller
         {
             Configuration.ConfigChanged += ( o, e ) =>
             {
-                if( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) && e.Key == "Speed" )
+                if( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
                 {
-                    _timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
+                    if( e.Key == "Strategy" )
+                    {
+                        _scrollingStrategy.Stop();
+                        _scrollingStrategy = GetStrategyByName( e.Value.ToString() );
+                        _scrollingStrategy.Start();
+                    }
                 }
             };
 
@@ -131,20 +149,56 @@ namespace KeyScroller
 
         public event EventHandler<HighlightEventArgs> BeginHighlight
         {
-            add { _scrollingStrategy.BeginHighlight += value; }
-            remove { _scrollingStrategy.BeginHighlight -= value; }
+            add 
+            { 
+                foreach(var kp in _strategies)
+                {
+                    kp.Value.BeginHighlight += value;
+                }
+            }
+            remove 
+            {
+                foreach( var kp in _strategies )
+                {
+                    kp.Value.BeginHighlight -= value;
+                }
+            }
         }
 
         public event EventHandler<HighlightEventArgs> EndHighlight
         {
-            add { _scrollingStrategy.EndHighlight += value; }
-            remove { _scrollingStrategy.EndHighlight -= value; }
+            add
+            {
+                foreach( var kp in _strategies )
+                {
+                    kp.Value.EndHighlight += value;
+                }
+            }
+            remove
+            {
+                foreach( var kp in _strategies )
+                {
+                    kp.Value.EndHighlight -= value;
+                }
+            }
         }
 
         public event EventHandler<HighlightEventArgs> SelectElement
         {
-            add { _scrollingStrategy.SelectElement += value; }
-            remove { _scrollingStrategy.SelectElement -= value; }
+            add
+            {
+                foreach( var kp in _strategies )
+                {
+                    kp.Value.SelectElement += value;
+                }
+            }
+            remove
+            {
+                foreach( var kp in _strategies )
+                {
+                    kp.Value.SelectElement -= value;
+                }
+            }
         }
 
         #endregion

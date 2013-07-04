@@ -61,6 +61,15 @@ namespace KeyScroller.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scrolling by zone.
+        /// </summary>
+        public static string BasicScrollingStrategy {
+            get {
+                return ResourceManager.GetString("BasicScrollingStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to left click.
         /// </summary>
         public static string LeftClick {
@@ -120,6 +129,24 @@ namespace KeyScroller.Resources {
         public static string ScrollEditor {
             get {
                 return ResourceManager.GetString("ScrollEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scrolling key by key.
+        /// </summary>
+        public static string SimpleScrollingStrategy {
+            get {
+                return ResourceManager.GetString("SimpleScrollingStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fast scrolling (key by key).
+        /// </summary>
+        public static string TurboScrollingStrategy {
+            get {
+                return ResourceManager.GetString("TurboScrollingStrategy", resourceCulture);
             }
         }
     }

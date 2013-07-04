@@ -117,25 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BasicScrollingStrategy" xml:space="preserve">
+    <value>Défilement par zones</value>
+  </data>
   <data name="LeftClick" xml:space="preserve">
-    <value>left click</value>
+    <value>clic gauche</value>
   </data>
   <data name="Listening" xml:space="preserve">
-    <value>Listening to the "{0}" key</value>
+    <value>Ecoute de la touche "{0}"</value>
   </data>
   <data name="MiddleClick" xml:space="preserve">
-    <value>middle click</value>
+    <value>clic du milieu</value>
   </data>
   <data name="NothingSelected" xml:space="preserve">
-    <value>No key selected</value>
+    <value>Aucune touche selectionnée</value>
   </data>
   <data name="PointerListening" xml:space="preserve">
-    <value>Listening to the {0}</value>
+    <value>Ecoute du {0}</value>
   </data>
   <data name="RightClick" xml:space="preserve">
-    <value>right click</value>
+    <value>clic droit</value>
   </data>
   <data name="ScrollEditor" xml:space="preserve">
-    <value>Scroll editor</value>
+    <value>Editeur du défilement</value>
+  </data>
+  <data name="SimpleScrollingStrategy" xml:space="preserve">
+    <value>Défilement touche par touche</value>
+  </data>
+  <data name="TurboScrollingStrategy" xml:space="preserve">
+    <value>Défilement rapide (touche par touche)</value>
   </data>
 </root>

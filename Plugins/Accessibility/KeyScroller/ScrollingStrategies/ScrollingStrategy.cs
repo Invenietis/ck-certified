@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Threading;
 using CK.Core;
+using CK.Plugin.Config;
 using CommonServices.Accessibility;
 using HighlightModel;
 
@@ -23,6 +24,7 @@ namespace KeyScroller
 
         protected List<IHighlightableElement> _elements;
         protected DispatcherTimer _timer;
+        protected IPluginConfigAccessor _configuration;
 
         protected int _currentId = -1;
         protected Stack<IHighlightableElement> _currentElementParents = null;
@@ -34,12 +36,12 @@ namespace KeyScroller
             get { return _roElements ?? (_roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements )); }
         }
 
-        public ScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements )
+        public ScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
         {
             _elements = elements;
             _timer = timer;
             _currentElementParents = new Stack<IHighlightableElement>();
-            _timer.Tick += OnInternalBeat;
+            _configuration = configuration;
         }
 
         #region IScrollingStrategy Members
@@ -163,11 +165,16 @@ namespace KeyScroller
 
         public virtual void Start()
         {
+            
+
             if( !_timer.IsEnabled && _elements.Count > 0 )
             {
                 _timer.Start();
             }
+            _timer.Tick += OnInternalBeat;
+            _configuration.ConfigChanged += OnConfigChanged;
         }
+
 
         public virtual void Stop()
         {
@@ -179,6 +186,8 @@ namespace KeyScroller
                 }
                 _timer.IsEnabled = false;
             }
+            _timer.Tick -= OnInternalBeat;
+            _configuration.ConfigChanged -= OnConfigChanged;
         }
 
         public virtual void Pause( bool forceEndHighlight )
@@ -190,6 +199,17 @@ namespace KeyScroller
                     FireEndHighlight();
                 }
                 _timer.Stop();
+            }
+        }
+
+        protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
+            {
+                if( e.Key == "Speed" )
+                {
+                    _timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
+                }
             }
         }
 

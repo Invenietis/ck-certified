@@ -7,6 +7,7 @@ using KeyScroller;
 using CK.Core;
 using CommonServices.Accessibility;
 using HighlightModel;
+using CK.Plugin.Config;
 
 namespace KeyScroller
 {
@@ -20,7 +21,8 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public BasicScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements ) : base(timer, elements)
+        public BasicScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+            : base( timer, elements, configuration )
         {
         }
 

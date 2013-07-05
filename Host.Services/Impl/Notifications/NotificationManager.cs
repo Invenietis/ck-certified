@@ -26,6 +26,7 @@ using System.Windows;
 using CK.Plugin;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 namespace Host.Services
 {
@@ -37,29 +38,46 @@ namespace Host.Services
 
         void INotifierContext.FireHide()
         {
-            if( Hide != null ) Hide( this, EventArgs.Empty );
+            if( Hide != null )
+                Hide( this, EventArgs.Empty );
+        }
+
+        private UIElement GetDefaultContent( string title, string content )
+        {
+            UIElement e = null;
+            Application.Current.Dispatcher.Invoke( ( (Action)( () => e = new DefaultContent( title, content ) ) ), null );
+            return e;
         }
 
         public IDisposable ShowNotification( Guid pluginId, string title, string content, int duration )
         {
-            return ShowCustomBaloon( pluginId, new DefaultContent( title, content ), duration, null, NotificationTypes.None );
+            return ShowCustomBaloon( pluginId, GetDefaultContent( title, content ), duration, null, NotificationTypes.None );
         }
 
         public IDisposable ShowNotification( Guid pluginId, string title, string content, int duration, Action<object, EventArgs> imageClickAction )
         {
-            return ShowCustomBaloon( pluginId, new DefaultContent( title, content ), duration, imageClickAction, NotificationTypes.None );
+            return ShowCustomBaloon( pluginId, GetDefaultContent( title, content ), duration, imageClickAction, NotificationTypes.None );
         }
 
         public IDisposable ShowNotification( Guid pluginId, string title, string content, int duration, NotificationTypes notificationType )
         {
-            return ShowCustomBaloon( pluginId, new DefaultContent( title, content ), duration, null, notificationType );
+            return ShowCustomBaloon( pluginId, GetDefaultContent( title, content ), duration, null, notificationType );
         }
 
         public IDisposable ShowNotification( Guid pluginId, string title, string content, int duration, NotificationTypes notificationType, Action<object, EventArgs> imageClickAction )
         {
-            return ShowCustomBaloon( pluginId, new DefaultContent( title, content ), duration, imageClickAction, notificationType );
+            return ShowCustomBaloon( pluginId, GetDefaultContent( title, content ), duration, imageClickAction, notificationType );
         }
 
+        /// <summary>
+        /// Creates a notification by directly providing a UIElement. MAKE SURE THE UIELEMENT HAS BEEN CREATED BY THE APPLICATION'S MAIN THREAD.
+        /// </summary>
+        /// <param name="pluginId"></param>
+        /// <param name="content"></param>
+        /// <param name="duration"></param>
+        /// <param name="notificationType"></param>
+        /// <param name="imageClickAction"></param>
+        /// <returns></returns>
         public IDisposable ShowNotification( Guid pluginId, UIElement content, int duration, NotificationTypes notificationType, Action<object, EventArgs> imageClickAction )
         {
             return ShowCustomBaloon( pluginId, content, duration, imageClickAction, notificationType );
@@ -74,6 +92,7 @@ namespace Host.Services
         {
             if( content != null )
             {
+
                 string imagePath = null;
                 if( pluginId != Guid.Empty ) imagePath = "../../../Images/defaultPluginIcon.png";
                 else imagePath = "../../../Images/logo.png";
@@ -94,6 +113,7 @@ namespace Host.Services
                         return new NotificationHandle( this );
                     }
                 }
+
             }
 
             return null;

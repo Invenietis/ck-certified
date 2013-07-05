@@ -158,8 +158,11 @@ namespace SimpleSkin
             else
             {
                 _isStarted = false;
-                Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
-                    "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
+                Application.Current.Dispatcher.BeginInvoke( (Action)( () =>
+                {
+                    Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
+                        "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
+                } ), null );
             }
         }
 
@@ -610,7 +613,7 @@ namespace SimpleSkin
                 _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
                 _miniView.Closing += new CancelEventHandler( OnWindowClosing );
                 _miniView.Show();
-
+                
                 if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth / 2 ), _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
                 !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth ), _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
                 {

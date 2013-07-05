@@ -23,6 +23,7 @@
 
 using System.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
+using System;
 
 namespace Host.Services
 {
@@ -40,11 +41,11 @@ namespace Host.Services
 
         // Using a DependencyProperty as the backing store for NotificationContext.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty NotificationContextProperty =
-        DependencyProperty.RegisterAttached( 
-            "NotificationContext", 
-            typeof( INotifierContext ), 
+        DependencyProperty.RegisterAttached(
+            "NotificationContext",
+            typeof( INotifierContext ),
             typeof( ShowNotificationBehavior ),
-            new FrameworkPropertyMetadata( OnContextChanged ) 
+            new FrameworkPropertyMetadata( OnContextChanged )
         );
 
         static void OnContextChanged( DependencyObject depObj, DependencyPropertyChangedEventArgs e )
@@ -53,17 +54,19 @@ namespace Host.Services
             notifier.Show += ( o, args ) =>
             {
                 var tb = depObj as TaskbarIcon;
+
                 if( tb != null && !tb.IsDisposed )
                 {
                     tb.ShowCustomBalloon( args.Content, args.Animation, args.Duration );
                 }
+
             };
             notifier.Hide += ( o, args ) =>
             {
                 var tb = depObj as TaskbarIcon;
                 if( tb != null )
                 {
-                    tb.CloseBalloon();
+                    tb.Dispatcher.BeginInvoke( (Action)( () => tb.CloseBalloon() ), null );
                 }
             };
         }

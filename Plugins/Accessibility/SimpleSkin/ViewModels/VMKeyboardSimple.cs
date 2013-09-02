@@ -273,7 +273,12 @@ namespace SimpleSkin.ViewModels
 
         public SkippingBehavior Skip
         {
-            get { return SkippingBehavior.EnterChildren; }
+            get
+            {
+                if( Zones.Count > 0 && Zones.Any( z => z.Skip != SkippingBehavior.Skip ) )
+                    return SkippingBehavior.EnterChildren; //We enter only if there are zones that need to be scrolled through.
+                return SkippingBehavior.None;
+            }
         }
 
         #endregion
@@ -283,7 +288,7 @@ namespace SimpleSkin.ViewModels
         private void UpdateBackgroundPath()
         {
             object keyboardBackgroundObject = Context.Config[Layout]["KeyboardBackground"];
-            
+
             //Some contexts have a color in the KeyboardBackground.
             if( keyboardBackgroundObject == null || keyboardBackgroundObject is Color )
             {

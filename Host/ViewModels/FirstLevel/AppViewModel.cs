@@ -107,8 +107,7 @@ namespace Host
         {
             get
             {
-
-                return CK.Core.OSVersionInfo.OSLevel < OSVersionInfo.SimpleOSLevel.Windows8 && CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
+                return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
             }
             set
             {

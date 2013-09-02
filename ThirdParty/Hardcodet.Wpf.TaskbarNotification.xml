@@ -6,7 +6,7 @@
     <members>
         <member name="T:Hardcodet.Wpf.TaskbarNotification.BalloonIcon">
             <summary>
-             Supported icons for the tray's balloon messages.
+             Supported icons for the tray's ballon messages.
             </summary>
         </member>
         <member name="F:Hardcodet.Wpf.TaskbarNotification.BalloonIcon.None">
@@ -437,7 +437,7 @@
         </member>
         <member name="F:Hardcodet.Wpf.TaskbarNotification.Interop.IconDataMembers.Info">
             <summary>
-            The balloon ToolTip is set. Accordingly, the following
+            The ballon ToolTip is set. Accordingly, the following
             members are set: <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonText"/>,
             <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonTitle"/>, <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.BalloonFlags"/>,
             and <see cref="F:Hardcodet.Wpf.TaskbarNotification.Interop.NotifyIconData.VersionOrTimeout"/>.
@@ -682,7 +682,7 @@
             the taskbar icon area.
             </summary>
         </member>
-        <member name="E:Hardcodet.Wpf.TaskbarNotification.Interop.WindowMessageSink.BalloonToolTipChanged">
+        <member name="E:Hardcodet.Wpf.TaskbarNotification.Interop.WindowMessageSink.BallonToolTipChanged">
             <summary>
             Fired if a balloon ToolTip was either displayed
             or closed (indicated by the boolean flag).
@@ -1968,12 +1968,6 @@
             <param name="commandParameter">An optional parameter that is associated with
             the command.</param>
             <param name="target">The target element on which to raise the command.</param>
-        </member>
-        <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.GetDispatcher(System.Windows.Threading.DispatcherObject)">
-            <summary>
-            Returns a dispatcher for multi-threaded scenarios
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Hardcodet.Wpf.TaskbarNotification.Util.IsDataContextDataBound(System.Windows.FrameworkElement)">
             <summary>

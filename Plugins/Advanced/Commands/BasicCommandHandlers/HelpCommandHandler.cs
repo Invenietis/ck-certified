@@ -42,7 +42,7 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHelpService> HelpService { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ISkinService> SkinService { get; set; }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )

@@ -128,13 +128,14 @@ namespace LogPlugin
                 }
                 if( Notification != null )
                 {
-                    if( !errorLogCreated )
+                    if( !errorLogCreated && Notification != null )
                     {
                         Notification.ShowNotification( PluginId.UniqueId, R.CriticalError, R.ErrorOccuredWhileLogging, 4000, NotificationTypes.Error );
                     }
                     else
                     {
-                        Notification.ShowNotification( PluginId.UniqueId, er.Title, er.Content, 2000, NotificationTypes.Error );
+                        if( Notification != null )
+                            Notification.ShowNotification( PluginId.UniqueId, er.Title, er.Content, 2000, NotificationTypes.Error );
                         PlanLogUpload();
                     }
                 }

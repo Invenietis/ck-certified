@@ -5,6 +5,7 @@
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
+    xmlns:helpers="clr-namespace:SimpleSkin.Helpers"
     WindowStartupLocation="Manual"
     Title="Simple skin"
     Topmost="True" WindowStyle="None"
@@ -77,7 +78,7 @@
 
     </Window.Resources>
     <Grid>
-        <Image Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
+        <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
         <Viewbox Stretch="Fill" >
             <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
         </Viewbox>

@@ -45,14 +45,9 @@ namespace CK.Plugins.ObjectExplorer
         const string PluginPublicName = "Object Explorer";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
         
-        //WindowManager _wnd;
-        //Window _mainWindow;
         VMIContextView _view;
 
         public VMIContextViewModel VMIContext { get; private set; }
-
-        [RequiredService( Required = true )]
-        public INotificationService Notification { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IHelpService HelpService { get; set; }

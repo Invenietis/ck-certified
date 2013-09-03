@@ -135,7 +135,7 @@ namespace Host
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
+                //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );

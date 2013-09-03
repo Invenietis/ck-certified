@@ -28,7 +28,7 @@ using System;
 
 namespace BasicCommandHandlers
 {
-    [Plugin(CommandViewer.PluginId, Categories = new string[] { "Development" },
+    [Plugin( CommandViewer.PluginId, Categories = new string[] { "Development" },
         PublicName = "Command viewer", Version = "1.0.0" )]
     public class CommandViewer : BasicCommandHandler
     {
@@ -44,7 +44,7 @@ namespace BasicCommandHandlers
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            if( !e.Canceled )
+            if( !e.Canceled && Notifications != null )
                 Notifications.ShowNotification( new Guid( PluginId ), "Command viewer : Command sent", "Command : " + e.Command, 1000 );
         }
     }

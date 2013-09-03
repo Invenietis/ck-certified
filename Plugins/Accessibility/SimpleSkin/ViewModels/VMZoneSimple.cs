@@ -99,7 +99,7 @@ namespace SimpleSkin.ViewModels
 
                 return SkippingBehavior.None;
 
-                //one case is not taken into account : when there are several zones, but only one has a skip behavior != Skip. In this case, we will not skip the zone, and highlight all the keys until the user triggers the key that enters into the zone.
+                //one case is not taken into account : when there are several zones, but only one has a skip behavior != Skip. In this case, we will not skip the zone, and highlight all the keys until the user triggers the event that makes the basicscroll enter the zone.
                 //that can only happen when all the zones but one are not visible.
             }
         }

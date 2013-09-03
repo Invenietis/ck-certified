@@ -59,7 +59,7 @@ namespace CK.WordPredictor
 
             if( SendKeyService != null && SendKeyService.Service != null )
             {
-                SendKeyService.Service.KeySent += OnKeySent;
+                SendKeyService.Service.KeySent += OnOldKeySent;
             }
             SendKeyService.ServiceStatusChanged += OnSendKeyServiceStatusChanged;
 
@@ -87,7 +87,7 @@ namespace CK.WordPredictor
 
             if( SendKeyService != null && SendKeyService.Service != null )
             {
-                SendKeyService.Service.KeySent -= OnKeySent;
+                SendKeyService.Service.KeySent -= OnOldKeySent;
             }
             SendKeyService.ServiceStatusChanged -= OnSendKeyServiceStatusChanged;
 
@@ -102,7 +102,7 @@ namespace CK.WordPredictor
 
         #region Event Registration
 
-        protected virtual void OnKeySent( object sender, KeySentEventArgs e )
+        protected virtual void OnOldKeySent( object sender, KeySentEventArgs e )
         {
             if( !PredictionTextAreaService.Service.IsDriven )
             {
@@ -121,7 +121,11 @@ namespace CK.WordPredictor
 
         protected virtual void OnStringSent( object sender, StringSentEventArgs e )
         {
-            if( e.StringVal != null ) SetToken( e.StringVal );
+            string val = e.StringVal;
+            if( val != null )
+            {
+                SetToken( e.StringVal );
+            }
         }
 
         void SetToken( string token )
@@ -387,11 +391,11 @@ namespace CK.WordPredictor
         {
             if( e.Current == InternalRunningStatus.Stopping )
             {
-                SendKeyService.Service.KeySent -= OnKeySent;
+                SendKeyService.Service.KeySent -= OnOldKeySent;
             }
             if( e.Current == InternalRunningStatus.Starting )
             {
-                SendKeyService.Service.KeySent += OnKeySent;
+                SendKeyService.Service.KeySent += OnOldKeySent;
             }
         }
 

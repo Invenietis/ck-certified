@@ -303,7 +303,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Contexts\ContextCiviKeySmall.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

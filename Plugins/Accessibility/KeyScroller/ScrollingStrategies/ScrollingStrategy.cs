@@ -110,9 +110,9 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetEnterChild( ICKReadOnlyList<IHighlightableElement> elements )
         {
-            // if the current element does not have childs ... go to the normal next element
+            // if the current element does not have any children ... go to the normal next element
             if( elements[_currentId].Children.Count == 0 ) return GetNextElement( ActionType.Normal );
-            // else we just push the element as a parent and set the the first child as the current element
+            // otherwise we just push the element as a parent and set the the first child as the current element
             _currentElementParents.Push( elements[_currentId] );
             int tmpId = _currentId;
             _currentId = 0;
@@ -134,7 +134,7 @@ namespace KeyScroller
             else
             {
                 ICKReadOnlyList<IHighlightableElement> elements = null;
-                // get the sibblings of the current elements
+                // get the sibling of the current element
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 

@@ -34,9 +34,9 @@ namespace KeyScroller
             : base( timer, elements, configuration )
         {
             _normalInterval = _timer.Interval;
-            TurboInterval = new TimeSpan( 0, 0, 0, 0, _configuration.User.GetOrSet("TurboSpeed", 100) );
+            TurboInterval = new TimeSpan( 0, 0, 0, 0, _configuration.User.GetOrSet( "TurboSpeed", 100 ) );
             _normalSpeedTimer = new DispatcherTimer( DispatcherPriority.Normal );
-            _normalSpeedTimer.Interval = new TimeSpan(0, 0, 0, 0, 5000);
+            _normalSpeedTimer.Interval = new TimeSpan( 0, 0, 0, 0, 5000 );
             _normalSpeedTimer.Tick += ( o, e ) => SetNormalIntervalTimerInterval();
         }
 
@@ -44,7 +44,7 @@ namespace KeyScroller
         {
             if( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
             {
-                if(e.Key == "Speed")
+                if( e.Key == "Speed" )
                 {
                     var newInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                     if( !IsTurboMode ) _normalInterval = newInterval;
@@ -86,7 +86,7 @@ namespace KeyScroller
         }
         public override void OnExternalEvent()
         {
-            if( _currentElement != null && (!IsTurboMode || _currentElementParents.Count == 0 ) ) //Minimized
+            if( _currentElement != null && ( !IsTurboMode || _currentElementParents.Count == 0 ) ) //Minimized
             {
                 FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
                 _actionType = ActionType.StayOnTheSame;

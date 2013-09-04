@@ -129,6 +129,11 @@
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\IKeyCommandParameter.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\KeyCommandTypeViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\KeyCommandCreatorViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\KeyCommandViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SimpleKeyCommandParameter.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMLayoutKeyModeEditable.cs" />
@@ -396,6 +401,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\help.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

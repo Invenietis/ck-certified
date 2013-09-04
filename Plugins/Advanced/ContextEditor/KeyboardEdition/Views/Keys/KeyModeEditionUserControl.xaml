@@ -155,7 +155,7 @@
                 </DockPanel>
             </StackPanel>
 
-            <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Width="200">
+            <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Width="150">
                 <StackPanel>
                     <!-- Key : Delete buttons -->
                     <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-key-button" Action="{Binding DeleteKeyCommand}" Text="Delete this key : " 
@@ -207,8 +207,19 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <DockPanel LastChildFill="True" Margin="5">
-                        <Button DockPanel.Dock="Right" Width="24" Height="24" VerticalAlignment="Center" Command="{Binding KeyModeVM.AddCommandCommand}" ><!--CommandParameter="{Binding ElementName=addTxtBox, Path=Text}"-->
+                    <Button x:Name="ShowAddActionPanelButton" Content="Add an action" Click="ShowAddActionPanel"></Button>
+                    <!--<StackPanel x:Name="AddActionPanel" Visibility="Collapsed">
+                        <ComboBox ItemsSource="{Binding ActionList}" SelectedItem="{Binding SelectedAction}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Label}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ContentControl ContentTemplateSelector="{StaticResource AddActionTemplateSelector}" Content="{Binding SelectedAction}" />
+                    </StackPanel>-->
+                    <!--<DockPanel LastChildFill="True" Margin="5">
+                        <Button DockPanel.Dock="Right" Width="24" Height="24" VerticalAlignment="Center" Command="{Binding KeyModeVM.AddCommandCommand}" >
                             <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
@@ -221,7 +232,7 @@
                             </Button.Style>
                         </Button>
                         <TextBox DockPanel.Dock="Left" MinWidth="100" Margin="0 0 5 0" Text="{Binding KeyModeVM.TemporaryKeyProgram, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    </DockPanel>
+                    </DockPanel>-->
                 </StackPanel>
 
             </Border>

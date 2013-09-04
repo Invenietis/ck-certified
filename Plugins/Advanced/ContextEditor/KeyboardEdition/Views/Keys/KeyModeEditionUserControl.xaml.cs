@@ -24,5 +24,10 @@ namespace KeyboardEditor.s
         {
             InitializeComponent();
         }
+
+        private void ShowAddActionPanel( object sender, RoutedEventArgs e )
+        {
+
+        }
     }
 }

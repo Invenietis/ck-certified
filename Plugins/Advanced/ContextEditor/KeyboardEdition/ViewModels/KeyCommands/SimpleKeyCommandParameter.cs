@@ -13,7 +13,8 @@ namespace KeyboardEditor.KeyboardEdition
     /// </summary>
     public class SimpleKeyCommandParameterManager : IKeyCommandParameterManager
     {
-        public string Value { get; set; }
+        string _value;
+        public string Value { get { return _value; } set { _value = value; } }
         public void FillFromString( string parameter )
         {
             Value = parameter;
@@ -23,5 +24,11 @@ namespace KeyboardEditor.KeyboardEdition
         {
             return Value;
         }
+
+        public void OnPropertyChanged( string propertyName )
+        {
+            if( PropertyChanged != null ) PropertyChanged( this, new System.ComponentModel.PropertyChangedEventArgs( propertyName ) );
+        }
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

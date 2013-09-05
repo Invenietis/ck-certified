@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace KeyboardEditor.KeyboardEdition
 {
-    public interface IKeyCommandParameterManager
+    public interface IKeyCommandParameterManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Gets a string containing the Parameter's GetCommandString return value and populates the object with it.

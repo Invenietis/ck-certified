@@ -14,41 +14,41 @@ namespace KeyboardEditorTests
         [Test]
         public void SendStringSimpleTest()
         {
-            KeyCommandTypeProviderViewModel provider = new KeyCommandTypeProviderViewModel();
+            KeyCommandProviderViewModel provider = new KeyCommandProviderViewModel();
 
             Assert.NotNull( provider );
             Assert.That( provider.AvailableTypes.Count() == 2 );
 
-            KeyCommandViewModel kcvm = new KeyCommandViewModel( provider, "sendString:Bonjour" );
+            provider.CreateKeyCommand("sendString:Bonjour" );
 
-            Assert.NotNull( kcvm );
-            Assert.That( kcvm.Type.Description == "Permet d'écrire n'importe quelle chaine de caractère" );
-            Assert.That( kcvm.Type.InnerName == "sendString" );
-            Assert.That( kcvm.Type.Name == "Ecrire une lettre ou une phrase" );
-            Assert.IsTrue( kcvm.Type.IsValid );
+            Assert.NotNull( provider.KeyCommand );
+            Assert.That( provider.KeyCommand.Type.Description == "Permet d'écrire n'importe quelle chaine de caractère" );
+            Assert.That( provider.KeyCommand.Type.InnerName == "sendString" );
+            Assert.That( provider.KeyCommand.Type.Name == "Ecrire une lettre ou une phrase" );
+            Assert.IsTrue( provider.KeyCommand.Type.IsValid );
 
-            Assert.That( kcvm.Parameter.GetParameterString() == "Bonjour" );
-            Assert.That( kcvm.ToString() == "sendString:Bonjour" );
+            Assert.That( provider.KeyCommand.Parameter.GetParameterString() == "Bonjour" );
+            Assert.That( provider.KeyCommand.ToString() == "sendString:Bonjour" );
         }
 
         [Test]
         public void SendKeySimpleTest()
         {
-            KeyCommandTypeProviderViewModel provider = new KeyCommandTypeProviderViewModel();
+            KeyCommandProviderViewModel provider = new KeyCommandProviderViewModel();
 
             Assert.NotNull( provider );
             Assert.That( provider.AvailableTypes.Count() == 2 );
 
-            KeyCommandViewModel kcvm = new KeyCommandViewModel( provider, "sendKey:Back" );
+            provider.CreateKeyCommand( "sendKey:Back" );
 
-            Assert.NotNull( kcvm );
-            Assert.That( kcvm.Type.Description == "Permet de simuler la pression sur une touche sépciale comme Entrée, les touches F1..12, Effacer, Suppr etc..." );
-            Assert.That( kcvm.Type.InnerName == "sendKey" );
-            Assert.That( kcvm.Type.Name == "Touche spéciale (F11, Entrée, Suppr ...)" );
-            Assert.IsTrue( kcvm.Type.IsValid );
+            Assert.NotNull( provider.KeyCommand );
+            Assert.That( provider.KeyCommand.Type.Description == "Permet de simuler la pression sur une touche sépciale comme Entrée, les touches F1..12, Effacer, Suppr etc..." );
+            Assert.That( provider.KeyCommand.Type.InnerName == "sendKey" );
+            Assert.That( provider.KeyCommand.Type.Name == "Touche spéciale (F11, Entrée, Suppr ...)" );
+            Assert.IsTrue( provider.KeyCommand.Type.IsValid );
 
-            Assert.That( kcvm.Parameter.GetParameterString() == "Back" );
-            Assert.That( kcvm.ToString() == "sendKey:Back" );
+            Assert.That( provider.KeyCommand.Parameter.GetParameterString() == "Back" );
+            Assert.That( provider.KeyCommand.ToString() == "sendKey:Back" );
         }
     }
 }

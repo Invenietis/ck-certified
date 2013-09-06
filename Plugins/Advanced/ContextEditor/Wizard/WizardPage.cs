@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Windows;
 using KeyboardEditor.ViewModels;
+using CK.Windows.App;
 
 namespace KeyboardEditor
 {
@@ -37,7 +38,7 @@ namespace KeyboardEditor
             {
                 if( _showHelpCommand == null )
                 {
-                    _showHelpCommand = new KeyCommand( () => Root.ShowHelp() );
+                    _showHelpCommand = new VMCommand( () => Root.ShowHelp() );
                 }
                 return _showHelpCommand;
             }

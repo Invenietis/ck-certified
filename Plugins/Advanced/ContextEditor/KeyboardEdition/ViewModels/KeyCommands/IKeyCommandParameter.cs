@@ -20,5 +20,10 @@ namespace KeyboardEditor.KeyboardEdition
         /// </summary>
         /// <returns>Returns the representation of this object's implementation's value. This value is to be processed by a corresponding CommandHandler.</returns>
         string GetParameterString();
+
+        /// <summary>
+        /// Gets whether the parameter is valid (ie: can be safely saved as is)
+        /// </summary>
+        bool IsValid { get; }
     }
 }

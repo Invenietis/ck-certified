@@ -14,6 +14,8 @@ using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
 using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
+using KeyboardEditor.KeyboardEdition;
+using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -41,6 +43,9 @@ namespace KeyboardEditor.ViewModels
             {
                 _commands.Add( cmd );
             }
+
+            //TODO : implement a registering behavior
+            _keyCommandTypeProvider = new KeyCommandProviderViewModel();
 
             RegisterEvents();
 
@@ -212,21 +217,104 @@ namespace KeyboardEditor.ViewModels
         ObservableCollection<string> _commands;
         public ObservableCollection<string> Commands { get { return _commands; } }
 
-        VMCommand _addCommand;
-        public VMCommand AddCommandCommand
+        bool _showKeyCommandCreationPanel;
+        public bool ShowKeyCommandCreationPanel
+        {
+            get { return _showKeyCommandCreationPanel; }
+            set
+            {
+                _showKeyCommandCreationPanel = value;
+                OnPropertyChanged( "ShowKeyCommandCreationPanel" );
+            }
+        }
+
+        VMCommand _initializeCommand;
+        public VMCommand InitializeCommandCommand
         {
             get
             {
-                if( _addCommand == null )
+                if( _initializeCommand == null )
                 {
-                    _addCommand = new VMCommand( () =>
+                    _initializeCommand = new VMCommand( () =>
                     {
-                        _model.OnKeyDownCommands.Commands.Add( _temporaryKeyProgram );
-                        TemporaryKeyProgram = String.Empty;
+                        KeyCommandTypeProvider.InitializeKeyCommand();
+                        ShowKeyCommandCreationPanel = true;
                     } );
                 }
 
-                return _addCommand;
+                return _initializeCommand;
+            }
+        }
+
+        VMCommand _saveCommand;
+        public VMCommand SaveCommandCommand
+        {
+            get
+            {
+                if( _saveCommand == null )
+                {
+                    _saveCommand = new VMCommand( () =>
+                    {
+                        DoAddKeyCommand( KeyCommandTypeProvider.KeyCommand.ToString() );
+                        ShowKeyCommandCreationPanel = false;
+
+                    } );
+                }
+
+                return _saveCommand;
+            }
+        }
+
+        private void DoAddKeyCommand( string keyCommand )
+        {
+            _model.OnKeyDownCommands.Commands.Add( keyCommand );
+            KeyCommandTypeProvider.FlushCurrentKeyCommand();
+        }
+
+        string _commandBeingChanged = String.Empty;
+        VMCommand<string> _changeCommand;
+        public VMCommand<string> ChangeCommandCommand
+        {
+            get
+            {
+                if( _changeCommand == null )
+                {
+                    _changeCommand = new VMCommand<string>( ( cmdString ) =>
+                    {
+                        _commandBeingChanged = cmdString;
+                        DoRemoveKeyCommand( cmdString );
+                        KeyCommandTypeProvider.CreateKeyCommand( cmdString );
+                        ShowKeyCommandCreationPanel = true;
+                    } );
+                }
+
+                return _changeCommand;
+            }
+        }
+
+        VMCommand _cancelCommand;
+        public VMCommand CancelChangesCommand
+        {
+            get
+            {
+                if( _cancelCommand == null )
+                {
+                    _cancelCommand = new VMCommand( () =>
+                    {
+                        if( !String.IsNullOrEmpty( _commandBeingChanged ) )
+                        {
+                            DoAddKeyCommand( _commandBeingChanged );
+                            _commandBeingChanged = String.Empty;
+                        }
+                        else
+                        {
+                            KeyCommandTypeProvider.FlushCurrentKeyCommand();
+                        }
+                        ShowKeyCommandCreationPanel = false;
+                    } );
+                }
+
+                return _cancelCommand;
             }
         }
 
@@ -239,18 +327,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _removeCommand = new VMCommand<string>( ( cmdString ) =>
                     {
-                        Debug.Assert( _model.OnKeyDownCommands.Commands.Contains( cmdString )
-                            || _model.OnKeyUpCommands.Commands.Contains( cmdString )
-                            || _model.OnKeyPressedCommands.Commands.Contains( cmdString ) );
-
-                        if( _model.OnKeyDownCommands.Commands.Contains( cmdString ) )
-                            _model.OnKeyDownCommands.Commands.Remove( cmdString );
-                        else if( _model.OnKeyUpCommands.Commands.Contains( cmdString ) )
-                            _model.OnKeyDownCommands.Commands.Remove( cmdString );
-                        else if( _model.OnKeyPressedCommands.Commands.Remove( cmdString ) )
-                            _model.OnKeyDownCommands.Commands.Remove( cmdString );
-                        else
-                            throw new ArgumentException( "Trying to remove a command that cannot be found in the key commands. Key : " + _model.UpLabel + ", command : " + cmdString );
+                        DoRemoveKeyCommand( cmdString );
                     } );
                 }
 
@@ -258,20 +335,56 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        string _temporaryKeyProgram = String.Empty;
-        public string TemporaryKeyProgram
+        private void DoRemoveKeyCommand( string cmdString )
         {
-            get
-            {
-                return _temporaryKeyProgram;
-            }
+            Debug.Assert( _model.OnKeyDownCommands.Commands.Contains( cmdString )
+                || _model.OnKeyUpCommands.Commands.Contains( cmdString )
+                || _model.OnKeyPressedCommands.Commands.Contains( cmdString ) );
+
+            if( _model.OnKeyDownCommands.Commands.Contains( cmdString ) )
+                _model.OnKeyDownCommands.Commands.Remove( cmdString );
+            else if( _model.OnKeyUpCommands.Commands.Contains( cmdString ) )
+                _model.OnKeyDownCommands.Commands.Remove( cmdString );
+            else if( _model.OnKeyPressedCommands.Commands.Remove( cmdString ) )
+                _model.OnKeyDownCommands.Commands.Remove( cmdString );
+            else
+                throw new ArgumentException( "Trying to remove a command that cannot be found in the key commands. Key : " + _model.UpLabel + ", command : " + cmdString );
+        }
+
+        KeyCommandProviderViewModel _keyCommandTypeProvider;
+        public KeyCommandProviderViewModel KeyCommandTypeProvider
+        {
+            get { return _keyCommandTypeProvider; }
             set
             {
-                _temporaryKeyProgram = value;
-                OnPropertyChanged( "TemporaryKeyProgram" );
+                _keyCommandTypeProvider = value;
+                OnPropertyChanged( "KeyCommandTypeProvider" );
             }
         }
 
+
+        VMCommand _deleteKeyModeCommand;
+        /// <summary>
+        /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
+        /// </summary>
+        public VMCommand DeleteKeyModeCommand
+        {
+            get
+            {
+                if( _deleteKeyModeCommand == null )
+                {
+                    _deleteKeyModeCommand = new VMCommand( () =>
+                    {
+                        Context.KeyboardVM.CurrentMode = Context.KeyboardContext.EmptyMode;
+                        VMKeyEditable parent = ActualParent; //Keeping a ref to the parent, since the model will be detached from its parent when destroyed
+                        _model.Destroy();
+                        parent.RefreshKeyboardModelViewModels();
+
+                    } );
+                }
+                return _deleteKeyModeCommand;
+            }
+        }
 
 
         #endregion
@@ -301,29 +414,6 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
-
-        VMCommand _deleteKeyModeCommand;
-        /// <summary>
-        /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
-        /// </summary>
-        public VMCommand DeleteKeyModeCommand
-        {
-            get
-            {
-                if( _deleteKeyModeCommand == null )
-                {
-                    _deleteKeyModeCommand = new VMCommand( () =>
-                    {
-                        Context.KeyboardVM.CurrentMode = Context.KeyboardContext.EmptyMode;
-                        VMKeyEditable parent = ActualParent; //Keeping a ref to the parent, since the model will be detached from its parent when destroyed
-                        _model.Destroy();
-                        parent.RefreshKeyboardModelViewModels();
-
-                    } );
-                }
-                return _deleteKeyModeCommand;
-            }
-        }
 
         //COMMON
         public override string ToString()

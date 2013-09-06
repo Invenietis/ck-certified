@@ -14,7 +14,17 @@ namespace KeyboardEditor.KeyboardEdition
     public class SimpleKeyCommandParameterManager : IKeyCommandParameterManager
     {
         string _value;
-        public string Value { get { return _value; } set { _value = value; } }
+        public string Value
+        {
+            get { return _value; }
+            set
+            {
+                _value = value;
+                OnPropertyChanged( "Value" );
+                OnPropertyChanged( "IsValid" );
+            }
+        }
+
         public void FillFromString( string parameter )
         {
             Value = parameter;
@@ -23,6 +33,11 @@ namespace KeyboardEditor.KeyboardEdition
         public string GetParameterString()
         {
             return Value;
+        }
+
+        public bool IsValid
+        {
+            get { return !String.IsNullOrEmpty( Value ); }
         }
 
         public void OnPropertyChanged( string propertyName )

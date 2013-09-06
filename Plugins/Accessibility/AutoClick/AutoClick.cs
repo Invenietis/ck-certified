@@ -39,6 +39,7 @@ using System.Runtime.InteropServices;
 using CK.Windows.Helpers;
 using CommonServices.Accessibility;
 using CK.Windows.Core;
+using CK.Windows.App;
 
 namespace CK.Plugins.AutoClick
 {

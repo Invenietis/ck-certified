@@ -14,10 +14,25 @@
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate x:Key="sendstringdatatemplate">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" Text="String to send : "></TextBlock>
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </DockPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="sendkeydatatemplate">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" Text="Action : "></TextBlock>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedValue}"></ComboBox>
+                </DockPanel>
+            </DataTemplate>
+
             <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:NotNullConverter x:Key="notnullconverter"/>
             <ckc:NotConverter x:Key="notconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
+            <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" SendStringDataTemplate="{StaticResource sendstringdatatemplate}" SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" />
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
@@ -151,7 +166,7 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    
+
                 </DockPanel>
             </StackPanel>
 
@@ -188,53 +203,44 @@
             <Border DockPanel.Dock="Left" Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
 
                 <!-- Commands -->
-                <StackPanel Margin="5" DockPanel.Dock="Top">
-                    <TextBlock x:Uid="keyboard-editor-key-mode-key-program" Text="Key program : " Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding KeyModeVM.Commands}" Padding="5">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <DockPanel LastChildFill="False" Margin="0 2">
-                                    <TextBlock Text="{Binding}" DockPanel.Dock="Left" TextTrimming="CharacterEllipsis" Margin="0 0 2 0"/>
-                                    <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.KeyModeVM.RemoveCommandCommand}" CommandParameter="{Binding}">
-                                        <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"></Image>
-                                    </Button>
-                                </DockPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <Button x:Name="ShowAddActionPanelButton" Content="Add an action" Click="ShowAddActionPanel"></Button>
-                    <!--<StackPanel x:Name="AddActionPanel" Visibility="Collapsed">
-                        <ComboBox ItemsSource="{Binding ActionList}" SelectedItem="{Binding SelectedAction}">
-                            <ComboBox.ItemTemplate>
+                <StackPanel Margin="5" DockPanel.Dock="Top" DataContext="{Binding KeyModeVM}">
+                    <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}, ConverterParameter=Invert}">
+                        <TextBlock x:Uid="keyboard-editor-key-mode-key-program" Text="Key program : " Margin="5"/>
+                        <ItemsControl ItemsSource="{Binding Commands}" Padding="5">
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Label}"></TextBlock>
+                                    <DockPanel LastChildFill="False" Margin="0 2">
+                                        <TextBlock Text="{Binding}" DockPanel.Dock="Left" TextTrimming="CharacterEllipsis" Margin="0 0 2 0"/>
+                                        <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveCommandCommand}" CommandParameter="{Binding}">
+                                            <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"></Image>
+                                        </Button>
+                                        <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ChangeCommandCommand}" CommandParameter="{Binding}">
+                                            <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/edit.png"></Image>
+                                        </Button>
+                                    </DockPanel>
                                 </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <ContentControl ContentTemplateSelector="{StaticResource AddActionTemplateSelector}" Content="{Binding SelectedAction}" />
-                    </StackPanel>-->
-                    <!--<DockPanel LastChildFill="True" Margin="5">
-                        <Button DockPanel.Dock="Right" Width="24" Height="24" VerticalAlignment="Center" Command="{Binding KeyModeVM.AddCommandCommand}" >
-                            <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=KeyModeVM.TemporaryKeyProgram, Converter={StaticResource stringnulltobool}}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <TextBox DockPanel.Dock="Left" MinWidth="100" Margin="0 0 5 0" Text="{Binding KeyModeVM.TemporaryKeyProgram, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    </DockPanel>-->
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Content="Add an action" Command="{Binding InitializeCommandCommand}" ></Button>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
+                        <TextBlock Text="Create a new action : "></TextBlock>
+                        <StackPanel DataContext="{Binding KeyCommandTypeProvider}">
+                            <ComboBox ItemsSource="{Binding AvailableTypes}" SelectedItem="{Binding SelectedKeyCommandType}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ContentControl ContentTemplateSelector="{StaticResource addactiondatatemplateselector}" Content="{Binding KeyCommand.Parameter}" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button IsEnabled="{Binding KeyCommandTypeProvider.KeyCommand.IsValid}" Content="Save" Command="{Binding SaveCommandCommand}"></Button>
+                            <Button Content="Cancel" Command="{Binding CancelChangesCommand}"></Button>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-
             </Border>
         </DockPanel>
     </Border>

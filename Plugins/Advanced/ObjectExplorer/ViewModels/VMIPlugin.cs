@@ -32,6 +32,7 @@ using CK.Plugin.Hosting;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer
 {

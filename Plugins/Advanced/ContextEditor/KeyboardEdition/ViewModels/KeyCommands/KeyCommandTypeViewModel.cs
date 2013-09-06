@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace KeyboardEditor.KeyboardEdition
 {
-    public class KeyCommandTypeViewModel
+    public class KeyCommandTypeViewModel : INotifyPropertyChanged
     {
         /// <summary>
         /// Valid Constructor for a KeyCommandType
@@ -17,7 +18,6 @@ namespace KeyboardEditor.KeyboardEdition
         {
             if( !typeof( IKeyCommandParameterManager ).IsAssignableFrom( keyCommandParameterType ) ) throw new ArgumentException( String.Format( "The keyCommandParameterType ({0}) for the KeyCommandType {1} doesn't implement IKeyCommandParameter", keyCommandParameterType.ToString(), innerName ) );
 
-            IsValid = true;
             InnerName = innerName;
             Name = name;
             Description = description;
@@ -31,7 +31,7 @@ namespace KeyboardEditor.KeyboardEdition
         /// <summary>
         /// Gets whether the current KeyCommandType InnerName is recognized by a registered command handler
         /// </summary>
-        public bool IsValid { get; internal set; }
+        public bool IsValid { get { return !String.IsNullOrWhiteSpace( InnerName ); } }
 
         /// <summary>
         /// Gets a user-friendly name (displayed to the user : must be multilingual)
@@ -43,12 +43,14 @@ namespace KeyboardEditor.KeyboardEdition
         /// </summary>
         public string Description { get; internal set; }
 
-        /// <summary>
-        /// The name used by the command handler that is supposed ot handle the KeyCommand (ex : sendString, sendKey)
-        /// This string will be set as the beggining of the KeyCommand, followed by a ":" (ex : sendstring:...)
-        /// </summary>
-        public string InnerName { get; internal set; }
+        public string InnerName { get; set; }
 
         public Type KeyCommandParameterType { get; internal set; }
+
+        private void OnPropertyChanged( string propertyName )
+        {
+            if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -27,6 +27,7 @@ using CK.WPF.ViewModel;
 using System.IO;
 using System.Diagnostics;
 using CK.Context;
+using CK.Windows.App;
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMApplicationInfo : VMISelectableElement, IDisposable

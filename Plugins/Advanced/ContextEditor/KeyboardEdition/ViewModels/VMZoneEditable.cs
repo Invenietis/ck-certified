@@ -127,7 +127,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _createKeyCommand == null )
                 {
-                    _createKeyCommand = new CK.WPF.ViewModel.VMCommand( () =>
+                    _createKeyCommand = new VMCommand( () =>
                     {
                         IKey key = Model.Keys.Create();
                         key.KeyModes.First().UpLabel = "New key";
@@ -159,7 +159,7 @@ namespace KeyboardEditor.ViewModels
 
         private void DeleteZone()
         {
-            _deleteZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
+            _deleteZoneCommand = new VMCommand( () =>
             {
                 ModalViewModel mvm = new ModalViewModel( R.DeleteZone, R.DeleteZoneConfirmation );
                 mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
@@ -254,7 +254,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _selectZoneCommand == null )
                 {
-                    _selectZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
+                    _selectZoneCommand = new VMCommand( () =>
                     {
                         _ctx.SelectedElement = this;
                     } );

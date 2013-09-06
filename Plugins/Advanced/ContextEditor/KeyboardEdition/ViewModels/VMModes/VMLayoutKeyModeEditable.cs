@@ -15,6 +15,7 @@ using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
 using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
+using CK.Windows.App;
 
 //TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
 namespace KeyboardEditor.ViewModels

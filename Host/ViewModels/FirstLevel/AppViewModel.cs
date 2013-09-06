@@ -198,7 +198,7 @@ namespace Host
             get
             {
                 if( _ensureMainWindowVisibleCommand == null )
-                    _ensureMainWindowVisibleCommand = new CK.WPF.ViewModel.VMCommand( EnsureMainWindowVisible );
+                    _ensureMainWindowVisibleCommand = new VMCommand( EnsureMainWindowVisible );
                 return _ensureMainWindowVisibleCommand;
             }
         }

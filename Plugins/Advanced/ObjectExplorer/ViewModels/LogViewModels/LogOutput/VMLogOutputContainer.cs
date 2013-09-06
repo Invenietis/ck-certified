@@ -31,6 +31,7 @@ using CK.WPF.ViewModel;
 using CK.Plugin;
 using CK.Plugins.ObjectExplorer.UI.UserControls;
 using System.ComponentModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 {

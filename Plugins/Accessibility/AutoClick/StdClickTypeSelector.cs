@@ -32,6 +32,7 @@ using System.Windows.Input;
 using CK.WPF.ViewModel;
 using System.Diagnostics;
 using System.ComponentModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.AutoClick
 {

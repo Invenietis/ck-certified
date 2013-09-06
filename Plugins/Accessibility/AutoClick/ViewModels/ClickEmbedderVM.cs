@@ -31,6 +31,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.ComponentModel;
 using CK.WPF.ViewModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {

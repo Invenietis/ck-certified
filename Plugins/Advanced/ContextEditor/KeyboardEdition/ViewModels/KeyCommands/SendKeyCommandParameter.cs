@@ -67,7 +67,7 @@ namespace KeyboardEditor.KeyboardEdition
         }
 
         Dictionary<string, CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys> _values;
-        public IEnumerable<string> Values { get { return _values.Keys; } }
+        public IEnumerable<string> AvailableValues { get { return _values.Keys; } }
 
         string _selectedValue;
         public string SelectedValue
@@ -77,6 +77,7 @@ namespace KeyboardEditor.KeyboardEdition
             {
                 _selectedValue = value;
                 OnPropertyChanged( "SelectedValue" );
+                OnPropertyChanged( "IsValid" );
             }
         }
 
@@ -85,22 +86,22 @@ namespace KeyboardEditor.KeyboardEdition
             NativeMethods.KeyboardKeys enumValue = NativeMethods.KeyboardKeys.A;
 
             if( Enum.TryParse<NativeMethods.KeyboardKeys>( parameter, out enumValue ) )
-            {
                 SelectedValue = _values.Where( kvp => kvp.Value == enumValue ).Single().Key;
-                IsValid = true;
-            }
-            else
-            {
-                IsValid = false;
-            }
         }
 
         private void OnPropertyChanged( string propertyName )
         {
-            if( PropertyChanged != null ) PropertyChanged( this, new System.ComponentModel.PropertyChangedEventArgs( "SelectedValue" ) );
+            if( PropertyChanged != null ) PropertyChanged( this, new System.ComponentModel.PropertyChangedEventArgs( propertyName ) );
         }
 
-        public bool IsValid { get; set; }
+        public bool IsValid
+        {
+            get
+            {
+                NativeMethods.KeyboardKeys enumValue = NativeMethods.KeyboardKeys.A;
+                return SelectedValue != null && _values.TryGetValue(SelectedValue, out enumValue);
+            }
+        }
 
         public string GetParameterString()
         {

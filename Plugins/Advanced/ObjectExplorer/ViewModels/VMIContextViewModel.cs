@@ -40,6 +40,7 @@ using System.Windows;
 using CommonServices;
 using CommonServices.Accessibility;
 using System.Windows.Controls;
+using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer
 {

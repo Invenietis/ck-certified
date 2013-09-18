@@ -43,7 +43,7 @@ namespace Host
         public static void Main( string[] args )
         {
 
-            //uncomment if you wan not to be told when WPF binding fails (can be useful to remove the annoying CK-Desktop's "ImagePath is null" errors.
+            //uncomment if you want not to be told when WPF binding fails.
             //Be careful, it will also remove the other binding errors
 #if DEBUG
             //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;

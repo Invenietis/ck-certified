@@ -26,14 +26,33 @@
 
             <!-- When editing a key -->
             <DataTemplate x:Key="KeyEditionDataTemplate">
-                <TabControl Style="{StaticResource KeyEditionUCStyle}" Width="Auto" Height="Auto" >
+                <!--<TabControl Style="{StaticResource KeyEditionUCStyle}" Width="Auto" Height="Auto" >
                     <TabItem x:Uid="keyboard-editor-key-tabitem-aspect" Header="Aspect and position" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Layout, Converter={StaticResource modeTypeToSelectedConverter}}">
                         <local:LayoutKeyEditionUserControl DataContext="{Binding}"  />
                     </TabItem>
                     <TabItem x:Uid="keyboard-editor-key-tabitem-config" Header="General configuration" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Mode, Converter={StaticResource modeTypeToSelectedConverter}}">
                         <local:KeyModeEditionUserControl DataContext="{Binding}"/>
                     </TabItem>
-                </TabControl>
+                </TabControl>-->
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding SelectKeyModeCommand}" Content="Content and Actions"></Button>
+                    <Button Command="{Binding SelectLayoutKeyModeCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Design" />
+                            <TextBlock Text="(Background, Font, Dimensions and Position)" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- When editing a KeyMode -->
+            <DataTemplate x:Key="KeyModeEditionDataTemplate">
+                <TextBlock Text="Oh damn ! I'm a KeyMode !"></TextBlock>
+            </DataTemplate>
+
+            <!-- When editing a LayoutKeyMode -->
+            <DataTemplate x:Key="LayoutKeyModeEditionDataTemplate">
+                <TextBlock Text="Oh damn ! I'm a LayoutKeyMode !"></TextBlock>
             </DataTemplate>
 
             <!-- When editing a keyboard -->
@@ -56,6 +75,8 @@
 
             <!-- Used to display the edition panel corresponding to the selected element's type -->
             <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" 
+                                                LayoutKeyModeEditionTemplate="{StaticResource LayoutKeyModeEditionDataTemplate}"
+                                                KeyModeEditionTemplate="{StaticResource KeyModeEditionDataTemplate}"
                                                 KeyEditionTemplate="{StaticResource KeyEditionDataTemplate}" 
                                                 ZoneEditionTemplate="{StaticResource ZoneEditionDataTemplate}" 
                                                 KeyboardEditionTemplate="{StaticResource KeyboardEditionDataTemplate}" />
@@ -123,7 +144,6 @@
             <TreeView DataContext="{Binding KeyboardVM}" Padding="20 0" MinWidth="100" MaxHeight="670">
                 <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}"/>
             </TreeView>
-            <!--<ScrollViewer>-->
             <Border>
 
                 <!-- Modes -->
@@ -182,7 +202,6 @@
                     </Viewbox>
                 </DockPanel>
             </Border>
-            <!--</ScrollViewer>-->
         </StackPanel>
 
     </Border>

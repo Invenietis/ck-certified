@@ -161,9 +161,6 @@
     <Compile Include="KeyboardEdition\Views\Keys\LayoutKeyEditionUserControl.xaml.cs">
       <DependentUpon>LayoutKeyEditionUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="KeyboardEdition\Views\Keys\KeyEditionUserControl.xaml.cs">
-      <DependentUpon>KeyEditionUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml.cs">
       <DependentUpon>KeyboardEditionUserControl.xaml</DependentUpon>
     </Compile>
@@ -255,10 +252,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="KeyboardEdition\Views\Keys\LayoutKeyEditionUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="KeyboardEdition\Views\Keys\KeyEditionUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

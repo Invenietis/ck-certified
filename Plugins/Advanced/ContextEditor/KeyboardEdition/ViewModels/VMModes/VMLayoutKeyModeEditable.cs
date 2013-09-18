@@ -118,24 +118,33 @@ namespace KeyboardEditor.ViewModels
         //COMMON
         public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? R.DefaultMode : _model.Mode.ToString(); } }
 
+        bool _isSelected;
         /// <summary>
         /// Gets whether the element is selected.
         /// A VMKeyModeEditable is selected if its parent is selected and that the keyboard's current mode correspond to the Mode associated with this VMLayoutKeyModeEditable
         /// </summary>
         public override bool IsSelected
         {
-            get { return Parent.IsSelected 
-                && ActualParent.CurrentLayoutKeyModeModeVM.Mode.ContainsAll( _model.Mode )
-                && _model.Mode.ContainsAll( ActualParent.CurrentLayoutKeyModeModeVM.Mode )
-                && Context.CurrentlyDisplayedModeType == ModeTypes.Layout; }
+            get
+            {
+                return _isSelected;
+            }
             set
             {
-                
-                Context.CurrentlyDisplayedModeType = ModeTypes.Layout;
+                if( value )
+                {
+                    if( Context.SelectedElement != this ) Context.SelectedElement = this;
+                    Context.CurrentlyDisplayedModeType = ModeTypes.Layout;
+                }
+
                 Context.KeyboardVM.CurrentMode = _model.Mode;
-                if( value ) Parent.IsSelected = value;
-                
+
+                _isSelected = value;
                 OnPropertyChanged( "IsSelected" );
+
+                ActualParent.TriggerOnPropertyChanged( "IsSelected" );
+                ActualParent.TriggerOnPropertyChanged( "IsBeingEdited" );
+                ActualParent.TriggerOnPropertyChanged( "Opacity" );
             }
         }
 

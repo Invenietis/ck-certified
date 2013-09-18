@@ -40,6 +40,7 @@ using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
 using System.Collections.ObjectModel;
+using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -51,7 +52,7 @@ namespace KeyboardEditor.ViewModels
         }
 
         internal void RefreshKeyboardModelViewModels()
-        {   
+        {
             _currentLayoutKeyModeModeVM = new VMKeyboardMode( _context, Model.CurrentLayout.Current.Mode );
             _currentKeyModeModeVM = new VMKeyboardMode( _context, Model.Current.Mode );
 
@@ -103,7 +104,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _createKeyModeCommand = new VMCommand<string>( ( type ) =>
                     {
-                        
+
                         if( type == "KeyMode" )
                         {
                             Model.KeyModes.Create( Model.Keyboard.CurrentMode );
@@ -125,6 +126,22 @@ namespace KeyboardEditor.ViewModels
                     } );
                 }
                 return _createKeyModeCommand;
+            }
+        }
+
+        VMCommand _selectKeyMode;
+        public VMCommand SelectKeyModeCommand
+        {
+            get
+            {
+                if( _selectKeyMode == null )
+                {
+                    _selectKeyMode = new VMCommand( () => 
+                    {
+                        KeyModeVM.IsSelected = true;
+                    });
+                }
+                return _selectKeyMode;
             }
         }
 

@@ -103,6 +103,7 @@ namespace KeyboardEditor.ViewModels
         //COMMON
         public string Name { get { return String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? R.DefaultMode : _model.Mode.ToString(); } }
 
+        bool _isSelected;
         /// <summary>
         /// Gets whether the element is selected.
         /// A VMKeyModeEditable is selected if its parent is selected and that the keyboard's current mode correspond to the Mode associated with this VMKeyModeEditable
@@ -111,35 +112,62 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                return Parent.IsSelected
-                    && ActualParent.CurrentKeyModeModeVM.Mode.ContainsAll( _model.Mode )
-                    && _model.Mode.ContainsAll( ActualParent.CurrentKeyModeModeVM.Mode )
-                    && Context.CurrentlyDisplayedModeType == ModeTypes.Mode;
+                //return Parent.IsSelected
+                //    && ActualParent.CurrentKeyModeModeVM.Mode.ContainsAll( _model.Mode )
+                //    && _model.Mode.ContainsAll( ActualParent.CurrentKeyModeModeVM.Mode )
+                //    && Context.CurrentlyDisplayedModeType == ModeTypes.Mode;
+                return _isSelected;
             }
             set
             {
                 VMKeyModeEditable previousKeyMode = null;
                 VMLayoutKeyModeEditable previousLayoutKeyMode = null;
 
-                if( value && Context.SelectedElement is VMKeyEditable )
+                if( value )
                 {
-                    previousKeyMode = ( Context.SelectedElement as VMKeyEditable ).KeyModeVM;
-                    previousLayoutKeyMode = ( Context.SelectedElement as VMKeyEditable ).LayoutKeyModeVM;
+                    if( Context.SelectedElement != this ) Context.SelectedElement = this;
+
+                    if( Context.SelectedElement is VMKeyEditable )
+                    {
+                        previousKeyMode = ( Context.SelectedElement as VMKeyEditable ).KeyModeVM;
+                        previousLayoutKeyMode = ( Context.SelectedElement as VMKeyEditable ).LayoutKeyModeVM;
+                        if( previousKeyMode != null && previousLayoutKeyMode != null )
+                        {
+                            previousKeyMode.TriggerPropertyChanged( "IsSelected" );
+                            previousLayoutKeyMode.TriggerPropertyChanged( "IsSelected" );
+                            previousKeyMode.ActualParent.TriggerOnPropertyChanged( "IsSelected" );
+                            previousKeyMode.ActualParent.TriggerOnPropertyChanged( "IsBeingEdited" );
+                            previousKeyMode.ActualParent.TriggerOnPropertyChanged( "Opacity" );
+                        }
+                    }
+                    else if( Context.SelectedElement is VMLayoutKeyModeEditable )
+                    {
+                        ( Context.SelectedElement as VMLayoutKeyModeEditable ).TriggerPropertyChanged( "IsSelected" );
+                    }
+                    else if( Context.SelectedElement is VMKeyModeEditable )
+                    {
+                        ( Context.SelectedElement as VMKeyModeEditable ).TriggerPropertyChanged( "IsSelected" );
+                    }
+
+                    Context.CurrentlyDisplayedModeType = ModeTypes.Mode;
+                    Context.KeyboardVM.CurrentMode = _model.Mode;
+
+                    //Parent.IsSelected = value;
                 }
 
-                Context.CurrentlyDisplayedModeType = ModeTypes.Mode;
-                Context.KeyboardVM.CurrentMode = _model.Mode;
+                _isSelected = value;
 
-                if( value ) Parent.IsSelected = value;
-
-                if( previousKeyMode != null && previousLayoutKeyMode != null )
+                if( Context.SelectedElement is VMKeyEditable )
                 {
-                    previousKeyMode.TriggerPropertyChanged( "IsSelected" );
-                    previousLayoutKeyMode.TriggerPropertyChanged( "IsSelected" );
+                    ( Context.SelectedElement as VMKeyEditable ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                    ( Context.SelectedElement as VMKeyEditable ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
                 }
+                else if( Context.SelectedElement is VMLayoutKeyModeEditable ) ( Context.SelectedElement as VMLayoutKeyModeEditable ).TriggerPropertyChanged( "IsSelected" );
+                else if( Context.SelectedElement is VMKeyModeEditable ) ( Context.SelectedElement as VMKeyModeEditable ).TriggerPropertyChanged( "IsSelected" );
 
-                ( Context.SelectedElement as VMKeyEditable ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
-                ( Context.SelectedElement as VMKeyEditable ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                ActualParent.TriggerOnPropertyChanged( "IsSelected" );
+                ActualParent.TriggerOnPropertyChanged( "IsBeingEdited" );
+                ActualParent.TriggerOnPropertyChanged( "Opacity" );
             }
         }
 

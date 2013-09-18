@@ -117,9 +117,13 @@ namespace KeyboardEditor.ViewModels
                 {
                     _currentlyDisplayedModeType = value;
 
-                    Debug.Assert( SelectedElement is VMKeyEditable, "When modifying the CurrentlyDisplayedModeType, the selected element should always be a VMKeyEditable" );
-                    ( (VMKeyEditable)SelectedElement ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
-                    ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                    if( SelectedElement is VMKeyEditable )
+                    {
+                        ( (VMKeyEditable)SelectedElement ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                        ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                    }
+                    else if( SelectedElement is VMKeyModeEditable ) ( (VMKeyModeEditable)SelectedElement ).TriggerPropertyChanged( "IsSelected" );
+                    else if( SelectedElement is VMLayoutKeyModeEditable ) ( (VMLayoutKeyModeEditable)SelectedElement ).TriggerPropertyChanged( "IsSelected" );
 
                     OnPropertyChanged( "CurrentlyDisplayedModeType" );
                 }

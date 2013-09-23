@@ -47,21 +47,17 @@ namespace CK.WordPredictor.Engines
 
         public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
         {
-
             if( _currentlyRunningTaskCancellationToken == null )
-            {
-                _currentlyRunningTaskCancellationToken = new System.Threading.CancellationToken( false );
-            }
-            if( _currentlyRunningTask.Status == TaskStatus.Running )
+                _currentlyRunningTaskCancellationToken = new CancellationToken( false );
+
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status == TaskStatus.Running )
             {
                 _cancellationSource.Cancel();
-                //_currentlyRunningTaskCancellationToken.Register(
             }
-            _currentlyRunningTask = Task.Factory.StartNew( () =>
+            else
             {
-                return Predict( textualContext, maxSuggestedWords );
-            }, _currentlyRunningTaskCancellationToken );
-            
+                _currentlyRunningTask = Task.Factory.StartNew( () => Predict( textualContext, maxSuggestedWords ), _currentlyRunningTaskCancellationToken );
+            }
             return _currentlyRunningTask;
         }
 

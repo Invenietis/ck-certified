@@ -39,11 +39,11 @@ namespace SimpleSkin.ViewModels
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
-        internal VMZoneSimple( VMContextSimple ctx, IZone zone ) 
+        internal VMZoneSimple( VMContextSimple ctx, IZone zone )
             : base( ctx )
         {
-             _zone = zone;
-             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
+            _zone = zone;
+            _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
             {
@@ -88,15 +88,19 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-                if( string.IsNullOrEmpty( Name ) || Keys.All( k => k.Skip == SkippingBehavior.Skip ) )
+                if( Keys.Count == 0 || Keys.All( k => k.Skip == SkippingBehavior.Skip ) )
                 {
                     return SkippingBehavior.Skip;
                 }
-                else if( Keys.Count == 1 )
-                {
+                else if( Keys.Count == 1 || Context.KeyboardVM.Zones.Count == 1 ) //if this zone has only one child or if this zone is the only one in the keyboard, 
+                {                                                                                   //then we directly scroll through its children
                     return SkippingBehavior.EnterChildren;
                 }
+
                 return SkippingBehavior.None;
+
+                //one case is not taken into account : when there are several zones, but only one has a skip behavior != Skip. In this case, we will not skip the zone, and highlight all the keys until the user triggers the event that makes the basicscroll enter the zone.
+                //that can only happen when all the zones but one are not visible.
             }
         }
 

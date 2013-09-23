@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using CK.Core;
 using System.ComponentModel;
 using CK.Plugin.Config;
+using Common.Logging;
 
 namespace Host
 {
@@ -46,6 +47,8 @@ namespace Host
     /// </summary>
     public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
     {
+        static ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
+        Guid _guid;
         Version _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
@@ -58,6 +61,21 @@ namespace Host
         {
             if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
             ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
+        }
+
+        /// <summary>
+        /// Gets a unique identifier for a CiviKey application
+        /// Is mainly used to identify an instance of CiviKey in crashlogs
+        /// TODO : this hsould be put in the CK-Desktop layer in order to be transmitted directly to the crashlog web server, and stored in files corresponding to this GUID
+        /// </summary>
+        private Guid ApplicationGUID
+        {
+            get
+            {
+                if( _guid == Guid.Empty ) _guid = (Guid)SystemConfig.GetOrSet( "Guid", Guid.NewGuid() );
+
+                return _guid;
+            }
         }
 
         /// <summary>
@@ -87,8 +105,11 @@ namespace Host
         {
             IContext ctx = base.CreateContext();
 
-            _notificationMngr = new NotificationManager();
+            _log.Debug( "LAUNCHING" );
+            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationGUID ) );
 
+            _notificationMngr = new NotificationManager();
+            
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
@@ -114,7 +135,7 @@ namespace Host
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
+                //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
@@ -123,6 +144,7 @@ namespace Host
 
             ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationPropertyChanged );
             ctx.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationPropertyChanged );
+
 
             return ctx;
         }

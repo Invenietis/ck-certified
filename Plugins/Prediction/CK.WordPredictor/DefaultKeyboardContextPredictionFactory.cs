@@ -20,6 +20,7 @@ namespace CK.WordPredictor
         {
             _keyboardContext = keyboardContext;
             _feature = feature;
+
         }
 
         public virtual string PredictionZoneName

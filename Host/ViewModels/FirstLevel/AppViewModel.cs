@@ -74,7 +74,7 @@ namespace Host
             }
         }
 
-        public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
+        //public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
 
         internal IConfigContainer ConfigContainer { get { return CivikeyHost.Context.GetService<IConfigContainer>(); } }
 
@@ -107,8 +107,7 @@ namespace Host
         {
             get
             {
-
-                return CK.Core.OSVersionInfo.OSLevel < OSVersionInfo.SimpleOSLevel.Windows8 && CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
+                return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
             }
             set
             {

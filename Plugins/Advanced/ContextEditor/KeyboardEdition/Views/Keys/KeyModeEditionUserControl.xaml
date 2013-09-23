@@ -108,7 +108,7 @@
                                         </Grid.RowDefinitions>
                                         <Image Height="36" Width="80" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/picture.png" Grid.Column="0" Grid.RowSpan="2">
                                             <Image.Visibility>
-                                                <Binding Path="Image">
+                                                <Binding Path="ImageSource">
                                                     <Binding.Converter>
                                                         <ckc:ValueConverterGroup>
                                                             <ckc:NotNullConverter/>
@@ -122,7 +122,7 @@
                                         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.RowSpan="2" Height="36">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Image}" />
                                             <Border.Visibility>
-                                                <Binding Path="Image">
+                                                <Binding Path="ImageSource">
                                                     <Binding.Converter>
                                                         <ckc:ValueConverterGroup>
                                                             <ckc:NotNullConverter/>

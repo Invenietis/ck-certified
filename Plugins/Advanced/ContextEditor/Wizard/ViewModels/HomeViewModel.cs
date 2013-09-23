@@ -7,12 +7,11 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class HomeViewModel : WizardPage
+    public class HomeViewModel : HelpAwareWizardPage
     {
         SimpleCommand<WizardButtonViewModel> _command;
         WizardButtonViewModel _selected;
         IKeyboardContext _keyboardCtx;
-        IKeyboardEditorRoot _root;
 
         /// <summary>
         /// Gets the list of <see cref="WizardButtonViewModel"/> on this <see cref="WizardPage"/>
@@ -35,9 +34,8 @@ namespace KeyboardEditor.ViewModels
         /// <param name="wizardManager"></param>
         /// <param name="keyboardCtx"></param>
         public HomeViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboardContext keyboardCtx )
-            : base( wizardManager, false )
+            : base(root, wizardManager, false )
         {
-            _root = root;
             _keyboardCtx = keyboardCtx;
             Buttons = new List<WizardButtonViewModel>();
 
@@ -80,7 +78,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void CreateNewKeyboard()
         {
-            Next = new KeyboardProfileViewModel( _root, WizardManager );
+            Next = new KeyboardProfileViewModel( Root, WizardManager );
             WizardManager.GoFurther();
         }
 
@@ -89,7 +87,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void EditCurrentKeyboard()
         {
-            Next = new KeyboardProfileViewModel( _root, WizardManager, _keyboardCtx.CurrentKeyboard );
+            Next = new KeyboardProfileViewModel( Root, WizardManager, _keyboardCtx.CurrentKeyboard );
             WizardManager.GoFurther();
         }
 
@@ -98,7 +96,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void EditOtherKeyboard()
         {
-            Next = new ModificationKeyboardListViewModel( _root, WizardManager, _keyboardCtx.Keyboards );
+            Next = new ModificationKeyboardListViewModel( Root, WizardManager, _keyboardCtx.Keyboards );
             WizardManager.GoFurther();
         }
 
@@ -107,7 +105,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void DestroyKeyboard()
         {
-            Next = new DeletionKeyboardListViewModel( _root, WizardManager, _keyboardCtx.Keyboards );
+            Next = new DeletionKeyboardListViewModel( Root, WizardManager, _keyboardCtx.Keyboards );
             WizardManager.GoFurther();
         }
 

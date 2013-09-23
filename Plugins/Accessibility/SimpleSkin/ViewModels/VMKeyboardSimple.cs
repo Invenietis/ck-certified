@@ -86,9 +86,11 @@ namespace SimpleSkin.ViewModels
 
         internal override void Dispose()
         {
-            _zones.Clear();
-            _keys.Clear();
-
+            Context.SkinDispatcher.Invoke( (Action)( () =>
+            {
+                _zones.Clear();
+                _keys.Clear();
+            } ), null );
             UnregisterEvents();
         }
 
@@ -104,7 +106,7 @@ namespace SimpleSkin.ViewModels
         {
             VMKeySimple kvm = Context.Obtain( e.Key );
 
-            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
+            Context.SkinDispatcher.Invoke( (Action)( () =>
             {
                 Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
                 _keys.Add( kvm );
@@ -113,7 +115,7 @@ namespace SimpleSkin.ViewModels
 
         void OnKeyDestroyed( object sender, KeyEventArgs e )
         {
-            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
+            Context.SkinDispatcher.Invoke( (Action)( () =>
             {
                 Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
                 _keys.Remove( Context.Obtain( e.Key ) );
@@ -123,7 +125,7 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
+            Context.SkinDispatcher.Invoke( (Action)( () =>
            {
                Zones.Add( Context.Obtain( e.Zone ) );
            } ) );
@@ -131,11 +133,22 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            Context.SkinDispatcher.BeginInvoke( (Action)( () =>
+
+            foreach( var k in e.Zone.Keys )
+            {
+                var mk = Context.Obtain( k );
+                Context.SkinDispatcher.Invoke( (Action)( () =>
+                {
+                    Keys.Remove( mk );
+                } ) );
+                Context.OnModelDestroy( k );
+            }
+            Context.SkinDispatcher.Invoke( (Action)( () =>
             {
                 Zones.Remove( Context.Obtain( e.Zone ) );
             } ) );
             Context.OnModelDestroy( e.Zone );
+
         }
 
         void OnLayoutSizeChanged( object sender, LayoutEventArgs e )
@@ -260,7 +273,12 @@ namespace SimpleSkin.ViewModels
 
         public SkippingBehavior Skip
         {
-            get { return SkippingBehavior.EnterChildren; }
+            get
+            {
+                if( Zones.Count > 0 && Zones.Any( z => z.Skip != SkippingBehavior.Skip ) )
+                    return SkippingBehavior.EnterChildren; //We enter only if there are zones that need to be scrolled through.
+                return SkippingBehavior.None;
+            }
         }
 
         #endregion
@@ -269,10 +287,18 @@ namespace SimpleSkin.ViewModels
 
         private void UpdateBackgroundPath()
         {
-            string s = Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" );
-            ThreadSafeSet<string>( s, ( v ) =>
+            object keyboardBackgroundObject = Context.Config[Layout]["KeyboardBackground"];
+
+            //Some contexts have a color in the KeyboardBackground.
+            if( keyboardBackgroundObject == null || keyboardBackgroundObject is Color )
             {
-                if( String.IsNullOrWhiteSpace( s ) ) _backgroundImagePath = null;
+                keyboardBackgroundObject = "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png";
+                Context.Config[Layout].Set( "KeyboardBackground", keyboardBackgroundObject );
+            }
+
+            ThreadSafeSet<string>( keyboardBackgroundObject.ToString(), ( v ) =>
+            {
+                if( String.IsNullOrWhiteSpace( v ) ) _backgroundImagePath = null;
                 else _backgroundImagePath = Imsc.ConvertFromString( v );
             } );
         }

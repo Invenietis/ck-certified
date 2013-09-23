@@ -234,6 +234,8 @@ namespace KeyboardEditor.ViewModels
         #region Layout Properties
 
         ImageSource _imageSource;
+        public ImageSource ImageSource { get { return _imageSource; } }
+
         /// <summary>
         /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
         /// </summary>
@@ -420,6 +422,9 @@ namespace KeyboardEditor.ViewModels
                 case KeyboardEditorMouseEvent.PointerButtonUp:
                     OnPointerButtonUp( args );
                     break;
+                case KeyboardEditorMouseEvent.PointerButtonDown:
+                    //Console.Out.WriteLine("Down from context");
+                    break;
                 default: //ButtonDown is handler by a Command, we don't use the pointer device driver for that. (yet ?)
                     break;
             }
@@ -507,13 +512,14 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            
+
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 //Console.Out.WriteLine( e.Key );
                 if( String.IsNullOrWhiteSpace( e.Key ) )
                 {
                     OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "ImageSource" );
                     OnPropertyChanged( "Opacity" );
                     OnPropertyChanged( "FontSize" );
                     OnPropertyChanged( "FontStyle" );
@@ -537,6 +543,7 @@ namespace KeyboardEditor.ViewModels
                         case "Image":
                             GetImageSourceCache();
                             OnPropertyChanged( "Image" );
+                            OnPropertyChanged( "ImageSource" );
                             break;
                         case "Visible":
                             OnPropertyChanged( "Visible" );
@@ -652,6 +659,9 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "FontSize", "LayoutKeyMode" );
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
+                OnPropertyChanged( "ImageSource" );
+
+                PositionChanged();
             } );
 
             SetActionOnPropertyChanged( "Current", () =>
@@ -662,10 +672,10 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "Description", "KeyMode" );
             } );
 
-            SetActionOnPropertyChanged( "X", () => DispatchPropertyChanged( "X", "LayoutKeyMode" ) );
-            SetActionOnPropertyChanged( "Y", () => DispatchPropertyChanged( "Y", "LayoutKeyMode" ) );
-            SetActionOnPropertyChanged( "W", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
-            SetActionOnPropertyChanged( "H", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
+            SetActionOnPropertyChanged( "X", () => { OnPropertyChanged( "X" ); DispatchPropertyChanged( "X", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "Y", () => { OnPropertyChanged( "Y" ); DispatchPropertyChanged( "Y", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "W", () => { OnPropertyChanged( "Width" ); DispatchPropertyChanged( "Width", "LayoutKeyMode" ); } );
+            SetActionOnPropertyChanged( "H", () => { OnPropertyChanged( "Height" ); DispatchPropertyChanged( "Height", "LayoutKeyMode" ); } );
             SetActionOnPropertyChanged( "Width", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
             SetActionOnPropertyChanged( "Height", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
             SetActionOnPropertyChanged( "Enabled", () => DispatchPropertyChanged( "Enabled", "KeyMode" ) );
@@ -673,10 +683,10 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "DownLabel", () => DispatchPropertyChanged( "DownLabel", "KeyMode" ) );
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
-            SetActionOnPropertyChanged( "Visible", () => 
-            { 
-                DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" ); 
-                DispatchPropertyChanged( "Visible", "LayoutKeyMode" ); 
+            SetActionOnPropertyChanged( "Visible", () =>
+            {
+                DispatchPropertyChanged( "IsVisible", "LayoutKeyMode" );
+                DispatchPropertyChanged( "Visible", "LayoutKeyMode" );
             } );
         }
 

@@ -42,6 +42,9 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHelpService> HelpService { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ISkinService> SkinService { get; set; }
+
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( e.Command.StartsWith( PROTOCOL ) )
@@ -54,7 +57,8 @@ namespace BasicCommandHandlers
 
         public void ShowHelp()
         {
-            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.ShowHelpFor( skinUniqueId, true );
+            if( HelpService.Status == InternalRunningStatus.Started
+                && SkinService.Status == InternalRunningStatus.Started ) HelpService.Service.ShowHelpFor( SkinService.Service.PluginUniqueId, true );
         }
     }
 }

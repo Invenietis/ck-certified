@@ -28,12 +28,10 @@ namespace KeyboardEditor.ViewModels
 
         public override void OnKeyboardSelected( KeyboardViewModel selectedKeyboardViewModel )
         {
-            Next = new EndingStepViewModel( _root, WizardManager );
+            Next = new EndingStepViewModel( Root, WizardManager );
 
             NotifyOfPropertyChange( () => IsLastStep );
             NotifyOfPropertyChange( () => CanGoFurther );
-
-            
         }
 
         public override bool OnBeforeNext()

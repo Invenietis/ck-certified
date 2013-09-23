@@ -13,6 +13,7 @@ namespace Host.ViewModels
     public class ContextModel : VMBase, IDisposable
     {
         IKeyboardContext _ctx;
+        AppViewModel _app;
 
         ObservableCollection<KeyboardModel> _keyboards;
         public ObservableCollection<KeyboardModel> Keyboards
@@ -20,9 +21,10 @@ namespace Host.ViewModels
             get { return _keyboards; }
         }
 
-        public ContextModel( IKeyboardContext ctx )
+        public ContextModel( AppViewModel app )
         {
-            _ctx = ctx;
+            _app = app;
+            _ctx = app.KeyboardContext;
 
             _keyboards = new ObservableCollection<KeyboardModel>();
             foreach( IKeyboard keyboard in _ctx.Keyboards )
@@ -41,7 +43,10 @@ namespace Host.ViewModels
             }
             set
             {
-                _ctx.CurrentKeyboard = value.Model;
+                if( value != null )
+                    _ctx.CurrentKeyboard = value.Model;
+                else _ctx.CurrentKeyboard = null;
+
                 OnPropertyChanged( "Current" );
             }
         }

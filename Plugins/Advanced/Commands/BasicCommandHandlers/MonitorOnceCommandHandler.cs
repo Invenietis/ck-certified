@@ -29,6 +29,7 @@ using CK.Context;
 using CK.Core;
 using System.Collections.Generic;
 using CK.Keyboard.Model;
+using CK.Plugins.SendInputDriver;
 
 namespace BasicCommandHandlers
 {
@@ -52,6 +53,9 @@ namespace BasicCommandHandlers
         [RequiredService]
         public ISendKeyCommandHandlerService SendKeyCommandHandler { get; set; }
 
+        [RequiredService]
+        public ISendStringService SendStringCommandHandler { get; set; }
+
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( !e.Canceled )
@@ -74,7 +78,7 @@ namespace BasicCommandHandlers
                                     {
                                         if( p.MatchIsolatedChar( ':' ) )
                                         {
-                                            Parse( eventKey, eventName, e.Command.Split(':')[1] );
+                                            Parse( eventKey, eventName, e.Command.Split( ':' )[1] );
                                         }
                                     }
                                 }
@@ -100,24 +104,41 @@ namespace BasicCommandHandlers
             if( !_clickActions.ContainsKey( key ) )
             {
                 if( _clickActions.Count == 0 )
+                {
+                    SendStringCommandHandler.StringSent += new EventHandler<StringSentEventArgs>( OnStringSent );
                     SendKeyCommandHandler.KeySent += new EventHandler<KeySentEventArgs>( OnKeySent );
+                }
                 _clickActions.Add( key, command );
             }
             else
             {
                 _clickActions.Remove( key );
                 if( _clickActions.Count == 0 )
+                {
+                    SendStringCommandHandler.StringSent += new EventHandler<StringSentEventArgs>( OnStringSent );
                     SendKeyCommandHandler.KeySent -= new EventHandler<KeySentEventArgs>( OnKeySent );
+                }
             }
         }
 
+        void OnStringSent( object sender, StringSentEventArgs e )
+        {
+            ValueSent();
+        }
+
         void OnKeySent( object sender, KeySentEventArgs e )
+        {
+            ValueSent();
+        }
+
+        void ValueSent()
         {
             foreach( var command in _clickActions )
                 CommandManager.SendCommand( command.Key, command.Value );
             _clickActions.Clear();
 
             SendKeyCommandHandler.KeySent -= new EventHandler<KeySentEventArgs>( OnKeySent );
+            SendStringCommandHandler.StringSent -= new EventHandler<StringSentEventArgs>( OnStringSent );
         }
     }
 }

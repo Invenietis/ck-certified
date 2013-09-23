@@ -47,9 +47,6 @@ namespace CK.WPF.StandardViews
     {
         static StdKeyView()
         {
-            //Keyboard.DefaultRestoreFocusMode = RestoreFocusMode.None;
-            //HwndSource.DefaultAcquireHwndFocusInMenuMode = false;
-            //DefaultStyleKeyProperty.DefaultMetadata.DefaultValue = ToolBarButtonStyleKey;
             DefaultStyleKeyProperty.OverrideMetadata( typeof( StdKeyView ), new FrameworkPropertyMetadata( typeof( StdKeyView ) ) );
         }
 

@@ -13,7 +13,7 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class SavingStepViewModel : WizardPage
+    public class SavingStepViewModel : HelpAwareWizardPage
     {
         /// <summary>
         /// Gets the list of <see cref="WizardButtonViewModel"/> of this <see cref="WizardPage"/>
@@ -22,7 +22,6 @@ namespace KeyboardEditor.ViewModels
         SimpleCommand<WizardButtonViewModel> _command;
         WizardButtonViewModel _selected;
         IKeyboard _keyboardToSave;
-        IKeyboardEditorRoot _root;
 
         /// <summary>
         /// Ctor
@@ -31,9 +30,8 @@ namespace KeyboardEditor.ViewModels
         /// <param name="wizardManager">The wizardManager</param>
         /// <param name="keyboard">The modified keyboard to save</param>
         public SavingStepViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard keyboard )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
-            _root = root;
             _keyboardToSave = keyboard;
 
             Buttons = new List<WizardButtonViewModel>();
@@ -73,7 +71,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         private void SaveOnEditedKeyboard()
         {
-            Next = new EndingStepViewModel( _root, WizardManager );
+            Next = new EndingStepViewModel( Root, WizardManager );
             WizardManager.GoFurther();
         }
 
@@ -84,19 +82,19 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         private void SaveUnderOtherKeyboard()
         {
-            Next = new SaveAsStepViewModel( _root, WizardManager, _keyboardToSave );
+            Next = new SaveAsStepViewModel( Root, WizardManager, _keyboardToSave );
             WizardManager.GoFurther();
         }
 
         private void CancelAndQuit()
         {
-            _root.CancelModifications();
+            Root.CancelModifications();
             WizardManager.Close();
         }
 
         private void CancelAndRestart()
         {
-            _root.CancelModifications();
+            Root.CancelModifications();
             WizardManager.Restart();
         }
 

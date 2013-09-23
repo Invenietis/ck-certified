@@ -42,24 +42,14 @@ namespace Host.VM
                 IPluginProxy pluginProxy = _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), true );
                 if( pluginProxy != null ) _wordPredictionPlugins.Add( pluginProxy );
             }
-
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ), true ) );
-            //_wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" ), true ) );
         }
 
         public int MaxSuggestedWords
         {
-            get { return Config != null ? Config.GetOrSet( "MaxSuggestedWords", 5 ) : 5; }
+            get { return Config != null ? Config.GetOrSet( "WordPredictionMaxSuggestedWords", 5 ) : 5; }
             set
             {
-                if( Config != null ) Config.Set( "MaxSuggestedWords", value );
+                if( Config != null ) Config.Set( "WordPredictionMaxSuggestedWords", value );
             }
         }
 

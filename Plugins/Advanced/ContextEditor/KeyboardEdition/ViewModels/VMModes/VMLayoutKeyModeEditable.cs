@@ -178,18 +178,17 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
-        //COMMON
-        VMCommand _deleteKeyModeCommand;
+        VMCommand _deleteLayoutKeyModeCommand;
         /// <summary>
         /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
         /// </summary>
-        public VMCommand DeleteKeyModeCommand
+        public VMCommand DeleteLayoutKeyModeCommand
         {
             get
             {
-                if( _deleteKeyModeCommand == null )
+                if( _deleteLayoutKeyModeCommand == null )
                 {
-                    _deleteKeyModeCommand = new VMCommand( () =>
+                    _deleteLayoutKeyModeCommand = new VMCommand( () =>
                     {
                         Context.KeyboardVM.CurrentMode = Context.KeyboardContext.EmptyMode;
                         VMKeyEditable parent = ActualParent; //Keeping a ref to the parent, since the model will be detached from its parent when destroyed
@@ -198,7 +197,7 @@ namespace KeyboardEditor.ViewModels
 
                     } );
                 }
-                return _deleteKeyModeCommand;
+                return _deleteLayoutKeyModeCommand;
             }
         }
 

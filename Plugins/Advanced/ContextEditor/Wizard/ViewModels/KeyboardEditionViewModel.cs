@@ -9,17 +9,15 @@ using CK.WPF.ViewModel;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class KeyboardEditionViewModel : WizardPage
+    public class KeyboardEditionViewModel : HelpAwareWizardPage
     {
-        public VMContextEditable EditedContext { get { return _root.EditedContext; } }
-        IKeyboardEditorRoot _root;
+        public VMContextEditable EditedContext { get { return Root.EditedContext; } }
 
         public KeyboardEditionViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard editedKeyboard )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
-            _root = root;
-            _root.EditedContext = new VMContextEditable( root, editedKeyboard, _root.Config, root.SkinConfiguration );
-            Next = new SavingStepViewModel(_root, WizardManager, EditedContext.KeyboardVM.Model );
+            Root.EditedContext = new VMContextEditable( root, editedKeyboard, Root.Config, root.SkinConfiguration );
+            Next = new SavingStepViewModel( Root, WizardManager, EditedContext.KeyboardVM.Model );
 
             Title = String.Format( R.KeyboardEditionStepTitle, editedKeyboard.Name );
             Description = R.KeyboardEditionStepDesc;
@@ -27,13 +25,11 @@ namespace KeyboardEditor.ViewModels
 
         public override bool OnBeforeNext()
         {
-            _root.EditedContext.Dispose();
             return base.OnBeforeNext();
         }
 
         public override bool OnBeforeGoBack()
         {
-            _root.EditedContext.Dispose();
             return base.OnBeforeGoBack();
         }
 
@@ -50,24 +46,24 @@ namespace KeyboardEditor.ViewModels
         }
 
         // Used to find the config
-        internal IKeyboardElement ConfigHolder 
-        { 
-            get 
+        internal IKeyboardElement ConfigHolder
+        {
+            get
             {
                 string holderType = _selectedHolder.GetType().ToString();
                 switch( holderType )
                 {
                     case "VMKeyboardEditable":
-                        return (_selectedHolder as VMKeyboardEditable).Model;
+                        return ( _selectedHolder as VMKeyboardEditable ).Model;
                     case "VMZoneEditable":
-                        return (_selectedHolder as VMZoneEditable).Model;
+                        return ( _selectedHolder as VMZoneEditable ).Model;
                     case "VMKeyEditable":
-                        return (_selectedHolder as VMKeyEditable).Model;
+                        return ( _selectedHolder as VMKeyEditable ).Model;
                     default:
                         break;
                 }
                 return null;
-            } 
+            }
         }
     }
 }

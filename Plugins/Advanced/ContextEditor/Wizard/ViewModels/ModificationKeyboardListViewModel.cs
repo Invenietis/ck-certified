@@ -29,7 +29,7 @@ namespace KeyboardEditor.ViewModels
         public override void OnKeyboardSelected( KeyboardViewModel selectedKeyboardViewModel )
         {
             //We update the Next property to give it the proper model.
-            Next = new KeyboardProfileViewModel( _root, WizardManager, _selectedKeyboard.Keyboard );
+            Next = new KeyboardProfileViewModel( Root, WizardManager, _selectedKeyboard.Keyboard );
 
             NotifyOfPropertyChange( () => IsLastStep );
             NotifyOfPropertyChange( () => CanGoFurther );

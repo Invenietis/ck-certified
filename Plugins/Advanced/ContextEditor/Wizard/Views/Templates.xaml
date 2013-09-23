@@ -76,9 +76,9 @@
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
 
-        <DockPanel LastChildFill="True" Margin="10">
+        <DockPanel LastChildFill="True">
 
-            <StackPanel DockPanel.Dock="Top" Width="500" Height="100" HorizontalAlignment="Center">
+            <StackPanel DockPanel.Dock="Top" Width="500" Height="100" HorizontalAlignment="Center" Margin="10">
                 <StackPanel.Visibility>
                     <Binding Path="ActiveItem.Title">
                         <Binding.Converter>
@@ -94,64 +94,28 @@
                 <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
             </StackPanel>
 
-            <DockPanel Height="70" Width="500" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 10 0 0">
+            
+
+            <DockPanel Height="70" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 10 0 0">
                 <!--Back button-->
-                <Button x:Uid="wizard-manager-template-back-button" 
+                <Button x:Uid="wizard-manager-template-back-button" Margin="20 0 0 20"
                             Style="{StaticResource BackButtonStyle}" 
                             DockPanel.Dock="Left" 
                             Command="{Binding GoBackCommand}" 
                             Content="Back"/>
+
+                <ckcontrols:ImageButton DockPanel.Dock="Right" VerticalAlignment="Bottom" x:Uid="editor-help-button" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/help.png" Width="16" Height="16" Margin="5" ToolTip="Help" Command="{Binding ActiveItem.ShowHelpCommand}"></ckcontrols:ImageButton>
+
                 <!--Forward button-->
-                <Button Style="{StaticResource ForwardButtonStyle}" DockPanel.Dock="Right" IsEnabled="{Binding ActiveItem.CanGoFurther}">
+                <Button Style="{StaticResource ForwardButtonStyle}" DockPanel.Dock="Right" IsEnabled="{Binding ActiveItem.CanGoFurther}" Margin="0 0 0 20">
                     <Button.Visibility>
                         <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert"/>
                     </Button.Visibility>
                 </Button>
             </DockPanel>
-
-            <!--<ScrollViewer >-->
-                <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
-            <!--</ScrollViewer>-->
-
+            
+            <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
         </DockPanel>
-        <!--<Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Width="500" HorizontalAlignment="Center">
-                    <StackPanel.Visibility>
-                        <Binding Path="ActiveItem.Title">
-                            <Binding.Converter>
-                                <ckcontrols:ValueConverterGroup>
-                                    <ckcontrols:StringIsNullOrWhiteSpaceToBoolean/>
-                                    <ckcontrols:NotConverter/>
-                                    <ckcore:BooleanToVisibilityConverter/>
-                                </ckcontrols:ValueConverterGroup>
-                            </Binding.Converter>
-                        </Binding>
-                    </StackPanel.Visibility>
-                    <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                    <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                </StackPanel>
-                <DockPanel VerticalAlignment="Top" Grid.Row="1" LastChildFill="True" Margin="0 20">
-                    
-                    <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
-                    <DockPanel Width="500" HorizontalAlignment="Center" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 20 0 0">
-                       
-                        <Button x:Uid="wizard-manager-template-back-button" 
-                            Style="{StaticResource BackButtonStyle}" 
-                            DockPanel.Dock="Left" 
-                            Command="{Binding GoBackCommand}" 
-                            Content="Back"/>
-                      
-                        <Button Style="{StaticResource ForwardButtonStyle}" DockPanel.Dock="Right" IsEnabled="{Binding ActiveItem.CanGoFurther}">
-                            <Button.Visibility>
-                                <Binding Path="ActiveItem.HideNext" Converter="{StaticResource BooleanToVisibilityConv}" ConverterParameter="Invert"/>
-                            </Button.Visibility>
-                        </Button>
-                    </DockPanel>
-                </DockPanel>
-            </Grid>-->
+        
     </DataTemplate>
 </ResourceDictionary>

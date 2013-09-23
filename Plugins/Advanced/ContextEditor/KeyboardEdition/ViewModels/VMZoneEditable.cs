@@ -175,8 +175,6 @@ namespace KeyboardEditor.ViewModels
                     Keys[i].Model.Destroy();
                 }
 
-
-
                 Context.SelectedElement = Parent;
                 Model.Destroy();
 

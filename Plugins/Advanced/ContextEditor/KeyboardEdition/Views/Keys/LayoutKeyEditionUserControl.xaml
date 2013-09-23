@@ -139,7 +139,7 @@
 
                     <!-- Delete the key mode -->
                     <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-mode-button"
-                                      Action="{Binding KeyModeVM.DeleteKeyModeCommand}" ActionParameter="KeyMode"
+                                      Action="{Binding LayoutKeyModeVM.DeleteLayoutKeyModeCommand}" ActionParameter="KeyMode"
                                       ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"
                                       Template="{StaticResource SimpleActionControlTemplate}"
                                       Text="Delete this mode configuration : " TooltipText="The configurations of the key for the current mode will be deleted. The key itself will not be deleted.">

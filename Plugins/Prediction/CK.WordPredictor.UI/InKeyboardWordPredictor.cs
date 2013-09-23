@@ -53,8 +53,15 @@ namespace CK.WordPredictor.UI
 
         void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
         {
-            if( e.PropertyName == "MaxSuggestedWords" )
+            if( e.PropertyName == "WordPredictionMaxSuggestedWords" )
             {
+                object newValue = Config.User["WordPredictionMaxSuggestedWords"];
+                if( newValue != null )
+                {
+                    int newIntValue = (int)newValue;
+                    if( newIntValue == Feature.MaxSuggestedWords ) return; //We don't remove and recreate the zone if the new value equals the previous one
+                }
+
                 DestroyPredictionZones();
                 Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
             }
@@ -79,7 +86,15 @@ namespace CK.WordPredictor.UI
             foreach( IKeyboard k in Context.Keyboards )
             {
                 IZone zone = k.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-                if( zone != null ) zone.Destroy();
+                if( zone != null )
+                {
+                    for( int i = zone.Keys.Count - 1; i >= 0; i-- )
+                    {
+                        zone.Keys[i].Destroy();
+                    }
+
+                    zone.Destroy();
+                }
             }
         }
 

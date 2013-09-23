@@ -38,6 +38,7 @@ using CK.Windows;
 using System.Runtime.InteropServices;
 using CK.Windows.Helpers;
 using CommonServices.Accessibility;
+using CK.Windows.Core;
 
 namespace CK.Plugins.AutoClick
 {
@@ -207,8 +208,8 @@ namespace CK.Plugins.AutoClick
             _wpfStandardClickTypeWindow.Show();
 
             //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
-            if( !Config.User.Contains( "AutoClickWindowPlacement" ) ) Config.User.Set( "AutoClickWindowPlacement", _wpfStandardClickTypeWindow.GetPlacement() );
-            _wpfStandardClickTypeWindow.SetPlacement( (WINDOWPLACEMENT)Config.User["AutoClickWindowPlacement"] );
+            if( !Config.User.Contains( "AutoClickWindowPlacement" ) ) Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _wpfStandardClickTypeWindow.Hwnd ) );
+            CKWindowTools.SetPlacement( _wpfStandardClickTypeWindow.Hwnd, (WINDOWPLACEMENT)Config.User["AutoClickWindowPlacement"] );
 
             //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
             if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_wpfStandardClickTypeWindow.Left, (int)_wpfStandardClickTypeWindow.Top ) )
@@ -231,7 +232,7 @@ namespace CK.Plugins.AutoClick
         {
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             UnregisterEvents();
-            Config.User.Set( "AutoClickWindowPlacement", _wpfStandardClickTypeWindow.GetPlacement() );
+            Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _wpfStandardClickTypeWindow.Hwnd ) );
         }
 
         public void Teardown()

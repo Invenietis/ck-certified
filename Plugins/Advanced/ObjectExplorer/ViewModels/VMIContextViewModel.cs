@@ -53,9 +53,9 @@ namespace CK.Plugins.ObjectExplorer
         Dictionary<IServiceInfo, VMIService> _dynamicServices;
         Dictionary<IServiceReferenceInfo, VMIService> _serviceRefs;
         Dictionary<IAssemblyInfo, VMIAssembly> _assemblies;
-        
+
         VMLogConfig _vmLogConfig;
- 
+
         ISelectableElement _selectedElement;
         ISelectableElement _previousSelectedElement;
 
@@ -91,15 +91,15 @@ namespace CK.Plugins.ObjectExplorer
 
         public VMISelectableElement SelectedElement
         {
-            get 
-            { 
-                return _selectedElement as VMISelectableElement; 
+            get
+            {
+                return _selectedElement as VMISelectableElement;
             }
             set
             {
                 if( _selectedElement != null )
                     _previousSelectedElement = _selectedElement;
-                
+
                 _selectedElement = value;
                 _selectedElement.SelectedChanged();
 
@@ -141,11 +141,11 @@ namespace CK.Plugins.ObjectExplorer
             _vmLogConfig.Initialize();
 
             OsInfo = new VMOSInfo( this );
-            
-            VMApplicationInfo = new VMApplicationInfo( this );
-            
 
-            Dictionary<string,List<IPluginInfo>> categoryFolders = new Dictionary<string, List<IPluginInfo>>();
+            VMApplicationInfo = new VMApplicationInfo( this );
+
+
+            Dictionary<string, List<IPluginInfo>> categoryFolders = new Dictionary<string, List<IPluginInfo>>();
             foreach( IPluginInfo plugin in PluginRunner.Discoverer.AllPlugins )
             {
                 foreach( string categ in plugin.Categories )
@@ -163,9 +163,9 @@ namespace CK.Plugins.ObjectExplorer
                     }
                 }
             }
-            foreach( KeyValuePair<string,List<IPluginInfo>> item in categoryFolders )
+            foreach( KeyValuePair<string, List<IPluginInfo>> item in categoryFolders )
             {
-                VMCollection<VMAlias<VMIPlugin>,IPluginInfo> collection = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( item.Value, ( info ) => { return new VMAlias<VMIPlugin>( FindOrCreate( info ), null ); } );
+                VMCollection<VMAlias<VMIPlugin>, IPluginInfo> collection = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( item.Value, ( info ) => { return new VMAlias<VMIPlugin>( FindOrCreate( info ), null ); } );
                 VMIFolder folder = new VMIFolder( collection, item.Key );
                 Categories.Add( folder );
             }
@@ -179,7 +179,7 @@ namespace CK.Plugins.ObjectExplorer
 
         void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
-            if( !e.Success )
+            if( !e.Success && NotificationService != null )
                 NotificationService.ShowNotification( Guid.Empty, R.ApplyDoneErrorCaption, R.ApplyDoneError, 4000, NotificationTypes.Warning );
         }
 
@@ -187,7 +187,7 @@ namespace CK.Plugins.ObjectExplorer
         {
             VMIPlugin p = null;
             if( !_plugins.TryGetValue( item, out p ) )
-            {                
+            {
                 p = new VMIPlugin( this, item, null );
                 _plugins.Add( item, p );
             }
@@ -234,9 +234,9 @@ namespace CK.Plugins.ObjectExplorer
             {
                 s = FindOrCreateDynamic( item.Reference );
 
-                if(s == null)
+                if( s == null )
                     s = new VMIService( this, item, null );
-                
+
                 _serviceRefs.Add( item, s );
             }
             return s;
@@ -244,8 +244,9 @@ namespace CK.Plugins.ObjectExplorer
 
         private void InitializeCommands()
         {
-            StopObjectExplorer = new VMCommand( 
-                () => { 
+            StopObjectExplorer = new VMCommand(
+                () =>
+                {
                     // TODO
                 } );
 
@@ -292,7 +293,8 @@ namespace CK.Plugins.ObjectExplorer
                 Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( ObjectExplorer.PluginId.UniqueId, ConfigUserAction.Stopped );
                 if( !Context.GetService<ISimplePluginRunner>( true ).Apply() )
                 {
-                    NotificationService.ShowNotification( Guid.Empty, R.ApplyDoneErrorCaption, R.ApplyDoneError, 4000, NotificationTypes.Warning );
+                    if( NotificationService != null )
+                        NotificationService.ShowNotification( Guid.Empty, R.ApplyDoneErrorCaption, R.ApplyDoneError, 4000, NotificationTypes.Warning );
                     callback( false );
                 }
                 else

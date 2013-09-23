@@ -12,7 +12,7 @@ using CK.Windows;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class ContextListViewModel : WizardPage
+    public class ContextListViewModel : HelpAwareWizardPage
     {
         IKeyboard _keyboardtoSave;
         IUriHistoryCollection _contexts;
@@ -20,7 +20,7 @@ namespace KeyboardEditor.ViewModels
 
         ContextViewModel _selectedContext;
         ICommand _selectionCommand;
-        KeyboardEditor _root;
+        
 
         /// <summary>
         /// Ctor
@@ -28,13 +28,12 @@ namespace KeyboardEditor.ViewModels
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The context to which we should save a keyboard</param>
         public ContextListViewModel( KeyboardEditor root, WizardManager wizardManager, IUriHistoryCollection contexts, IKeyboard keyboardToSave )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
-            _root = root;
             _contexts = contexts;
             _keyboardtoSave = keyboardToSave;
 
-            Next = new EndingStepViewModel( _root, WizardManager );
+            Next = new EndingStepViewModel( Root, WizardManager );
 
             ContextVms = new List<ContextViewModel>();
             foreach( var context in _contexts )
@@ -99,5 +98,7 @@ namespace KeyboardEditor.ViewModels
                 return _saveCommand;
             }
         }
+
+        
     }
 }

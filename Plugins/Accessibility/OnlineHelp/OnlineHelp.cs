@@ -23,7 +23,7 @@ namespace OnlineHelp
     {
         const string PluginGuidString = "{1DB78D66-B5EC-43AC-828C-CCAB91FA6210}";
         Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginIdVersion = "1.0.1";
         const string PluginPublicName = "OnlineHelp";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 

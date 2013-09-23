@@ -75,7 +75,7 @@
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.9.6-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.9.7-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,7 +83,7 @@
     </Reference>
     <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.9.6-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.9.12-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -132,6 +132,7 @@
     <Compile Include="Editor\EditorViewModel.cs" />
     <Compile Include="Editor\EditorViewModel.FontProperties.cs" />
     <Compile Include="Editor\SimpleSkinEditor.cs" />
+    <Compile Include="Helpers\DraggableVisualAttachedProperty.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>
@@ -145,7 +146,6 @@
     <Compile Include="ViewModels\VMKeyboardSimple.cs" />
     <Compile Include="ViewModels\VMKeySimple.cs" />
     <Compile Include="ViewModels\VMZoneSimple.cs" />
-    <Compile Include="WPFThread.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Host.Services\Host.Services.csproj">
@@ -272,9 +272,7 @@
   <ItemGroup>
     <Resource Include="Images\help.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\clics\doubleleftclick.png" />
     <Resource Include="Images\clics\dragdrop.png" />

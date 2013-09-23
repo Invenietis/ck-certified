@@ -42,15 +42,24 @@ namespace BasicCommandHandlers
         [RequiredService]
         public IContext Context { get; set; }
 
-        [RequiredService]
-        public ISkinService SkinService { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ISkinService> SkinService { get; set; }
+
+        void HideSkin()
+        {
+            if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.HideSkin();
+        }
+        void ToggleHostMinimized()
+        {
+            if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.ToggleHostMinimized();
+        }
 
         public override bool Setup( IPluginSetupInfo info )
         {
             _actions = new Dictionary<string, Action>();
-            _actions.Add( "HideSkin", () => SkinService.HideSkin() );
+            _actions.Add( "HideSkin", () => HideSkin() );
             _actions.Add( "ShutDown", () => Context.RaiseExitApplication( true ) );
-            _actions.Add( "ToggleHostMinimized", () => SkinService.ToggleHostMinimized() );
+            _actions.Add( "ToggleHostMinimized", () => ToggleHostMinimized() );
             _actions.Add(
                 "WindowsKey",
                 () =>

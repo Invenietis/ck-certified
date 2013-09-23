@@ -155,9 +155,8 @@ namespace SimpleSkin.ViewModels
             if( e.Current != null )
             {
                 _currentKeyboard = Obtain( e.Current );
-                OnPropertyChanged( "KeyboardVM" );
                 _currentKeyboard.TriggerPropertyChanged();
-
+                OnPropertyChanged( "KeyboardVM" );
             }
         }
 

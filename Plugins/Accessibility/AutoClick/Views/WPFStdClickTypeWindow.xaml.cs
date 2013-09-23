@@ -22,17 +22,25 @@
 #endregion
 
 using CK.Windows;
+using System.Windows;
+using System.Windows.Media;
 
 namespace CK.Plugins.AutoClick.Views
 {
     /// <summary>
     /// Interaction logic for WPFStandardClickTypeWindow.xaml
     /// </summary>
-    public partial class WPFStdClickTypeWindow : NoFocusWindow
+    public partial class WPFStdClickTypeWindow : CKWindow
     {
         public WPFStdClickTypeWindow()
         {
             InitializeComponent();
+        }
+
+        protected override bool IsDraggableVisual( DependencyObject visualElement )
+        {
+            var parent = VisualTreeHelper.GetParent( visualElement );
+            return parent is WPFStdClickTypeWindow;
         }
     }
 }

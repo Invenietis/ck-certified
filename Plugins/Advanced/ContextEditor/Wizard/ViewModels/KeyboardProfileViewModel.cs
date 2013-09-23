@@ -16,11 +16,10 @@ namespace KeyboardEditor.ViewModels
     /// <summary>
     /// The <see cref="WizardPage"/> enables editing a keyboards basic properties : its name, width and height.
     /// </summary>
-    public class KeyboardProfileViewModel : WizardPage
+    public class KeyboardProfileViewModel : HelpAwareWizardPage
     {
         SimpleKeyboardViewModel _viemModel;
         string _backupFileName;
-        IKeyboardEditorRoot _root;
         IKeyboard _model;
 
         //Gets whether this step has already been passed. If so, and if the user wants to go back, 
@@ -34,13 +33,12 @@ namespace KeyboardEditor.ViewModels
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to create or modify</param>
         public KeyboardProfileViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard model )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
-            _root = root;
             _model = model;
             _viemModel = new SimpleKeyboardViewModel( model );
 
-            _backupFileName = _root.BackupKeyboard( model );
+            _backupFileName = Root.BackupKeyboard( model );
 
             Title = R.KeyboardProfileTitle;
             Description = R.KeyboardProfileDesc;
@@ -51,11 +49,10 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         public KeyboardProfileViewModel( IKeyboardEditorRoot root, WizardManager wizardManager )
-            : base( wizardManager, false )
+            : base( root, wizardManager, false )
         {
             _viemModel = new SimpleKeyboardViewModel();
             _backupFileName = "";
-            _root = root;
 
             Title = R.KeyboardProfileTitle;
             Description = R.KeyboardProfileDesc;
@@ -150,11 +147,11 @@ namespace KeyboardEditor.ViewModels
                     return false;
                 }
 
-                _root.CancelModifications();
+                Root.CancelModifications();
                 _stepAchieved = false;
             }
 
-            _root.EnsureBackupIsClean();
+            Root.EnsureBackupIsClean();
             return true;
         }
 
@@ -164,8 +161,8 @@ namespace KeyboardEditor.ViewModels
             //So we do create it with the user's information.
             if( _model == null )
             {
-                _model = _root.KeyboardContext.Service.Keyboards.Create( Name );
-                _root.KeyboardBackup = new KeyboardBackup( _model, _backupFileName );
+                _model = Root.KeyboardContext.Service.Keyboards.Create( Name );
+                Root.KeyboardBackup = new KeyboardBackup( _model, _backupFileName );
             }
             else if( _model.Name != Name ) _model.Rename( Name );
 
@@ -176,13 +173,13 @@ namespace KeyboardEditor.ViewModels
 
             //If the EditedContext is not null, it means that we were modifying a keyboard before finishing and going back all the way to modifying another keyboard.
             //We dispose the previous KeyboardEditionViewModel, to unregister events before setting it to null.
-            if( _root.EditedContext != null )
+            if( Root.EditedContext != null )
             {
-                _root.EditedContext.Dispose();
-                _root.EditedContext = null;
+                Root.EditedContext.Dispose();
+                Root.EditedContext = null;
             }
 
-            Next = new KeyboardEditionViewModel( _root, WizardManager, _model );
+            Next = new KeyboardEditionViewModel( Root, WizardManager, _model );
             _stepAchieved = true;
 
             return _model != null;

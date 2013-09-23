@@ -39,7 +39,7 @@ namespace CK.WordPredictor
 
         public int MaxSuggestedWords
         {
-            get { return Config.User.TryGet( "MaxSuggestedWords", 10 ); }
+            get { return Config.User.GetOrSet( "WordPredictionMaxSuggestedWords", 5 ); }
         }
 
         public string Engine

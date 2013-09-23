@@ -60,7 +60,7 @@ namespace PointerDeviceDriver
             }
         }
 
-                                    //TODO : add a counter
+        //TODO : add a counter
         /// <summary>
         /// Register a keyCode. Once registered, the key will be swallowed and propagated through the <see cref="KeyDown"/> event.
         /// </summary>
@@ -70,7 +70,7 @@ namespace PointerDeviceDriver
             _cancellableKeys.Add( keyCode );
         }
 
-                                    //TODO : add a counter
+        //TODO : add a counter
         /// <summary>
         /// Unregister a keyCode. The keyCode won't be be swallowed and propagated anymore.
         /// Note : doesn't handle a counter yet, which means that unregistering this keyCode will unregister it for any plugin using this service.
@@ -118,6 +118,16 @@ namespace PointerDeviceDriver
             }
         }
 
+        [StructLayout( LayoutKind.Sequential )]
+        public struct LLKBDHOOKSTRUCT
+        {
+            public int wVk;
+            public int wScan;
+            public int dwFlags;
+            public int time;
+            public IntPtr dwExtraInfo;
+        }
+
         /// <summary>
         /// Method which provides an interpretation for all hook events.
         /// Depending of the hook's params we'll fire the good event.
@@ -126,22 +136,32 @@ namespace PointerDeviceDriver
         {
             if( e.Code >= 0 && e.wParam == (IntPtr)WM_KEYDOWN )
             {
-                int vkCode = Marshal.ReadInt32( e.lParam );
+
+                LLKBDHOOKSTRUCT keyboardInfo = (LLKBDHOOKSTRUCT)Marshal.PtrToStructure( e.lParam, typeof( LLKBDHOOKSTRUCT ) );
+                int vkCode = keyboardInfo.wVk;
                 if( _cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 ) )
                 {
-                    //We only swallow the event if we are going to do something with it
-                    if( KeyDown != null ) e.Cancel = true;
+                    
+                    InputSource source = InputSource.Other;
+                    if( (int)keyboardInfo.dwExtraInfo == 39229115 ) //CiviKey's footprint
+                    {
+                        source = InputSource.CiviKey;
+                    }
+                    else
+                    {
+                        //We only swallow the event if we are going to do something with it and that it does not come from CiviKey
+                        if( KeyDown != null ) e.Cancel = true;
+                    }
 
-                    Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int>)FireEvent, vkCode );
+                    Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int, InputSource>)FireEvent, vkCode, source );
                 }
             }
         }
 
-        void FireEvent( int vkCode )
+        void FireEvent( int vkCode, InputSource source )
         {
-            KeyboardDriverEventArg eventArgs = new KeyboardDriverEventArg( vkCode );
+            KeyboardDriverEventArg eventArgs = new KeyboardDriverEventArg( vkCode, source );
             if( KeyDown != null ) KeyDown( this, eventArgs );
         }
-
     }
 }

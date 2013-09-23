@@ -6,9 +6,44 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Windows;
+using KeyboardEditor.ViewModels;
 
 namespace KeyboardEditor
 {
+    public abstract class HelpAwareWizardPage : WizardPage
+    {
+        internal IKeyboardEditorRoot Root { get; private set; }
+
+        public HelpAwareWizardPage( IKeyboardEditorRoot root, WizardManager wizardManager, WizardPage next, bool isLastStep, string title = "" )
+            : base( wizardManager, next, title )
+        {
+            Root = root;
+        }
+
+        public HelpAwareWizardPage( IKeyboardEditorRoot root, WizardManager wizardManager, WizardPage next, string title = "" )
+            : this( root, wizardManager, next, false, title )
+        {
+        }
+
+        public HelpAwareWizardPage( IKeyboardEditorRoot root, WizardManager wizardManager, bool isLastStep, string title = "" )
+            : this( root, wizardManager, null, isLastStep, title )
+        {
+        }
+
+        ICommand _showHelpCommand;
+        public ICommand ShowHelpCommand
+        {
+            get
+            {
+                if( _showHelpCommand == null )
+                {
+                    _showHelpCommand = new KeyCommand( () => Root.ShowHelp() );
+                }
+                return _showHelpCommand;
+            }
+        }
+    }
+
     /// <summary>
     /// This class is used to fill the <see cref="WizardManager"/>'s stack.
     /// It has all the properties needed by the <see cref="WizardManager"/> to display a wizard with next and back actions.
@@ -79,7 +114,7 @@ namespace KeyboardEditor
         /// <param name="next">The next WizardPage</param>
         /// <param name="title">(optional) title of the page</param>
         public WizardPage( WizardManager wizardManager, WizardPage next, string title = "" )
-            : this( wizardManager, next, false )
+            : this( wizardManager, next, false, title )
         {
         }
 
@@ -146,5 +181,7 @@ namespace KeyboardEditor
         {
             return true;
         }
+
+
     }
 }

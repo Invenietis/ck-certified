@@ -24,17 +24,28 @@
 using System;
 using System.Windows;
 using CK.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using SimpleSkin.Helpers;
+using System.Windows.Input;
 
 namespace SimpleSkin
 {
     /// <summary>
     /// Logique d'interaction pour SkinWindow.xaml
     /// </summary>
-    public partial class SkinWindow : CKWindow
+    public partial class SkinWindow : CKNoFocusWindow
     {
-        public SkinWindow( )
+        public SkinWindow()
         {
             InitializeComponent();
+        }
+
+        protected override bool IsDraggableVisual( DependencyObject visualElement )
+        {
+            if( DraggableVisualAttachedProperty.GetDraggableVisual( visualElement ) ) return true;
+            var parent = VisualTreeHelper.GetParent( visualElement );
+            return parent is SkinWindow || base.IsDraggableVisual( visualElement );
         }
     }
 }

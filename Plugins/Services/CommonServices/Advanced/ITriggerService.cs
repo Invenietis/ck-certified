@@ -38,6 +38,20 @@ namespace CommonServices
         /// <summary>
         /// Fired to clients to let them know that they have to do an action intended by an external input.
         /// </summary>
-        event EventHandler Triggered;
+        event EventHandler<InputTriggerEventArgs> Triggered;
+    }
+
+    public class InputTriggerEventArgs : EventArgs
+    {
+        public InputSource Source { get; set; }
+        public InputTriggerEventArgs( InputSource source )
+        {
+            Source = source;
+        }
+
+        public InputTriggerEventArgs()
+        {
+            Source = InputSource.Unknown;
+        }
     }
 }

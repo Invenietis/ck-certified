@@ -115,6 +115,10 @@ namespace SimpleSkin.ViewModels
         {
             SetActionOnPropertyChanged( "Current", () =>
             {
+                //SafeUpdateX();
+                //SafeUpdateY();
+                //SafeUpdateX();
+
                 SafeUpdateUpLabel();
                 SafeUpdateDownLabel();
                 SafeUpdateIsEnabled();
@@ -151,6 +155,17 @@ namespace SimpleSkin.ViewModels
         {
             if( String.IsNullOrWhiteSpace( propertyName ) )
             {
+                SafeUpdateX();
+                SafeUpdateY();
+                SafeUpdateWidth();
+                SafeUpdateHeight();
+                SafeUpdateVisible();
+                OnPropertyChanged( "X" );
+                OnPropertyChanged( "Y" );
+                OnPropertyChanged( "Width" );
+                OnPropertyChanged( "Height" );
+                OnPropertyChanged( "Visible" );
+
                 SafeUpdateOpacity();
                 SafeUpdateFontSize();
                 SafeUpdateFontStyle();

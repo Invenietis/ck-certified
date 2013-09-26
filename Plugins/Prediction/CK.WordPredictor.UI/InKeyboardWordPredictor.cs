@@ -130,17 +130,20 @@ namespace CK.WordPredictor.UI
                 else if( e.Action == NotifyCollectionChangedAction.Add )
                 {
                     int idx = e.NewStartingIndex;
-                    IKey key = zone.Keys[idx];
-                    if( key != null && e.NewStartingIndex < Feature.MaxSuggestedWords )
+                    if( idx < zone.Keys.Count )
                     {
-                        IWordPredicted wordPredicted = WordPredictorService.Service.Words[e.NewStartingIndex];
-                        if( wordPredicted != null )
+                        IKey key = zone.Keys[idx];
+                        if( key != null && e.NewStartingIndex < Feature.MaxSuggestedWords )
                         {
-                            key.Current.DownLabel = wordPredicted.Word;
-                            key.Current.UpLabel = wordPredicted.Word;
+                            IWordPredicted wordPredicted = WordPredictorService.Service.Words[e.NewStartingIndex];
+                            if( wordPredicted != null )
+                            {
+                                key.Current.DownLabel = wordPredicted.Word;
+                                key.Current.UpLabel = wordPredicted.Word;
                             key.Current.OnKeyDownCommands.Commands.Clear();
                             key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
-                            key.CurrentLayout.Current.Visible = true;
+                                key.CurrentLayout.Current.Visible = true;
+                            }
                         }
                     }
                 }

@@ -39,8 +39,11 @@ namespace Host.VM
         {
             foreach( var pluginId in _wordPredictionPluginIds )
             {
-                IPluginProxy pluginProxy = _app.PluginRunner.PluginHost.FindLoadedPlugin( new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), true );
-                if( pluginProxy != null ) _wordPredictionPlugins.Add( pluginProxy );
+                IPluginProxy pluginProxy = _app.PluginRunner.PluginHost.FindLoadedPlugin( pluginId, true );
+                if( pluginProxy != null )
+                {
+                    _wordPredictionPlugins.Add( pluginProxy );
+                }
             }
         }
 
@@ -145,10 +148,10 @@ namespace Host.VM
                 {
                     if( value )
                     {
-                        foreach( var pluginId in _wordPredictionPluginIds )
+                        if( _wordPredictionPlugins.Count == 0 ) GetPlugins();
+                        foreach( var plugin in _wordPredictionPlugins )
                         {
-                            _app.StartPlugin( pluginId );
-                            _wordPredictionPlugins.Add( _app.PluginRunner.PluginHost.FindLoadedPlugin( pluginId, true ) );
+                            _app.StartPlugin( plugin.PluginKey.PluginId );
                         }
                     }
                     else

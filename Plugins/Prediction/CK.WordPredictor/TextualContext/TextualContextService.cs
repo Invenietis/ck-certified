@@ -193,7 +193,7 @@ namespace CK.WordPredictor
                 while( i < _tokenSeparatorIndexes.Length )
                 {
                     int wordIndex = _tokenSeparatorIndexes[i];
-                    if( wordIndex > _caretIndex ) return i;
+                    if( wordIndex >= _caretIndex ) return i;
                     i++;
                 }
                 return i;

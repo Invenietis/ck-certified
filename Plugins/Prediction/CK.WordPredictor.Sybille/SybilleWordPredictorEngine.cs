@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
@@ -13,25 +14,22 @@ namespace CK.WordPredictor.Engines
         Sybille.WordPredictor _sybille;
         IWordPredictorFeature _wordPredictionFeature;
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature )
-        {
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
-
-        }
-
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
-            : this( wordPredictionFeature )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
             _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+
+            _wordPredictionFeature = wordPredictionFeature;
+            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
         }
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
-            : this( wordPredictionFeature )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
             _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+
+            _wordPredictionFeature = wordPredictionFeature;
+            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
         }
 
 
@@ -43,27 +41,40 @@ namespace CK.WordPredictor.Engines
             }
         }
 
+        Task<IEnumerable<IWordPredicted>> _currentlyRunningTask;
+        CancellationToken _currentlyRunningTaskCancellationToken;
+        CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+
         public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
         {
-            return Task.Factory.StartNew( () =>
+            if( _currentlyRunningTaskCancellationToken == null )
+                _currentlyRunningTaskCancellationToken = new CancellationToken( false );
+
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status == TaskStatus.Running )
             {
-                return Predict( textualContext, maxSuggestedWords );
-            } );
+                _cancellationSource.Cancel();
+            }
+            else
+            {
+                _currentlyRunningTask = Task.Factory.StartNew( () => Predict( textualContext, maxSuggestedWords ), _currentlyRunningTaskCancellationToken );
+            }
+            return _currentlyRunningTask;
         }
 
         public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
         {
             //This call can sometimes raise an ArgumentException
             //TODO : log it and catch it to go on.
-            IEnumerable<WeightlessWordPredicted> result = new List<WeightlessWordPredicted>();
+            IEnumerable<WeightlessWordPredicted> result = null;
             try
             {
                 result = _sybille
                     .Predict( ObtainContext( textualService ), maxSuggestedWords )
                     .Select( t => new WeightlessWordPredicted( t ) );
             }
-            catch( ArgumentException e )
+            catch( ArgumentException )
             {
+                return Enumerable.Empty<IWordPredicted>();
             }
             return result;
         }
@@ -74,8 +85,15 @@ namespace CK.WordPredictor.Engines
             {
                 string tokenPhrase = String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
                 tokenPhrase += " ";
-                tokenPhrase += textualService.Tokens.Count >= textualService.CurrentTokenIndex ?
-                    ( textualService.Tokens[textualService.CurrentTokenIndex].Value.Substring( 0, textualService.CaretOffset ) ) : String.Empty;
+                if( textualService.Tokens.Count >= textualService.CurrentTokenIndex )
+                {
+                    string value = textualService.Tokens[textualService.CurrentTokenIndex].Value;
+                    if( value.Length >= textualService.CaretOffset )
+                    {
+                        tokenPhrase += (value.Substring( 0, textualService.CaretOffset ));
+                    }
+                }
+
                 return tokenPhrase;
             }
             if( textualService.Tokens.Count == 1 )

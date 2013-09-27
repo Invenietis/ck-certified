@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using CK.Plugin;
+using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
 
@@ -15,6 +16,35 @@ namespace CK.WordPredictor
         public const string CMDSendPredictionAreaContent = "sendPredictionAreaContent";
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<ISendStringService> SendStringService { get; set; }
+
+        public override void Start()
+        {
+            base.Start();
+            SendStringService.Service.StringSending += Service_StringSending;
+            SendStringService.Service.StringSent += Service_StringSent;
+        }
+
+        public override void Stop()
+        {
+            SendStringService.Service.StringSending -= Service_StringSending;
+            SendStringService.Service.StringSent -= Service_StringSent;
+            base.Stop();
+        }
+
+        bool _sending;
+
+        void Service_StringSending( object sender, StringSendingEventArgs e )
+        {
+            _sending = true;
+        }
+
+        void Service_StringSent( object sender, StringSentEventArgs e )
+        {
+            _sending = false;
+        }
 
         string _text;
         int _caretIndex;
@@ -28,8 +58,12 @@ namespace CK.WordPredictor
             set
             {
                 _text = value;
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
+
+                if( _sending == false )
+                {
+                    if( PropertyChanged != null )
+                        PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
+                }
             }
         }
 
@@ -43,8 +77,11 @@ namespace CK.WordPredictor
             {
                 _caretIndex = value;
 
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
+                if( _sending == false )
+                {
+                    if( PropertyChanged != null )
+                        PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
+                }
             }
         }
 

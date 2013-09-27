@@ -48,13 +48,16 @@ namespace CK.WordPredictor
 
         public virtual bool Setup( IPluginSetupInfo info )
         {
-            _predictedList = new FastObservableCollection<IWordPredicted>();
-            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
+          
             return true;
         }
 
         public virtual void Start()
         {
+            List<IWordPredicted> internalList = new List<IWordPredicted>( Feature.MaxSuggestedWords );
+            _predictedList = new FastObservableCollection<IWordPredicted>( internalList );
+            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
+
             LoadEngine();
             TextualContextService.PropertyChanged += OnTextualContextServicePropertyChanged;
             Feature.PropertyChanged += OnFeaturePropertyChanged;
@@ -93,8 +96,7 @@ namespace CK.WordPredictor
             {
                 _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
                 {
-                    _predictedList.Clear();
-                    _predictedList.AddItems( words.Result ); 
+                    _predictedList.ReplaceItems( words.Result ); 
                     //foreach( var w in words.Result ) _predictedList.Add( w );
                 }, TaskContinuationOptions.OnlyOnRanToCompletion );
             }

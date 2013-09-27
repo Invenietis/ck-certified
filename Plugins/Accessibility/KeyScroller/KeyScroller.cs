@@ -144,7 +144,8 @@ namespace KeyScroller
 
         public void Resume()
         {
-            _scrollingStrategy.Start();
+            _scrollingStrategy.Resume();
+            //_scrollingStrategy.Start();
         }
 
         public event EventHandler<HighlightEventArgs> BeginHighlight

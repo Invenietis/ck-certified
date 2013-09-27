@@ -72,8 +72,10 @@ namespace BasicCommandHandlers
 
         public void Clic()
         {
-            PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
-            PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
+            //This API doesn't enable adding the CiviKey flag to the windows message. Therefor, we don't know that the event is sent by CiviKey; which is infinite loop prone.
+            //PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
+            //PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
+            CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftClick();
         }
 
         public void DoubleClic()
@@ -84,18 +86,21 @@ namespace BasicCommandHandlers
 
         public void RightClic()
         {
-            PointerDriver.Service.SimulateButtonDown( ButtonInfo.XButton, "Right" );
-            PointerDriver.Service.SimulateButtonUp( ButtonInfo.XButton, "Right" );
+            //PointerDriver.Service.SimulateButtonDown( ButtonInfo.XButton, "Right" );
+            //PointerDriver.Service.SimulateButtonUp( ButtonInfo.XButton, "Right" );
+            CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionRightClick();
         }
 
         public void LeftPush()
         {
-            PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
+            //PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
+            CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftDown();
         }
 
         public void LeftRelease()
         {
-            PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
+            //PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
+            CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftUp();
         }
 
         #endregion

@@ -48,14 +48,14 @@ namespace Host.VM
             NotifyOfPropertyChange( () => ActivatePlugin );
             NotifyOfPropertyChange( () => CountDownDuration );
             NotifyOfPropertyChange( () => TimeBeforeCountDownStarts );
-            NotifyOfPropertyChange( () => ShowMousePanelOption );
+            NotifyOfPropertyChange( () => ShowMouseIndicatorOption );
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             NotifyOfPropertyChange( () => CountDownDuration );
             NotifyOfPropertyChange( () => TimeBeforeCountDownStarts );
-            NotifyOfPropertyChange( () => ShowMousePanelOption );
+            NotifyOfPropertyChange( () => ShowMouseIndicatorOption );
         }
 
         public int CountDownDuration
@@ -76,12 +76,12 @@ namespace Host.VM
             }
         }
 
-        public bool ShowMousePanelOption
+        public bool ShowMouseIndicatorOption
         {
-            get { return Config != null ? Config.GetOrSet( "ShowMousePanelOption", false ) : false; }
+            get { return Config != null ? Config.GetOrSet( "ShowMouseIndicatorOption", false ) : false; }
             set
             {
-                if( Config != null ) Config.Set( "ShowMousePanelOption", value );
+                if( Config != null ) Config.Set( "ShowMouseIndicatorOption", value );
             }
         }
 
@@ -99,7 +99,7 @@ namespace Host.VM
             p.DisplayName = R.AutoClickCountDownDuration;
             g.Items.Add( p );
 
-            g.AddProperty( R.AutoClickShowMousePanelOption, this, h => ShowMousePanelOption );
+            g.AddProperty( R.AutoClickShowMousePanelOption, this, h => ShowMouseIndicatorOption );
         }
     }
 }

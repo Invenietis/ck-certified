@@ -109,7 +109,7 @@
                         </ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Uid="autoclick-editor-showprogressmouse" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Show a progress indicator above the pointer :" Style="{StaticResource CTEditor_OptionsTextBlock}" />
-                    <CheckBox Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ShowMousePanelOption, Mode=TwoWay}" Margin="0 0 20 0"/>
+                    <CheckBox Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ShowMouseIndicatorOption, Mode=TwoWay}" Margin="0 0 20 0"/>
                 </Grid>
             </Border>
             

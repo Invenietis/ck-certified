@@ -33,7 +33,7 @@ namespace KeyScroller
 
         internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
-            get { return _roElements ?? (_roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements )); }
+            get { return _roElements ?? ( _roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
         }
 
         public ScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
@@ -54,7 +54,7 @@ namespace KeyScroller
 
         protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
         {
-            SelectElement( sender, eventArgs);
+            SelectElement( sender, eventArgs );
         }
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
@@ -160,21 +160,16 @@ namespace KeyScroller
                 }
             }
 
-            return GetSkipBehavior(nextElement);
+            return GetSkipBehavior( nextElement );
         }
 
         public virtual void Start()
         {
-            
+            StartTimer();
 
-            if( !_timer.IsEnabled && _elements.Count > 0 )
-            {
-                _timer.Start();
-            }
             _timer.Tick += OnInternalBeat;
             _configuration.ConfigChanged += OnConfigChanged;
         }
-
 
         public virtual void Stop()
         {
@@ -199,6 +194,19 @@ namespace KeyScroller
                     FireEndHighlight();
                 }
                 _timer.Stop();
+            }
+        }
+
+        public virtual void Resume()
+        {
+            StartTimer();
+        }
+
+        protected virtual void StartTimer()
+        {
+            if( !_timer.IsEnabled && _elements.Count > 0 )
+            {
+                _timer.Start();
             }
         }
 
@@ -230,6 +238,10 @@ namespace KeyScroller
 
         #region IScrollingStrategy Members
 
+        public abstract string Name
+        {
+            get;
+        }
 
         public void ElementUnregistered( IHighlightableElement unregisteredElement )
         {
@@ -242,15 +254,6 @@ namespace KeyScroller
                 _currentElementParents = new Stack<IHighlightableElement>();
                 _currentId = 0;
             }
-        }
-
-        #endregion
-
-        #region IScrollingStrategy Members
-
-        public abstract string Name
-        {
-            get;
         }
 
         #endregion

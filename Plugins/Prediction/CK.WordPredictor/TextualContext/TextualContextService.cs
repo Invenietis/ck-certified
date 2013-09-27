@@ -288,11 +288,11 @@ namespace CK.WordPredictor
         }
 
         /// <summary>
-        /// return a 
+        /// Splits the context (seperates the different words)
         /// </summary>
         string[] Normalization( string context )
         {
-            return context.Split( new char[] { ' ' } );
+            return context.Split(' ');
         }
 
         // WORD1  WORD2 WORD3
@@ -333,7 +333,6 @@ namespace CK.WordPredictor
 
                 _tokenCollection.Clear( false );
                 _tokenCollection.AddRange( tokens, false );
-
             }
         }
 

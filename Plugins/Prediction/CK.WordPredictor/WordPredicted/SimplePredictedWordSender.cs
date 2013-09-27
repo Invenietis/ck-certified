@@ -36,7 +36,7 @@ namespace CK.WordPredictor
                 {
                     string wordToSend = e.Word.Substring( caretOffset, e.Word.Length - caretOffset );
 
-                    if( Feature.InsertSpaceAfterPredictedWord ) wordToSend += " ";
+                    if( Feature.InsertSpaceAfterPredictedWord && !wordToSend.EndsWith("'") ) wordToSend += " ";
 
                     SendStringService.Service.SendString( wordToSend );
                 }

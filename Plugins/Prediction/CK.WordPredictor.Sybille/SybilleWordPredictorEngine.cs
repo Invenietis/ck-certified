@@ -69,7 +69,7 @@ namespace CK.WordPredictor.Engines
             try
             {
                 result = _sybille
-                    .Predict( ObtainContext( textualService ), maxSuggestedWords )
+                    .Predict( ObtainSybilleContext( textualService ), maxSuggestedWords )
                     .Select( t => new WeightlessWordPredicted( t ) );
             }
             catch( ArgumentException )
@@ -79,6 +79,20 @@ namespace CK.WordPredictor.Engines
             return result;
         }
 
+        /// <summary>
+        /// Calls <see cref="ObtainContext( ITextualContextService textualService )"/> and replaces all occurences of "'" (apostrophe) by "' " (apostrophe + space).
+        /// Done so because Sybille doesn't understand the apostrophe character. therefor, in order to get a prediction for the word that follows this char, we flush Sybille's context thanks to the space char.
+        /// </summary>
+        public virtual string ObtainSybilleContext( ITextualContextService textualService )
+        {
+            return ObtainContext( textualService ).Replace( "'", "' " );
+        }
+
+        /// <summary>
+        /// Gets the prediction context (all the text that has been written since the last "Return")
+        /// </summary>
+        /// <param name="textualService"></param>
+        /// <returns></returns>
         public string ObtainContext( ITextualContextService textualService )
         {
             if( textualService.Tokens.Count > 1 )
@@ -90,7 +104,7 @@ namespace CK.WordPredictor.Engines
                     string value = textualService.Tokens[textualService.CurrentTokenIndex].Value;
                     if( value.Length >= textualService.CaretOffset )
                     {
-                        tokenPhrase += (value.Substring( 0, textualService.CaretOffset ));
+                        tokenPhrase += ( value.Substring( 0, textualService.CaretOffset ) );
                     }
                 }
 

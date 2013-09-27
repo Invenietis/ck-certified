@@ -34,9 +34,15 @@ namespace CK.WordPredictor
                 int caretOffset = TextualContextService.Service.CaretOffset;
                 if( e.Word.Length > 0 && e.Word.Length > caretOffset )
                 {
-                    string wordToSend = e.Word.Substring( caretOffset, e.Word.Length - caretOffset );
+                    string wordToSend = e.Word;
 
-                    if( Feature.InsertSpaceAfterPredictedWord && !wordToSend.EndsWith("'") ) wordToSend += " ";
+                    if( TextualContextService.Service.CurrentToken != null 
+                        && e.Word.Substring( 0, caretOffset ).Equals( TextualContextService.Service.CurrentToken.Value, StringComparison.InvariantCultureIgnoreCase ) )
+                    {
+                        wordToSend = e.Word.Substring( caretOffset, e.Word.Length - caretOffset );
+                    }
+
+                    if( Feature.InsertSpaceAfterPredictedWord && !wordToSend.EndsWith( "'" ) ) wordToSend += " ";
 
                     SendStringService.Service.SendString( wordToSend );
                 }

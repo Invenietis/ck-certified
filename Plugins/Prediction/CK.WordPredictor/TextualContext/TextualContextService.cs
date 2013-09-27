@@ -292,7 +292,7 @@ namespace CK.WordPredictor
         /// </summary>
         string[] Normalization( string context )
         {
-            return context.Split(' ');
+            return context.Split( ' ', '\'' );
         }
 
         // WORD1  WORD2 WORD3
@@ -318,7 +318,7 @@ namespace CK.WordPredictor
             else
             {
 
-                string[] tokens = Normalization( value ); ;
+                string[] tokens = Normalization( value );
                 if( tokens.Length > 1 )
                 {
                     _tokenSeparatorIndexes = new int[tokens.Length - 1];

@@ -9,6 +9,8 @@ namespace KeyScroller
     /// </summary>
     internal interface IScrollingStrategy
     {
+        bool IsStarted { get; }
+
         /// <summary>
         /// The displayable unique strategy name
         /// </summary>

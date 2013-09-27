@@ -16,8 +16,8 @@ namespace CK.WordPredictor.Model
         /// <param name="textualContext"></param>
         /// <param name="maxSuggestedWords"></param>
         /// <returns></returns>
-        IEnumerable<IWordPredicted> Predict( ITextualContextService textualContext, int maxSuggestedWords );
+        IReadOnlyList<IWordPredicted> Predict( ITextualContextService textualContext, int maxSuggestedWords );
 
-        Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords );
+        Task<IReadOnlyList<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords );
     }
 }

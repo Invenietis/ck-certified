@@ -83,6 +83,7 @@
     <Compile Include="ITextualContextService.cs" />
     <Compile Include="IWordPredictorFeature.cs" />
     <Compile Include="IWordPredictorService.cs" />
+    <Compile Include="PredictionLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IWordPredicted.cs" />
     <Compile Include="PredictionAreaContentEventArgs.cs" />

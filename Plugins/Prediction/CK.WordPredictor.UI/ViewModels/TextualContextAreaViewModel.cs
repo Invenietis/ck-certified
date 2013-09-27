@@ -63,7 +63,10 @@ namespace CK.WordPredictor.UI.ViewModels
         public string TextualContext
         {
             get { return _predictionTextArea.Text; }
-            set { _text = _predictionTextArea.Text = value; }
+            set 
+            {
+                _text = _predictionTextArea.Text = value; 
+            }
         }
     }
 }

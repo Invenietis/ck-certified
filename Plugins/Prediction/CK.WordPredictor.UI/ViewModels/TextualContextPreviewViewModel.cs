@@ -8,8 +8,9 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI.ViewModels
 {
-    public class TextualContextPreviewViewModel : INotifyPropertyChanged, IDisposable
+    public class TextualContextPreviewViewModel : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable
     {
+        public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
 
         readonly IService<ITextualContextService> _textualContext;
@@ -80,5 +81,6 @@ namespace CK.WordPredictor.UI.ViewModels
             _textualContext.Service.PropertyChanged -= TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged -= TextualContextService_ServiceStatusChanged;
         }
+
     }
 }

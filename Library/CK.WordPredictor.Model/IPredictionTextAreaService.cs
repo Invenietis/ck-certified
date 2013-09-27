@@ -19,8 +19,8 @@ namespace CK.WordPredictor.Model
         /// Others should NOT set this value.
         /// </summary>
         bool IsDriven { get; set; }
+        
         event EventHandler<IsDrivenChangedEventArgs> IsDrivenChanged;
-
 
         /// <summary>
         /// This event is raised when the <see cref="ITextualContextService"/> has been sent by the service.

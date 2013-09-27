@@ -89,6 +89,7 @@
     <Compile Include="DefaultKeyboardContextPredictionFactory.cs" />
     <Compile Include="Engines\IWordPredictorEngine.cs" />
     <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
+    <Compile Include="FastObservableCollection.cs" />
     <Compile Include="TextualContext\PredictionTextAreaBus.cs" />
     <Compile Include="TextualContext\TextualContextService.cs" />
     <Compile Include="TextualContext\TextualContextCommandHandler.cs" />

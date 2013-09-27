@@ -40,12 +40,12 @@ namespace WordPredictorTest
                 get { throw new NotImplementedException(); }
             }
 
-            public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWord )
+            public IReadOnlyList<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWord )
             {
                 throw new NotImplementedException();
             }
 
-            public System.Threading.Tasks.Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+            public System.Threading.Tasks.Task<IReadOnlyList<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
             {
                 throw new NotImplementedException();
             }

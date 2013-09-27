@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +17,7 @@ namespace CK.WordPredictor
     {
         static Func<string> _resourcePath = () => Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) );
 
-        ObservableCollection<IWordPredicted> _predictedList;
+        FastObservableCollection<IWordPredicted> _predictedList;
         WordPredictedCollection _wordPredictedCollection;
         IWordPredictorEngine _engine;
         Task _asyncEngineContinuation;
@@ -45,7 +48,7 @@ namespace CK.WordPredictor
 
         public virtual bool Setup( IPluginSetupInfo info )
         {
-            _predictedList = new ObservableCollection<IWordPredicted>();
+            _predictedList = new FastObservableCollection<IWordPredicted>();
             _wordPredictedCollection = new WordPredictedCollection( _predictedList );
             return true;
         }
@@ -91,7 +94,8 @@ namespace CK.WordPredictor
                 _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
                 {
                     _predictedList.Clear();
-                    foreach( var w in words.Result ) _predictedList.Add( w );
+                    _predictedList.AddItems( words.Result ); 
+                    //foreach( var w in words.Result ) _predictedList.Add( w );
                 }, TaskContinuationOptions.OnlyOnRanToCompletion );
             }
         }

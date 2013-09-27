@@ -8,6 +8,7 @@ using CK.Plugin;
 using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
+using CK.Core;
 
 namespace CK.WordPredictor
 {
@@ -121,10 +122,14 @@ namespace CK.WordPredictor
 
         protected virtual void OnStringSent( object sender, StringSentEventArgs e )
         {
-            string val = e.StringVal;
-            if( val != null )
+            using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, "OnStringSent" ) )
             {
-                SetToken( e.StringVal );
+                string val = e.StringVal;
+                if( val != null )
+                {
+                    PredictionLogger.Instance.Trace( val );
+                    SetToken( e.StringVal );
+                }
             }
         }
 
@@ -135,7 +140,10 @@ namespace CK.WordPredictor
             _caretIndex = newRawContext.Length;
             InternalSetRawText( newRawContext );
 
-            NotifyPropertiesChanged( "CurrentToken", "Tokens", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
+            using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, () => "Notified", "Notifiying..." ) )
+            {
+                NotifyPropertiesChanged( "CurrentToken", "Tokens", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
+            }
         }
 
         protected virtual void OnTextualContextClear( object sender, EventArgs e )
@@ -155,13 +163,20 @@ namespace CK.WordPredictor
 
         private void OnPredictionAreaServicePropertyChanged( object sender, PropertyChangedEventArgs e )
         {
-            if( e.PropertyName == "Text" )
+            using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, "OnPredictionAreaServicePropertyChanged" ) )
             {
-                SetRawText( PredictionTextAreaService.Service.Text );
-            }
-            if( e.PropertyName == "CaretIndex" )
-            {
-                SetCaretIndex( PredictionTextAreaService.Service.CaretIndex );
+                if( e.PropertyName == "Text" )
+                {
+                    PredictionLogger.Instance.Trace( "Property: {0}", "Text" );
+                    PredictionLogger.Instance.Trace( "Value: {0}", PredictionTextAreaService.Service.Text );
+                    SetRawText( PredictionTextAreaService.Service.Text );
+                }
+                if( e.PropertyName == "CaretIndex" )
+                {
+                    PredictionLogger.Instance.Trace( "Property: {0}", "CaretIndex" );
+                    PredictionLogger.Instance.Trace( "Value: {0}", PredictionTextAreaService.Service.CaretIndex );
+                    SetCaretIndex( PredictionTextAreaService.Service.CaretIndex );
+                }
             }
         }
 
@@ -280,11 +295,18 @@ namespace CK.WordPredictor
         // WORD1  WORD2 WORD3
         public void SetRawText( string value )
         {
-            if( value == _rawContext ) return;
+            if( value == _rawContext )
+            {
+                PredictionLogger.Instance.Trace( "Value is already RawContext. Do nothing.", value );
+                return;
+            }
 
+            PredictionLogger.Instance.Trace( "Value changing..." );
             InternalSetRawText( value );
+            PredictionLogger.Instance.Trace( "Value changed..." );
 
             NotifyPropertiesChanged( "CurrentToken", "Tokens" );
+
         }
 
         private void InternalSetRawText( string value )
@@ -401,9 +423,13 @@ namespace CK.WordPredictor
 
         private void NotifyPropertiesChanged( params string[] properties )
         {
-            foreach( string p in properties )
+            using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, () => "Notified", "Notifiying..." ) )
             {
-                OnPropertyChanged( p );
+                foreach( string p in properties )
+                {
+                    PredictionLogger.Instance.Trace( p );
+                    OnPropertyChanged( p );
+                }
             }
         }
 

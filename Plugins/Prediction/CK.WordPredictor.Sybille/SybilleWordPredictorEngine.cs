@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CK.Core;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
 
@@ -41,17 +43,18 @@ namespace CK.WordPredictor.Engines
             }
         }
 
-        Task<IEnumerable<IWordPredicted>> _currentlyRunningTask;
+        Task<IReadOnlyList<IWordPredicted>> _currentlyRunningTask;
         CancellationToken _currentlyRunningTaskCancellationToken;
         CancellationTokenSource _cancellationSource = new CancellationTokenSource();
 
-        public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+        public Task<IReadOnlyList<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
         {
             if( _currentlyRunningTaskCancellationToken == null )
                 _currentlyRunningTaskCancellationToken = new CancellationToken( false );
 
             if( _currentlyRunningTask != null && _currentlyRunningTask.Status == TaskStatus.Running )
             {
+                PredictionLogger.Instance.Trace( "Prediction Canceled" );
                 _cancellationSource.Cancel();
             }
             else
@@ -61,20 +64,23 @@ namespace CK.WordPredictor.Engines
             return _currentlyRunningTask;
         }
 
-        public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
+        public IReadOnlyList<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
         {
+
             //This call can sometimes raise an ArgumentException
             //TODO : log it and catch it to go on.
-            IEnumerable<WeightlessWordPredicted> result = null;
+            IReadOnlyList<WeightlessWordPredicted> result = null;
             try
             {
                 result = _sybille
                     .Predict( ObtainContext( textualService ), maxSuggestedWords )
-                    .Select( t => new WeightlessWordPredicted( t ) );
+                    .Select( t => new WeightlessWordPredicted( PredictionLogger.Instance, t ) )
+                    .ToArray();
             }
-            catch( ArgumentException )
+            catch( ArgumentException ex )
             {
-                return Enumerable.Empty<IWordPredicted>();
+                PredictionLogger.Instance.Error( ex );
+                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
             }
             return result;
         }

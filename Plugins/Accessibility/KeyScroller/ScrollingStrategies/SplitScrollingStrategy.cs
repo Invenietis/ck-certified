@@ -14,7 +14,7 @@ namespace KeyScroller
     internal class SplitScrollingStrategy : BasicScrollingStrategy
     {
         const string StrategyName = "SplitScrollingStrategy";
-        const int childrenLimitBeforeSplit = 6;
+        const int childrenLimitBeforeSplit = 5;
         public SplitScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
@@ -33,40 +33,40 @@ namespace KeyScroller
         {
             if( !_elements.Contains( element ) )
             {
-                IList<IHighlightableElement> highlightable = new List<IHighlightableElement>();
-                foreach( var e in element.Children )
-                {
-                    VMZoneSimple vmz = e as VMZoneSimple;
-                    if( vmz != null )
-                    {
-                        // e is a VMZone element
-                        if( (e.Children.Count - 1) > childrenLimitBeforeSplit )
-                        {
-                            highlightable.Add( new VMSplitZone( vmz.Context, vmz.Children.Skip( 0 ).Take( e.Children.Count / 2 ) ) );
-                            highlightable.Add( new VMSplitZone( vmz.Context, vmz.Children.Skip( (e.Children.Count / 2) ) ) );
-                        }
-                        else
-                        {
-                            // add the VMZone from scratch
-                            highlightable.Add( vmz );
-                        }
-                    }
-                    else
-                    {
-                        highlightable.Add( e );
-                    }
-                }
-                _elements.Add( new VMSRootTemp( highlightable ) );
+                var highlightable = RegisterRecursive( element.Children );
+                _elements.Add( new VMSTemp( highlightable ) );
                 Start();
             }
         }
+
+        IEnumerable<IHighlightableElement> RegisterRecursive( IEnumerable<IHighlightableElement> elements )
+        {
+            IList<IHighlightableElement> highlightable = new List<IHighlightableElement>();
+            foreach( var e in elements )
+            {
+                IEnumerable<IHighlightableElement> childrenElements = null;
+                if( e.Children.Count > 0 ) childrenElements = RegisterRecursive( e.Children );
+
+                VMZoneSimple vmz = e as VMZoneSimple;
+                if( vmz != null && childrenElements != null && ((vmz.Children.Count - 1) > childrenLimitBeforeSplit) )
+                {
+                    highlightable.Add( new VMSplitZone( vmz.Context, childrenElements.Skip( 0 ).Take( vmz.Children.Count / 2 ) ) );
+                    highlightable.Add( new VMSplitZone( vmz.Context, childrenElements.Skip( (vmz.Children.Count / 2) ) ) );
+                }
+                else
+                {
+                    highlightable.Add( e );
+                }
+            }
+            return highlightable;
+        }
     }
 
-    public class VMSRootTemp : IHighlightableElement
+    public class VMSTemp : IHighlightableElement
     {
         IEnumerable<IHighlightableElement> _elements;
 
-        public VMSRootTemp( IEnumerable<IHighlightableElement> children )
+        public VMSTemp( IEnumerable<IHighlightableElement> children )
         {
             _elements = children;
         }

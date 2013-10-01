@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="ScrollingStrategies\ScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\SimpleScrollingStrategy.cs" />
+    <Compile Include="ScrollingStrategies\SplitScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\StrategyAttribute.cs" />
     <Compile Include="ScrollingStrategies\TurboScrollingStrategy.cs" />
   </ItemGroup>
@@ -141,6 +142,10 @@
       <Name>HighlightModel</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\SimpleSkin\SimpleSkin.csproj">
+      <Project>{6ffe0480-6c42-413b-b59d-78793ac651c7}</Project>
+      <Name>SimpleSkin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -157,10 +162,12 @@
     <EmbeddedResource Include="Resources\R.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

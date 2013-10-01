@@ -76,6 +76,10 @@ namespace KeyScroller
                 case "SimpleScrollingStrategy":
                     if( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new SimpleScrollingStrategy( _timer, _registeredElements, Configuration );
+
+                case "SplitScrollingStrategy":
+                    if( _strategies.ContainsKey( name ) ) return _strategies[name];
+                    return new SplitScrollingStrategy( _timer, _registeredElements, Configuration );
                 
                 default:
                     if( _strategies.ContainsKey( "BasicScrollingStrategy" ) ) return _strategies["BasicScrollingStrategy"];

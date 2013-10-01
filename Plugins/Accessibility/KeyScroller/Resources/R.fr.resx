@@ -147,4 +147,7 @@
   <data name="TurboScrollingStrategy" xml:space="preserve">
     <value>Défilement rapide (touche par touche)</value>
   </data>
+  <data name="SplitScrollingStrategy" xml:space="preserve">
+    <value>Défilement par demi-zone</value>
+  </data>
 </root>

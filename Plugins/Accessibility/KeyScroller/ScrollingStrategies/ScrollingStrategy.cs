@@ -54,7 +54,7 @@ namespace KeyScroller
 
         protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
         {
-            SelectElement( sender, eventArgs);
+            SelectElement( sender, eventArgs );
         }
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
@@ -160,12 +160,12 @@ namespace KeyScroller
                 }
             }
 
-            return GetSkipBehavior(nextElement);
+            return GetSkipBehavior( nextElement );
         }
 
         public virtual void Start()
         {
-            
+
 
             if( !_timer.IsEnabled && _elements.Count > 0 )
             {
@@ -226,6 +226,19 @@ namespace KeyScroller
         {
             if( EndHighlight != null ) EndHighlight( this, new HighlightEventArgs( _currentElement ) );
             _currentElement = null;
+        }
+
+        /// <summary>
+        /// This method is the default way to register a tree to a scrolling strategy
+        /// </summary>
+        /// <param name="element"></param>
+        public virtual void RegisterTree( IHighlightableElement element )
+        {
+            if( !_elements.Contains( element ) )
+            {
+                _elements.Add( element );
+                Start();
+            }
         }
 
         #region IScrollingStrategy Members

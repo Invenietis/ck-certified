@@ -35,7 +35,7 @@ namespace SimpleSkin.ViewModels
     public class VMZoneSimple : VMContextElement, IHighlightableElement
     {
         public CKObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
-        CKObservableSortedArrayKeyList<VMKeySimple, int> _keys;
+        protected CKObservableSortedArrayKeyList<VMKeySimple, int> _keys;
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
@@ -50,6 +50,16 @@ namespace SimpleSkin.ViewModels
                 VMKeySimple k = Context.Obtain( key );
                 Keys.Add( k );
             }
+        }
+
+        /// <summary>
+        /// This constructor set only the ctx with an empty CKObservableSortedArrayKeyList
+        /// </summary>
+        /// <param name="ctx"></param>
+        internal VMZoneSimple( VMContextSimple ctx )
+            : base( ctx )
+        {
+            _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
         }
 
         internal override void Dispose()

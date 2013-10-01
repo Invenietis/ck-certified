@@ -142,6 +142,9 @@
     <value>Scroll editor</value>
   </data>
   <data name="SimpleScrollingStrategy" xml:space="preserve">
+    <value>Scrolling key by half-zone</value>
+  </data>
+  <data name="SimpleScrollingStrategy" xml:space="preserve">
     <value>Scrolling key by key</value>
   </data>
   <data name="TurboScrollingStrategy" xml:space="preserve">

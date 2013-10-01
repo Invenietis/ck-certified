@@ -120,6 +120,9 @@
   <data name="BasicScrollingStrategy" xml:space="preserve">
     <value>Défilement par zones</value>
   </data>
+  <data name="SplitScrollingStrategy" xml:space="preserve">
+    <value>Défilement par demies-zones</value>
+  </data>
   <data name="LeftClick" xml:space="preserve">
     <value>clic gauche</value>
   </data>

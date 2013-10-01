@@ -44,6 +44,12 @@ namespace KeyScroller
         void Pause( bool forceEndHighlight );
 
         /// <summary>
+        /// Defines the way to register a tree to a scrolling strategy
+        /// </summary>
+        /// <param name="element"></param>
+        void RegisterTree( IHighlightableElement element );
+
+        /// <summary>
         /// Called after the trigger event is fired
         /// </summary>
         void OnExternalEvent();

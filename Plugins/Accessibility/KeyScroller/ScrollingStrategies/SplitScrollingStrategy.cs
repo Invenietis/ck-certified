@@ -22,12 +22,56 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        IHighlightableElement _currentElement = null;
+        IHighlightableElement _nextElement = null;
 
         public SplitScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
 
+        }
+
+        protected override IHighlightableElement GetUpToParent()
+        {
+            IHighlightableElement nextElement = null;
+            // if there is no parent, go to normal next element
+            if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
+
+            IHighlightableElement parent = _currentElementParents.Pop();
+            ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
+            if( _currentElementParents.Count > 0 ) parentSibblings = _currentElementParents.Peek().Children;
+            else parentSibblings = RegisteredElements;
+
+            if( parent is VMSplitZone )
+            {
+                var parentSplitZone = parent as VMSplitZone;
+                _currentId = parentSibblings.IndexOf( parentSplitZone.Original );
+            }
+            else
+            {
+                _currentId = parentSibblings.IndexOf( parent );
+            }
+
+            nextElement = parent;
+
+            // if the parent skipping behavior is enter children, we skip it
+            if( parent.Skip == SkippingBehavior.EnterChildren )
+            {
+                _currentElement = nextElement;
+                return GetNextElement( ActionType.Normal );
+            }
+
+            return nextElement;
+        }
+
+        protected override IHighlightableElement GetEnterChild( ICKReadOnlyList<IHighlightableElement> elements )
+        {
+            // if the current element does not have any children ... go to the normal next element
+            if( _nextElement == null || (_nextElement != null && _nextElement.Children.Count == 0) ) return GetNextElement( ActionType.Normal );
+            // otherwise we just push the element as a parent and set the the first child as the current element
+            _currentElementParents.Push( _nextElement );
+            _currentId = 0;
+
+            return _nextElement.Children[0];
         }
 
         protected override IHighlightableElement GetNextElement( ActionType actionType )
@@ -37,7 +81,7 @@ namespace KeyScroller
 
             if( actionType == ActionType.UpToParent )
             {
-                _currentElement = GetUpToParent();
+                _nextElement = GetUpToParent();
             }
             else
             {
@@ -48,21 +92,21 @@ namespace KeyScroller
 
                 if( actionType == ActionType.StayOnTheSame )
                 {
-                    _currentElement = GetStayOnTheSame( elements );
+                    _nextElement = GetStayOnTheSame( elements );
                 }
                 else if( _currentId < 0 || actionType != ActionType.EnterChild )
                 {
                     // if it's the first iteration, or if we just have to go to the next sibbling
                     VMSplitZone splitZone = null;
 
-                    if( _currentElement != null )
+                    if( _nextElement != null )
                     {
-                        splitZone = _currentElement as VMSplitZone;
+                        splitZone = _nextElement as VMSplitZone;
                     }
 
                     if( splitZone != null && splitZone.Next != null )
                     {
-                        _currentElement = splitZone.Next;
+                        _nextElement = splitZone.Next;
                     }
                     else
                     {
@@ -75,42 +119,42 @@ namespace KeyScroller
                         var nextElementToSplit = elements[_currentId];
                         if( !(nextElementToSplit is VMZoneSimple) )
                         {
-                            _currentElement = nextElementToSplit;
+                            _nextElement = nextElementToSplit;
                         }
                         else
                         {
                             var vmz = nextElementToSplit as VMZoneSimple;
                             if( vmz != null && vmz.Children.Count > childrenLimitBeforeSplit )
                             {
-                                _currentElement = new VMSplitZone( vmz.Context, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
+                                _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
                             }
                             else
                             {
-                                _currentElement = nextElementToSplit;
+                                _nextElement = nextElementToSplit;
                             }
                         }
                     }
                 }
                 else
                 {
-                    _currentElement = GetEnterChild( elements );
+                    _nextElement = GetEnterChild( elements );
                 }
             }
 
-            return GetSkipBehavior( _currentElement );
+            return GetSkipBehavior( _nextElement );
         }
 
-        public override void OnExternalEvent()
-        {
-            if( _currentElement != null )
-            {
-                if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
-                else
-                {
-                    FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                    _actionType = ActionType.StayOnTheSame;
-                }
-            }
-        }
+        //public override void OnExternalEvent()
+        //{
+        //    if( _currentElement != null )
+        //    {
+        //        if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
+        //        else
+        //        {
+        //            FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
+        //            _actionType = ActionType.StayOnTheSame;
+        //        }
+        //    }
+        //}
     }
 }

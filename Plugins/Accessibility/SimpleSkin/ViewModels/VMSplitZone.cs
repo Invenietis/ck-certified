@@ -9,14 +9,14 @@ namespace SimpleSkin.ViewModels
 {
     public class VMSplitZone : VMZoneSimple
     {
-        public VMSplitZone( VMContextSimple ctx, IEnumerable<IHighlightableElement> part1, IEnumerable<IHighlightableElement> part2 )
-            : this( ctx, part1 )
+        public VMSplitZone( VMZoneSimple vms, IEnumerable<IHighlightableElement> part1, IEnumerable<IHighlightableElement> part2 )
+            : this( vms, part1 )
         {
-            Next = new VMSplitZone( ctx, part2 );
+            Next = new VMSplitZone( vms, part2 );
         }
 
-        private VMSplitZone( VMContextSimple ctx, IEnumerable<IHighlightableElement> part1 )
-            : base( ctx )
+        private VMSplitZone( VMZoneSimple vms, IEnumerable<IHighlightableElement> part1 )
+            : base( vms.Context )
         {
             foreach( var v in part1 )
             {
@@ -24,8 +24,11 @@ namespace SimpleSkin.ViewModels
                 if( e != null ) _keys.Add( e );
             }
 
+            Original = vms;
             Next = null;
         }
+
+        public VMZoneSimple Original { get; set; }
 
         public VMSplitZone Next { get; set; }
     }

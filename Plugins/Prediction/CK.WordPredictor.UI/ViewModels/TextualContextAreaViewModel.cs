@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
+using System.Threading;
+using System.Reactive.Linq;
 
 namespace CK.WordPredictor.UI.ViewModels
 {
@@ -50,13 +53,14 @@ namespace CK.WordPredictor.UI.ViewModels
             }
         }
 
+        int _caretIndex;
+
         public int CaretIndex
         {
-            get { return _predictionTextArea.CaretIndex; }
-            set 
+            get { return _caretIndex; }
+            set
             {
-                //_predictionTextArea.Text = _text;
-                _predictionTextArea.CaretIndex = value;
+                _caretIndex = value;
                 PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
             }
         }
@@ -67,8 +71,10 @@ namespace CK.WordPredictor.UI.ViewModels
             set
             {
                 _text = value;
-                //_predictionTextArea.Text = value;
                 PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
+            
+                //_predictionTextArea.Text = value;
+                //PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
             }
         }
     }

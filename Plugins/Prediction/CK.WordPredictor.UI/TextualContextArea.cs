@@ -25,9 +25,6 @@ namespace CK.WordPredictor.UI
         public IWordPredictorFeature Feature { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ITextualContextService TextualContextService { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IPredictionTextAreaService PredictionTextAreaService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -72,7 +69,7 @@ namespace CK.WordPredictor.UI
         TextualContextAreaViewModel _textArea;
         void EnableEditor()
         {
-            _textArea = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
+            _textArea = new TextualContextAreaViewModel( PredictionTextAreaService, CommandTextualContextService );
             _textArea.PropertyChanged += OnTextAreaPropertyChanged;
             _window = new TextualContextAreaWindow( _textArea )
             {

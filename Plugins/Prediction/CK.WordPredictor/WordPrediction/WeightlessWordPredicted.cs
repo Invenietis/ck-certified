@@ -10,10 +10,9 @@ namespace CK.WordPredictor
 {
     public class WeightlessWordPredicted : IWordPredicted
     {
-        public WeightlessWordPredicted( IActivityLogger logger, string w )
+        public WeightlessWordPredicted( string w )
         {
             Word = w;
-            logger.Info( w );
         }
 
         public string Word { get; private set; }

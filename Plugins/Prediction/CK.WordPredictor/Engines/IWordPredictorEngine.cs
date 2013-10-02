@@ -10,14 +10,8 @@ namespace CK.WordPredictor.Model
     {
         bool IsWeightedPrediction { get; }
 
-        /// <summary>
-        /// Returns an enumeration of <see cref="IWordPredicted"/> from 
-        /// </summary>
-        /// <param name="textualContext"></param>
-        /// <param name="maxSuggestedWords"></param>
-        /// <returns></returns>
-        IReadOnlyList<IWordPredicted> Predict( ITextualContextService textualContext, int maxSuggestedWords );
+        IReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords );
 
-        Task<IReadOnlyList<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords );
+        Task<IReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords );
     }
 }

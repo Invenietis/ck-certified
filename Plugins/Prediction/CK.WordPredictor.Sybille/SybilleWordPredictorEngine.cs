@@ -44,71 +44,58 @@ namespace CK.WordPredictor.Engines
         }
 
         Task<IReadOnlyList<IWordPredicted>> _currentlyRunningTask;
-        CancellationToken _currentlyRunningTaskCancellationToken;
-        CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+        CancellationTokenSource cancellationSource = null;
 
-        public Task<IReadOnlyList<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+        public Task<IReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
         {
-            if( _currentlyRunningTaskCancellationToken == null )
-                _currentlyRunningTaskCancellationToken = new CancellationToken( false );
-
-            if( _currentlyRunningTask != null && _currentlyRunningTask.Status == TaskStatus.Running )
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status <= TaskStatus.Running )
             {
+                Debug.Assert( cancellationSource != null );
+                cancellationSource.Cancel();
+                //_currentlyRunningTask.Wait( cancellationSource.Token );
+                cancellationSource.Dispose();
+                cancellationSource = new CancellationTokenSource();
                 PredictionLogger.Instance.Trace( "Prediction Canceled" );
-                _cancellationSource.Cancel();
             }
-            else
+
+            if( cancellationSource == null )
+                cancellationSource = new CancellationTokenSource();
+
+            _currentlyRunningTask = Task.Factory.StartNew( () =>
             {
-                _currentlyRunningTask = Task.Factory.StartNew( () => Predict( textualContext, maxSuggestedWords ), _currentlyRunningTaskCancellationToken );
-            }
+                if( cancellationSource.IsCancellationRequested == false )
+                    return Predict( rawContext, maxSuggestedWords );
+
+                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
+            }, cancellationSource.Token );
+
             return _currentlyRunningTask;
         }
 
-        public IReadOnlyList<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
+        public IReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords )
         {
-
-            //This call can sometimes raise an ArgumentException
-            //TODO : log it and catch it to go on.
-            IReadOnlyList<WeightlessWordPredicted> result = null;
             try
             {
-                result = _sybille
-                    .Predict( ObtainContext( textualService ), maxSuggestedWords )
-                    .Select( t => new WeightlessWordPredicted( PredictionLogger.Instance, t ) )
+                var predicted = _sybille
+                    .Predict( rawContext, maxSuggestedWords )
+                    .Select( t => new WeightlessWordPredicted( t ) )
                     .ToArray();
+
+                PredictionLogger.Instance.Trace( "Predicted < {0} > from < {1} >", String.Join( ", ", predicted.Select( w => w.Word ) ), rawContext.Replace( ' ', '_' ) );
+
+                return predicted;
             }
             catch( ArgumentException ex )
             {
-                PredictionLogger.Instance.Error( ex );
+                PredictionLogger.Instance.Error( ex.Message );
                 return CKReadOnlyListEmpty<IWordPredicted>.Empty;
             }
-            return result;
-        }
-
-        public string ObtainContext( ITextualContextService textualService )
-        {
-            if( textualService.Tokens.Count > 1 )
+            catch( IndexOutOfRangeException outOfRangeEx )
             {
-                string tokenPhrase = String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
-                tokenPhrase += " ";
-                if( textualService.Tokens.Count >= textualService.CurrentTokenIndex )
-                {
-                    string value = textualService.Tokens[textualService.CurrentTokenIndex].Value;
-                    if( value.Length >= textualService.CaretOffset )
-                    {
-                        tokenPhrase += (value.Substring( 0, textualService.CaretOffset ));
-                    }
-                }
-
-                return tokenPhrase;
+                PredictionLogger.Instance.Error( outOfRangeEx.Message );
+                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
             }
-            if( textualService.Tokens.Count == 1 )
-            {
-                return textualService.CurrentToken.Value.Substring( 0, textualService.CaretOffset );
-            }
-            return String.Empty;
         }
-
 
         public bool IsWeightedPrediction
         {
@@ -121,8 +108,15 @@ namespace CK.WordPredictor.Engines
         {
             if( _sybille != null )
             {
-                _sybille.SaveUserPredictor();
-                _sybille = null;
+                try
+                {
+                    _sybille.SaveUserPredictor();
+                    _sybille = null;
+                }
+                catch( Exception ex )
+                {
+                    PredictionLogger.Instance.Error( ex, "While saving user predictor" );
+                }
             }
         }
 

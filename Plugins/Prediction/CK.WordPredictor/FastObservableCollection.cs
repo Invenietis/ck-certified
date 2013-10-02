@@ -9,6 +9,8 @@ namespace CK.WordPredictor
 {
     public class FastObservableCollection<T> : ObservableCollection<T>
     {
+        static object _lock = new object();
+
         /// <summary>
         /// This private variable holds the flag to
         /// turn on and off the collection changed notification.
@@ -37,19 +39,22 @@ namespace CK.WordPredictor
         /// <param name="items">The source collection.</param>
         public void ReplaceItems( IReadOnlyList<T> items )
         {
-            this.SuspendCollectionChangeNotification();
-            try
+            lock( _lock )
             {
-                base.Clear();
-
-                foreach( var i in items )
+                this.SuspendCollectionChangeNotification();
+                try
                 {
-                    base.Add( i );
+                    base.Clear();
+
+                    foreach( var i in items )
+                    {
+                        base.Add( i );
+                    }
                 }
-            }
-            finally
-            {
-                this.NotifyChanges();
+                finally
+                {
+                    this.NotifyChanges();
+                }
             }
         }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
@@ -58,11 +60,9 @@ namespace CK.WordPredictor
             set
             {
                 _text = value;
-
-                if( _sending == false )
+                if( _sending == false && PropertyChanged != null )
                 {
-                    if( PropertyChanged != null )
-                        PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
+                    PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
                 }
             }
         }
@@ -77,11 +77,8 @@ namespace CK.WordPredictor
             {
                 _caretIndex = value;
 
-                if( _sending == false )
-                {
-                    if( PropertyChanged != null )
-                        PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
-                }
+                if( PropertyChanged != null )
+                    PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
             }
         }
 

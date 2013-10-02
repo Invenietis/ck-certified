@@ -10,6 +10,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CK.Plugin;
 using CK.WordPredictor.Model;
+using CK.Core;
+using System.Linq;
+using System.Threading;
+
 
 namespace CK.WordPredictor
 {
@@ -48,7 +52,7 @@ namespace CK.WordPredictor
 
         public virtual bool Setup( IPluginSetupInfo info )
         {
-          
+
             return true;
         }
 
@@ -94,10 +98,16 @@ namespace CK.WordPredictor
         {
             if( _engine != null )
             {
-                _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
+                string rawContext = TextualContextService.GetTextualContext();
+                PredictionLogger.Instance.Trace( "RawContext: {0}.", rawContext );
+
+                var originTask = _engine.PredictAsync( rawContext, Feature.MaxSuggestedWords );
+                originTask.ContinueWith( task =>
                 {
-                    _predictedList.ReplaceItems( words.Result ); 
-                    //foreach( var w in words.Result ) _predictedList.Add( w );
+                    PredictionLogger.Instance.Trace( "{0} items currently.", _predictedList.Count );
+                    PredictionLogger.Instance.Trace( "{0}: {1}", task.Result.Count, String.Join( " ", task.Result.Select( w => w.Word ) ) );
+                    
+                    _predictedList.ReplaceItems( task.Result );
                 }, TaskContinuationOptions.OnlyOnRanToCompletion );
             }
         }

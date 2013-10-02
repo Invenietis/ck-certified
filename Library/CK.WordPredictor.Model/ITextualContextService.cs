@@ -21,7 +21,7 @@ namespace CK.WordPredictor.Model
     {
     }
 
-    public interface ITextualContextService : INotifyPropertyChanged, IDynamicService
+    public interface ITextualContextService : CK.Core.IFluentInterface, INotifyPropertyChanged, IDynamicService
     {
         /// <summary>
         /// Gets an observable list of <see cref="IToken"/> that surrounds the caret (the current insertion point).

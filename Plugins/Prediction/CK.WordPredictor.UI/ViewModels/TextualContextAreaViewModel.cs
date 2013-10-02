@@ -55,7 +55,7 @@ namespace CK.WordPredictor.UI.ViewModels
             get { return _predictionTextArea.CaretIndex; }
             set 
             {
-                _predictionTextArea.Text = _text;
+                //_predictionTextArea.Text = _text;
                 _predictionTextArea.CaretIndex = value;
                 PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
             }
@@ -66,7 +66,8 @@ namespace CK.WordPredictor.UI.ViewModels
             get { return _text; }
             set
             {
-                _text = _predictionTextArea.Text = value;
+                _text = value;
+                //_predictionTextArea.Text = value;
                 PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
             }
         }

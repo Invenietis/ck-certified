@@ -37,7 +37,7 @@ namespace KeyScroller
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
-        
+
         //List the avalaible strategy at the class init
         static KeyScrollerPlugin()
         {
@@ -60,19 +60,19 @@ namespace KeyScroller
             {
                 _strategies.Add( name, GetStrategyByName( name ) );
             }
-            _scrollingStrategy = GetStrategyByName(Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
-            
+            _scrollingStrategy = GetStrategyByName( Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ) );
+
             return true;
         }
-        
-        IScrollingStrategy GetStrategyByName(string name)
+
+        IScrollingStrategy GetStrategyByName( string name )
         {
             switch( name )
             {
                 case "TurboScrollingStrategy":
                     if( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration);
-                  
+                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration );
+
                 case "SimpleScrollingStrategy":
                     if( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new SimpleScrollingStrategy( _timer, _registeredElements, Configuration );
@@ -125,7 +125,7 @@ namespace KeyScroller
             if( !_registeredElements.Contains( element ) )
             {
                 _registeredElements.Add( element );
-                _scrollingStrategy.Start();
+                if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
             }
         }
 
@@ -148,19 +148,19 @@ namespace KeyScroller
 
         public void Resume()
         {
-            _scrollingStrategy.Start();
+            _scrollingStrategy.Resume();
         }
 
         public event EventHandler<HighlightEventArgs> BeginHighlight
         {
-            add 
-            { 
-                foreach(var kp in _strategies)
+            add
+            {
+                foreach( var kp in _strategies )
                 {
                     kp.Value.BeginHighlight += value;
                 }
             }
-            remove 
+            remove
             {
                 foreach( var kp in _strategies )
                 {

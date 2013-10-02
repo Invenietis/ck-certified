@@ -92,7 +92,7 @@ namespace CK.WordPredictor
                 {
                     _predictedList.Clear();
                     foreach( var w in words.Result ) _predictedList.Add( w );
-                } );
+                }, TaskContinuationOptions.OnlyOnRanToCompletion );
             }
         }
 

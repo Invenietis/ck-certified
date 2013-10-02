@@ -7,6 +7,7 @@ using CK.Core;
 using CK.Plugin.Config;
 using CommonServices.Accessibility;
 using HighlightModel;
+using System.Diagnostics;
 
 namespace KeyScroller
 {
@@ -33,7 +34,7 @@ namespace KeyScroller
 
         internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
-            get { return _roElements ?? (_roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements )); }
+            get { return _roElements ?? ( _roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
         }
 
         public ScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
@@ -54,10 +55,11 @@ namespace KeyScroller
 
         protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
         {
-            SelectElement( sender, eventArgs);
+            SelectElement( sender, eventArgs );
         }
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
+            Console.Out.WriteLine( "Internalbeat " + DateTime.Now );
             if( _currentElement != null ) FireEndHighlight();
 
             // highlight the next element
@@ -160,21 +162,22 @@ namespace KeyScroller
                 }
             }
 
-            return GetSkipBehavior(nextElement);
+            return GetSkipBehavior( nextElement );
         }
 
+        bool _isStarted;
+        public bool IsStarted { get { return _isStarted; } }
         public virtual void Start()
         {
-            
+            Debug.Assert( !_isStarted );
 
-            if( !_timer.IsEnabled && _elements.Count > 0 )
-            {
-                _timer.Start();
-            }
+            StartTimer();
+
+            Console.Out.WriteLine( "Registering " + Name );
             _timer.Tick += OnInternalBeat;
             _configuration.ConfigChanged += OnConfigChanged;
+            _isStarted = true;
         }
-
 
         public virtual void Stop()
         {
@@ -188,6 +191,7 @@ namespace KeyScroller
             }
             _timer.Tick -= OnInternalBeat;
             _configuration.ConfigChanged -= OnConfigChanged;
+            _isStarted = false;
         }
 
         public virtual void Pause( bool forceEndHighlight )
@@ -199,6 +203,19 @@ namespace KeyScroller
                     FireEndHighlight();
                 }
                 _timer.Stop();
+            }
+        }
+
+        public virtual void Resume()
+        {
+            StartTimer();
+        }
+
+        protected virtual void StartTimer()
+        {
+            if( !_timer.IsEnabled && _elements.Count > 0 )
+            {
+                _timer.Start();
             }
         }
 
@@ -230,6 +247,10 @@ namespace KeyScroller
 
         #region IScrollingStrategy Members
 
+        public abstract string Name
+        {
+            get;
+        }
 
         public void ElementUnregistered( IHighlightableElement unregisteredElement )
         {
@@ -242,15 +263,6 @@ namespace KeyScroller
                 _currentElementParents = new Stack<IHighlightableElement>();
                 _currentId = 0;
             }
-        }
-
-        #endregion
-
-        #region IScrollingStrategy Members
-
-        public abstract string Name
-        {
-            get;
         }
 
         #endregion

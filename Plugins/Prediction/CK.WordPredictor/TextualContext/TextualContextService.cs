@@ -65,6 +65,7 @@ namespace CK.WordPredictor
 
             if( SendStringService != null && SendStringService.Service != null )
             {
+                SendStringService.Service.KeySent += OnKeySent;
                 SendStringService.Service.StringSent += OnStringSent;
             }
             SendStringService.ServiceStatusChanged += OnSendStringServiceStatusChanged;
@@ -113,6 +114,23 @@ namespace CK.WordPredictor
                     SetRawText( raw );
                 }
                 else if( e.Key == "{ENTER}" )
+                {
+                    ClearContext();
+                }
+            }
+        }
+
+        protected virtual void OnKeySent( object sender, NativeKeySentEventArgs e )
+        {
+            if( !PredictionTextAreaService.Service.IsDriven )
+            {
+                if( e.Key == NativeMethods.KeyboardKeys.Space && _rawContext != null && _rawContext.Length > 0 )
+                {
+                    var raw = _rawContext.Substring( 0, _rawContext.Length - 1 );
+                    _caretIndex = raw.Length;
+                    SetRawText( raw );
+                }
+                else if( e.Key == NativeMethods.KeyboardKeys.Enter )
                 {
                     ClearContext();
                 }
@@ -193,7 +211,7 @@ namespace CK.WordPredictor
                 while( i < _tokenSeparatorIndexes.Length )
                 {
                     int wordIndex = _tokenSeparatorIndexes[i];
-                    if( wordIndex > _caretIndex ) return i;
+                    if( wordIndex >= _caretIndex ) return i;
                     i++;
                 }
                 return i;
@@ -270,11 +288,11 @@ namespace CK.WordPredictor
         }
 
         /// <summary>
-        /// return a 
+        /// Splits the context (seperates the different words)
         /// </summary>
         string[] Normalization( string context )
         {
-            return context.Split( new char[] { ' ' } );
+            return context.Split( ' ', '\'' );
         }
 
         // WORD1  WORD2 WORD3
@@ -300,7 +318,7 @@ namespace CK.WordPredictor
             else
             {
 
-                string[] tokens = Normalization( value ); ;
+                string[] tokens = Normalization( value );
                 if( tokens.Length > 1 )
                 {
                     _tokenSeparatorIndexes = new int[tokens.Length - 1];
@@ -315,7 +333,6 @@ namespace CK.WordPredictor
 
                 _tokenCollection.Clear( false );
                 _tokenCollection.AddRange( tokens, false );
-
             }
         }
 
@@ -379,10 +396,12 @@ namespace CK.WordPredictor
         {
             if( e.Current == InternalRunningStatus.Stopping )
             {
+                SendStringService.Service.KeySent -= OnKeySent;
                 SendStringService.Service.StringSent -= OnStringSent;
             }
             if( e.Current == InternalRunningStatus.Starting )
             {
+                SendStringService.Service.KeySent += OnKeySent;
                 SendStringService.Service.StringSent += OnStringSent;
             }
         }

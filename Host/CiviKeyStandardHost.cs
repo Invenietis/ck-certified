@@ -60,7 +60,8 @@ namespace Host
         public void FireShowHostHelp()
         {
             if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
-            ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
+            if( ShowHostHelp != null )
+                ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
         }
 
         /// <summary>

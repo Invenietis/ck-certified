@@ -90,7 +90,7 @@ namespace BasicCommandHandlers
         {
             // timer should not be enabled. If it is enabled it could be due to 
             if( _timer.IsEnabled ) _timer.Stop();
-            
+
             // setup speed
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, speed );
 
@@ -139,23 +139,23 @@ namespace BasicCommandHandlers
                 switch( direction )
                 {
                     case "UL":
-                        angle = -((3 * Math.PI) / 4);
+                        angle = -( ( 3 * Math.PI ) / 4 );
                         break;
                     case "BL":
-                        angle = (3 * Math.PI) / 4;
+                        angle = ( 3 * Math.PI ) / 4;
                         break;
                     case "BR":
                         angle = Math.PI / 4;
                         break;
                     case "UR":
-                        angle = -(Math.PI / 4);
+                        angle = -( Math.PI / 4 );
                         break;
                 }
 
                 motion = () =>
                 {
-                    int x = (int)(PointerDriver.Service.CurrentPointerXLocation + (STEP * Math.Cos( angle )));
-                    int y = (int)(PointerDriver.Service.CurrentPointerYLocation + (STEP * Math.Sin( angle )));
+                    int x = ( PointerDriver.Service.CurrentPointerXLocation + (int)( STEP * Math.Cos( angle ) ) );
+                    int y = ( PointerDriver.Service.CurrentPointerYLocation + (int)( STEP * Math.Sin( angle ) ) );
                     PointerDriver.Service.MovePointer( x, y );
                 };
             }

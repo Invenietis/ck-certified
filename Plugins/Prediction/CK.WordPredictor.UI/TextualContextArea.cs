@@ -42,13 +42,17 @@ namespace CK.WordPredictor.UI
         public void Start()
         {
             Feature.PropertyChanged += OnFeaturePropertyChanged;
+            PredictionTextAreaService.PredictionAreaTextSent += OnPredictionAreaContentSent;
+
             if( Feature.DisplayContextEditor ) EnableEditor();
         }
 
         public void Stop()
         {
             DisableEditor();
+
             Feature.PropertyChanged -= OnFeaturePropertyChanged;
+            PredictionTextAreaService.PredictionAreaTextSent -= OnPredictionAreaContentSent;
 
             if( _observersChain != null ) _observersChain.Dispose();
         }
@@ -109,6 +113,11 @@ namespace CK.WordPredictor.UI
             CreateSendContextKeyInPredictionZone( zone );
         }
 
+        void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
+        {
+            _textArea.TextualContext = String.Empty;
+        }
+
         void OnTextAreaPropertyChanged( PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "IsFocused" )
@@ -117,11 +126,11 @@ namespace CK.WordPredictor.UI
             }
             if( e.PropertyName == "TextualContext" )
             {
-                PredictionTextAreaService.Text = _textArea.TextualContext;
+                PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
             }
             if( e.PropertyName == "CaretIndex" )
             {
-                PredictionTextAreaService.CaretIndex = _textArea.CaretIndex;
+                PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
             }
         }
 

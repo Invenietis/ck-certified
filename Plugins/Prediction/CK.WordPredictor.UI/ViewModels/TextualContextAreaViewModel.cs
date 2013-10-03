@@ -15,15 +15,7 @@ namespace CK.WordPredictor.UI.ViewModels
         public TextualContextAreaViewModel( IPredictionTextAreaService predictionTextArea, ICommandTextualContextService commandTextualContextService )
         {
             _predictionTextArea = predictionTextArea;
-            _predictionTextArea.TextSent += OnPredictionAreaContentSent;
             _commandTextualContextService = commandTextualContextService;
-        }
-
-        void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
-        {
-            _text = _predictionTextArea.Text = String.Empty;
-            if( PropertyChanged != null )
-                PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
         }
 
         bool _isFocused;
@@ -37,7 +29,7 @@ namespace CK.WordPredictor.UI.ViewModels
 
                 if( _isFocused )
                 {
-                    _predictionTextArea.Text = _text;
+                    _predictionTextArea.ChangePredictionAreaContent( _text, _caretIndex );
                 }
 
                 PropertyChanged( this, new PropertyChangedEventArgs( "IsFocused" ) );

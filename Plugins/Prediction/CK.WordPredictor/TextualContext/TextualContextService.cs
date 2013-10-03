@@ -47,8 +47,8 @@ namespace CK.WordPredictor
         {
             if( PredictionTextAreaService != null && PredictionTextAreaService.Service != null )
             {
-                PredictionTextAreaService.Service.TextSent += OnPredictionAreaContentSent;
-                PredictionTextAreaService.Service.PropertyChanged += OnPredictionAreaServicePropertyChanged;
+                PredictionTextAreaService.Service.PredictionAreaTextSent += OnPredictionAreaContentSent;
+                PredictionTextAreaService.Service.PredictionAreaContentChanged += OnPredictionAreaServicePropertyChanged;
             }
             PredictionTextAreaService.ServiceStatusChanged += OnPredictionAreaServiceStatusChanged;
 
@@ -76,8 +76,8 @@ namespace CK.WordPredictor
         {
             if( PredictionTextAreaService != null && PredictionTextAreaService.Service != null )
             {
-                PredictionTextAreaService.Service.TextSent -= OnPredictionAreaContentSent;
-                PredictionTextAreaService.Service.PropertyChanged -= OnPredictionAreaServicePropertyChanged;
+                PredictionTextAreaService.Service.PredictionAreaTextSent -= OnPredictionAreaContentSent;
+                PredictionTextAreaService.Service.PredictionAreaContentChanged -= OnPredictionAreaServicePropertyChanged;
             }
             PredictionTextAreaService.ServiceStatusChanged -= OnPredictionAreaServiceStatusChanged;
 
@@ -151,7 +151,31 @@ namespace CK.WordPredictor
             }
         }
 
-        void SetToken( string token )
+        protected virtual void OnTextualContextClear( object sender, EventArgs e )
+        {
+            ClearContext();
+        }
+
+        protected virtual void OnPredictionAreaServicePropertyChanged( object sender, PredictionAreaContentEventArgs e )
+        {
+            PredictionLogger.Instance.Trace( "CaretIndex {0}", e.CaretIndex );
+
+            _caretIndex = e.CaretIndex;
+
+            SetRawText( e.Text );
+
+            NotifyPropertiesChanged( "CurrentToken", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
+        }
+
+        protected virtual void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
+        {
+            CommandTextualContextService.Service.ClearTextualContext();
+            SendStringService.Service.SendString( e.Text );
+        }
+
+        #endregion
+
+        private void SetToken( string token )
         {
             string newRawContext = String.Concat( _rawContext, token );
 
@@ -159,11 +183,6 @@ namespace CK.WordPredictor
             InternalSetRawText( newRawContext );
 
             NotifyPropertiesChanged( "CurrentToken", "Tokens", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
-        }
-
-        protected virtual void OnTextualContextClear( object sender, EventArgs e )
-        {
-            ClearContext();
         }
 
         private void ClearContext()
@@ -176,27 +195,6 @@ namespace CK.WordPredictor
             NotifyPropertiesChanged( "CurrentToken", "Tokens", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
         }
 
-        private void OnPredictionAreaServicePropertyChanged( object sender, PropertyChangedEventArgs e )
-        {
-            if( e.PropertyName == "Text" )
-            {
-                //PredictionLogger.Instance.Trace( "Property: Text Value: {0}", PredictionTextAreaService.Service.Text );
-                SetRawText( PredictionTextAreaService.Service.Text );
-            }
-            if( e.PropertyName == "CaretIndex" )
-            {
-                PredictionLogger.Instance.Trace( "CaretIndex {0}", PredictionTextAreaService.Service.CaretIndex );
-                SetCaretIndex( PredictionTextAreaService.Service.CaretIndex );
-            }
-        }
-
-        private void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
-        {
-            CommandTextualContextService.Service.ClearTextualContext();
-            SendStringService.Service.SendString( e.Text );
-        }
-
-        #endregion
 
         #region ITextualContextService Implementation
 
@@ -305,14 +303,6 @@ namespace CK.WordPredictor
             }
         }
 
-        public void SetCaretIndex( int caretGlobalIndex )
-        {
-            _caretIndex = caretGlobalIndex;
-
-            NotifyPropertiesChanged( "CurrentToken", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
-        }
-
-
         static char[] _separators = new char[] { ' ' };
 
         /// <summary>
@@ -372,6 +362,7 @@ namespace CK.WordPredictor
 
         #endregion
 
+        #region Helpers
         internal static bool IsResetContextToken( string token )
         {
             if( String.IsNullOrWhiteSpace( token ) ) return false;
@@ -388,17 +379,9 @@ namespace CK.WordPredictor
             return Char.IsWhiteSpace( c ) || Char.IsSeparator( c );
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
 
-        protected virtual void OnPropertyChanged( string propertyName )
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if( handler != null )
-            {
-                var e = new PropertyChangedEventArgs( propertyName );
-                handler( this, e );
-            }
-        }
+        #region Service status change handling
 
         void OnCommandTextualContextServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
@@ -416,13 +399,13 @@ namespace CK.WordPredictor
         {
             if( e.Current == InternalRunningStatus.Stopping )
             {
-                PredictionTextAreaService.Service.TextSent -= OnPredictionAreaContentSent;
-                PredictionTextAreaService.Service.PropertyChanged -= OnPredictionAreaServicePropertyChanged;
+                PredictionTextAreaService.Service.PredictionAreaTextSent -= OnPredictionAreaContentSent;
+                PredictionTextAreaService.Service.PredictionAreaContentChanged -= OnPredictionAreaServicePropertyChanged;
             }
             if( e.Current == InternalRunningStatus.Starting )
             {
-                PredictionTextAreaService.Service.TextSent += OnPredictionAreaContentSent;
-                PredictionTextAreaService.Service.PropertyChanged += OnPredictionAreaServicePropertyChanged;
+                PredictionTextAreaService.Service.PredictionAreaTextSent += OnPredictionAreaContentSent;
+                PredictionTextAreaService.Service.PredictionAreaContentChanged += OnPredictionAreaServicePropertyChanged;
             }
         }
 
@@ -452,6 +435,22 @@ namespace CK.WordPredictor
             }
         }
 
+        #endregion
+
+        #region Properties changed
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged( string propertyName )
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if( handler != null )
+            {
+                var e = new PropertyChangedEventArgs( propertyName );
+                handler( this, e );
+            }
+        }
+
         private void NotifyPropertiesChanged( params string[] properties )
         {
             //using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, () => "Notified", "Notifiying..." ) )
@@ -463,6 +462,8 @@ namespace CK.WordPredictor
                 }
             }
         }
+
+        #endregion
 
     }
 }

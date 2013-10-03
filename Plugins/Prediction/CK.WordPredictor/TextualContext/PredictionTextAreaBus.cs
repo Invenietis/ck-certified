@@ -15,9 +15,14 @@ namespace CK.WordPredictor
     [Plugin( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}", PublicName = "WordPrediction - TextArea Bus", Categories = new string[] { "Prediction", "Advcanced" } )]
     public class PredictionTextAreaBus : BasicCommandHandler, IPredictionTextAreaService
     {
+        string _text;
+        int _caretIndex;
+
         public const string CMDSendPredictionAreaContent = "sendPredictionAreaContent";
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<PredictionAreaContentEventArgs> PredictionAreaContentChanged;
+        
+        public event EventHandler<PredictionAreaContentEventArgs> PredictionAreaTextSent;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendStringService> SendStringService { get; set; }
@@ -25,75 +30,41 @@ namespace CK.WordPredictor
         public override void Start()
         {
             base.Start();
-            SendStringService.Service.StringSending += Service_StringSending;
-            SendStringService.Service.StringSent += Service_StringSent;
+            PredictionAreaContentChanged += OnPredictionAreaContentChanged;
+
         }
 
         public override void Stop()
         {
-            SendStringService.Service.StringSending -= Service_StringSending;
-            SendStringService.Service.StringSent -= Service_StringSent;
+            PredictionAreaContentChanged -= OnPredictionAreaContentChanged;
             base.Stop();
         }
 
-        bool _sending;
-
-        void Service_StringSending( object sender, StringSendingEventArgs e )
+        protected virtual void OnPredictionAreaContentChanged( object sender, PredictionAreaContentEventArgs e )
         {
-            _sending = true;
+            _text = e.Text;
+            _caretIndex = e.CaretIndex;
         }
 
-        void Service_StringSent( object sender, StringSentEventArgs e )
+        void IPredictionTextAreaService.ChangePredictionAreaContent( string text, int caretIndex )
         {
-            _sending = false;
-        }
-
-        string _text;
-        int _caretIndex;
-
-        public string Text
-        {
-            get
+            if( _text != text || _caretIndex != caretIndex )
             {
-                return _text;
-            }
-            set
-            {
-                _text = value;
-                if( _sending == false && PropertyChanged != null )
-                {
-                    PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
-                }
+                if( PredictionAreaContentChanged != null )
+                    PredictionAreaContentChanged( this, new PredictionAreaContentEventArgs( text, caretIndex ) );
             }
         }
 
-        public int CaretIndex
+        void IPredictionTextAreaService.SendText()
         {
-            get
-            {
-                return _caretIndex;
-            }
-            set
-            {
-                _caretIndex = value;
-
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
-            }
-        }
-
-        public event EventHandler<PredictionAreaContentEventArgs> TextSent;
-
-        public void SendText()
-        {
-            if( TextSent != null && Text != null )
-                TextSent( this, new PredictionAreaContentEventArgs( Text ) );
+            if( PredictionAreaTextSent != null )
+                PredictionAreaTextSent( this, new PredictionAreaContentEventArgs( _text, _caretIndex ) );
         }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( e.Command != null && e.Command.Contains( CMDSendPredictionAreaContent ) )
-                SendText();
+                ((IPredictionTextAreaService)this).SendText();
         }
 
         public event EventHandler<IsDrivenChangedEventArgs> IsDrivenChanged;
@@ -110,5 +81,6 @@ namespace CK.WordPredictor
                 if( IsDrivenChanged != null ) IsDrivenChanged( this, new IsDrivenChangedEventArgs( value ) );
             }
         }
+
     }
 }

@@ -36,7 +36,7 @@ namespace CK.WordPredictor
 
         public IWordPredicted this[int index]
         {
-            get { return _list[index]; }
+            get { return _list.Count > index ? _list[index] : null; }
         }
 
         #endregion

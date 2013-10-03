@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CK.Plugin;
+using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
 
@@ -12,54 +15,56 @@ namespace CK.WordPredictor
     [Plugin( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}", PublicName = "WordPrediction - TextArea Bus", Categories = new string[] { "Prediction", "Advcanced" } )]
     public class PredictionTextAreaBus : BasicCommandHandler, IPredictionTextAreaService
     {
-        public const string CMDSendPredictionAreaContent = "sendPredictionAreaContent";
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         string _text;
         int _caretIndex;
 
-        public string Text
+        public const string CMDSendPredictionAreaContent = "sendPredictionAreaContent";
+
+        public event EventHandler<PredictionAreaContentEventArgs> PredictionAreaContentChanged;
+        
+        public event EventHandler<PredictionAreaContentEventArgs> PredictionAreaTextSent;
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<ISendStringService> SendStringService { get; set; }
+
+        public override void Start()
         {
-            get
+            base.Start();
+            PredictionAreaContentChanged += OnPredictionAreaContentChanged;
+
+        }
+
+        public override void Stop()
+        {
+            PredictionAreaContentChanged -= OnPredictionAreaContentChanged;
+            base.Stop();
+        }
+
+        protected virtual void OnPredictionAreaContentChanged( object sender, PredictionAreaContentEventArgs e )
+        {
+            _text = e.Text;
+            _caretIndex = e.CaretIndex;
+        }
+
+        void IPredictionTextAreaService.ChangePredictionAreaContent( string text, int caretIndex )
+        {
+            if( _text != text || _caretIndex != caretIndex )
             {
-                return _text;
-            }
-            set
-            {
-                _text = value;
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "Text" ) );
+                if( PredictionAreaContentChanged != null )
+                    PredictionAreaContentChanged( this, new PredictionAreaContentEventArgs( text, caretIndex ) );
             }
         }
 
-        public int CaretIndex
+        void IPredictionTextAreaService.SendText()
         {
-            get
-            {
-                return _caretIndex;
-            }
-            set
-            {
-                _caretIndex = value;
-
-                if( PropertyChanged != null )
-                    PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
-            }
-        }
-
-        public event EventHandler<PredictionAreaContentEventArgs> TextSent;
-
-        public void SendText()
-        {
-            if( TextSent != null && Text != null )
-                TextSent( this, new PredictionAreaContentEventArgs( Text ) );
+            if( PredictionAreaTextSent != null )
+                PredictionAreaTextSent( this, new PredictionAreaContentEventArgs( _text, _caretIndex ) );
         }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
             if( e.Command != null && e.Command.Contains( CMDSendPredictionAreaContent ) )
-                SendText();
+                ((IPredictionTextAreaService)this).SendText();
         }
 
         public event EventHandler<IsDrivenChangedEventArgs> IsDrivenChanged;
@@ -76,5 +81,6 @@ namespace CK.WordPredictor
                 if( IsDrivenChanged != null ) IsDrivenChanged( this, new IsDrivenChangedEventArgs( value ) );
             }
         }
+
     }
 }

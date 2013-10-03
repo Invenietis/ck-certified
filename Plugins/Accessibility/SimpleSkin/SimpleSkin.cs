@@ -107,7 +107,7 @@ namespace SimpleSkin
         Dispatcher _skinDispatcher;
         //_secondThread;
 
-        #region IPlugin Implementation
+        #region IPlugin Implementation 
 
         public bool Setup( IPluginSetupInfo info )
         {

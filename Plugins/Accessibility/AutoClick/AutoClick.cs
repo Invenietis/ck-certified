@@ -64,7 +64,7 @@ namespace CK.Plugins.AutoClick
 
         private AutoClickEditorWindow _editorWindow;
         private WPFStdClickTypeWindow _wpfStandardClickTypeWindow;
-        private MouseProgressPieWindow _mouseWindow;
+        private MouseProgressPieWindow _mouseIndicatorWindow;
 
         public bool IsEditorOpened { get { return _editorWindow.IsVisible; } }
 
@@ -134,21 +134,20 @@ namespace CK.Plugins.AutoClick
         public bool IsPaused
         {
             get { return _isPaused; }
-            set { _isPaused = value; OnPropertyChanged( "IsPaused" ); OnPropertyChanged( "ShowMousePanel" ); }
+            set { _isPaused = value; OnPropertyChanged( "IsPaused" ); OnPropertyChanged( "ShowMouseIndicator" ); }
         }
 
-        //true if fhe user wants to see the MousePanel
-        bool _showMousePanelOption;
-        public bool ShowMousePanelOption
+        //true if the user wants to see the indicator next to the mouse pointer
+        public bool ShowMouseIndicatorOption
         {
-            get { return (bool)Config.User["ShowMousePanelOption"]; }
-            set { Config.User["ShowMousePanelOption"] = value; }
+            get { return (bool)Config.User["ShowMouseIndicatorOption"]; }
+            set { Config.User["ShowMouseIndicatorOption"] = value; }
         }
 
         //true if the user wants to see the MousePanel and the autoclick is not paused
-        public bool ShowMousePanel
+        public bool ShowMouseIndicator
         {
-            get { return !_isPaused && _showMousePanelOption; }
+            get { return !_isPaused && ShowMouseIndicatorOption; }
         }
 
         /// <summary>
@@ -184,7 +183,6 @@ namespace CK.Plugins.AutoClick
             _selector = new StdClickTypeSelector( this );
             _wpfStandardClickTypeWindow = new WPFStdClickTypeWindow() { DataContext = this };
 
-            _showMousePanelOption = Config.User.GetOrSet<bool>( "ShowMousePanelOption", true );
             int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
             int defaultWidth = defaultHeight / 4;
 
@@ -197,14 +195,16 @@ namespace CK.Plugins.AutoClick
                 _wpfStandardClickTypeWindow.Width = _wpfStandardClickTypeWindow.Height = 0;
             }
 
-            _mouseWindow = new MouseProgressPieWindow { DataContext = this };
+            _mouseIndicatorWindow = new MouseProgressPieWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
 
             Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             ConfigureMouseWatcher();
             RegisterEvents();
 
-            _mouseWindow.Show();
+            Config.User.GetOrSet<bool>( "ShowMouseIndicatorOption", true );
+
+            _mouseIndicatorWindow.Show();
             _wpfStandardClickTypeWindow.Show();
 
             //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
@@ -237,9 +237,9 @@ namespace CK.Plugins.AutoClick
 
         public void Teardown()
         {
-            if( _mouseWindow != null )
+            if( _mouseIndicatorWindow != null )
             {
-                _mouseWindow.Close();
+                _mouseIndicatorWindow.Close();
                 _editorWindow.Close();
             }
 
@@ -250,7 +250,7 @@ namespace CK.Plugins.AutoClick
 
             _selector = null;
             _editorWindow = null;
-            _mouseWindow = null;
+            _mouseIndicatorWindow = null;
             _wpfStandardClickTypeWindow = null;
         }
 
@@ -275,7 +275,8 @@ namespace CK.Plugins.AutoClick
                     case "CountDownDuration":
                         MouseWatcher.Service.CountDownDuration = (int)e.Value;
                         break;
-                    case "ShowMousePanelOption":
+                    case "ShowMouseIndicatorOption":
+                        OnPropertyChanged( "ShowMouseIndicator" );
                         break;
                     default:
                         return;
@@ -295,8 +296,8 @@ namespace CK.Plugins.AutoClick
 
         void OnPointerMove( object sender, PointerDeviceEventArgs e )
         {
-            _mouseWindow.Left = e.X + 10;
-            _mouseWindow.Top = e.Y - 20;
+            _mouseIndicatorWindow.Left = e.X + 10;
+            _mouseIndicatorWindow.Top = e.Y - 20;
         }
 
         private void OnEditorWindowVisibilityChanged( object sender, DependencyPropertyChangedEventArgs e )
@@ -314,11 +315,13 @@ namespace CK.Plugins.AutoClick
         {
             _isPaused = true;
             OnPropertyChanged( "ProgressValue" );
+            OnPropertyChanged( "ShowMouseIndicator" );
         }
 
         private void OnHasResumed( object sender, EventArgs e )
         {
             _isPaused = false;
+            OnPropertyChanged( "ShowMouseIndicator" );
         }
 
         private void OnProgressValueChanged( object sender, AutoClickProgressValueChangedEventArgs e )
@@ -424,22 +427,22 @@ namespace CK.Plugins.AutoClick
                     case ClickInstruction.None:
                         break;
                     case ClickInstruction.RightButtonDown:
-                        MouseDriver.Service.SimulateButtonDown( ButtonInfo.XButton, "Right" );
+                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionRightDown();
                         break;
                     case ClickInstruction.RightButtonUp:
-                        MouseDriver.Service.SimulateButtonUp( ButtonInfo.XButton, "Right" );
+                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionRightUp();
                         break;
                     case ClickInstruction.LeftButtonDown:
-                        MouseDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
+                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftDown();
                         break;
                     case ClickInstruction.LeftButtonUp:
-                        MouseDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
+                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftUp();
                         break;
                     case ClickInstruction.WheelDown:
-                        MouseDriver.Service.SimulateButtonDown( ButtonInfo.XButton, "Middle" );
+                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionMiddleDown();
                         break;
                     case ClickInstruction.WheelUp:
-                        MouseDriver.Service.SimulateButtonUp( ButtonInfo.XButton, "Middle" );
+                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionMiddleUp();
                         break;
                     default:
                         break;

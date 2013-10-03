@@ -9,6 +9,8 @@ namespace KeyScroller
     /// </summary>
     internal interface IScrollingStrategy
     {
+        bool IsStarted { get; }
+
         /// <summary>
         /// The displayable unique strategy name
         /// </summary>
@@ -39,9 +41,14 @@ namespace KeyScroller
         void Stop();
 
         /// <summary>
-        /// Suspend the scrolling strategy (Start() to resume)
+        /// Suspend the scrolling strategy
         /// </summary>
         void Pause( bool forceEndHighlight );
+
+        /// <summary>
+        /// Resumes the scrillong strategy
+        /// </summary>
+        void Resume();
 
         /// <summary>
         /// Called after the trigger event is fired

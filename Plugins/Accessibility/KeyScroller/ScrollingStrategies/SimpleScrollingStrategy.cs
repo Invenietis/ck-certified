@@ -11,6 +11,9 @@ using CK.Plugin.Config;
 
 namespace KeyScroller
 {
+    /// <summary>
+    /// Scrolling on each key one after the other, without taking zones into account
+    /// </summary>
     [Strategy( SimpleScrollingStrategy.StrategyName )]
     public class SimpleScrollingStrategy : ScrollingStrategy
     {

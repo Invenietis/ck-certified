@@ -132,7 +132,7 @@ namespace KeyScroller
                     {
                         //We don't cancel the event, in order no to block the user when he selects the left click as the trigger.
                         //e.Cancel = true;
-                        InternalTriggered( this, new InputTriggerEventArgs() ); //We don't know the input source (yet)
+                        InternalTriggered( this, new InputTriggerEventArgs( e.Source ) );
                     }
                 }
             }

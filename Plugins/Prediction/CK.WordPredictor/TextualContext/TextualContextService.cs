@@ -28,6 +28,10 @@ namespace CK.WordPredictor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPredictionTextAreaService> PredictionTextAreaService { get; set; }
 
+        public event EventHandler TextualContextChanging;
+
+        public event EventHandler TextualContextChanged;
+
         #region IPlugin Initialization
 
         public bool Setup( IPluginSetupInfo info )
@@ -102,6 +106,24 @@ namespace CK.WordPredictor
 
         #endregion
 
+        class ChangeWrapper : IDisposable
+        {
+            TextualContextService _service;
+
+            public ChangeWrapper( TextualContextService service )
+            {
+                _service = service;
+                if( _service.TextualContextChanging != null )
+                    _service.TextualContextChanging( this, EventArgs.Empty );
+            }
+
+            public void Dispose()
+            {
+                if( _service.TextualContextChanged != null )
+                    _service.TextualContextChanged( this, EventArgs.Empty );
+            }
+        }
+
         #region Event Registration
 
         protected virtual void OnOldKeySent( object sender, KeySentEventArgs e )
@@ -158,13 +180,14 @@ namespace CK.WordPredictor
 
         protected virtual void OnPredictionAreaServicePropertyChanged( object sender, PredictionAreaContentEventArgs e )
         {
-            PredictionLogger.Instance.Trace( "CaretIndex {0}", e.CaretIndex );
+            using( new ChangeWrapper( this ) )
+            {
+                PredictionLogger.Instance.Trace( "CaretIndex {0}", e.CaretIndex );
 
-            _caretIndex = e.CaretIndex;
+                _caretIndex = e.CaretIndex;
 
-            SetRawText( e.Text );
-
-            NotifyPropertiesChanged( "CurrentToken", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
+                InternalSetRawText( e.Text );
+            }
         }
 
         protected virtual void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
@@ -177,22 +200,24 @@ namespace CK.WordPredictor
 
         private void SetToken( string token )
         {
-            string newRawContext = String.Concat( _rawContext, token );
+            using( new ChangeWrapper( this ) )
+            {
+                string newRawContext = String.Concat( _rawContext, token );
 
-            _caretIndex = newRawContext.Length;
-            InternalSetRawText( newRawContext );
-
-            NotifyPropertiesChanged( "CurrentToken", "Tokens", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
+                _caretIndex = newRawContext.Length;
+                InternalSetRawText( newRawContext );
+            }
         }
 
         private void ClearContext()
         {
-            _rawContext = null;
-            _tokenCollection.Clear();
-            _caretIndex = 0;
-            _tokenSeparatorIndexes = new int[0];
-
-            NotifyPropertiesChanged( "CurrentToken", "Tokens", "CurrentTokenIndex", "CaretOffset", "CurrentPosition" );
+            using( new ChangeWrapper( this ) )
+            {
+                _rawContext = null;
+                _tokenCollection.Clear();
+                _caretIndex = 0;
+                _tokenSeparatorIndexes = new int[0];
+            }
         }
 
 
@@ -316,11 +341,12 @@ namespace CK.WordPredictor
         // WORD1  WORD2 WORD3
         public void SetRawText( string value )
         {
-            if( value == _rawContext ) return;
+            using( new ChangeWrapper( this ) )
+            {
+                if( value == _rawContext ) return;
 
-            InternalSetRawText( value );
-
-            NotifyPropertiesChanged( "CurrentToken", "Tokens" );
+                InternalSetRawText( value );
+            }
         }
 
         private void InternalSetRawText( string value )
@@ -436,34 +462,5 @@ namespace CK.WordPredictor
         }
 
         #endregion
-
-        #region Properties changed
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged( string propertyName )
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if( handler != null )
-            {
-                var e = new PropertyChangedEventArgs( propertyName );
-                handler( this, e );
-            }
-        }
-
-        private void NotifyPropertiesChanged( params string[] properties )
-        {
-            //using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, () => "Notified", "Notifiying..." ) )
-            {
-                foreach( string p in properties )
-                {
-                    //PredictionLogger.Instance.Trace( p );
-                    OnPropertyChanged( p );
-                }
-            }
-        }
-
-        #endregion
-
     }
 }

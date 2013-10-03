@@ -18,11 +18,11 @@ namespace CK.WordPredictor.UI.ViewModels
         public TextualContextPreviewViewModel( IService<ITextualContextService> textualContext )
         {
             _textualContext = textualContext;
-            _textualContext.Service.PropertyChanged += TextualContext_PropertyChanged;
+            _textualContext.Service.TextualContextChanged += TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged += TextualContextService_ServiceStatusChanged;
         }
 
-        private void TextualContext_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+        private void TextualContext_PropertyChanged( object sender, EventArgs e )
         {
             OnPropertyChanged( "TextualContext" );
             OnPropertyChanged( "CurrentToken" );
@@ -78,7 +78,7 @@ namespace CK.WordPredictor.UI.ViewModels
 
         public void Dispose()
         {
-            _textualContext.Service.PropertyChanged -= TextualContext_PropertyChanged;
+            _textualContext.Service.TextualContextChanged -= TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged -= TextualContextService_ServiceStatusChanged;
         }
 

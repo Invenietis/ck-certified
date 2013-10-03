@@ -53,8 +53,6 @@ namespace CK.WordPredictor.UI
 
             Feature.PropertyChanged -= OnFeaturePropertyChanged;
             PredictionTextAreaService.PredictionAreaTextSent -= OnPredictionAreaContentSent;
-
-            if( _observersChain != null ) _observersChain.Dispose();
         }
 
         public void Teardown()
@@ -141,6 +139,7 @@ namespace CK.WordPredictor.UI
             Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
 
             if( _window != null ) _window.Close();
+            if( _observersChain != null ) _observersChain.Dispose();
         }
 
         void CreateSendContextKeyInPredictionZone( IZone zone )

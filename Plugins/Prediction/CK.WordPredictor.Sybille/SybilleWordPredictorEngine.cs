@@ -16,6 +16,8 @@ namespace CK.WordPredictor.Engines
         Sybille.WordPredictor _sybille;
         IWordPredictorFeature _wordPredictionFeature;
 
+        const int MaxPredictRetryCount = 2;
+
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
@@ -74,6 +76,12 @@ namespace CK.WordPredictor.Engines
 
         public IReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords )
         {
+            int retryCount = MaxPredictRetryCount;
+            return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
+        }
+
+        private IReadOnlyList<IWordPredicted> InternalPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
+        {
             try
             {
                 var predicted = _sybille
@@ -88,13 +96,24 @@ namespace CK.WordPredictor.Engines
             catch( ArgumentException ex )
             {
                 PredictionLogger.Instance.Error( ex.Message );
-                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
+                return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
             catch( IndexOutOfRangeException outOfRangeEx )
             {
                 PredictionLogger.Instance.Error( outOfRangeEx.Message );
-                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
+                return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
+        }
+
+        private IReadOnlyList<IWordPredicted> RetryPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
+        {
+            if( retryCount > 0 )
+            {
+                retryCount--;
+                PredictionLogger.Instance.Trace( "Attempt n°{0}", MaxPredictRetryCount - retryCount );
+                return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
+            }
+            return CKReadOnlyListEmpty<IWordPredicted>.Empty;
         }
 
         public bool IsWeightedPrediction

@@ -45,10 +45,10 @@ namespace CK.WordPredictor.Engines
             }
         }
 
-        Task<IReadOnlyList<IWordPredicted>> _currentlyRunningTask;
+        Task<ICKReadOnlyList<IWordPredicted>> _currentlyRunningTask;
         CancellationTokenSource cancellationSource = null;
 
-        public Task<IReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
+        public Task<ICKReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
         {
             if( _currentlyRunningTask != null && _currentlyRunningTask.Status <= TaskStatus.Running )
             {
@@ -74,20 +74,20 @@ namespace CK.WordPredictor.Engines
             return _currentlyRunningTask;
         }
 
-        public IReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords )
+        public ICKReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords )
         {
             int retryCount = MaxPredictRetryCount;
             return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
         }
 
-        private IReadOnlyList<IWordPredicted> InternalPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
+        private ICKReadOnlyList<IWordPredicted> InternalPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
         {
             try
             {
                 var predicted = _sybille
                     .Predict( rawContext, maxSuggestedWords )
                     .Select( t => new WeightlessWordPredicted( t ) )
-                    .ToArray();
+                    .ToReadOnlyList();
 
                 PredictionLogger.Instance.Trace( "Predicted < {0} > from < {1} >", String.Join( ", ", predicted.Select( w => w.Word ) ), rawContext.Replace( ' ', '_' ) );
 
@@ -105,7 +105,7 @@ namespace CK.WordPredictor.Engines
             }
         }
 
-        private IReadOnlyList<IWordPredicted> RetryPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
+        private ICKReadOnlyList<IWordPredicted> RetryPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
         {
             if( retryCount > 0 )
             {

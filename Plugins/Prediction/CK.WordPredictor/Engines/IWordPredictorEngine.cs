@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CK.Core;
 
 namespace CK.WordPredictor.Model
 {
@@ -10,8 +10,8 @@ namespace CK.WordPredictor.Model
     {
         bool IsWeightedPrediction { get; }
 
-        IReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords );
+        ICKReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords );
 
-        Task<IReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords );
+        Task<ICKReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords );
     }
 }

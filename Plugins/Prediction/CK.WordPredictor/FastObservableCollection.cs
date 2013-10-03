@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using CK.Core;
 
 namespace CK.WordPredictor
 {
@@ -35,9 +36,10 @@ namespace CK.WordPredictor
         /// This method adds the given generic list of items
         /// as a range into current collection by casting them as type T.
         /// It then notifies once after all items are added.
+        /// This method is thread safe.
         /// </summary>
         /// <param name="items">The source collection.</param>
-        public void ReplaceItems( IReadOnlyList<T> items )
+        public void ReplaceItems( ICKReadOnlyList<T> items )
         {
             lock( _lock )
             {
@@ -76,7 +78,7 @@ namespace CK.WordPredictor
         /// It then notifies once after all items are removed.
         /// </summary>
         /// <param name="items">The source collection.</param>
-        public void RemoveItems( IReadOnlyList<T> items )
+        public void RemoveItems( ICKReadOnlyList<T> items )
         {
             this.SuspendCollectionChangeNotification();
             try

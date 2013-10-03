@@ -23,8 +23,14 @@ namespace CK.WordPredictor.Model
 
     public interface ITextualContextService : CK.Core.IFluentInterface, IDynamicService
     {
+        /// <summary>
+        /// This event is fired when the textual context is going to change
+        /// </summary>
         event EventHandler TextualContextChanging;
 
+        /// <summary>
+        /// This event is fired when the textual context has changed.
+        /// </summary>
         event EventHandler TextualContextChanged;
 
         /// <summary>

@@ -6,6 +6,7 @@ using CK.WordPredictor;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.Engines;
 using NUnit.Framework;
+using CK.Core;
 
 namespace WordPredictorTest
 {
@@ -40,12 +41,12 @@ namespace WordPredictorTest
                 get { throw new NotImplementedException(); }
             }
 
-            public IReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWord )
+            public ICKReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWord )
             {
                 throw new NotImplementedException();
             }
 
-            public System.Threading.Tasks.Task<IReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
+            public System.Threading.Tasks.Task<ICKReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
             {
                 throw new NotImplementedException();
             }

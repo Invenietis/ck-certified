@@ -32,7 +32,7 @@ namespace CK.WindowManager.Model
     {
         void Attach( IWindowElement first, IWindowElement second );
 
-        void Detach( IWindowElement first, IWindowElement second );
+        void Detach( IBinding binding );
 
         event EventHandler<WindowBindingEventArgs> BeforeBinding;
 

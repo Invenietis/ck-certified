@@ -7,20 +7,23 @@ using Moq;
 using CK.WindowManager.Model;
 using System.Windows;
 using System.Windows.Threading;
+using CK.Core;
 
 namespace CK.Certified.WindowManager.Test
 {
-    [TestFixture]
+    [TestFixture( Category = "WindowManager" )]
     public class WindowManagerTest
     {
-        [Test]
+        [Test, RequiresSTA]
         public void WindowManagerApiTest()
         {
             IWindowManager windowManager = new WindowManager();
-            WindowElement A = new WindowElement( "A", new Window() );
-            WindowElement B = new WindowElement( "B", new Window() );
-            WindowElement C = new WindowElement( "C", new Window() );
-            WindowElement D = new WindowElement( "D", new Window() );
+            WindowElement A = new WindowElement( windowManager, "A", new Window() );
+            WindowElement B = new WindowElement( windowManager, "B", new Window() );
+            WindowElement C = new WindowElement( windowManager, "C", new Window() );
+            WindowElement D = new WindowElement( windowManager, "D", new Window() );
+            WindowElement E = new WindowElement( windowManager, "E", new Window() );
+            WindowElement F = new WindowElement( windowManager, "F", new Window() );
 
             A.WindowManager = B.WindowManager = C.WindowManager = D.WindowManager = windowManager;
 
@@ -35,20 +38,10 @@ namespace CK.Certified.WindowManager.Test
             //     |    E
             //     D
 
-            // The listener plugin listen the window location change event directly from the WindowManager.
-            // When a Window from A B C or D change the location, all the window must move together.
-            Listener listener = new Listener();
-            listener.WindowManager = windowManager;
-
-            // The listener listen any window movement
-            listener.WindowManager.WindowMoved += ( sender, e ) =>
-            {
-
-            };
-
-
             WindowElementBinder binder = new WindowElementBinder();
             binder.WindowManager = windowManager;
+
+
             binder.WindowManager.WindowMoved += ( sender, e ) =>
             {
                 // Whenever a window moved, ask if there is a window near from this
@@ -56,15 +49,53 @@ namespace CK.Certified.WindowManager.Test
             binder.BeforeBinding += ( sender, e ) =>
             {
             };
+
+            WindowBindedEventArgs bindedEvent = null;
+
             binder.AfterBinding += ( sender, e ) =>
             {
-
+                bindedEvent = e;
             };
+
+
+            // The listener plugin listen the window location change event directly from the WindowManager.
+            // When a Window from A B C or D change the location, all the window must move together.
+            Listener listener = new Listener( windowManager );
+            listener.WindowManager = windowManager;
+            listener.WindowBinder = binder;
+
+            binder.Attach( A, B );
+            Assert.That( bindedEvent, Is.Not.Null );
+            Assert.That( bindedEvent.BindingType == BindingEventType.Attach );
+            Assert.That( bindedEvent.Binding, Is.Not.Null );
+            Assert.That( bindedEvent.Binding.First == A );
+            Assert.That( bindedEvent.Binding.Second == B );
+
+            binder.Attach( B, C );
+            Assert.That( bindedEvent.BindingType == BindingEventType.Attach );
+            Assert.That( bindedEvent.Binding, Is.Not.Null );
+            Assert.That( bindedEvent.Binding.First == B );
+            Assert.That( bindedEvent.Binding.Second == C );
+
+            binder.Attach( B, D );
+            Assert.That( bindedEvent.BindingType == BindingEventType.Attach );
+            Assert.That( bindedEvent.Binding, Is.Not.Null );
+            Assert.That( bindedEvent.Binding.First == B );
+            Assert.That( bindedEvent.Binding.Second == D );
+
+
+            A._w_LocationChanged( A, EventArgs.Empty );
+
         }
 
         class WindowElementBinder : IWindowBinder
         {
             IDictionary<IWindowElement,List<IBinding>> _bindings;
+
+            public WindowElementBinder()
+            {
+                _bindings = new Dictionary<IWindowElement, List<IBinding>>();
+            }
 
             public IWindowManager WindowManager { get; set; }
 
@@ -88,15 +119,15 @@ namespace CK.Certified.WindowManager.Test
                 for( int i = 0; i < bindings.Count; ++i )
                 {
                     IBinding binding = bindings[i];
-                    if( binding.First != referential )
+                    if( binding.First != referential && attached.IndexOf( binding.First ) == -1 )
                     {
-                        GetAttachedElements( binding.First, _bindings[binding.First], attached );
                         attached.Add( binding.First );
+                        GetAttachedElements( binding.First, _bindings[binding.First], attached );
                     }
-                    if( binding.Second != referential )
+                    else if( binding.Second != referential && attached.IndexOf( binding.Second ) == -1 )
                     {
-                        GetAttachedElements( binding.Second, _bindings[binding.Second], attached );
                         attached.Add( binding.Second );
+                        GetAttachedElements( binding.Second, _bindings[binding.Second], attached );
                     }
                 }
             }
@@ -121,12 +152,7 @@ namespace CK.Certified.WindowManager.Test
 
             private void Link( IWindowElement window, SimpleBinding binding )
             {
-                var bindings = _bindings[window];
-                if( bindings == null )
-                {
-                    bindings = new List<IBinding>();
-                    _bindings.Add( window, bindings );
-                }
+                var bindings = _bindings.GetOrSet( window, ( w ) => new List<IBinding>() );
                 bindings.Add( binding );
             }
 
@@ -177,8 +203,9 @@ namespace CK.Certified.WindowManager.Test
 
             public IWindowBinder WindowBinder { get; set; }
 
-            public Listener()
+            public Listener( IWindowManager m )
             {
+                WindowManager = m;
                 WindowManager.WindowResized += WindowManager_WindowResized;
                 WindowManager.WindowMoved += WindowManager_WindowMoved;
             }
@@ -313,6 +340,11 @@ namespace CK.Certified.WindowManager.Test
 
         class WindowElement : IWindowElement
         {
+            public Window Window
+            {
+                get { return _w; }
+            }
+
             Window _w;
             string _name;
 
@@ -326,14 +358,19 @@ namespace CK.Certified.WindowManager.Test
 
             public event EventHandler Restored;
 
+            public WindowElement( IWindowManager m, string name, Window w )
+                : this( name, w )
+            {
+                WindowManager = m;
+                WindowManager.Register( this );
+            }
+
             public WindowElement( string name, Window w )
             {
                 _name = name;
                 _w = w;
                 _w.LocationChanged += _w_LocationChanged;
                 _w.SizeChanged += _w_SizeChanged;
-
-                WindowManager.Register( this );
             }
 
             void _w_SizeChanged( object sender, SizeChangedEventArgs e )
@@ -342,7 +379,7 @@ namespace CK.Certified.WindowManager.Test
                     SizeChanged( sender, EventArgs.Empty );
             }
 
-            void _w_LocationChanged( object sender, EventArgs e )
+            public void _w_LocationChanged( object sender, EventArgs e )
             {
                 if( LocationChanged != null )
                     LocationChanged( sender, e );

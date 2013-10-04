@@ -31,7 +31,7 @@ using CK.Core;
 
 namespace CommonServices
 {
-    public interface ISkinService
+    public interface ISkinService : IDynamicService
     {
         /// <summary>
         /// Hides the skin window

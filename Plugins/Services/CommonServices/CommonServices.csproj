@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="Accessibility\IHelpService.cs" />
     <Compile Include="Accessibility\IKeyboardDriver.cs" />
-    <Compile Include="Accessibility\IHighlighterService.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
     <Compile Include="Advanced\Commands\IHelpCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IChangeKeyboardCommandHandlerService.cs" />

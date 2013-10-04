@@ -24,10 +24,10 @@
 using System;
 using System.Collections.Generic;
 using CommonServices;
+using CommonServices.Accessibility;
 using CK.Plugin;
 using CK.Core;
 using CK.Context;
-using CommonServices.Accessibility;
 using System.Windows.Threading;
 using System.Diagnostics;
 

@@ -67,6 +67,11 @@ namespace CK.Keyboard.Model
         /// </summary>
         /// <seealso cref="CurrentChanged"/>
         IKeyboard Current { get; set; }
+
+        /// <summary>
+        /// Gets all active <see cref="IKeyboard"/>. An active keyboard has property IsActive set to true.
+        /// </summary>
+        ICollection<IKeyboard> Actives { get; }
         
         /// <summary>
         /// Fires whenever the <see cref="Current"/> changed.
@@ -88,6 +93,15 @@ namespace CK.Keyboard.Model
         /// </summary>
         event EventHandler<KeyboardRenamedEventArgs> KeyboardRenamed;
 
+        /// <summary>
+        /// Raised whenever one of the keyboard contained in this collection has become active.
+        /// </summary>
+        event EventHandler<KeyboardEventArgs> KeyboardActivated;
+
+        /// <summary>
+        /// Raised whenever one of the keyboard contained in this collection has become inactive.
+        /// </summary>
+        event EventHandler<KeyboardEventArgs> KeyboardDeactivated;
     }
 
 }

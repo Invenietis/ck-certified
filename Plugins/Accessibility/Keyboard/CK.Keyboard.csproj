@@ -78,6 +78,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KeyboardCollection.Active.cs" />
     <Compile Include="Key.cs" />
     <Compile Include="Key.KeyModes.cs" />
     <Compile Include="Keyboard.cs" />

@@ -34,6 +34,10 @@ namespace CK.Keyboard.Model
     /// </summary>
     public interface IKeyboard : IKeyboardElement
     {
+        /// <summary>
+        /// Gets whether the keyboard is active or makes this keyboard active.
+        /// </summary>
+        bool IsActive { get; set; }
 
         /// <summary>
         /// Destroys this keyboard.

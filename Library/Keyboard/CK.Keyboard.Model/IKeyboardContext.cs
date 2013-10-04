@@ -28,6 +28,7 @@ using CK.SharedDic;
 using System.Xml.Serialization;
 using CK.Storage;
 using CK.Plugin;
+using System.Collections.ObjectModel;
 
 namespace CK.Keyboard.Model
 {

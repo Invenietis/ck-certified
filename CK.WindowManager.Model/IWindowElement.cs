@@ -6,6 +6,35 @@ using System.Threading.Tasks;
 
 namespace CK.WindowManager.Model
 {
+    public interface IBinding
+    {
+        IWindowElement First { get; }
+
+        IWindowElement Second { get; }
+    }
+
+    public class WindowBindingEventArgs : EventArgs
+    {
+        IBinding Binding { get; set; }
+
+        bool Canceled { get; set; }
+    }
+
+    public class WindowBindedEventArgs : EventArgs
+    {
+        IBinding Binding { get; set; }
+    }
+
+    public interface IWindowBinder
+    {
+        event EventHandler<WindowBindingEventArgs> BeforeBinding;
+
+        event EventHandler<WindowBindedEventArgs> AfterBinding;
+
+        ICollection<IBinding> AllBindings { get; }
+
+    }
+
     public interface IWindowManager
     {
         /// <summary>
@@ -19,36 +48,6 @@ namespace CK.WindowManager.Model
         /// </summary>
         /// <param name="window"></param>
         void Unregister( IWindowElement window );
-
-        /// <summary>
-        /// Moves the given window element to the given position
-        /// </summary>
-        /// <param name="window"></param>
-        /// <param name="descriptor"></param>
-        void Move( IWindowElement window, int x, int y );
-
-        /// <summary>
-        /// Resizes the given window element
-        /// </summary>
-        /// <param name="window"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        void Resize( IWindowElement window, int width, int height );
-
-        /// <summary>
-        /// Hides the window.
-        /// </summary>
-        void Hide( IWindowElement window );
-
-        /// <summary>
-        /// Restores the window.
-        /// </summary>
-        void Restore( IWindowElement window );
-
-        /// <summary>
-        /// Toggles minimization of the host's window.
-        /// </summary>
-        void ToggleHostMinimized( IWindowElement window );
 
         /// <summary>
         /// Raised when the window is hidden.
@@ -85,19 +84,21 @@ namespace CK.WindowManager.Model
     {
         string Name { get; }
 
-        int X { get; }
+        double Top { get; }
 
-        int Y { get; }
+        double Left { get; }
 
-        int Width { get; }
+        double Width { get; }
 
-        int Height { get; }
+        double Height { get; }
 
-        ICollection<IBinder> Binders { get; }
+        event EventHandler LocationChanged;
+
+        event EventHandler SizeChanged;
+
+        event EventHandler Hidden;
+
+        event EventHandler Restored;
     }
 
-    public interface IBinder
-    {
-
-    }
 }

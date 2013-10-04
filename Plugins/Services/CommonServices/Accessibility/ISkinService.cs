@@ -31,23 +31,8 @@ using CK.Core;
 
 namespace CommonServices
 {
-    public interface ISkinService : IDynamicService
+    public interface ISkinService
     {
-        /// <summary>
-        /// Hides the skin window
-        /// </summary>
-        void HideSkin();
-
-        /// <summary>
-        /// Restores the skin window.
-        /// </summary>
-        void RestoreSkin();
-
-        /// <summary>
-        /// Toggles minimization of the host's window
-        /// </summary>
-        void ToggleHostMinimized();
-
         /// <summary>
         /// Gets the uniqueId of the skin.
         /// </summary>

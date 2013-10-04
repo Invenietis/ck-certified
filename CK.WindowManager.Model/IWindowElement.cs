@@ -6,33 +6,46 @@ using System.Threading.Tasks;
 
 namespace CK.WindowManager.Model
 {
+    public enum BindingEventType
+    {
+        Attach,
+        Detach
+    }
+
+    public class WindowBindingEventArgs : EventArgs
+    {
+        public BindingEventType BindingType { get; set; }
+
+        public IBinding Binding { get; set; }
+
+        public bool Canceled { get; set; }
+    }
+
+    public class WindowBindedEventArgs : EventArgs
+    {
+        public BindingEventType BindingType { get; set; }
+
+        public IBinding Binding { get; set; }
+    }
+
+    public interface IWindowBinder
+    {
+        void Attach( IWindowElement first, IWindowElement second );
+
+        void Detach( IWindowElement first, IWindowElement second );
+
+        event EventHandler<WindowBindingEventArgs> BeforeBinding;
+
+        event EventHandler<WindowBindedEventArgs> AfterBinding;
+
+        IList<IWindowElement> GetAttachedElements( IWindowElement referential );
+    }
+
     public interface IBinding
     {
         IWindowElement First { get; }
 
         IWindowElement Second { get; }
-    }
-
-    public class WindowBindingEventArgs : EventArgs
-    {
-        IBinding Binding { get; set; }
-
-        bool Canceled { get; set; }
-    }
-
-    public class WindowBindedEventArgs : EventArgs
-    {
-        IBinding Binding { get; set; }
-    }
-
-    public interface IWindowBinder
-    {
-        event EventHandler<WindowBindingEventArgs> BeforeBinding;
-
-        event EventHandler<WindowBindedEventArgs> AfterBinding;
-
-        ICollection<IBinding> AllBindings { get; }
-
     }
 
     public interface IWindowManager
@@ -62,12 +75,12 @@ namespace CK.WindowManager.Model
         /// <summary>
         /// Raised when the window is moved.
         /// </summary>
-        event EventHandler<WindowElementEventArgs> WindowMoved;
+        event EventHandler<WindowElementLocationEventArgs> WindowMoved;
 
         /// <summary>
         /// Raised when the window is moved.
         /// </summary>
-        event EventHandler<WindowElementEventArgs> WindowResized;
+        event EventHandler<WindowElementResizeEventArgs> WindowResized;
     }
 
     public class WindowElementEventArgs : EventArgs
@@ -77,6 +90,34 @@ namespace CK.WindowManager.Model
         public WindowElementEventArgs( IWindowElement window )
         {
             Window = window;
+        }
+    }
+
+    public class WindowElementLocationEventArgs : WindowElementEventArgs
+    {
+        public double DeltaTop { get; private set; }
+
+        public double DeltaLeft { get; private set; }
+
+        public WindowElementLocationEventArgs( IWindowElement window, double deltaTop, double deltaLeft )
+            : base( window )
+        {
+            DeltaTop = deltaTop;
+            DeltaLeft = deltaLeft;
+        }
+    }
+
+    public class WindowElementResizeEventArgs : WindowElementEventArgs
+    {
+        public double DeltaWidth { get; private set; }
+
+        public double DeltaHeight { get; private set; }
+
+        public WindowElementResizeEventArgs( IWindowElement window, double deltaWidth, double deltaHeight )
+            : base( window )
+        {
+            DeltaWidth = deltaWidth;
+            DeltaHeight = deltaHeight;
         }
     }
 
@@ -91,6 +132,10 @@ namespace CK.WindowManager.Model
         double Width { get; }
 
         double Height { get; }
+
+        void Move( double top, double left );
+
+        void Resize( double width, double height );
 
         event EventHandler LocationChanged;
 

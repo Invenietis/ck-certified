@@ -14,6 +14,13 @@ namespace CK.WindowManager.Model
     public interface IWindowManager : IDynamicService
     {
         /// <summary>
+        /// Gets a <see cref="IWindowElement"/> by name. Null if no window element are registered with this name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IWindowElement GetByName( string name );
+
+        /// <summary>
         /// Registers the given window element
         /// </summary>
         /// <param name="window"></param>
@@ -24,6 +31,10 @@ namespace CK.WindowManager.Model
         /// </summary>
         /// <param name="window"></param>
         void Unregister( IWindowElement window );
+
+        event EventHandler<WindowElementEventArgs> Registered;
+
+        event EventHandler<WindowElementEventArgs> Unregistered;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is hidden.

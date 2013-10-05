@@ -74,7 +74,7 @@ namespace Host
             }
         }
 
-        //public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
+        public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
 
         internal IConfigContainer ConfigContainer { get { return CivikeyHost.Context.GetService<IConfigContainer>(); } }
 

@@ -8,7 +8,7 @@ using CK.WindowManager.Model;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" } )]
+    [Plugin( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" }, Version = "1.0.0" )]
     public class WindowManagerExecutor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]

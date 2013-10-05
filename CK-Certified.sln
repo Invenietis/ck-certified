@@ -97,7 +97,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WPF.Wizard", "CK.WPF.Wiz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineHelp", "Plugins\Accessibility\OnlineHelp\OnlineHelp.csproj", "{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowManager.Model", "CK.WindowManager.Model\CK.WindowManager.Model.csproj", "{FDA960F6-D429-4696-9306-B473DAE41E5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowManager.Model", "Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj", "{FDA960F6-D429-4696-9306-B473DAE41E5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Certified.WindowManager.Test", "CK.Certified.WindowManager.Test\CK.Certified.WindowManager.Test.csproj", "{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}"
 EndProject

@@ -42,16 +42,16 @@ namespace BasicCommandHandlers
         [RequiredService]
         public IContext Context { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<ISkinService> SkinService { get; set; }
+        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        //public IService<ISkinService> SkinService { get; set; }
 
         void HideSkin()
         {
-            if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.HideSkin();
+            //if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.HideSkin();
         }
         void ToggleHostMinimized()
         {
-            if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.ToggleHostMinimized();
+            //if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.ToggleHostMinimized();
         }
 
         public override bool Setup( IPluginSetupInfo info )

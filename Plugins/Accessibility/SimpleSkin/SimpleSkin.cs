@@ -53,7 +53,7 @@ namespace SimpleSkin
         PublicName = PluginPublicName,
         Version = SimpleSkin.PluginIdVersion,
         Categories = new string[] { "Visual", "Accessibility" } )]
-    public partial class SimpleSkin : IPlugin//, ISkinService
+    public partial class SimpleSkin : IPlugin
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
         Guid PluginGuid = new Guid( PluginIdString );

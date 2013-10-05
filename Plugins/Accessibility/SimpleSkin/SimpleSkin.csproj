@@ -150,7 +150,7 @@
     <Compile Include="ViewModels\VMZoneSimple.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
+    <ProjectReference Include="..\..\..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
       <Project>{fda960f6-d429-4696-9306-b473dae41e5b}</Project>
       <Name>CK.WindowManager.Model</Name>
     </ProjectReference>

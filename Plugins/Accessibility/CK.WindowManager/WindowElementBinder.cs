@@ -8,7 +8,7 @@ using CK.Core;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{F6B5D818-3C04-4A46-AD65-AFC5458A394C}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.WindowElementBinder" )]
+    [Plugin( "{F6B5D818-3C04-4A46-AD65-AFC5458A394C}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.WindowElementBinder", Version = "1.0.0" )]
     public class WindowElementBinder : IWindowBinder, IPlugin
     {
         IDictionary<IWindowElement,List<IBinding>> _bindings;

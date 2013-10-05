@@ -7,7 +7,7 @@ using CK.WindowManager.Model;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager" )]
+    [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager", Version = "1.0.0" )]
     public class WindowManager : IWindowManager, IPlugin
     {
         class WindowElementData
@@ -120,7 +120,7 @@ namespace CK.WindowManager
             window.LocationChanged -= OnWindowLocationChanged;
             window.SizeChanged -= OnWindowSizeChanged;
             _dic.Remove( window );
-            
+
             if( Unregistered != null )
                 Unregistered( this, new WindowElementEventArgs( window ) );
         }

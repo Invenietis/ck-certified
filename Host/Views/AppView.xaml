@@ -30,11 +30,6 @@
                 DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}"
                 Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                 ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
-        <tb:TaskbarIcon.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Exit" Command="{Binding ExitHostCommand}" />
-            </ContextMenu>
-        </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
         <StackPanel>
             <Grid>

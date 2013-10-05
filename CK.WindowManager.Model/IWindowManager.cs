@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CK.Plugin;
+
+namespace CK.WindowManager.Model
+{
+    /// <summary>
+    /// A <see cref="IWindowElement"/> can register itself into the window manager. 
+    /// The window manager knows location and size of each registered <see cref="IWindowElement"/> and provides
+    /// events about their state (when they moved, they are resized, hidden or restored).
+    /// </summary>
+    public interface IWindowManager : IDynamicService
+    {
+        /// <summary>
+        /// Registers the given window element
+        /// </summary>
+        /// <param name="window"></param>
+        void Register( IWindowElement window );
+
+        /// <summary>
+        /// Unregister the given window element
+        /// </summary>
+        /// <param name="window"></param>
+        void Unregister( IWindowElement window );
+
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/> is hidden.
+        /// </summary>
+        event EventHandler<WindowElementEventArgs> WindowHidden;
+
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/> is restored.
+        /// </summary>
+        event EventHandler<WindowElementEventArgs> WindowRestored;
+
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/>  is moved.
+        /// </summary>
+        event EventHandler<WindowElementLocationEventArgs> WindowMoved;
+
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/> is resized.
+        /// </summary>
+        event EventHandler<WindowElementResizeEventArgs> WindowResized;
+    }
+
+}

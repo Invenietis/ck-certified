@@ -44,6 +44,7 @@ using System.Collections.Generic;
 using CK.WPF.ViewModel;
 using System.Threading;
 using CK.Windows.Core;
+using CK.WindowManager.Model;
 
 namespace SimpleSkin
 {

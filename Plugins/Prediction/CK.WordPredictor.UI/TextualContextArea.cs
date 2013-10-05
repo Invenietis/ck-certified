@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
+using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
 
@@ -31,6 +32,49 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ICommandTextualContextService CommandTextualContextService { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
+
+        void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                RegisterWindowManager();
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                UnregisterWindowManager();
+            }
+        }
+
+        void Service_Registered( object sender, WindowElementEventArgs e )
+        {
+            if( e.Window.Name == "Skin" )
+            {
+                WindowBinder.Service.Attach( _w, e.Window );
+            }
+        }
+
+        private void RegisterWindowManager()
+        {
+            _w = new WindowElement( WindowManager.Service, _window, "TextualContextArea" );
+
+            WindowManager.Service.Register( _w );
+            WindowManager.Service.Registered += Service_Registered;
+        }
+
+        private void UnregisterWindowManager()
+        {
+            WindowManager.Service.Unregister( _w );
+            WindowManager.Service.Registered -= Service_Registered;
+
+            _w.Dispose();
+        }
+
+        WindowElement _w;
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
 
@@ -109,6 +153,13 @@ namespace CK.WordPredictor.UI
 
             var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
             CreateSendContextKeyInPredictionZone( zone );
+
+            // Window Manager
+            WindowManager.ServiceStatusChanged += WindowManager_ServiceStatusChanged;
+            if( WindowManager.Status == InternalRunningStatus.Started )
+            {
+                RegisterWindowManager();
+            }
         }
 
         void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
@@ -140,6 +191,9 @@ namespace CK.WordPredictor.UI
 
             if( _window != null ) _window.Close();
             if( _observersChain != null ) _observersChain.Dispose();
+
+            UnregisterWindowManager();
+            WindowManager.ServiceStatusChanged -= WindowManager_ServiceStatusChanged;
         }
 
         void CreateSendContextKeyInPredictionZone( IZone zone )

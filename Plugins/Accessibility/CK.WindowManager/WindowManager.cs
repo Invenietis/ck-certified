@@ -7,6 +7,7 @@ using CK.WindowManager.Model;
 
 namespace CK.WindowManager
 {
+    [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager" )]
     public class WindowManager : IWindowManager, IPlugin
     {
         class WindowElementData
@@ -32,8 +33,24 @@ namespace CK.WindowManager
 
         public event EventHandler<WindowElementResizeEventArgs> WindowResized;
 
+        public event EventHandler<WindowElementEventArgs> Registered;
+
+        public event EventHandler<WindowElementEventArgs> Unregistered;
+
+        public IWindowElement GetByName( string name )
+        {
+            IWindowElement key = _dic.Keys.FirstOrDefault( x => x.Name == name );
+            if( key != null ) return key;
+
+            return null;
+        }
+
         public virtual void Register( IWindowElement window )
         {
+            if( window == null ) throw new ArgumentNullException( "window" );
+            if( _dic.ContainsKey( window ) ) return;
+            if( GetByName( window.Name ) != null ) return;
+
             _dic.Add( window, new WindowElementData
             {
                 Window = window,
@@ -47,6 +64,9 @@ namespace CK.WindowManager
             window.Restored += OnWindowRestored;
             window.LocationChanged += OnWindowLocationChanged;
             window.SizeChanged += OnWindowSizeChanged;
+
+            if( Registered != null )
+                Registered( this, new WindowElementEventArgs( window ) );
         }
 
         protected virtual void OnWindowRestored( object sender, EventArgs e )
@@ -100,6 +120,9 @@ namespace CK.WindowManager
             window.LocationChanged -= OnWindowLocationChanged;
             window.SizeChanged -= OnWindowSizeChanged;
             _dic.Remove( window );
+            
+            if( Unregistered != null )
+                Unregistered( this, new WindowElementEventArgs( window ) );
         }
 
 
@@ -123,5 +146,7 @@ namespace CK.WindowManager
         }
 
         #endregion
+
+
     }
 }

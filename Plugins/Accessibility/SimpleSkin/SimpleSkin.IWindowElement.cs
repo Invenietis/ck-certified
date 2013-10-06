@@ -44,16 +44,23 @@ namespace SimpleSkin
 
         private void RegisterWindowManager()
         {
-            _w = new WindowElement( WindowManager.Service, _skinWindow, "Skin" );
+            _skinDispatcher.BeginInvoke( new Action( () =>
+            {
+                _w = new WindowElement( WindowManager.Service, _skinWindow, "Skin" );
 
-            WindowManager.Service.Register( _w );
+                WindowManager.Service.Register( _w );
+            } ) );
         }
 
         private void UnregisterWindowManager()
         {
-            WindowManager.Service.Unregister( _w );
 
-            _w.Dispose();
+            _skinDispatcher.BeginInvoke( new Action( () =>
+            {
+                WindowManager.Service.Unregister( _w );
+
+                _w.Dispose();
+            } ) );
         }
     }
 }

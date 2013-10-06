@@ -41,11 +41,11 @@
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.9.7\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.13\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.9.7\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.9.13\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Reflection, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -53,7 +53,7 @@
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.9.7\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.9.13\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

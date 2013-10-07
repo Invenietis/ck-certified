@@ -66,6 +66,7 @@
     <Compile Include="WindowBindingEventArgs.cs" />
     <Compile Include="WindowElement.cs" />
     <Compile Include="WindowElementEventArgs.cs" />
+    <Compile Include="WindowManagerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

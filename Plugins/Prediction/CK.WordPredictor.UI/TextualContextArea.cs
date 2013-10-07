@@ -20,6 +20,8 @@ namespace CK.WordPredictor.UI
     [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextArea : IPlugin
     {
+        const string WindowName = "TextualContextArea";
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
@@ -38,6 +40,8 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowBinder> WindowBinder { get; set; }
 
+        IWindowElement _me;
+
         void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started )
@@ -52,9 +56,21 @@ namespace CK.WordPredictor.UI
 
         void Service_Registered( object sender, WindowElementEventArgs e )
         {
-            if( e.Window.WindowElement.Name == "Skin" )
+            if( e.Window.Name == WindowName )
             {
-                WindowBinder.Service.Attach( _window, e.Window );
+                _me = e.Window;
+                // Auto attached with the skin if the skin is registered
+                var skinWindowElement = WindowManager.Service.GetByName( "Skin" );
+                if( skinWindowElement != null )
+                {
+                    WindowBinder.Service.Attach( _me, skinWindowElement );
+                }
+            }
+            // If the skin is registered when we are launched before it, 
+            // listen to to its registration and auto-attach
+            if( e.Window.Name == "Skin" )
+            {
+                if( _me != null ) WindowBinder.Service.Attach( _me, e.Window );
             }
         }
 
@@ -68,34 +84,30 @@ namespace CK.WordPredictor.UI
 
         void Service_Unregistered( object sender, WindowElementEventArgs e )
         {
-            if( e.Window.WindowElement.Name == "Skin" )
+            if( e.Window.Name == "Skin" )
             {
-                WindowBinder.Service.Detach( _window, e.Window );
+                WindowBinder.Service.Detach( _me, e.Window );
             }
         }
 
         private void RegisterWindowManager()
         {
-            _window.WindowElement = new WindowElement( _window, "TextualContextArea" );
+            WindowBinder.Service.AfterBinding += Service_AfterBinding;
 
             WindowManager.Service.Registered += Service_Registered;
             WindowManager.Service.Unregistered += Service_Unregistered;
-            WindowBinder.Service.AfterBinding += Service_AfterBinding;
-            WindowManager.Service.Register( _window );
+            WindowManager.Service.RegisterWindow( WindowName, _window );
         }
-
 
         private void UnregisterWindowManager()
         {
-            if( _window != null && _window.WindowElement != null )
+            if( _window != null && _window != null )
             {
-                WindowManager.Service.Unregister( _window );
+                WindowManager.Service.UnregisterWindow( WindowName );
 
                 WindowManager.Service.Registered -= Service_Registered;
                 WindowManager.Service.Unregistered -= Service_Unregistered;
                 WindowBinder.Service.AfterBinding -= Service_AfterBinding;
-
-                _window.WindowElement.Dispose();
             }
         }
 

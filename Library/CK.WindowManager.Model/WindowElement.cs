@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace CK.WindowManager.Model
 {
-    public sealed class WindowElement : IWindowElement2, IDisposable
+    public sealed class WindowElement : IWindowElement
     {
         Window _w;
         string _name;
@@ -22,7 +23,6 @@ namespace CK.WindowManager.Model
         public WindowElement( Window w, string name )
         {
             if( w == null ) throw new ArgumentNullException( "w" );
-            if( !(w is IWindowElement) ) throw new ArgumentException( "The Window must implement IWindowElementHolder" );
 
             _name = name;
             _w = w;
@@ -41,44 +41,49 @@ namespace CK.WindowManager.Model
             get { return _w; }
         }
 
+        public Dispatcher Dispatcher
+        {
+            get { return _w.Dispatcher; }
+        }
+
         void OnWindowSizeChanged( object sender, SizeChangedEventArgs e )
         {
             if( SizeChanged != null )
-                SizeChanged( sender, EventArgs.Empty );
+                SizeChanged( this, EventArgs.Empty );
         }
 
         public void OnWindowLocationChanged( object sender, EventArgs e )
         {
             if( LocationChanged != null )
-                LocationChanged( sender, e );
+                LocationChanged( this, e );
         }
 
-        string IWindowElement2.Name
+        string IWindowElement.Name
         {
             get { return _name; }
         }
 
-        double IWindowElement2.Left
+        double IWindowElement.Left
         {
             get { return _w.Left; }
         }
 
-        double IWindowElement2.Top
+        double IWindowElement.Top
         {
             get { return _w.Top; }
         }
 
-        double IWindowElement2.Width
+        double IWindowElement.Width
         {
             get { return _w.Width; }
         }
 
-        double IWindowElement2.Height
+        double IWindowElement.Height
         {
             get { return _w.Height; }
         }
 
-        void IWindowElement2.Move( double top, double left )
+        void IWindowElement.Move( double top, double left )
         {
             using( _w.Dispatcher.DisableProcessing() )
             {
@@ -88,7 +93,7 @@ namespace CK.WindowManager.Model
             }
         }
 
-        void IWindowElement2.Resize( double width, double height )
+        void IWindowElement.Resize( double width, double height )
         {
             using( _w.Dispatcher.DisableProcessing() )
             {

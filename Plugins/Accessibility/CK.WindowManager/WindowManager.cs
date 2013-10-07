@@ -16,7 +16,7 @@ namespace CK.WindowManager
 
         class WindowElementData
         {
-            public IWindowElement2 Window { get; set; }
+            public IWindowElement Window { get; set; }
 
             public double Top { get; set; }
 
@@ -43,68 +43,67 @@ namespace CK.WindowManager
 
         public IWindowElement GetByName( string name )
         {
-            IWindowElement key = _dic.Keys.FirstOrDefault( x => x.WindowElement.Name == name );
+            IWindowElement key = _dic.Keys.FirstOrDefault( x => x.Name == name );
             if( key != null ) return key;
 
             return null;
         }
 
-        public virtual void Register( IWindowElement windowHolder )
+        public virtual void Register( IWindowElement windowElement )
         {
-            if( windowHolder == null ) throw new ArgumentNullException( "windowHolder" );
-            if( windowHolder.WindowElement == null )
-                throw new InvalidOperationException( "The window element holder must hold a valid, non null reference to a window element." );
+            if( windowElement == null ) throw new ArgumentNullException( "windowElement" );
+            if( _dic.ContainsKey( windowElement ) ) return;
 
-            if( _dic.ContainsKey( windowHolder ) ) return;
-            if( GetByName( windowHolder.WindowElement.Name ) != null ) return;
-
-            _dic.Add( windowHolder, new WindowElementData
+            _dic.Add( windowElement, new WindowElementData
             {
-                Window = windowHolder.WindowElement,
-                Height = windowHolder.WindowElement.Height,
-                Width = windowHolder.WindowElement.Width,
-                Left = windowHolder.WindowElement.Left,
-                Top = windowHolder.WindowElement.Top
+                Window = windowElement,
+                Height = windowElement.Height,
+                Width = windowElement.Width,
+                Left = windowElement.Left,
+                Top = windowElement.Top
             } );
 
-            windowHolder.WindowElement.Hidden += OnWindowHidden;
-            windowHolder.WindowElement.Restored += OnWindowRestored;
-            windowHolder.WindowElement.LocationChanged += OnWindowLocationChanged;
-            windowHolder.WindowElement.SizeChanged += OnWindowSizeChanged;
+            windowElement.Hidden += OnWindowHidden;
+            windowElement.Restored += OnWindowRestored;
+            windowElement.LocationChanged += OnWindowLocationChanged;
+            windowElement.SizeChanged += OnWindowSizeChanged;
 
             if( Registered != null )
-                Registered( this, new WindowElementEventArgs( windowHolder ) );
+                Registered( this, new WindowElementEventArgs( windowElement ) );
         }
 
         protected virtual void OnWindowRestored( object sender, EventArgs e )
         {
-            IWindowElement windowHolder = sender as IWindowElement;
-            if( windowHolder != null )
+            IWindowElement windowElement = sender as IWindowElement;
+            if( windowElement != null )
             {
                 WindowElementData data = null;
-                if( _dic.TryGetValue( windowHolder, out data ) )
+                if( _dic.TryGetValue( windowElement, out data ) )
                 {
                     if( WindowRestored != null )
-                        WindowRestored( sender, new WindowElementEventArgs( windowHolder ) );
+                        WindowRestored( sender, new WindowElementEventArgs( windowElement ) );
                 }
             }
         }
 
         protected virtual void OnWindowSizeChanged( object sender, EventArgs e )
         {
-            IWindowElement windowHolder = sender as IWindowElement;
-            if( windowHolder != null )
+            IWindowElement windowElementFromSender = sender as IWindowElement;
+            if( windowElementFromSender != null )
             {
                 WindowElementData data = null;
-                if( _dic.TryGetValue( windowHolder, out data ) )
+                if( _dic.TryGetValue( windowElementFromSender, out data ) )
                 {
-                    IWindowElement2 window = data.Window;
-                    using( new DisableElementEvents( OnWindowSizeChanged, WindowBinder.GetAttachedElements( windowHolder ) ) )
+                    IWindowElement window = data.Window;
+                    using( new DisableElementEvents( 
+                        w => w.SizeChanged -= OnWindowSizeChanged,
+                        w => w.SizeChanged += OnWindowSizeChanged,
+                        WindowBinder.GetAttachedElements( window ) ) )
                     {
                         double deltaWidth = window.Width - data.Width;
                         double deltaHeight = window.Height - data.Height;
 
-                        var evt = new WindowElementResizeEventArgs( windowHolder, deltaWidth, deltaHeight );
+                        var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
                         if( WindowResized != null )
                             WindowResized( sender, evt );
 
@@ -118,19 +117,22 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
         {
-            IWindowElement windowHolder = sender as IWindowElement;
-            if( windowHolder != null )
+            IWindowElement windowElement = sender as IWindowElement;
+            if( windowElement != null )
             {
                 WindowElementData data = null;
-                if( _dic.TryGetValue( windowHolder, out data ) )
+                if( _dic.TryGetValue( windowElement, out data ) )
                 {
-                    IWindowElement2 window = data.Window;
-                    using( new DisableElementEvents( OnWindowLocationChanged, WindowBinder.GetAttachedElements( windowHolder ) ) )
+                    IWindowElement window = data.Window;
+                    using( new DisableElementEvents(
+                        w => w.LocationChanged -= OnWindowLocationChanged,
+                        w => w.LocationChanged += OnWindowLocationChanged,
+                        WindowBinder.GetAttachedElements( windowElement ) ) )
                     {
                         double deltaTop = window.Top - data.Top;
                         double deltaLeft = window.Left - data.Left;
 
-                        var evt = new WindowElementLocationEventArgs( windowHolder, deltaTop, deltaLeft );
+                        var evt = new WindowElementLocationEventArgs( windowElement, deltaTop, deltaLeft );
                         if( WindowMoved != null )
                             WindowMoved( sender, evt );
 
@@ -145,54 +147,59 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowHidden( object sender, EventArgs e )
         {
-            IWindowElement windowHolder = sender as IWindowElement;
-            if( windowHolder != null )
+            IWindowElement windowElement = sender as IWindowElement;
+            if( windowElement != null )
             {
                 WindowElementData data = null;
-                if( _dic.TryGetValue( windowHolder, out data ) )
+                if( _dic.TryGetValue( windowElement, out data ) )
                 {
                     if( WindowHidden != null )
-                        WindowHidden( sender, new WindowElementEventArgs( windowHolder ) );
+                        WindowHidden( sender, new WindowElementEventArgs( windowElement ) );
                 }
             }
         }
 
-        public virtual void Unregister( IWindowElement windowHolder )
+        public virtual void Unregister( IWindowElement windowElement )
         {
-            if( windowHolder == null )
-                throw new ArgumentNullException( "windowHolder" );
-            if( windowHolder.WindowElement == null )
+            if( windowElement == null )
+                throw new ArgumentNullException( "windowElement" );
+            if( windowElement == null )
                 throw new InvalidOperationException( "The window element holder must hold a valid, non null reference to a window element." );
 
             WindowElementData data = null;
-            if( _dic.TryGetValue( windowHolder, out data ) )
+            if( _dic.TryGetValue( windowElement, out data ) )
             {
                 data.Window.Hidden -= OnWindowHidden;
                 data.Window.Restored -= OnWindowRestored;
                 data.Window.LocationChanged -= OnWindowLocationChanged;
                 data.Window.SizeChanged -= OnWindowSizeChanged;
-                _dic.Remove( windowHolder );
+                _dic.Remove( windowElement );
 
                 if( Unregistered != null )
-                    Unregistered( this, new WindowElementEventArgs( windowHolder ) );
+                    Unregistered( this, new WindowElementEventArgs( windowElement ) );
             }
         }
 
         class DisableElementEvents : IDisposable
         {
             ICKReadOnlyCollection<IWindowElement> _holders;
-            EventHandler _eventToDisable;
+            Action<IWindowElement> _eventToDisableTarget;
+            Action<IWindowElement> _eventToEnableTarget;
 
-            public DisableElementEvents( EventHandler eventToDisable, ICKReadOnlyCollection<IWindowElement> holders )
+            public DisableElementEvents(
+                Action<IWindowElement> eventToDisableTarget,
+                Action<IWindowElement> eventToEnableTarget,
+                ICKReadOnlyCollection<IWindowElement> holders )
             {
-                _eventToDisable = eventToDisable;
+                _eventToDisableTarget = eventToDisableTarget;
+                _eventToEnableTarget = eventToEnableTarget;
                 _holders = holders;
-                foreach( var h in _holders ) h.WindowElement.LocationChanged -= _eventToDisable;
+                foreach( var h in _holders ) _eventToDisableTarget( h );
             }
 
             public void Dispose()
             {
-                foreach( var h in _holders ) h.WindowElement.LocationChanged += _eventToDisable;
+                foreach( var h in _holders ) _eventToEnableTarget( h );
             }
         }
 

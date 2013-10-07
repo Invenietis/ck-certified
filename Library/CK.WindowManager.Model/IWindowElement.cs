@@ -7,7 +7,7 @@ using System.Windows.Threading;
 
 namespace CK.WindowManager.Model
 {
-    public interface IWindowElement
+    public interface IWindowElement : IDisposable
     {
         Dispatcher Dispatcher { get; }
 

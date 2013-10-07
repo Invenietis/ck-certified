@@ -28,6 +28,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using SimpleSkin.Helpers;
 using System.Windows.Input;
+using CK.WindowManager.Model;
 
 namespace SimpleSkin
 {

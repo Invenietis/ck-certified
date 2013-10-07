@@ -52,29 +52,53 @@ namespace CK.WordPredictor.UI
 
         void Service_Registered( object sender, WindowElementEventArgs e )
         {
-            if( e.Window.Name == "Skin" )
+            if( e.Window.WindowElement.Name == "Skin" )
             {
-                WindowBinder.Service.Attach( _w, e.Window );
+                WindowBinder.Service.Attach( _window, e.Window );
+            }
+        }
+
+        void Service_AfterBinding( object sender, WindowBindedEventArgs e )
+        {
+            if( e.BindingType == BindingEventType.Attach )
+            {
+
+            }
+        }
+
+        void Service_Unregistered( object sender, WindowElementEventArgs e )
+        {
+            if( e.Window.WindowElement.Name == "Skin" )
+            {
+                WindowBinder.Service.Detach( _window, e.Window );
             }
         }
 
         private void RegisterWindowManager()
         {
-            _w = new WindowElement( WindowManager.Service, _window, "TextualContextArea" );
+            _window.WindowElement = new WindowElement( _window, "TextualContextArea" );
 
-            WindowManager.Service.Register( _w );
             WindowManager.Service.Registered += Service_Registered;
+            WindowManager.Service.Unregistered += Service_Unregistered;
+            WindowBinder.Service.AfterBinding += Service_AfterBinding;
+            WindowManager.Service.Register( _window );
         }
+
 
         private void UnregisterWindowManager()
         {
-            WindowManager.Service.Unregister( _w );
-            WindowManager.Service.Registered -= Service_Registered;
+            if( _window != null && _window.WindowElement != null )
+            {
+                WindowManager.Service.Unregister( _window );
 
-            _w.Dispose();
+                WindowManager.Service.Registered -= Service_Registered;
+                WindowManager.Service.Unregistered -= Service_Unregistered;
+                WindowBinder.Service.AfterBinding -= Service_AfterBinding;
+
+                _window.WindowElement.Dispose();
+            }
         }
 
-        WindowElement _w;
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
 
@@ -237,6 +261,5 @@ namespace CK.WordPredictor.UI
                 Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }
         }
-
     }
 }

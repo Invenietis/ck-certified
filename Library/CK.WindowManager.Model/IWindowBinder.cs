@@ -13,24 +13,25 @@ namespace CK.WindowManager.Model
     public interface IWindowBinder : IDynamicService
     {
         /// <summary>
-        /// Gets a readonly collection of attached <see cref="IWindowElement"/> from a referential <see cref="IWindowElement"/>.
+        /// Gets a readonly collection of attached <see cref="IWindowElement2"/> from a referential <see cref="IWindowElement2"/>.
         /// </summary>
-        /// <param name="referential">The <see cref="IWindowElement"/> from where to retrieve all attached <see cref="IWindowElement"/>.</param>
+        /// <param name="referential">The <see cref="IWindowElement2"/> from where to retrieve all attached <see cref="IWindowElement2"/>.</param>
         /// <returns></returns>
         ICKReadOnlyCollection<IWindowElement> GetAttachedElements( IWindowElement referential );
 
         /// <summary>
-        /// Attach the both <see cref="IWindowElement"/> given
+        /// Attach the both <see cref="IWindowElement2"/> given
         /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        void Attach( IWindowElement first, IWindowElement second );
+        /// <param name="me"></param>
+        /// <param name="other"></param>
+        void Attach( IWindowElement me, IWindowElement other );
 
         /// <summary>
         /// Removes the given <see cref="IBinding"/>
         /// </summary>
-        /// <param name="binding"></param>
-        void Detach( IBinding binding );
+        /// <param name="me"></param>
+        /// <param name="other"></param>
+        void Detach( IWindowElement me, IWindowElement other );
 
         /// <summary>
         /// Raised before an attachment occurs. This event can be canceled.

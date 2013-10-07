@@ -119,6 +119,7 @@
     <Compile Include="Helpers\SelectedTextBehavior.cs" />
     <Compile Include="Helpers\CaretIndexBehavior.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
+    <Compile Include="TextualContextAreaWindow.IWindowElement.cs" />
     <Compile Include="TextualContextPreview.cs" />
     <Compile Include="Views\TextualContextPreviewWindow.xaml.cs">
       <DependentUpon>TextualContextPreviewWindow.xaml</DependentUpon>

@@ -24,13 +24,19 @@ namespace CK.WindowManager
 
         public ICKReadOnlyCollection<IWindowElement> GetAttachedElements( IWindowElement referential )
         {
-            List<IBinding> bindings = _bindings[referential];
-            IList<IWindowElement> list = new List<IWindowElement>();
+            if( referential == null ) throw new ArgumentNullException( "referential" );
 
-            // TODO: improved algo
-            GetAttachedElements( referential, bindings, list );
-            list.Remove( referential );
-            return list.ToReadOnlyCollection();
+            List<IBinding> bindings = null;
+            if( _bindings.TryGetValue( referential, out bindings ) )
+            {
+                IList<IWindowElement> list = new List<IWindowElement>();
+
+                // TODO: improved algo
+                GetAttachedElements( referential, bindings, list );
+                list.Remove( referential );
+                return list.ToReadOnlyCollection();
+            }
+            return CKReadOnlyListEmpty<IWindowElement>.Empty;
         }
 
         void GetAttachedElements( IWindowElement referential, List<IBinding> bindings, IList<IWindowElement> attached )
@@ -54,17 +60,20 @@ namespace CK.WindowManager
         }
 
 
-        public void Attach( IWindowElement first, IWindowElement second )
+        public void Attach( IWindowElement me, IWindowElement other )
         {
-            var binding = new SimpleBinding { First = first, Second = second };
+            if( me == null ) throw new ArgumentNullException( "me" );
+            if( other == null ) throw new ArgumentNullException( "other" );
+
+            var binding = new SimpleBinding { First = me, Second = other };
 
             var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Attach };
             if( BeforeBinding != null ) BeforeBinding( this, evt );
 
             if( evt.Canceled == false )
             {
-                Link( first, binding );
-                Link( second, binding );
+                Link( me, binding );
+                Link( other, binding );
 
                 var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Attach };
                 if( AfterBinding != null ) AfterBinding( this, evtAfter );
@@ -77,21 +86,31 @@ namespace CK.WindowManager
             bindings.Add( binding );
         }
 
-        public void Detach( IBinding binding )
+        public void Detach( IWindowElement me, IWindowElement other )
         {
-            var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
-            if( BeforeBinding != null ) BeforeBinding( this, evt );
+            if( me == null ) throw new ArgumentNullException( "me" );
+            if( other == null ) throw new ArgumentNullException( "other" );
 
-            if( evt.Canceled == false )
+            var binding = new SimpleBinding { First = me, Second = other };
+
+            List<IBinding> list = null;
+            bool isBindingExists = _bindings.TryGetValue( binding.First, out list ) && list.Contains( binding );
+            if( isBindingExists )
             {
-                var bindingsA = _bindings[binding.First];
-                if( bindingsA != null ) bindingsA.Remove( binding );
+                var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
+                if( BeforeBinding != null ) BeforeBinding( this, evt );
 
-                var bindingsB = _bindings[binding.First];
-                if( bindingsB != null ) bindingsB.Remove( binding );
+                if( evt.Canceled == false )
+                {
+                    var bindingsA = _bindings[binding.First];
+                    if( bindingsA != null ) bindingsA.Remove( binding );
 
-                var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
-                if( AfterBinding != null ) AfterBinding( this, evtAfter );
+                    var bindingsB = _bindings[binding.First];
+                    if( bindingsB != null ) bindingsB.Remove( binding );
+
+                    var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
+                    if( AfterBinding != null ) AfterBinding( this, evtAfter );
+                }
             }
         }
 

@@ -20,28 +20,28 @@ namespace CK.WindowManager
         void OnWindowManagerWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
             // The Window that moves first
-            IWindowElement triggerWindow = e.Window;
+            IWindowElement triggerHolder = e.Window;
 
             // Gets all windows attach to the given window
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerWindow );
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
-                Action action = new Action( () => window.Move( window.Top + e.DeltaTop, window.Left + e.DeltaLeft ) );
-                Dispatcher.CurrentDispatcher.BeginInvoke( action, DispatcherPriority.Render );
+                Action action = new Action( () => window.WindowElement.Move( window.WindowElement.Top + e.DeltaTop, window.WindowElement.Left + e.DeltaLeft ) );
+                window.Dispatcher.Invoke( action, DispatcherPriority.Render );
             }
         }
 
         void OnWindowManagerWindowResized( object sender, WindowElementResizeEventArgs e )
         {
             // The Window that moves first
-            IWindowElement triggerWindow = e.Window;
+            IWindowElement triggerHolder = e.Window;
 
             // Gets all windows attach to the given window
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerWindow );
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
-                Delegate action = new Action( () => window.Resize( window.Width + e.DeltaWidth, window.Height + e.DeltaHeight ) );
-                Dispatcher.CurrentDispatcher.BeginInvoke( action, DispatcherPriority.Render );
+                Delegate action = new Action( () => window.WindowElement.Resize( window.WindowElement.Width + e.DeltaWidth, window.WindowElement.Height + e.DeltaHeight ) );
+                window.Dispatcher.Invoke( action, DispatcherPriority.Render );
             }
         }
 

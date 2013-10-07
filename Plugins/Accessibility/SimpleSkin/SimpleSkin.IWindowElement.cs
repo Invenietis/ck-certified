@@ -7,6 +7,11 @@ using CK.WindowManager.Model;
 
 namespace SimpleSkin
 {
+    public partial class SkinWindow : IWindowElement
+    {
+        public IWindowElement2 WindowElement { get; set; }
+    }
+
     public partial class SimpleSkin
     {
         WindowElement _w;
@@ -46,9 +51,8 @@ namespace SimpleSkin
         {
             _skinDispatcher.BeginInvoke( new Action( () =>
             {
-                _w = new WindowElement( WindowManager.Service, _skinWindow, "Skin" );
-
-                WindowManager.Service.Register( _w );
+                _skinWindow.WindowElement = new WindowElement( _skinWindow, "Skin" );
+                WindowManager.Service.Register( _skinWindow );
             } ) );
         }
 
@@ -57,9 +61,8 @@ namespace SimpleSkin
 
             _skinDispatcher.BeginInvoke( new Action( () =>
             {
-                WindowManager.Service.Unregister( _w );
-
-                _w.Dispose();
+                WindowManager.Service.Unregister( _skinWindow );
+                _skinWindow.WindowElement.Dispose();
             } ) );
         }
     }

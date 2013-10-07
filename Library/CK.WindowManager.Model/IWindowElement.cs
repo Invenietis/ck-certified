@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace CK.WindowManager.Model
 {
     public interface IWindowElement
     {
+        Dispatcher Dispatcher { get; }
+
         /// <summary>
         /// Raised when the window element location changed.
         /// </summary>

@@ -6,7 +6,7 @@ using System.Text;
 namespace CK.WindowManager.Model
 {
     /// <summary>
-    /// Represents a binding between two <see cref="IWindowElement"/>.
+    /// Represents a binding between two <see cref="IWindowElement2"/>.
     /// </summary>
     public interface IBinding
     {

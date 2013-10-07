@@ -7,14 +7,14 @@ using CK.Plugin;
 namespace CK.WindowManager.Model
 {
     /// <summary>
-    /// A <see cref="IWindowElement"/> can register itself into the window manager. 
-    /// The window manager knows location and size of each registered <see cref="IWindowElement"/> and provides
+    /// A <see cref="IWindowElement2"/> can register itself into the window manager. 
+    /// The window manager knows location and size of each registered <see cref="IWindowElement2"/> and provides
     /// events about their state (when they moved, they are resized, hidden or restored).
     /// </summary>
     public interface IWindowManager : IDynamicService
     {
         /// <summary>
-        /// Gets a <see cref="IWindowElement"/> by name. Null if no window element are registered with this name.
+        /// Gets a <see cref="IWindowElement2"/> by name. Null if no window element are registered with this name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -24,35 +24,35 @@ namespace CK.WindowManager.Model
         /// Registers the given window element
         /// </summary>
         /// <param name="window"></param>
-        void Register( IWindowElement window );
+        void Register( IWindowElement windowHolder );
 
         /// <summary>
         /// Unregister the given window element
         /// </summary>
         /// <param name="window"></param>
-        void Unregister( IWindowElement window );
+        void Unregister( IWindowElement windowHolder );
 
         event EventHandler<WindowElementEventArgs> Registered;
 
         event EventHandler<WindowElementEventArgs> Unregistered;
 
         /// <summary>
-        /// Raised when a <see cref="IWindowElement"/> is hidden.
+        /// Raised when a <see cref="IWindowElement2"/> is hidden.
         /// </summary>
         event EventHandler<WindowElementEventArgs> WindowHidden;
 
         /// <summary>
-        /// Raised when a <see cref="IWindowElement"/> is restored.
+        /// Raised when a <see cref="IWindowElement2"/> is restored.
         /// </summary>
         event EventHandler<WindowElementEventArgs> WindowRestored;
 
         /// <summary>
-        /// Raised when a <see cref="IWindowElement"/>  is moved.
+        /// Raised when a <see cref="IWindowElement2"/>  is moved.
         /// </summary>
         event EventHandler<WindowElementLocationEventArgs> WindowMoved;
 
         /// <summary>
-        /// Raised when a <see cref="IWindowElement"/> is resized.
+        /// Raised when a <see cref="IWindowElement2"/> is resized.
         /// </summary>
         event EventHandler<WindowElementResizeEventArgs> WindowResized;
     }

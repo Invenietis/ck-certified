@@ -12,7 +12,13 @@ namespace SimpleSkin.ViewModels
         public VMSplitZone( VMZoneSimple vms, IEnumerable<IHighlightableElement> part1, IEnumerable<IHighlightableElement> part2 )
             : this( vms, part1 )
         {
-            Next = new VMSplitZone( vms, part2 );
+            Next = new VMSplitZone( vms, part2, this );
+        }
+
+        private VMSplitZone( VMZoneSimple vms, IEnumerable<IHighlightableElement> part1, VMSplitZone parent )
+            : this( vms, part1 )
+        {
+            Parent = parent;
         }
 
         private VMSplitZone( VMZoneSimple vms, IEnumerable<IHighlightableElement> part1 )
@@ -26,10 +32,13 @@ namespace SimpleSkin.ViewModels
 
             Original = vms;
             Next = null;
+            Parent = null;
         }
 
-        public VMZoneSimple Original { get; set; }
+        public VMZoneSimple Original { get; private set; }
 
-        public VMSplitZone Next { get; set; }
+        public VMSplitZone Next { get; private set; }
+
+        public VMSplitZone Parent { get; private set; }
     }
 }

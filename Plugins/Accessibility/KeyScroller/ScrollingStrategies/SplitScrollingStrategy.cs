@@ -59,14 +59,13 @@ namespace KeyScroller
                 }
 
                 _currentId = parentSibblings.IndexOf( parentSplitZone.Original );
+                nextElement = parentSplitZone.Parent ?? parentSplitZone;
             }
             else
             {
                 _currentId = parentSibblings.IndexOf( parent );
-                _nextElement = parent;
+                nextElement = parent;
             }
-
-            nextElement = parent;
 
             // if the parent skipping behavior is enter children, we skip it
             if( parent.Skip == SkippingBehavior.EnterChildren )

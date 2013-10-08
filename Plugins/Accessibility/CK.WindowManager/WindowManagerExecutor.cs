@@ -23,7 +23,8 @@ namespace CK.WindowManager
             IWindowElement triggerHolder = e.Window;
 
             // Gets all windows attach to the given window
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
+            ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
+            
             foreach( IWindowElement window in attachedElements )
             {
                 window.Move( window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
@@ -41,7 +42,7 @@ namespace CK.WindowManager
             // Moves all attached windows with position Top / Bottom
 
             // Gets all windows attach to the given window
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetBinding( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
                 window.Resize( window.Width + e.DeltaWidth, window.Height + e.DeltaHeight );
@@ -52,7 +53,7 @@ namespace CK.WindowManager
         {
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetBinding( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
                 window.Restore();
@@ -62,7 +63,7 @@ namespace CK.WindowManager
         void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
         {
             IWindowElement triggerHolder = e.Window;
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetBinding( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
                 window.Hide();

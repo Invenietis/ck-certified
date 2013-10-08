@@ -42,14 +42,29 @@ namespace CK.WindowManager.Model
 
     public interface ISpatialBinding
     {
+        /// <summary>
+        /// Gets the reference window
+        /// </summary>
         IWindowElement Window { get; }
 
+        /// <summary>
+        /// Gets the left binding of the reference window
+        /// </summary>
         ISpatialBinding Left { get; }
 
+        /// <summary>
+        /// Gets the right binding of the reference window
+        /// </summary>
         ISpatialBinding Right { get; }
 
+        /// <summary>
+        /// Gets the bottom binding of the reference window
+        /// </summary>
         ISpatialBinding Bottom { get; }
 
+        /// <summary>
+        /// Gets the top binding of the reference window
+        /// </summary>
         ISpatialBinding Top { get; }
     }
 

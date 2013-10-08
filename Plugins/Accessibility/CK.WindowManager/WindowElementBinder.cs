@@ -23,48 +23,33 @@ namespace CK.WindowManager
 
         public event EventHandler<WindowBindedEventArgs> AfterBinding;
 
-        public ICKReadOnlyCollection<IWindowElement> GetAttachedElements( IWindowElement referential )
+        public ISpatialBinding GetBinding( IWindowElement referential )
         {
             if( referential == null ) throw new ArgumentNullException( "referential" );
-
-            List<IBinding> bindings = null;
-            if( _bindings.TryGetValue( referential, out bindings ) )
-            {
-                IList<IWindowElement> list = new List<IWindowElement>();
-
-                // TODO: improved algo
-                GetAttachedElements( referential, bindings, list );
-                list.Remove( referential );
-                return list.ToReadOnlyCollection();
-            }
-            return CKReadOnlyListEmpty<IWindowElement>.Empty;
+            
+            SpatialBinding b = null;
+            _spatialBindings.TryGetValue( referential, out b );
+            return b;
         }
-
-        void GetAttachedElements( IWindowElement referential, List<IBinding> bindings, IList<IWindowElement> attached )
-        {
-            if( bindings == null || bindings.Count == 0 ) return;
-
-            for( int i = 0; i < bindings.Count; ++i )
-            {
-                IBinding binding = bindings[i];
-                if( binding.Master != referential && attached.IndexOf( binding.Master ) == -1 )
-                {
-                    attached.Add( binding.Master );
-                    GetAttachedElements( binding.Master, _bindings[binding.Master], attached );
-                }
-                else if( binding.Slave != referential && attached.IndexOf( binding.Slave ) == -1 )
-                {
-                    attached.Add( binding.Slave );
-                    GetAttachedElements( binding.Slave, _bindings[binding.Slave], attached );
-                }
-            }
-        }
-
 
         public void Attach( IWindowElement master, IWindowElement slave, BindingPosition position )
         {
             if( master == null ) throw new ArgumentNullException( "master" );
             if( slave == null ) throw new ArgumentNullException( "slave" );
+
+            // Spatial binding point of view
+
+            bool isNew = true;
+            SpatialBinding spatialBinding = null;
+            if( _spatialBindings.TryGetValue( master, out spatialBinding ) )
+            {
+                isNew = false;
+                if( position == BindingPosition.Top && spatialBinding.Top != null ) return;
+                if( position == BindingPosition.Left && spatialBinding.Left != null ) return;
+                if( position == BindingPosition.Bottom && spatialBinding.Bottom != null ) return;
+                if( position == BindingPosition.Right && spatialBinding.Right != null ) return;
+            }
+            else spatialBinding = new SpatialBinding( master );
 
             var binding = new SimpleBinding
             {
@@ -73,36 +58,36 @@ namespace CK.WindowManager
                 Position = position
             };
 
-            List<IBinding> list = null;
-
-            // If an attachement already exists, this attachement is canceled. 
-            // The usage is to detach and the re attach. Cannot replace alread attached window elements.
-            if( _bindings.TryGetValue( master, out list ) && list.Contains( binding ) )
+            var evt = new WindowBindingEventArgs
             {
-                // If the binding exists in master / slave, the binding must exist in slave / master.
-                Debug.Assert( _bindings.TryGetValue( slave, out list ) && list.Contains( binding ) );
-                // In addition, the binding position must be the opposite
-                return;
-            }
-
-            var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Attach };
-            if( BeforeBinding != null ) BeforeBinding( this, evt );
+                Binding = binding,
+                BindingType = BindingEventType.Attach
+            };
+            if( BeforeBinding != null )
+                BeforeBinding( this, evt );
 
             if( evt.Canceled == false )
             {
-                Link( master, binding );
-                var oppositeBinding = new SimpleBinding
-                {
-                    Master = slave,
-                    Slave = master,
-                    Position = WindowElementBinder.GetOppositePosition( position )
-                };
-                Link( slave, oppositeBinding );
 
-                var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Attach };
-                if( AfterBinding != null ) AfterBinding( this, evtAfter );
+                if( position == BindingPosition.Top ) spatialBinding.Top = new SpatialBinding( slave ) { Bottom = spatialBinding };
+                if( position == BindingPosition.Left ) spatialBinding.Left = new SpatialBinding( slave ) { Right = spatialBinding };
+                if( position == BindingPosition.Bottom ) spatialBinding.Bottom = new SpatialBinding( slave ) { Top = spatialBinding };
+                if( position == BindingPosition.Right ) spatialBinding.Right = new SpatialBinding( slave ) { Left = spatialBinding };
+
+                if( isNew ) _spatialBindings.Add( master, spatialBinding );
+
+                var evtAfter = new WindowBindedEventArgs
+                {
+                    Binding = binding,
+                    BindingType = BindingEventType.Attach
+                };
+                if( AfterBinding != null )
+                    AfterBinding( this, evtAfter );
             }
+
         }
+
+        IDictionary<IWindowElement, SpatialBinding> _spatialBindings = new Dictionary<IWindowElement, SpatialBinding>();
 
         internal static BindingPosition GetOppositePosition( BindingPosition position )
         {
@@ -112,43 +97,59 @@ namespace CK.WindowManager
             return BindingPosition.Left;
         }
 
-        private void Link( IWindowElement window, SimpleBinding binding )
-        {
-            var bindings = _bindings.GetOrSet( window, ( w ) => new List<IBinding>() );
-            bindings.Add( binding );
-        }
-
         public void Detach( IWindowElement me, IWindowElement other )
         {
             if( me == null ) throw new ArgumentNullException( "me" );
             if( other == null ) throw new ArgumentNullException( "other" );
-
-            var binding = new SimpleBinding 
-            { 
-                Master = me, 
-                Slave = other 
-            };
-
-            List<IBinding> list = null;
-            bool isBindingExists = _bindings.TryGetValue( binding.Master, out list ) && list.Contains( binding );
-            if( isBindingExists )
+            
+            SpatialBinding spatialBinding = null;
+            if( _spatialBindings.TryGetValue( me, out spatialBinding ) )
             {
+                var binding = new SimpleBinding
+                {
+                    Master = me,
+                    Slave = other
+                };
                 var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
                 if( BeforeBinding != null ) BeforeBinding( this, evt );
 
                 if( evt.Canceled == false )
                 {
-                    var bindingsA = _bindings[binding.Master];
-                    if( bindingsA != null ) bindingsA.Remove( binding );
+                    Debug.Assert( me == spatialBinding.Window );
 
-                    var bindingsB = _bindings[binding.Slave];
-                    if( bindingsB != null ) bindingsB.Remove( binding );
-
-                    var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
-                    if( AfterBinding != null ) AfterBinding( this, evtAfter );
+                    if( spatialBinding.Bottom != null && spatialBinding.Bottom.Window == other )
+                    {
+                        Debug.Assert( spatialBinding.Bottom.Top != null );
+                        Detach( other, me );
+                        spatialBinding.Bottom = null;
+                    }
+                    if( spatialBinding.Left != null && spatialBinding.Left.Window == other )
+                    {
+                        Debug.Assert( spatialBinding.Left.Right != null );
+                        Detach( other, me );
+                        spatialBinding.Left = null;
+                    }
+                    if( spatialBinding.Top != null && spatialBinding.Top.Window == other )
+                    {
+                        Debug.Assert( spatialBinding.Top.Bottom != null );
+                        Detach( other, me );
+                        spatialBinding.Top = null;
+                    }
+                    if( spatialBinding.Right != null && spatialBinding.Right.Window == other )
+                    {
+                        Debug.Assert( spatialBinding.Right.Left != null );
+                        Detach( other, me );
+                        spatialBinding.Right = null;
+                    }
+                    if( spatialBinding.IsAlone )
+                        _spatialBindings.Remove( me );
                 }
+
+                var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
+                if( AfterBinding != null ) AfterBinding( this, evtAfter );
             }
         }
+
 
         class SimpleBinding : IBinding
         {
@@ -173,6 +174,30 @@ namespace CK.WindowManager
                 return Master.GetHashCode() ^ Slave.GetHashCode();
             }
         }
+
+        class SpatialBinding : ISpatialBinding
+        {
+            public SpatialBinding( IWindowElement w )
+            {
+                Window = w;
+            }
+
+            public IWindowElement Window { get; private set; }
+
+            public ISpatialBinding Left { get; set; }
+
+            public ISpatialBinding Right { get; set; }
+
+            public ISpatialBinding Bottom { get; set; }
+
+            public ISpatialBinding Top { get; set; }
+
+            public bool IsAlone
+            {
+                get { return Left == null && Right == null && Top == null && Bottom == null; }
+            }
+        }
+
 
         #region IPlugin Members
 

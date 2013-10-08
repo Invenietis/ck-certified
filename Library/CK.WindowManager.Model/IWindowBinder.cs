@@ -13,11 +13,11 @@ namespace CK.WindowManager.Model
     public interface IWindowBinder : IDynamicService
     {
         /// <summary>
-        /// Gets a readonly collection of attached <see cref="IWindowElement"/> from a referential <see cref="IWindowElement"/>.
+        /// Gets a <see cref="ISpatialBinding"/> from a reference <see cref="IWindowElement"/>.
         /// </summary>
-        /// <param name="master">The <see cref="IWindowElement"/> from where to retrieve all attached <see cref="IWindowElement"/>.</param>
+        /// <param name="reference">The <see cref="IWindowElement"/> from where to retrieve all attached <see cref="IWindowElement"/>.</param>
         /// <returns></returns>
-        ICKReadOnlyCollection<IWindowElement> GetAttachedElements( IWindowElement master );
+        ISpatialBinding GetBinding( IWindowElement reference );
 
         /// <summary>
         /// Attach the both <see cref="IWindowElement"/> provided.

@@ -98,7 +98,7 @@ namespace CK.WindowManager
                     using( new DisableElementEvents( 
                         w => w.SizeChanged -= OnWindowSizeChanged,
                         w => w.SizeChanged += OnWindowSizeChanged,
-                        WindowBinder.GetAttachedElements( window ) ) )
+                        WindowBinder.GetBinding( window ) ) )
                     {
                         double deltaWidth = window.Width - data.Width;
                         double deltaHeight = window.Height - data.Height;
@@ -127,7 +127,7 @@ namespace CK.WindowManager
                     using( new DisableElementEvents(
                         w => w.LocationChanged -= OnWindowLocationChanged,
                         w => w.LocationChanged += OnWindowLocationChanged,
-                        WindowBinder.GetAttachedElements( windowElement ) ) )
+                        WindowBinder.GetBinding( windowElement ) ) )
                     {
                         double deltaTop = window.Top - data.Top;
                         double deltaLeft = window.Left - data.Left;

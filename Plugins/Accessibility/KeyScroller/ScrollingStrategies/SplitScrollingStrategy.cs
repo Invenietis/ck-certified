@@ -15,7 +15,7 @@ namespace KeyScroller
     internal class SplitScrollingStrategy : BasicScrollingStrategy
     {
         const string StrategyName = "SplitScrollingStrategy";
-        const int childrenLimitBeforeSplit = 6;
+        const int ChildrenLimitBeforeSplit = 6;
 
         public override string Name
         {
@@ -88,7 +88,7 @@ namespace KeyScroller
             _currentId = 0;
 
             var vmz = _nextElement as VMZoneSimple;
-            if( vmz != null && !(vmz is VMSplitZone) && vmz.Children.Count > childrenLimitBeforeSplit )
+            if( vmz != null && !(vmz is VMSplitZone) && vmz.Children.Count > ChildrenLimitBeforeSplit )
             {
                 _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
                 // push the original zone in the history

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CK.Core;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
 
@@ -13,6 +15,8 @@ namespace CK.WordPredictor.Engines
     {
         Sybille.WordPredictor _sybille;
         IWordPredictorFeature _wordPredictionFeature;
+
+        const int MaxPredictRetryCount = 2;
 
         public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
         {
@@ -41,82 +45,76 @@ namespace CK.WordPredictor.Engines
             }
         }
 
-        Task<IEnumerable<IWordPredicted>> _currentlyRunningTask;
-        CancellationToken _currentlyRunningTaskCancellationToken;
-        CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+        Task<ICKReadOnlyList<IWordPredicted>> _currentlyRunningTask;
+        CancellationTokenSource cancellationSource = null;
 
-        public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+        public Task<ICKReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
         {
-            if( _currentlyRunningTaskCancellationToken == null )
-                _currentlyRunningTaskCancellationToken = new CancellationToken( false );
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status <= TaskStatus.Running )
+            {
+                Debug.Assert( cancellationSource != null );
+                cancellationSource.Cancel();
+                //_currentlyRunningTask.Wait( cancellationSource.Token );
+                cancellationSource.Dispose();
+                cancellationSource = new CancellationTokenSource();
+                PredictionLogger.Instance.Trace( "Prediction Canceled" );
+            }
 
-            if( _currentlyRunningTask != null && _currentlyRunningTask.Status == TaskStatus.Running )
+            if( cancellationSource == null )
+                cancellationSource = new CancellationTokenSource();
+
+            _currentlyRunningTask = Task.Factory.StartNew( () =>
             {
-                _cancellationSource.Cancel();
-            }
-            else
-            {
-                _currentlyRunningTask = Task.Factory.StartNew( () => Predict( textualContext, maxSuggestedWords ), _currentlyRunningTaskCancellationToken );
-            }
+                if( cancellationSource.IsCancellationRequested == false )
+                    return Predict( rawContext, maxSuggestedWords );
+
+                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
+            }, cancellationSource.Token );
+
             return _currentlyRunningTask;
         }
 
-        public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
+        public ICKReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords )
         {
-            //This call can sometimes raise an ArgumentException
-            //TODO : log it and catch it to go on.
-            IEnumerable<WeightlessWordPredicted> result = null;
+            int retryCount = MaxPredictRetryCount;
+            return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
+        }
+
+        private ICKReadOnlyList<IWordPredicted> InternalPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
+        {
             try
             {
-                result = _sybille
-                    .Predict( ObtainSybilleContext( textualService ), maxSuggestedWords )
-                    .Select( t => new WeightlessWordPredicted( t ) );
+                var predicted = _sybille
+                    .Predict( rawContext, maxSuggestedWords )
+                    .Select( t => new WeightlessWordPredicted( t ) )
+                    .ToReadOnlyList();
+
+                PredictionLogger.Instance.Trace( "Predicted < {0} > from < {1} >", String.Join( ", ", predicted.Select( w => w.Word ) ), rawContext.Replace( ' ', '_' ) );
+
+                return predicted;
             }
-            catch( ArgumentException )
+            catch( ArgumentException ex )
             {
-                return Enumerable.Empty<IWordPredicted>();
+                PredictionLogger.Instance.Error( ex.Message );
+                return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
-            return result;
+            catch( IndexOutOfRangeException outOfRangeEx )
+            {
+                PredictionLogger.Instance.Error( outOfRangeEx.Message );
+                return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
+            }
         }
 
-        /// <summary>
-        /// Calls <see cref="ObtainContext( ITextualContextService textualService )"/> and replaces all occurences of "'" (apostrophe) by "' " (apostrophe + space).
-        /// Done so because Sybille doesn't understand the apostrophe character. therefor, in order to get a prediction for the word that follows this char, we flush Sybille's context thanks to the space char.
-        /// </summary>
-        public virtual string ObtainSybilleContext( ITextualContextService textualService )
+        private ICKReadOnlyList<IWordPredicted> RetryPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
         {
-            return ObtainContext( textualService ).Replace( "'", "' " );
-        }
-
-        /// <summary>
-        /// Gets the prediction context (all the text that has been written since the last "Return")
-        /// </summary>
-        /// <param name="textualService"></param>
-        /// <returns></returns>
-        public string ObtainContext( ITextualContextService textualService )
-        {
-            if( textualService.Tokens.Count > 1 )
+            if( retryCount > 0 )
             {
-                string tokenPhrase = String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
-                tokenPhrase += " ";
-                if( textualService.Tokens.Count >= textualService.CurrentTokenIndex )
-                {
-                    string value = textualService.Tokens[textualService.CurrentTokenIndex].Value;
-                    if( value.Length >= textualService.CaretOffset )
-                    {
-                        tokenPhrase += ( value.Substring( 0, textualService.CaretOffset ) );
-                    }
-                }
-
-                return tokenPhrase;
+                retryCount--;
+                PredictionLogger.Instance.Trace( "Attempt n°{0}", MaxPredictRetryCount - retryCount );
+                return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
-            if( textualService.Tokens.Count == 1 )
-            {
-                return textualService.CurrentToken.Value.Substring( 0, textualService.CaretOffset );
-            }
-            return String.Empty;
+            return CKReadOnlyListEmpty<IWordPredicted>.Empty;
         }
-
 
         public bool IsWeightedPrediction
         {
@@ -129,8 +127,15 @@ namespace CK.WordPredictor.Engines
         {
             if( _sybille != null )
             {
-                _sybille.SaveUserPredictor();
-                _sybille = null;
+                try
+                {
+                    _sybille.SaveUserPredictor();
+                    _sybille = null;
+                }
+                catch( Exception ex )
+                {
+                    PredictionLogger.Instance.Error( ex, "While saving user predictor" );
+                }
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,9 +26,6 @@ namespace CK.WordPredictor.UI
         public IWordPredictorFeature Feature { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ITextualContextService TextualContextService { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IPredictionTextAreaService PredictionTextAreaService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -44,16 +42,17 @@ namespace CK.WordPredictor.UI
         public void Start()
         {
             Feature.PropertyChanged += OnFeaturePropertyChanged;
+            PredictionTextAreaService.PredictionAreaTextSent += OnPredictionAreaContentSent;
+
             if( Feature.DisplayContextEditor ) EnableEditor();
         }
 
         public void Stop()
         {
             DisableEditor();
-            Feature.PropertyChanged -= OnFeaturePropertyChanged;
 
-            //The textarea can be null if we never enabled the editor
-            if( _textArea != null ) _textArea.PropertyChanged -= OnTextAreaPropertyChanged;
+            Feature.PropertyChanged -= OnFeaturePropertyChanged;
+            PredictionTextAreaService.PredictionAreaTextSent -= OnPredictionAreaContentSent;
         }
 
         public void Teardown()
@@ -70,10 +69,34 @@ namespace CK.WordPredictor.UI
         }
 
         TextualContextAreaViewModel _textArea;
+        IDisposable _observersChain;
+
         void EnableEditor()
         {
-            _textArea = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
-            _textArea.PropertyChanged += OnTextAreaPropertyChanged;
+            TimeSpan dueTime = TimeSpan.FromMilliseconds( 250 );
+
+            _textArea = new TextualContextAreaViewModel( PredictionTextAreaService, CommandTextualContextService );
+
+            var propertyChangedEvents = Observable.FromEvent<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+              h => new PropertyChangedEventHandler( ( sender, e ) => h( e ) ),
+              h => _textArea.PropertyChanged += h,
+              h => _textArea.PropertyChanged -= h );
+
+            var textualContextChanged = propertyChangedEvents
+                .Where( x => x.PropertyName == "TextualContext" )
+                .Throttle( dueTime );
+
+            var caretIndexChanged = propertyChangedEvents
+                .Where( x => x.PropertyName == "CaretIndex" )
+                .Throttle( dueTime );
+
+            var isFocusedChanged = propertyChangedEvents.Where( x => x.PropertyName == "IsFocused" );
+
+            _observersChain = textualContextChanged
+                .Merge( caretIndexChanged )
+                .Merge( isFocusedChanged )
+                .Subscribe( OnTextAreaPropertyChanged );
+
             _window = new TextualContextAreaWindow( _textArea )
             {
                 Width = 600,
@@ -88,11 +111,24 @@ namespace CK.WordPredictor.UI
             CreateSendContextKeyInPredictionZone( zone );
         }
 
-        void OnTextAreaPropertyChanged( object sender, PropertyChangedEventArgs e )
+        void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
+        {
+            _textArea.TextualContext = String.Empty;
+        }
+
+        void OnTextAreaPropertyChanged( PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "IsFocused" )
             {
                 PredictionTextAreaService.IsDriven = _textArea.IsFocused;
+            }
+            if( e.PropertyName == "TextualContext" )
+            {
+                PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
+            }
+            if( e.PropertyName == "CaretIndex" )
+            {
+                PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
             }
         }
 
@@ -103,6 +139,7 @@ namespace CK.WordPredictor.UI
             Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
 
             if( _window != null ) _window.Close();
+            if( _observersChain != null ) _observersChain.Dispose();
         }
 
         void CreateSendContextKeyInPredictionZone( IZone zone )

@@ -36,7 +36,8 @@ namespace WordPredictorTest
         {
             TextualContextService textualContextService = new TextualContextService();
             textualContextService.SetRawText( "Je" );
-            var predicted = engine.Predict( textualContextService, 20 );
+            string context= textualContextService.GetTextualContext();
+            var predicted = engine.Predict( context, 20 );
             Assert.That( predicted, Is.Not.Null );
             Assert.That( predicted.Count() > 0 );
         }

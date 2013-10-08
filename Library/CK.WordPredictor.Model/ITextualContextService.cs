@@ -21,8 +21,18 @@ namespace CK.WordPredictor.Model
     {
     }
 
-    public interface ITextualContextService : INotifyPropertyChanged, IDynamicService
+    public interface ITextualContextService : CK.Core.IFluentInterface, IDynamicService
     {
+        /// <summary>
+        /// This event is fired when the textual context is going to change
+        /// </summary>
+        event EventHandler TextualContextChanging;
+
+        /// <summary>
+        /// This event is fired when the textual context has changed.
+        /// </summary>
+        event EventHandler TextualContextChanged;
+
         /// <summary>
         /// Gets an observable list of <see cref="IToken"/> that surrounds the caret (the current insertion point).
         /// </summary>

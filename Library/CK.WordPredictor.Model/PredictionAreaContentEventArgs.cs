@@ -7,11 +7,14 @@ namespace CK.WordPredictor.Model
 {
     public class PredictionAreaContentEventArgs : EventArgs
     {
-        public string Text { get; private set; }
+        public readonly string Text;
 
-        public PredictionAreaContentEventArgs( string text )
+        public readonly int CaretIndex;
+
+        public PredictionAreaContentEventArgs( string text, int caretIndex )
         {
             Text = text;
+            CaretIndex = caretIndex;
         }
     }
 }

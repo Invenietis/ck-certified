@@ -124,25 +124,22 @@ namespace CK.WordPredictor.UI
                 {
                     for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
                     {
-                        zone.Keys[i].CurrentLayout.Current.Visible = false;
-                    }
-                }
-                else if( e.Action == NotifyCollectionChangedAction.Add )
-                {
-                    int idx = e.NewStartingIndex;
-                    if( idx < zone.Keys.Count )
-                    {
-                        IKey key = zone.Keys[idx];
-                        if( key != null && e.NewStartingIndex < Feature.MaxSuggestedWords )
+                        IKey key = zone.Keys[i];
+                        if( key != null )
                         {
-                            IWordPredicted wordPredicted = WordPredictorService.Service.Words[e.NewStartingIndex];
-                            if( wordPredicted != null )
+                            key.CurrentLayout.Current.Visible = false;
+
+                            if( i < Feature.MaxSuggestedWords && WordPredictorService.Service.Words.Count > i )
                             {
-                                key.Current.DownLabel = wordPredicted.Word;
-                                key.Current.UpLabel = wordPredicted.Word;
-                            key.Current.OnKeyDownCommands.Commands.Clear();
-                            key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
-                                key.CurrentLayout.Current.Visible = true;
+                                IWordPredicted wordPredicted = WordPredictorService.Service.Words[i];
+                                if( wordPredicted != null )
+                                {
+                                    key.Current.DownLabel = wordPredicted.Word;
+                                    key.Current.UpLabel = wordPredicted.Word;
+                                    key.Current.OnKeyDownCommands.Commands.Clear();
+                                    key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+                                    key.CurrentLayout.Current.Visible = true;
+                                }
                             }
                         }
                     }

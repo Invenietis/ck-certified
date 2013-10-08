@@ -185,11 +185,13 @@ namespace CK.WordPredictor.UI
             _window.Show();
 
             Feature.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
-            Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            if( Context.CurrentKeyboard != null )
+            {
+                Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
 
-            var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-            CreateSendContextKeyInPredictionZone( zone );
-
+                var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
+                CreateSendContextKeyInPredictionZone( zone );
+            }
             // Window Manager
             WindowManager.ServiceStatusChanged += WindowManager_ServiceStatusChanged;
             if( WindowManager.Status == InternalRunningStatus.Started )
@@ -223,7 +225,8 @@ namespace CK.WordPredictor.UI
         {
             DestroySendContextKey();
             Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
-            Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+            if( Context.CurrentKeyboard != null )
+                Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
 
             if( _window != null ) _window.Close();
             if( _observersChain != null ) _observersChain.Dispose();

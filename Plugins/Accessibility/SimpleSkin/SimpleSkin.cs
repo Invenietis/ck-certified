@@ -163,8 +163,11 @@ namespace SimpleSkin
                 _isStarted = false;
                 Application.Current.Dispatcher.BeginInvoke( (Action)(() =>
                 {
-                    Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
-                        "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
+                    if( Notification != null )
+                    {
+                        Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est disponible",
+                            "Aucun clavier n'est disponible dans le contexte actuel, veuillez choisir un contexte contenant au moins un clavier.", 1000, NotificationTypes.Error );
+                    }
                 }), null );
             }
         }
@@ -220,9 +223,12 @@ namespace SimpleSkin
 
         public void Teardown()
         {
-            //TODO : remove when the NoFocusWindowManager is exported to a service.
-            //Then register the Shutdown call to the ApplicationExiting event.
-            _noFocusWindowManager.Shutdown();
+            if( _noFocusWindowManager != null )
+            {
+                //TODO : remove when the NoFocusWindowManager is exported to a service.
+                //Then register the Shutdown call to the ApplicationExiting event.
+                _noFocusWindowManager.Shutdown();
+            }
         }
 
         #region ToolMethods

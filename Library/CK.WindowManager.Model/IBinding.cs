@@ -68,4 +68,29 @@ namespace CK.WindowManager.Model
         ISpatialBinding Top { get; }
     }
 
+    public static class BindingExtensions
+    {
+
+        /// <summary>
+        /// Gets all descendants
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<IWindowElement> AllDescendants( this ISpatialBinding me )
+        {
+            if( me.Top != null ) foreach( var e in me.Top.Descendants( me.Window ) ) yield return e;
+            if( me.Left != null ) foreach( var e in me.Left.Descendants( me.Window ) ) yield return e;
+            if( me.Bottom != null ) foreach( var e in me.Bottom.Descendants( me.Window ) ) yield return e;
+            if( me.Right != null ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
+        }
+
+        private static IEnumerable<IWindowElement> Descendants( this ISpatialBinding me, IWindowElement reference )
+        {
+            if( me.Top != null && me.Top.Window != reference ) foreach( var e in me.Top.Descendants( me.Window ) ) yield return e;
+            if( me.Left != null && me.Left.Window != reference ) foreach( var e in me.Left.Descendants( me.Window ) ) yield return e;
+            if( me.Bottom != null && me.Bottom.Window != reference ) foreach( var e in me.Bottom.Descendants( me.Window ) ) yield return e;
+            if( me.Right != null && me.Right.Window != reference ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
+
+            yield return me.Window;
+        }
+    }
 }

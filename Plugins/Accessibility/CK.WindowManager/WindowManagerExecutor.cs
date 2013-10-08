@@ -24,10 +24,11 @@ namespace CK.WindowManager
 
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
-            
-            foreach( IWindowElement window in attachedElements )
+
+            // Horizontal move
+            foreach( IWindowElement window in binding.AllDescendants() )
             {
-                window.Move( window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
+                WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
             }
         }
 
@@ -36,38 +37,52 @@ namespace CK.WindowManager
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
 
-            // If the resized is horizontal
-            // Resizes referential window.
-            // Resizes all attached windows with position Left / Right
-            // Moves all attached windows with position Top / Bottom
-
             // Gets all windows attach to the given window
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetBinding( triggerHolder );
-            foreach( IWindowElement window in attachedElements )
+            ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
+
+            if( e.DeltaHeight != 0 )
             {
-                window.Resize( window.Width + e.DeltaWidth, window.Height + e.DeltaHeight );
+                DoResizeVerticaly( e, binding.Left );
+                DoResizeVerticaly( e, binding.Right );
+            }
+            if( e.DeltaWidth != 0 )
+            {
+                DoResizeHorizontaly( e, binding.Top );
+                DoResizeHorizontaly( e, binding.Bottom );
+            }
+        }
+
+        private void DoResizeHorizontaly( WindowElementResizeEventArgs e, ISpatialBinding spatial )
+        {
+            if( spatial != null )
+            {
+                var window = spatial.Window;
+                double newWidth = window.Width + e.DeltaWidth;
+                WindowManager.Resize( window, newWidth, window.Height );
+            }
+        }
+
+        private void DoResizeVerticaly( WindowElementResizeEventArgs e, ISpatialBinding spatial )
+        {
+            if( spatial != null )
+            {
+                var window = spatial.Window;
+                double newHeight = window.Height + e.DeltaHeight;
+                WindowManager.Resize( window, window.Width, newHeight );
             }
         }
 
         void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )
         {
             // The Window that moves first
-            IWindowElement triggerHolder = e.Window;
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetBinding( triggerHolder );
-            foreach( IWindowElement window in attachedElements )
-            {
+            foreach( IWindowElement window in WindowBinder.GetBinding( e.Window ).AllDescendants() )
                 window.Restore();
-            }
         }
 
         void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
         {
-            IWindowElement triggerHolder = e.Window;
-            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetBinding( triggerHolder );
-            foreach( IWindowElement window in attachedElements )
-            {
+            foreach( IWindowElement window in WindowBinder.GetBinding( e.Window ).AllDescendants() )
                 window.Hide();
-            }
         }
 
         void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )
@@ -84,8 +99,8 @@ namespace CK.WindowManager
                     double topSlave = e.Binding.Master.Top - e.Binding.Slave.Height;
                     double leftSlave = e.Binding.Master.Left;
 
-                    e.Binding.Slave.Move( topSlave, leftSlave );
-                    e.Binding.Slave.Resize( e.Binding.Master.Width, e.Binding.Slave.Height );
+                    WindowManager.Move( e.Binding.Slave, topSlave, leftSlave );
+                    WindowManager.Resize( e.Binding.Slave, e.Binding.Master.Width, e.Binding.Slave.Height );
                 }
             }
         }

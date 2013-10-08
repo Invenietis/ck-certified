@@ -68,14 +68,19 @@ namespace CK.WindowManager
 
             if( evt.Canceled == false )
             {
-
-                if( position == BindingPosition.Top ) spatialBinding.Top = new SpatialBinding( slave ) { Bottom = spatialBinding };
-                if( position == BindingPosition.Left ) spatialBinding.Left = new SpatialBinding( slave ) { Right = spatialBinding };
-                if( position == BindingPosition.Bottom ) spatialBinding.Bottom = new SpatialBinding( slave ) { Top = spatialBinding };
-                if( position == BindingPosition.Right ) spatialBinding.Right = new SpatialBinding( slave ) { Left = spatialBinding };
-
                 if( isNew ) _spatialBindings.Add( master, spatialBinding );
 
+                SpatialBinding slaveSpatialBinding = null;
+                if( position == BindingPosition.Top ) spatialBinding.Top = slaveSpatialBinding = new SpatialBinding( slave ) { Bottom = spatialBinding };
+                if( position == BindingPosition.Left ) spatialBinding.Left = slaveSpatialBinding = new SpatialBinding( slave ) { Right = spatialBinding };
+                if( position == BindingPosition.Bottom ) spatialBinding.Bottom = slaveSpatialBinding = new SpatialBinding( slave ) { Top = spatialBinding };
+                if( position == BindingPosition.Right ) spatialBinding.Right = slaveSpatialBinding = new SpatialBinding( slave ) { Left = spatialBinding };
+
+                if( isNew )
+                {
+                    Debug.Assert( slaveSpatialBinding != null );
+                    _spatialBindings.Add( slave, slaveSpatialBinding );
+                }
                 var evtAfter = new WindowBindedEventArgs
                 {
                     Binding = binding,

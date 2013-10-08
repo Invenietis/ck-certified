@@ -33,6 +33,22 @@ namespace CK.WindowManager.Model
         void Unregister( IWindowElement windowElement );
 
         /// <summary>
+        /// Moves the given window element top the top and left.
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="top"></param>
+        /// <param name="left"></param>
+        void Move( IWindowElement window, double top, double left );
+
+        /// <summary>
+        /// Resizes the given window element to the width and height
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        void Resize( IWindowElement window, double width, double height );
+
+        /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is registered.
         /// </summary>
         event EventHandler<WindowElementEventArgs> Registered;

@@ -37,13 +37,27 @@ namespace KeyScroller
             if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
             IHighlightableElement parent = _currentElementParents.Pop();
+            IHighlightableElement parentObj = null;
             ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
-            if( _currentElementParents.Count > 0 ) parentSibblings = _currentElementParents.Peek().Children;
+            if( _currentElementParents.Count > 0 )
+            {
+                parentObj = _currentElementParents.Peek();
+                parentSibblings = parentObj.Children;
+            }
             else parentSibblings = RegisteredElements;
 
             if( parent is VMSplitZone )
             {
                 var parentSplitZone = parent as VMSplitZone;
+                if( parentObj is VMZoneSimple && !(parentObj is VMSplitZone) )
+                {
+                    if( _currentElementParents.Count >= 1 )
+                    {
+                        parentObj = _currentElementParents.Skip( 1 ).Take( 1 ).SingleOrDefault();
+                        if( parentObj != null ) parentSibblings = parentObj.Children;
+                    }
+                }
+
                 _currentId = parentSibblings.IndexOf( parentSplitZone.Original );
             }
             else
@@ -75,6 +89,7 @@ namespace KeyScroller
             if( vmz != null && !(vmz is VMSplitZone) && vmz.Children.Count > childrenLimitBeforeSplit )
             {
                 _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
+                _currentElementParents.Push( vmz );
                 return _nextElement;
             }
             else

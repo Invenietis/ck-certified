@@ -67,6 +67,8 @@ namespace KeyScroller
                 nextElement = parent;
             }
 
+            if( _currentId < 0 ) _currentId = 0;
+
             // if the parent skipping behavior is enter children, we skip it
             if( parent.Skip == SkippingBehavior.EnterChildren )
             {

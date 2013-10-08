@@ -46,6 +46,7 @@ namespace KeyScroller
             }
             else parentSibblings = RegisteredElements;
 
+            // if it's a splitted zone, "insert" it in the model logically
             if( parent is VMSplitZone )
             {
                 var parentSplitZone = parent as VMSplitZone;
@@ -90,6 +91,7 @@ namespace KeyScroller
             if( vmz != null && !(vmz is VMSplitZone) && vmz.Children.Count > childrenLimitBeforeSplit )
             {
                 _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
+                // push the original zone in the history
                 _currentElementParents.Push( vmz );
                 return _nextElement;
             }
@@ -167,18 +169,5 @@ namespace KeyScroller
 
             return GetSkipBehavior( _nextElement );
         }
-
-        //public override void OnExternalEvent()
-        //{
-        //    if( _currentElement != null )
-        //    {
-        //        if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
-        //        else
-        //        {
-        //            FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-        //            _actionType = ActionType.StayOnTheSame;
-        //        }
-        //    }
-        //}
     }
 }

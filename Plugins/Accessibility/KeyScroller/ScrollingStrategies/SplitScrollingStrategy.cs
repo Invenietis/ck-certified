@@ -49,6 +49,7 @@ namespace KeyScroller
             else
             {
                 _currentId = parentSibblings.IndexOf( parent );
+                _nextElement = parent;
             }
 
             nextElement = parent;
@@ -68,8 +69,18 @@ namespace KeyScroller
             // if the current element does not have any children ... go to the normal next element
             if( _nextElement == null || (_nextElement != null && _nextElement.Children.Count == 0) ) return GetNextElement( ActionType.Normal );
             // otherwise we just push the element as a parent and set the the first child as the current element
-            _currentElementParents.Push( _nextElement );
             _currentId = 0;
+
+            var vmz = _nextElement as VMZoneSimple;
+            if( vmz != null && !(vmz is VMSplitZone) && vmz.Children.Count > childrenLimitBeforeSplit )
+            {
+                _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
+                return _nextElement;
+            }
+            else
+            {
+                _currentElementParents.Push( _nextElement );
+            }
 
             return _nextElement.Children[0];
         }
@@ -117,27 +128,24 @@ namespace KeyScroller
                         else _currentId = 0;
 
                         var nextElementToSplit = elements[_currentId];
-                        if( !(nextElementToSplit is VMZoneSimple) )
+                        if( (_nextElement is VMSplitZone) )
+                        {
+                            _nextElement = GetUpToParent();
+                        }
+                        else if( !(nextElementToSplit is VMZoneSimple) )
                         {
                             _nextElement = nextElementToSplit;
                         }
                         else
                         {
                             var vmz = nextElementToSplit as VMZoneSimple;
-                            if( vmz != null && vmz.Children.Count > childrenLimitBeforeSplit )
-                            {
-                                _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
-                            }
-                            else
-                            {
-                                _nextElement = nextElementToSplit;
-                            }
+                            _nextElement = vmz;
                         }
                     }
                 }
                 else
                 {
-                    _nextElement = GetEnterChild( elements );
+                    _nextElement = GetEnterChild( _nextElement.Children );
                 }
             }
 

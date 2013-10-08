@@ -11,9 +11,6 @@ namespace CK.WindowManager
     [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager", Version = "1.0.0" )]
     public class WindowManager : IWindowManager, IPlugin
     {
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
-        public IWindowBinder WindowBinder { get; set; }
-
         class WindowElementData
         {
             public IWindowElement Window { get; set; }
@@ -72,6 +69,29 @@ namespace CK.WindowManager
                 Registered( this, new WindowElementEventArgs( windowElement ) );
         }
 
+
+        public void Move( IWindowElement window, double top, double left )
+        {
+            window.Move( top, left );
+            WindowElementData data = null;
+            if( _dic.TryGetValue( window, out data ) )
+            {
+                data.Top = window.Top;
+                data.Left = window.Left;
+            }
+        }
+        
+        public void Resize( IWindowElement window, double width, double height )
+        {
+            window.Resize( width, height );
+            WindowElementData data = null;
+            if( _dic.TryGetValue( window, out data ) )
+            {
+                data.Width = window.Width;
+                data.Height = window.Height;
+            }
+        }
+
         protected virtual void OnWindowRestored( object sender, EventArgs e )
         {
             IWindowElement windowElement = sender as IWindowElement;
@@ -95,21 +115,16 @@ namespace CK.WindowManager
                 if( _dic.TryGetValue( windowElementFromSender, out data ) )
                 {
                     IWindowElement window = data.Window;
-                    using( new DisableElementEvents( 
-                        w => w.SizeChanged -= OnWindowSizeChanged,
-                        w => w.SizeChanged += OnWindowSizeChanged,
-                        WindowBinder.GetAttachedElements( window ) ) )
-                    {
-                        double deltaWidth = window.Width - data.Width;
-                        double deltaHeight = window.Height - data.Height;
 
-                        var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
-                        if( WindowResized != null )
-                            WindowResized( sender, evt );
+                    double deltaWidth = window.Width - data.Width;
+                    double deltaHeight = window.Height - data.Height;
 
-                        data.Width = window.Width;
-                        data.Height = window.Height;
-                    }
+                    var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
+                    if( WindowResized != null )
+                        WindowResized( sender, evt );
+
+                    data.Width = window.Width;
+                    data.Height = window.Height;
 
                 }
             }
@@ -124,22 +139,15 @@ namespace CK.WindowManager
                 if( _dic.TryGetValue( windowElement, out data ) )
                 {
                     IWindowElement window = data.Window;
-                    using( new DisableElementEvents(
-                        w => w.LocationChanged -= OnWindowLocationChanged,
-                        w => w.LocationChanged += OnWindowLocationChanged,
-                        WindowBinder.GetAttachedElements( windowElement ) ) )
-                    {
-                        double deltaTop = window.Top - data.Top;
-                        double deltaLeft = window.Left - data.Left;
+                    double deltaTop = window.Top - data.Top;
+                    double deltaLeft = window.Left - data.Left;
 
-                        var evt = new WindowElementLocationEventArgs( windowElement, deltaTop, deltaLeft );
-                        if( WindowMoved != null )
-                            WindowMoved( sender, evt );
+                    var evt = new WindowElementLocationEventArgs( windowElement, deltaTop, deltaLeft );
+                    if( WindowMoved != null )
+                        WindowMoved( sender, evt );
 
-                        data.Top = window.Top;
-                        data.Left = window.Left;
-                    }
-
+                    data.Top = window.Top;
+                    data.Left = window.Left;
                 }
             }
         }
@@ -182,18 +190,18 @@ namespace CK.WindowManager
 
         class DisableElementEvents : IDisposable
         {
-            ICKReadOnlyCollection<IWindowElement> _holders;
+            IReadOnlyCollection<IWindowElement> _holders;
             Action<IWindowElement> _eventToDisableTarget;
             Action<IWindowElement> _eventToEnableTarget;
 
             public DisableElementEvents(
                 Action<IWindowElement> eventToDisableTarget,
                 Action<IWindowElement> eventToEnableTarget,
-                ICKReadOnlyCollection<IWindowElement> holders )
+                IEnumerable<IWindowElement> holders )
             {
                 _eventToDisableTarget = eventToDisableTarget;
                 _eventToEnableTarget = eventToEnableTarget;
-                _holders = holders;
+                _holders = holders.ToArray();
                 foreach( var h in _holders ) _eventToDisableTarget( h );
             }
 

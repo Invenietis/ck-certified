@@ -9,8 +9,6 @@ namespace CK.WindowManager.Model
 {
     public interface IWindowElement : IDisposable
     {
-        Dispatcher Dispatcher { get; }
-
         /// <summary>
         /// Raised when the window element location changed.
         /// </summary>
@@ -69,6 +67,10 @@ namespace CK.WindowManager.Model
         /// <param name="width"></param>
         /// <param name="height"></param>
         void Resize( double width, double height );
+
+        void Hide();
+
+        void Restore();
     }
 
 }

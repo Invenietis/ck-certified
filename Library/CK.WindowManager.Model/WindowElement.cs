@@ -28,10 +28,24 @@ namespace CK.WindowManager.Model
             _w = w;
             _w.LocationChanged += OnWindowLocationChanged;
             _w.SizeChanged += OnWindowSizeChanged;
+            _w.StateChanged += OnWindowStateChanged;
+        }
+
+        void OnWindowStateChanged( object sender, EventArgs e )
+        {
+            if( _w.WindowState == WindowState.Minimized )
+            {
+                if( Hidden != null ) Hidden( this, EventArgs.Empty );
+            }
+            if( _w.WindowState == WindowState.Normal )
+            {
+                if( Restored != null ) Restored( this, EventArgs.Empty );
+            }
         }
 
         public void Dispose()
         {
+            _w.StateChanged -= OnWindowStateChanged;
             _w.LocationChanged -= OnWindowLocationChanged;
             _w.SizeChanged -= OnWindowSizeChanged;
         }
@@ -65,43 +79,89 @@ namespace CK.WindowManager.Model
 
         double IWindowElement.Left
         {
-            get { return _w.Left; }
+            get { return DispatchWhenRequired( () => _w.Left ); }
         }
 
         double IWindowElement.Top
         {
-            get { return _w.Top; }
+            get { return DispatchWhenRequired( () => _w.Top ); }
         }
 
         double IWindowElement.Width
         {
-            get { return _w.Width; }
+            get { return DispatchWhenRequired( () => _w.Width ); }
         }
 
         double IWindowElement.Height
         {
-            get { return _w.Height; }
+            get { return DispatchWhenRequired( () => _w.Height ); }
         }
 
         void IWindowElement.Move( double top, double left )
         {
-            using( _w.Dispatcher.DisableProcessing() )
+            DispatchWhenRequired( new Action( () =>
             {
-                _w.Top = top;
-                _w.Left = left;
-                Console.WriteLine( "{2} [{0},{1}]", _w.Top, _w.Left, _name );
-            }
+                using( new DisableElementEvents( () => _w.LocationChanged -= OnWindowLocationChanged, () => _w.LocationChanged += OnWindowLocationChanged ) )
+                {
+                    _w.Top = top;
+                    _w.Left = left;
+                }
+            } ) );
         }
 
         void IWindowElement.Resize( double width, double height )
         {
-            using( _w.Dispatcher.DisableProcessing() )
+            DispatchWhenRequired( new Action( () =>
             {
-                _w.Width = width;
-                _w.Height = height;
-                Console.WriteLine( "{2} [{0},{1}]", _w.Width, _w.Height, _name );
-            }
+                using( new DisableElementEvents( () => _w.SizeChanged -= OnWindowSizeChanged, () => _w.SizeChanged += OnWindowSizeChanged ) )
+                {
+                    _w.Width = width < 0 ? 0 : width;
+                    _w.Height = height < 0 ? 0 : height;
+                }
+            } ) );
         }
 
+        public void Hide()
+        {
+            DispatchWhenRequired( new Action( () => _w.Hide() ) );
+        }
+
+        public void Restore()
+        {
+            DispatchWhenRequired( new Action( () => _w.Show() ) );
+        }
+
+        private T DispatchWhenRequired<T>( Func<T> f )
+        {
+            if( Dispatcher.CheckAccess() ) return f();
+
+            return (T)Dispatcher.Invoke( f );
+        }
+
+        private void DispatchWhenRequired( Action d )
+        {
+            if( Dispatcher.CheckAccess() ) d();
+            else Dispatcher.Invoke( d );
+        }
+
+        class DisableElementEvents : IDisposable
+        {
+            Action _eventToDisableTarget;
+            Action _eventToEnableTarget;
+
+            public DisableElementEvents(
+                Action eventToDisableTarget,
+                Action eventToEnableTarget )
+            {
+                _eventToDisableTarget = eventToDisableTarget;
+                _eventToEnableTarget = eventToEnableTarget;
+                _eventToDisableTarget();
+            }
+
+            public void Dispose()
+            {
+                _eventToEnableTarget();
+            }
+        }
     }
 }

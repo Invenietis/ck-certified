@@ -63,14 +63,14 @@ namespace CK.WordPredictor.UI
                 var skinWindowElement = WindowManager.Service.GetByName( "Skin" );
                 if( skinWindowElement != null )
                 {
-                    WindowBinder.Service.Attach( _me, skinWindowElement );
+                    WindowBinder.Service.Attach( skinWindowElement, _me, BindingPosition.Top );
                 }
             }
             // If the skin is registered when we are launched before it, 
             // listen to to its registration and auto-attach
             if( e.Window.Name == "Skin" )
             {
-                if( _me != null ) WindowBinder.Service.Attach( _me, e.Window );
+                if( _me != null ) WindowBinder.Service.Attach( e.Window, _me, BindingPosition.Top );
             }
         }
 

@@ -15,23 +15,32 @@ namespace CK.WindowManager.Model
         /// <summary>
         /// Gets a readonly collection of attached <see cref="IWindowElement"/> from a referential <see cref="IWindowElement"/>.
         /// </summary>
-        /// <param name="referential">The <see cref="IWindowElement"/> from where to retrieve all attached <see cref="IWindowElement"/>.</param>
+        /// <param name="master">The <see cref="IWindowElement"/> from where to retrieve all attached <see cref="IWindowElement"/>.</param>
         /// <returns></returns>
-        ICKReadOnlyCollection<IWindowElement> GetAttachedElements( IWindowElement referential );
+        ICKReadOnlyCollection<IWindowElement> GetAttachedElements( IWindowElement master );
 
         /// <summary>
-        /// Attach the both <see cref="IWindowElement"/> given
+        /// Attach the both <see cref="IWindowElement"/> provided.
         /// </summary>
-        /// <param name="me"></param>
-        /// <param name="other"></param>
-        void Attach( IWindowElement me, IWindowElement other );
+        /// <remarks>
+        /// If an attachement already exists, this attachement is canceled. 
+        /// The usage is to detach and the re-attach. Cannot replace alread attached window elements.
+        /// No event is raised in such cases.
+        /// </remarks>
+        /// <param name="master">The master window element</param>
+        /// <param name="slave"></param>
+        /// <param name="position">The position of the attachement relatively between master and slave. See <see cref="BindingPosition"/> remarks.</param>
+        void Attach( IWindowElement master, IWindowElement slave, BindingPosition position );
 
         /// <summary>
-        /// Removes the given <see cref="IBinding"/>
+        /// Detach the both <see cref="IWindowElement"/> provided.
         /// </summary>
-        /// <param name="me"></param>
-        /// <param name="other"></param>
-        void Detach( IWindowElement me, IWindowElement other );
+        /// <remarks>
+        /// If no attachment exists between the both <see cref="IWindowElement"/> supplied, no event is raised.
+        /// </remarks>
+        /// <param name="master"></param>
+        /// <param name="slave"></param>
+        void Detach( IWindowElement master, IWindowElement slave );
 
         /// <summary>
         /// Raised before an attachment occurs. This event can be canceled.

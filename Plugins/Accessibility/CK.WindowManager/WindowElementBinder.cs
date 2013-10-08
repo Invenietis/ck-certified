@@ -5,6 +5,7 @@ using System.Text;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Core;
+using System.Diagnostics;
 
 namespace CK.WindowManager
 {
@@ -46,38 +47,69 @@ namespace CK.WindowManager
             for( int i = 0; i < bindings.Count; ++i )
             {
                 IBinding binding = bindings[i];
-                if( binding.First != referential && attached.IndexOf( binding.First ) == -1 )
+                if( binding.Master != referential && attached.IndexOf( binding.Master ) == -1 )
                 {
-                    attached.Add( binding.First );
-                    GetAttachedElements( binding.First, _bindings[binding.First], attached );
+                    attached.Add( binding.Master );
+                    GetAttachedElements( binding.Master, _bindings[binding.Master], attached );
                 }
-                else if( binding.Second != referential && attached.IndexOf( binding.Second ) == -1 )
+                else if( binding.Slave != referential && attached.IndexOf( binding.Slave ) == -1 )
                 {
-                    attached.Add( binding.Second );
-                    GetAttachedElements( binding.Second, _bindings[binding.Second], attached );
+                    attached.Add( binding.Slave );
+                    GetAttachedElements( binding.Slave, _bindings[binding.Slave], attached );
                 }
             }
         }
 
 
-        public void Attach( IWindowElement me, IWindowElement other )
+        public void Attach( IWindowElement master, IWindowElement slave, BindingPosition position )
         {
-            if( me == null ) throw new ArgumentNullException( "me" );
-            if( other == null ) throw new ArgumentNullException( "other" );
+            if( master == null ) throw new ArgumentNullException( "master" );
+            if( slave == null ) throw new ArgumentNullException( "slave" );
 
-            var binding = new SimpleBinding { First = me, Second = other };
+            var binding = new SimpleBinding
+            {
+                Master = master,
+                Slave = slave,
+                Position = position
+            };
+
+            List<IBinding> list = null;
+
+            // If an attachement already exists, this attachement is canceled. 
+            // The usage is to detach and the re attach. Cannot replace alread attached window elements.
+            if( _bindings.TryGetValue( master, out list ) && list.Contains( binding ) )
+            {
+                // If the binding exists in master / slave, the binding must exist in slave / master.
+                Debug.Assert( _bindings.TryGetValue( slave, out list ) && list.Contains( binding ) );
+                // In addition, the binding position must be the opposite
+                return;
+            }
 
             var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Attach };
             if( BeforeBinding != null ) BeforeBinding( this, evt );
 
             if( evt.Canceled == false )
             {
-                Link( me, binding );
-                Link( other, binding );
+                Link( master, binding );
+                var oppositeBinding = new SimpleBinding
+                {
+                    Master = slave,
+                    Slave = master,
+                    Position = WindowElementBinder.GetOppositePosition( position )
+                };
+                Link( slave, oppositeBinding );
 
                 var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Attach };
                 if( AfterBinding != null ) AfterBinding( this, evtAfter );
             }
+        }
+
+        internal static BindingPosition GetOppositePosition( BindingPosition position )
+        {
+            if( position == BindingPosition.Bottom ) return BindingPosition.Top;
+            if( position == BindingPosition.Top ) return BindingPosition.Bottom;
+            if( position == BindingPosition.Left ) return BindingPosition.Right;
+            return BindingPosition.Left;
         }
 
         private void Link( IWindowElement window, SimpleBinding binding )
@@ -91,10 +123,14 @@ namespace CK.WindowManager
             if( me == null ) throw new ArgumentNullException( "me" );
             if( other == null ) throw new ArgumentNullException( "other" );
 
-            var binding = new SimpleBinding { First = me, Second = other };
+            var binding = new SimpleBinding 
+            { 
+                Master = me, 
+                Slave = other 
+            };
 
             List<IBinding> list = null;
-            bool isBindingExists = _bindings.TryGetValue( binding.First, out list ) && list.Contains( binding );
+            bool isBindingExists = _bindings.TryGetValue( binding.Master, out list ) && list.Contains( binding );
             if( isBindingExists )
             {
                 var evt = new WindowBindingEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
@@ -102,10 +138,10 @@ namespace CK.WindowManager
 
                 if( evt.Canceled == false )
                 {
-                    var bindingsA = _bindings[binding.First];
+                    var bindingsA = _bindings[binding.Master];
                     if( bindingsA != null ) bindingsA.Remove( binding );
 
-                    var bindingsB = _bindings[binding.First];
+                    var bindingsB = _bindings[binding.Slave];
                     if( bindingsB != null ) bindingsB.Remove( binding );
 
                     var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
@@ -116,23 +152,25 @@ namespace CK.WindowManager
 
         class SimpleBinding : IBinding
         {
-            public IWindowElement First { get; set; }
+            public IWindowElement Master { get; set; }
 
-            public IWindowElement Second { get; set; }
+            public IWindowElement Slave { get; set; }
+
+            public BindingPosition Position { get; set; }
 
             public override bool Equals( object obj )
             {
                 var binding = obj as IBinding;
                 if( binding != null )
                 {
-                    return ReferenceEquals( binding.First, First ) && ReferenceEquals( binding.Second, Second );
+                    return ReferenceEquals( binding.Master, Master ) && ReferenceEquals( binding.Slave, Slave );
                 }
                 return false;
             }
 
             public override int GetHashCode()
             {
-                return First.GetHashCode() ^ Second.GetHashCode();
+                return Master.GetHashCode() ^ Slave.GetHashCode();
             }
         }
 

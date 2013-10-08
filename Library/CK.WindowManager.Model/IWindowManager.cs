@@ -32,8 +32,14 @@ namespace CK.WindowManager.Model
         /// <param name="window"></param>
         void Unregister( IWindowElement windowElement );
 
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/> is registered.
+        /// </summary>
         event EventHandler<WindowElementEventArgs> Registered;
 
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/> is unregistered.
+        /// </summary>
         event EventHandler<WindowElementEventArgs> Unregistered;
 
         /// <summary>

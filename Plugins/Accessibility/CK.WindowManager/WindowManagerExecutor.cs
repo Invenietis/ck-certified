@@ -26,8 +26,7 @@ namespace CK.WindowManager
             IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
-                Action action = new Action( () => window.Move( window.Top + e.DeltaTop, window.Left + e.DeltaLeft ) );
-                window.Dispatcher.Invoke( action, DispatcherPriority.Render );
+                window.Move( window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
             }
         }
 
@@ -36,21 +35,58 @@ namespace CK.WindowManager
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
 
+            // If the resized is horizontal
+            // Resizes referential window.
+            // Resizes all attached windows with position Left / Right
+            // Moves all attached windows with position Top / Bottom
+
             // Gets all windows attach to the given window
             IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
             foreach( IWindowElement window in attachedElements )
             {
-                Delegate action = new Action( () => window.Resize( window.Width + e.DeltaWidth, window.Height + e.DeltaHeight ) );
-                window.Dispatcher.Invoke( action, DispatcherPriority.Render );
+                window.Resize( window.Width + e.DeltaWidth, window.Height + e.DeltaHeight );
+            }
+        }
+
+        void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )
+        {
+            // The Window that moves first
+            IWindowElement triggerHolder = e.Window;
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
+            foreach( IWindowElement window in attachedElements )
+            {
+                window.Restore();
+            }
+        }
+
+        void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
+        {
+            IWindowElement triggerHolder = e.Window;
+            IEnumerable<IWindowElement> attachedElements = WindowBinder.GetAttachedElements( triggerHolder );
+            foreach( IWindowElement window in attachedElements )
+            {
+                window.Hide();
             }
         }
 
         void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )
         {
+
         }
 
         void WindowBinder_AfterBinding( object sender, WindowBindedEventArgs e )
         {
+            if( e.BindingType == BindingEventType.Attach )
+            {
+                if( e.Binding.Position == BindingPosition.Top )
+                {
+                    double topSlave = e.Binding.Master.Top - e.Binding.Slave.Height;
+                    double leftSlave = e.Binding.Master.Left;
+
+                    e.Binding.Slave.Move( topSlave, leftSlave );
+                    e.Binding.Slave.Resize( e.Binding.Master.Width, e.Binding.Slave.Height );
+                }
+            }
         }
 
         #region IPlugin Members
@@ -64,7 +100,9 @@ namespace CK.WindowManager
         {
             WindowManager.WindowResized += OnWindowManagerWindowResized;
             WindowManager.WindowMoved += OnWindowManagerWindowMoved;
-            
+            WindowManager.WindowHidden += WindowManager_WindowHidden;
+            WindowManager.WindowRestored += WindowManager_WindowRestored;
+
             WindowBinder.BeforeBinding += WindowBinder_BeforeBinding;
             WindowBinder.AfterBinding += WindowBinder_AfterBinding;
         }
@@ -73,6 +111,8 @@ namespace CK.WindowManager
         {
             WindowManager.WindowResized -= OnWindowManagerWindowResized;
             WindowManager.WindowMoved -= OnWindowManagerWindowMoved;
+            WindowManager.WindowHidden -= WindowManager_WindowHidden;
+            WindowManager.WindowRestored -= WindowManager_WindowRestored;
 
             WindowBinder.BeforeBinding -= WindowBinder_BeforeBinding;
             WindowBinder.AfterBinding -= WindowBinder_AfterBinding;

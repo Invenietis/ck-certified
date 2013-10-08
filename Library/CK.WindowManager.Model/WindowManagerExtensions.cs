@@ -11,7 +11,7 @@ namespace CK.WindowManager.Model
 
         public static void RegisterWindow( this IWindowManager m, string name, Window window )
         {
-            m.Register( new WindowElement( window, "Skin" ) );
+            m.Register( new WindowElement( window, name ) );
         }
 
         public static void UnregisterWindow( this IWindowManager m, string name )

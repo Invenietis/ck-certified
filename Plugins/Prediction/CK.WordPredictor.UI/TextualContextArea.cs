@@ -46,12 +46,13 @@ namespace CK.WordPredictor.UI
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
             return true;
         }
 
         public void Start()
         {
+            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+
             Feature.PropertyChanged += OnFeaturePropertyChanged;
             PredictionTextAreaService.PredictionAreaTextSent += OnPredictionAreaContentSent;
 
@@ -136,7 +137,6 @@ namespace CK.WordPredictor.UI
 
             if( _window != null ) _window.Close();
             if( _observersChain != null ) _observersChain.Dispose();
-
             if( _subscriber != null ) _subscriber.Unsubscribe();
         }
 

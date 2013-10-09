@@ -30,29 +30,30 @@ namespace CK.WindowManager.Model
             get { return _windowBinder; }
         }
 
-        public void Subscribe( string name, Window window )
+        public virtual void Subscribe( string name, Window window )
         {
             _name = name;
             _window = window;
 
-            // Window Manager
             WindowManager.ServiceStatusChanged += WindowManager_ServiceStatusChanged;
-            WindowBinder.ServiceStatusChanged += WindowBinder_ServiceStatusChanged;
-
             if( WindowManager.Status == InternalRunningStatus.Started )
             {
                 RegisterWindowManager();
             }
+
+            WindowBinder.ServiceStatusChanged += WindowBinder_ServiceStatusChanged;
             if( WindowBinder.Status == InternalRunningStatus.Started )
             {
                 RegisterWindowBinder();
             }
         }
 
-        public void Unsubscribe()
+        public virtual void Unsubscribe()
         {
             UnregisterWindowManager();
             WindowManager.ServiceStatusChanged -= WindowManager_ServiceStatusChanged;
+            
+            UnregisterWindowBinder();
             WindowBinder.ServiceStatusChanged -= WindowBinder_ServiceStatusChanged;
         }
 
@@ -64,7 +65,7 @@ namespace CK.WindowManager.Model
 
         public Action<WindowBindedEventArgs> AfterBinding { get; set; }
 
-        void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        protected void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started )
             {
@@ -76,7 +77,7 @@ namespace CK.WindowManager.Model
             }
         }
 
-        void WindowBinder_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        protected void WindowBinder_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started )
             {
@@ -88,14 +89,14 @@ namespace CK.WindowManager.Model
             }
         }
 
-        void RegisterWindowManager()
+        protected void RegisterWindowManager()
         {
             WindowManager.Service.Registered += Service_Registered;
             WindowManager.Service.Unregistered += Service_Unregistered;
             WindowManager.Service.RegisterWindow( _name, _window );
         }
 
-        void UnregisterWindowManager()
+        protected void UnregisterWindowManager()
         {
             if( _window != null && _window != null )
             {
@@ -106,34 +107,34 @@ namespace CK.WindowManager.Model
             }
         }
 
-        private void RegisterWindowBinder()
+        protected void RegisterWindowBinder()
         {
             WindowBinder.Service.BeforeBinding += Service_BeforeBinding;
             WindowBinder.Service.AfterBinding += Service_AfterBinding;
         }
 
-        private void UnregisterWindowBinder()
+        protected void UnregisterWindowBinder()
         {
             WindowBinder.Service.BeforeBinding -= Service_BeforeBinding;
             WindowBinder.Service.AfterBinding -= Service_AfterBinding;
         }
 
-        void Service_Registered( object sender, WindowElementEventArgs e )
+        protected void Service_Registered( object sender, WindowElementEventArgs e )
         {
             if( WindowRegistered != null ) WindowRegistered( e );
         }
 
-        void Service_Unregistered( object sender, WindowElementEventArgs e )
+        protected void Service_Unregistered( object sender, WindowElementEventArgs e )
         {
             if( WindowUnregistered != null ) WindowUnregistered( e );
         }
 
-        void Service_BeforeBinding( object sender, WindowBindingEventArgs e )
+        protected void Service_BeforeBinding( object sender, WindowBindingEventArgs e )
         {
             if( BeforeBinding != null ) BeforeBinding( e );
         }
 
-        void Service_AfterBinding( object sender, WindowBindedEventArgs e )
+        protected void Service_AfterBinding( object sender, WindowBindedEventArgs e )
         {
             if( AfterBinding != null ) AfterBinding( e );
         }

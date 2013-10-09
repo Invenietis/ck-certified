@@ -9,54 +9,26 @@ namespace SimpleSkin
 {
     public partial class SimpleSkin
     {
-        WindowElement _w;
-
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowManager> WindowManager { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
+
+        WindowManagerSubscriber _subscriber;
+
         partial void OnSuccessfulStart()
         {
-            WindowManager.ServiceStatusChanged += WindowManager_ServiceStatusChanged;
-            if( WindowManager.Status == InternalRunningStatus.Started )
+            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+            _skinDispatcher.BeginInvoke( new Action( () =>
             {
-                RegisterWindowManager();
-            }
+                _subscriber.Subscribe( "Skin", _skinWindow );
+            } ) );
         }
 
         partial void OnSuccessfulStop()
         {
-            UnregisterWindowManager();
-            WindowManager.ServiceStatusChanged -= WindowManager_ServiceStatusChanged;
-        }
-
-        void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                RegisterWindowManager();
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                UnregisterWindowManager();
-            }
-        }
-
-
-        private void RegisterWindowManager()
-        {
-            _skinDispatcher.BeginInvoke( new Action( () =>
-            {
-                WindowManager.Service.RegisterWindow( "Skin", _skinWindow );
-            } ) );
-        }
-
-        private void UnregisterWindowManager()
-        {
-
-            _skinDispatcher.BeginInvoke( new Action( () =>
-            {
-                WindowManager.Service.UnregisterWindow( "Skin" );
-            } ) );
+            _subscriber.Unsubscribe();
         }
     }
 }

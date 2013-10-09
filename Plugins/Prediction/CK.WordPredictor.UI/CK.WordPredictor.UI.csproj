@@ -131,7 +131,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\TextualContextAreaViewModel.cs" />
     <Compile Include="TextualContextArea.cs" />
-    <Compile Include="WindowManagerSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">

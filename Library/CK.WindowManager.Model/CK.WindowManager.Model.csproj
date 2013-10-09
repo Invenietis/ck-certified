@@ -67,6 +67,7 @@
     <Compile Include="WindowElement.cs" />
     <Compile Include="WindowElementEventArgs.cs" />
     <Compile Include="WindowManagerExtensions.cs" />
+    <Compile Include="WindowManagerSubscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

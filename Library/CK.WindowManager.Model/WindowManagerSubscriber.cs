@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using CK.Plugin;
-using CK.WindowManager.Model;
 
-namespace CK.WordPredictor.UI
+namespace CK.WindowManager.Model
 {
     public class WindowManagerSubscriber
     {

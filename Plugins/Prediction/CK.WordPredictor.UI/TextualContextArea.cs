@@ -40,7 +40,6 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowBinder> WindowBinder { get; set; }
 
-        IWindowElement _me;
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
 
@@ -83,6 +82,8 @@ namespace CK.WordPredictor.UI
         WindowManagerSubscriber _subscriber;
         TextualContextAreaViewModel _textArea;
         IDisposable _observersChain;
+        IWindowElement _skin;
+        IWindowElement _me;
 
         void EnableEditor()
         {
@@ -140,35 +141,38 @@ namespace CK.WordPredictor.UI
             if( _subscriber != null ) _subscriber.Unsubscribe();
         }
 
+        /// <summary>
+        /// If the skin is registered when we are launched before it, 
+        /// listen to to its registration and auto-attach
+        /// </summary>
         void EnableWindowManagerSubscription()
         {
-            _subscriber.Subscribe( WindowName, _window );
+            _subscriber.OnBinderStarted = () =>
+            {
+                if( _skin != null & _me != null )
+                    WindowBinder.Service.Attach( _skin, _me, BindingPosition.Top );
+            };
+            _subscriber.OnBinderStopped = () =>
+            {
+                if( _skin != null & _me != null )
+                    WindowBinder.Service.Detach( _skin, _me );
+            };
             _subscriber.WindowRegistered = ( e ) =>
             {
                 if( e.Window.Name == WindowName )
                 {
                     _me = e.Window;
-                    // Auto attached with the skin if the skin is registered
-                    var skinWindowElement = WindowManager.Service.GetByName( "Skin" );
-                    if( skinWindowElement != null )
-                    {
-                        WindowBinder.Service.Attach( skinWindowElement, _me, BindingPosition.Top );
-                    }
+                    _skin = WindowManager.Service.GetByName( "Skin" );
                 }
-                // If the skin is registered when we are launched before it, 
-                // listen to to its registration and auto-attach
-                if( e.Window.Name == "Skin" )
-                {
-                    if( _me != null ) WindowBinder.Service.Attach( e.Window, _me, BindingPosition.Top );
-                }
+                if( e.Window.Name == "Skin" ) _skin = e.Window;
+                
+                _subscriber.OnBinderStarted();
             };
             _subscriber.WindowUnregistered = ( e ) =>
             {
-                if( e.Window.Name == "Skin" )
-                {
-                    WindowBinder.Service.Detach( _me, e.Window );
-                }
+                if( e.Window.Name == "Skin" ) _subscriber.OnBinderStopped();
             };
+            _subscriber.Subscribe( WindowName, _window );
         }
 
         void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )

@@ -21,14 +21,15 @@ namespace CK.WindowManager
         {
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
-
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
-
-            // Horizontal move
-            foreach( IWindowElement window in binding.AllDescendants() )
+            if( binding != null )
             {
-                WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
+                // Horizontal move
+                foreach( IWindowElement window in binding.AllDescendants() )
+                {
+                    WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
+                }
             }
         }
 
@@ -36,19 +37,25 @@ namespace CK.WindowManager
         {
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
-
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
-
-            if( e.DeltaHeight != 0 )
+            if( binding != null )
             {
-                DoResizeVerticaly( e, binding.Left );
-                DoResizeVerticaly( e, binding.Right );
-            }
-            if( e.DeltaWidth != 0 )
-            {
-                DoResizeHorizontaly( e, binding.Top );
-                DoResizeHorizontaly( e, binding.Bottom );
+                if( e.DeltaHeight != 0 )
+                {
+                    DoResizeVerticaly( e, binding.Left );
+                    DoResizeVerticaly( e, binding.Right );
+                    if( binding.Bottom != null )
+                    {
+                        var window = binding.Bottom.Window;
+                        WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left );
+                    }
+                }
+                if( e.DeltaWidth != 0 )
+                {
+                    DoResizeHorizontaly( e, binding.Top );
+                    DoResizeHorizontaly( e, binding.Bottom );
+                }
             }
         }
 
@@ -74,15 +81,23 @@ namespace CK.WindowManager
 
         void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )
         {
-            // The Window that moves first
-            foreach( IWindowElement window in WindowBinder.GetBinding( e.Window ).AllDescendants() )
-                window.Restore();
+            ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+            if( binding != null )
+            {
+                // The Window that moves first
+                foreach( IWindowElement window in binding.AllDescendants() )
+                    window.Restore();
+            }
         }
 
         void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
         {
-            foreach( IWindowElement window in WindowBinder.GetBinding( e.Window ).AllDescendants() )
-                window.Hide();
+            ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+            if( binding != null )
+            {
+                foreach( IWindowElement window in binding.AllDescendants() )
+                    window.Hide();
+            }
         }
 
         void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )

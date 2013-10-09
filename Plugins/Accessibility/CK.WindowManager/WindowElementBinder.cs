@@ -215,27 +215,23 @@ namespace CK.WindowManager
 
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.Window == other )
                     {
-                        Debug.Assert( spatialBinding.Bottom.Top != null );
-                        Detach( other, me );
                         spatialBinding.Bottom = null;
+                        Detach( other, me );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.Window == other )
                     {
-                        Debug.Assert( spatialBinding.Left.Right != null );
-                        Detach( other, me );
                         spatialBinding.Left = null;
+                        Detach( other, me );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.Window == other )
                     {
-                        Debug.Assert( spatialBinding.Top.Bottom != null );
-                        Detach( other, me );
                         spatialBinding.Top = null;
+                        Detach( other, me );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.Window == other )
                     {
-                        Debug.Assert( spatialBinding.Right.Left != null );
-                        Detach( other, me );
                         spatialBinding.Right = null;
+                        Detach( other, me );
                     }
                     if( spatialBinding.IsAlone )
                         _spatialBindings.Remove( me );

@@ -29,11 +29,11 @@ namespace CK.WordPredictor.UI
         public IService<IWindowBinder> WindowBinder { get; set; }
 
         IWindowElement _me;
+        IWindowElement _textualContext;
         WindowManagerSubscriber _subscriber;
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
             return true;
         }
 
@@ -45,33 +45,33 @@ namespace CK.WordPredictor.UI
             _window.Height = 300;
             _window.Show();
 
-            _subscriber.Subscribe( WindowName, _window );
+            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+            _subscriber.OnBinderStarted = () =>
+            {
+                if( _textualContext != null & _me != null )
+                    WindowBinder.Service.Attach( _textualContext, _me, BindingPosition.Top );
+            };
+            _subscriber.OnBinderStopped = () =>
+            {
+                if( _textualContext != null & _me != null )
+                    WindowBinder.Service.Detach( _textualContext, _me );
+            };
             _subscriber.WindowRegistered = ( e ) =>
             {
                 if( e.Window.Name == WindowName )
                 {
                     _me = e.Window;
-                    // Auto attached with the skin if the skin is registered
-                    var textualAreaWindowElement = WindowManager.Service.GetByName( TextualContextArea.WindowName );
-                    if( textualAreaWindowElement != null )
-                    {
-                        WindowBinder.Service.Attach( textualAreaWindowElement, _me, BindingPosition.Top );
-                    }
+                    _textualContext = WindowManager.Service.GetByName( TextualContextArea.WindowName );
                 }
-                // If the skin is registered when we are launched before it, 
-                // listen to to its registration and auto-attach
-                if( e.Window.Name == TextualContextArea.WindowName )
-                {
-                    if( _me != null ) WindowBinder.Service.Attach( e.Window, _me, BindingPosition.Top );
-                }
+                if( e.Window.Name == TextualContextArea.WindowName ) _textualContext = e.Window;
+
+                _subscriber.OnBinderStarted();
             };
             _subscriber.WindowUnregistered = ( e ) =>
             {
-                if( e.Window.Name == TextualContextArea.WindowName )
-                {
-                    WindowBinder.Service.Detach( _me, e.Window );
-                }
+                if( e.Window.Name == TextualContextArea.WindowName ) _subscriber.OnBinderStopped();
             };
+            _subscriber.Subscribe( WindowName, _window );
         }
 
         public void Stop()

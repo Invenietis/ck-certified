@@ -65,6 +65,10 @@ namespace CK.WindowManager.Model
 
         public Action<WindowBindedEventArgs> AfterBinding { get; set; }
 
+        public Action OnBinderStarted { get; set; }
+
+        public Action OnBinderStopped { get; set; }
+
         protected void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started )
@@ -111,10 +115,12 @@ namespace CK.WindowManager.Model
         {
             WindowBinder.Service.BeforeBinding += Service_BeforeBinding;
             WindowBinder.Service.AfterBinding += Service_AfterBinding;
+            if( OnBinderStarted != null ) OnBinderStarted();
         }
 
         protected void UnregisterWindowBinder()
         {
+            if( OnBinderStopped != null ) OnBinderStopped();
             WindowBinder.Service.BeforeBinding -= Service_BeforeBinding;
             WindowBinder.Service.AfterBinding -= Service_AfterBinding;
         }

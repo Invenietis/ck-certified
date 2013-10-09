@@ -13,10 +13,13 @@ namespace CK.WindowManager
     public class WindowElementBinder : IWindowBinder, IPlugin
     {
         IDictionary<IWindowElement,List<IBinding>> _bindings;
+        DefaultActivityLogger _logger;
 
         public WindowElementBinder()
         {
             _bindings = new Dictionary<IWindowElement, List<IBinding>>();
+            _logger = new DefaultActivityLogger();
+            _logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
 
         public event EventHandler<WindowBindingEventArgs> BeforeBinding;
@@ -26,7 +29,7 @@ namespace CK.WindowManager
         public ISpatialBinding GetBinding( IWindowElement referential )
         {
             if( referential == null ) throw new ArgumentNullException( "referential" );
-            
+
             SpatialBinding b = null;
             _spatialBindings.TryGetValue( referential, out b );
             return b;
@@ -38,58 +41,146 @@ namespace CK.WindowManager
             if( slave == null ) throw new ArgumentNullException( "slave" );
 
             // Spatial binding point of view
-
-            bool isNew = true;
-            SpatialBinding spatialBinding = null;
-            if( _spatialBindings.TryGetValue( master, out spatialBinding ) )
+            using( _logger.OpenGroup( LogLevel.Info, "Attaching {0} on {1} at {2}", master.Name, slave.Name, position.ToString() ) )
             {
-                isNew = false;
-                if( position == BindingPosition.Top && spatialBinding.Top != null ) return;
-                if( position == BindingPosition.Left && spatialBinding.Left != null ) return;
-                if( position == BindingPosition.Bottom && spatialBinding.Bottom != null ) return;
-                if( position == BindingPosition.Right && spatialBinding.Right != null ) return;
-            }
-            else spatialBinding = new SpatialBinding( master );
+                SpatialBinding spatialBinding = null;
+                SpatialBinding slaveSpatialBinding  = null;
 
-            var binding = new SimpleBinding
-            {
-                Master = master,
-                Slave = slave,
-                Position = position
-            };
-
-            var evt = new WindowBindingEventArgs
-            {
-                Binding = binding,
-                BindingType = BindingEventType.Attach
-            };
-            if( BeforeBinding != null )
-                BeforeBinding( this, evt );
-
-            if( evt.Canceled == false )
-            {
-                if( isNew ) _spatialBindings.Add( master, spatialBinding );
-
-                SpatialBinding slaveSpatialBinding = null;
-                if( position == BindingPosition.Top ) spatialBinding.Top = slaveSpatialBinding = new SpatialBinding( slave ) { Bottom = spatialBinding };
-                if( position == BindingPosition.Left ) spatialBinding.Left = slaveSpatialBinding = new SpatialBinding( slave ) { Right = spatialBinding };
-                if( position == BindingPosition.Bottom ) spatialBinding.Bottom = slaveSpatialBinding = new SpatialBinding( slave ) { Top = spatialBinding };
-                if( position == BindingPosition.Right ) spatialBinding.Right = slaveSpatialBinding = new SpatialBinding( slave ) { Left = spatialBinding };
-
-                if( isNew )
+                using( _logger.OpenGroup( LogLevel.Info, "Master binding..." ) )
                 {
-                    Debug.Assert( slaveSpatialBinding != null );
-                    _spatialBindings.Add( slave, slaveSpatialBinding );
+                    if( _spatialBindings.TryGetValue( master, out spatialBinding ) )
+                    {
+                        if( position == BindingPosition.Top && spatialBinding.Top != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", spatialBinding.Top.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else if( position == BindingPosition.Left && spatialBinding.Left != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", spatialBinding.Left.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else if( position == BindingPosition.Bottom && spatialBinding.Bottom != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", spatialBinding.Bottom.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else if( position == BindingPosition.Right && spatialBinding.Right != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", spatialBinding.Right.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else _logger.Trace( "{0} already exists in bindings but no window attached at position {1}.", master.Name, position );
+                    }
+                    else
+                    {
+                        _logger.Trace( "Fresh new window" );
+                        //spatialBinding = new SpatialBinding( master );
+                    }
                 }
-                var evtAfter = new WindowBindedEventArgs
+
+                using( _logger.OpenGroup( LogLevel.Info, "Slave binding..." ) )
+                {
+                    if( _spatialBindings.TryGetValue( slave, out slaveSpatialBinding ) )
+                    {
+                        if( position == BindingPosition.Top && slaveSpatialBinding.Bottom != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Bottom.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else if( position == BindingPosition.Left && spatialBinding.Right != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Right.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else if( position == BindingPosition.Bottom && spatialBinding.Top != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Top.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else if( position == BindingPosition.Right && spatialBinding.Left != null )
+                        {
+                            _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Left.Window.Name, master.Name, position );
+                            return;
+                        }
+                        else _logger.Trace( "{0} already exists in bindings but no window attached at position {1}.", slave.Name, position );
+                    }
+                    else
+                    {
+                        _logger.Trace( "Fresh new window" );
+                        //spatialBinding = new SpatialBinding( slave );
+                    }
+                }
+
+                var binding = new SimpleBinding
+                {
+                    Master = master,
+                    Slave = slave,
+                    Position = position
+                };
+
+                var evt = new WindowBindingEventArgs
                 {
                     Binding = binding,
                     BindingType = BindingEventType.Attach
                 };
-                if( AfterBinding != null )
-                    AfterBinding( this, evtAfter );
-            }
 
+                _logger.Trace( "Before binding..." );
+                if( BeforeBinding != null )
+                    BeforeBinding( this, evt );
+
+                if( evt.Canceled == true )
+                {
+                    _logger.Trace( "...canceled. The reason was {0}.", evt.CancelReason ?? "No Reason" );
+                }
+                else
+                {
+                    if( spatialBinding == null )
+                    {
+                        spatialBinding = new SpatialBinding( master );
+                        _spatialBindings.Add( master, spatialBinding );
+                    }
+                    if( slaveSpatialBinding == null )
+                    {
+                        slaveSpatialBinding = new SpatialBinding( slave );
+                        _spatialBindings.Add( slave, slaveSpatialBinding );
+                    }
+
+                    Debug.Assert( spatialBinding != null );
+                    Debug.Assert( slaveSpatialBinding != null );
+
+                    if( position == BindingPosition.Top )
+                    {
+                        spatialBinding.Top = slaveSpatialBinding;
+                        slaveSpatialBinding.Bottom = spatialBinding;
+                    }
+                    if( position == BindingPosition.Left )
+                    {
+                        spatialBinding.Left = slaveSpatialBinding;
+                        slaveSpatialBinding.Right = spatialBinding;
+                    }
+                    if( position == BindingPosition.Bottom )
+                    {
+                        spatialBinding.Bottom = slaveSpatialBinding;
+                        slaveSpatialBinding.Top = spatialBinding;
+                    }
+                    if( position == BindingPosition.Right )
+                    {
+                        spatialBinding.Right = slaveSpatialBinding;
+                        slaveSpatialBinding.Left = spatialBinding;
+                    }
+
+                    var evtAfter = new WindowBindedEventArgs
+                    {
+                        Binding = binding,
+                        BindingType = BindingEventType.Attach
+                    };
+
+                    _logger.Trace( "After binding..." );
+                    if( AfterBinding != null )
+                        AfterBinding( this, evtAfter );
+                }
+            }
         }
 
         IDictionary<IWindowElement, SpatialBinding> _spatialBindings = new Dictionary<IWindowElement, SpatialBinding>();
@@ -106,7 +197,7 @@ namespace CK.WindowManager
         {
             if( me == null ) throw new ArgumentNullException( "me" );
             if( other == null ) throw new ArgumentNullException( "other" );
-            
+
             SpatialBinding spatialBinding = null;
             if( _spatialBindings.TryGetValue( me, out spatialBinding ) )
             {

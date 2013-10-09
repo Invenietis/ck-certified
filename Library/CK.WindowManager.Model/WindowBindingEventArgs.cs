@@ -21,5 +21,7 @@ namespace CK.WindowManager.Model
     public class WindowBindingEventArgs : WindowBindedEventArgs
     {
         public bool Canceled { get; set; }
+
+        public string CancelReason { get; set; }
     }
 }

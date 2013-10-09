@@ -20,7 +20,7 @@ namespace CK.WordPredictor.UI
     [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextArea : IPlugin
     {
-        const string WindowName = "TextualContextArea";
+        internal const string WindowName = "TextualContextArea";
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
@@ -41,81 +41,12 @@ namespace CK.WordPredictor.UI
         public IService<IWindowBinder> WindowBinder { get; set; }
 
         IWindowElement _me;
-
-        void WindowManager_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                RegisterWindowManager();
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                UnregisterWindowManager();
-            }
-        }
-
-        void Service_Registered( object sender, WindowElementEventArgs e )
-        {
-            if( e.Window.Name == WindowName )
-            {
-                _me = e.Window;
-                // Auto attached with the skin if the skin is registered
-                var skinWindowElement = WindowManager.Service.GetByName( "Skin" );
-                if( skinWindowElement != null )
-                {
-                    WindowBinder.Service.Attach( skinWindowElement, _me, BindingPosition.Top );
-                }
-            }
-            // If the skin is registered when we are launched before it, 
-            // listen to to its registration and auto-attach
-            if( e.Window.Name == "Skin" )
-            {
-                if( _me != null ) WindowBinder.Service.Attach( e.Window, _me, BindingPosition.Top );
-            }
-        }
-
-        void Service_AfterBinding( object sender, WindowBindedEventArgs e )
-        {
-            if( e.BindingType == BindingEventType.Attach )
-            {
-
-            }
-        }
-
-        void Service_Unregistered( object sender, WindowElementEventArgs e )
-        {
-            if( e.Window.Name == "Skin" )
-            {
-                WindowBinder.Service.Detach( _me, e.Window );
-            }
-        }
-
-        private void RegisterWindowManager()
-        {
-            WindowBinder.Service.AfterBinding += Service_AfterBinding;
-
-            WindowManager.Service.Registered += Service_Registered;
-            WindowManager.Service.Unregistered += Service_Unregistered;
-            WindowManager.Service.RegisterWindow( WindowName, _window );
-        }
-
-        private void UnregisterWindowManager()
-        {
-            if( _window != null && _window != null )
-            {
-                WindowManager.Service.UnregisterWindow( WindowName );
-
-                WindowManager.Service.Registered -= Service_Registered;
-                WindowManager.Service.Unregistered -= Service_Unregistered;
-                WindowBinder.Service.AfterBinding -= Service_AfterBinding;
-            }
-        }
-
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
 
         public bool Setup( IPluginSetupInfo info )
         {
+            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
             return true;
         }
 
@@ -148,6 +79,7 @@ namespace CK.WordPredictor.UI
             }
         }
 
+        WindowManagerSubscriber _subscriber;
         TextualContextAreaViewModel _textArea;
         IDisposable _observersChain;
 
@@ -192,12 +124,51 @@ namespace CK.WordPredictor.UI
                 var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
                 CreateSendContextKeyInPredictionZone( zone );
             }
-            // Window Manager
-            WindowManager.ServiceStatusChanged += WindowManager_ServiceStatusChanged;
-            if( WindowManager.Status == InternalRunningStatus.Started )
+            EnableWindowManagerSubscription();
+        }
+
+        void DisableEditor()
+        {
+            DestroySendContextKey();
+            Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
+            if( Context.CurrentKeyboard != null )
+                Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+
+            if( _window != null ) _window.Close();
+            if( _observersChain != null ) _observersChain.Dispose();
+
+            if( _subscriber != null ) _subscriber.Unsubscribe();
+        }
+
+        void EnableWindowManagerSubscription()
+        {
+            _subscriber.Subscribe( WindowName, _window );
+            _subscriber.WindowRegistered = ( e ) =>
             {
-                RegisterWindowManager();
-            }
+                if( e.Window.Name == WindowName )
+                {
+                    _me = e.Window;
+                    // Auto attached with the skin if the skin is registered
+                    var skinWindowElement = WindowManager.Service.GetByName( "Skin" );
+                    if( skinWindowElement != null )
+                    {
+                        WindowBinder.Service.Attach( skinWindowElement, _me, BindingPosition.Top );
+                    }
+                }
+                // If the skin is registered when we are launched before it, 
+                // listen to to its registration and auto-attach
+                if( e.Window.Name == "Skin" )
+                {
+                    if( _me != null ) WindowBinder.Service.Attach( e.Window, _me, BindingPosition.Top );
+                }
+            };
+            _subscriber.WindowUnregistered = ( e ) =>
+            {
+                if( e.Window.Name == "Skin" )
+                {
+                    WindowBinder.Service.Detach( _me, e.Window );
+                }
+            };
         }
 
         void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
@@ -219,20 +190,6 @@ namespace CK.WordPredictor.UI
             {
                 PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
             }
-        }
-
-        void DisableEditor()
-        {
-            DestroySendContextKey();
-            Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
-            if( Context.CurrentKeyboard != null )
-                Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
-
-            if( _window != null ) _window.Close();
-            if( _observersChain != null ) _observersChain.Dispose();
-
-            UnregisterWindowManager();
-            WindowManager.ServiceStatusChanged -= WindowManager_ServiceStatusChanged;
         }
 
         void CreateSendContextKeyInPredictionZone( IZone zone )
@@ -265,7 +222,7 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Starting )
             {

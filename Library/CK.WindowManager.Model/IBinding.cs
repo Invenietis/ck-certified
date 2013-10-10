@@ -83,6 +83,22 @@ namespace CK.WindowManager.Model
             if( me.Right != null ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
         }
 
+        public static IEnumerable<IWindowElement> AllDescendants( this ISpatialBinding me, BindingPosition excludes )
+        {
+            List<IWindowElement> toExclude = new List<IWindowElement>();
+
+            if( excludes == BindingPosition.Top )
+                foreach( var e in me.Top.Descendants( me.Window ) ) toExclude.Add( e );
+            if( excludes == BindingPosition.Bottom )
+                foreach( var e in me.Bottom.Descendants( me.Window ) ) toExclude.Add( e );
+            if( excludes == BindingPosition.Left )
+                foreach( var e in me.Left.Descendants( me.Window ) ) toExclude.Add( e );
+            if( excludes == BindingPosition.Right )
+                foreach( var e in me.Right.Descendants( me.Window ) ) toExclude.Add( e );
+
+            return me.AllDescendants().Except( toExclude );
+        }
+
         private static IEnumerable<IWindowElement> Descendants( this ISpatialBinding me, IWindowElement reference )
         {
             if( me.Top != null && me.Top.Window != reference ) foreach( var e in me.Top.Descendants( me.Window ) ) yield return e;

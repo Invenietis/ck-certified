@@ -47,8 +47,9 @@ namespace CK.WindowManager
                     DoResizeVerticaly( e, binding.Right );
                     if( binding.Bottom != null )
                     {
-                        var window = binding.Bottom.Window;
-                        WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left );
+                        var windows = binding.Bottom.AllDescendants( excludes: BindingPosition.Top ).Union( new[] { binding.Bottom.Window } );
+                        foreach( var window in windows )
+                            WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left );
                     }
                 }
                 if( e.DeltaWidth != 0 )
@@ -111,11 +112,16 @@ namespace CK.WindowManager
             {
                 if( e.Binding.Position == BindingPosition.Top )
                 {
-                    double topSlave = e.Binding.Master.Top - e.Binding.Slave.Height;
-                    double leftSlave = e.Binding.Master.Left;
+                   
+                    var windowToMove = WindowBinder.GetBinding( e.Binding.Slave ).AllDescendants().Except( new[] { e.Binding.Master } ).Union( new[] { e.Binding.Slave } );
+                    foreach( var w in windowToMove )
+                    {
+                        double topSlave = e.Binding.Master.Top - w.Height;
+                        double leftSlave = e.Binding.Master.Left;
 
-                    WindowManager.Move( e.Binding.Slave, topSlave, leftSlave );
-                    WindowManager.Resize( e.Binding.Slave, e.Binding.Master.Width, e.Binding.Slave.Height );
+                        WindowManager.Move( w, topSlave, leftSlave );
+                        WindowManager.Resize( w, e.Binding.Master.Width, w.Height );
+                    }
                 }
             }
         }

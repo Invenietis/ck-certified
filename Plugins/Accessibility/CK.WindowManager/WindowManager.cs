@@ -80,7 +80,7 @@ namespace CK.WindowManager
                 data.Left = window.Left;
             }
         }
-        
+
         public void Resize( IWindowElement window, double width, double height )
         {
             window.Resize( width, height );
@@ -119,13 +119,12 @@ namespace CK.WindowManager
                     double deltaWidth = window.Width - data.Width;
                     double deltaHeight = window.Height - data.Height;
 
-                    var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
-                    if( WindowResized != null )
-                        WindowResized( sender, evt );
-
                     data.Width = window.Width;
                     data.Height = window.Height;
 
+                    var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
+                    if( WindowResized != null )
+                        WindowResized( sender, evt );
                 }
             }
         }
@@ -142,12 +141,12 @@ namespace CK.WindowManager
                     double deltaTop = window.Top - data.Top;
                     double deltaLeft = window.Left - data.Left;
 
+                    data.Top = window.Top;
+                    data.Left = window.Left;
+
                     var evt = new WindowElementLocationEventArgs( windowElement, deltaTop, deltaLeft );
                     if( WindowMoved != null )
                         WindowMoved( sender, evt );
-
-                    data.Top = window.Top;
-                    data.Left = window.Left;
                 }
             }
         }

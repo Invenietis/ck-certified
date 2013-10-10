@@ -103,8 +103,8 @@ namespace CK.WindowManager.Model
             {
                 using( new DisableElementEvents( () => _w.LocationChanged -= OnWindowLocationChanged, () => _w.LocationChanged += OnWindowLocationChanged ) )
                 {
-                    _w.Top = top;
-                    _w.Left = left;
+                    if( top != _w.Top ) _w.Top = top;
+                    if( left != _w.Left ) _w.Left = left;
                 }
             } ) );
         }

@@ -110,17 +110,34 @@ namespace CK.WindowManager
         {
             if( e.BindingType == BindingEventType.Attach )
             {
+                // The slave is being attached to the master. 
+                // Moves the slave on top of the master. 
+                // But also moves all bound window attached to the slave
+
+                var windowToMove = WindowBinder
+                    .GetBinding( e.Binding.Slave )
+                    .AllDescendants()
+                    .Except( new[] { e.Binding.Master } )
+                    .Union( new[] { e.Binding.Slave } );
+
+                var relativeMaster = e.Binding.Master;
                 if( e.Binding.Position == BindingPosition.Top )
                 {
-                   
-                    var windowToMove = WindowBinder.GetBinding( e.Binding.Slave ).AllDescendants().Except( new[] { e.Binding.Master } ).Union( new[] { e.Binding.Slave } );
-                    foreach( var w in windowToMove )
+                    foreach( var w in windowToMove.OrderByDescending( x => x.Top ) )
                     {
-                        double topSlave = e.Binding.Master.Top - w.Height;
-                        double leftSlave = e.Binding.Master.Left;
+                        // The master is the attached above
+                        double topSlave = relativeMaster.Top - w.Height;
+                        double leftSlave = relativeMaster.Left;
 
                         WindowManager.Move( w, topSlave, leftSlave );
-                        WindowManager.Resize( w, e.Binding.Master.Width, w.Height );
+                        WindowManager.Resize( w, relativeMaster.Width, w.Height );
+                        relativeMaster = w;
+                    }
+                }
+                if( e.Binding.Position == BindingPosition.Bottom )
+                {
+                    foreach( var w in windowToMove.OrderBy( x => x.Top ) )
+                    {
                     }
                 }
             }

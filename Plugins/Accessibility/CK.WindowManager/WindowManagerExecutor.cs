@@ -107,7 +107,6 @@ namespace CK.WindowManager
             {
                 // The slave is being attached to the master. 
                 // Moves the slave on top of the master. 
-                // But also moves all bound window attached to the slave
                 if( e.Binding.Position == BindingPosition.Top )
                 {
                     var relativeMaster = e.Binding.Master;
@@ -116,8 +115,8 @@ namespace CK.WindowManager
                     double topSlave = relativeMaster.Top - w.Height;
                     double leftSlave = relativeMaster.Left;
 
-                    WindowManager.Move( w, topSlave, leftSlave ).BroadCast();
-                    WindowManager.Resize( w, relativeMaster.Width, w.Height );
+                    WindowManager.Move( w, topSlave, leftSlave ).Broadcast();
+                    WindowManager.Resize( w, relativeMaster.Width, w.Height ).Broadcast();
                     //relativeMaster = w;
                 }
             }

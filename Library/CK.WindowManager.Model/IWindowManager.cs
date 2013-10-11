@@ -38,7 +38,7 @@ namespace CK.WindowManager.Model
         /// <param name="window"></param>
         /// <param name="top"></param>
         /// <param name="left"></param>
-        IActionCallback Move( IWindowElement window, double top, double left );
+        IManualInteractionResult Move( IWindowElement window, double top, double left );
 
         /// <summary>
         /// Resizes the given window element to the width and height
@@ -46,7 +46,7 @@ namespace CK.WindowManager.Model
         /// <param name="window"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        IActionCallback Resize( IWindowElement window, double width, double height );
+        IManualInteractionResult Resize( IWindowElement window, double width, double height );
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is registered.
@@ -77,10 +77,5 @@ namespace CK.WindowManager.Model
         /// Raised when a <see cref="IWindowElement"/> is resized.
         /// </summary>
         event EventHandler<WindowElementResizeEventArgs> WindowResized;
-    }
-
-    public interface IActionCallback : CK.Core.IFluentInterface
-    {
-        void BroadCast();
     }
 }

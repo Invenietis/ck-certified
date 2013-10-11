@@ -58,6 +58,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IManualInteractionResult.cs" />
     <Compile Include="IBinding.cs" />
     <Compile Include="IWindowBinder.cs" />
     <Compile Include="IWindowElement.cs" />

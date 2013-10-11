@@ -11,7 +11,7 @@ namespace CK.WindowManager
     [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager", Version = "1.0.0" )]
     public class WindowManager : IWindowManager, IPlugin
     {
-        class WindowElementData
+        class WindowElementData : ICloneable
         {
             public IWindowElement Window { get; set; }
 
@@ -22,6 +22,11 @@ namespace CK.WindowManager
             public double Width { get; set; }
 
             public double Height { get; set; }
+
+            public object Clone()
+            {
+                return new WindowElementData { Window = this.Window, Top = this.Top, Left = this.Left, Width = this.Width, Height = this.Height };
+            }
         }
 
         IDictionary<IWindowElement, WindowElementData> _dic = new Dictionary<IWindowElement, WindowElementData>();
@@ -69,26 +74,149 @@ namespace CK.WindowManager
                 Registered( this, new WindowElementEventArgs( windowElement ) );
         }
 
-
-        public void Move( IWindowElement window, double top, double left )
+        class NullActionCallback : IActionCallback
         {
-            window.Move( top, left );
-            WindowElementData data = null;
-            if( _dic.TryGetValue( window, out data ) )
+            public static IActionCallback Default = new NullActionCallback();
+
+            public void BroadCast()
             {
-                data.Top = window.Top;
-                data.Left = window.Left;
             }
         }
 
-        public void Resize( IWindowElement window, double width, double height )
+
+        class MoveActionCallback : IActionCallback
         {
-            window.Resize( width, height );
+            WindowManager _m;
+            WindowElementData _data;
+            WindowElementData _clonedData;
+
+            public MoveActionCallback( WindowManager m, WindowElementData data, WindowElementData clonedData )
+            {
+                _m = m;
+                _data = data;
+                _clonedData = clonedData;
+
+                data.Top = _data.Window.Top;
+                data.Left = _data.Window.Left;
+            }
+
+            public void BroadCast()
+            {
+                // Restores values...
+                _data.Top = _clonedData.Top;
+                _data.Left = _clonedData.Left;
+                // Broadcast
+                _m.OnWindowLocationChanged( _data.Window, EventArgs.Empty );
+            }
+        }
+
+        class ResizeActionCallback : IActionCallback
+        {
+            WindowManager _m;
+            IWindowElement _window;
+
+            public ResizeActionCallback( WindowManager m, IWindowElement window )
+            {
+                _m = m;
+                _window = window;
+            }
+
+            public void BroadCast()
+            {
+                _m.OnWindowSizeChanged( _window, EventArgs.Empty );
+            }
+        }
+
+        public IActionCallback Move( IWindowElement window, double top, double left )
+        {
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
             {
+                WindowElementData cloneData = (WindowElementData)data.Clone();
+
+                window.Move( top, left );
+
+                return new MoveActionCallback( this, data, cloneData );
+            }
+            return NullActionCallback.Default;
+        }
+
+        public IActionCallback Resize( IWindowElement window, double width, double height )
+        {
+            WindowElementData data = null;
+            if( _dic.TryGetValue( window, out data ) )
+            {
+                window.Resize( width, height );
+
                 data.Width = window.Width;
                 data.Height = window.Height;
+
+                return new ResizeActionCallback( this, window );
+            }
+            return NullActionCallback.Default;
+        }
+
+        protected virtual void OnWindowSizeChanged( object sender, EventArgs e )
+        {
+            IWindowElement windowElementFromSender = sender as IWindowElement;
+            if( windowElementFromSender != null )
+            {
+                WindowElementData data = null;
+                if( _dic.TryGetValue( windowElementFromSender, out data ) )
+                {
+                    IWindowElement window = data.Window;
+                    double deltaWidth = window.Width - data.Width;
+                    double deltaHeight = window.Height - data.Height;
+
+                    data.Width = window.Width;
+                    data.Height = window.Height;
+
+                    if( deltaWidth != 0 || deltaHeight != 0 )
+                    {
+                        var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
+                        if( WindowResized != null )
+                            WindowResized( sender, evt );
+                    }
+
+                }
+            }
+        }
+
+        protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
+        {
+            IWindowElement windowElementFromSender = sender as IWindowElement;
+            if( windowElementFromSender != null )
+            {
+                WindowElementData data = null;
+                if( _dic.TryGetValue( windowElementFromSender, out data ) )
+                {
+                    IWindowElement window = data.Window;
+                    double deltaTop = window.Top - data.Top;
+                    double deltaLeft = window.Left - data.Left;
+
+                    data.Top = window.Top;
+                    data.Left = window.Left;
+                    if( deltaTop != 0 || deltaLeft != 0 )
+                    {
+                        var evt = new WindowElementLocationEventArgs( windowElementFromSender, deltaTop, deltaLeft );
+                        if( WindowMoved != null )
+                            WindowMoved( sender, evt );
+                    }
+                }
+            }
+        }
+
+        protected virtual void OnWindowHidden( object sender, EventArgs e )
+        {
+            IWindowElement windowElement = sender as IWindowElement;
+            if( windowElement != null )
+            {
+                WindowElementData data = null;
+                if( _dic.TryGetValue( windowElement, out data ) )
+                {
+                    if( WindowHidden != null )
+                        WindowHidden( sender, new WindowElementEventArgs( windowElement ) );
+                }
             }
         }
 
@@ -102,66 +230,6 @@ namespace CK.WindowManager
                 {
                     if( WindowRestored != null )
                         WindowRestored( sender, new WindowElementEventArgs( windowElement ) );
-                }
-            }
-        }
-
-        protected virtual void OnWindowSizeChanged( object sender, EventArgs e )
-        {
-            IWindowElement windowElementFromSender = sender as IWindowElement;
-            if( windowElementFromSender != null )
-            {
-                WindowElementData data = null;
-                if( _dic.TryGetValue( windowElementFromSender, out data ) )
-                {
-                    IWindowElement window = data.Window;
-
-                    double deltaWidth = window.Width - data.Width;
-                    double deltaHeight = window.Height - data.Height;
-
-                    data.Width = window.Width;
-                    data.Height = window.Height;
-
-                    var evt = new WindowElementResizeEventArgs( window, deltaWidth, deltaHeight );
-                    if( WindowResized != null )
-                        WindowResized( sender, evt );
-                }
-            }
-        }
-
-        protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
-        {
-            IWindowElement windowElement = sender as IWindowElement;
-            if( windowElement != null )
-            {
-                WindowElementData data = null;
-                if( _dic.TryGetValue( windowElement, out data ) )
-                {
-                    IWindowElement window = data.Window;
-                    double deltaTop = window.Top - data.Top;
-                    double deltaLeft = window.Left - data.Left;
-
-                    data.Top = window.Top;
-                    data.Left = window.Left;
-
-                    var evt = new WindowElementLocationEventArgs( windowElement, deltaTop, deltaLeft );
-                    if( WindowMoved != null )
-                        WindowMoved( sender, evt );
-                }
-            }
-        }
-
-
-        protected virtual void OnWindowHidden( object sender, EventArgs e )
-        {
-            IWindowElement windowElement = sender as IWindowElement;
-            if( windowElement != null )
-            {
-                WindowElementData data = null;
-                if( _dic.TryGetValue( windowElement, out data ) )
-                {
-                    if( WindowHidden != null )
-                        WindowHidden( sender, new WindowElementEventArgs( windowElement ) );
                 }
             }
         }

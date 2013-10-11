@@ -103,7 +103,24 @@ namespace CK.WindowManager
 
         void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )
         {
+            if( e.BindingType == BindingEventType.Attach )
+            {
+                // The slave is being attached to the master. 
+                // Moves the slave on top of the master. 
+                // But also moves all bound window attached to the slave
+                if( e.Binding.Position == BindingPosition.Top )
+                {
+                    var relativeMaster = e.Binding.Master;
+                    var w = e.Binding.Slave;
+                    // The master is the attached above
+                    double topSlave = relativeMaster.Top - w.Height;
+                    double leftSlave = relativeMaster.Left;
 
+                    WindowManager.Move( w, topSlave, leftSlave ).BroadCast();
+                    WindowManager.Resize( w, relativeMaster.Width, w.Height );
+                    //relativeMaster = w;
+                }
+            }
         }
 
         void WindowBinder_AfterBinding( object sender, WindowBindedEventArgs e )
@@ -113,33 +130,44 @@ namespace CK.WindowManager
                 // The slave is being attached to the master. 
                 // Moves the slave on top of the master. 
                 // But also moves all bound window attached to the slave
+                //if( e.Binding.Position == BindingPosition.Top )
+                //{
+                //    var relativeMaster = e.Binding.Master;
+                //    var w = e.Binding.Slave;
+                //    // The master is the attached above
+                //    double topSlave = relativeMaster.Top - w.Height;
+                //    double leftSlave = relativeMaster.Left;
 
-                var windowToMove = WindowBinder
-                    .GetBinding( e.Binding.Slave )
-                    .AllDescendants()
-                    .Except( new[] { e.Binding.Master } )
-                    .Union( new[] { e.Binding.Slave } );
+                //    WindowManager.Move( w, topSlave, leftSlave ).BroadCast();
+                //    WindowManager.Resize( w, relativeMaster.Width, w.Height );
+                //    //relativeMaster = w;
+                //}
+                //var windowToMove = WindowBinder
+                //    .GetBinding( e.Binding.Slave )
+                //    .AllDescendants()
+                //    .Except( new[] { e.Binding.Master } )
+                //    .Union( new[] { e.Binding.Slave } );
 
-                var relativeMaster = e.Binding.Master;
-                if( e.Binding.Position == BindingPosition.Top )
-                {
-                    foreach( var w in windowToMove.OrderByDescending( x => x.Top ) )
-                    {
-                        // The master is the attached above
-                        double topSlave = relativeMaster.Top - w.Height;
-                        double leftSlave = relativeMaster.Left;
+                //var relativeMaster = e.Binding.Master;
+                //if( e.Binding.Position == BindingPosition.Top )
+                //{
+                //    foreach( var w in windowToMove.OrderByDescending( x => x.Top ) )
+                //    {
+                //        // The master is the attached above
+                //        double topSlave = relativeMaster.Top - w.Height;
+                //        double leftSlave = relativeMaster.Left;
 
-                        WindowManager.Move( w, topSlave, leftSlave );
-                        WindowManager.Resize( w, relativeMaster.Width, w.Height );
-                        relativeMaster = w;
-                    }
-                }
-                if( e.Binding.Position == BindingPosition.Bottom )
-                {
-                    foreach( var w in windowToMove.OrderBy( x => x.Top ) )
-                    {
-                    }
-                }
+                //        WindowManager.Move( w, topSlave, leftSlave );
+                //        WindowManager.Resize( w, relativeMaster.Width, w.Height );
+                //        relativeMaster = w;
+                //    }
+                //}
+                //if( e.Binding.Position == BindingPosition.Bottom )
+                //{
+                //    foreach( var w in windowToMove.OrderBy( x => x.Top ) )
+                //    {
+                //    }
+                //}
             }
         }
 

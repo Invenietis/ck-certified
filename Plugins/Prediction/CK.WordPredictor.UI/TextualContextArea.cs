@@ -149,28 +149,28 @@ namespace CK.WordPredictor.UI
         {
             _subscriber.OnBinderStarted = () =>
             {
-                if( _skin != null & _me != null )
-                    WindowBinder.Service.Attach( _skin, _me, BindingPosition.Top );
+                //if( _skin != null & _me != null )
+                //    WindowBinder.Service.Attach( _skin, _me, BindingPosition.Top );
             };
             _subscriber.OnBinderStopped = () =>
             {
-                if( _skin != null & _me != null )
-                    WindowBinder.Service.Detach( _skin, _me );
+                //if( _skin != null & _me != null )
+                //    WindowBinder.Service.Detach( _skin, _me );
             };
             _subscriber.WindowRegistered = ( e ) =>
             {
-                if( e.Window.Name == WindowName )
-                {
-                    _me = e.Window;
-                    _skin = WindowManager.Service.GetByName( "Skin" );
-                }
-                if( e.Window.Name == "Skin" ) _skin = e.Window;
+                //if( e.Window.Name == WindowName )
+                //{
+                //    _me = e.Window;
+                //    _skin = WindowManager.Service.GetByName( "Skin" );
+                //}
+                //if( e.Window.Name == "Skin" ) _skin = e.Window;
                 
-                _subscriber.OnBinderStarted();
+                //_subscriber.OnBinderStarted();
             };
             _subscriber.WindowUnregistered = ( e ) =>
             {
-                if( e.Window.Name == "Skin" ) _subscriber.OnBinderStopped();
+                //if( e.Window.Name == "Skin" ) _subscriber.OnBinderStopped();
             };
             _subscriber.Subscribe( WindowName, _window );
         }

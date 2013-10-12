@@ -13,6 +13,11 @@ namespace CK.WindowManager
     {
         IDictionary<IWindowElement, WindowElementData> _dic = new Dictionary<IWindowElement, WindowElementData>();
 
+        public IReadOnlyList<IWindowElement> WindowElements
+        {
+            get { return _dic.Keys.ToArray(); }
+        }
+
         public virtual IManualInteractionResult Move( IWindowElement window, double top, double left )
         {
             WindowElementData data = null;

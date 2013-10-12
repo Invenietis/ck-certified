@@ -14,6 +14,11 @@ namespace CK.WindowManager.Model
     public interface IWindowManager : IDynamicService
     {
         /// <summary>
+        /// Gets all regsitered <see cref="IWindowElement"/>.
+        /// </summary>
+        IReadOnlyList<IWindowElement> WindowElements { get; }
+
+        /// <summary>
         /// Gets a <see cref="IWindowElement"/> by name. Null if no window element are registered with this name.
         /// </summary>
         /// <param name="name"></param>
@@ -77,5 +82,6 @@ namespace CK.WindowManager.Model
         /// Raised when a <see cref="IWindowElement"/> is resized.
         /// </summary>
         event EventHandler<WindowElementResizeEventArgs> WindowResized;
+
     }
 }

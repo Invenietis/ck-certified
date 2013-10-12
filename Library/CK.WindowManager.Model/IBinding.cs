@@ -7,6 +7,7 @@ namespace CK.WindowManager.Model
 {
     public enum BindingPosition
     {
+        None,
         Top,
         Right,
         Bottom,

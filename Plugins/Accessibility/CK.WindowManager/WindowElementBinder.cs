@@ -88,17 +88,17 @@ namespace CK.WindowManager
                             _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Bottom.Window.Name, master.Name, position );
                             return;
                         }
-                        else if( position == BindingPosition.Left && spatialBinding.Right != null )
+                        else if( position == BindingPosition.Left && slaveSpatialBinding.Right != null )
                         {
                             _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Right.Window.Name, master.Name, position );
                             return;
                         }
-                        else if( position == BindingPosition.Bottom && spatialBinding.Top != null )
+                        else if( position == BindingPosition.Bottom && slaveSpatialBinding.Top != null )
                         {
                             _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Top.Window.Name, master.Name, position );
                             return;
                         }
-                        else if( position == BindingPosition.Right && spatialBinding.Left != null )
+                        else if( position == BindingPosition.Right && slaveSpatialBinding.Left != null )
                         {
                             _logger.Trace( "{0} is already bound to {1} at position {2}.", slaveSpatialBinding.Left.Window.Name, master.Name, position );
                             return;

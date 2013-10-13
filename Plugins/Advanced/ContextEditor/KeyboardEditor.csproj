@@ -226,7 +226,9 @@
     <Compile Include="Wizard\WizardPage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Wizard\KeyboardEditor.HotKey.cs" />
     <EmbeddedResource Include="Resources\helpcontent.zip" />
   </ItemGroup>

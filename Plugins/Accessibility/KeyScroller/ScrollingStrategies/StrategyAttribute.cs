@@ -7,24 +7,24 @@ using System.Text;
 namespace KeyScroller
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class Strategy : Attribute
+    public class StrategyAttribute : Attribute
     {
         static List<string> _strategies = new List<string>();
         public static List<string> AvalaibleStrategies { get { return _strategies; } }
         public string Name { get; private set; }
-        public Strategy(string name)
+        public StrategyAttribute(string name)
         {
             Name = name;
         }
 
-        public static IEnumerable<Strategy> GetStrategies( )
+        public static IEnumerable<string> GetStrategies( )
         {
             foreach( Type type in Assembly.GetCallingAssembly().GetTypes() )
             {
-                Strategy strategy = (Strategy)Strategy.GetCustomAttribute( type, typeof( Strategy ) );
+                StrategyAttribute strategy = (StrategyAttribute)StrategyAttribute.GetCustomAttribute( type, typeof( StrategyAttribute ) );
                 if( strategy != null )
                 {
-                    yield return strategy;
+                    yield return strategy.Name;
                 }
             }
         }
@@ -32,7 +32,7 @@ namespace KeyScroller
         {
             foreach( Type type in Assembly.GetCallingAssembly().GetTypes() )
             {
-                if( type.GetCustomAttributes( typeof( Strategy ), true ).Length > 0 )
+                if( type.GetCustomAttributes( typeof( StrategyAttribute ), true ).Length > 0 )
                 {
                     yield return type;
                 }

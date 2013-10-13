@@ -10,7 +10,7 @@ using HighlightModel;
 
 namespace KeyScroller
 {
-    [Strategy( TurboScrollingStrategy.StrategyName )]
+    [StrategyAttribute( TurboScrollingStrategy.StrategyName )]
     public class TurboScrollingStrategy : SimpleScrollingStrategy
     {
         const string StrategyName = "TurboScrollingStrategy";

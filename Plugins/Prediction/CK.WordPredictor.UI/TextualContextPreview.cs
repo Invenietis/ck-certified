@@ -49,12 +49,12 @@ namespace CK.WordPredictor.UI
             _subscriber.OnBinderStarted = () =>
             {
                 if( _textualContext != null & _me != null )
-                    WindowBinder.Service.Attach( _textualContext, _me, BindingPosition.Top );
+                    WindowBinder.Service.Bind( _textualContext, _me, BindingPosition.Top );
             };
             _subscriber.OnBinderStopped = () =>
             {
                 if( _textualContext != null & _me != null )
-                    WindowBinder.Service.Detach( _textualContext, _me );
+                    WindowBinder.Service.Unbind( _textualContext, _me );
             };
             _subscriber.WindowRegistered = ( e ) =>
             {

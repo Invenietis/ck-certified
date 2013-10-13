@@ -80,24 +80,29 @@ namespace CK.WindowManager
             }
         }
 
-        void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )
+        private void MoveOnTop(IBinding binding)
         {
-            ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
-            if( binding != null )
+            // The slave is being attached to the master. 
+            // Moves the slave on top of the master. 
+            if (binding.Position == BindingPosition.Top)
             {
-                // The Window that moves first
-                foreach( IWindowElement window in binding.AllDescendants() )
-                    window.Restore();
+                var relativeMaster = binding.Master;
+                var w = binding.Slave;
+                // The master is the attached above
+                double topSlave = relativeMaster.Top - w.Height;
+                double leftSlave = relativeMaster.Left;
+
+                WindowManager.Move(w, topSlave, leftSlave).Broadcast();
+                WindowManager.Resize(w, relativeMaster.Width, w.Height).Broadcast();
+                //relativeMaster = w;
             }
         }
 
-        void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
+        void WindowBinder_PreviewBinding(object sender, WindowBindedEventArgs e)
         {
-            ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
-            if( binding != null )
+            if (e.BindingType == BindingEventType.Attach)
             {
-                foreach( IWindowElement window in binding.AllDescendants() )
-                    window.Hide();
+                MoveOnTop(e.Binding);
             }
         }
 
@@ -105,68 +110,32 @@ namespace CK.WindowManager
         {
             if( e.BindingType == BindingEventType.Attach )
             {
-                // The slave is being attached to the master. 
-                // Moves the slave on top of the master. 
-                if( e.Binding.Position == BindingPosition.Top )
-                {
-                    var relativeMaster = e.Binding.Master;
-                    var w = e.Binding.Slave;
-                    // The master is the attached above
-                    double topSlave = relativeMaster.Top - w.Height;
-                    double leftSlave = relativeMaster.Left;
-
-                    WindowManager.Move( w, topSlave, leftSlave ).Broadcast();
-                    WindowManager.Resize( w, relativeMaster.Width, w.Height ).Broadcast();
-                    //relativeMaster = w;
-                }
+                MoveOnTop(e.Binding);
             }
         }
 
         void WindowBinder_AfterBinding( object sender, WindowBindedEventArgs e )
         {
-            if( e.BindingType == BindingEventType.Attach )
+        }
+
+        void WindowManager_WindowRestored(object sender, WindowElementEventArgs e)
+        {
+            ISpatialBinding binding = WindowBinder.GetBinding(e.Window);
+            if (binding != null)
             {
-                // The slave is being attached to the master. 
-                // Moves the slave on top of the master. 
-                // But also moves all bound window attached to the slave
-                //if( e.Binding.Position == BindingPosition.Top )
-                //{
-                //    var relativeMaster = e.Binding.Master;
-                //    var w = e.Binding.Slave;
-                //    // The master is the attached above
-                //    double topSlave = relativeMaster.Top - w.Height;
-                //    double leftSlave = relativeMaster.Left;
+                // The Window that moves first
+                foreach (IWindowElement window in binding.AllDescendants())
+                    window.Restore();
+            }
+        }
 
-                //    WindowManager.Move( w, topSlave, leftSlave ).BroadCast();
-                //    WindowManager.Resize( w, relativeMaster.Width, w.Height );
-                //    //relativeMaster = w;
-                //}
-                //var windowToMove = WindowBinder
-                //    .GetBinding( e.Binding.Slave )
-                //    .AllDescendants()
-                //    .Except( new[] { e.Binding.Master } )
-                //    .Union( new[] { e.Binding.Slave } );
-
-                //var relativeMaster = e.Binding.Master;
-                //if( e.Binding.Position == BindingPosition.Top )
-                //{
-                //    foreach( var w in windowToMove.OrderByDescending( x => x.Top ) )
-                //    {
-                //        // The master is the attached above
-                //        double topSlave = relativeMaster.Top - w.Height;
-                //        double leftSlave = relativeMaster.Left;
-
-                //        WindowManager.Move( w, topSlave, leftSlave );
-                //        WindowManager.Resize( w, relativeMaster.Width, w.Height );
-                //        relativeMaster = w;
-                //    }
-                //}
-                //if( e.Binding.Position == BindingPosition.Bottom )
-                //{
-                //    foreach( var w in windowToMove.OrderBy( x => x.Top ) )
-                //    {
-                //    }
-                //}
+        void WindowManager_WindowHidden(object sender, WindowElementEventArgs e)
+        {
+            ISpatialBinding binding = WindowBinder.GetBinding(e.Window);
+            if (binding != null)
+            {
+                foreach (IWindowElement window in binding.AllDescendants())
+                    window.Hide();
             }
         }
 
@@ -184,6 +153,7 @@ namespace CK.WindowManager
             WindowManager.WindowHidden += WindowManager_WindowHidden;
             WindowManager.WindowRestored += WindowManager_WindowRestored;
 
+            WindowBinder.PreviewBinding += WindowBinder_PreviewBinding;
             WindowBinder.BeforeBinding += WindowBinder_BeforeBinding;
             WindowBinder.AfterBinding += WindowBinder_AfterBinding;
         }
@@ -195,6 +165,7 @@ namespace CK.WindowManager
             WindowManager.WindowHidden -= WindowManager_WindowHidden;
             WindowManager.WindowRestored -= WindowManager_WindowRestored;
 
+            WindowBinder.PreviewBinding -= WindowBinder_PreviewBinding;
             WindowBinder.BeforeBinding -= WindowBinder_BeforeBinding;
             WindowBinder.AfterBinding -= WindowBinder_AfterBinding;
         }

@@ -7,6 +7,11 @@ using CK.Plugin;
 
 namespace CK.WindowManager.Model
 {
+    public interface IBindResult : CK.Core.IFluentInterface
+    {
+        void Seal();
+    }
+
     /// <summary>
     /// The window binder allows two <see cref="IWindwoElement"/> to bind together.
     /// </summary>
@@ -19,8 +24,10 @@ namespace CK.WindowManager.Model
         /// <returns></returns>
         ISpatialBinding GetBinding( IWindowElement reference );
 
+
+        IBindResult PreviewBind( IWindowElement master, IWindowElement slave, BindingPosition position );
         /// <summary>
-        /// Attach the both <see cref="IWindowElement"/> provided.
+        /// Binds the both <see cref="IWindowElement"/> provided.
         /// </summary>
         /// <remarks>
         /// If an attachement already exists, this attachement is canceled. 
@@ -30,17 +37,19 @@ namespace CK.WindowManager.Model
         /// <param name="master">The master window element</param>
         /// <param name="slave"></param>
         /// <param name="position">The position of the attachement relatively between master and slave. See <see cref="BindingPosition"/> remarks.</param>
-        void Attach( IWindowElement master, IWindowElement slave, BindingPosition position );
+        void Bind( IWindowElement master, IWindowElement slave, BindingPosition position );
 
         /// <summary>
-        /// Detach the both <see cref="IWindowElement"/> provided.
+        /// Unbinds the both <see cref="IWindowElement"/> provided.
         /// </summary>
         /// <remarks>
         /// If no attachment exists between the both <see cref="IWindowElement"/> supplied, no event is raised.
         /// </remarks>
         /// <param name="master"></param>
         /// <param name="slave"></param>
-        void Detach( IWindowElement master, IWindowElement slave );
+        void Unbind( IWindowElement master, IWindowElement slave );
+
+        event EventHandler<WindowBindedEventArgs> PreviewBinding;
 
         /// <summary>
         /// Raised before an attachment occurs. This event can be canceled.

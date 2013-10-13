@@ -69,6 +69,10 @@
       <Project>{fda960f6-d429-4696-9306-b473dae41e5b}</Project>
       <Name>CK.WindowManager.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

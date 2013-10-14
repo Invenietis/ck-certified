@@ -26,6 +26,9 @@ namespace CK.WindowManager.Model
 
 
         IBindResult PreviewBind( IWindowElement master, IWindowElement slave, BindingPosition position );
+
+        IBindResult PreviewUnbind( IWindowElement master, IWindowElement slave );
+
         /// <summary>
         /// Binds the both <see cref="IWindowElement"/> provided.
         /// </summary>
@@ -60,6 +63,7 @@ namespace CK.WindowManager.Model
         /// Rasied after an attachment occurs.
         /// </summary>
         event EventHandler<WindowBindedEventArgs> AfterBinding;
+
 
     }
 

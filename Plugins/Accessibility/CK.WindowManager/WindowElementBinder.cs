@@ -34,7 +34,7 @@ namespace CK.WindowManager
 
             SpatialBinding b = null;
             _spatialBindings.TryGetValue( referential, out b );
-            return new SpatialBinding( referential );
+            return b ?? new SpatialBinding( referential );
         }
 
         private bool CanBind(IWindowElement master, IWindowElement slave, BindingPosition position, out SpatialBinding spatialBinding, out SpatialBinding slaveSpatialBinding )
@@ -164,6 +164,26 @@ namespace CK.WindowManager
 
                 return new BindResult(this, binding);
             }
+            return NullResult.Default;
+        }
+
+        public IBindResult PreviewUnbind( IWindowElement master, IWindowElement slave )
+        {
+            var binding = new SimpleBinding
+            {
+                Master = master,
+                Slave = slave
+            };
+
+            var evt = new WindowBindedEventArgs
+            {
+                Binding = binding,
+                BindingType = BindingEventType.Detach
+            };
+
+            if (PreviewBinding != null)
+                PreviewBinding(this, evt);
+
             return NullResult.Default;
         }
 

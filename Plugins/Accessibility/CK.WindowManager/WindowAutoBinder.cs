@@ -7,6 +7,7 @@ using System.Drawing;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
+using System.Diagnostics;
 
 namespace CK.WindowManager
 {
@@ -28,14 +29,14 @@ namespace CK.WindowManager
         public float AttractionRadius = 50;
 
         bool _intersectionDetected = false;
+        bool _processing;
 
         void OnWindowMoved(object sender, WindowElementLocationEventArgs e)
         {
-            // A preview is pending
-            if (_intersectionDetected ) return;
-
             // Do not act when a binding is occuring.
             if (_binding == true) return;
+
+            _intersectionDetected = false;
 
             ISpatialBinding binding = WindowBinder.Service.GetBinding(e.Window);
             if (binding == null) return;
@@ -63,6 +64,7 @@ namespace CK.WindowManager
 
             if (_intersectionDetected)
             {
+                Debug.Assert(otherWindow != null);
                 // Determines the intersection
                 RectangleF overlapRectangle = RectangleF.Intersect(enlargedRectangle, rect);
                 BindingPosition pos = BindingPosition.None;
@@ -72,32 +74,30 @@ namespace CK.WindowManager
                 else if (overlapRectangle.Right == enlargedRectangle.Right) pos = BindingPosition.Left;
                 else if (overlapRectangle.Left == enlargedRectangle.Left) pos = BindingPosition.Right;
 
-                if (otherWindow != null) BindResult = WindowBinder.Service.PreviewBind(otherWindow, e.Window, pos);
+                if (_previewingBinding == false) _bindResult = WindowBinder.Service.PreviewBind(otherWindow, e.Window, pos);
 
             }
-            else
-            {
-                _intersectionDetected = false;
-                BindResult = null;
-            }
+            else _bindResult = WindowBinder.Service.PreviewUnbind(otherWindow, e.Window);
         }
 
-        IBindResult BindResult { get; set; }
+        bool _previewingBinding;
+        IBindResult _bindResult;
 
-        void PointerDeviceDriver_PointerButtonDown(object sender, PointerDeviceEventArgs e)
+        void WindowBinder_PreviewBinding(object sender, WindowBindedEventArgs e)
         {
-            if (_intersectionDetected)
+            if (e.BindingType == BindingEventType.Attach)
             {
-
+                if (_previewingBinding == false) _previewingBinding = true;
             }
+            else _previewingBinding = false;
         }
 
         private void PointerDeviceDriver_PointerButtonUp(object sender, PointerDeviceEventArgs e)
         {
-            if (_intersectionDetected && BindResult != null)
+            if (_intersectionDetected && _bindResult != null)
             {
-                BindResult.Seal();
-                BindResult = null;
+                _bindResult.Seal();
+                _bindResult = null;
                 _intersectionDetected = false;
             }
         }
@@ -133,13 +133,13 @@ namespace CK.WindowManager
 
         public void Start()
         {
+            WindowBinder.Service.PreviewBinding += WindowBinder_PreviewBinding;
             WindowBinder.Service.BeforeBinding += Service_BeforeBinding;
             WindowBinder.Service.AfterBinding += Service_AfterBinding;
 
             WindowManager.Service.Registered += Service_Registered;
             WindowManager.Service.WindowMoved += OnWindowMoved;
 
-            PointerDeviceDriver.PointerButtonDown += PointerDeviceDriver_PointerButtonDown;
             PointerDeviceDriver.PointerButtonUp += PointerDeviceDriver_PointerButtonUp;
 
             foreach (IWindowElement e in WindowManager.Service.WindowElements) RegisterWindow(e);
@@ -147,9 +147,9 @@ namespace CK.WindowManager
 
         public void Stop()
         {
-            PointerDeviceDriver.PointerButtonDown -= PointerDeviceDriver_PointerButtonDown;
             PointerDeviceDriver.PointerButtonUp -= PointerDeviceDriver_PointerButtonUp;
 
+            WindowBinder.Service.PreviewBinding -= WindowBinder_PreviewBinding;
             WindowBinder.Service.AfterBinding -= Service_AfterBinding;
             WindowBinder.Service.BeforeBinding -= Service_BeforeBinding;
 

@@ -30,15 +30,11 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowMoved(object sender, WindowElementLocationEventArgs e)
         {
-            //if (_previewingBinding != null) return;
-
-            // The Window that moves first
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding(triggerHolder);
             if (binding != null)
             {
-                // Horizontal move
                 foreach (IWindowElement window in binding.AllDescendants())
                 {
                     WindowManager.Move(window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft);
@@ -48,9 +44,6 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowResized(object sender, WindowElementResizeEventArgs e)
         {
-            //if (_previewingBinding != null) return;
-
-            // The Window that moves first
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding(triggerHolder);
@@ -134,7 +127,6 @@ namespace CK.WindowManager
         {
             if (e.BindingType == BindingEventType.Attach)
             {
-                _logger.Info("Before binding");
                 MoveOnTop(e.Binding);
             }
         }
@@ -145,13 +137,14 @@ namespace CK.WindowManager
             // Moves the slave on top of the master. 
             if (binding.Position == BindingPosition.Top)
             {
-                _logger.Info("Moving {0} on top of {1}...", binding.Slave.Name, binding.Master.Name);
                 // The master is the attached above
                 double topSlave = binding.Master.Top - binding.Slave.Height;
                 double leftSlave = binding.Master.Left;
+                double width = binding.Master.Width;
+                double height =  binding.Slave.Height;
 
                 WindowManager.Move(binding.Slave, topSlave, leftSlave).Broadcast();
-                //WindowManager.Resize(binding.Slave, binding.Master.Width, binding.Slave.Height).Broadcast();
+                WindowManager.Resize( binding.Slave, width, height ).Broadcast();
             }
         }
 

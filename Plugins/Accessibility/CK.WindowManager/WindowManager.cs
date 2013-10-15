@@ -217,6 +217,9 @@ namespace CK.WindowManager
             public void Broadcast()
             {
             }
+            public void Silent()
+            {
+            }
         }
 
         class MoveResult : IManualInteractionResult
@@ -243,6 +246,9 @@ namespace CK.WindowManager
                 // Broadcast
                 _m.OnWindowLocationChanged( _data.Window, EventArgs.Empty );
             }
+            public void Silent()
+            {
+            }
         }
 
         class ResizeResult : IManualInteractionResult
@@ -268,6 +274,10 @@ namespace CK.WindowManager
                 _data.Height = _clonedData.Height;
                 // Broadcast
                 _m.OnWindowSizeChanged( _data.Window, EventArgs.Empty );
+            }
+
+            public void Silent()
+            {
             }
         }
 

@@ -11,6 +11,10 @@ namespace CK.WindowManager.Model
     public interface IManualInteractionResult : CK.Core.IFluentInterface
     {
         /// <summary>
+        /// Does not propagate the event. This is the default behavior.
+        /// </summary>
+        void Silent();
+        /// <summary>
         /// Broadcast the event resulting of the manual interaction.
         /// </summary>
         void Broadcast();

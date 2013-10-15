@@ -4,11 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Host.Services;
 
 namespace CK.WindowManager.Model
 {
     public interface IWindowElement : IDisposable
     {
+        /// <summary>
+        /// Raised when the window element is focused.
+        /// </summary>
+        event EventHandler GotFocus;
+
         /// <summary>
         /// Raised when the window element location changed.
         /// </summary>
@@ -71,6 +77,8 @@ namespace CK.WindowManager.Model
         void Hide();
 
         void Restore();
+
+        void ToggleHostMinimized( IHostManipulator manipulator );
     }
 
 }

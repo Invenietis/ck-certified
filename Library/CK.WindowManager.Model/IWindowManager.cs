@@ -54,6 +54,16 @@ namespace CK.WindowManager.Model
         IManualInteractionResult Resize( IWindowElement window, double width, double height );
 
         /// <summary>
+        /// Minimizes the host.
+        /// </summary>
+        void ToggleHostMinimized();
+
+        /// <summary>
+        /// Raised when a <see cref="IWindowElement"/> got the focus.
+        /// </summary>
+        event EventHandler<WindowElementEventArgs> WindowGotFocus;
+
+        /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is registered.
         /// </summary>
         event EventHandler<WindowElementEventArgs> Registered;

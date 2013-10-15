@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CK.Context;
 using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
+using Host.Services;
 
 namespace CK.WindowManager
 {
@@ -12,6 +14,17 @@ namespace CK.WindowManager
     public class WindowManager : IWindowManager, IPlugin
     {
         IDictionary<IWindowElement, WindowElementData> _dic = new Dictionary<IWindowElement, WindowElementData>();
+
+        IWindowElement _lastFocused;
+        IHostManipulator _hostManipulator;
+
+        [RequiredService]
+        public IContext Context { get; set; }
+
+        /// <summary>
+        /// The HostManipulator, enables minimizing the host.
+        /// </summary>
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? (_hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>()); } }
 
         public IReadOnlyList<IWindowElement> WindowElements
         {
@@ -119,6 +132,29 @@ namespace CK.WindowManager
             }
         }
 
+        protected virtual void OnWindowGotFocus( object sender, EventArgs e )
+        {
+            IWindowElement windowElement = sender as IWindowElement;
+            if( windowElement != null )
+            {
+                WindowElementData data = null;
+                if( _dic.TryGetValue( windowElement, out data ) )
+                {
+                    _lastFocused = windowElement;
+                    if( WindowGotFocus != null )
+                        WindowGotFocus( sender, new WindowElementEventArgs( windowElement ) );
+                }
+            }
+        }
+
+        public void ToggleHostMinimized()
+        {
+            if( _lastFocused != null )
+            {
+                _lastFocused.ToggleHostMinimized( HostManipulator );
+            }
+        }
+
         public IWindowElement GetByName( string name )
         {
             IWindowElement key = _dic.Keys.FirstOrDefault( x => x.Name == name );
@@ -141,6 +177,7 @@ namespace CK.WindowManager
                 Top = windowElement.Top
             } );
 
+            windowElement.GotFocus += OnWindowGotFocus;
             windowElement.Hidden += OnWindowHidden;
             windowElement.Restored += OnWindowRestored;
             windowElement.LocationChanged += OnWindowLocationChanged;
@@ -149,6 +186,7 @@ namespace CK.WindowManager
             if( Registered != null )
                 Registered( this, new WindowElementEventArgs( windowElement ) );
         }
+
 
         public virtual void Unregister( IWindowElement windowElement )
         {
@@ -160,6 +198,7 @@ namespace CK.WindowManager
             WindowElementData data = null;
             if( _dic.TryGetValue( windowElement, out data ) )
             {
+                data.Window.GotFocus -= OnWindowGotFocus;
                 data.Window.Hidden -= OnWindowHidden;
                 data.Window.Restored -= OnWindowRestored;
                 data.Window.LocationChanged -= OnWindowLocationChanged;
@@ -172,6 +211,8 @@ namespace CK.WindowManager
         }
 
         #region Public Events
+
+        public event EventHandler<WindowElementEventArgs> WindowGotFocus;
 
         public event EventHandler<WindowElementEventArgs> WindowHidden;
 
@@ -308,5 +349,6 @@ namespace CK.WindowManager
                 Height = Window.Height;
             }
         }
+
     }
 }

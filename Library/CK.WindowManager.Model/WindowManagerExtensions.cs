@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using CK.Windows;
 
 namespace CK.WindowManager.Model
 {
     public static class WindowManagerExtensions
     {
 
-        public static void RegisterWindow( this IWindowManager m, string name, Window window )
+        public static void RegisterWindow( this IWindowManager m, string name, CKWindow window )
         {
             m.Register( new WindowElement( window, name ) );
         }

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using CK.Plugin;
+using CK.Windows;
 
 namespace CK.WindowManager.Model
 {
     public class WindowManagerSubscriber
     {
         string _name;
-        Window _window;
+        CKWindow _window;
         readonly IService<IWindowManager> _windowManager;
         readonly IService<IWindowBinder> _windowBinder;
 
@@ -30,7 +31,7 @@ namespace CK.WindowManager.Model
             get { return _windowBinder; }
         }
 
-        public virtual void Subscribe( string name, Window window )
+        public virtual void Subscribe( string name, CKWindow window )
         {
             _name = name;
             _window = window;

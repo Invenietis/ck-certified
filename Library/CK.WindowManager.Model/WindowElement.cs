@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using CK.Windows;
+using Host.Services;
 
 namespace CK.WindowManager.Model
 {
     public sealed class WindowElement : IWindowElement
     {
-        Window _w;
+        CKWindow _w;
         string _name;
 
         public event EventHandler LocationChanged;
@@ -20,7 +22,9 @@ namespace CK.WindowManager.Model
 
         public event EventHandler Restored;
 
-        public WindowElement( Window w, string name )
+        public event EventHandler GotFocus;
+
+        public WindowElement( CKWindow w, string name )
         {
             if( w == null ) throw new ArgumentNullException( "w" );
 
@@ -29,6 +33,15 @@ namespace CK.WindowManager.Model
             _w.LocationChanged += OnWindowLocationChanged;
             _w.SizeChanged += OnWindowSizeChanged;
             _w.StateChanged += OnWindowStateChanged;
+            _w.GotFocus += OnGotFocus;
+        }
+
+        void OnGotFocus( object sender, RoutedEventArgs e )
+        {
+            if( GotFocus != null )
+            {
+                GotFocus( this, e );
+            }
         }
 
         void OnWindowStateChanged( object sender, EventArgs e )
@@ -48,6 +61,7 @@ namespace CK.WindowManager.Model
             _w.StateChanged -= OnWindowStateChanged;
             _w.LocationChanged -= OnWindowLocationChanged;
             _w.SizeChanged -= OnWindowSizeChanged;
+            _w.GotFocus -= OnGotFocus;
         }
 
         public Window Window
@@ -162,6 +176,14 @@ namespace CK.WindowManager.Model
             {
                 _eventToEnableTarget();
             }
+        }
+
+
+        public void ToggleHostMinimized( IHostManipulator manipulator )
+        {
+            IntPtr ptr = IntPtr.Zero;
+            Dispatcher.Invoke( (Action)(() => ptr = _w.Hwnd), null );
+            Application.Current.Dispatcher.BeginInvoke( (Action)(() => manipulator.ToggleMinimize( ptr )), null );
         }
     }
 }

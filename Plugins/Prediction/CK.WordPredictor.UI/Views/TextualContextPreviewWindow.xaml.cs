@@ -11,13 +11,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CK.Windows;
 
 namespace CK.WordPredictor.UI
 {
     /// <summary>
     /// Interaction logic for PredictionTextArea.xaml
     /// </summary>
-    public partial class TextualContextPreviewWindow : Window
+    public partial class TextualContextPreviewWindow : CKWindow
     {
         public TextualContextPreviewWindow( ViewModels.TextualContextPreviewViewModel vm )
         {

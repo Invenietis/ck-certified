@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using CommonServices;
 using CK.Plugin;
 using CK.Context;
+using CK.WindowManager.Model;
 
 namespace BasicCommandHandlers
 {
@@ -42,16 +43,23 @@ namespace BasicCommandHandlers
         [RequiredService]
         public IContext Context { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        //public IService<ISkinService> SkinService { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
 
         void HideSkin()
         {
-            //if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.HideSkin();
+            if( WindowManager.Status.IsStartingOrStarted )
+            {
+                IWindowElement el = WindowManager.Service.GetByName( "Skin" );
+                if( el != null ) el.Hide();
+            }
         }
         void ToggleHostMinimized()
         {
-            //if( SkinService.Status.IsStartingOrStarted ) SkinService.Service.ToggleHostMinimized();
+            if( WindowManager.Status.IsStartingOrStarted )
+            {
+                WindowManager.Service.ToggleHostMinimized();
+            }
         }
 
         public override bool Setup( IPluginSetupInfo info )

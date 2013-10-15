@@ -557,44 +557,9 @@ namespace SimpleSkin
         #region MiniView methods & properties
 
         /// <summary>
-        /// Toggles minimization of the application's host, the configuration window.
-        /// </summary>
-        public void ToggleHostMinimized()
-        {
-            IntPtr ptr = IntPtr.Zero;
-            _skinDispatcher.Invoke( (Action)(() => ptr = _skinWindow.Hwnd), null );
-            Application.Current.Dispatcher.Invoke( (Action)(() => HostManipulator.ToggleMinimize( ptr )), null );
-        }
-
-        /// <summary>
         /// Gets whether the application's host's window is minimized.
         /// </summary>
         public bool IsHostMinimized { get { return HostManipulator.IsMinimized; } }
-
-        /// <summary>
-        /// Hides the skin and shows the keyboard's MiniView
-        /// </summary>
-        public void HideSkin()
-        {
-            if( !_viewHidden )
-            {
-                _viewHidden = true;
-
-                _skinDispatcher.Invoke( (Action)(() =>
-                {
-                    ShowMiniView();
-                    _skinWindow.Hide();
-
-                    if( Highlighter.Status == InternalRunningStatus.Started )
-                    {
-                        Highlighter.Service.RegisterTree( _miniViewVm );
-                        Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-                    }
-
-                    if( _timer != null ) _timer.Stop();
-                }), null );
-            }
-        }
 
         /// <summary>
         /// Hides the keyboard's MiniView and shows the keyboard

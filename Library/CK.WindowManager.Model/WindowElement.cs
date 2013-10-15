@@ -141,7 +141,7 @@ namespace CK.WindowManager.Model
         private void DispatchWhenRequired( Action d )
         {
             if( Dispatcher.CheckAccess() ) d();
-            else Dispatcher.Invoke( d );
+            else Dispatcher.BeginInvoke( d );
         }
 
         class DisableElementEvents : IDisposable

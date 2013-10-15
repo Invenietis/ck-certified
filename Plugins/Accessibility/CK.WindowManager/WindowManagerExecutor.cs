@@ -30,7 +30,7 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowMoved(object sender, WindowElementLocationEventArgs e)
         {
-            if (_previewingBinding != null) return;
+            //if (_previewingBinding != null) return;
 
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
@@ -48,7 +48,7 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowResized(object sender, WindowElementResizeEventArgs e)
         {
-            if (_previewingBinding != null) return;
+            //if (_previewingBinding != null) return;
 
             // The Window that moves first
             IWindowElement triggerHolder = e.Window;
@@ -157,7 +157,14 @@ namespace CK.WindowManager
 
         void WindowBinder_AfterBinding(object sender, WindowBindedEventArgs e)
         {
-            _previewingBinding = null;
+            if( _previewingBinding != null )
+            {
+                _previewingBinding.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    _previewingBinding.Hide();
+                    _previewingBinding = null;
+                } ) );
+            }
         }
 
         void WindowManager_WindowRestored(object sender, WindowElementEventArgs e)

@@ -60,7 +60,11 @@ namespace CK.Keyboard
             _modes.Add( String.Empty, _empty );
 
             if( sp != null ) sp.GetService<ISimpleServiceContainer>( true ).Add<IStructuredSerializer<KeyboardCollection>>( this );
+
+            OnInitialized();
         }
+
+        partial void OnInitialized();
 
         public IPluginConfigAccessor Configuration { get; set; }
 

@@ -41,10 +41,7 @@ namespace KeyScroller
         //List the avalaible strategy at the class init
         static KeyScrollerPlugin()
         {
-            foreach( Strategy s in Strategy.GetStrategies() )
-            {
-                AvailableStrategies.Add( s.Name );
-            }
+            AvailableStrategies.AddRange( StrategyAttribute.GetStrategies() );
         }
 
         public bool Setup( IPluginSetupInfo info )

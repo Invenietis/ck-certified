@@ -175,9 +175,11 @@ namespace PointerDeviceDriver
                 _windowsHook.Dispose();
                 _windowsHook = null;
             }
-
-            _pointerPosGetter.Dispose();
-            _pointerPosGetter = null;
+            if( _pointerPosGetter != null )
+            {
+                _pointerPosGetter.Dispose();
+                _pointerPosGetter = null;
+            }
         }
 
         public void MovePointer( int x, int y )

@@ -33,7 +33,7 @@ using CK.Storage;
 
 namespace CK.Keyboard
 {
-    sealed class KeyboardCollection : IKeyboardCollection
+    sealed partial class KeyboardCollection : IKeyboardCollection
     {
         KeyboardContext _context;
         IDictionary<string, Keyboard>   _keyboards;
@@ -57,13 +57,13 @@ namespace CK.Keyboard
 
         IKeyboard IKeyboardCollection.this[string name]
         {
-            get { return this[ name ]; }
+            get { return this[name]; }
         }
 
         internal Keyboard this[string name]
         {
             get
-            {              
+            {
                 Keyboard k;
                 _keyboards.TryGetValue( name, out k );
                 return k;
@@ -109,7 +109,7 @@ namespace CK.Keyboard
 
         internal void OnDestroy( Keyboard kb )
         {
-            Debug.Assert( kb != null && kb.Context == _context && _context.Keyboards == this, 
+            Debug.Assert( kb != null && kb.Context == _context && _context.Keyboards == this,
                 "This must be called only for keyboard of this context and only for actual keyboard collection." );
             // First, fires the keyboard changed event if needed:
             // current keyboard (the one that will be removed) is not yet modified: clients
@@ -152,7 +152,7 @@ namespace CK.Keyboard
         public bool Contains( object item )
         {
             Keyboard k = item as Keyboard;
-            return k != null ? _keyboards.Values.Contains( k ) : false; 
+            return k != null ? _keyboards.Values.Contains( k ) : false;
         }
 
         public int Count
@@ -162,7 +162,7 @@ namespace CK.Keyboard
 
         public IEnumerator<IKeyboard> GetEnumerator()
         {
-            Converter<Keyboard,IKeyboard> conv = delegate( Keyboard k ) { return (IKeyboard)k; }; 
+            Converter<Keyboard,IKeyboard> conv = delegate( Keyboard k ) { return (IKeyboard)k; };
             return Wrapper<IKeyboard>.CreateEnumerator( _keyboards.Values, conv );
         }
 
@@ -182,7 +182,7 @@ namespace CK.Keyboard
             get { return _current; }
             set
             {
-                if( value != _current ) 
+                if( value != _current )
                 {
                     if( CurrentChanging != null )
                     {
@@ -195,11 +195,16 @@ namespace CK.Keyboard
                     if( previous != null && Context.PluginRunner != null ) Context.PluginRunner.Remove( previous.RequirementLayer, false );
                     _current = value;
                     if( _current != null && Context.PluginRunner != null ) Context.PluginRunner.Add( _current.RequirementLayer, true );
-                    
+
                     if( CurrentChanged != null )
                     {
                         CurrentChanged( this, new CurrentKeyboardChangedEventArgs( Context, previous ) );
                     }
+
+                    // This will fired KeyboardActivated event if the new current wasn't active. 
+                    // Fired after the CurrentChanged event.
+                    _current.IsActive = true;
+                    
                     Context.SetKeyboardContextDirty();
                 }
             }
@@ -217,13 +222,13 @@ namespace CK.Keyboard
                 kbName = newName;
                 if( KeyboardRenamed != null ) KeyboardRenamed( this, new KeyboardRenamedEventArgs( k, previous ) );
             }
-        }      
+        }
 
         internal void ReplaceWith( KeyboardCollection c )
         {
             // First, adds the current one if it exists: it will be restored as the current one.
             // If no current keyboard exists, the first one added will become the current one.
-            if( c.Current != null ) 
+            if( c.Current != null )
             {
                 c.Current.Keyboards = this;
                 Add( c.Current );

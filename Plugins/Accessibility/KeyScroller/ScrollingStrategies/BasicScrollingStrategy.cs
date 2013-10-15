@@ -14,7 +14,7 @@ namespace KeyScroller
     /// <summary>
     /// Scrolling on each zone, then entinring the zone to scroll on each key
     /// </summary>
-    [Strategy( BasicScrollingStrategy.StrategyName )]
+    [StrategyAttribute( BasicScrollingStrategy.StrategyName )]
     internal class BasicScrollingStrategy : ScrollingStrategy
     {
         const string StrategyName = "BasicScrollingStrategy";

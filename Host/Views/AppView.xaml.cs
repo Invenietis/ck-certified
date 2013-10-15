@@ -51,12 +51,12 @@ namespace Host
 
         protected override void OnClosing( System.ComponentModel.CancelEventArgs e )
         {
-            if( taskbarIcon != null )
-            {
-                if(taskbarIcon.Visibility == System.Windows.Visibility.Visible)
-                    taskbarIcon.Visibility = System.Windows.Visibility.Collapsed;
-                taskbarIcon.Dispose();
-            }
+            //if( taskbarIcon != null )
+            //{
+            //    if(taskbarIcon.Visibility == System.Windows.Visibility.Visible)
+            //        taskbarIcon.Visibility = System.Windows.Visibility.Collapsed;
+            //    taskbarIcon.Dispose();
+            //}
             base.OnClosing( e );
         }
 

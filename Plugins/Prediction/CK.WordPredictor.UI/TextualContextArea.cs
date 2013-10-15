@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
+using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
 
@@ -19,6 +20,8 @@ namespace CK.WordPredictor.UI
     [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextArea : IPlugin
     {
+        internal const string WindowName = "TextualContextArea";
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
@@ -31,6 +34,12 @@ namespace CK.WordPredictor.UI
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ICommandTextualContextService CommandTextualContextService { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
+
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
 
@@ -41,6 +50,8 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
+            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+
             Feature.PropertyChanged += OnFeaturePropertyChanged;
             PredictionTextAreaService.PredictionAreaTextSent += OnPredictionAreaContentSent;
 
@@ -68,8 +79,11 @@ namespace CK.WordPredictor.UI
             }
         }
 
+        WindowManagerSubscriber _subscriber;
         TextualContextAreaViewModel _textArea;
         IDisposable _observersChain;
+        IWindowElement _skin;
+        IWindowElement _me;
 
         void EnableEditor()
         {
@@ -105,10 +119,60 @@ namespace CK.WordPredictor.UI
             _window.Show();
 
             Feature.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
-            Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            if( Context.CurrentKeyboard != null )
+            {
+                Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
 
-            var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-            CreateSendContextKeyInPredictionZone( zone );
+                var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
+                CreateSendContextKeyInPredictionZone( zone );
+            }
+            EnableWindowManagerSubscription();
+        }
+
+        void DisableEditor()
+        {
+            DestroySendContextKey();
+            Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
+            if( Context.CurrentKeyboard != null )
+                Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+
+            if( _window != null ) _window.Close();
+            if( _observersChain != null ) _observersChain.Dispose();
+            if( _subscriber != null ) _subscriber.Unsubscribe();
+        }
+
+        /// <summary>
+        /// If the skin is registered when we are launched before it, 
+        /// listen to to its registration and auto-attach
+        /// </summary>
+        void EnableWindowManagerSubscription()
+        {
+            _subscriber.OnBinderStarted = () =>
+            {
+                //if( _skin != null & _me != null )
+                //    WindowBinder.Service.Attach( _skin, _me, BindingPosition.Top );
+            };
+            _subscriber.OnBinderStopped = () =>
+            {
+                //if( _skin != null & _me != null )
+                //    WindowBinder.Service.Detach( _skin, _me );
+            };
+            _subscriber.WindowRegistered = ( e ) =>
+            {
+                //if( e.Window.Name == WindowName )
+                //{
+                //    _me = e.Window;
+                //    _skin = WindowManager.Service.GetByName( "Skin" );
+                //}
+                //if( e.Window.Name == "Skin" ) _skin = e.Window;
+                
+                //_subscriber.OnBinderStarted();
+            };
+            _subscriber.WindowUnregistered = ( e ) =>
+            {
+                //if( e.Window.Name == "Skin" ) _subscriber.OnBinderStopped();
+            };
+            _subscriber.Subscribe( WindowName, _window );
         }
 
         void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
@@ -130,16 +194,6 @@ namespace CK.WordPredictor.UI
             {
                 PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
             }
-        }
-
-        void DisableEditor()
-        {
-            DestroySendContextKey();
-            Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
-            Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
-
-            if( _window != null ) _window.Close();
-            if( _observersChain != null ) _observersChain.Dispose();
         }
 
         void CreateSendContextKeyInPredictionZone( IZone zone )
@@ -172,7 +226,7 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Starting )
             {
@@ -183,6 +237,5 @@ namespace CK.WordPredictor.UI
                 Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }
         }
-
     }
 }

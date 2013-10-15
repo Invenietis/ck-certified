@@ -22,7 +22,7 @@
         <Binding Path="IsVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibilityConverter}" ConverterParameter="Hidden"/>
     </Window.Visibility>
     <Grid Name="grid">
-        <tb:TaskbarIcon 
+        <!--<tb:TaskbarIcon 
                 x:Name="taskbarIcon"
                 IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico"
                 ToolTipText="CiviKey" 
@@ -30,12 +30,7 @@
                 DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}"
                 Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                 ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
-        <tb:TaskbarIcon.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Exit" Command="{Binding ExitHostCommand}" />
-            </ContextMenu>
-        </tb:TaskbarIcon.ContextMenu>
-        </tb:TaskbarIcon>
+        </tb:TaskbarIcon>-->
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>

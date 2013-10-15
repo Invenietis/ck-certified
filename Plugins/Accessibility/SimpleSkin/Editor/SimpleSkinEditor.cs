@@ -58,9 +58,6 @@ namespace SimpleSkinEditor
         [RequiredService]
         public IContext Context { get; set; }
 
-        [RequiredService]
-        public ISkinService Skin { get; set; }
-
         [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
         public IPluginConfigAccessor EditedPluginConfiguration { get; set; }
 

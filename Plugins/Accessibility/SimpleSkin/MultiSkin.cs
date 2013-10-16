@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Threading;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.WindowManager.Model;
 using SimpleSkin.ViewModels;
 
 namespace SimpleSkin
@@ -28,14 +30,33 @@ namespace SimpleSkin
 
         public IPluginConfigAccessor Config { get; set; }
 
+        struct SkinInfo
+        {
+            public SkinInfo( SkinWindow window, VMContextActiveKeyboard vm, Dispatcher d , WindowManagerSubscriber sub )
+            {
+                Skin = window;
+                ViewModel = vm;
+                Dispatcher = d;
+                Subscriber = sub;
+            }
+            
+            public readonly WindowManagerSubscriber Subscriber;
+
+            public readonly SkinWindow Skin;
+
+            public readonly VMContextActiveKeyboard ViewModel;
+
+            public readonly Dispatcher Dispatcher;
+        }
+
         #region IPlugin Members
 
         CKNoFocusWindowManager _noFocusWindowManager;
-        IDictionary<string,SkinWindow> _skins;
+        IDictionary<string,SkinInfo> _skins;
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _skins = new Dictionary<string, SkinWindow>();
+            _skins = new Dictionary<string, SkinInfo>();
             return true;
         }
 
@@ -46,14 +67,17 @@ namespace SimpleSkin
                 _noFocusWindowManager = new CKNoFocusWindowManager();
                 foreach( var activeKeyboard in KeyboardContext.Service.Keyboards.Actives )
                 {
+                    var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
                     var vm = new VMContextActiveKeyboard( activeKeyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, _noFocusWindowManager.NoFocusWindowThreadDispatcher );
                     var skin = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( () => new SkinWindow
                     {
                         DataContext = vm
                     } );
-                    _skins.Add( activeKeyboard.Name, skin );
-
-                    skin.Dispatcher.Invoke( new Action( () => skin.Show() ) );
+                    SkinInfo skinInfo = new SkinInfo( skin, vm, _noFocusWindowManager.NoFocusWindowThreadDispatcher, subscriber );
+                    _skins.Add( activeKeyboard.Name, skinInfo );
+                    
+                    SubscribeToWindowManager( skinInfo );
+                    skinInfo.Dispatcher.BeginInvoke( new Action( () => skinInfo.Skin.Show() ) );
                 }
             }
         }
@@ -62,14 +86,38 @@ namespace SimpleSkin
         {
             foreach( var skin in _skins.Values )
             {
-                skin.Close();
-                ((IDisposable)skin.DataContext).Dispose();
+                skin.Dispatcher.BeginInvoke( (Action)(() =>
+                {
+                    skin.Subscriber.Unsubscribe();
+                    skin.ViewModel.Dispose();
+                    skin.Skin.Close();
+                }) );
             }
             _skins.Clear();
         }
 
         public void Teardown()
         {
+            if( _noFocusWindowManager != null )
+            {
+                //TODO : remove when the NoFocusWindowManager is exported to a service.
+                //Then register the Shutdown call to the ApplicationExiting event.
+                _noFocusWindowManager.Shutdown();
+            }
+        }
+        
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
+
+        void SubscribeToWindowManager( SkinInfo skinInfo )
+        {
+            skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+            {
+                skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
+            } ) );
         }
 
         #endregion

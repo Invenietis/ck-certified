@@ -64,6 +64,12 @@ namespace CK.WordPredictor.UI
 
                 DestroyPredictionZones();
                 Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
+
+                // Also Create an new keyboard and makes it active
+                IKeyboard kb = Context.Keyboards.Create( "Prediction" );
+                Feature.PredictionContextFactory.CreatePredictionZone( kb, Feature.MaxSuggestedWords );
+                // Enables the keyboard
+                kb.IsActive = true;
             }
         }
 

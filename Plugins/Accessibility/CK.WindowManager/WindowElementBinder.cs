@@ -22,7 +22,7 @@ namespace CK.WindowManager
         {
             _bindings = new Dictionary<IWindowElement, List<IBinding>>();
             _logger = new DefaultActivityLogger();
-            _logger.Tap.Register( new ActivityLoggerConsoleSink() );
+            //_logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
 
         public event EventHandler<WindowBindedEventArgs> PreviewBinding;

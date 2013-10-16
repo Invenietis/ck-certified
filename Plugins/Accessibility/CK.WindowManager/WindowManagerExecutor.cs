@@ -25,7 +25,7 @@ namespace CK.WindowManager
         public WindowManagerExecutor()
         {
             _logger = new DefaultActivityLogger();
-            _logger.Tap.Register( new ActivityLoggerConsoleSink() );
+            //_logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
 
         void OnWindowManagerWindowMoved( object sender, WindowElementLocationEventArgs e )
@@ -65,7 +65,7 @@ namespace CK.WindowManager
                 if( e.DeltaWidth != 0 )
                 {
                     DoResizeHorizontaly( e, binding.Top, BindingPosition.Bottom );
-                    DoResizeHorizontaly( e, binding.Bottom , BindingPosition.Top);
+                    DoResizeHorizontaly( e, binding.Bottom, BindingPosition.Top );
                     // Special case for windows attached to the right during a resizing
 
                     if( binding.Right != null )
@@ -172,13 +172,17 @@ namespace CK.WindowManager
 
         //TODO : by windows
         CKWindow _previewingBinding = null;
+        BindingPosition _previewingBindingPosition = BindingPosition.None;
 
         void WindowBinder_PreviewBinding( object sender, WindowBindedEventArgs e )
         {
             if( e.BindingType == BindingEventType.Attach )
             {
-                if( _previewingBinding == null )
+                if( _previewingBindingPosition != e.Binding.Position )
+                {
+                    _previewingBindingPosition = e.Binding.Position;
                     ShowPlaceholder( e.Binding );
+                }
             }
             else
             {
@@ -187,21 +191,25 @@ namespace CK.WindowManager
                     {
                         _previewingBinding.Hide();
                         _previewingBinding = null;
+                        _previewingBindingPosition = BindingPosition.None;
                     } ) );
             }
         }
 
-        private void ShowPlaceholder( IBinding binding )
+        void ShowPlaceholder( IBinding binding )
         {
+            CKWindow w = _previewingBinding ?? (_previewingBinding = new CKWindow());
+
             Rect r = GetWindowPosition( binding );
-            if( _previewingBinding == null ) _previewingBinding = new CKWindow();
-            _previewingBinding.Left = r.Left;
-            _previewingBinding.Top = r.Top;
-            _previewingBinding.Width = r.Width;
-            _previewingBinding.Height = r.Height;
-            _previewingBinding.Opacity = .5;
-            _previewingBinding.Background = new System.Windows.Media.LinearGradientBrush( System.Windows.Media.Color.FromRgb( 0, 0, 255 ), System.Windows.Media.Color.FromArgb( 100, 0, 20, 215 ), 175 );
-            _previewingBinding.Show();
+            w.Show();
+            w.Left = r.Left;
+            w.Top = r.Top;
+            w.Width = r.Width;
+            w.Height = r.Height;
+            w.Opacity = .5;
+            w.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromRgb( 152, 120, 152 ) );
+            w.ResizeMode = ResizeMode.NoResize;
+            w.WindowStyle = WindowStyle.None;
         }
 
         void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )
@@ -218,13 +226,11 @@ namespace CK.WindowManager
         void WindowBinder_AfterBinding( object sender, WindowBindedEventArgs e )
         {
             if( _previewingBinding != null )
-            {
                 _previewingBinding.Dispatcher.BeginInvoke( new Action( () =>
                 {
                     _previewingBinding.Hide();
                     _previewingBinding = null;
                 } ) );
-            }
         }
 
         void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )

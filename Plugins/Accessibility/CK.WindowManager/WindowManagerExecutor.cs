@@ -11,144 +11,211 @@ using CK.Windows;
 
 namespace CK.WindowManager
 {
-    [Plugin("{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" }, Version = "1.0.0")]
+    [Plugin( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" }, Version = "1.0.0" )]
     public class WindowManagerExecutor : IPlugin
     {
         DefaultActivityLogger _logger;
 
-        [DynamicService(Requires = RunningRequirement.MustExistTryStart)]
+        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowManager WindowManager { get; set; }
 
-        [DynamicService(Requires = RunningRequirement.MustExistTryStart)]
+        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowBinder WindowBinder { get; set; }
 
         public WindowManagerExecutor()
         {
             _logger = new DefaultActivityLogger();
-            _logger.Tap.Register(new ActivityLoggerConsoleSink());
+            _logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
 
-        void OnWindowManagerWindowMoved(object sender, WindowElementLocationEventArgs e)
+        void OnWindowManagerWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attach to the given window
-            ISpatialBinding binding = WindowBinder.GetBinding(triggerHolder);
-            if (binding != null)
+            ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
+            if( binding != null )
             {
-                foreach (IWindowElement window in binding.AllDescendants())
+                foreach( IWindowElement window in binding.AllDescendants() )
                 {
-                    WindowManager.Move(window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft);
+                    WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
                 }
             }
         }
 
-        void OnWindowManagerWindowResized(object sender, WindowElementResizeEventArgs e)
+        void OnWindowManagerWindowResized( object sender, WindowElementResizeEventArgs e )
         {
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attach to the given window
-            ISpatialBinding binding = WindowBinder.GetBinding(triggerHolder);
-            if (binding != null)
+            ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
+            if( binding != null )
             {
-                if (e.DeltaHeight != 0)
+                if( e.DeltaHeight != 0 )
                 {
-                    DoResizeVerticaly(e, binding.Left);
-                    DoResizeVerticaly(e, binding.Right);
-                    if (binding.Bottom != null)
+                    DoResizeVerticaly( e, binding.Left );
+                    DoResizeVerticaly( e, binding.Right );
+                    // Special case for windows attached to the bottom during a resizing
+                    if( binding.Bottom != null )
                     {
-                        var windows = binding.Bottom.AllDescendants(excludes: BindingPosition.Top).Union(new[] { binding.Bottom.Window });
-                        foreach (var window in windows)
-                            WindowManager.Move(window, window.Top + e.DeltaHeight, window.Left);
+                        //var window = binding.Bottom.Window;
+                        var windows = binding.Bottom.AllDescendants( excludes: BindingPosition.Top ).Union( new[] { binding.Bottom.Window } );
+                        foreach( var window in windows )
+                            WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left ).Silent();
                     }
                 }
-                if (e.DeltaWidth != 0)
+                if( e.DeltaWidth != 0 )
                 {
-                    DoResizeHorizontaly(e, binding.Top);
-                    DoResizeHorizontaly(e, binding.Bottom);
+                    DoResizeHorizontaly( e, binding.Top, BindingPosition.Bottom );
+                    DoResizeHorizontaly( e, binding.Bottom , BindingPosition.Top);
+                    // Special case for windows attached to the right during a resizing
+
+                    if( binding.Right != null )
+                    {
+                        var windows = binding.Right.AllDescendants( excludes: BindingPosition.Left ).Union( new[] { binding.Right.Window } );
+                        foreach( var window in windows )
+                            WindowManager.Move( window, window.Top, window.Left + e.DeltaWidth ).Silent();
+                    }
                 }
             }
         }
 
-        private void DoResizeHorizontaly(WindowElementResizeEventArgs e, ISpatialBinding spatial)
+        void DoResizeHorizontaly( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
         {
-            if (spatial != null)
+            if( spatial != null )
             {
-                var window = spatial.Window;
-                double newWidth = window.Width + e.DeltaWidth;
-                WindowManager.Resize(window, newWidth, window.Height);
+                {
+                    // [Master]
+                    // [Spatial] 
+                    // [Spatial.Descendants]
+                    var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial.Window } );
+                    foreach( var window in windows )
+                    {
+                        double newWidth = window.Width + e.DeltaWidth;
+                        WindowManager.Resize( window, newWidth, window.Height );
+                    }
+                }
+                // Special case to propagate the movement to all attached windows at the right of the target
+                //  [Master]
+                //  [Spatial] [Spatial.Right]
+                //  
+                //  [Spatial] [Spatial.Right]
+                //  [Master]
+                if( spatial.Right != null )
+                {
+                    var windows = spatial.Right.AllDescendants( excludes: BindingPosition.Left ).Union( new[] { spatial.Right.Window } );
+                    foreach( var window in windows )
+                        WindowManager.Move( window, window.Top, window.Left + e.DeltaWidth ).Silent();
+                }
             }
         }
 
-        private void DoResizeVerticaly(WindowElementResizeEventArgs e, ISpatialBinding spatial)
+        void DoResizeVerticaly( WindowElementResizeEventArgs e, ISpatialBinding spatial )
         {
-            if (spatial != null)
+            if( spatial != null )
             {
-                var window = spatial.Window;
-                double newHeight = window.Height + e.DeltaHeight;
-                WindowManager.Resize(window, window.Width, newHeight);
+                {
+                    var window = spatial.Window;
+                    double newHeight = window.Height + e.DeltaHeight;
+                    WindowManager.Resize( window, window.Width, newHeight );
+                }
+                // Special case to propagate the movement to all attached windows at the bottom of the target
+                //  [Master] [Spatial]
+                //           [Spatial.Bottom]
+                //  
+                //         [Spatial] [Master]
+                //  [Spatial.Bottom]
+                if( spatial.Bottom != null )
+                {
+                    var windows = spatial.Bottom.AllDescendants( excludes: BindingPosition.Top ).Union( new[] { spatial.Bottom.Window } );
+                    foreach( var window in windows )
+                        WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left ).Silent();
+                }
             }
         }
 
+
+        Rect GetWindowPosition( IBinding binding )
+        {
+            if( binding.Position == BindingPosition.Top )
+            {
+                double top = binding.Master.Top - binding.Slave.Height;
+                double left = binding.Master.Left;
+                double width = binding.Master.Width;
+                double height = binding.Slave.Height;
+                return new Rect( left, top, width, height );
+            }
+            if( binding.Position == BindingPosition.Bottom )
+            {
+                double top = binding.Master.Top + binding.Master.Height;
+                double left = binding.Master.Left;
+                double width = binding.Master.Width;
+                double height = binding.Slave.Height;
+                return new Rect( left, top, width, height );
+            }
+            if( binding.Position == BindingPosition.Left )
+            {
+                double top = binding.Master.Top;
+                double left = binding.Master.Left - binding.Slave.Width;
+                double width = binding.Slave.Width;
+                double height = binding.Master.Height;
+                return new Rect( left, top, width, height );
+            }
+            if( binding.Position == BindingPosition.Right )
+            {
+                double top = binding.Master.Top;
+                double left = binding.Master.Left + binding.Master.Width;
+                double width = binding.Slave.Width;
+                double height = binding.Master.Height;
+                return new Rect( left, top, width, height );
+            }
+            return new Rect();
+        }
 
         //TODO : by windows
         CKWindow _previewingBinding = null;
 
-        void WindowBinder_PreviewBinding(object sender, WindowBindedEventArgs e)
+        void WindowBinder_PreviewBinding( object sender, WindowBindedEventArgs e )
         {
-            if (e.BindingType == BindingEventType.Attach)
+            if( e.BindingType == BindingEventType.Attach )
             {
-                if (_previewingBinding == null)
-                {
-                    double topSlave = e.Binding.Master.Top - e.Binding.Slave.Height;
-                    double leftSlave = e.Binding.Master.Left;
-                    _previewingBinding = new CKWindow();
-                    _previewingBinding.Left = leftSlave;
-                    _previewingBinding.Top = topSlave;
-                    _previewingBinding.Width = e.Binding.Master.Width;
-                    _previewingBinding.Height = e.Binding.Slave.Height;
-                    _previewingBinding.Opacity = .5;
-                    _previewingBinding.Background = new System.Windows.Media.LinearGradientBrush(System.Windows.Media.Color.FromRgb(0, 0, 255), System.Windows.Media.Color.FromArgb(100, 0, 20, 215), 175);
-                    _previewingBinding.Show();
-                }
+                if( _previewingBinding == null )
+                    ShowPlaceholder( e.Binding );
             }
             else
             {
-                if (_previewingBinding != null)
-                {
-                    _previewingBinding.Dispatcher.BeginInvoke(new Action(() =>
+                if( _previewingBinding != null )
+                    _previewingBinding.Dispatcher.BeginInvoke( new Action( () =>
                     {
                         _previewingBinding.Hide();
                         _previewingBinding = null;
-                    }));
-                }
+                    } ) );
             }
         }
 
-        void WindowBinder_BeforeBinding(object sender, WindowBindingEventArgs e)
+        private void ShowPlaceholder( IBinding binding )
         {
-            if (e.BindingType == BindingEventType.Attach)
-            {
-                MoveOnTop(e.Binding);
-            }
+            Rect r = GetWindowPosition( binding );
+            if( _previewingBinding == null ) _previewingBinding = new CKWindow();
+            _previewingBinding.Left = r.Left;
+            _previewingBinding.Top = r.Top;
+            _previewingBinding.Width = r.Width;
+            _previewingBinding.Height = r.Height;
+            _previewingBinding.Opacity = .5;
+            _previewingBinding.Background = new System.Windows.Media.LinearGradientBrush( System.Windows.Media.Color.FromRgb( 0, 0, 255 ), System.Windows.Media.Color.FromArgb( 100, 0, 20, 215 ), 175 );
+            _previewingBinding.Show();
         }
 
-        private void MoveOnTop(IBinding binding)
+        void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )
         {
-            // The slave is being attached to the master. 
-            // Moves the slave on top of the master. 
-            if (binding.Position == BindingPosition.Top)
+            if( e.BindingType == BindingEventType.Attach )
             {
-                // The master is the attached above
-                double topSlave = binding.Master.Top - binding.Slave.Height;
-                double leftSlave = binding.Master.Left;
-                double width = binding.Master.Width;
-                double height =  binding.Slave.Height;
+                Rect r = GetWindowPosition( e.Binding );
 
-                WindowManager.Move(binding.Slave, topSlave, leftSlave).Broadcast();
-                WindowManager.Resize( binding.Slave, width, height ).Broadcast();
+                WindowManager.Move( e.Binding.Slave, r.Top, r.Left ).Broadcast();
+                WindowManager.Resize( e.Binding.Slave, r.Width, r.Height ).Broadcast();
             }
         }
 
-        void WindowBinder_AfterBinding(object sender, WindowBindedEventArgs e)
+        void WindowBinder_AfterBinding( object sender, WindowBindedEventArgs e )
         {
             if( _previewingBinding != null )
             {
@@ -160,30 +227,30 @@ namespace CK.WindowManager
             }
         }
 
-        void WindowManager_WindowRestored(object sender, WindowElementEventArgs e)
+        void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )
         {
-            ISpatialBinding binding = WindowBinder.GetBinding(e.Window);
-            if (binding != null)
+            ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+            if( binding != null )
             {
                 // The Window that moves first
-                foreach (IWindowElement window in binding.AllDescendants())
+                foreach( IWindowElement window in binding.AllDescendants() )
                     window.Restore();
             }
         }
 
-        void WindowManager_WindowHidden(object sender, WindowElementEventArgs e)
+        void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
         {
-            ISpatialBinding binding = WindowBinder.GetBinding(e.Window);
-            if (binding != null)
+            ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+            if( binding != null )
             {
-                foreach (IWindowElement window in binding.AllDescendants())
+                foreach( IWindowElement window in binding.AllDescendants() )
                     window.Hide();
             }
         }
 
         #region IPlugin Members
 
-        public bool Setup(IPluginSetupInfo info)
+        public bool Setup( IPluginSetupInfo info )
         {
             return true;
         }

@@ -333,7 +333,6 @@ namespace CK.WindowManager
             }
         }
 
-
         class SimpleBinding : IBinding
         {
             public IWindowElement Master { get; set; }
@@ -380,7 +379,6 @@ namespace CK.WindowManager
                 get { return Left == null && Right == null && Top == null && Bottom == null; }
             }
         }
-
 
         #region IPlugin Members
 

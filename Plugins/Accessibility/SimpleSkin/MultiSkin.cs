@@ -46,12 +46,14 @@ namespace SimpleSkin
                 _noFocusWindowManager = new CKNoFocusWindowManager();
                 foreach( var activeKeyboard in KeyboardContext.Service.Keyboards.Actives )
                 {
-                    var vm = new VMContextActiveKeyboard( activeKeyboard.Name, Context, KeyboardContext.Service, Config, _noFocusWindowManager.NoFocusWindowThreadDispatcher );
+                    var vm = new VMContextActiveKeyboard( activeKeyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, _noFocusWindowManager.NoFocusWindowThreadDispatcher );
                     var skin = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( () => new SkinWindow
                     {
                         DataContext = vm
                     } );
                     _skins.Add( activeKeyboard.Name, skin );
+
+                    skin.Dispatcher.Invoke( new Action( () => skin.Show() ) );
                 }
             }
         }

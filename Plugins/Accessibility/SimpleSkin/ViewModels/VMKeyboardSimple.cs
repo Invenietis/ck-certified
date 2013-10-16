@@ -59,7 +59,7 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
-        internal VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
+        internal VMKeyboardSimple( VMContextSimpleBase ctx, IKeyboard kb )
             : base( ctx )
         {
             _zones = new ObservableCollection<VMZoneSimple>();

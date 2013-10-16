@@ -34,28 +34,99 @@ using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
-    public class VMContextSimple : VMBase
+    public class VMContextCurrentKeyboardSimple : VMContextSimpleBase
+    {
+        public VMContextCurrentKeyboardSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
+            : base( ctx, kbctx, config, skinDispatcher )
+        {
+        }
+
+        protected override Func<IKeyboard> KeyboardSelector
+        {
+            get { return () => KeyboardContext.Keyboards.Context.CurrentKeyboard; }
+        }
+
+    }
+
+    public class VMContextActiveKeyboard : VMContextSimpleBase
+    {
+        string _activeKeyboardName;
+        public VMContextActiveKeyboard( string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
+            : base( ctx, kbctx, config, skinDispatcher )
+        {
+            _activeKeyboardName = activeKeyboardName;
+            kbctx.Keyboards.KeyboardActivated += OnKeyboardActivated;
+            kbctx.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;
+
+        }
+
+        void OnKeyboardActivated( object sender, KeyboardEventArgs e )
+        {
+            if( _activeKeyboardName == e.Keyboard.Name )
+            {
+                OnPropertyChanged( "KeyboardVM" );
+            }
+        }
+
+        void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
+        {
+            if( _activeKeyboardName == e.Keyboard.Name )
+            {
+                OnPropertyChanged( "KeyboardVM" );
+            }
+        }
+
+        protected override Func<IKeyboard> KeyboardSelector
+        {
+            get
+            {
+                return () =>
+                {
+                    var kb = KeyboardContext.Keyboards[_activeKeyboardName];
+                    if( kb != null && kb.IsActive ) return kb;
+
+                    return null;
+                };
+            }
+        }
+
+        protected override void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        {
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            KeyboardContext.Keyboards.KeyboardActivated -= OnKeyboardActivated;
+            KeyboardContext.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
+        }
+    }
+
+    public abstract class VMContextSimpleBase : VMBase, IDisposable
     {
         Dictionary<object, VMContextElement> _dic;
-        EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
-        PropertyChangedEventHandler _evUserConfigurationChanged;
-        EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
-        EventHandler<KeyboardEventArgs> _evKeyboardCreated;
         ObservableCollection<VMKeyboardSimple> _keyboards;
-        VMKeyboardSimple _currentKeyboard;
+        VMKeyboardSimple _keyboard;
         IPluginConfigAccessor _config;
         IKeyboardContext _kbctx;
         IContext _ctx;
-        
+
         public ObservableCollection<VMKeyboardSimple> Keyboards { get { return _keyboards; } }
-        public VMKeyboardSimple KeyboardVM { get { return _currentKeyboard; } }
+
+        public VMKeyboardSimple KeyboardVM
+        {
+            get { return _keyboard ?? (_keyboard = Obtain( KeyboardSelector() )); }
+        }
+
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
 
         public Dispatcher SkinDispatcher { get; private set; }
 
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
+        protected abstract Func<IKeyboard> KeyboardSelector { get; }
+
+        public VMContextSimpleBase( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
         {
             SkinDispatcher = skinDispatcher;
 
@@ -73,7 +144,6 @@ namespace SimpleSkin.ViewModels
                     _dic.Add( keyboard, kb );
                     _keyboards.Add( kb );
                 }
-                _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
             }
             else
             {
@@ -85,6 +155,8 @@ namespace SimpleSkin.ViewModels
 
         public VMKeyboardSimple Obtain( IKeyboard keyboard )
         {
+            if( keyboard == null ) throw new ArgumentNullException( "keyboard" );
+
             VMKeyboardSimple k = FindViewModel<VMKeyboardSimple>( keyboard );
             if( k == null ) throw new Exception( "Context mismatch." );
             return k;
@@ -124,7 +196,7 @@ namespace SimpleSkin.ViewModels
             return (T)vm;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             UnregisterEvents();
             foreach( VMContextElement vm in _dic.Values ) vm.Dispose();
@@ -150,12 +222,12 @@ namespace SimpleSkin.ViewModels
             _keyboards.Add( k );
         }
 
-        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        protected virtual void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             if( e.Current != null )
             {
-                _currentKeyboard = Obtain( e.Current );
-                _currentKeyboard.TriggerPropertyChanged();
+                _keyboard = Obtain( e.Current );
+                _keyboard.TriggerPropertyChanged();
                 OnPropertyChanged( "KeyboardVM" );
             }
         }
@@ -177,23 +249,18 @@ namespace SimpleSkin.ViewModels
 
         private void RegisterEvents()
         {
-            _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
-            _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-            _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
-            _evUserConfigurationChanged = new PropertyChangedEventHandler( OnUserConfigurationChanged );
-
-            _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
-            _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
-            _ctx.ConfigManager.UserConfiguration.PropertyChanged += _evUserConfigurationChanged;
+            _kbctx.Keyboards.KeyboardCreated += OnKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed += OnKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationChanged;
         }
 
         private void UnregisterEvents()
         {
-            _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
-            _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
-            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
+            _kbctx.Keyboards.KeyboardCreated -= OnKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed -= OnKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= OnUserConfigurationChanged;
         }
 
         #endregion

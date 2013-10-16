@@ -137,6 +137,7 @@
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MiniViewVM.cs" />
+    <Compile Include="MultiSkin.cs" />
     <Compile Include="SimpleSkin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSkin.IWindowElement.cs" />

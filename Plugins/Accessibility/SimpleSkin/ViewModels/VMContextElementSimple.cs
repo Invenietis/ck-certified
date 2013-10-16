@@ -12,9 +12,9 @@ namespace SimpleSkin.ViewModels
 {
     public abstract class VMContextElement : VMBase
     {
-        VMContextSimple _context;
+        VMContextSimpleBase _context;
 
-        public VMContextElement( VMContextSimple context )
+        public VMContextElement( VMContextSimpleBase context )
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace SimpleSkin.ViewModels
         /// <summary>
         /// Gets the <see cref="VMContext"/> to which this element belongs.
         /// </summary>
-        public VMContextSimple Context { get { return _context; } }
+        public VMContextSimpleBase Context { get { return _context; } }
 
         internal abstract void Dispose();
 

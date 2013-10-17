@@ -25,6 +25,7 @@ namespace CK.WordPredictor.UI
 
         public IPluginConfigAccessor Config { get; set; }
 
+        public IKeyboard PredictionKeyboard { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -36,6 +37,8 @@ namespace CK.WordPredictor.UI
             if( Context != null )
             {
                 Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
+                EnsurePredictionKeyboard();
+
                 Context.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
             }
 
@@ -59,12 +62,28 @@ namespace CK.WordPredictor.UI
                 if( newValue != null )
                 {
                     int newIntValue = (int)newValue;
-                    if( newIntValue == Feature.MaxSuggestedWords ) return; //We don't remove and recreate the zone if the new value equals the previous one
+                    if( newIntValue == Feature.MaxSuggestedWords )
+                        return; //We don't remove and recreate the zone if the new value equals the previous one
                 }
 
-                DestroyPredictionZones();
+                Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
                 Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
+                EnsurePredictionKeyboard();
             }
+        }
+
+        private void EnsurePredictionKeyboard()
+        {
+            if( PredictionKeyboard == null )
+            {
+                // Also Create an new keyboard and makes it active
+                PredictionKeyboard = Context.Keyboards["Prediction"];
+                if( PredictionKeyboard == null ) PredictionKeyboard = Context.Keyboards.Create( "Prediction" );
+            }
+            PredictionKeyboard.IsActive = true;
+            PredictionKeyboard.CurrentLayout.H = 50;
+            Feature.AutonomousKeyboardPredictionFactory.RemovePredictionZone( PredictionKeyboard );
+            Feature.AutonomousKeyboardPredictionFactory.CreatePredictionZone( PredictionKeyboard, Feature.MaxSuggestedWords );
         }
 
         public void Stop()
@@ -76,30 +95,20 @@ namespace CK.WordPredictor.UI
             }
             if( Context != null )
             {
-                DestroyPredictionZones();
+                Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
                 Context.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
             }
-        }
-
-        private void DestroyPredictionZones()
-        {
-            foreach( IKeyboard k in Context.Keyboards )
+            if( PredictionKeyboard != null )
             {
-                IZone zone = k.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-                if( zone != null )
-                {
-                    for( int i = zone.Keys.Count - 1; i >= 0; i-- )
-                    {
-                        zone.Keys[i].Destroy();
-                    }
-
-                    zone.Destroy();
-                }
+                PredictionKeyboard.IsActive = false;
+                PredictionKeyboard.Destroy();
+                PredictionKeyboard = null;
             }
         }
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
+            Feature.PredictionContextFactory.RemovePredictionZone( e.Previous );
             Feature.PredictionContextFactory.CreatePredictionZone( e.Current, Feature.MaxSuggestedWords );
         }
 
@@ -118,28 +127,33 @@ namespace CK.WordPredictor.UI
         protected void OnWordPredictedCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
         {
             var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-            if( zone != null )
-            {
-                if( e.Action == NotifyCollectionChangedAction.Reset )
-                {
-                    for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
-                    {
-                        IKey key = zone.Keys[i];
-                        if( key != null )
-                        {
-                            key.CurrentLayout.Current.Visible = false;
+            SetupPredictionZone( e, zone );
+            if( PredictionKeyboard != null )
+                SetupPredictionZone( e, PredictionKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName] );
 
-                            if( i < Feature.MaxSuggestedWords && WordPredictorService.Service.Words.Count > i )
+        }
+
+        private void SetupPredictionZone( NotifyCollectionChangedEventArgs e, IZone zone )
+        {
+            if( zone != null && e.Action == NotifyCollectionChangedAction.Reset )
+            {
+                for( int i = 0; i < Feature.MaxSuggestedWords; ++i )
+                {
+                    IKey key = zone.Keys[i];
+                    if( key != null )
+                    {
+                        key.CurrentLayout.Current.Visible = false;
+
+                        if( i < Feature.MaxSuggestedWords && WordPredictorService.Service.Words.Count > i )
+                        {
+                            IWordPredicted wordPredicted = WordPredictorService.Service.Words[i];
+                            if( wordPredicted != null )
                             {
-                                IWordPredicted wordPredicted = WordPredictorService.Service.Words[i];
-                                if( wordPredicted != null )
-                                {
-                                    key.Current.DownLabel = wordPredicted.Word;
-                                    key.Current.UpLabel = wordPredicted.Word;
-                                    key.Current.OnKeyDownCommands.Commands.Clear();
-                                    key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
-                                    key.CurrentLayout.Current.Visible = true;
-                                }
+                                key.Current.DownLabel = wordPredicted.Word;
+                                key.Current.UpLabel = wordPredicted.Word;
+                                key.Current.OnKeyDownCommands.Commands.Clear();
+                                key.Current.OnKeyDownCommands.Commands.Add( CommandFromWord( wordPredicted ) );
+                                key.CurrentLayout.Current.Visible = true;
                             }
                         }
                     }

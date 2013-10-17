@@ -49,6 +49,11 @@ namespace SimpleSkin.ViewModels
         ObservableCollection<VMKeySimple> _keys;
         IKeyboard _keyboard;
 
+        public IKeyboard Keyboard
+        {
+            get { return _keyboard; }
+        }
+
         public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
         public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
 
@@ -59,7 +64,7 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
-        internal VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
+        internal VMKeyboardSimple( VMContextSimpleBase ctx, IKeyboard kb )
             : base( ctx )
         {
             _zones = new ObservableCollection<VMZoneSimple>();
@@ -324,6 +329,7 @@ namespace SimpleSkin.ViewModels
         }
 
         #endregion
+
 
     }
 }

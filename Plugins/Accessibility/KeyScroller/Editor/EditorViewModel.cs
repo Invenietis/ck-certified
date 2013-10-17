@@ -74,7 +74,7 @@ namespace KeyScroller.Editor
 
         public bool IsTurboStrategy
         {
-            get { return KeyScrollerPlugin.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
+            get { return _currentIndexStrategy == -1 ? false : KeyScrollerPlugin.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
         }
 
         public int CurrentIndexStrategy
@@ -118,7 +118,7 @@ namespace KeyScroller.Editor
                 var selectedKey = _keyboardTriggerConfig.User.GetOrSet( "TriggerCode", 122 );
                 var triggerDevice = _keyboardTriggerConfig.User.GetOrSet( "TriggerDevice", TriggerDevice.Keyboard );
 
-                if( selectedKey != null && triggerDevice != null )
+                if( selectedKey != null && triggerDevice != null ) //TODO
                 {
                     TriggerDevice device = TriggerDevice.None;
                     Enum.TryParse<TriggerDevice>( triggerDevice.ToString(), out device );

@@ -24,5 +24,8 @@ namespace CK.WordPredictor.Model
         bool DisplayContextEditor { get; }
 
         IKeyboardContextPredictionFactory PredictionContextFactory { get; set; }
+
+        IKeyboardContextPredictionFactory AutonomousKeyboardPredictionFactory { get; set; }
+
     }
 }

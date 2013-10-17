@@ -14,6 +14,7 @@ namespace CK.WindowManager
     [Plugin( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" }, Version = "1.0.0" )]
     public class WindowManagerExecutor : IPlugin
     {
+        PreviewBindingInfo _placeholder;
         DefaultActivityLogger _logger;
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
@@ -24,6 +25,7 @@ namespace CK.WindowManager
 
         public WindowManagerExecutor()
         {
+            _placeholder = new PreviewBindingInfo();
             _logger = new DefaultActivityLogger();
             //_logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
@@ -132,108 +134,32 @@ namespace CK.WindowManager
             }
         }
 
-
-        Rect GetWindowPosition( IBinding binding )
-        {
-            if( binding.Position == BindingPosition.Top )
-            {
-                double top = binding.Master.Top - binding.Slave.Height;
-                double left = binding.Master.Left;
-                double width = binding.Master.Width;
-                double height = binding.Slave.Height;
-                return new Rect( left, top, width, height );
-            }
-            if( binding.Position == BindingPosition.Bottom )
-            {
-                double top = binding.Master.Top + binding.Master.Height;
-                double left = binding.Master.Left;
-                double width = binding.Master.Width;
-                double height = binding.Slave.Height;
-                return new Rect( left, top, width, height );
-            }
-            if( binding.Position == BindingPosition.Left )
-            {
-                double top = binding.Master.Top;
-                double left = binding.Master.Left - binding.Slave.Width;
-                double width = binding.Slave.Width;
-                double height = binding.Master.Height;
-                return new Rect( left, top, width, height );
-            }
-            if( binding.Position == BindingPosition.Right )
-            {
-                double top = binding.Master.Top;
-                double left = binding.Master.Left + binding.Master.Width;
-                double width = binding.Slave.Width;
-                double height = binding.Master.Height;
-                return new Rect( left, top, width, height );
-            }
-            return new Rect();
-        }
-
-        //TODO : by windows
-        CKWindow _previewingBinding = null;
-        BindingPosition _previewingBindingPosition = BindingPosition.None;
-
-        void WindowBinder_PreviewBinding( object sender, WindowBindedEventArgs e )
+        void OnPreviewBinding( object sender, WindowBindedEventArgs e )
         {
             if( e.BindingType == BindingEventType.Attach )
             {
-                if( _previewingBindingPosition != e.Binding.Position )
-                {
-                    _previewingBindingPosition = e.Binding.Position;
-                    ShowPlaceholder( e.Binding );
-                }
+                if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding );
             }
-            else
-            {
-                if( _previewingBinding != null )
-                    _previewingBinding.Dispatcher.BeginInvoke( new Action( () =>
-                    {
-                        _previewingBinding.Hide();
-                        _previewingBinding = null;
-                        _previewingBindingPosition = BindingPosition.None;
-                    } ) );
-            }
+            else _placeholder.Shutdown();
         }
 
-        void ShowPlaceholder( IBinding binding )
-        {
-            CKWindow w = _previewingBinding ?? (_previewingBinding = new CKWindow());
-
-            Rect r = GetWindowPosition( binding );
-            w.Show();
-            w.Left = r.Left;
-            w.Top = r.Top;
-            w.Width = r.Width;
-            w.Height = r.Height;
-            w.Opacity = .5;
-            w.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromRgb( 152, 120, 152 ) );
-            w.ResizeMode = ResizeMode.NoResize;
-            w.WindowStyle = WindowStyle.None;
-        }
-
-        void WindowBinder_BeforeBinding( object sender, WindowBindingEventArgs e )
+        void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
             if( e.BindingType == BindingEventType.Attach )
             {
-                Rect r = GetWindowPosition( e.Binding );
+                Rect r = e.Binding.GetWindowArea();
 
                 WindowManager.Move( e.Binding.Slave, r.Top, r.Left ).Broadcast();
                 WindowManager.Resize( e.Binding.Slave, r.Width, r.Height ).Broadcast();
             }
         }
 
-        void WindowBinder_AfterBinding( object sender, WindowBindedEventArgs e )
+        void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
-            if( _previewingBinding != null )
-                _previewingBinding.Dispatcher.BeginInvoke( new Action( () =>
-                {
-                    _previewingBinding.Hide();
-                    _previewingBinding = null;
-                } ) );
+            _placeholder.Shutdown();
         }
 
-        void WindowManager_WindowRestored( object sender, WindowElementEventArgs e )
+        void OnWindowRestored( object sender, WindowElementEventArgs e )
         {
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
@@ -244,7 +170,7 @@ namespace CK.WindowManager
             }
         }
 
-        void WindowManager_WindowHidden( object sender, WindowElementEventArgs e )
+        void OnWindowHidden( object sender, WindowElementEventArgs e )
         {
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
@@ -265,24 +191,24 @@ namespace CK.WindowManager
         {
             WindowManager.WindowResized += OnWindowManagerWindowResized;
             WindowManager.WindowMoved += OnWindowManagerWindowMoved;
-            WindowManager.WindowHidden += WindowManager_WindowHidden;
-            WindowManager.WindowRestored += WindowManager_WindowRestored;
+            WindowManager.WindowHidden += OnWindowHidden;
+            WindowManager.WindowRestored += OnWindowRestored;
 
-            WindowBinder.PreviewBinding += WindowBinder_PreviewBinding;
-            WindowBinder.BeforeBinding += WindowBinder_BeforeBinding;
-            WindowBinder.AfterBinding += WindowBinder_AfterBinding;
+            WindowBinder.PreviewBinding += OnPreviewBinding;
+            WindowBinder.BeforeBinding += OnBeforeBinding;
+            WindowBinder.AfterBinding += OnAfterBinding;
         }
 
         public void Stop()
         {
             WindowManager.WindowResized -= OnWindowManagerWindowResized;
             WindowManager.WindowMoved -= OnWindowManagerWindowMoved;
-            WindowManager.WindowHidden -= WindowManager_WindowHidden;
-            WindowManager.WindowRestored -= WindowManager_WindowRestored;
+            WindowManager.WindowHidden -= OnWindowHidden;
+            WindowManager.WindowRestored -= OnWindowRestored;
 
-            WindowBinder.PreviewBinding -= WindowBinder_PreviewBinding;
-            WindowBinder.BeforeBinding -= WindowBinder_BeforeBinding;
-            WindowBinder.AfterBinding -= WindowBinder_AfterBinding;
+            WindowBinder.PreviewBinding -= OnPreviewBinding;
+            WindowBinder.BeforeBinding -= OnBeforeBinding;
+            WindowBinder.AfterBinding -= OnAfterBinding;
         }
 
         public void Teardown()

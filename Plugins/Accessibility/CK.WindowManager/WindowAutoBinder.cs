@@ -69,10 +69,10 @@ namespace CK.WindowManager
                 Rect overlapRectangle = Rect.Intersect( enlargedRectangle, rect );
                 BindingPosition pos = BindingPosition.None;
 
-                if( overlapRectangle.Bottom == enlargedRectangle.Bottom ) pos = BindingPosition.Top;
-                else if( overlapRectangle.Top == enlargedRectangle.Top ) pos = BindingPosition.Bottom;
-                else if( overlapRectangle.Right == enlargedRectangle.Right ) pos = BindingPosition.Left;
-                else if( overlapRectangle.Left == enlargedRectangle.Left ) pos = BindingPosition.Right;
+                if( overlapRectangle.Bottom == enlargedRectangle.Bottom && overlapRectangle.Height != enlargedRectangle.Height ) pos = BindingPosition.Top;
+                else if( overlapRectangle.Top == enlargedRectangle.Top && overlapRectangle.Height != enlargedRectangle.Height ) pos = BindingPosition.Bottom;
+                else if( overlapRectangle.Right == enlargedRectangle.Right && overlapRectangle.Width != enlargedRectangle.Width ) pos = BindingPosition.Left;
+                else if( overlapRectangle.Left == enlargedRectangle.Left && overlapRectangle.Width != enlargedRectangle.Width ) pos = BindingPosition.Right;
 
                 _bindResult = WindowBinder.Service.PreviewBind( otherWindow, e.Window, pos );
             }

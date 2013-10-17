@@ -5,13 +5,14 @@ using System.Text;
 
 namespace CK.WindowManager.Model
 {
+    [Flags]
     public enum BindingPosition
     {
-        None,
-        Top,
-        Right,
-        Bottom,
-        Left
+        None = 0,
+        Top = 1,
+        Right = 2,
+        Bottom = 4,
+        Left = 8
     }
     /// <summary>
     /// Represents a binding between two <see cref="IWindowElement"/>.

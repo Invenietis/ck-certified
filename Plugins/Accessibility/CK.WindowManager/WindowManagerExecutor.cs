@@ -37,7 +37,7 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
             if( binding != null )
             {
-                foreach( IWindowElement window in binding.AllDescendants() )
+                foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
                 {
                     WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
                 }
@@ -53,86 +53,77 @@ namespace CK.WindowManager
             {
                 if( e.DeltaHeight != 0 )
                 {
-                    DoResizeVerticaly( e, binding.Left );
-                    DoResizeVerticaly( e, binding.Right );
-                    // Special case for windows attached to the bottom during a resizing
-                    if( binding.Bottom != null )
-                    {
-                        //var window = binding.Bottom.Window;
-                        var windows = binding.Bottom.AllDescendants( excludes: BindingPosition.Top ).Union( new[] { binding.Bottom.Window } );
-                        foreach( var window in windows )
-                            WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left ).Silent();
-                    }
+                    ResizeVerticaly( e, binding.Left, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
+                    ResizeVerticaly( e, binding.Right, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
+                    SpecialMoveBottom( e, binding.Bottom );
                 }
                 if( e.DeltaWidth != 0 )
                 {
-                    DoResizeHorizontaly( e, binding.Top, BindingPosition.Bottom );
-                    DoResizeHorizontaly( e, binding.Bottom, BindingPosition.Top );
-                    // Special case for windows attached to the right during a resizing
+                    ResizeHorizontaly( e, binding.Top, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
+                    ResizeHorizontaly( e, binding.Bottom, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
+                    SpecialMoveRight( e, binding.Right );
+                }
+            }
+        }
 
-                    if( binding.Right != null )
+        void ResizeHorizontaly( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
+        {
+            if( spatial != null )
+            {
+                var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial } );
+                foreach( var window in windows )
+                {
+                    double newWidth = window.Window.Width + e.DeltaWidth;
+                    WindowManager.Resize( window.Window, newWidth, window.Window.Height );
+                    SpecialMoveRight( e, window );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Special case for windows attached to the right during a resizing
+        /// </summary>
+        private void SpecialMoveRight( WindowElementResizeEventArgs e, ISpatialBinding window )
+        {
+            if( window.Right != null )
+            {
+                foreach( var windowDesc in window.SubTree( BindingPosition.Right ) )
+                    WindowManager.Move( windowDesc, windowDesc.Top, windowDesc.Left + e.DeltaWidth ).Silent();
+            }
+        }
+
+        void ResizeVerticaly( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
+        {
+            if( spatial != null )
+            {
+                var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial } );
+                foreach( var window in windows )
+                {
+                    double newHeight = window.Window.Height + e.DeltaHeight;
+                    WindowManager.Resize( window.Window, window.Window.Width, newHeight );
+                    if( window.Bottom != null )
                     {
-                        var windows = binding.Right.AllDescendants( excludes: BindingPosition.Left ).Union( new[] { binding.Right.Window } );
-                        foreach( var window in windows )
-                            WindowManager.Move( window, window.Top, window.Left + e.DeltaWidth ).Silent();
+                        foreach( var windowDesc in window.SubTree( BindingPosition.Bottom ) )
+                            WindowManager.Move( windowDesc, windowDesc.Top + e.DeltaHeight, windowDesc.Left ).Silent();
                     }
                 }
             }
         }
 
-        void DoResizeHorizontaly( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
+        /// <summary>
+        /// Special case for windows attached to the bottom during a resizing
+        /// </summary>
+        private void SpecialMoveBottom( WindowElementResizeEventArgs e, ISpatialBinding spatial )
         {
             if( spatial != null )
             {
-                {
-                    // [Master]
-                    // [Spatial] 
-                    // [Spatial.Descendants]
-                    var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial.Window } );
-                    foreach( var window in windows )
-                    {
-                        double newWidth = window.Width + e.DeltaWidth;
-                        WindowManager.Resize( window, newWidth, window.Height );
-                    }
-                }
-                // Special case to propagate the movement to all attached windows at the right of the target
-                //  [Master]
-                //  [Spatial] [Spatial.Right]
-                //  
-                //  [Spatial] [Spatial.Right]
-                //  [Master]
-                if( spatial.Right != null )
-                {
-                    var windows = spatial.Right.AllDescendants( excludes: BindingPosition.Left ).Union( new[] { spatial.Right.Window } );
-                    foreach( var window in windows )
-                        WindowManager.Move( window, window.Top, window.Left + e.DeltaWidth ).Silent();
-                }
+                //var window = binding.Bottom.Window;
+                var windows = spatial.SubTree( BindingPosition.Bottom );
+                foreach( var window in windows )
+                    WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left ).Silent();
             }
         }
 
-        void DoResizeVerticaly( WindowElementResizeEventArgs e, ISpatialBinding spatial )
-        {
-            if( spatial != null )
-            {
-                {
-                    var window = spatial.Window;
-                    double newHeight = window.Height + e.DeltaHeight;
-                    WindowManager.Resize( window, window.Width, newHeight );
-                }
-                // Special case to propagate the movement to all attached windows at the bottom of the target
-                //  [Master] [Spatial]
-                //           [Spatial.Bottom]
-                //  
-                //         [Spatial] [Master]
-                //  [Spatial.Bottom]
-                if( spatial.Bottom != null )
-                {
-                    var windows = spatial.Bottom.AllDescendants( excludes: BindingPosition.Top ).Union( new[] { spatial.Bottom.Window } );
-                    foreach( var window in windows )
-                        WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left ).Silent();
-                }
-            }
-        }
 
         void OnPreviewBinding( object sender, WindowBindedEventArgs e )
         {
@@ -148,9 +139,12 @@ namespace CK.WindowManager
             if( e.BindingType == BindingEventType.Attach )
             {
                 Rect r = e.Binding.GetWindowArea();
-
-                WindowManager.Move( e.Binding.Slave, r.Top, r.Left ).Broadcast();
-                WindowManager.Resize( e.Binding.Slave, r.Width, r.Height ).Broadcast();
+                if( r != Rect.Empty )
+                {
+                    WindowManager.Move( e.Binding.Slave, r.Top, r.Left ).Broadcast();
+                    WindowManager.Resize( e.Binding.Slave, r.Width, r.Height ).Broadcast();
+                }
+                else e.Canceled = true;
             }
         }
 
@@ -165,7 +159,7 @@ namespace CK.WindowManager
             if( binding != null )
             {
                 // The Window that moves first
-                foreach( IWindowElement window in binding.AllDescendants() )
+                foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
                     window.Restore();
             }
         }
@@ -175,7 +169,7 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
-                foreach( IWindowElement window in binding.AllDescendants() )
+                foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
                     window.Hide();
             }
         }

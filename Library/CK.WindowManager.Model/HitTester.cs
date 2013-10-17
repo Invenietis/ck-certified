@@ -36,13 +36,11 @@ namespace CK.WindowManager.Model
         {
             if( _lock == true ) throw new ApplicationException( "You must check the state before perform a hit test" );
 
-            ICollection<IWindowElement> boundWindows = binding.AllDescendants().ToArray();
-
             Rect rect = setToChallenge[binding.Window];
             Rect enlargedArea = Rect.Inflate( rect, radius, radius );
 
             IWindowElement matchedWindow = null;
-            Rect intersectArea = GetIntersectionArea( binding, setToChallenge, boundWindows, rect, ref enlargedArea, out matchedWindow );
+            Rect intersectArea = GetIntersectionArea( binding, setToChallenge,  rect, ref enlargedArea, out matchedWindow );
             if( intersectArea != Rect.Empty )
             {
                 Debug.Assert( matchedWindow != null );
@@ -52,8 +50,9 @@ namespace CK.WindowManager.Model
             return null;
         }
 
-        static private Rect GetIntersectionArea( ISpatialBinding binding, IDictionary<IWindowElement, Rect> setToChallenge, ICollection<IWindowElement> boundWindows, Rect rect, ref Rect enlargedRectangle, out IWindowElement otherWindow )
+        static private Rect GetIntersectionArea( ISpatialBinding binding, IDictionary<IWindowElement, Rect> setToChallenge, Rect rect, ref Rect enlargedRectangle, out IWindowElement otherWindow )
         {
+            ICollection<IWindowElement> boundWindows = binding.AllDescendants().Select( x => x.Window ).ToArray();
             otherWindow = null;
             foreach( var item in setToChallenge )
             {

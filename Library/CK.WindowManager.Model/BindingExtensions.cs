@@ -11,48 +11,84 @@ namespace CK.WindowManager.Model
     {
 
         /// <summary>
-        /// Gets all descendants
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<IWindowElement> AllDescendants( this ISpatialBinding me )
-        {
-            if( me.Top != null ) foreach( var e in me.Top.Descendants( me.Window ) ) yield return e;
-            if( me.Left != null ) foreach( var e in me.Left.Descendants( me.Window ) ) yield return e;
-            if( me.Bottom != null ) foreach( var e in me.Bottom.Descendants( me.Window ) ) yield return e;
-            if( me.Right != null ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
-        }
-        
-        /// <summary>
         /// Enumerates through all descendant with the ability to filter them.
         /// </summary>
         /// <param name="me"><see cref="ISpatialBinding"/></param>
         /// <param name="filter">A filter function that take a descendant as a <see cref="IWindowElement"/>, and the <see cref="BindingPosition"/>.</param>
         /// <returns>An enumeration of all descendants</returns>
-        public static IEnumerable<IWindowElement> AllDescendants( this ISpatialBinding me, BindingPosition excludes )
+        public static IEnumerable<ISpatialBinding> AllDescendants( this ISpatialBinding me, BindingPosition excludes = BindingPosition.None )
         {
-            List<IWindowElement> toExclude = new List<IWindowElement>();
+            //List<IWindowElement> toExclude = new List<IWindowElement>();
 
-            if( excludes == BindingPosition.Top )
-                foreach( var e in me.Top.Descendants( me.Window ) ) toExclude.Add( e );
-            if( excludes == BindingPosition.Bottom )
-                foreach( var e in me.Bottom.Descendants( me.Window ) ) toExclude.Add( e );
-            if( excludes == BindingPosition.Left )
-                foreach( var e in me.Left.Descendants( me.Window ) ) toExclude.Add( e );
-            if( excludes == BindingPosition.Right )
-                foreach( var e in me.Right.Descendants( me.Window ) ) toExclude.Add( e );
+            //if( excludes.HasFlag( BindingPosition.Top ) )
+            //    foreach( var e in me.Top.Descendants( me.Window ) ) toExclude.Add( e );
+            //if( excludes.HasFlag( BindingPosition.Bottom ) )
+            //{
+            //    foreach( var e in me.Bottom.Descendants( me.Window ) ) toExclude.Add( e );
+            //}
+            //if( excludes.HasFlag( BindingPosition.Left ) )
+            //    foreach( var e in me.Left.Descendants( me.Window ) ) toExclude.Add( e );
+            //if( excludes.HasFlag( BindingPosition.Right ) )
+            //    foreach( var e in me.Right.Descendants( me.Window ) ) toExclude.Add( e );
 
-            return me.AllDescendants().Except( toExclude );
+            //return me.AllDescendants().Except( toExclude );
+
+            var v = new List<ISpatialBinding>();
+            BrowseExclude( me, v, excludes );
+            return v.Except( new[] { me } );
         }
 
-        private static IEnumerable<IWindowElement> Descendants( this ISpatialBinding me, IWindowElement reference )
+        private static void BrowseExclude( this ISpatialBinding me, IList<ISpatialBinding> visited, BindingPosition excludes )
         {
-            if( me.Top != null && me.Top.Window != reference ) foreach( var e in me.Top.Descendants( me.Window ) ) yield return e;
-            if( me.Left != null && me.Left.Window != reference ) foreach( var e in me.Left.Descendants( me.Window ) ) yield return e;
-            if( me.Bottom != null && me.Bottom.Window != reference ) foreach( var e in me.Bottom.Descendants( me.Window ) ) yield return e;
-            if( me.Right != null && me.Right.Window != reference ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
+            if( !visited.Contains( me ) )
+            {
+                visited.Add( me );
 
-            yield return me.Window;
+                if( me.Top != null && !excludes.HasFlag( BindingPosition.Top ) ) BrowseExclude( me.Top, visited, excludes );
+                if( me.Left != null && !excludes.HasFlag( BindingPosition.Left ) ) BrowseExclude( me.Left, visited, excludes );
+                if( me.Bottom != null && !excludes.HasFlag( BindingPosition.Bottom ) ) BrowseExclude( me.Bottom, visited, excludes );
+                if( me.Right != null && !excludes.HasFlag( BindingPosition.Right ) ) BrowseExclude( me.Right, visited, excludes );
+            }
         }
+
+        public static IEnumerable<IWindowElement> SubTree( this ISpatialBinding me, BindingPosition position )
+        {
+            var visited = new List<IWindowElement>();
+            visited.Add( me.Window );
+
+            if( me.Top != null && position.HasFlag( BindingPosition.Top ) ) Browse( me.Top, visited );
+            if( me.Left != null && position.HasFlag( BindingPosition.Left ) ) Browse( me.Left, visited );
+            if( me.Bottom != null && position.HasFlag( BindingPosition.Bottom ) ) Browse( me.Bottom, visited );
+            if( me.Right != null && position.HasFlag( BindingPosition.Right ) ) Browse( me.Right, visited );
+
+            return visited.Except( new[] { me.Window } );
+        }
+
+        private static void Browse( this ISpatialBinding me, IList<IWindowElement> visited )
+        {
+            if( !visited.Contains( me.Window ) )
+            {
+                visited.Add( me.Window );
+
+                if( me.Top != null ) Browse( me.Top, visited );
+                if( me.Left != null ) Browse( me.Left, visited );
+                if( me.Bottom != null ) Browse( me.Bottom, visited );
+                if( me.Right != null ) Browse( me.Right, visited );
+            }
+        }
+
+        //private static IEnumerable<IWindowElement> Descendants( this ISpatialBinding me, IWindowElement reference )
+        //{
+        //    if( me != null )
+        //    {
+        //        if( me.Top != null && me.Top.Window != reference ) foreach( var e in me.Top.Descendants( me.Window ) ) yield return e;
+        //        if( me.Left != null && me.Left.Window != reference ) foreach( var e in me.Left.Descendants( me.Window ) ) yield return e;
+        //        if( me.Bottom != null && me.Bottom.Window != reference ) foreach( var e in me.Bottom.Descendants( me.Window ) ) yield return e;
+        //        if( me.Right != null && me.Right.Window != reference ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
+
+        //        yield return me.Window;
+        //    }
+        //}
 
         /// <summary>
         /// Gets the window area of the <see cref="IBinding.Slave"/> window comparing to the <see cref="IBinding.Master"/> and <see cref="IBinding.BindingPosition"/>.

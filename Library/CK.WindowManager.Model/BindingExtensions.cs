@@ -21,7 +21,13 @@ namespace CK.WindowManager.Model
             if( me.Bottom != null ) foreach( var e in me.Bottom.Descendants( me.Window ) ) yield return e;
             if( me.Right != null ) foreach( var e in me.Right.Descendants( me.Window ) ) yield return e;
         }
-
+        
+        /// <summary>
+        /// Enumerates through all descendant with the ability to filter them.
+        /// </summary>
+        /// <param name="me"><see cref="ISpatialBinding"/></param>
+        /// <param name="filter">A filter function that take a descendant as a <see cref="IWindowElement"/>, and the <see cref="BindingPosition"/>.</param>
+        /// <returns>An enumeration of all descendants</returns>
         public static IEnumerable<IWindowElement> AllDescendants( this ISpatialBinding me, BindingPosition excludes )
         {
             List<IWindowElement> toExclude = new List<IWindowElement>();
@@ -48,7 +54,11 @@ namespace CK.WindowManager.Model
             yield return me.Window;
         }
 
-
+        /// <summary>
+        /// Gets the window area of the <see cref="IBinding.Slave"/> window comparing to the <see cref="IBinding.Master"/> and <see cref="IBinding.BindingPosition"/>.
+        /// </summary>
+        /// <param name="binding"><see cref="IBinding"/></param>
+        /// <returns>A <see cref="Rect"/> or <see cref="Rect.Empty"/> if the <see cref="BindingPosition"/> is <see cref="BindingPosition.None"/></returns>
         public static Rect GetWindowArea( this IBinding binding )
         {
             if( binding.Position == BindingPosition.Top )

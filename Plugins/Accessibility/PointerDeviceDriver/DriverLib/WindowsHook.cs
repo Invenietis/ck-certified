@@ -156,6 +156,5 @@ namespace PointerDeviceDriver
             get { return _cancel; }
             set { _cancel = value; }
         }
-
     }
 }

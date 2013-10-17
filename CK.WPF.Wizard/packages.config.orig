@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<packages>
+  <package id="Caliburn.Micro" version="1.3.1" targetFramework="net40" />
+  <package id="CK.Core" version="2.8.14" targetFramework="net40-Client" />
+  <package id="CK.Interop" version="2.8.14" targetFramework="net40-Client" />
+  <package id="CK.Reflection" version="2.8.14" targetFramework="net40-Client" />
+<<<<<<< origin/develop-2013
+  <package id="CK.Windows.Config" version="2.9.13" targetFramework="net40-Client" />
+  <package id="CK.Windows.Core" version="2.9.13" targetFramework="net40-Client" />
+  <package id="CK.Windows.Interop" version="2.9.13" targetFramework="net40-Client" />
+=======
+  <package id="CK.Windows.Config" version="2.9.6-develop" targetFramework="net40-Client" />
+  <package id="CK.Windows.Core" version="2.9.12-develop" targetFramework="net40-Client" />
+  <package id="CK.Windows.Interop" version="2.9.6-develop" targetFramework="net40-Client" />
+>>>>>>> local
+  <package id="Common.Logging" version="2.1.2" targetFramework="net40-Client" />
+</packages>

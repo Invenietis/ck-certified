@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingExtensions.cs" />
+    <Compile Include="HitTester.cs" />
     <Compile Include="PreviewBindingInfo.cs" />
     <Compile Include="IManualInteractionResult.cs" />
     <Compile Include="IBinding.cs" />

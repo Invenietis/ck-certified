@@ -27,7 +27,7 @@ namespace CK.WindowManager.Model
             if( HasPreview )
             {
                 Binding = null;
-                Window.Dispatcher.BeginInvoke( new Action( () => Window.Hide() ) );
+                if( Window != null ) Window.Dispatcher.BeginInvoke( new Action( () => Window.Hide() ) );
             }
         }
 

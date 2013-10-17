@@ -86,10 +86,10 @@ namespace SimpleSkin
         {
             foreach( var skin in _skins.Values )
             {
+                skin.Subscriber.Unsubscribe();
+                skin.ViewModel.Dispose();
                 skin.Dispatcher.BeginInvoke( (Action)(() =>
                 {
-                    skin.Subscriber.Unsubscribe();
-                    skin.ViewModel.Dispose();
                     skin.Skin.Close();
                 }) );
             }

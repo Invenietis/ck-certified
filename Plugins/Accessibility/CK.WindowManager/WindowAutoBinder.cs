@@ -76,6 +76,11 @@ namespace CK.WindowManager
             RegisterWindow( e.Window );
         }
 
+        void OnWindowuUregistered( object sender, WindowElementEventArgs e )
+        {
+            UnegisterWindow( e.Window );
+        }
+
         private void RegisterWindow( IWindowElement window )
         {
             if( !_rect.ContainsKey( window ) )
@@ -83,6 +88,11 @@ namespace CK.WindowManager
                 var rect = new Rect( window.Left, window.Top, window.Width, window.Height );
                 _rect.Add( window, rect );
             }
+        }
+
+        private void UnegisterWindow( IWindowElement windowElement )
+        {
+            _rect.Remove( windowElement );
         }
 
         #region IPlugin Members
@@ -99,6 +109,8 @@ namespace CK.WindowManager
             WindowBinder.Service.AfterBinding += OnAfterBinding;
 
             WindowManager.Service.Registered += OnWindowRegistered;
+            WindowManager.Service.Unregistered += OnWindowuUregistered;
+
             WindowManager.Service.WindowMoved += OnWindowMoved;
 
             PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
@@ -116,6 +128,8 @@ namespace CK.WindowManager
             WindowBinder.Service.BeforeBinding -= OnBeforeBinding;
 
             WindowManager.Service.Registered -= OnWindowRegistered;
+            WindowManager.Service.Unregistered -= OnWindowuUregistered;
+
             WindowManager.Service.WindowMoved -= OnWindowMoved;
         }
 

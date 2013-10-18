@@ -56,6 +56,14 @@ namespace CK.WindowManager
             }
         }
 
+        void PointerDeviceDriver_PointerMove( object sender, PointerDeviceEventArgs e )
+        {
+        }
+
+        void PointerDeviceDriver_PointerButtonDown( object sender, PointerDeviceEventArgs e )
+        {
+        }
+
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
             if( _bindResult != null ) _bindResult.Seal();
@@ -113,6 +121,8 @@ namespace CK.WindowManager
 
             WindowManager.Service.WindowMoved += OnWindowMoved;
 
+            PointerDeviceDriver.PointerButtonDown += PointerDeviceDriver_PointerButtonDown;
+            PointerDeviceDriver.PointerMove += PointerDeviceDriver_PointerMove;
             PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
 
             foreach( IWindowElement e in WindowManager.Service.WindowElements ) RegisterWindow( e );
@@ -122,6 +132,8 @@ namespace CK.WindowManager
         {
             _rect.Clear();
 
+            PointerDeviceDriver.PointerButtonDown -= PointerDeviceDriver_PointerButtonDown;
+            PointerDeviceDriver.PointerMove -= PointerDeviceDriver_PointerMove;
             PointerDeviceDriver.PointerButtonUp -= OnPointerButtonUp;
 
             WindowBinder.Service.AfterBinding -= OnAfterBinding;

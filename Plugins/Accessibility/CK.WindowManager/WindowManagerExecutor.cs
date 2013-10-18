@@ -55,13 +55,13 @@ namespace CK.WindowManager
                 {
                     ResizeVerticaly( e, binding.Left, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
                     ResizeVerticaly( e, binding.Right, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
-                    SpecialMoveBottom( e, binding.Bottom );
+                    SpecialMoveBottom( e, binding );
                 }
                 if( e.DeltaWidth != 0 )
                 {
                     ResizeHorizontaly( e, binding.Top, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
                     ResizeHorizontaly( e, binding.Bottom, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
-                    SpecialMoveRight( e, binding.Right );
+                    SpecialMoveRight( e, binding );
                 }
             }
         }
@@ -83,11 +83,11 @@ namespace CK.WindowManager
         /// <summary>
         /// Special case for windows attached to the right during a resizing
         /// </summary>
-        private void SpecialMoveRight( WindowElementResizeEventArgs e, ISpatialBinding window )
+        private void SpecialMoveRight( WindowElementResizeEventArgs e, ISpatialBinding spatial )
         {
-            if( window.Right != null )
+            if( spatial != null )
             {
-                foreach( var windowDesc in window.SubTree( BindingPosition.Right ) )
+                foreach( var windowDesc in spatial.SubTree( BindingPosition.Right ) )
                     WindowManager.Move( windowDesc, windowDesc.Top, windowDesc.Left + e.DeltaWidth ).Silent();
             }
         }
@@ -101,11 +101,7 @@ namespace CK.WindowManager
                 {
                     double newHeight = window.Window.Height + e.DeltaHeight;
                     WindowManager.Resize( window.Window, window.Window.Width, newHeight );
-                    if( window.Bottom != null )
-                    {
-                        foreach( var windowDesc in window.SubTree( BindingPosition.Bottom ) )
-                            WindowManager.Move( windowDesc, windowDesc.Top + e.DeltaHeight, windowDesc.Left ).Silent();
-                    }
+                    SpecialMoveBottom( e, spatial );
                 }
             }
         }

@@ -69,7 +69,9 @@ namespace CK.Keyboard
         {
             if( index < 0 ) index = 0;
             else if( index > _keys.Count ) index = _keys.Count;
-            Key k = new Key( this, index );
+            
+            var k =  new Key( this, index );
+
             _keys.Insert( index, k );
             while( ++index < _keys.Count ) _keys[index].SetIndex( this, index );
             KeyEventArgs e = new KeyEventArgs( k );
@@ -95,7 +97,7 @@ namespace CK.Keyboard
             get { return _keys[i]; }
         }
 
-        bool IReadOnlyCollection<IKey>.Contains( object item )
+        bool ICKReadOnlyCollection<IKey>.Contains( object item )
         {
             IKey k = item as IKey;
             return k != null ? k.Zone == this : false;
@@ -108,7 +110,7 @@ namespace CK.Keyboard
 
         IEnumerator<IKey> IEnumerable<IKey>.GetEnumerator()
         {
-            Converter<Key,IKey> conv = delegate(Key key) { return (IKey)key; };            
+            Converter<Key, IKey> conv = delegate( Key key ) { return (IKey)key; };
             return Wrapper<IKey>.CreateEnumerator( _keys, conv );
         }
 

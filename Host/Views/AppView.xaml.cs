@@ -35,6 +35,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace Host
 {
@@ -48,8 +49,19 @@ namespace Host
             InitializeComponent();
         }
 
+        protected override void OnClosing( System.ComponentModel.CancelEventArgs e )
+        {
+            if( taskbarIcon != null )
+            {
+                if(taskbarIcon.Visibility == System.Windows.Visibility.Visible)
+                    taskbarIcon.Visibility = System.Windows.Visibility.Collapsed;
+                taskbarIcon.Dispose();
+            }
+            base.OnClosing( e );
+        }
+
         /// <summary>
-        /// Used to launch WPF UI Thread when the window goes from the minimized state to the normal state, in XP.
+        /// Used to launch WPF UI Thread when the window goes from the minimized state to the normal state, on XP.
         /// Without that, half the window remains black until it is resized.
         /// </summary>
         /// <param name="e"></param>

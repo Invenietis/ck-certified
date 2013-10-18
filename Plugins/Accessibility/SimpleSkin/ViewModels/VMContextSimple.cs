@@ -26,39 +26,192 @@ using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using CK.Core;
 using CK.Context;
+using System;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMContextSimple : VMContext<VMContextSimple,VMKeyboardSimple,VMZoneSimple,VMKeySimple>
+    public class VMContextSimple : VMBase
     {
+        Dictionary<object, VMContextElement> _dic;
+        EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
+        PropertyChangedEventHandler _evUserConfigurationChanged;
+        EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
+        EventHandler<KeyboardEventArgs> _evKeyboardCreated;
+        ObservableCollection<VMKeyboardSimple> _keyboards;
+        VMKeyboardSimple _currentKeyboard;
         IPluginConfigAccessor _config;
-        public IPluginConfigAccessor Config
+        IKeyboardContext _kbctx;
+        IContext _ctx;
+        
+        public ObservableCollection<VMKeyboardSimple> Keyboards { get { return _keyboards; } }
+        public VMKeyboardSimple KeyboardVM { get { return _currentKeyboard; } }
+        public IKeyboardContext KeyboardContext { get { return _kbctx; } }
+        public IPluginConfigAccessor Config { get { return _config; } }
+        public IContext Context { get { return _ctx; } }
+
+        public Dispatcher SkinDispatcher { get; private set; }
+
+        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
         {
-            get
+            SkinDispatcher = skinDispatcher;
+
+            _dic = new Dictionary<object, VMContextElement>();
+            _keyboards = new ObservableCollection<VMKeyboardSimple>();
+            _config = config;
+            _kbctx = kbctx;
+            _ctx = ctx;
+
+            if( _kbctx.Keyboards.Count > 0 )
             {
-                if( _config == null ) _config = Context.GetService<IPluginConfigAccessor>( true );
-                return _config;
+                foreach( IKeyboard keyboard in _kbctx.Keyboards )
+                {
+                    VMKeyboardSimple kb = CreateKeyboard( keyboard );
+                    _dic.Add( keyboard, kb );
+                    _keyboards.Add( kb );
+                }
+                _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
+            }
+            else
+            {
+                //TODO : send a notification telling the user that there are no keyboards in the current context.
+            }
+
+            RegisterEvents();
+        }
+
+        public VMKeyboardSimple Obtain( IKeyboard keyboard )
+        {
+            VMKeyboardSimple k = FindViewModel<VMKeyboardSimple>( keyboard );
+            if( k == null ) throw new Exception( "Context mismatch." );
+            return k;
+        }
+
+        public VMZoneSimple Obtain( IZone zone )
+        {
+            VMZoneSimple z = FindViewModel<VMZoneSimple>( zone );
+            if( z == null )
+            {
+                if( zone.Context != _kbctx )
+                    throw new Exception( "Context mismatch." );
+                z = CreateZone( zone );
+                _dic.Add( zone, z );
+            }
+            return z;
+        }
+
+        public VMKeySimple Obtain( IKey key )
+        {
+            VMKeySimple k = FindViewModel<VMKeySimple>( key );
+            if( k == null )
+            {
+                if( key.Context != _kbctx )
+                    throw new Exception( "Context mismatch." );
+                k = CreateKey( key );
+                _dic.Add( key, k );
+            }
+            return k;
+        }
+
+        T FindViewModel<T>( object m )
+            where T : VMContextElement
+        {
+            VMContextElement vm;
+            _dic.TryGetValue( m, out vm );
+            return (T)vm;
+        }
+
+        public void Dispose()
+        {
+            UnregisterEvents();
+            foreach( VMContextElement vm in _dic.Values ) vm.Dispose();
+            _dic.Clear();
+        }
+
+        #region OnXXXXXXXXX
+
+        internal void OnModelDestroy( object m )
+        {
+            VMContextElement vm;
+            if( _dic.TryGetValue( m, out vm ) )
+            {
+                vm.Dispose();
+                _dic.Remove( m );
             }
         }
 
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx )
-            : base( ctx, kbctx.Keyboards.Context )
+        void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
+            VMKeyboardSimple k = CreateKeyboard( e.Keyboard );
+            _dic.Add( e.Keyboard, k );
+            _keyboards.Add( k );
         }
 
-        protected override VMKeySimple CreateKey( IKey k )
+        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            return new VMKeySimple( this, k );
+            if( e.Current != null )
+            {
+                _currentKeyboard = Obtain( e.Current );
+                _currentKeyboard.TriggerPropertyChanged();
+                OnPropertyChanged( "KeyboardVM" );
+            }
         }
 
-        protected override VMZoneSimple CreateZone( IZone z )
+        void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
+        {
+            //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
+            if( e.PropertyName == "CurrentContextProfile" )
+            {
+                OnPropertyChanged( "KeyboardVM" );
+            }
+        }
+
+        void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
+        {
+            _keyboards.Remove( Obtain( e.Keyboard ) );
+            OnModelDestroy( e.Keyboard );
+        }
+
+        private void RegisterEvents()
+        {
+            _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
+            _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
+            _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
+            _evUserConfigurationChanged = new PropertyChangedEventHandler( OnUserConfigurationChanged );
+
+            _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged += _evUserConfigurationChanged;
+        }
+
+        private void UnregisterEvents()
+        {
+            _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
+        }
+
+        #endregion
+
+        private VMKeyboardSimple CreateKeyboard( IKeyboard kb )
+        {
+            return new VMKeyboardSimple( this, kb );
+        }
+
+        private VMZoneSimple CreateZone( IZone z )
         {
             return new VMZoneSimple( this, z );
         }
 
-        protected override VMKeyboardSimple CreateKeyboard( IKeyboard kb )
+        private VMKeySimple CreateKey( IKey k )
         {
-            return new VMKeyboardSimple( this, kb );
+            return new VMKeySimple( this, k );
         }
+
     }
 }

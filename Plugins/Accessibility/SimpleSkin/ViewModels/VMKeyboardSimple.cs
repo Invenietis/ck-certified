@@ -30,21 +30,137 @@ using CK.Plugin.Config;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using CK.Windows.Helpers;
+using HighlightModel;
+using CK.Core;
+using System.Linq;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
-    internal class VMKeyboardSimple : VMKeyboard<VMContextSimple, VMKeyboardSimple, VMZoneSimple, VMKeySimple>
+    public class VMKeyboardSimple : VMContextElement, IHighlightableElement
     {
-        public VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
-            : base( ctx, kb )
+        #region Properties & variables
+
+        ObservableCollection<VMZoneSimple> _zones;
+        ObservableCollection<VMKeySimple> _keys;
+        IKeyboard _keyboard;
+
+        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
+        public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
+
+        /// <summary>
+        /// Gets the current layout used by the current keyboard.
+        /// </summary>
+        public ILayout Layout { get { return _keyboard.CurrentLayout; } }
+
+        #endregion
+
+        internal VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
+            : base( ctx )
         {
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _zones = new ObservableCollection<VMZoneSimple>();
+            _keys = new ObservableCollection<VMKeySimple>();
+
+            _keyboard = kb;
+
+            RegisterEvents();
+
+            foreach( IZone zone in _keyboard.Zones )
+            {
+                Zones.Add( Context.Obtain( zone ) );
+                foreach( IKey key in zone.Keys )
+                {
+                    _keys.Add( Context.Obtain( key ) );
+                }
+            }
+
+            SafeUpdateW();
+            SafeUpdateH();
+            SafeUpdateInsideBorderColor();
+            UpdateBackgroundPath();
         }
 
-        protected override void OnDispose()
+        internal override void Dispose()
         {
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
-            base.OnDispose();
+            Context.SkinDispatcher.Invoke( (Action)( () =>
+            {
+                _zones.Clear();
+                _keys.Clear();
+            } ), null );
+            UnregisterEvents();
+        }
+
+        public void TriggerPropertyChanged()
+        {
+            OnPropertyChanged( "Keys" );
+            OnPropertyChanged( "BackgroundImagePath" );
+        }
+
+        #region OnXXXXX
+
+        void OnKeyCreated( object sender, KeyEventArgs e )
+        {
+            VMKeySimple kvm = Context.Obtain( e.Key );
+
+            Context.SkinDispatcher.Invoke( (Action)( () =>
+            {
+                Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
+                _keys.Add( kvm );
+            } ) );
+        }
+
+        void OnKeyDestroyed( object sender, KeyEventArgs e )
+        {
+            Context.SkinDispatcher.Invoke( (Action)( () =>
+            {
+                Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
+                _keys.Remove( Context.Obtain( e.Key ) );
+            } ) );
+            Context.OnModelDestroy( e.Key );
+        }
+
+        void OnZoneCreated( object sender, ZoneEventArgs e )
+        {
+            Context.SkinDispatcher.Invoke( (Action)( () =>
+           {
+               Zones.Add( Context.Obtain( e.Zone ) );
+           } ) );
+        }
+
+        void OnZoneDestroyed( object sender, ZoneEventArgs e )
+        {
+
+            foreach( var k in e.Zone.Keys )
+            {
+                var mk = Context.Obtain( k );
+                Context.SkinDispatcher.Invoke( (Action)( () =>
+                {
+                    Keys.Remove( mk );
+                } ) );
+                Context.OnModelDestroy( k );
+            }
+            Context.SkinDispatcher.Invoke( (Action)( () =>
+            {
+                Zones.Remove( Context.Obtain( e.Zone ) );
+            } ) );
+            Context.OnModelDestroy( e.Zone );
+
+        }
+
+        void OnLayoutSizeChanged( object sender, LayoutEventArgs e )
+        {
+            if( e.Layout == _keyboard.CurrentLayout )
+            {
+                SafeUpdateH();
+                OnPropertyChanged( "H" );
+
+                SafeUpdateW();
+                OnPropertyChanged( "W" );
+            }
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -54,33 +170,160 @@ namespace SimpleSkin.ViewModels
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
-                        OnPropertyChanged( "Background" );
+                        UpdateBackgroundPath();
+                        OnPropertyChanged( "BackgroundImagePath" );
                         break;
                     case "InsideBorderColor":
+                        SafeUpdateInsideBorderColor();
                         OnPropertyChanged( "InsideBorderColor" );
                         break;
                 }
             }
         }
 
-        public Brush InsideBorderColor
+        private void RegisterEvents()
+        {
+            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
+            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
+            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
+            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        }
+
+        private void UnregisterEvents()
+        {
+            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
+            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
+            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
+            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
+            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+        }
+
+        #endregion
+
+        #region "Design" properties
+
+
+        private int _w;
+        /// <summary>
+        /// Gets the width of the current layout.
+        /// </summary>
+        public int W { get { return _w; } }
+
+
+        private int _h;
+        /// <summary>
+        /// Gets the height of the current layout.
+        /// </summary>
+        public int H { get { return _h; } }
+
+        private Brush _insideBorderColor;
+        public Brush InsideBorderColor { get { return _insideBorderColor; } }
+
+        ImageSourceConverter _imsc;
+        ImageSourceConverter Imsc
         {
             get
             {
-                if( Context.Config[Layout]["InsideBorderColor"] != null )
-                    return new SolidColorBrush( (Color)Context.Config[Layout]["InsideBorderColor"] );
-                return null;
+                if( _imsc == null ) _imsc = new ImageSourceConverter();
+                return _imsc;
             }
         }
 
-        ImageSourceConverter imsc;
-        public object BackgroundImagePath
+        object _backgroundImagePath;
+        public object BackgroundImagePath { get { return _backgroundImagePath; } }
+
+        #endregion
+
+        #region IHighlightableElement Members
+
+        public ICKReadOnlyList<IHighlightableElement> Children
         {
             get
             {
-                if( imsc == null ) imsc = new ImageSourceConverter();
-                return imsc.ConvertFromString( Context.Config[Layout].GetOrSet( "KeyboardBackground", "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png" ) );
+                if( Zones.Count > 0 )
+                {
+                    return new CKReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
+                }
+                return new CKReadOnlyListOnIList<IHighlightableElement>( new List<IHighlightableElement>() );
             }
         }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return W; }
+        }
+
+        public int Height
+        {
+            get { return H; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get
+            {
+                if( Zones.Count > 0 && Zones.Any( z => z.Skip != SkippingBehavior.Skip ) )
+                    return SkippingBehavior.EnterChildren; //We enter only if there are zones that need to be scrolled through.
+                return SkippingBehavior.None;
+            }
+        }
+
+        #endregion
+
+        #region Threadsafe updates
+
+        private void UpdateBackgroundPath()
+        {
+            object keyboardBackgroundObject = Context.Config[Layout]["KeyboardBackground"];
+
+            //Some contexts have a color in the KeyboardBackground.
+            if( keyboardBackgroundObject == null || keyboardBackgroundObject is Color )
+            {
+                keyboardBackgroundObject = "pack://application:,,,/SimpleSkin;component/Images/skinBackground.png";
+                Context.Config[Layout].Set( "KeyboardBackground", keyboardBackgroundObject );
+            }
+
+            ThreadSafeSet<string>( keyboardBackgroundObject.ToString(), ( v ) =>
+            {
+                if( String.IsNullOrWhiteSpace( v ) ) _backgroundImagePath = null;
+                else _backgroundImagePath = Imsc.ConvertFromString( v );
+            } );
+        }
+
+        private void SafeUpdateInsideBorderColor()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "InsideBorderColor", null );
+            ThreadSafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _insideBorderColor = null;
+                else _insideBorderColor = new SolidColorBrush( v );
+            } );
+        }
+
+        private void SafeUpdateH()
+        {
+            ThreadSafeSet<int>( _keyboard.CurrentLayout.H, ( v ) => _h = v );
+        }
+
+        private void SafeUpdateW()
+        {
+            ThreadSafeSet<int>( _keyboard.CurrentLayout.W, ( v ) => _w = v );
+        }
+
+        #endregion
+
     }
 }

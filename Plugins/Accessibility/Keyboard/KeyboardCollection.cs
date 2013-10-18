@@ -182,7 +182,7 @@ namespace CK.Keyboard
             get { return _current; }
             set
             {
-                if( value != _current )
+                if( value != _current ) 
                 {
                     if( CurrentChanging != null )
                     {

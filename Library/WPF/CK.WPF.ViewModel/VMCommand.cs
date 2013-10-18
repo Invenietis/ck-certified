@@ -27,6 +27,7 @@ using System.Diagnostics;
 
 namespace CK.WPF.ViewModel
 {
+
     /// <summary>
     /// A command whose sole purpose is to 
     /// relay its functionality to other

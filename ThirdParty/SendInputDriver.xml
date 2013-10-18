@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SendInputDriver</name>
+    </assembly>
+    <members>
+        <member name="M:CK.Plugins.SendInputDriver.ISendStringService.SendString(System.String)">
+            <summary>
+            Send a String
+            </summary>
+            <param name="key">A classic string</param>
+        </member>
+        <member name="M:CK.Plugins.SendInputDriver.ISendStringService.SendString(System.Object,System.String)">
+            <summary>
+            Send a String
+            </summary>
+            <param name="key">A classic string</param>
+        </member>
+        <member name="E:CK.Plugins.SendInputDriver.ISendStringService.StringSent">
+            <summary>
+            Raised when a String is sent.
+            </summary>
+        </member>
+        <member name="E:CK.Plugins.SendInputDriver.ISendStringService.StringSending">
+            <summary>
+            Raised when a String is sending.
+            </summary>
+        </member>
+        <member name="F:CK.Plugins.SendInputDriver.StringSentEventArgs.StringVal">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:CK.Plugins.SendInputDriver.StringSendingEventArgs">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:CK.Plugins.SendInputDriver.NativeMethods.WM_KEYDOWN">
+            <summary>
+            Value : 0x100
+            </summary>
+        </member>
+        <member name="F:CK.Plugins.SendInputDriver.NativeMethods.WM_KEYUP">
+            <summary>
+            Value : 0x101
+            </summary>
+        </member>
+        <member name="F:CK.Plugins.SendInputDriver.NativeMethods.WM_SYSKEYDOWN">
+            <summary>
+            Value : 260
+            </summary>
+        </member>
+        <member name="F:CK.Plugins.SendInputDriver.NativeMethods.WM_SYSKEYUP">
+            <summary>
+            Value : 0x105
+            </summary>
+        </member>
+        <member name="M:CK.Plugins.SendInputDriver.SendInputKeybd.GetScanCodeFromVK(CK.Plugins.SendInputDriver.NativeMethods.VirtualKeys,System.IntPtr)">
+            <summary>
+            Get scan code from a virtual key. Ask for the local thread mapping or the forground window mapping
+            </summary>
+            <param name="vk">The Virtual Key to map</param>
+            <param name="window">The window application to use for the transformation</param>
+            <returns>The scan code of the virtual key</returns>
+        </member>
+        <member name="M:CK.Plugins.SendInputDriver.SendInputKeybd.GetVirtualKeyCodeCustom(System.Char,System.IntPtr)">
+            <summary>
+            Get KeyCode from a char. Ask for the local thread mapping or the forground window mapping
+            </summary>
+            <param name="c">The char to transform</param>
+            <param name="window">The window application to use for the transformation</param>
+            <returns>The char KeyCode for the window</returns>
+        </member>
+        <member name="M:CK.Plugins.SendInputDriver.SendInputKeybd.Process(System.String)">
+            <summary>
+            Process a string
+            </summary>
+            <param name="s">The string to send</param>
+        </member>
+        <member name="M:CK.Plugins.SendInputDriver.SendInputKeybd.ProcessString(System.String)">
+            <summary>
+            Process a string
+            </summary>
+            <param name="s">The string to send</param>
+        </member>
+    </members>
+</doc>

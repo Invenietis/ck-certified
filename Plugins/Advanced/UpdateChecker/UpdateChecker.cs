@@ -39,6 +39,8 @@ using System.Text;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using CK.Windows.App;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace UpdateChecker
 {
@@ -153,7 +155,11 @@ namespace UpdateChecker
             UpdateVersionState savedState = _versionState;
             VersionState = UpdateVersionState.CheckingForNewVersion;
             string httpRequest = GetServerUrl() + "version/updated/currentversion/" + HostInformation.AppName + @"-" + _distributionName + "/" + HostInformation.AppVersion.ToString();
-            _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );//gets the new version from its package repository
+            Task.Factory.StartNew( () =>
+            {
+                // This task exist to bypass the long proxy lookup (10s on my Comp) that freez the OS during bootstrap of the update checker
+                _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );//gets the new version from its package repository
+            } );
         }
 
         void _webClient_DownloadDataCompleted( object sender, DownloadDataCompletedEventArgs e )
@@ -205,7 +211,8 @@ namespace UpdateChecker
             DownloadState = UpdateDownloadState.Downloading;
             string httpRequest = GetServerUrl() + "version/updated/download/" + Path.Combine( HostInformation.AppName + @"-" + _distributionName, HostInformation.AppVersion.ToString() );
             _webClient.DownloadFileAsync( new Uri( httpRequest ), _downloading.Path, savedState );
-            _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
+            if( Notifications != null )
+                _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
         }
 
         void _webClient_DownloadFileCompleted( object sender, AsyncCompletedEventArgs e )

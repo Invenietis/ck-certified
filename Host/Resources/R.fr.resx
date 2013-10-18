@@ -133,7 +133,7 @@
     <value>Durée du décompte</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
-    <value>clic automatique</value>
+    <value>le clic automatique</value>
   </data>
   <data name="AutoClickShowMousePanelOption" xml:space="preserve">
     <value>Afficher l'indicateur de progression au dessus du pointeur</value>
@@ -235,7 +235,7 @@
     <value>Configuration du clavier visuel</value>
   </data>
   <data name="SkinSectionName" xml:space="preserve">
-    <value>clavier visuel</value>
+    <value>le clavier visuel</value>
   </data>
   <data name="SkinViewConfig" xml:space="preserve">
     <value>Editer l'aspect du clavier</value>
@@ -290,5 +290,38 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="SkinEditorSectionName" xml:space="preserve">
+    <value>Modification du clavier</value>
+  </data>
+  <data name="ScrollConfig" xml:space="preserve">
+    <value>Configuration du défilement</value>
+  </data>
+  <data name="WordPredictionConfig" xml:space="preserve">
+    <value>Configuration de la Prédiction de mots</value>
+  </data>
+  <data name="AdvancedAppConfig" xml:space="preserve">
+    <value>Configuration avancée</value>
+  </data>
+  <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
+    <value>Nombre de mots prédits (maximum)</value>
+  </data>
+  <data name="SkinBasicConfig" xml:space="preserve">
+    <value>Configuration basique</value>
+  </data>
+  <data name="WordPredictionInsertSpace" xml:space="preserve">
+    <value>Insérer un espace après les mots prédits</value>
+  </data>
+  <data name="WordPredictionSectionName" xml:space="preserve">
+    <value>Prédiction de mots</value>
+  </data>
+  <data name="WordPredictionDisplayPredictionEditorWindow" xml:space="preserve">
+    <value>Afficher la fenêtre de l'éditeur de prédiction</value>
+  </data>
+  <data name="WordPredictionFilterAlreadySuggestedWord" xml:space="preserve">
+    <value>Masquer les mots déja présentés</value>
+  </data>
+  <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
+    <value>Activer la prédiction sémantique (analyse de la structure de la phrase)</value>
   </data>
 </root>

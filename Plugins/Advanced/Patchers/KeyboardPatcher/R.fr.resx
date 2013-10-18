@@ -157,6 +157,9 @@ Voulez-vous l'installer ?</value>
   <data name="RememberMyDecision" xml:space="preserve">
     <value>Enregistrer mon choix</value>
   </data>
+  <data name="SkinConfigurationNull" xml:space="preserve">
+    <value>L'objet de configuration de la "Skin" du clavier est nul</value>
+  </data>
   <data name="TryAgain" xml:space="preserve">
     <value>Oui, réessayer</value>
   </data>

@@ -225,7 +225,7 @@ namespace CK.Plugins.ObjectExplorer
             get { return _pluginRunner.ConfigManager.UserConfiguration.LiveUserConfiguration.GetAction( _pluginInfo.PluginId ); }
         }
 
-        public IReadOnlyList<string> Categories { get { return _pluginInfo.Categories; } }
+        public ICKReadOnlyList<string> Categories { get { return _pluginInfo.Categories; } }
 
 
         #endregion
@@ -291,8 +291,8 @@ namespace CK.Plugins.ObjectExplorer
             }
 
             ServiceRefs = new VMCollection<VMAlias<VMIService>, IServiceReferenceInfo>( plugin.ServiceReferences, ( info ) => { return new VMAlias<VMIService>( VMIContext.FindOrCreate( info ), this ); } );
-            CanEdit = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( new ReadOnlyListOnIList<IPluginInfo>( _canEdit ), ( info ) => { return new VMAlias<VMIPlugin>( VMIContext.FindOrCreate( info ), this ); } );
-            EditableBy = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( new ReadOnlyListOnIList<IPluginInfo>( editableBy ), ( info ) => { return new VMAlias<VMIPlugin>( VMIContext.FindOrCreate( info ), this ); } );
+            CanEdit = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( new CKReadOnlyListOnIList<IPluginInfo>( _canEdit ), ( info ) => { return new VMAlias<VMIPlugin>( VMIContext.FindOrCreate( info ), this ); } );
+            EditableBy = new VMCollection<VMAlias<VMIPlugin>, IPluginInfo>( new CKReadOnlyListOnIList<IPluginInfo>( editableBy ), ( info ) => { return new VMAlias<VMIPlugin>( VMIContext.FindOrCreate( info ), this ); } );
         }
 
         void Start()

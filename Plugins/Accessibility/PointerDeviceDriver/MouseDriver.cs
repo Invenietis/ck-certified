@@ -86,13 +86,13 @@ namespace PointerDeviceDriver
             }
         }
 
-        public int CurrentPointerYLocation 
-        { 
-            get 
+        public int CurrentPointerYLocation
+        {
+            get
             {
                 EnsurePositionRetrieval();
-                return _lastPointerPosition.Y; 
-            } 
+                return _lastPointerPosition.Y;
+            }
         }
 
         // Definition of the ExtraInfo used by this implementation
@@ -124,11 +124,11 @@ namespace PointerDeviceDriver
 
             //Versions above Vista unhook the mousehook as soon as there is a CPU overload. So we must use a simple timer to get the cursor position
             //We still use the mousehook to process the mouse clicks, which are less heavy to process
-            if( CK.Core.OSVersionInfo.IsWindowsVistaOrGreater )
-            {
-                _pointerPositionViaTimer = true;
-                _pointerPosGetter = new SimpleDispatchTimerWrapper( new TimeSpan( 150000 ), GetCurrentPointerPos );
-            }
+            //if( CK.Core.OSVersionInfo.OSLevel >= CK.Core.OSVersionInfo.SimpleOSLevel.WindowsVista )
+            //{
+            //    _pointerPositionViaTimer = true;
+            //    _pointerPosGetter = new SimpleDispatchTimerWrapper( new TimeSpan( 150000 ), GetCurrentPointerPos );
+            //}
 
             // We look if we can set the Low Level Mouse Hook 
             string message;
@@ -156,7 +156,7 @@ namespace PointerDeviceDriver
                 if( ( _lastPointerPosition.X != p.X || _lastPointerPosition.Y != p.Y ) && InternalPointerMove != null )
                 {
                     _lastPointerPosition = p;
-                    InternalPointerMove( this, new PointerDeviceEventArgs( (int)_lastPointerPosition.X, (int)_lastPointerPosition.Y, new ButtonInfo(), "" ) );
+                    InternalPointerMove( this, new PointerDeviceEventArgs( (int)_lastPointerPosition.X, (int)_lastPointerPosition.Y, new ButtonInfo(), "", InputSource.Unknown ) );
                 }
             }
         }
@@ -197,33 +197,33 @@ namespace PointerDeviceDriver
         /// Simulate a ButtonDown Event
         /// </summary>
         /// <param name="buttonInfo">Default button is Left, look at ButtonInfo to see available buttons</param>
-        public void SimulateButtonDown( ButtonInfo buttonInfo, string extraInfo )
-        {
-            if( buttonInfo == ButtonInfo.DefaultButton )
-                Win32Wrapper.mouse_event( MouseEventFlags.LEFTDOWN, 0, 0, 0, 0 );
+        //public void SimulateButtonDown( ButtonInfo buttonInfo, string extraInfo )
+        //{
+        //    if( buttonInfo == ButtonInfo.DefaultButton )
+        //        Win32Wrapper.mouse_event( MouseEventFlags.LEFTDOWN, 0, 0, 0, 0 );
 
-            if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Right )
-                Win32Wrapper.mouse_event( MouseEventFlags.RIGHTDOWN, 0, 0, 0, 0 );
+        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Right )
+        //        Win32Wrapper.mouse_event( MouseEventFlags.RIGHTDOWN, 0, 0, 0, 0 );
 
-            if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
-                Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEDOWN, 0, 0, 0, 0 );
-        }
+        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
+        //        Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEDOWN, 0, 0, 0, 0 );
+        //}
 
         /// <summary>
         /// Simulate a ButtonUp Event
         /// </summary>
         /// <param name="buttonInfo">Default button is Left, look at ButtonInfo to see available buttons</param>
-        public void SimulateButtonUp( ButtonInfo buttonInfo, string extraInfo )
-        {
-            if( buttonInfo == ButtonInfo.DefaultButton )
-                Win32Wrapper.mouse_event( MouseEventFlags.LEFTUP, 0, 0, 0, 0 );
+        //public void SimulateButtonUp( ButtonInfo buttonInfo, string extraInfo )
+        //{
+        //    if( buttonInfo == ButtonInfo.DefaultButton )
+        //        Win32Wrapper.mouse_event( MouseEventFlags.LEFTUP, 0, 0, 0, 0 );
 
-            if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Right )
-                Win32Wrapper.mouse_event( MouseEventFlags.RIGHTUP, 0, 0, 0, 0 );
+        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Right )
+        //        Win32Wrapper.mouse_event( MouseEventFlags.RIGHTUP, 0, 0, 0, 0 );
 
-            if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
-                Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEUP, 0, 0, 0, 0 );
-        }
+        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
+        //        Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEUP, 0, 0, 0, 0 );
+        //}
 
         /// <summary>
         /// Method which provides an interpretation for all hook events.
@@ -238,6 +238,12 @@ namespace PointerDeviceDriver
             LLMouseHookStruct mouseInfo = (LLMouseHookStruct)Marshal.PtrToStructure( e.lParam, typeof( LLMouseHookStruct ) );
             MouseHookAction action = (MouseHookAction)e.Code;
 
+            InputSource source = InputSource.Other;
+            if( (int)mouseInfo.dwExtraInfo == 39229115 ) //CiviKey's footprint
+            {
+                source = InputSource.CiviKey;
+            }
+
             // We only handle the hook if the hook proc contain informations
             if( action == MouseHookAction.HC_ACTION )
             {
@@ -246,7 +252,7 @@ namespace PointerDeviceDriver
                 string buttonExtraInfo = String.Empty;
                 ButtonInfo buttonInfo = GetButtonInfo( mouseMessage, out buttonExtraInfo );
 
-                PointerDeviceEventArgs pointerEventArgs = new PointerDeviceEventArgs( _lastPointerPosition.X, _lastPointerPosition.Y, buttonInfo, buttonExtraInfo );
+                PointerDeviceEventArgs pointerEventArgs = new PointerDeviceEventArgs( _lastPointerPosition.X, _lastPointerPosition.Y, buttonInfo, buttonExtraInfo, source );
 
                 // We look at the MouseMessage (wParam of the HookProc delegate) to know which event to fire.
                 if( mouseMessage == MouseMessage.WM_MOUSEMOVE && InternalPointerMove != null )

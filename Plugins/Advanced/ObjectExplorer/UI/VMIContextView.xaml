@@ -40,7 +40,8 @@
                         <RowDefinition Height="32"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBox x:Uid="Search-treenode" Grid.Row="0" oe:TypeAheadBehaviour.IsEnabled="True" IsReadOnly="False" Text="Search" MaxLength="10" Margin="0,0,0,10" />
+                    <!--<TextBox x:Uid="Search-treenode" Grid.Row="0" oe:TypeAheadBehaviour.IsEnabled="True" IsReadOnly="False" Text="Search" MaxLength="10" Margin="0,0,0,10" />-->
+                    <Button x:Uid="Search-treenode" Grid.Row="0" Command="{Binding ShowHelp}" Content="Help" Margin="0,0,0,10" />
                     <TreeView Name="Tree" Grid.Row="1">
                         <TreeViewItem x:Uid="General-treenode" Header="General" oe:TreeViewItemImage.Image="Resources/TreeImages/general.png" Style="{StaticResource ResourceKey=HeaderedTVI}">
                             <TreeViewItem x:Uid="Logs-treenode" DataContext="{Binding VMLogConfig}" oe:TreeViewItemImage.Image="Resources/LogImages/LogIcon.png" Header="Logs" Style="{StaticResource HeaderedSelectableTVI}"/>

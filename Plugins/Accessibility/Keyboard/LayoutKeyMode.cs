@@ -253,7 +253,7 @@ namespace CK.Keyboard
             Height = int.Parse( r.GetAttribute( "H" ) );
 
             string visible = r.GetAttribute( "Visible" );
-            if( visible != null ) _visible = XmlConvert.ToBoolean( visible );
+            if( visible != null ) Visible = XmlConvert.ToBoolean( visible );
             r.Read();
         }
 

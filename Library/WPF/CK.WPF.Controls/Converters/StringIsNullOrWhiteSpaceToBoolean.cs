@@ -1,6 +1,6 @@
-#region LGPL License
+﻿        #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.Controls\Converters\StringIsNullOrWhiteSpaceToBoolean.cs) is part of CiviKey. 
+* This file (CK.Windows.Core\Converter\StringIsNullOrWhiteSpaceToBoolean.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -19,28 +19,46 @@
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
-#endregion
+        #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Data;
 
 namespace CK.WPF.Controls
 {
-    [ValueConversion( typeof( string ), typeof( bool ) )]
+    [ValueConversion( typeof( bool ), typeof( Visibility ) )]
     public class StringIsNullOrWhiteSpaceToBoolean : IValueConverter
     {
+        /// <summary>
+        /// Returns true if the string is null or white space
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
-            if(value.GetType() != typeof(string)) return false;
-            return String.IsNullOrWhiteSpace( value.ToString() );
+            string stringValue = value.ToString();
+            return String.IsNullOrWhiteSpace(stringValue);
         }
 
+
+        /// <summary>
+        /// Does not support two-way binding 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
-        {            
-            return null;
+        {
+            return Binding.DoNothing;
         }
     }
 }

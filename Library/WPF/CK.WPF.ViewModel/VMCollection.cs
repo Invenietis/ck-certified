@@ -34,7 +34,7 @@ namespace CK.WPF.ViewModel
     {
         IEnumerable<M> _model;
         Converter<M,VM> _converter;
-        EnumerableConverter<VM,M> _enumAdapter;
+        CKEnumerableConverter<VM, M> _enumAdapter;
 
         public event PropertyChangedEventHandler  PropertyChanged;
         public event NotifyCollectionChangedEventHandler  CollectionChanged;
@@ -43,7 +43,7 @@ namespace CK.WPF.ViewModel
         {
             _model = model;
             _converter = converter;
-            _enumAdapter = new EnumerableConverter<VM, M>( _model, _converter );
+            _enumAdapter = new CKEnumerableConverter<VM, M>( _model, _converter );
         }
 
         public IEnumerator<VM> GetEnumerator()

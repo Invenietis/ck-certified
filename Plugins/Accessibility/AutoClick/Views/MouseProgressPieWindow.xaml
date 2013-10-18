@@ -22,9 +22,9 @@
     </Window.Resources>
     <StackPanel>
         <Viewbox>
-            <views:WPFClickTypeWatch IsEnabled="False" Visibility="{Binding ShowMousePanel, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" 
+            <views:WPFClickTypeWatch IsEnabled="False" 
                                      Template="{StaticResource PieProgressBarTemplate}" Width="20" Height="20"
-                                     BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}" />
+                                     BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}" Visibility="{Binding ShowMouseIndicator, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/> 
         </Viewbox>
     </StackPanel>
 </Window>

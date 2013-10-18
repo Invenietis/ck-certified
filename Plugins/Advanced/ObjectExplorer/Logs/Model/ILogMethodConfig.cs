@@ -36,7 +36,7 @@ namespace CK.Plugins.ObjectExplorer
         // Necessary info to identify the method
         string ReturnType { get; }
         string Name { get; }
-        IReadOnlyList<ILogParameterInfo> Parameters { get; }
+        ICKReadOnlyList<ILogParameterInfo> Parameters { get; }
 
         //Log configuration
         //bool DoLogErrors { get; }

@@ -28,7 +28,7 @@ using CK.Core;
 
 namespace CK.Keyboard.Model
 {
-    public interface ILayoutKeyCollection : IReadOnlyList<ILayoutKey>
+    public interface ILayoutKeyCollection : ICKReadOnlyList<ILayoutKey>
     {
         /// <summary>
         /// Gets the <see cref="ILayoutZone"/> to which this collection belongs.

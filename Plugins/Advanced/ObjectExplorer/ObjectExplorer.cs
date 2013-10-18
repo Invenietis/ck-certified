@@ -30,27 +30,32 @@ using System.Windows;
 using CommonServices;
 using Host.Services;
 using System;
+using CommonServices.Accessibility;
+using CK.Core;
 
 namespace CK.Plugins.ObjectExplorer
 {
-    [Plugin( StrPluginID, PublicName = "Object Explorer", Version = "1.0.0", Categories = new string[] { "Advanced" },
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion, Categories = new string[] { "Advanced" },
      IconUri = "Plugins/ObjectExplorer/UI/Resources/objectExplorerIcon.ico" )]
     public class ObjectExplorer : IPlugin
     {
-        public const string StrPluginID = "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}";
-        //WindowManager _wnd;
-        //Window _mainWindow;
+        const string PluginGuidString = "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}";
+        Guid PluginGuid = new Guid( PluginGuidString );
+        const string PluginIdVersion = "1.0.0";
+        const string PluginPublicName = "Object Explorer";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        
         VMIContextView _view;
 
         public VMIContextViewModel VMIContext { get; private set; }
 
-        [RequiredService( Required = true )]
-        public INotificationService Notification { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IHelpService HelpService { get; set; }
 
         [RequiredService( Required = true )]
         public IContext Context { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ILogService LogService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
@@ -64,7 +69,7 @@ namespace CK.Plugins.ObjectExplorer
 
         public void Start()
         {
-            VMIContext = new VMIContextViewModel( Context, Config, LogService );
+            VMIContext = new VMIContextViewModel( Context, Config, LogService, HelpService );
 
             _view = new VMIContextView();
             _view.DataContext = VMIContext;
@@ -77,7 +82,7 @@ namespace CK.Plugins.ObjectExplorer
             if( !_isClosing )
             {
                 _isClosing = true;
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( StrPluginID ), ConfigUserAction.Stopped );
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginGuidString ), ConfigUserAction.Stopped );
                 Context.PluginRunner.Apply();
                 return;
             }

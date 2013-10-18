@@ -41,7 +41,7 @@ namespace CK.Keyboard.Model
         /// <summary>
         /// Gets the atomic modes that this mode contains.
         /// </summary>
-        IReadOnlyList<IKeyboardMode> AtomicModes { get; }
+        ICKReadOnlyList<IKeyboardMode> AtomicModes { get; }
 
         /// <summary>
         /// Gets a boolean indicating whether this mode is the empty mode (<see cref="AtomicModes"/> is empty
@@ -117,7 +117,7 @@ namespace CK.Keyboard.Model
         /// <remarks>
         /// For atomic modes (an the empty mode itself), <see cref="Fallbacks"/> contains only the <see cref="IKeyboardContextMode.EmptyMode"/>.
         /// </remarks>
-        IReadOnlyList<IKeyboardMode> Fallbacks { get; }
+        ICKReadOnlyList<IKeyboardMode> Fallbacks { get; }
 
     }
 }

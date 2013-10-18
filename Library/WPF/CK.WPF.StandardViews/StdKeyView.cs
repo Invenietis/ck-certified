@@ -36,16 +36,56 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Markup;
+using System.Windows.Controls.Primitives;
+using System.ComponentModel;
+using System.Windows.Interop;
 
 namespace CK.WPF.StandardViews
 {
-    [ContentProperty("UpLabel")]
-    public class StdKeyView : Button
+    [ContentProperty( "UpLabel" )]
+    public class StdKeyView : ButtonBase
     {
         static StdKeyView()
         {
             DefaultStyleKeyProperty.OverrideMetadata( typeof( StdKeyView ), new FrameworkPropertyMetadata( typeof( StdKeyView ) ) );
         }
+
+        public StdKeyView()
+        {
+            Focusable = false;
+        }
+
+        public int X
+        {
+            get { return (int)GetValue( XProperty ); }
+            set { SetValue( XProperty, value ); }
+        }
+        public static readonly DependencyProperty XProperty =
+        DependencyProperty.Register( "X", typeof( int ), typeof( StdKeyView ) );
+
+        public int Y
+        {
+            get { return (int)GetValue( YProperty ); }
+            set { SetValue( YProperty, value ); }
+        }
+        public static readonly DependencyProperty YProperty =
+        DependencyProperty.Register( "Y", typeof( int ), typeof( StdKeyView ) );
+
+        public ICommand Description
+        {
+            get { return (ICommand)GetValue( DescriptionProperty ); }
+            set { SetValue( DescriptionProperty, value ); }
+        }
+        public static readonly DependencyProperty DescriptionProperty =
+        DependencyProperty.Register( "Description", typeof( string ), typeof( StdKeyView ) );
+
+        public int ZIndex
+        {
+            get { return (int)GetValue( ZIndexProperty ); }
+            set { SetValue( ZIndexProperty, value ); }
+        }
+        public static readonly DependencyProperty ZIndexProperty =
+        DependencyProperty.Register( "ZIndex", typeof( int ), typeof( StdKeyView ) );
 
         public ICommand KeyDownCommand
         {
@@ -86,6 +126,15 @@ namespace CK.WPF.StandardViews
         }
         public static readonly DependencyProperty ShowLabelProperty = 
         DependencyProperty.Register( "ShowLabel", typeof( bool ), typeof( StdKeyView ), new PropertyMetadata( true ) );
+
+        public bool ShowImage
+        {
+            get { return (bool)GetValue( ShowImageProperty ); }
+            set { SetValue( ShowImageProperty, value ); }
+        }
+        public static readonly DependencyProperty ShowImageProperty =
+        DependencyProperty.Register( "ShowImage", typeof( bool ), typeof( StdKeyView ), new PropertyMetadata( true ) );
+
 
         public string UpLabel
         {

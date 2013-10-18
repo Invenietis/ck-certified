@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DefaultMode" xml:space="preserve">
+    <value>Default mode</value>
+  </data>
+  <data name="DefaultZone" xml:space="preserve">
+    <value>Default zone</value>
+  </data>
+  <data name="DeleteKey" xml:space="preserve">
+    <value>Delete a key</value>
+  </data>
+  <data name="DeleteKeyConfirmation" xml:space="preserve">
+    <value>Are you sure that you want to delete this key ?</value>
+  </data>
+  <data name="DeleteKeys" xml:space="preserve">
+    <value>Delete the keys</value>
+  </data>
+  <data name="DeleteZone" xml:space="preserve">
+    <value>Delete a zone</value>
+  </data>
+  <data name="DeleteZoneConfirmation" xml:space="preserve">
+    <value>Are yout sure that you want to delete this zone ?</value>
+  </data>
+  <data name="EndingStepDesc" xml:space="preserve">
+    <value>Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard.</value>
+  </data>
+  <data name="EndingStepQuitDesc" xml:space="preserve">
+    <value>You can exit the wizard if you have no other modifications to make.</value>
+  </data>
+  <data name="EndingStepStartOverDesc" xml:space="preserve">
+    <value>You can go back to the beginning of the wizard if you want to modify another keyboard.</value>
+  </data>
+  <data name="EndingStepTitle" xml:space="preserve">
+    <value>Modifications saved</value>
+  </data>
+  <data name="HomeDestroyKeyboardDesc" xml:space="preserve">
+    <value>Delete one of your keyboards</value>
+  </data>
+  <data name="HomeDestroyKeyboardTitle" xml:space="preserve">
+    <value>Delete a keyboard</value>
+  </data>
+  <data name="HomeEditCurrentKeyboard" xml:space="preserve">
+    <value>Edit the current keyboard</value>
+  </data>
+  <data name="HomeEditCurrentKeyboardDesc" xml:space="preserve">
+    <value>Edit easily the currently used keyboard.</value>
+  </data>
+  <data name="HomeEditNewKeyboard" xml:space="preserve">
+    <value>Create a new keyboard</value>
+  </data>
+  <data name="HomeEditNewKeyboardDesc" xml:space="preserve">
+    <value>Create a keyboard from scratch</value>
+  </data>
+  <data name="HomeEditOtherKeyboard" xml:space="preserve">
+    <value>Choose another keyboard to modify</value>
+  </data>
+  <data name="HomeEditOtherKeyboardDesc" xml:space="preserve">
+    <value>Modify another keyboard or start from an existing keyboard to create a new one.</value>
+  </data>
+  <data name="HomeStepDescription" xml:space="preserve">
+    <value>Welcome to CiviKey's keyboard creation and modification wizard.
+You can choose between the four following actions to chose the keyboard you want to modify.</value>
+  </data>
+  <data name="HomeStepTitle" xml:space="preserve">
+    <value>Keyboard creation and modification</value>
+  </data>
+  <data name="KeyboardDeletionListStepDesc" xml:space="preserve">
+    <value>To delete a keybaord, select the keyboard you want removed, then press "Next".</value>
+  </data>
+  <data name="KeyboardDeletionListStepTitle" xml:space="preserve">
+    <value>Keyboard deletion</value>
+  </data>
+  <data name="KeyboardEditionStepDesc" xml:space="preserve">
+    <value>Through this page you can add, delete or modify any key of the keyboard.
+Modifications will be saved during the next step.</value>
+  </data>
+  <data name="KeyboardEditionStepTitle" xml:space="preserve">
+    <value>Keyboard modification : {0}</value>
+  </data>
+  <data name="KeyboardListStepDesc" xml:space="preserve">
+    <value>Choose among the existing keyboard the one that you want to modify, or from which you want to start to create a new keyboard.</value>
+  </data>
+  <data name="KeyboardListStepTitle" xml:space="preserve">
+    <value>Existing keyboards list</value>
+  </data>
+  <data name="KeyboardProfileBackPopInDesc" xml:space="preserve">
+    <value>Going back is going to erase the modifications made until now.
+Are you sure you want to go back ?</value>
+  </data>
+  <data name="KeyboardProfileBackPopInNo" xml:space="preserve">
+    <value>No, stay on this page</value>
+  </data>
+  <data name="KeyboardProfileBackPopInTitle" xml:space="preserve">
+    <value>Cancel modifications</value>
+  </data>
+  <data name="KeyboardProfileBackPopInYes" xml:space="preserve">
+    <value>Yes, revert modifications</value>
+  </data>
+  <data name="KeyboardProfileDesc" xml:space="preserve">
+    <value>This page enables you to modify the name of the keyboard.</value>
+  </data>
+  <data name="KeyboardProfileTitle" xml:space="preserve">
+    <value>Keyboard's name edition</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="SaveAsStepDesc" xml:space="preserve">
+    <value>You can either select an existing keyboard ot erase it, or type a new keyboard name to save your modifications under a new keyboard.
+If you have started your modifications with an existing keyboard, its former state will be re-established.</value>
+  </data>
+  <data name="SaveAsStepPopInDesc" xml:space="preserve">
+    <value>You are about to save your modifications on the keyboard named {0}.
+Are you sure that you want to erase this existing keyboard ?</value>
+  </data>
+  <data name="SaveAsStepPopInTitle" xml:space="preserve">
+    <value>Erase an existing keyboard</value>
+  </data>
+  <data name="SaveAsStepTitle" xml:space="preserve">
+    <value>Save as... step</value>
+  </data>
+  <data name="SaveKeys" xml:space="preserve">
+    <value>Save the keys</value>
+  </data>
+  <data name="SavingStepCancelAndQuitDesc" xml:space="preserve">
+    <value>Cancel all modifications made on this keyboard and quit the wizard.</value>
+  </data>
+  <data name="SavingStepCancelAndQuitTitle" xml:space="preserve">
+    <value>Cancel and quit</value>
+  </data>
+  <data name="SavingStepCancelAndRestartDesc" xml:space="preserve">
+    <value>Cancel all modifications made on this keyboard and go back to the beginning of the wizard.</value>
+  </data>
+  <data name="SavingStepCancelAndRestartTitle" xml:space="preserve">
+    <value>Cancel and restart</value>
+  </data>
+  <data name="SavingStepDesc" xml:space="preserve">
+    <value>You can now choose where you want to save the modifications you just made; on the "{0}" keyboard, or on another one.</value>
+  </data>
+  <data name="SavingStepSaveAsDesc" xml:space="preserve">
+    <value>Save the modifications made on a new keyboard or another existing one.</value>
+  </data>
+  <data name="SavingStepSaveAsTitle" xml:space="preserve">
+    <value>Save as...</value>
+  </data>
+  <data name="SavingStepSaveDesc" xml:space="preserve">
+    <value>Save the modifications made on this keyboard.</value>
+  </data>
+  <data name="SavingStepSaveTitle" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SavingStepTitle" xml:space="preserve">
+    <value>Saving step</value>
+  </data>
+  <data name="StartOver" xml:space="preserve">
+    <value>Start over</value>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Keyboard creation wizard</value>
+  </data>
+  <data name="WizardExitPopInDesc" xml:space="preserve">
+    <value>You are about to close the keyboard edition wizard. 
+
+Are you sure that you want to do that ? All modifications unsaved will be lost.</value>
+  </data>
+  <data name="WizardExitPopInTitle" xml:space="preserve">
+    <value>Exiting the wizard</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+</root>

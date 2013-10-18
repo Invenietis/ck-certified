@@ -5,7 +5,7 @@
     xmlns:controls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls">
 
     <controls:StringIsNullOrWhiteSpaceToBoolean x:Key="StringIsNullOrWhiteSpaceToBoolean" />
-    
+
     <Style TargetType="{x:Type local:StdKeyboardView}">
         <Setter Property="Width" Value="500" />
         <Setter Property="Height" Value="350" />
@@ -13,7 +13,6 @@
         <Setter Property="InsideBorderColor" Value="WhiteSmoke"/>
         <Setter Property="InsideBorderThickness" Value="1"/>
         <Setter Property="Opacity" Value="1"/>
-        <!--<Setter Property="Background" Value="Transparent"/>-->
         <Setter Property="OutsideBorderColor">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -28,17 +27,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyboardView}">
-                    <Grid>
-                        <Grid Opacity="{TemplateBinding Opacity}">
+                    <Grid Focusable="False">
+                        <Grid Focusable="False" Opacity="{TemplateBinding Opacity}">
                             <Border x:Name="OutsideBorder" BorderThickness="{TemplateBinding OutsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding OutsideBorderColor}">
-                                <Border BorderThickness="{TemplateBinding InsideBorderThickness}" 
+                                <Border x:Name="InsideBorder" BorderThickness="{TemplateBinding InsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding InsideBorderColor}"
                                 Background="{TemplateBinding Background}">
                                 </Border>
                             </Border>
-
-                            <ItemsControl ItemsSource="{TemplateBinding Keys}">
+                            <ItemsControl Focusable="False" ItemsSource="{TemplateBinding Keys}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Canvas />
@@ -46,8 +44,9 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
-                                        <Setter Property="Canvas.Top" Value="{Binding Path=Y}"/>
-                                        <Setter Property="Canvas.Left" Value="{Binding Path=X}"/>
+                                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+                                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                             </ItemsControl>
@@ -60,6 +59,7 @@
 
     <Style TargetType="{x:Type local:StdKeyView}">
         <!-- Border brush -->
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -82,7 +82,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyView}">
-                    <Grid x:Name="buttonGrid">
+                    <Grid Focusable="False" x:Name="buttonGrid" Canvas.ZIndex="{TemplateBinding ZIndex}">
+                        <Grid.ToolTip>
+                            <ToolTip x:Name="gridTooltip" Content="{TemplateBinding Description}"/>
+                        </Grid.ToolTip>
                         <Border x:Name="Border" CornerRadius="5"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1.5"
                                 Background="{TemplateBinding Background}" />
@@ -95,15 +98,21 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>
-                        <TextBlock x:Name="Letter" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding UpLabel}"
+                        <TextBlock x:Name="Letter" 
+                                   Foreground="{TemplateBinding Foreground}" 
+                                   Text="{TemplateBinding UpLabel}" 
+                                   Focusable="False" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
-                               FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"/>
+                               FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"
+                               TextTrimming="CharacterEllipsis" >
+                        </TextBlock>
+                        
                         <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Description, Converter={StaticResource StringIsNullOrWhiteSpaceToBoolean}}" Value="False">
-                            <Setter TargetName="buttonGrid" Property="ToolTip" Value="{Binding Description}"/>
-                        </DataTrigger>
+                        <Trigger SourceName="gridTooltip" Property="Content" Value="">
+                            <Setter TargetName="gridTooltip" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
                         <!-- Trigger on : IsMouseOver -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
@@ -120,11 +129,14 @@
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="Letter" Property="Text" Value="{Binding RelativeSource={RelativeSource TemplatedParent},  Path=DownLabel}"/>
+                            <Setter TargetName="Letter" Property="Text" Value="{Binding RelativeSource={RelativeSource TemplatedParent},  Path=UpLabel}"/>
                         </Trigger>
                         <!-- Trigger on : ShowLabel -->
                         <Trigger Property="ShowLabel" Value="False">
                             <Setter TargetName="Letter" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="controls:TextBlockService.IsTextTrimmed" Value="True" SourceName="Letter">
+                            <Setter TargetName="buttonGrid" Property="ToolTip" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=UpLabel}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

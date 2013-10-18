@@ -69,7 +69,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
         VMLogServiceConfig _holder;
         List<ILogParameterInfo> _parameters;
-        IReadOnlyList<ILogParameterInfo> _parametersEx;
+        ICKReadOnlyList<ILogParameterInfo> _parametersEx;
         string _returnType;
         bool _doLogErrors;
         bool _doLogEnter;
@@ -125,7 +125,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
         public VMLogServiceConfig Holder { get { return _holder; } }
         public IPluginConfigAccessor Config { get; set; }
         public bool IsEmpty { get { return !(_doLogEnter | _doLogParameters | _doLogCaller | _doLogLeave | _doLogReturnValue | _doLog); } }
-        Core.IReadOnlyList<ILogParameterInfo> ILogMethodConfig.Parameters
+        Core.ICKReadOnlyList<ILogParameterInfo> ILogMethodConfig.Parameters
         {
             get { return _parametersEx; }
         }
@@ -154,7 +154,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 
             _returnType = returnType;
             _parameters = parameters;
-            _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>( _parameters );
+            _parametersEx = new CKReadOnlyListOnIList<ILogParameterInfo>( _parameters );
 
             _dataPath = _holder.Name + "-" + FullSignature;
             _doLogDataPath = _dataPath + "-MethodDoLog";

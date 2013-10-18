@@ -29,20 +29,20 @@ namespace CK.Plugins.ObjectExplorer
     {
 
 
-        public static bool GetIsEnabled(DependencyObject obj)
+        public static bool GetIsEnabled( DependencyObject obj )
         {
-            return (bool)obj.GetValue(IsEnabledProperty);
+            return (bool)obj.GetValue( IsEnabledProperty );
         }
 
-        public static void SetIsEnabled(DependencyObject obj, bool value)
+        public static void SetIsEnabled( DependencyObject obj, bool value )
         {
-            obj.SetValue(IsEnabledProperty, value);
+            obj.SetValue( IsEnabledProperty, value );
         }
 
         // Using a DependencyProperty as the backing store for IsEnabled.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsEnabledProperty =
-            DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(CustomEnabling), new UIPropertyMetadata(false));
+            DependencyProperty.RegisterAttached( "IsEnabled", typeof( bool ), typeof( CustomEnabling ), new UIPropertyMetadata( false ) );
 
-        
+
     }
 }

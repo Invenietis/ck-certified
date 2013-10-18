@@ -1,4 +1,4 @@
-﻿<ckwincore:NoFocusWindow x:Class="CK.Plugins.AutoClick.Views.WPFStdClickTypeWindow"
+﻿<ckwincore:CKWindow x:Class="CK.Plugins.AutoClick.Views.WPFStdClickTypeWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Topmost="True"
@@ -24,4 +24,4 @@
             </Border>
         </Viewbox>
     </Grid>
-</ckwincore:NoFocusWindow>
+</ckwincore:CKWindow>

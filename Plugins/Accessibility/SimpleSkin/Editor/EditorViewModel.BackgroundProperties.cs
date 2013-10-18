@@ -44,6 +44,7 @@ namespace SimpleSkinEditor
             {
                 _config[ConfigHolder]["Background"] = value;
                 NotifyOfPropertyChange( () => HoverBackground );
+                NotifyOfPropertyChange( () => HighlightBackground );
                 NotifyOfPropertyChange( () => PressedBackground );
             }
         }
@@ -51,17 +52,31 @@ namespace SimpleSkinEditor
         public Color HoverBackground
         {
             get { return ConfigHolder.GetWrappedPropertyValue( _config, "HoverBackground", Background ).Value; }
-            set 
+            set
             {
                 _config[ConfigHolder]["HoverBackground"] = value;
-                NotifyOfPropertyChange( () => PressedBackground );
+                NotifyOfPropertyChange( () => HoverBackground );
+            }
+        }
+
+        public Color HighlightBackground
+        {
+            get { return ConfigHolder.GetWrappedPropertyValue( _config, "HighlightBackground", Background ).Value; }
+            set
+            {
+                _config[ConfigHolder]["HighlightBackground"] = value;
+                NotifyOfPropertyChange( () => HighlightBackground );
             }
         }
 
         public Color PressedBackground
         {
             get { return ConfigHolder.GetWrappedPropertyValue( _config, "PressedBackground", HoverBackground ).Value; }
-            set { _config[ConfigHolder]["PressedBackground"] = value; }
+            set
+            {
+                _config[ConfigHolder]["PressedBackground"] = value;
+                NotifyOfPropertyChange( () => PressedBackground );
+            }
         }
     }
 }

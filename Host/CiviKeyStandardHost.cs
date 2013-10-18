@@ -32,14 +32,12 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
 using Host.Services.Helper;
-using Host.Resources;
 using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
-using System.Linq;
 using System.ComponentModel;
 using CK.Plugin.Config;
-using System.Configuration;
+using Common.Logging;
 
 namespace Host
 {
@@ -47,13 +45,39 @@ namespace Host
     /// Singleton host. Its private constructor is safe (no exceptions can be 
     /// thrown except an out of memory: we can safely ignore this pathological case).
     /// </summary>
-    public class CivikeyStandardHost : AbstractContextHost, IHostInformation
+    public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
     {
+        static ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
+        Guid _guid;
         Version _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
+        IVersionedUniqueId _fakeUniqueIdForTheHost;
 
+        public event EventHandler<HostHelpEventArgs> ShowHostHelp;
+
+        public void FireShowHostHelp()
+        {
+            if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
+            if( ShowHostHelp != null )
+                ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
+        }
+
+        /// <summary>
+        /// Gets a unique identifier for a CiviKey application
+        /// Is mainly used to identify an instance of CiviKey in crashlogs
+        /// TODO : this hsould be put in the CK-Desktop layer in order to be transmitted directly to the crashlog web server, and stored in files corresponding to this GUID
+        /// </summary>
+        private Guid ApplicationGUID
+        {
+            get
+            {
+                if( _guid == Guid.Empty ) _guid = (Guid)SystemConfig.GetOrSet( "Guid", Guid.NewGuid() );
+
+                return _guid;
+            }
+        }
 
         /// <summary>
         /// Gets the current version of the Civikey-Standard application.
@@ -82,33 +106,37 @@ namespace Host
         {
             IContext ctx = base.CreateContext();
 
-            _notificationMngr = new NotificationManager();
+            _log.Debug( "LAUNCHING" );
+            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationGUID ) );
 
+            _notificationMngr = new NotificationManager();
+            
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.OptionalTryStart );
+            hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
 
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
-
             // Initializes Services.
             {
                 ctx.ServiceContainer.Add<IHostInformation>( this );
+                ctx.ServiceContainer.Add<IHostHelp>( this );
                 // inject specific xaml serializers.
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Size> ), new XamlSerializer<Size>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Color> ), new XamlSerializer<Color>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<LinearGradientBrush> ), new XamlSerializer<LinearGradientBrush>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<TextDecorationCollection> ), new XamlSerializer<TextDecorationCollection>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontWeight> ), new XamlSerializer<FontWeight>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<FontStyle> ), new XamlSerializer<FontStyle>() );
-                ctx.ServiceContainer.Add( typeof( IStructuredSerializer<Image> ), new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add( typeof( INotificationService ), _notificationMngr );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Size>>( new XamlSerializer<Size>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Color>>( new XamlSerializer<Color>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<LinearGradientBrush>>( new XamlSerializer<LinearGradientBrush>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<TextDecorationCollection>>( new XamlSerializer<TextDecorationCollection>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
+                //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
@@ -117,6 +145,7 @@ namespace Host
 
             ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationPropertyChanged );
             ctx.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationPropertyChanged );
+
 
             return ctx;
         }
@@ -135,23 +164,8 @@ namespace Host
                 Context.ConfigManager.Extended.HostUserConfig.Clear();
                 LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
 
-
-                //Cloning the current context
-                //string newContextAdress = Path.GetDirectoryName( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
-                //                           + Path.DirectorySeparatorChar
-                //                           + Path.GetFileNameWithoutExtension( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address.AbsolutePath )
-                //                           + " - "
-                //                           + DateTime.UtcNow.ToFileTime() + ".xml";
-
-                //Uri newContextUri = new Uri( "file:///" + newContextAdress );
-                //File.Copy( previousContextAdress.AbsolutePath, newContextAdress, true );
-                //IUriHistory newContext = Context.ConfigManager.UserConfiguration.ContextProfiles.FindOrCreate( newContextUri );
-                //Context.ConfigManager.UserConfiguration.CurrentContextProfile = newContext;
-
-
                 Context.ConfigManager.Extended.Container.Clear( Context );
                 LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
-
 
                 Context.PluginRunner.Apply( true );
             }

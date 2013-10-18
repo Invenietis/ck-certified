@@ -24,6 +24,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace CK.WPF.ViewModel
 {
@@ -79,7 +80,7 @@ namespace CK.WPF.ViewModel
         /// Raises this object's <see cref="PropertyChanged"/> event.
         /// </summary>
         /// <param name="propertyName">The property that has a new value.</param>
-        protected virtual void OnPropertyChanged( string propertyName )
+        protected virtual void OnPropertyChanged( [CallerMemberName] string propertyName = "" )
         {
             this.CheckPropertyName( propertyName );
             PropertyChangedEventHandler handler = this.PropertyChanged;
@@ -89,6 +90,5 @@ namespace CK.WPF.ViewModel
                 handler( this, e );
             }
         }
-
     }
 }

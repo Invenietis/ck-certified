@@ -34,7 +34,7 @@ namespace BasicCommandHandlers
         PublicName = "Send key command handler", Version = "2.0.0" )]
     public class NewSendKeyCommandHandlerPlugin : BasicCommandHandler, ISendKeyCommandHandlerService
     {
-        private const string CMDSendKey = "sendKey";
+        private const string CMDSendKey = "sendKeyOld";
 
         public event EventHandler<KeySentEventArgs>  KeySent;
 

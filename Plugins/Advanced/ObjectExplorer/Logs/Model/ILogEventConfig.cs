@@ -38,7 +38,7 @@ namespace CK.Plugins.ObjectExplorer
     {
         //Necessary info to identify the event
         string Name { get; }
-        IReadOnlyList<ILogParameterInfo> Parameters { get; }
+        ICKReadOnlyList<ILogParameterInfo> Parameters { get; }
 
         //Log configuration
         ServiceLogEventOptions LogOptions { get; }

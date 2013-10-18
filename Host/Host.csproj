@@ -34,7 +34,7 @@
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -43,6 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -86,85 +87,83 @@
     </Reference>
     <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Context.2.8.44\lib\net40\CK.Context.dll</HintPath>
+      <HintPath>..\packages\CK.Context.2.9.6-develop\lib\net40\CK.Context.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core, Version=2.7.40.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Core.2.7.40\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Core.2.8.9-develop\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Interop, Version=2.7.40.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Interop, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Interop.2.7.40\lib\net40\CK.Interop.dll</HintPath>
+      <HintPath>..\packages\CK.Interop.2.8.9-develop\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Plugin.Config.2.8.44\lib\net40\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\packages\CK.Plugin.Config.2.9.6-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Discoverer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK-Runner.2.8.44\lib\net40\CK.Plugin.Discoverer.dll</HintPath>
+      <HintPath>..\packages\CK-Runner.2.9.7-develop\lib\net40\CK.Plugin.Discoverer.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Discoverer.Runner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK-Runner.2.8.44\lib\net40\CK.Plugin.Discoverer.Runner.dll</HintPath>
+      <HintPath>..\packages\CK-Runner.2.9.7-develop\lib\net40\CK.Plugin.Discoverer.Runner.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK-Runner.2.8.44\lib\net40\CK.Plugin.Host.dll</HintPath>
+      <HintPath>..\packages\CK-Runner.2.9.7-develop\lib\net40\CK.Plugin.Host.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK-Plugin.2.8.44\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Runner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK-Runner.2.8.44\lib\net40\CK.Plugin.Runner.dll</HintPath>
+      <HintPath>..\packages\CK-Runner.2.9.7-develop\lib\net40\CK.Plugin.Runner.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection, Version=2.7.40.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Reflection, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Reflection.2.7.40\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\packages\CK.Reflection.2.8.9-develop\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.SharedDic.2.8.44\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\packages\CK.SharedDic.2.9.7-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage, Version=2.7.40.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Storage, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Storage.2.7.40\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\packages\CK.Storage.2.8.9-develop\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.App.2.8.44\lib\net40\CK.Windows.App.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.App.2.9.7-develop\lib\net40\CK.Windows.App.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Config.2.8.44\lib\net40\CK.Windows.Config.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Config.2.9.6-develop\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Core.2.8.45\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Core.2.9.12-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Interop.2.8.44\lib\net40\CK.Windows.Interop.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Interop.2.9.6-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging, Version=2.1.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging.Log4Net1211">
       <HintPath>..\packages\Common.Logging.Log4Net1211.2.1.1\lib\net40\Common.Logging.Log4Net1211.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.3.0, Culture=neutral, PublicKeyToken=8692c11e1bce2429, processorArchitecture=MSIL">
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Runtime\Current\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\ThirdParty\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-client\log4net.dll</HintPath>
@@ -214,12 +213,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AppConfigViewModel.cs" />
-    <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
+    <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
+    <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
-    <Compile Include="ViewModels\ConfigFeatureStarter.cs" />
-    <Compile Include="ViewModels\RootConfigViewModel.cs" />
-    <Compile Include="ViewModels\SkinViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ConfigBase.cs" />
+    <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
+    <Compile Include="ViewModels\SecondLevel\AppConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\SkinBasicConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\SkinViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
@@ -299,6 +303,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKeySmall.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Resource Include="Resources\Icons\CiviKey.ico" />
     <Resource Include="Resources\Icons\logo_16x16.ico" />
     <Resource Include="Resources\Images\accept.png" />
@@ -347,17 +357,22 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml" />
+    <Resource Include="Views\SplashTransparent.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Views\SplashTransparent.png" />
+    <Resource Include="Views\Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\FourthLevel\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(SolutionDir)ThirdParty\AdvancedCommandHandler.dll $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y</PostBuildEvent>
+    <PostBuildEvent>xcopy $(SolutionDir)ThirdParty\SendInputDriver.dll $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y
+xcopy $(SolutionDir)ThirdParty\SendInputDriver.pdb $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y
+xcopy $(SolutionDir)ThirdParty\SendInputDriver.xml $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

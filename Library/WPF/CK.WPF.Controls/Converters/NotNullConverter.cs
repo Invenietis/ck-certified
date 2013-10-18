@@ -40,7 +40,7 @@ namespace CK.WPF.Controls
 
         public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
-            throw new NotImplementedException();
+            return Convert( value, targetType, parameter, culture );
         }
     }
 }

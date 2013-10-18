@@ -34,8 +34,8 @@ namespace CK.Plugins.ObjectExplorer
     internal class LogMethodConfig : ILogMethodConfig
     {
         List<ILogParameterInfo> _parameters;
-        ReadOnlyListOnIList<ILogParameterInfo> _parametersEx;
-        IReadOnlyList<ILogParameterInfo> ILogMethodConfig.Parameters { get { return _parametersEx; } }
+        CKReadOnlyListOnIList<ILogParameterInfo> _parametersEx;
+        ICKReadOnlyList<ILogParameterInfo> ILogMethodConfig.Parameters { get { return _parametersEx; } }
         bool _doLog;
         //bool _doLogErrors;
 
@@ -58,7 +58,7 @@ namespace CK.Plugins.ObjectExplorer
             Name = methodName;
             ReturnType = returnType;
             _parameters = p;
-            _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>( _parameters );
+            _parametersEx = new CKReadOnlyListOnIList<ILogParameterInfo>( _parameters );
         }
     }
 }

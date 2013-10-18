@@ -22,9 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
 using System.Windows;
 using CK.Windows.App;
@@ -45,6 +42,13 @@ namespace Host
         [STAThread]
         public static void Main( string[] args )
         {
+
+            //uncomment if you wan not to be told when WPF binding fails (can be useful to remove the annoying CK-Desktop's "ImagePath is null" errors.
+            //Be careful, it will also remove the other binding errors
+#if DEBUG
+            //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
+#endif
+
             CultureInfo ci = new CultureInfo( "fr-FR" );
             Thread.CurrentThread.CurrentUICulture = ci;
             Thread.CurrentThread.CurrentCulture = ci;

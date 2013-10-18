@@ -266,7 +266,7 @@ namespace PointerDeviceDriver
         /// </summary>
         public int Y;
 
-		public PointStruct( int x, int y )
+        public PointStruct( int x, int y )
 		{
 			X = x;
 			Y = y;

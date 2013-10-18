@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin;
 using System.Windows;
+using CK.Core;
 
 namespace CommonServices
 {
@@ -35,7 +36,7 @@ namespace CommonServices
         /// <summary>
         /// Hides the skin window
         /// </summary>
-        void Hide();
+        void HideSkin();
 
         /// <summary>
         /// Restores the skin window.
@@ -46,5 +47,10 @@ namespace CommonServices
         /// Toggles minimization of the host's window
         /// </summary>
         void ToggleHostMinimized();
+
+        /// <summary>
+        /// Gets the uniqueId of the skin.
+        /// </summary>
+        IVersionedUniqueId PluginUniqueId { get; }
     }
 }

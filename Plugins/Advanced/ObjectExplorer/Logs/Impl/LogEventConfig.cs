@@ -30,8 +30,8 @@ namespace CK.Plugins.ObjectExplorer
     internal class LogEventConfig : ILogEventConfig
     {
         List<ILogParameterInfo> _parameters;
-        ReadOnlyListOnIList<ILogParameterInfo> _parametersEx;
-        IReadOnlyList<ILogParameterInfo> ILogEventConfig.Parameters { get { return _parametersEx; } }
+        CKReadOnlyListOnIList<ILogParameterInfo> _parametersEx;
+        ICKReadOnlyList<ILogParameterInfo> ILogEventConfig.Parameters { get { return _parametersEx; } }
         bool _doLog;
 
         public string Name { get; internal set; }
@@ -53,7 +53,7 @@ namespace CK.Plugins.ObjectExplorer
             Name = eventName;
             _doLog = doLog;   
             _parameters = parameters;
-            _parametersEx = new ReadOnlyListOnIList<ILogParameterInfo>(_parameters);
+            _parametersEx = new CKReadOnlyListOnIList<ILogParameterInfo>(_parameters);
 
             LogOptions = logOptions;
         }     

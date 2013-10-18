@@ -42,11 +42,11 @@ namespace CK.Plugins.ObjectExplorer
         bool DoLog { get; }
 
 
-        IReadOnlyCollection<ILogMethodConfig> Methods { get; }
+        ICKReadOnlyCollection<ILogMethodConfig> Methods { get; }
 
-        IReadOnlyCollection<ILogEventConfig> Events { get; }
+        ICKReadOnlyCollection<ILogEventConfig> Events { get; }
         
-        IReadOnlyCollection<ILogPropertyConfig> Properties { get; }
+        ICKReadOnlyCollection<ILogPropertyConfig> Properties { get; }
       
     }
 }

@@ -71,7 +71,7 @@ namespace CK.Keyboard
                         {
                             atomics[i] = ObtainMode( splitModes[i] );
                         }
-                        m = new KeyboardMode( this, modes, new ReadOnlyListOnIList<IKeyboardMode>( atomics ) );
+                        m = new KeyboardMode( this, modes, new CKReadOnlyListOnIList<IKeyboardMode>( atomics ) );
                         _modes.Add( modes, m );
                     }
                     Debug.Assert( !m.IsAtomic && m.AtomicModes.Count == modeCount, "Combined mode." );
@@ -103,7 +103,7 @@ namespace CK.Keyboard
             KeyboardMode m;
             if ( !_modes.TryGetValue( modes, out m ) )
             {
-                m = new KeyboardMode( this, modes, new ReadOnlyListOnIList<IKeyboardMode>( atomicModes.ToArray() ) );
+                m = new KeyboardMode( this, modes, new CKReadOnlyListOnIList<IKeyboardMode>( atomicModes.ToArray() ) );
                 _modes.Add( modes, m );
             }
             return m;
@@ -138,7 +138,7 @@ namespace CK.Keyboard
                     atomicModes = subArray;
                 }
                 else atomicModes = (IKeyboardMode[])atomicModes.Clone();
-                m = new KeyboardMode( this, modes, new ReadOnlyListOnIList<IKeyboardMode>( atomicModes ) );
+                m = new KeyboardMode( this, modes, new CKReadOnlyListOnIList<IKeyboardMode>( atomicModes ) );
                 _modes.Add( modes, m );
             }
             return m;

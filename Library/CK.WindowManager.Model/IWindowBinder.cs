@@ -24,10 +24,26 @@ namespace CK.WindowManager.Model
         /// <returns></returns>
         ISpatialBinding GetBinding( IWindowElement reference );
 
+        /// <summary>
+        /// Does not bind the both <see cref="IWindowElement"/> provided, but provides a preview of a such <see cref="IBinding"/>.
+        /// This will raised the event <see cref="PreviewBinding"/>.
+        /// The returned <see cref="IBindResult"/> provides an interface to <see cref="IBindResult.Seal"/> or approve the previewed binding.
+        /// </summary>
+        /// <param name="target">This is the target window.</param>
+        /// <param name="origin">This is the current window dragged by the user for example.</param>
+        /// <param name="position">The position of the current relative to the target element. See <see cref="BindingPosition"/> remarks.</param>
+        /// <returns><see cref="IBindResult"/></returns>
+        IBindResult PreviewBind( IWindowElement target, IWindowElement origin, BindingPosition position );
 
-        IBindResult PreviewBind( IWindowElement master, IWindowElement slave, BindingPosition position );
-
-        IBindResult PreviewUnbind( IWindowElement master, IWindowElement slave );
+        /// <summary>
+        /// Does not unbind the both <see cref="IWindowElement"/> provided, but provides a preview of a such unbinding.
+        /// This will raised the event <see cref="PreviewBinding"/>.
+        /// The returned <see cref="IBindResult"/> provides an interface to <see cref="IBindResult.Seal"/> or approve the previewed unbinding.
+        /// </summary>
+        /// <param name="target">This is the target window.</param>
+        /// <param name="origin">This is the current window dragged by the user for example.</param>
+        /// <returns></returns>
+        IBindResult PreviewUnbind( IWindowElement target, IWindowElement origin );
 
         /// <summary>
         /// Binds the both <see cref="IWindowElement"/> provided.
@@ -37,10 +53,10 @@ namespace CK.WindowManager.Model
         /// The usage is to detach and the re-attach. Cannot replace alread attached window elements.
         /// No event is raised in such cases.
         /// </remarks>
-        /// <param name="master">The master window element</param>
-        /// <param name="slave"></param>
-        /// <param name="position">The position of the attachement relatively between master and slave. See <see cref="BindingPosition"/> remarks.</param>
-        void Bind( IWindowElement master, IWindowElement slave, BindingPosition position );
+        /// <param name="target">This is the target window.</param>
+        /// <param name="origin">This is the current window dragged by the user for example.</param>
+        /// <param name="position">The position of the current relative to the target element. See <see cref="BindingPosition"/> remarks.</param>
+        void Bind( IWindowElement target, IWindowElement origin, BindingPosition position );
 
         /// <summary>
         /// Unbinds the both <see cref="IWindowElement"/> provided.
@@ -48,10 +64,13 @@ namespace CK.WindowManager.Model
         /// <remarks>
         /// If no attachment exists between the both <see cref="IWindowElement"/> supplied, no event is raised.
         /// </remarks>
-        /// <param name="master"></param>
-        /// <param name="slave"></param>
-        void Unbind( IWindowElement master, IWindowElement slave );
+        /// <param name="target">This is the target window.</param>
+        /// <param name="origin">This is the current window dragged by the user for example.</param>
+        void Unbind( IWindowElement target, IWindowElement origin );
 
+        /// <summary>
+        /// Raised whan a preview of a binding occurs.
+        /// </summary>
         event EventHandler<WindowBindedEventArgs> PreviewBinding;
 
         /// <summary>

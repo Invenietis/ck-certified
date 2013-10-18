@@ -91,7 +91,7 @@ namespace CK.WindowManager.Model
         //}
 
         /// <summary>
-        /// Gets the window area of the <see cref="IBinding.Slave"/> window comparing to the <see cref="IBinding.Master"/> and <see cref="IBinding.BindingPosition"/>.
+        /// Gets the window area of the <see cref="IBinding.Origin"/> window comparing to the <see cref="IBinding.Target"/> and <see cref="IBinding.BindingPosition"/>.
         /// </summary>
         /// <param name="binding"><see cref="IBinding"/></param>
         /// <returns>A <see cref="Rect"/> or <see cref="Rect.Empty"/> if the <see cref="BindingPosition"/> is <see cref="BindingPosition.None"/></returns>
@@ -99,34 +99,34 @@ namespace CK.WindowManager.Model
         {
             if( binding.Position == BindingPosition.Top )
             {
-                double top = binding.Master.Top - binding.Slave.Height;
-                double left = binding.Master.Left;
-                double width = binding.Master.Width;
-                double height = binding.Slave.Height;
+                double top = binding.Target.Top - binding.Origin.Height;
+                double left = binding.Target.Left;
+                double width = binding.Target.Width;
+                double height = binding.Origin.Height;
                 return new Rect( left, top, width, height );
             }
             if( binding.Position == BindingPosition.Bottom )
             {
-                double top = binding.Master.Top + binding.Master.Height;
-                double left = binding.Master.Left;
-                double width = binding.Master.Width;
-                double height = binding.Slave.Height;
+                double top = binding.Target.Top + binding.Target.Height;
+                double left = binding.Target.Left;
+                double width = binding.Target.Width;
+                double height = binding.Origin.Height;
                 return new Rect( left, top, width, height );
             }
             if( binding.Position == BindingPosition.Left )
             {
-                double top = binding.Master.Top;
-                double left = binding.Master.Left - binding.Slave.Width;
-                double width = binding.Slave.Width;
-                double height = binding.Master.Height;
+                double top = binding.Target.Top;
+                double left = binding.Target.Left - binding.Origin.Width;
+                double width = binding.Origin.Width;
+                double height = binding.Target.Height;
                 return new Rect( left, top, width, height );
             }
             if( binding.Position == BindingPosition.Right )
             {
-                double top = binding.Master.Top;
-                double left = binding.Master.Left + binding.Master.Width;
-                double width = binding.Slave.Width;
-                double height = binding.Master.Height;
+                double top = binding.Target.Top;
+                double left = binding.Target.Left + binding.Target.Width;
+                double width = binding.Origin.Width;
+                double height = binding.Target.Height;
                 return new Rect( left, top, width, height );
             }
             return Rect.Empty;

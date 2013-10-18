@@ -71,8 +71,8 @@ namespace CK.WindowManager.Model
         {
             public HitTestResult( IWindowElement windowElement, IWindowElement matchedWindow, Rect enlargedRectangle, Rect overlapRectangle )
             {
-                Master = windowElement;
-                Slave = matchedWindow;
+                Target = windowElement;
+                Origin = matchedWindow;
 
                 if( overlapRectangle.Bottom == enlargedRectangle.Bottom && overlapRectangle.Height != enlargedRectangle.Height ) Position = BindingPosition.Top;
                 else if( overlapRectangle.Top == enlargedRectangle.Top && overlapRectangle.Height != enlargedRectangle.Height ) Position = BindingPosition.Bottom;
@@ -83,9 +83,9 @@ namespace CK.WindowManager.Model
 
             public BindingPosition Position { get; set; }
 
-            public IWindowElement Master { get; set; }
+            public IWindowElement Target { get; set; }
 
-            public IWindowElement Slave { get; set; }
+            public IWindowElement Origin { get; set; }
         }
     }
 }

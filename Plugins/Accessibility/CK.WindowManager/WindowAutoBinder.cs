@@ -7,6 +7,7 @@ using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
 using System.Diagnostics;
+using System.Timers;
 
 namespace CK.WindowManager
 {
@@ -14,14 +15,19 @@ namespace CK.WindowManager
     public class WindowAutoBinder : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
-        public IService<IWindowManager> WindowManager { get; set; }
+        public IWindowManager WindowManager { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
-        public IService<IWindowBinder> WindowBinder { get; set; }
+        public IWindowBinder WindowBinder { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IPointerDeviceDriver PointerDeviceDriver { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ICommonTimer> CommonTimer { get; set; }
+
+        Timer _timer = null;
+        IWindowElement _window = null;
         IDictionary<IWindowElement, Rect> _rect;
 
         public double AttractionRadius = 50;
@@ -40,28 +46,76 @@ namespace CK.WindowManager
 
             if( _tester.CanTest )
             {
-                ISpatialBinding binding = WindowBinder.Service.GetBinding( e.Window );
-                IReadOnlyList<IWindowElement> registeredElements = WindowManager.Service.WindowElements;
+                ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+                IReadOnlyList<IWindowElement> registeredElements = WindowManager.WindowElements;
 
                 IBinding result = _tester.Test( binding, _rect, AttractionRadius );
                 if( result != null )
                 {
-                    _bindResult = WindowBinder.Service.PreviewBind( result.Master, result.Slave, result.Position );
+                    _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
                 }
                 else
                 {
                     if( _tester.LastResult != null )
-                        _bindResult = WindowBinder.Service.PreviewUnbind( _tester.LastResult.Master, _tester.LastResult.Slave );
+                    {
+                        WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
+                        _bindResult = null;
+                    }
                 }
             }
         }
 
-        void PointerDeviceDriver_PointerMove( object sender, PointerDeviceEventArgs e )
+
+        void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
         {
+            if( CommonTimer.Status.IsStartingOrStarted )
+            {
+                // Gets the window over the click
+                foreach( var r in _rect )
+                {
+                    if( r.Value.Contains( new Point( e.X, e.Y ) ) )
+                    {
+                        _window = r.Key;
+                    }
+                }
+                if( _window != null )
+                {
+                    //_timer.Interval = CommonTimer.Service.Interval;
+                    //_timer.AutoReset = true;
+                    //_timer.Start();
+                    //_timer.Elapsed += OnTimerElapsed;
+                }
+            }
         }
 
-        void PointerDeviceDriver_PointerButtonDown( object sender, PointerDeviceEventArgs e )
+        void OnTimerElapsed( object sender, ElapsedEventArgs e )
         {
+            if( _window != null )
+            {
+                var spatial = WindowBinder.GetBinding( _window );
+                
+                if( spatial.Top != null ) WindowBinder.PreviewUnbind( _window, spatial.Top.Window );
+                if( spatial.Left != null ) WindowBinder.PreviewUnbind( _window, spatial.Left.Window );
+                if( spatial.Right != null ) WindowBinder.PreviewUnbind( _window, spatial.Right.Window );
+                if( spatial.Bottom != null ) WindowBinder.PreviewUnbind( _window, spatial.Bottom.Window  );
+
+                _timer.Elapsed -= OnTimerElapsed;
+                _timer.Stop();
+                _window = null;
+            }
+        }
+
+        void OnPointerMove( object sender, PointerDeviceEventArgs e )
+        {
+            if( CommonTimer.Status.IsStartingOrStarted )
+            {
+                if( _timer.Enabled )
+                {
+                    _timer.Elapsed -= OnTimerElapsed;
+                    _timer.Stop();
+                    _window = null;
+                }
+            }
         }
 
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
@@ -107,46 +161,48 @@ namespace CK.WindowManager
 
         public bool Setup( IPluginSetupInfo info )
         {
+            _timer = new Timer();
             _rect = new Dictionary<IWindowElement, Rect>();
             return true;
         }
 
         public void Start()
         {
-            WindowBinder.Service.BeforeBinding += OnBeforeBinding;
-            WindowBinder.Service.AfterBinding += OnAfterBinding;
+            WindowBinder.BeforeBinding += OnBeforeBinding;
+            WindowBinder.AfterBinding += OnAfterBinding;
 
-            WindowManager.Service.Registered += OnWindowRegistered;
-            WindowManager.Service.Unregistered += OnWindowuUregistered;
+            WindowManager.Registered += OnWindowRegistered;
+            WindowManager.Unregistered += OnWindowuUregistered;
 
-            WindowManager.Service.WindowMoved += OnWindowMoved;
+            WindowManager.WindowMoved += OnWindowMoved;
 
-            PointerDeviceDriver.PointerButtonDown += PointerDeviceDriver_PointerButtonDown;
-            PointerDeviceDriver.PointerMove += PointerDeviceDriver_PointerMove;
+            PointerDeviceDriver.PointerButtonDown += OnPointerButtonDown;
+            PointerDeviceDriver.PointerMove += OnPointerMove;
             PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
 
-            foreach( IWindowElement e in WindowManager.Service.WindowElements ) RegisterWindow( e );
+            foreach( IWindowElement e in WindowManager.WindowElements ) RegisterWindow( e );
         }
 
         public void Stop()
         {
             _rect.Clear();
 
-            PointerDeviceDriver.PointerButtonDown -= PointerDeviceDriver_PointerButtonDown;
-            PointerDeviceDriver.PointerMove -= PointerDeviceDriver_PointerMove;
+            PointerDeviceDriver.PointerButtonDown -= OnPointerButtonDown;
+            PointerDeviceDriver.PointerMove -= OnPointerMove;
             PointerDeviceDriver.PointerButtonUp -= OnPointerButtonUp;
 
-            WindowBinder.Service.AfterBinding -= OnAfterBinding;
-            WindowBinder.Service.BeforeBinding -= OnBeforeBinding;
+            WindowBinder.AfterBinding -= OnAfterBinding;
+            WindowBinder.BeforeBinding -= OnBeforeBinding;
 
-            WindowManager.Service.Registered -= OnWindowRegistered;
-            WindowManager.Service.Unregistered -= OnWindowuUregistered;
+            WindowManager.Registered -= OnWindowRegistered;
+            WindowManager.Unregistered -= OnWindowuUregistered;
 
-            WindowManager.Service.WindowMoved -= OnWindowMoved;
+            WindowManager.WindowMoved -= OnWindowMoved;
         }
 
         public void Teardown()
         {
+            _timer.Dispose();
         }
 
         #endregion

@@ -137,8 +137,8 @@ namespace CK.WindowManager
                 Rect r = e.Binding.GetWindowArea();
                 if( r != Rect.Empty )
                 {
-                    WindowManager.Move( e.Binding.Slave, r.Top, r.Left ).Broadcast();
-                    WindowManager.Resize( e.Binding.Slave, r.Width, r.Height ).Broadcast();
+                    WindowManager.Move( e.Binding.Origin, r.Top, r.Left ).Broadcast();
+                    WindowManager.Resize( e.Binding.Origin, r.Width, r.Height ).Broadcast();
                 }
                 else e.Canceled = true;
             }

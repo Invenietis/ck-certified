@@ -39,7 +39,7 @@ namespace SimpleSkin.ViewModels
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
-        internal VMZoneSimple( VMContextSimple ctx, IZone zone )
+        internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone )
             : base( ctx )
         {
             _zone = zone;

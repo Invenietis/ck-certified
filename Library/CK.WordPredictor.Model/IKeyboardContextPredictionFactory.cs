@@ -8,6 +8,9 @@ namespace CK.WordPredictor.Model
 {
     public interface IKeyboardContextPredictionFactory
     {
+        /// <summary>
+        /// Gets the name of the underlying prediction zone
+        /// </summary>
         string PredictionZoneName { get; }
 
         /// <summary>
@@ -20,10 +23,26 @@ namespace CK.WordPredictor.Model
         /// <returns>The prediction zone model <see cref="IZone"/>.</returns>
         IZone CreatePredictionZone( IKeyboard keyboard, int count );
 
+        /// <summary>
+        /// Removes the prediction zone in the given keyboard.
+        /// </summary>
+        /// <param name="keyboard"></param>
+        void RemovePredictionZone( IKeyboard keyboard );
+
+        /// <summary>
+        /// Cretes a prediction key at the given index in the given zone.
+        /// </summary>
+        /// <remarks>
+        /// The zone can be any zone, and not necessarily the prediction zone.
+        /// </remarks>
+        /// <param name="zone"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         IKey CreatePredictionKey( IZone zone, int index );
 
+        /// <summary>
+        /// This event is raised when the prediction zone is created.
+        /// </summary>
         event EventHandler<ZoneEventArgs> PredictionZoneCreated;
-
-        bool IsKeyboardSupported( IKeyboard keyboard );
     }
 }

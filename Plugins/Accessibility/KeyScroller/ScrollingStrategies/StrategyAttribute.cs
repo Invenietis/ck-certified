@@ -6,35 +6,26 @@ using System.Text;
 
 namespace KeyScroller
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = false )]
     public class StrategyAttribute : Attribute
     {
         static List<string> _strategies = new List<string>();
         public static List<string> AvalaibleStrategies { get { return _strategies; } }
         public string Name { get; private set; }
-        public StrategyAttribute(string name)
+        public StrategyAttribute( string name )
         {
             Name = name;
         }
 
-        public static IEnumerable<string> GetStrategies( )
+        public static IEnumerable<string> GetStrategies()
         {
-            foreach( Type type in Assembly.GetCallingAssembly().GetTypes() )
+            foreach( Type type in Assembly.GetExecutingAssembly().GetTypes().Where( x => typeof( IScrollingStrategy ).IsAssignableFrom( x ) ) )
             {
-                StrategyAttribute strategy = (StrategyAttribute)StrategyAttribute.GetCustomAttribute( type, typeof( StrategyAttribute ) );
+
+                StrategyAttribute strategy = (StrategyAttribute)type.GetCustomAttributes( typeof( StrategyAttribute ), false ).FirstOrDefault();
                 if( strategy != null )
                 {
                     yield return strategy.Name;
-                }
-            }
-        }
-        public static IEnumerable<Type> GetTypes()
-        {
-            foreach( Type type in Assembly.GetCallingAssembly().GetTypes() )
-            {
-                if( type.GetCustomAttributes( typeof( StrategyAttribute ), true ).Length > 0 )
-                {
-                    yield return type;
                 }
             }
         }

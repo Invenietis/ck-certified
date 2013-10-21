@@ -14,7 +14,8 @@ namespace CK.WordPredictor
     public class WordPredictorFeature : IPlugin, IWordPredictorFeature
     {
         private IKeyboardContextPredictionFactory _predictionContextFactory;
-        
+        private IKeyboardContextPredictionFactory _autonomousPredictionContextFactory;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public IPluginConfigAccessor Config { get; set; }
@@ -76,6 +77,12 @@ namespace CK.WordPredictor
         {
             get { return _predictionContextFactory ?? (_predictionContextFactory = new DefaultKeyboardContextPredictionFactory( Context, this )); }
             set { _predictionContextFactory = value; }
+        }
+
+        public IKeyboardContextPredictionFactory AutonomousKeyboardPredictionFactory
+        {
+            get { return _autonomousPredictionContextFactory ?? (_autonomousPredictionContextFactory = new AutonomousKeyboardPredictionFactory( Context, this )); }
+            set { _autonomousPredictionContextFactory = value; }
         }
 
     }

@@ -7,12 +7,40 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
 {
+    public class AutonomousKeyboardPredictionFactory : DefaultKeyboardContextPredictionFactory, IKeyboardContextPredictionFactory
+    {
+        public AutonomousKeyboardPredictionFactory( IKeyboardContext keyboardContext, IWordPredictorFeature feature ):base(keyboardContext,feature)
+        {
+        }
+
+        IKeyboard PredictionKeyboard
+        {
+            get
+            {
+                return KeyboardContext.Keyboards.Actives.FirstOrDefault( x => x.Name == "Prediction" );
+            }
+        }
+
+        protected override int KeyHeight
+        {
+            get { return PredictionKeyboard.CurrentLayout.H - KeySpace*2; }
+        }
+    }
+
     public class DefaultKeyboardContextPredictionFactory : IKeyboardContextPredictionFactory
     {
-        protected const string CompatibilityKeyboardName = "Azerty";
-
         readonly IWordPredictorFeature _feature;
         readonly IKeyboardContext _keyboardContext;
+
+        protected IWordPredictorFeature Feature
+        {
+            get { return _feature; }
+        } 
+
+        protected IKeyboardContext KeyboardContext
+        {
+            get { return _keyboardContext; }
+        } 
 
         public event EventHandler<ZoneEventArgs>  PredictionZoneCreated;
 
@@ -20,7 +48,6 @@ namespace CK.WordPredictor
         {
             _keyboardContext = keyboardContext;
             _feature = feature;
-
         }
 
         public virtual string PredictionZoneName
@@ -48,26 +75,41 @@ namespace CK.WordPredictor
             get { return 5; }
         }
 
-        public virtual IZone CreatePredictionZone( IKeyboard kb, int count )
+        public virtual IZone CreatePredictionZone( IKeyboard keyboard, int count )
         {
-            if( IsKeyboardSupported( kb ) )
+            if( keyboard == null ) throw new ArgumentNullException( "keyboard" );
+
+            IZone predictionZone = keyboard.Zones[PredictionZoneName];
+            if( predictionZone != null ) predictionZone.Destroy();
+
+            predictionZone = keyboard.Zones.Create( PredictionZoneName );
+
+            for( int i = 0; i < count; ++i )
             {
-                IZone predictionZone = kb.Zones[PredictionZoneName];
-                if( predictionZone != null ) predictionZone.Destroy();
+                CreatePredictionKey( predictionZone, i );
+            }
 
-                predictionZone = kb.Zones.Create( PredictionZoneName );
+            if( PredictionZoneCreated != null )
+                PredictionZoneCreated( this, new ZoneEventArgs( predictionZone ) );
 
-                for( int i = 0; i < count; ++i )
+            return predictionZone;
+        }
+
+
+        public virtual void RemovePredictionZone( IKeyboard keyboard )
+        {
+            if( keyboard == null ) throw new ArgumentNullException( "keyboard" );
+
+            IZone zone = keyboard.Zones[PredictionZoneName];
+            if( zone != null )
+            {
+                for( int i = zone.Keys.Count - 1; i >= 0; i-- )
                 {
-                    CreatePredictionKey( predictionZone, i );
+                    zone.Keys[i].Destroy();
                 }
 
-                if( PredictionZoneCreated != null )
-                    PredictionZoneCreated( this, new ZoneEventArgs( predictionZone ) );
-
-                return predictionZone;
+                zone.Destroy();
             }
-            return null;
         }
 
         public virtual IKey CreatePredictionKey( IZone zone, int index )
@@ -78,11 +120,6 @@ namespace CK.WordPredictor
             key.CurrentLayout.Current.Visible = false;
             CustomizePredictionKey( key );
             return key;
-        }
-
-        public virtual bool IsKeyboardSupported( IKeyboard keyboard )
-        {
-            return keyboard != null ? keyboard.Name == CompatibilityKeyboardName : false;
         }
 
         protected virtual void CustomizePredictionKey( IKey key )

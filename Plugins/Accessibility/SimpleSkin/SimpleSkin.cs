@@ -64,7 +64,7 @@ namespace SimpleSkin
         public bool IsViewHidden { get { return _viewHidden; } }
         public IPluginConfigAccessor Config { get; set; }
         IHostManipulator _hostManipulator;
-        VMContextSimple _ctxVm;
+        VMContextCurrentKeyboardSimple _ctxVm;
         SkinWindow _skinWindow;
         DispatcherTimer _timer;
         MiniViewVM _miniViewVm;
@@ -123,7 +123,11 @@ namespace SimpleSkin
             {
                 _noFocusWindowManager = new CKNoFocusWindowManager();
                 _skinDispatcher = _noFocusWindowManager.NoFocusWindowThreadDispatcher;
-                _ctxVm = new VMContextSimple( Context, KeyboardContext.Service.Keyboards.Context, Config, _skinDispatcher );
+                _ctxVm = new VMContextCurrentKeyboardSimple( 
+                    Context, 
+                    KeyboardContext.Service.Keyboards.Context, 
+                    Config, 
+                    _skinDispatcher );
 
                 _isStarted = true;
                 _skinWindow = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( (Func<SkinWindow>)(() =>
@@ -149,7 +153,7 @@ namespace SimpleSkin
                     CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement );
                 }), null );
 
-                SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S );
+                //SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S );
 
                 InitializeHighligther();
                 UpdateAutoHideConfig();

@@ -50,7 +50,7 @@ namespace SimpleSkin.ViewModels
         ICommand _keyUpCmd;
         IKey _key;
 
-        internal VMKeySimple( VMContextSimple ctx, IKey k )
+        internal VMKeySimple( VMContextSimpleBase ctx, IKey k )
             : base( ctx )
         {
             _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();

@@ -27,6 +27,8 @@ namespace InputTrigger
 
         public IInputListener InputListener { get; private set; }
 
+        public ITrigger DefaultTrigger { get { return Trigger.Default; } }
+                                            
         private Dictionary<ITrigger, List<Action<ITrigger>>> _listeners;
 
         public bool Setup( IPluginSetupInfo info )
@@ -45,6 +47,7 @@ namespace InputTrigger
         public void Stop()
         {
             InputListener.KeyDown -= OnKeyDown;
+            InputListener.Dispose();
         }
 
         public void Teardown()
@@ -52,10 +55,11 @@ namespace InputTrigger
 
         }
 
-        public void RegisterFor(ITrigger trigger, Action<ITrigger> action)
+        public void RegisterFor(ITrigger trigger, Action<ITrigger> action, bool preventDefault = true)
         {
             //call action when the given trigger is rised
             ITrigger key = GetKey( trigger.KeyCode, trigger.Source );
+            if( preventDefault && trigger.Source == TriggerDevice.Keyboard ) KeyboardDriver.Service.RegisterCancellableKey( trigger.KeyCode );
 
             if( key != null )
             {
@@ -71,7 +75,9 @@ namespace InputTrigger
 
         public void Unregister(ITrigger trigger, Action<ITrigger> action )
         {
+            if( trigger.Source == TriggerDevice.Keyboard ) KeyboardDriver.Service.UnregisterCancellableKey( trigger.KeyCode );
             trigger = GetKey( trigger.KeyCode, trigger.Source );
+            
             if( trigger != null )
             {
                 _listeners[trigger].Remove( action );

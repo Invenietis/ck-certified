@@ -36,9 +36,9 @@ namespace CommonServices
     public interface ITriggerService : IDynamicService
     {
         /// <summary>
-        /// Fired to clients to let them know that they have to do an action intended by an external input.
+        /// Get the default ITrigger
         /// </summary>
-        event EventHandler<InputTriggerEventArgs> Triggered;
+        ITrigger DefaultTrigger { get; }
 
         /// <summary>
         /// The listener that listen all input kind
@@ -50,7 +50,8 @@ namespace CommonServices
         /// </summary>
         /// <param name="trigger"></param>
         /// <param name="action"></param>
-        void RegisterFor(ITrigger trigger, Action<ITrigger> action);
+        /// <param name="preventDefault">if true, the event fired by the ITrigger is not propagated to the system</param>
+        void RegisterFor( ITrigger trigger, Action<ITrigger> action, bool preventDefault = true );
 
         /// <summary>
         /// Unregister the given action to the given trigger

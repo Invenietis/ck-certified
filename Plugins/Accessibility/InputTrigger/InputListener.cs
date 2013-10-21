@@ -39,12 +39,12 @@ namespace InputTrigger
         {
             if( IsRecording )
             {
-                _recordCallback(new Trigger( e.KeyCode, TriggerDevice.Pointer ));
+                _recordCallback( new Trigger( e.KeyCode, e.InputSource == InputSource.CiviKey ? TriggerDevice.Civikey : TriggerDevice.Keyboard ) );
                 IsRecording = false;
             }
             else
             {
-                FireKeyDown( e.KeyCode, TriggerDevice.Pointer );
+                FireKeyDown( e.KeyCode, e.InputSource == InputSource.CiviKey ? TriggerDevice.Civikey : TriggerDevice.Keyboard );
             }
         }
 

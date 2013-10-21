@@ -16,7 +16,7 @@ using CommonServices;
 
 namespace KeyScroller
 {
-    [Plugin( InputTrigger.PluginIdString,
+   /* [Plugin( InputTrigger.PluginIdString,
            PublicName = PluginPublicName,
            Version = InputTrigger.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
@@ -196,5 +196,5 @@ namespace KeyScroller
         Keyboard = 1,
         Pointer = 2
     }
-
+    */
 }

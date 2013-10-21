@@ -141,6 +141,10 @@
       <Name>HighlightModel</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\InputTrigger\InputTrigger.csproj">
+      <Project>{1b0ea719-1f21-4448-9ffa-bfaebc78ecc4}</Project>
+      <Name>InputTrigger</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

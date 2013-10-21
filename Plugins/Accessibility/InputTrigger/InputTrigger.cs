@@ -8,7 +8,11 @@ using CommonServices;
 
 namespace InputTrigger
 {
-    public class InputTrigger : IPlugin
+    [Plugin( InputTrigger.PluginIdString,
+           PublicName = PluginPublicName,
+           Version = InputTrigger.PluginIdVersion,
+           Categories = new string[] { "Visual", "Accessibility" } )]
+    public class InputTrigger : IPlugin , ITriggerService
     {
         const string PluginIdString = "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -93,5 +97,11 @@ namespace InputTrigger
 
             foreach( var action in _listeners[key] ) action( key );
         }
+
+        #region ITriggerService Members
+
+        public event EventHandler<InputTriggerEventArgs> Triggered;
+
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace InputTrigger
         const string PluginIdString = "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Input Trigger";
+        const string PluginPublicName = "Input Trigger Shab Reloaded";
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
@@ -21,48 +21,26 @@ namespace InputTrigger
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
 
+        public IInputListener InputListener { get; private set; }
+
         private Dictionary<ITrigger, List<Action<ITrigger>>> _listeners;
-
-        private bool _listenToKeyDown;
-        private bool ListenToKeyDown
-        {
-            set
-            {
-                if( _listenToKeyDown != value )
-                {
-                    _listenToKeyDown = value;
-                    if( _listenToKeyDown )
-                    {
-                        KeyboardDriver.Service.KeyDown += OnKeyDown;
-                        PointerDriver.Service.PointerButtonDown += OnPointerButtonDown;
-                    }
-                    else
-                    {
-                        KeyboardDriver.Service.KeyDown -= OnKeyDown;
-                        PointerDriver.Service.PointerButtonDown -= OnPointerButtonDown;
-                    }
-                }
-            }
-        }
-
-        TriggerDevice _currentDevice = TriggerDevice.None;
 
         public bool Setup( IPluginSetupInfo info )
         {
             _listeners = new Dictionary<ITrigger, List<Action<ITrigger>>>();
+
             return true;
         }
 
         public void Start()
         {
-            KeyboardDriver.Service.KeyDown += OnKeyDown;
-            PointerDriver.Service.PointerButtonDown += OnPointerButtonDown;
+            InputListener = new InputListener( KeyboardDriver, PointerDriver );
+            InputListener.KeyDown += OnKeyDown;
         }
 
         public void Stop()
         {
-            ListenToKeyDown = false;
-            //KeyboardDriver.Service.UnregisterCancellableKey( _keyCode );
+            InputListener.KeyDown -= OnKeyDown;
         }
 
         public void Teardown()
@@ -72,51 +50,48 @@ namespace InputTrigger
 
         public void RegisterFor(ITrigger trigger, Action<ITrigger> action)
         {
-            //TODO call action when ITrigger is rised
-        }
+            //call action when the given trigger is rised
+            ITrigger key = GetKey( trigger.KeyCode, trigger.Source );
 
-        public void Unregister( Action<ITrigger> action )
-        {
-            //TODO unregister action
-        }
-
-        //JL : duplicate with MouseCodeFromButtonInfo in BasicScroll/Editor/EditorViewModel.cs. Where can it be put to avoid duplication ?
-        public int MouseCodeFromButtonInfo( ButtonInfo buttonInfo, string extraInfo )
-        {
-            if( buttonInfo == ButtonInfo.DefaultButton )
+            if( key != null )
             {
-                return 1;
+                _listeners[key].Add( action );
             }
-
-            if( buttonInfo == ButtonInfo.XButton )
+            else
             {
-                if( extraInfo == "Right" )
-                    return 2;
-
-                if( extraInfo == "Middle" )
-                    return 3;
+                List<Action<ITrigger>> l = new List<Action<ITrigger>>();
+                l.Add(action);
+                _listeners.Add( trigger, l );
             }
-
-            throw new Exception( String.Format( "The specified buttonInfo is incorrect. (ButtonInfo : {0}, ExtraInfo : {1}) ", buttonInfo.ToString(), extraInfo ) );
         }
 
-        void OnKeyDown( object sender, KeyboardDriverEventArg e )
+        public void Unregister(ITrigger trigger, Action<ITrigger> action )
         {
-
-            //if( _currentDevice == TriggerDevice.Keyboard && e.KeyCode == _keyCode ) // when the right keycode is pressed
-            //{
-
-            //}
+            trigger = GetKey( trigger.KeyCode, trigger.Source );
+            if( trigger != null )
+            {
+                _listeners[trigger].Remove( action );
+            }
         }
 
-        void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
+        void OnKeyDown( object sender, KeyDownEventArgs e )
         {
-            if( _currentDevice == TriggerDevice.Pointer )
-            {
-                //if( MouseCodeFromButtonInfo( e.ButtonInfo, e.ExtraInfo ) == _keyCode ) // when the right mouse button is pressed
-                //{
-                //}
-            }
+            ITrigger key = GetKey( e.KeyCode, e.Source );
+
+            if( key != null ) InvokeActions( key );
+        }
+
+        ITrigger GetKey( int keyCode, TriggerDevice source )
+        {
+            return _listeners.Keys.Where( k => k.Source == source && k.KeyCode == keyCode )
+                .FirstOrDefault();
+        }
+
+        void InvokeActions(ITrigger key)
+        {
+            if( !_listeners.ContainsKey( key ) ) throw new InvalidOperationException( "The given trigger must exist!" );
+
+            foreach( var action in _listeners[key] ) action( key );
         }
     }
 }

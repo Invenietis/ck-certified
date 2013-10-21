@@ -168,6 +168,26 @@ namespace KeyScroller
 
             throw new Exception( String.Format( "The specified buttonInfo is incorrect. (ButtonInfo : {0}, ExtraInfo : {1}) ", buttonInfo.ToString(), extraInfo ) );
         }
+
+        #region ITriggerService Members
+
+
+        public IInputListener InputListener
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public void RegisterFor( ITrigger trigger, Action<ITrigger> action )
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Unregister( ITrigger trigger, Action<ITrigger> action )
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
     public enum TriggerDevice

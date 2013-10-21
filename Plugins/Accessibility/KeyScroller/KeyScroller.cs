@@ -11,6 +11,7 @@ using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
+using InputTrigger;
 
 namespace KeyScroller
 {
@@ -95,12 +96,12 @@ namespace KeyScroller
                 }
             };
 
-            ExternalInput.Service.Triggered += OnExternalInputTriggered;
+            ExternalInput.Service.RegisterFor(Trigger.Default, OnExternalInputTriggered);
         }
 
         public void Stop()
         {
-            ExternalInput.Service.Triggered -= OnExternalInputTriggered;
+            //ExternalInput.Service.Triggered -= OnExternalInputTriggered;
 
             _scrollingStrategy.Stop();
         }
@@ -200,10 +201,10 @@ namespace KeyScroller
 
         #endregion
 
-        private void OnExternalInputTriggered( object sender, InputTriggerEventArgs e )
+        private void OnExternalInputTriggered( ITrigger t )
         {
-            if( e.Source != InputSource.CiviKey )
-                _scrollingStrategy.OnExternalEvent();
+            //if( e.Source != InputSource.CiviKey )
+            _scrollingStrategy.OnExternalEvent();
         }
     }
 }

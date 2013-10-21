@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using CK.Plugin;
 
 namespace CK.WindowManager.Model
@@ -24,6 +25,8 @@ namespace CK.WindowManager.Model
         /// <param name="name"></param>
         /// <returns></returns>
         IWindowElement GetByName( string name );
+
+        Rect GetClientArea( IWindowElement e );
 
         /// <summary>
         /// Registers the given window element

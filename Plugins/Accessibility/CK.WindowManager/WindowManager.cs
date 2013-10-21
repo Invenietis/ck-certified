@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using CK.Context;
 using CK.Core;
 using CK.Plugin;
@@ -29,6 +30,15 @@ namespace CK.WindowManager
         public IReadOnlyList<IWindowElement> WindowElements
         {
             get { return _dic.Keys.ToArray(); }
+        }
+
+        public Rect GetClientArea( IWindowElement e )
+        {
+            WindowElementData d;
+            _dic.TryGetValue( e, out d );
+            if( d == null ) return Rect.Empty;
+
+            return d.ToRect();
         }
 
         public virtual IManualInteractionResult Move( IWindowElement window, double top, double left )
@@ -347,6 +357,10 @@ namespace CK.WindowManager
                 Left = Window.Left;
                 Width = Window.Width;
                 Height = Window.Height;
+            }
+            internal Rect ToRect()
+            {
+                return new Rect( Left, Top, Width, Height );
             }
         }
 

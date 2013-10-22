@@ -35,7 +35,7 @@ namespace KeyScroller.Editor
         public IPluginConfigAccessor KeyboardTriggerConfiguration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IKeyboardDriver KeyboardHook { get; set; }
+        public ITriggerService TriggerService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerInput { get; set; }
@@ -50,14 +50,12 @@ namespace KeyScroller.Editor
         public void Start()
         {
             IWindowManager wnd = IoC.Get<WindowManager>();
-            _editor = new EditorViewModel( BasicScrollConfiguration, KeyboardTriggerConfiguration, KeyboardHook, PointerInput.Service ) { Context = Context };
-            KeyboardHook.KeyDown += _editor.OnKeyboardHookInvoked;
+            _editor = new EditorViewModel( BasicScrollConfiguration, KeyboardTriggerConfiguration, TriggerService ) { Context = Context };
             wnd.ShowWindow( _editor );
         }
 
         public void Stop()
         {
-            KeyboardHook.KeyDown -= _editor.OnKeyboardHookInvoked;
             _editor.Stopping = true;
             _editor.TryClose();
         }

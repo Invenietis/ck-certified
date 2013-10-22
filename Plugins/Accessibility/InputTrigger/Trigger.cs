@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using CommonServices;
 
 namespace InputTrigger
 {
+    [Serializable]
     public class Trigger : ITrigger
     {
         public static readonly ITrigger Default = new Trigger( 122 , TriggerDevice.Keyboard);

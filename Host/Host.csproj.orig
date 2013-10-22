@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0C102B01-5ABA-4CC9-B531-78ECC48390F3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Host</RootNamespace>
+    <AssemblyName>CiviKey</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icons\CiviKey.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Caliburn.Micro, Version=1.3.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CK.Context, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Context.2.9.13\lib\net40\CK.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Interop.2.8.14\lib\net40\CK.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Plugin.Config.2.9.13\lib\net40\CK.Plugin.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config.Model, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK-Plugin.2.9.13\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Discoverer, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK-Runner.2.9.13\lib\net40\CK.Plugin.Discoverer.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Discoverer.Runner, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK-Runner.2.9.13\lib\net40\CK.Plugin.Discoverer.Runner.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Host, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK-Runner.2.9.13\lib\net40\CK.Plugin.Host.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Model, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK-Plugin.2.9.13\lib\net40\CK.Plugin.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Runner, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK-Runner.2.9.13\lib\net40\CK.Plugin.Runner.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Reflection, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Reflection.2.8.14\lib\net40\CK.Reflection.dll</HintPath>
+    </Reference>
+<<<<<<< origin/develop-2013
+    <Reference Include="CK.SharedDic, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+=======
+    <Reference Include="CK.SharedDic, Version=2.9.13.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+>>>>>>> local
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.SharedDic.2.9.13\lib\net40\CK.SharedDic.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.App.2.9.13\lib\net40\CK.Windows.App.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.Config.2.9.13\lib\net40\CK.Windows.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.Core.2.9.13\lib\net40\CK.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CK.Windows.Interop.2.9.13\lib\net40\CK.Windows.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Log4Net1211, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Common.Logging.Log4Net1211.2.1.2\lib\net40\Common.Logging.Log4Net1211.dll</HintPath>
+    </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ThirdParty\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-client\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CiviKeyStandardHost.cs" />
+    <Compile Include="CommonLogger.cs" />
+    <Compile Include="Resources\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\R.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
+    <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
+    <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
+    <Compile Include="ViewModels\AutoClickViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ConfigBase.cs" />
+    <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
+    <Compile Include="ViewModels\SecondLevel\AppConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\SkinBasicConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\SkinViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
+    <Compile Include="Views\AppView.xaml.cs">
+      <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Globals.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.fr.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Host.Services\Host.Services.csproj">
+      <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
+      <Name>Host.Services</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
+      <Name>CK.WPF.Controls</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
+      <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
+      <Name>CK.WPF.ViewModel</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Contexts\ContextCiviKeySmall.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Resource Include="Resources\Icons\CiviKey.ico" />
+    <Resource Include="Resources\Icons\logo_16x16.ico" />
+    <Resource Include="Resources\Images\accept.png" />
+    <Resource Include="Resources\Images\add.png" />
+    <Resource Include="Resources\Images\back.png" />
+    <Resource Include="Resources\Images\config.png" />
+    <Resource Include="Resources\Images\cross.png" />
+    <Resource Include="Resources\Images\defaultPluginIcon.png" />
+    <Resource Include="Resources\Images\edit.png" />
+    <Resource Include="Resources\Images\error.png" />
+    <Resource Include="Resources\Images\forward.png" />
+    <Resource Include="Resources\Images\logo.png" />
+    <Resource Include="Resources\Images\magnifier.png" />
+    <Resource Include="Resources\Images\message.png" />
+    <Resource Include="Resources\Images\ok.png" />
+    <Resource Include="Resources\Images\save.png" />
+    <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\edit.png" />
+    <Resource Include="Views\Images\Keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\SplashTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\FourthLevel\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(SolutionDir)ThirdParty\SendInputDriver.dll $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y
+xcopy $(SolutionDir)ThirdParty\SendInputDriver.pdb $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y
+xcopy $(SolutionDir)ThirdParty\SendInputDriver.xml $(SolutionDir)Output\$(ConfigurationName)\Plugins\ /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

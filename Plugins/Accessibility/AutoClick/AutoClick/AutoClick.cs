@@ -65,7 +65,7 @@ namespace CK.Plugins.AutoClick
 
         public IPluginConfigAccessor Config { get; set; }
 
-        private MouseProgressPieWindow _mouseIndicatorWindow;
+        private MouseDecoratorWindow _mouseIndicatorWindow;
         private AutoClickEditorWindow _editorWindow;
         private AutoClickWindow _autoClickWindow;
 
@@ -136,7 +136,7 @@ namespace CK.Plugins.AutoClick
                 _autoClickWindow.Width = _autoClickWindow.Height = 0;
             }
 
-            _mouseIndicatorWindow = new MouseProgressPieWindow { DataContext = this };
+            _mouseIndicatorWindow = new MouseDecoratorWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
 
             Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );

@@ -28,10 +28,10 @@ namespace CK.Plugins.AutoClick.Views
     /// <summary>
     /// Interaction logic for AutoClickEditorWindow.xaml
     /// </summary>
-    public partial class MouseProgressPieWindow : Window
+    public partial class MouseDecoratorWindow : Window
     {
 
-        public MouseProgressPieWindow()
+        public MouseDecoratorWindow()
         {
             InitializeComponent();
         }

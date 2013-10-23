@@ -36,17 +36,11 @@ namespace CK.Plugins.AutoClick.ViewModel
     {
 
         #region Properties
-        
+
         private ClickEmbedderVM _selectedClickEmbedderVM;
+        public ClickVM NextClick { get { return _selectedClickEmbedderVM.NextClick; } }
 
-        public ClickVM NextClick
-        {
-            get 
-            { 
-                return _selectedClickEmbedderVM.NextClick; }
-        }
-
-        internal ClickVM GetNextClick(bool doIncrement)
+        internal ClickVM GetNextClick( bool doIncrement )
         {
             ClickVM nextClick = _selectedClickEmbedderVM.GetNextClick( doIncrement );
             if( doIncrement )
@@ -82,15 +76,15 @@ namespace CK.Plugins.AutoClick.ViewModel
             ClickEmbedderVM clickEmbedderVM;
             IList<ClickVM> _clickList = new List<ClickVM>();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Clic Gauche", "/AutoClick;component/Res/Images/LeftClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, "Clic Gauche", "/Res/Images/LeftClick.png", _clickList );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Gauche", new List<ClickInstruction>()
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
-                } ) );            
+                } ) );
             Add( clickEmbedderVM );
             _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Clic Droit", "/AutoClick;component/Res/Images/RightClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, "Clic Droit", "/Res/Images/RightClick.png", _clickList );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Droit", new List<ClickInstruction>() 
                 { 
                    ClickInstruction.RightButtonDown, ClickInstruction.RightButtonUp
@@ -98,7 +92,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             Add( clickEmbedderVM );
             _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Double Clic", "/AutoClick;component/Res/Images/DoubleLeftClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, "Double Clic", "/Res/Images/DoubleLeftClick.png", _clickList );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Double Clic", new List<ClickInstruction>() 
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp, ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
@@ -106,20 +100,20 @@ namespace CK.Plugins.AutoClick.ViewModel
             Add( clickEmbedderVM );
             _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Glisser-Déposer", "/AutoClick;component/Res/Images/DragDrop.png", _clickList );
-            clickEmbedderVM.Add(new ClickVM( clickEmbedderVM, "Presser clic Gauche", new List<ClickInstruction>() 
+            clickEmbedderVM = new ClickEmbedderVM( this, "Glisser-Déposer", "/Res/Images/DragDrop.png", _clickList );
+            clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Presser clic Gauche", new List<ClickInstruction>() 
                 { 
                      ClickInstruction.LeftButtonDown
-                } ));
+                } ) );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Relâcher clic Droit", new List<ClickInstruction>() 
                 { 
                     ClickInstruction.LeftButtonUp
-                } ) );            
+                } ) );
             Add( clickEmbedderVM );
 
             this.First().ChangeSelectionCommand.Execute( this );
             OnPropertyChanged( "NextClick" );
-        }     
+        }
 
         public void ChangeSelection( ClickEmbedderVM selectedClickEmbedder )
         {

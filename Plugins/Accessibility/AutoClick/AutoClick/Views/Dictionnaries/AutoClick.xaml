@@ -250,7 +250,6 @@
 
             <!-- The panel containing the clicks -->
             <!--<ContentControl Template="{DynamicResource RunningClickTypeSelectorTemplate}"  DataContext="{Binding Selector.Service}"/>-->
-
         </StackPanel>
     </ControlTemplate>
 

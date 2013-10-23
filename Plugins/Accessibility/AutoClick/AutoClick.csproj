@@ -141,14 +141,17 @@
     <Compile Include="AutoClick\Views\AutoClickEditorWindow.xaml.cs">
       <DependentUpon>AutoClickEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AutoClick\Views\MouseProgressPieWindow.xaml.cs">
-      <DependentUpon>MouseProgressPieWindow.xaml</DependentUpon>
+    <Compile Include="AutoClick\Views\MouseDecoratorWindow.xaml.cs">
+      <DependentUpon>MouseDecoratorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoClick\Views\CustomControls\ActionOnOverButton.cs" />
     <Compile Include="AutoClick\Views\CustomControls\WPFClickTypeWatch.cs" />
     <Compile Include="AutoClick\Views\CustomControls\ActionOnMouseEnterButton.cs" />
     <Compile Include="AutoClick\Views\AutoClickWindow.xaml.cs">
       <DependentUpon>AutoClickWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TypeSelectorService\Views\ClickSelectorWindow.xaml.cs">
+      <DependentUpon>ClickSelectorWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -160,11 +163,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AutoClick\Views\MouseProgressPieWindow.xaml">
+    <Page Include="AutoClick\Views\MouseDecoratorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SharedDictionnaries\Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TypeSelectorService\Views\ClickSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

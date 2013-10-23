@@ -48,70 +48,8 @@ namespace CK.Plugins.AutoClick
 
         #region Variables & Properties
 
-        //private ICommand _incrementTimeBeforeCountDownStartsCommand;
-        //public ICommand IncrementTimeBeforeCountDownStartsCommand
-        //{
-        //    get
-        //    {
-        //        if( _incrementTimeBeforeCountDownStartsCommand == null )
-        //        {
-        //            _incrementTimeBeforeCountDownStartsCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", 100 ) );
-        //        }
-        //        return _incrementTimeBeforeCountDownStartsCommand;
-        //    }
-        //}
-
-        //private ICommand _decrementTimeBeforeCountDownStartsCommand;
-        //public ICommand DecrementTimeBeforeCountDownStartsCommand
-        //{
-        //    get
-        //    {
-        //        if( _decrementTimeBeforeCountDownStartsCommand == null )
-        //        {
-        //            _decrementTimeBeforeCountDownStartsCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", -100 ) );
-        //        }
-        //        return _decrementTimeBeforeCountDownStartsCommand;
-        //    }
-        //}
-
-        //private ICommand _incrementCountDownDurationCommand;
-        //public ICommand IncrementCountDownDurationCommand
-        //{
-        //    get
-        //    {
-        //        if( _incrementCountDownDurationCommand == null )
-        //        {
-        //            _incrementCountDownDurationCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "CountDownDuration", 100 ) );
-        //        }
-        //        return _incrementCountDownDurationCommand;
-        //    }
-        //}
-
-        //private ICommand _decrementCountDownDurationCommand;
-        //public ICommand DecrementCountDownDurationCommand
-        //{
-        //    get
-        //    {
-        //        if( _decrementCountDownDurationCommand == null )
-        //        {
-        //            _decrementCountDownDurationCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "CountDownDuration", -100 ) );
-        //        }
-        //        return _decrementCountDownDurationCommand;
-        //    }
-        //}
-
-        //public int TimeBeforeCountDownStarts { get { return _holder.MouseWatcher.Service.TimeBeforeCountDownStarts; } }
-        //public int CountDownDuration { get { return _holder.MouseWatcher.Service.CountDownDuration; } }
-
-        //private AutoClick _holder;
-
         //ViewModel
-        private ClicksVM _clicksVM;
-        public ClicksVM ClicksVM
-        {
-            get { return _clicksVM; }
-            set { ClicksVM = value; }
-        }
+        public ClicksVM ClicksVM { get; set; }
 
         #endregion
 
@@ -119,22 +57,24 @@ namespace CK.Plugins.AutoClick
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _clicksVM = new ClicksVM();
+            ClicksVM = new ClicksVM();
             return true;
         }
 
         public void Start()
         {
+            ClickSelectorWindow _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
+            _clickSelectorWindow.Show();
         }
 
         public void Stop()
         {
-            
+
         }
 
         public void Teardown()
         {
-            _clicksVM = null;
+            ClicksVM = null;
         }
 
         #endregion
@@ -151,11 +91,11 @@ namespace CK.Plugins.AutoClick
         {
             ClickVM clickToLaunch = null;
 
-            clickToLaunch = _clicksVM.GetNextClick( true );
+            clickToLaunch = ClicksVM.GetNextClick( true );
 
             if( AutoClickClickTypeChosen != null && clickToLaunch != null )
             {
-                AutoClickClickTypeChosen( this, new ClickTypeEventArgs( clickToLaunch ) );                
+                AutoClickClickTypeChosen( this, new ClickTypeEventArgs( clickToLaunch ) );
             }
         }
 
@@ -182,6 +122,6 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
-        
+
     }
 }

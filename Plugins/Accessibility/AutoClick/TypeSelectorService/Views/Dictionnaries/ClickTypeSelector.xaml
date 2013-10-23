@@ -97,7 +97,7 @@
     </ControlTemplate>
 
     <!-- ClickTypeSelector : ClickTypeSelector Template -->
-    <ControlTemplate x:Key="RunningClickTypeSelectorTemplate">
+    <ControlTemplate x:Key="ClickTypeSelectorTemplate">
         <ItemsControl ItemsSource="{Binding ClicksVM}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

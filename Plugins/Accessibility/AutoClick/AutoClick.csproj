@@ -123,52 +123,60 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoClick.cs" />
-    <Compile Include="Behaviors\SelectionBehavior.cs" />
-    <Compile Include="Converters\PathToImageConverter.cs" />
-    <Compile Include="Converters\InstructionToImageConverter.cs" />
-    <Compile Include="Converters\ValueToIsLargeArcConverter.cs" />
-    <Compile Include="Converters\ValueToPointConverter.cs" />
-    <Compile Include="IClickTypeSelector.cs" />
-    <Compile Include="ViewModels\ClickInstruction.cs">
+    <Compile Include="AutoClick\AutoClick.cs" />
+    <Compile Include="Tools\Behaviors\SelectionBehavior.cs" />
+    <Compile Include="Tools\Converters\PathToImageConverter.cs" />
+    <Compile Include="Tools\Converters\InstructionToImageConverter.cs" />
+    <Compile Include="Tools\Converters\ValueToIsLargeArcConverter.cs" />
+    <Compile Include="Tools\Converters\ValueToPointConverter.cs" />
+    <Compile Include="TypeSelectorService\IClickTypeSelector.cs" />
+    <Compile Include="TypeSelectorService\ViewModels\ClickInstruction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StdClickTypeSelector.cs" />
-    <Compile Include="ViewModels\ClickEmbedderVM.cs" />
-    <Compile Include="ViewModels\ClicksVM.cs" />
-    <Compile Include="ViewModels\ClickVM.cs" />
-    <Compile Include="Views\AutoClickEditorWindow.xaml.cs">
+    <Compile Include="TypeSelectorService\StdClickTypeSelector.cs" />
+    <Compile Include="TypeSelectorService\ViewModels\ClickEmbedderVM.cs" />
+    <Compile Include="TypeSelectorService\ViewModels\ClicksVM.cs" />
+    <Compile Include="TypeSelectorService\ViewModels\ClickVM.cs" />
+    <Compile Include="AutoClick\Views\AutoClickEditorWindow.xaml.cs">
       <DependentUpon>AutoClickEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MouseProgressPieWindow.xaml.cs">
+    <Compile Include="AutoClick\Views\MouseProgressPieWindow.xaml.cs">
       <DependentUpon>MouseProgressPieWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CustomControls\ActionOnOverButton.cs" />
-    <Compile Include="Views\CustomControls\WPFClickTypeWatch.cs" />
-    <Compile Include="Views\CustomControls\ActionOnMouseEnterButton.cs" />
-    <Compile Include="Views\WPFStdClickTypeWindow.xaml.cs">
-      <DependentUpon>WPFStdClickTypeWindow.xaml</DependentUpon>
+    <Compile Include="AutoClick\Views\CustomControls\ActionOnOverButton.cs" />
+    <Compile Include="AutoClick\Views\CustomControls\WPFClickTypeWatch.cs" />
+    <Compile Include="AutoClick\Views\CustomControls\ActionOnMouseEnterButton.cs" />
+    <Compile Include="AutoClick\Views\AutoClickWindow.xaml.cs">
+      <DependentUpon>AutoClickWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AutoClickEditorWindow.xaml">
+    <Page Include="AutoClick\Views\AutoClickEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MouseProgressPieWindow.xaml">
+    <Page Include="AutoClick\Views\Dictionnaries\AutoClick.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Dictionnaries\AutoClick.xaml">
+    <Page Include="AutoClick\Views\MouseProgressPieWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Dictionnaries\Editor.xaml">
+    <Page Include="SharedDictionnaries\Shared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\WPFStdClickTypeWindow.xaml">
+    <Page Include="TypeSelectorService\Views\Dictionnaries\ClickTypeSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoClick\Views\Dictionnaries\Editor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoClick\Views\AutoClickWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

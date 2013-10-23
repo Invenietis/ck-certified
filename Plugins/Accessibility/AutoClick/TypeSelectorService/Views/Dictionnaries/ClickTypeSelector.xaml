@@ -11,15 +11,31 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/AutoClick;component/SharedDictionnaries/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
-   
-    <!--<lib:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    <converters:InstructionToImageConverter x:Key="InstructionToImageConverter" />
-    <converters:PathToImageConverter x:Key="PathToImageConverter" />-->
+
+    <Geometry x:Key="DownArrow">M0,0 L1,0 0.5,1Z</Geometry>
+    <Geometry x:Key="UpArrow">M0,1 L1,1 0.5,0Z</Geometry>
+    <Geometry x:Key="RightArrow">M0,0 L1,0.5 0,1Z</Geometry>
+    <Geometry x:Key="LeftArrow">M0,0.5 L1,1 1,0Z</Geometry>
+    <Geometry x:Key="CloseX">M0,0 L1,1 M0,1 L1,0</Geometry>
+
+    <Geometry x:Key="ButtonGeometry">F1 M 318.939,102L 425,102C 454.271,102 478,125.729 478,155L 478,249C 478,278.271 454.271,302 425,302L 318.939,302C 289.668,302 265.939,278.271 265.939,249L 265.939,155C 265.939,125.729 289.668,102 318.939,102 Z</Geometry>
+    
+    <Style x:Key="ScrollIndicatorStyle" TargetType="{x:Type Path}">
+        <Setter Property="Width" Value="8"></Setter>
+        <Setter Property="Height" Value="10"></Setter>
+        <Setter Property="Stretch" Value="Fill"></Setter>
+        <Setter Property="Fill" Value="Black"></Setter>
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Binding Path="IsHighlighted" Converter="{StaticResource BooleanToVisibilityConverter}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!-- ClickTypeSelector :BlackButton -->
     <DrawingImage x:Key="BlackButtonImage">
         <DrawingImage.Drawing>
-            <GeometryDrawing Geometry="F1 M 318.939,102L 425,102C 454.271,102 478,125.729 478,155L 478,249C 478,278.271 454.271,302 425,302L 318.939,302C 289.668,302 265.939,278.271 265.939,249L 265.939,155C 265.939,125.729 289.668,102 318.939,102 Z ">
+            <GeometryDrawing Geometry="{StaticResource ButtonGeometry}">
                 <GeometryDrawing.Pen>
                     <Pen Thickness="15" LineJoin="Round">
                         <Pen.Brush>
@@ -48,7 +64,7 @@
     <!-- ClickTypeSelector : GrayButton -->
     <DrawingImage x:Key="GrayButtonImage">
         <DrawingImage.Drawing>
-            <GeometryDrawing Geometry="F1 M 318.939,102L 425,102C 454.271,102 478,125.729 478,155L 478,249C 478,278.271 454.271,302 425,302L 318.939,302C 289.668,302 265.939,278.271 265.939,249L 265.939,155C 265.939,125.729 289.668,102 318.939,102 Z ">
+            <GeometryDrawing Geometry="{StaticResource ButtonGeometry}">
                 <GeometryDrawing.Pen>
                     <Pen Thickness="15" LineJoin="Round">
                         <Pen.Brush>
@@ -73,26 +89,24 @@
             </GeometryDrawing>
         </DrawingImage.Drawing>
     </DrawingImage>
-    
+
     <!-- ClickTypeSelector : ClickTypeButton Template -->
     <ControlTemplate x:Key="ClickTypeButtonTemplate" TargetType="{x:Type views:ActionOnMouseEnterButton}">
-        <Grid>
-            <Image Name="AutoClickButtonImage" Source="{StaticResource GrayButtonImage}" />
-            <!-- ContentPresenter : The image corresponding to the clickType -->
-            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Image Opacity="0.8" x:Name="ClickImage" Source="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" RenderOptions.BitmapScalingMode="HighQuality" />
+        <Border x:Name="ButtonContainer">
+            <Grid>
+                <Image Name="AutoClickButtonImage" Source="{StaticResource GrayButtonImage}">
+                </Image>
+                <!-- ContentPresenter : The image corresponding to the clickType -->
+                <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Opacity="1" x:Name="ClickImage" Source="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" RenderOptions.BitmapScalingMode="HighQuality">
+                    </Image>
+                </Grid>
             </Grid>
-        </Grid>
+        </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="Selected" Value="True">
                 <Setter TargetName="AutoClickButtonImage" Property="Source" Value="{StaticResource BlackButtonImage}" />
-                <Setter TargetName="ClickImage" Property="BitmapEffect">
-                    <Setter.Value>
-                        <OuterGlowBitmapEffect GlowColor="White" GlowSize="10" />
-                    </Setter.Value>
-                </Setter>
-                <Setter TargetName="ClickImage" Property="Opacity" Value="1"/>
-            </Trigger>            
+            </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -106,18 +120,26 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Viewbox Margin="2">
-                        <views:ActionOnMouseEnterButton Content="{Binding ImagePath, Mode=OneWay, Converter={StaticResource PathToImageConverter}}" 
+                    <Grid>
+                        <Viewbox Margin="10">
+                            <views:ActionOnMouseEnterButton Content="{Binding ImagePath, Mode=OneWay, Converter={StaticResource PathToImageConverter}}" 
                                                         Width="70" Height="70" FontSize="12" Padding="10"
                                                         Template="{StaticResource ClickTypeButtonTemplate}"                                                        
                                                         MouseEnterCommand="{Binding ChangeSelectionCommand}"
-                                                        RenderTransformOrigin="0.5,0.5" 
                                                         Selected="{Binding Path=IsSelected}">
-                            <views:ActionOnMouseEnterButton.ToolTip>
-                                <TextBlock Text="{Binding Name}" />
-                            </views:ActionOnMouseEnterButton.ToolTip>
-                        </views:ActionOnMouseEnterButton>
-                    </Viewbox>
+                                <views:ActionOnMouseEnterButton.ToolTip>
+                                    <TextBlock Text="{Binding Name}" />
+                                </views:ActionOnMouseEnterButton.ToolTip>
+                            </views:ActionOnMouseEnterButton>
+                        </Viewbox>
+                        <!--These paths are arrows indicating the clicktype that is being highlighted (by the scrolling service) -->
+                        <Path Data="{StaticResource RightArrow}" 
+                              Style="{StaticResource ScrollIndicatorStyle}"
+                              HorizontalAlignment="Left" />
+                        <Path Data="{StaticResource LeftArrow}" 
+                              Style="{StaticResource ScrollIndicatorStyle}" 
+                              HorizontalAlignment="Right" />
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

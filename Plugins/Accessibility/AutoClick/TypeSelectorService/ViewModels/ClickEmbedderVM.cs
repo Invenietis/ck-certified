@@ -31,10 +31,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.ComponentModel;
 using CK.WPF.ViewModel;
+using HighlightModel;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
-    public class ClickEmbedderVM : ObservableCollection<ClickVM>, INotifyPropertyChanged
+    public class ClickEmbedderVM : ObservableCollection<ClickVM>, INotifyPropertyChanged, IHighlightableElement
     {
         #region Variables & Properties
 
@@ -58,10 +59,10 @@ namespace CK.Plugins.AutoClick.ViewModel
         }
 
         private ClicksVM _holder;
-        public ClicksVM Holder 
-        { 
+        public ClicksVM Holder
+        {
             get { return _holder; }
-            set { _holder = value; } 
+            set { _holder = value; }
         }
 
         private bool _isSelected;
@@ -90,6 +91,18 @@ namespace CK.Plugins.AutoClick.ViewModel
             return nextClick;
         }
 
+        bool _isHighlighted = false;
+        public bool IsHighlighted
+        {
+            get { return _isHighlighted; }
+            set
+            {
+                Console.Out.WriteLine( "Hightlighted ? " + value + " who ? " + ImagePath );
+                _isHighlighted = value;
+                OnPropertyChanged( "IsHighlighted" );
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -104,7 +117,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             {
                 Add( click );
             }
-            
+
             _changeSelectionCmd = new VMCommand( DoSelect );
         }
 
@@ -113,9 +126,9 @@ namespace CK.Plugins.AutoClick.ViewModel
         #region Methods
 
         /// <summary>
-        /// Will be called by the UI (via a Command) whenever the clickEmbedder is selected
+        /// Will be called by the UI (via a Command) or an external device (the scroller for example) whenever the clickEmbedder is selected
         /// </summary>
-        private void DoSelect()
+        internal void DoSelect()
         {
             _holder.ChangeSelection( this );
         }
@@ -177,6 +190,36 @@ namespace CK.Plugins.AutoClick.ViewModel
         }
 
         #endregion
+
+        public Core.ICKReadOnlyList<IHighlightableElement> Children
+        {
+            get { return Core.CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
+        }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return 0; }
+        }
+
+        public int Height
+        {
+            get { return 0; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.None; }
+        }
     }
 
     #region EventHandlers / EventArgs

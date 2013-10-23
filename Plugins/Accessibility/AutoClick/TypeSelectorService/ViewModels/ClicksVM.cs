@@ -29,16 +29,21 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using CK.Plugins.AutoClick.Model;
+using HighlightModel;
+using CK.Core;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
-    public class ClicksVM : ObservableCollection<ClickEmbedderVM>, INotifyPropertyChanged
+    public class ClicksVM : ObservableCollection<ClickEmbedderVM>, INotifyPropertyChanged, IHighlightableElement
     {
 
         #region Properties
 
         private ClickEmbedderVM _selectedClickEmbedderVM;
         public ClickVM NextClick { get { return _selectedClickEmbedderVM.NextClick; } }
+
+        private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
+        public ICKReadOnlyList<ClickEmbedderVM> ReadOnlyClicksVM { get { return _clicksVmReadOnlyAdapter.ToReadOnlyList(); } }
 
         internal ClickVM GetNextClick( bool doIncrement )
         {
@@ -59,10 +64,13 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         public ClicksVM( IList<ClickEmbedderVM> clickEmbeddersVM )
         {
+
             foreach( ClickEmbedderVM clickEmbedderVM in clickEmbeddersVM )
             {
                 Add( clickEmbedderVM );
             }
+            _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( this );
+
             this.First().ChangeSelectionCommand.Execute( this );
             OnPropertyChanged( "NextClick" );
         }
@@ -194,5 +202,35 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         #endregion
 
+
+        public Core.ICKReadOnlyList<IHighlightableElement> Children
+        {
+            get { return ReadOnlyClicksVM; }
+        }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return 0; }
+        }
+
+        public int Height
+        {
+            get { return 0; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.EnterChildren; }
+        }
     }
 }

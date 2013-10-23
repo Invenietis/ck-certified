@@ -34,11 +34,13 @@ using System.Diagnostics;
 using System.ComponentModel;
 using CK.Plugin;
 using CK.Core;
+using CommonServices.Accessibility;
+using HighlightModel;
 
 namespace CK.Plugins.AutoClick
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class StdClickTypeSelector : CK.WPF.ViewModel.VMBase, IClickTypeSelector, IPlugin
+    public class StdClickTypeSelector : CK.WPF.ViewModel.VMBase, IClickTypeSelector, IPlugin, IHighlightableElement
     {
         const string PluginGuidString = "{F9687F04-7370-4812-9EB4-1320EB282DD8}";
         Guid PluginGuid = new Guid( PluginGuidString );
@@ -48,8 +50,15 @@ namespace CK.Plugins.AutoClick
 
         #region Variables & Properties
 
-        //ViewModel
+        [DynamicService( Requires = RunningRequirement.Optional )]
+        public IService<IHighlighterService> Highlighter { get; set; }
+
+        private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
+        private ClickSelectorWindow _clickSelectorWindow;
+
+
         public ClicksVM ClicksVM { get; set; }
+        public ICKReadOnlyList<ClickEmbedderVM> ReadOnlyClicksVM { get { return _clicksVmReadOnlyAdapter.ToReadOnlyList(); } }
 
         #endregion
 
@@ -58,18 +67,41 @@ namespace CK.Plugins.AutoClick
         public bool Setup( IPluginSetupInfo info )
         {
             ClicksVM = new ClicksVM();
+            _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             return true;
         }
 
         public void Start()
         {
-            ClickSelectorWindow _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
+            if( Highlighter.Status.IsStartingOrStarted )
+            {
+                RegisterHighlighterService();
+            }
+
+            Highlighter.ServiceStatusChanged += Highlighter_ServiceStatusChanged;
+
+            _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
             _clickSelectorWindow.Show();
+        }
+
+        void Highlighter_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                RegisterHighlighterService();
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                UnregisterHighlighterService();
+            }
         }
 
         public void Stop()
         {
+            UnregisterHighlighterService();
 
+            _clickSelectorWindow.Close();
+            _clickSelectorWindow = null;
         }
 
         public void Teardown()
@@ -122,6 +154,102 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
+        #region IHighlightable Members
 
+        private void RegisterHighlighterService()
+        {
+            Highlighter.Service.RegisterTree( this );
+            Highlighter.Service.BeginHighlight += OnBeginHighlight;
+            Highlighter.Service.EndHighlight += OnEndHighlight;
+            Highlighter.Service.SelectElement += OnScrollerSelect;
+        }
+
+        private void UnregisterHighlighterService()
+        {
+            Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+            Highlighter.Service.EndHighlight -= OnEndHighlight;
+            Highlighter.Service.SelectElement -= OnScrollerSelect;
+            Highlighter.Service.UnregisterTree( this );
+        }
+
+        bool _isHighlighted;
+        public bool IsHighlighted
+        {
+            get { return _isHighlighted; }
+            set
+            {
+                _isHighlighted = value;
+                OnPropertyChanged( "IsHighlighted" );
+            }
+        }
+
+        private void OnBeginHighlight( object sender, HighlightEventArgs e )
+        {
+            if( e.Element == this )
+            {
+                IsHighlighted = true;
+                Console.Out.WriteLine( "Highlighting Root" );
+            }
+            else if( e.Element is ClickEmbedderVM )
+            {
+                var result = ClicksVM.SingleOrDefault( ( el ) => el == e.Element );
+                Debug.Assert( result != null, "BeginHighlight was called on a ClickType that does not exist" );
+                result.IsHighlighted = true;
+                Console.Out.WriteLine( "Highlighting Child : " + result.ImagePath );
+            }
+        }
+
+        private void OnEndHighlight( object sender, HighlightEventArgs e )
+        {
+            if( e.Element is StdClickTypeSelector )
+            {
+                IsHighlighted = false;
+            }
+            else if( e.Element is ClickEmbedderVM )
+            {
+                ClickEmbedderVM clickEmbedder = ClicksVM.SingleOrDefault( ( el ) => el == e.Element );
+                Debug.Assert( clickEmbedder != null, "EndHighlight was called on a ClickType that does not exist" );
+                clickEmbedder.IsHighlighted = false;
+            }
+        }
+
+        void OnScrollerSelect( object sender, HighlightEventArgs e )
+        {
+            if( e.Element is ClickEmbedderVM )
+            {
+                ClickEmbedderVM clickEmbedder = ClicksVM.SingleOrDefault( ( el ) => el == e.Element );
+                Debug.Assert( clickEmbedder != null, "SelectElement was called on a ClickType that does not exist" );
+                clickEmbedder.DoSelect();
+            }
+        }
+
+        public ICKReadOnlyList<IHighlightableElement> Children { get { return ReadOnlyClicksVM; } }
+
+        public int X
+        {
+            get { return (int)_clickSelectorWindow.Left; }
+        }
+
+        public int Y
+        {
+            get { return (int)_clickSelectorWindow.Top; }
+        }
+
+        public int Width
+        {
+            get { return (int)_clickSelectorWindow.Width; }
+        }
+
+        public int Height
+        {
+            get { return (int)_clickSelectorWindow.Height; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.None; }
+        }
+
+        #endregion
     }
 }

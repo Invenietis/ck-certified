@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CK.Plugin;
 
-namespace ScreenDivider
+namespace CK.Plugins.ScreenDivider
 {
     public class ScreenDivider : IPlugin
     {

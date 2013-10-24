@@ -1,0 +1,30 @@
+﻿<Window x:Class="ScreenDivider.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ScreenDivider.Converters"
+        xmlns:views="clr-namespace:ScreenDivider.Views"
+        xmlns:viewModels="clr-namespace:ScreenDivider.ViewModels"
+        Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True"
+        x:Name="MWin" Topmost="True">
+    <Window.Resources>
+        <local:BooleanToColor x:Key="BooleanToColor" />
+        <local:BooleanToOpacity x:Key="BooleanToOpacity" />
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:WindowViewModel/>
+    </Window.DataContext>
+    <Window.Opacity>
+        <Binding Path="IsPause" Converter="{StaticResource BooleanToOpacity}"/>
+    </Window.Opacity>
+    <DockPanel Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=IsActive, Converter={StaticResource BooleanToColor}}">
+        <Grid x:Name="MainWindowGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        </Grid>
+        <DockPanel.Visibility>
+            <Binding Path="IsPause" Converter="{StaticResource BooleanToVisibilityConverter}"/>
+        </DockPanel.Visibility>
+    </DockPanel>
+</Window>

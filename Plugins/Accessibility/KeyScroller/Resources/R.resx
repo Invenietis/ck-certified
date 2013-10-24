@@ -144,6 +144,9 @@
   <data name="SimpleScrollingStrategy" xml:space="preserve">
     <value>Scrolling key by key</value>
   </data>
+  <data name="StateStrategy" xml:space="preserve">
+    <value>State</value>
+  </data>
   <data name="TurboScrollingStrategy" xml:space="preserve">
     <value>Fast scrolling (key by key)</value>
   </data>

@@ -27,6 +27,8 @@ namespace MouseRadar
         public double Radian { get; private set; }
         public int RotationSpeed { get; set; }
         public int TranslationSpeed { get; set; }
+        public bool SnakeMode { get; set; }
+        
         public RadarViewModel Model { get; private set; }
         
         public Radar(IPointerDeviceDriver pdd) : this()
@@ -36,7 +38,7 @@ namespace MouseRadar
             Model.SetArrowColor( Color.FromRgb( 0, 0, 0 ) );
             Model.Opacity = 1;
             Model.RadarSize = 100;
-            
+            SnakeMode = false;
             DataContext = Model;
             _mouseDriver = pdd;
             Left = pdd.CurrentPointerXLocation - Model.WindowSize / 2;
@@ -86,8 +88,8 @@ namespace MouseRadar
             if( p.Y - precision <= current.Bounds.Top ) collision = ScreenBound.Top;
             if( p.Y + precision >= current.Bounds.Bottom - 1)
                 collision = ScreenBound.Bottom; //Y can't be equel to current.Bounds.Bottom (current.Bounds.Bottom - 1 max)
-
-            return collision;
+            //Console.WriteLine( "Colision: " + collision );
+            return collision; 
         }
 
         void ProcessTranslation(object sender, EventArgs e)
@@ -95,6 +97,7 @@ namespace MouseRadar
             int moveX = _mouseDriver.CurrentPointerXLocation;
             int moveY = _mouseDriver.CurrentPointerYLocation;
             var p = GetTranslation( moveX, moveY );
+            //Console.WriteLine(" MOVE X {0}, Y {1}", moveX, moveY);
             Screen curScreen = Screen.FromPoint( new System.Drawing.Point( (int)p.X, (int)p.Y ) );
            
             ScreenBound collision = CheckBoundCollision( p );
@@ -107,20 +110,78 @@ namespace MouseRadar
                     moveY = (int)p.Y;
                     break;
                 case ScreenBound.Left:
-                    moveX = 0;
-                    moveY = (int)p.Y;
+                    if( SnakeMode )
+                    {
+                        //Reset the translation properties then recompute the translation
+                        _rayon = 0;
+                        _originX = moveX = curScreen.Bounds.Right - 1;
+                        _originY = moveY = curScreen.Bounds.Bottom - 1 -  moveY ;
+
+                        p = GetTranslation( moveX, moveY );
+
+                        moveY = (int)p.Y;
+                        moveX = (int)p.X;
+                        collision = ScreenBound.None;
+                    }
+                    else
+                    {
+                        moveX = 0;
+                        moveY = (int)p.Y;
+                    }
                     break;
                 case ScreenBound.Top:
-                    moveY = 0;
-                    moveX = (int)p.X;
+                    if( SnakeMode )
+                    {
+                        //Reset the translation properties then recompute the translation
+                        _rayon = _rayon - curScreen.Bounds.Bottom - 1;
+                        p = GetTranslation( moveX, moveY );
+
+                        moveY = (int)p.Y;
+                        moveX = (int)p.X;
+                        collision = ScreenBound.None;
+                    }
+                    else
+                    {
+                        moveY = 0;
+                        moveX = (int)p.X;
+                    }
+                    
                     break;
                 case ScreenBound.Right:
-                    moveX = curScreen.Bounds.Right;
-                    moveY = (int)p.Y;
+                    if( SnakeMode )
+                    {
+                        //Reset the translation properties then recompute the translation
+                        _rayon = _rayon - curScreen.Bounds.Right - 1;
+           
+                        p = GetTranslation( moveX, moveY );
+
+                        moveY = (int)p.Y;
+                        moveX = (int)p.X;
+                        collision = ScreenBound.None;
+                    }
+                    else
+                    {
+                        moveX = curScreen.Bounds.Right;
+                        moveY = (int)p.Y;
+                    }
                     break;
                 case ScreenBound.Bottom:
-                    moveY = curScreen.Bounds.Bottom;
-                    moveX = (int)p.X;
+                    if( SnakeMode )
+                    {
+                        //Reset the translation properties then recompute the translation
+                        _rayon = _rayon - curScreen.Bounds.Bottom - 1;
+                        p = GetTranslation( moveX, moveY );
+
+                        moveY = (int)p.Y;
+                        moveX = (int)p.X;
+                        collision = ScreenBound.None;
+                    }
+                    else
+                    {
+                        moveY = curScreen.Bounds.Bottom;
+                        moveX = (int)p.X;
+                    }
+                    
                     break;
             }
 
@@ -136,7 +197,7 @@ namespace MouseRadar
         {
             return _timerTranslate.IsEnabled;
         }
-        public void EndRotation()
+        public void StopRotation()
         {
             _timerRotate.Stop();
         }

@@ -117,6 +117,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="RootState.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="StateContext.cs" />
+    <Compile Include="StateScheduler.cs" />
+    <Compile Include="VirtualElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -129,6 +134,10 @@
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\KeyScroller\KeyScroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>

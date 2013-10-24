@@ -112,9 +112,9 @@ namespace CommonServices
     public enum TriggerDevice
     {
         None = 0,
-        Keyboard = 2,
-        Civikey = 4,
-        Pointer = 8
+        Keyboard = 1 ,
+        Civikey = 2,
+        Pointer = 3
     }
 
     public class InputTriggerEventArgs : EventArgs

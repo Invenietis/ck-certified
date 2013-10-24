@@ -21,6 +21,7 @@ namespace MouseRadar
         public float AngleMin { get; set; }
         public float AngleMax { get; set; }
         public Point ScreenScale { get; set; }
+        public int LapCount { get; set; }
 
         public RadarViewModel()
         {
@@ -108,15 +109,27 @@ namespace MouseRadar
                 if( AngleMin > AngleMax )
                 {
                     //Jump to AngleMin if Angle beetween max and min
-                    if( value >= AngleMax && value <= AngleMin) _angle = value - AngleMax + AngleMin;
+                    if( value >= AngleMax && value <= AngleMin )
+                    {
+                        _angle = value - AngleMax + AngleMin;
+                        LapCount++;
+                    }
                     else if( value >= 360 ) _angle = value - 360; //When angle > 360 restart to 0
                     else _angle = value;
                 }
                 else
                 {
                     //Back to AngleMin if Angle > max 
-                    if( value >= AngleMax ) _angle = value - AngleMax + AngleMin;
-                    else if( value < AngleMin ) _angle = value + AngleMax;//Jump to AngleMax when Angle < AngleMin
+                    if( value >= AngleMax )
+                    {
+                        _angle = value - AngleMax + AngleMin;
+                        LapCount++;
+                    }
+                    else if( value < AngleMin )
+                    {
+                        _angle = value + AngleMax;//Jump to AngleMax when Angle < AngleMin
+                        LapCount++;
+                    }
                     else _angle = value;
                 }
                 

@@ -65,7 +65,7 @@ namespace CK.WindowManager.Model
             if( newBinding == null ) throw new ArgumentNullException( "binding" );
 
             if( Binding == null ) return false;
-            return newBinding.Position == Binding.Position && Binding.Master == newBinding.Master;
+            return newBinding.Position == Binding.Position && Binding.Target == newBinding.Target;
         }
     }
 

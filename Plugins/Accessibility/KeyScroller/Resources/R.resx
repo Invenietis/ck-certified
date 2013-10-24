@@ -147,4 +147,7 @@
   <data name="TurboScrollingStrategy" xml:space="preserve">
     <value>Fast scrolling (key by key)</value>
   </data>
+  <data name="SplitScrollingStrategy" xml:space="preserve">
+    <value>Scrolling by half-zone</value>
+  </data>
 </root>

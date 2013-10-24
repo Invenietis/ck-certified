@@ -36,9 +36,10 @@ namespace KeyScroller
                 if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
                 else
                 {
-                    FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
+                    //FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
                     _actionType = ActionType.StayOnTheSame;
                 }
+                FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
             }
         }
     }

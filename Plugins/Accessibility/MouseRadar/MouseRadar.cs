@@ -100,33 +100,33 @@ namespace MouseRadar
             
             Highliter.Service.BeginHighlight += ( o, e ) =>
             {
-                if( e.Element != this && e.Element != _child[0] ) return;
+                if( e.Element != this && e.Element != _child.Single() ) return;
                 Focus();
                 Console.WriteLine( "Begin" );
+
                 if( _radar.Model.LapCount >= 3 )
                 {
-                    _radar.Model.LapCount = 0;
-                    ((IActionnableElement)_child[0]).ActionType = ActionType.UpToParent;
-                    
+                    ((IActionnableElement)_child.Single()).ActionType = ActionType.UpToParent;
+                    Pause();
                 }
             };
             
             Highliter.Service.SelectElement += ( o, e ) =>
             {
+                Console.WriteLine( "Element " + e.Element );
                 if( e.Element == this )
                 {
-                    ((IActionnableElement)_child[0]).ActionType = ActionType.StayOnTheSame;
-                    IsActive = true;
+                    Resume();
                 }
-                else if( e.Element == _child[0] ) TranslateRadar();
+                else if( e.Element == _child.Single() ) TranslateRadar();
             };
+
             Highliter.Service.EndHighlight += ( o, e ) =>
             {
-                if( e.Element != this && e.Element != _child[0] ) return;
+                if( e.Element != this && e.Element != _child.Single() ) return;
                 Blur();
         
                 Console.WriteLine( "End" );
-   
             };
 
             _radar.ScreenBoundCollide += ( o, e ) => {
@@ -159,10 +159,13 @@ namespace MouseRadar
 
             _radar.Show();
             _radar.Launch();
+            IsActive = true;
+            Pause();
         }
 
         void TranslateRadar()
         {
+            if( !IsActive ) return;
             if(_radar.IsTranslating()) _radar.StopTranslation();
             else _radar.StartTranslation();
             _radar.Model.LapCount = 0;
@@ -180,12 +183,22 @@ namespace MouseRadar
         }
         void Pause()
         {
-            _radar.StopTranslation();
+            
+            Console.WriteLine( "Pause" );
+            
             _radar.StopRotation();
+            _radar.StopTranslation( false );
+            _radar.Model.LapCount = 0;
+            IsActive = false;
         }
         void Resume()
         {
+            
+
+            Console.WriteLine( "Resume" );
+            ((IActionnableElement)_child.Single()).ActionType = ActionType.StayOnTheSame;
             _radar.StartRotation();
+            IsActive = true;
         }
         void Focus()
         {

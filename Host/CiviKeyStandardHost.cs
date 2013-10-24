@@ -116,12 +116,12 @@ namespace Host
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
             hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SindInput
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
 
-            ctx.PluginRunner.Add( hostRequirements );
+            ctx.PluginRunner.Add( hostRequirements )                                                                                                                                                                                                                    ;
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );

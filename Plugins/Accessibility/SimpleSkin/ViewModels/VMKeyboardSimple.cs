@@ -244,6 +244,24 @@ namespace SimpleSkin.ViewModels
 
         #region IHighlightableElement Members
 
+        private bool _isHighlighting;
+        public bool IsHighlighting
+        {
+            get { return _isHighlighting; }
+            set
+            {
+                if( value != _isHighlighting )
+                {
+                    ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
+                    OnPropertyChanged( "IsHighlighting" );
+                    foreach( var key in Keys )
+                    {
+                        key.IsHighlighting = value;
+                    }
+                }
+            }
+        }
+
         public ICKReadOnlyList<IHighlightableElement> Children
         {
             get
@@ -252,7 +270,7 @@ namespace SimpleSkin.ViewModels
                 {
                     return new CKReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
                 }
-                return new CKReadOnlyListOnIList<IHighlightableElement>( new List<IHighlightableElement>() );
+                return CKReadOnlyListEmpty<IHighlightableElement>.Empty;
             }
         }
 
@@ -280,8 +298,8 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-                if( Zones.Count > 0 && Zones.Any( z => z.Skip != SkippingBehavior.Skip ) )
-                    return SkippingBehavior.EnterChildren; //We enter only if there are zones that need to be scrolled through.
+                if( Zones.Count == 0 || Zones.All( z => z.Skip == SkippingBehavior.Skip ) )
+                    return SkippingBehavior.Skip; //If there are no zones or that they are all to be skipped, we skip this root element
                 return SkippingBehavior.None;
             }
         }

@@ -188,6 +188,10 @@ namespace CK.Plugins.AutoClick
             {
                 _isHighlighted = value;
                 OnPropertyChanged( "IsHighlighted" );
+                foreach( var click in ClicksVM )
+                {
+                    click.IsHighlighted = value;
+                }
             }
         }
 

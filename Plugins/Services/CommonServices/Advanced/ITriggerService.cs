@@ -36,9 +36,85 @@ namespace CommonServices
     public interface ITriggerService : IDynamicService
     {
         /// <summary>
-        /// Fired to clients to let them know that they have to do an action intended by an external input.
+        /// Get the default ITrigger
         /// </summary>
-        event EventHandler<InputTriggerEventArgs> Triggered;
+        ITrigger DefaultTrigger { get; }
+
+        /// <summary>
+        /// The listener that listen all input kind
+        /// </summary>
+        IInputListener InputListener { get; }
+
+        /// <summary>
+        /// Register an Action to the given trigger
+        /// </summary>
+        /// <param name="trigger"></param>
+        /// <param name="action"></param>
+        /// <param name="preventDefault">if true, the event fired by the ITrigger is not propagated to the system</param>
+        void RegisterFor( ITrigger trigger, Action<ITrigger> action, bool preventDefault = true );
+
+        /// <summary>
+        /// Unregister the given action to the given trigger
+        /// </summary>
+        /// <param name="trigger"></param>
+        /// <param name="action"></param>
+        void Unregister(ITrigger trigger, Action<ITrigger> action );
+    }
+
+    /// <summary>
+    /// Describe a class wich is able to catch inputs from the supported devices
+    /// </summary>
+    public interface IInputListener : IDisposable
+    {
+        /// <summary>
+        /// Listen to inputs and invoke the callback method when a trigger is rised
+        /// </summary>
+        /// <returns></returns>
+        void Record( Action<ITrigger> callback );
+        
+        /// <summary>
+        /// True when a record is ongoing
+        /// </summary>
+        bool IsRecording { get; }
+
+        /// <summary>
+        /// Fired when any input is pressed
+        /// </summary>
+        event EventHandler<KeyDownEventArgs> KeyDown;
+    }
+
+    /// <summary>
+    /// A captured input
+    /// </summary>
+    public interface ITrigger
+    {
+        int KeyCode { get; }
+
+        /// <summary>
+        /// Source device
+        /// </summary>
+        TriggerDevice Source { get; }
+    }
+
+    public class KeyDownEventArgs : EventArgs
+    {
+        public int KeyCode { get; private set; }
+        public TriggerDevice Source { get; private set; }
+
+        public KeyDownEventArgs( int keyCode, TriggerDevice device )
+            : base()
+        {
+            KeyCode = keyCode;
+            Source = device;
+        }
+    }
+
+    public enum TriggerDevice
+    {
+        None = 0,
+        Keyboard = 1 ,
+        Civikey = 2,
+        Pointer = 3
     }
 
     public class InputTriggerEventArgs : EventArgs

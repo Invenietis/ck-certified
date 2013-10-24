@@ -11,6 +11,7 @@ using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
+using InputTrigger;
 
 namespace KeyScroller
 {
@@ -32,11 +33,12 @@ namespace KeyScroller
         IScrollingStrategy _scrollingStrategy;
         DispatcherTimer _timer;
         Dictionary<string, IScrollingStrategy> _strategies;
+        ITrigger _currentTrigger;
 
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<ITriggerService> ExternalInput { get; set; }
+        public IService<ITriggerService> InputTrigger { get; set; }
 
         //List the avalaible strategy at the class init
         static KeyScrollerPlugin()
@@ -73,6 +75,9 @@ namespace KeyScroller
                 case "SimpleScrollingStrategy":
                     if( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new SimpleScrollingStrategy( _timer, _registeredElements, Configuration );
+                case "StateStrategy":
+                    if( _strategies.ContainsKey( name ) ) return _strategies[name];
+                    return new StateStrategy( _timer, _registeredElements, Configuration );
 
                 default:
                     if( _strategies.ContainsKey( "BasicScrollingStrategy" ) ) return _strategies["BasicScrollingStrategy"];
@@ -92,16 +97,25 @@ namespace KeyScroller
                         _scrollingStrategy = GetStrategyByName( e.Value.ToString() );
                         _scrollingStrategy.Start();
                     }
+                    if( e.Key == "Trigger" )
+                    {
+                        if( _currentTrigger != null )
+                        {
+                            InputTrigger.Service.Unregister( _currentTrigger, OnInputTriggered );
+                            _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
+                            InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
+                        }
+                    }
                 }
             };
 
-            ExternalInput.Service.Triggered += OnExternalInputTriggered;
+            _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
+            InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
         }
 
         public void Stop()
         {
-            ExternalInput.Service.Triggered -= OnExternalInputTriggered;
-
+            InputTrigger.Service.Unregister( _currentTrigger, OnInputTriggered );
             _scrollingStrategy.Stop();
         }
 
@@ -200,10 +214,10 @@ namespace KeyScroller
 
         #endregion
 
-        private void OnExternalInputTriggered( object sender, InputTriggerEventArgs e )
+        private void OnInputTriggered( ITrigger t )
         {
-            if( e.Source != InputSource.CiviKey )
-                _scrollingStrategy.OnExternalEvent();
+            _scrollingStrategy.OnExternalEvent();
+            Console.WriteLine( "Triggered : " + t.KeyCode );
         }
     }
 }

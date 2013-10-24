@@ -324,4 +324,10 @@
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
     <value>Activer la prédiction sémantique (analyse de la structure de la phrase)</value>
   </data>
+  <data name="Radar" xml:space="preserve">
+    <value>Radar</value>
+  </data>
+  <data name="RadarConfiguration" xml:space="preserve">
+    <value>Configuration du radar</value>
+  </data>
 </root>

@@ -136,25 +136,22 @@ namespace PointerDeviceDriver
         {
             if( e.Code >= 0 && e.wParam == (IntPtr)WM_KEYDOWN )
             {
-
                 LLKBDHOOKSTRUCT keyboardInfo = (LLKBDHOOKSTRUCT)Marshal.PtrToStructure( e.lParam, typeof( LLKBDHOOKSTRUCT ) );
                 int vkCode = keyboardInfo.wVk;
-                if( _cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 ) )
-                {
+                
                     
-                    InputSource source = InputSource.Other;
-                    if( (int)keyboardInfo.dwExtraInfo == 39229115 ) //CiviKey's footprint
-                    {
-                        source = InputSource.CiviKey;
-                    }
-                    else
-                    {
-                        //We only swallow the event if we are going to do something with it and that it does not come from CiviKey
-                        if( KeyDown != null ) e.Cancel = true;
-                    }
-
-                    Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int, InputSource>)FireEvent, vkCode, source );
+                InputSource source = InputSource.Other;
+                if( (int)keyboardInfo.dwExtraInfo == 39229115 ) //CiviKey's footprint
+                {
+                    source = InputSource.CiviKey;
                 }
+                else
+                {
+                    //We only swallow the event if we are going to do something with it and that it does not come from CiviKey
+                    if( KeyDown != null && (_cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 )) ) e.Cancel = true;
+                }
+     
+                Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int, InputSource>)FireEvent, vkCode, source );
             }
         }
 

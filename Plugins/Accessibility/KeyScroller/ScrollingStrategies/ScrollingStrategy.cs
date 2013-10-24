@@ -57,8 +57,18 @@ namespace KeyScroller
         {
             SelectElement( sender, eventArgs );
         }
+
+        int swallowedBeatsCount = 0;
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
+            //In case we are scrolling on the top level, we slow the scroller down by swallowing every other beat.
+            if( _currentElementParents.Count == 0 && swallowedBeatsCount < 1 )
+            {
+                swallowedBeatsCount++;
+                return;
+            }
+            swallowedBeatsCount = 0;
+
             if( _currentElement != null ) FireEndHighlight();
 
             // highlight the next element

@@ -5,13 +5,14 @@ using System.Text;
 
 namespace CK.WindowManager.Model
 {
+    [Flags]
     public enum BindingPosition
     {
-        None,
-        Top,
-        Right,
-        Bottom,
-        Left
+        None = 0,
+        Top = 1,
+        Right = 2,
+        Bottom = 4,
+        Left = 8
     }
     /// <summary>
     /// Represents a binding between two <see cref="IWindowElement"/>.
@@ -21,24 +22,30 @@ namespace CK.WindowManager.Model
         /// <summary>
         /// Represents the position of the Master window relative to Slave the  window.
         /// <remarks>
-        /// Master
-        /// Slave
-        /// > Position: Top
+        /// Target
+        /// Origin
+        /// > Position: Bottom
         /// 
-        /// Master - Slave > Position: Left
+        /// Origin - Target > Position: Left
         /// 
-        /// Slave
-        /// Master
-        /// > Position: Bottom.
+        /// Origin
+        /// Target
+        /// > Position: Top.
         /// 
-        /// Slave - Master > Position: Right
+        /// Target - Origin > Position: Right
         /// </remarks>
         /// </summary>
         BindingPosition Position { get; }
 
-        IWindowElement Master { get; }
+        /// <summary>
+        /// The target window element
+        /// </summary>
+        IWindowElement Target { get; }
 
-        IWindowElement Slave { get; }
+        /// <summary>
+        /// The origin window element (or current window)
+        /// </summary>
+        IWindowElement Origin { get; }
     }
 
     public interface ISpatialBinding

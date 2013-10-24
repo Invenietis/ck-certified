@@ -21,7 +21,7 @@ namespace MouseRadar
            PublicName = MouseRadar.PluginPublicName,
            Version = MouseRadar.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class MouseRadar : IPlugin, IHighlightableElement
+    public class MouseRadar : IPlugin, IActionnableElement
     {
         internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -32,7 +32,7 @@ namespace MouseRadar
 
         ICKReadOnlyList<IHighlightableElement> _child;
         Radar _radar;
-        VirtualElement _vElement;
+        //VirtualElement _vElement;
         
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
@@ -106,27 +106,26 @@ namespace MouseRadar
 
                 if( _radar.Model.LapCount >= 3 )
                 {
-                    ((IActionnableElement)_child.Single()).ActionType = ActionType.UpToParent;
-                    Pause();
+                    ActionType = KeyScroller.ActionType.Normal;
                 }
             };
             
             Highliter.Service.SelectElement += ( o, e ) =>
             {
                 Console.WriteLine( "Element " + e.Element );
-                if( e.Element == this )
-                {
-                    Resume();
-                }
-                else if( e.Element == _child.Single() ) TranslateRadar();
+                if( e.Element != this ) return;
+
+                if( IsActive ) TranslateRadar();
+                else Resume();
             };
 
             Highliter.Service.EndHighlight += ( o, e ) =>
             {
-                if( e.Element != this && e.Element != _child.Single() ) return;
+                if( e.Element != this ) return;
                 Blur();
         
                 Console.WriteLine( "End" );
+                if (ActionType != ActionType.StayOnTheSame ) Pause();
             };
 
             _radar.ScreenBoundCollide += ( o, e ) => {
@@ -193,10 +192,8 @@ namespace MouseRadar
         }
         void Resume()
         {
-            
-
             Console.WriteLine( "Resume" );
-            ((IActionnableElement)_child.Single()).ActionType = ActionType.StayOnTheSame;
+            ActionType = ActionType.StayOnTheSame;
             _radar.StartRotation();
             IsActive = true;
         }
@@ -215,7 +212,7 @@ namespace MouseRadar
 
         public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return _child; }
+            get { return CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         public int X
@@ -242,6 +239,12 @@ namespace MouseRadar
         {
             get { return SkippingBehavior.None; }
         }
+
+        #endregion
+
+        #region IActionnableElement Members
+
+        public ActionType ActionType { get; set; }
 
         #endregion
     }

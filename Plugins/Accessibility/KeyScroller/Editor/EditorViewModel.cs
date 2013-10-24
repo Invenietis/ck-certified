@@ -20,17 +20,15 @@ namespace KeyScroller.Editor
     {
         IPluginConfigAccessor _scrollConfig;
         IPluginConfigAccessor _keyboardTriggerConfig;
-        IKeyboardDriver _keyboardHook;
-        IPointerDeviceDriver _pointerHook;
+        ITriggerService _triggerService;
 
         int _currentIndexStrategy;
-        public EditorViewModel( IPluginConfigAccessor scrollConfig, IPluginConfigAccessor keyboardTriggerConfig, IKeyboardDriver keyboardHook, IPointerDeviceDriver pointerHook )
+        public EditorViewModel( IPluginConfigAccessor scrollConfig, IPluginConfigAccessor keyboardTriggerConfig, ITriggerService triggerService )
         {
             _scrollConfig = scrollConfig;
             _keyboardTriggerConfig = keyboardTriggerConfig;
+            _triggerService = triggerService;
 
-            _keyboardHook = keyboardHook;
-            _pointerHook = pointerHook;
             _currentIndexStrategy = KeyScrollerPlugin.AvailableStrategies.IndexOf(_scrollConfig.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
             this.DisplayName = R.ScrollEditor;
         }
@@ -38,6 +36,27 @@ namespace KeyScroller.Editor
         public IContext Context { get; set; }
 
         public bool Stopping { get; set; }
+        private bool _isRecording;
+
+        public bool IsRecording 
+        {
+            get { return _isRecording; }
+            set
+            {
+                _isRecording = value;
+                
+                if( value )
+                {
+                    _triggerService.InputListener.Record( ( ITrigger trigger ) => {
+                        _scrollConfig.User["Trigger"] = trigger;
+                        IsRecording = false;
+                        
+                        NotifyOfPropertyChange( () => SelectedKey );
+                        NotifyOfPropertyChange( () => IsRecording );
+                    } );
+                }
+            }
+        }
 
         public int Speed
         {
@@ -89,49 +108,22 @@ namespace KeyScroller.Editor
             get { return _currentIndexStrategy; }
         }
 
-        bool _isRecording = false;
-        public bool IsRecording
-        {
-            get { return _isRecording; }
-            set
-            {
-                _isRecording = value;
-                NotifyOfPropertyChange( () => IsRecording );
-                if( _isRecording )
-                {
-                    _keyboardHook.RegisterCancellableKey( -1 );
-                    _pointerHook.PointerButtonDown += OnPointerButtonDown;
-                }
-                else
-                {
-                    _keyboardHook.UnregisterCancellableKey( -1 );
-                    _pointerHook.PointerButtonDown -= OnPointerButtonDown;
-                }
-            }
-        }
-
-
         public string SelectedKey
         {
             get
             {
-                var selectedKey = _keyboardTriggerConfig.User.GetOrSet( "TriggerCode", 122 );
-                var triggerDevice = _keyboardTriggerConfig.User.GetOrSet( "TriggerDevice", TriggerDevice.Keyboard );
+                var selectedKey = _scrollConfig.User.GetOrSet( "Trigger",  _triggerService.DefaultTrigger );
 
-                if( selectedKey != null && triggerDevice != null ) //TODO
+                if( selectedKey != null ) 
                 {
-                    TriggerDevice device = TriggerDevice.None;
-                    Enum.TryParse<TriggerDevice>( triggerDevice.ToString(), out device );
-
-                    if( device == TriggerDevice.Keyboard )
+                    if( selectedKey.Source == TriggerDevice.Keyboard )
                     {
-                        System.Windows.Forms.Keys keyName;
-                        if( Enum.TryParse<System.Windows.Forms.Keys>( selectedKey.ToString(), out keyName ) )
-                            return string.Format( KeyScroller.Resources.R.Listening, keyName.ToString() );
-                        return string.Format( KeyScroller.Resources.R.Listening, selectedKey.ToString() );
+                        System.Windows.Forms.Keys keyName = (System.Windows.Forms.Keys) selectedKey.KeyCode;
+                      
+                        return string.Format( KeyScroller.Resources.R.Listening, keyName.ToString() );
                     }
-                    else if( device == TriggerDevice.Pointer )
-                        return string.Format( KeyScroller.Resources.R.PointerListening, MouseClicFromCode( Int32.Parse( selectedKey.ToString() ) ) );
+                    else if( selectedKey.Source == TriggerDevice.Pointer )
+                        return string.Format( KeyScroller.Resources.R.PointerListening, MouseClicFromCode( selectedKey.KeyCode ) );
                 }
                 return KeyScroller.Resources.R.NothingSelected;
             }
@@ -158,42 +150,6 @@ namespace KeyScroller.Editor
             base.OnDeactivate( close );
         }
 
-
-        void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
-        {
-            _keyboardTriggerConfig.User.Set( "TriggerCode", MouseCodeFromButtonInfo( e.ButtonInfo, e.ExtraInfo ) );
-            _keyboardTriggerConfig.User.Set( "TriggerDevice", TriggerDevice.Pointer );
-            NotifyOfPropertyChange( () => SelectedKey );
-            if( IsRecording ) IsRecording = false;
-        }
-
-        public void OnKeyboardHookInvoked( object sender, KeyboardDriverEventArg args )
-        {
-            _keyboardTriggerConfig.User.Set( "TriggerCode", args.KeyCode );
-            _keyboardTriggerConfig.User.Set( "TriggerDevice", TriggerDevice.Keyboard );
-            NotifyOfPropertyChange( () => SelectedKey );
-            if( IsRecording ) IsRecording = false;
-        }
-
-        //JL : duplicate with MouseCodeFromButtonInfo in InputTrigger. Where can it be put to avoid duplication ?
-        public int MouseCodeFromButtonInfo( ButtonInfo buttonInfo, string extraInfo )
-        {
-            if( buttonInfo == ButtonInfo.DefaultButton )
-            {
-                return 1;
-            }
-
-            if( buttonInfo == ButtonInfo.XButton )
-            {
-                if( extraInfo == "Right" )
-                    return 2;
-
-                if( extraInfo == "Middle" )
-                    return 3;
-            }
-
-            throw new Exception( String.Format( "The specified buttonInfo is incorrect. (ButtonInfo : {0}, ExtraInfo : {1}) ", buttonInfo.ToString(), extraInfo ) );
-        }
 
         string MouseClicFromCode( int code )
         {

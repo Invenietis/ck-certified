@@ -40,7 +40,6 @@ namespace CommonServices
         void RegisterCancellableKey( int keyCode );
 
         void UnregisterCancellableKey( int keyCode );
-
     }
 
     public class KeyboardDriverEventArg : EventArgs

@@ -44,6 +44,8 @@ namespace ScreenDivider
 
         public bool PluginInPause { get { return _attachedWindows.All( a => ((WindowViewModel)a.DataContext).IsPause ); } }
 
+        public bool IsEnter { get { return _attachedWindows.Any( a => ((WindowViewModel)a.DataContext).IsEnter ); } }
+
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
@@ -145,22 +147,22 @@ namespace ScreenDivider
 
         void SwitchWindow()
         {
-            if( _loop++ < MaxLoop )
-            {
-                if( _currentWindow < _attachedWindows.Count - 1 ) _currentWindow++;
-                else _currentWindow = 0;
+            //if( _loop++ < MaxLoop )
+            //{
+            if( _currentWindow < _attachedWindows.Count - 1 ) _currentWindow++;
+            else _currentWindow = 0;
 
-                if( _currentWindow > 0 ) ((WindowViewModel)_attachedWindows[_currentWindow - 1].DataContext).IsActive = false;
-                else ((WindowViewModel)_attachedWindows[_attachedWindows.Count - 1].DataContext).IsActive = false;
+            if( _currentWindow > 0 ) ((WindowViewModel)_attachedWindows[_currentWindow - 1].DataContext).IsActive = false;
+            else ((WindowViewModel)_attachedWindows[_attachedWindows.Count - 1].DataContext).IsActive = false;
 
-                ((WindowViewModel)_attachedWindows[_currentWindow].DataContext).IsActive = true;
-                _attachedWindows[_currentWindow].Focus();
-            }
-            else
-            {
-                _loop = 0;
-                PauseAllWindows();
-            }
+            ((WindowViewModel)_attachedWindows[_currentWindow].DataContext).IsActive = true;
+            _attachedWindows[_currentWindow].Focus();
+            //}
+            //else
+            //{
+            //    _loop = 0;
+            //    PauseAllWindows();
+            //}
         }
 
         #endregion
@@ -174,7 +176,8 @@ namespace ScreenDivider
 
         void OnBeginHighlight( object sender, HighlightEventArgs e )
         {
-            SwitchWindow();
+            if( !IsEnter )
+                SwitchWindow();
         }
 
         void OnEndHighlight( object sender, HighlightEventArgs e )

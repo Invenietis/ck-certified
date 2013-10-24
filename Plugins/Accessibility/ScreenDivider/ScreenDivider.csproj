@@ -47,6 +47,8 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -98,9 +100,18 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

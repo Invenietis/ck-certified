@@ -1,22 +1,229 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 using CK.Plugin;
+using CK.Plugin.Config;
+using CommonServices.Accessibility;
+using ScreenDivider.ViewModels;
+using ScreenDivider.Views;
+using ScreenDivider.Events;
+using System.Windows.Controls;
 
 namespace CK.Plugins.ScreenDivider
 {
     public class ScreenDivider : IPlugin
     {
+        IList<MainWindow> _attachedWindows = new List<MainWindow>();
+        int _currentWindow = -1;
+        int _loop = 0;
+
+        public IPluginConfigAccessor Config { get; set; }
+
+        public MainWindow CurrentWindow { get { return _attachedWindows[_currentWindow]; } }
+
+        public int MaxLoop { get { return _attachedWindows.Count * Config.User.GetOrSet( "ScrollingBeforeStop", 2 ); } }
+
+        public bool PluginInPause { get { return _attachedWindows.All( a => ((WindowViewModel)a.DataContext).IsPause ); } }
+
+        [DynamicService( Requires = RunningRequirement.Optional )]
+        public IService<IHighlighterService> Highlighter { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
-            throw new NotImplementedException();
+            foreach( Screen s in Screen.AllScreens.Reverse() )
+                ConfigureScreen( s );
+
+            return true;
         }
+
+        /// <summary>
+        /// Configure a Window for a Screen
+        /// </summary>
+        /// <param name="screen">Screen where Window should be displayed</param>
+        void ConfigureScreen( Screen screen )
+        {
+            MainWindow w = new MainWindow();
+            w.Closed += ( o, e ) =>
+            {
+                ((MainWindow)o).IsClosed = true;
+            };
+
+            w.Left = screen.WorkingArea.Left;
+            w.Top = screen.WorkingArea.Top;
+
+            w.Show();
+            w.WindowState = WindowState.Maximized;
+            //w.Closed += WindowClosed;
+
+            _attachedWindows.Add( w );
+        }
+
+        #region OnSelectedElement
+
+        void EnterKeyUp()
+        {
+            MainWindow w = CurrentWindow;
+
+            WindowViewModel wdc = (WindowViewModel)w.DataContext;
+            if( !wdc.IsEnter )
+            {
+                _attachedWindows.Where( a => a != w ).All( ( a ) =>
+                    {
+                        a.Hide();
+                        return true;
+                    }
+                );
+
+                CreateFirstGrid( w, wdc );
+                _loop = 0;
+                //else
+                //{
+                //    PauseAllWindows();
+                //    //_timer.Start();
+                //}
+            }
+            else
+            {
+                //_timer.Stop();
+                wdc.Enter();
+            }
+        }
+
+        private void CreateFirstGrid( MainWindow w, WindowViewModel wdc, bool onlyOneMode = false )
+        {
+            Grid myGrid = w.MainWindowGrid;
+            myGrid.Children.Add( wdc.Enter( onlyOneMode ) );
+            wdc.GridOwned.ExitNode += ExitGridNode;
+        }
+
+        /// <summary>
+        /// This method will be executed when a grid exited event is sent by a main grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void ExitGridNode( object sender, ExitGridEventArgs e )
+        {
+            if( _attachedWindows.Count > 1 )
+            {
+                foreach( var w in _attachedWindows )
+                {
+                    if( !w.IsClosed )
+                    {
+                        w.Show();
+                        Grid myGrid = w.MainWindowGrid;
+                        myGrid.Children.Clear();
+                    }
+                }
+                _attachedWindows[_currentWindow].Focus();
+            }
+            else
+            {
+                Debug.Assert( _attachedWindows.Count > 0 );
+                WindowViewModel wdc = (WindowViewModel)_attachedWindows[0].DataContext;
+                wdc.GridOwned.RestartSwitch();
+            }
+        }
+
+        void SwitchWindow()
+        {
+            if( _loop++ < MaxLoop )
+            {
+                if( _currentWindow < _attachedWindows.Count - 1 ) _currentWindow++;
+                else _currentWindow = 0;
+
+                if( _currentWindow > 0 ) ((WindowViewModel)_attachedWindows[_currentWindow - 1].DataContext).IsActive = false;
+                else ((WindowViewModel)_attachedWindows[_attachedWindows.Count - 1].DataContext).IsActive = false;
+
+                ((WindowViewModel)_attachedWindows[_currentWindow].DataContext).IsActive = true;
+                _attachedWindows[_currentWindow].Focus();
+            }
+            else
+            {
+                _loop = 0;
+
+                PauseAllWindows();
+            }
+        }
+
+        #endregion
+
+        #region Hightlight Methods
+
+        void OnSelectElement( object sender, HighlightEventArgs e )
+        {
+            EnterKeyUp();
+        }
+
+        void OnBeginHighlight( object sender, HighlightEventArgs e )
+        {
+            SwitchWindow();
+        }
+
+        void OnEndHighlight( object sender, HighlightEventArgs e )
+        {
+            // StayOnTheSame
+        }
+
+        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                RegisterHighlighter();
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                UnregisterHighlighter();
+            }
+        }
+
+        private void InitializeHighligther()
+        {
+            Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
+            if( Highlighter.Status == InternalRunningStatus.Started )
+            {
+                RegisterHighlighter();
+            }
+        }
+
+        private void UnInitializeHighlighter()
+        {
+            if( Highlighter.Status == InternalRunningStatus.Started )
+            {
+                UnregisterHighlighter();
+            }
+            Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+        }
+
+        private void UnregisterHighlighter()
+        {
+            Highlighter.Service.BeginHighlight -= OnBeginHighlight;
+            Highlighter.Service.EndHighlight -= OnEndHighlight;
+            Highlighter.Service.SelectElement -= OnSelectElement;
+        }
+
+        private void RegisterHighlighter()
+        {
+            Highlighter.Service.BeginHighlight += OnBeginHighlight;
+            Highlighter.Service.EndHighlight += OnEndHighlight;
+            Highlighter.Service.SelectElement += OnSelectElement;
+        }
+
+        #endregion
 
         public void Start()
         {
             throw new NotImplementedException();
+        }
+
+        private void PauseAllWindows()
+        {
+            foreach( var w in _attachedWindows )
+                ((WindowViewModel)w.DataContext).Pause();
         }
 
         public void Stop()

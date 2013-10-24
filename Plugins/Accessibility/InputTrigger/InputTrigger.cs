@@ -17,7 +17,7 @@ namespace InputTrigger
         const string PluginIdString = "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Input Trigger Shab Reloaded";
+        const string PluginPublicName = "Input Trigger";
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
@@ -57,7 +57,7 @@ namespace InputTrigger
 
         public void RegisterFor(ITrigger trigger, Action<ITrigger> action, bool preventDefault = true)
         {
-            //call action when the given trigger is rised
+            //call action when the given trigger is risen
             ITrigger key = GetKey( trigger.KeyCode, trigger.Source );
             if( preventDefault && trigger.Source == TriggerDevice.Keyboard ) KeyboardDriver.Service.RegisterCancellableKey( trigger.KeyCode );
 

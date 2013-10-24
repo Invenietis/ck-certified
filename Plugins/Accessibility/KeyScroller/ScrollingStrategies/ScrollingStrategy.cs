@@ -59,7 +59,6 @@ namespace KeyScroller
         }
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            Console.Out.WriteLine( "Internalbeat " + DateTime.Now );
             if( _currentElement != null ) FireEndHighlight();
 
             // highlight the next element

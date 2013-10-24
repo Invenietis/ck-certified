@@ -1,0 +1,256 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"
+    xmlns:converters="clr-namespace:CK.Plugins.AutoClick.Converters"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:b="clr-namespace:CK.Plugins.AutoClick.Behaviors"
+    xmlns:lib="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+    
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/AutoClick;component/SharedDictionnaries/Shared.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+    <!--<lib:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <converters:InstructionToImageConverter x:Key="InstructionToImageConverter" />
+    <converters:PathToImageConverter x:Key="PathToImageConverter" />-->
+
+    <!-- AutoClick : Pie Brush -->
+    <LinearGradientBrush x:Key="pieIndicatorBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0" Color="LightGreen"></GradientStop>
+        <GradientStop Offset="1" Color="DarkGreen"></GradientStop>
+    </LinearGradientBrush>
+
+    <!-- AutoClick : PieProgressBar Template -->
+    <ControlTemplate x:Key="PieProgressBarTemplate">
+        <ControlTemplate.Resources>
+            <converters:ValueToPointConverter x:Key="ValueToPointConverter"/>
+            <converters:ValueToIsLargeArcConverter x:Key="ValueToIsLargeArcConverter"/>
+            <LinearGradientBrush x:Key="backgroundBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="LightGray" />
+                <GradientStop Offset="1" Color="Gray" />
+            </LinearGradientBrush>
+        </ControlTemplate.Resources>
+        <Viewbox>
+            <Grid Height="20" Width="20">
+                <Ellipse x:Name="background" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="2"
+                         Width="20" Height="20" Fill="Transparent"/>
+                <Image Margin="2" Name="pauseImage" Width="14" Height="14" Source="/AutoClick;component/Res/Images/Pause.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image Margin="2" Name="playImage" Width="14" Height="14" Source="/AutoClick;component/Res/Images/Play.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image x:Name="pie" Stretch="None" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Center" >
+                    <Image.Source>
+                        <DrawingImage>
+                            <DrawingImage.Drawing>
+                                <GeometryDrawing Brush="{StaticResource pieIndicatorBrush}">
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Black" Thickness="0.001"/>
+                                    </GeometryDrawing.Pen>
+                                    <GeometryDrawing.Geometry>
+                                        <GeometryGroup>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0,10">
+                                                    <LineSegment Point="20,10"/>
+                                                </PathFigure>
+                                            </PathGeometry>
+                                            <CombinedGeometry GeometryCombineMode="Exclude">
+                                                <CombinedGeometry.Geometry1>
+                                                    <PathGeometry>
+                                                        <PathFigure StartPoint="10,10" IsClosed="True">
+                                                            <LineSegment Point="10,0" />
+                                                            <ArcSegment Size="10,10" SweepDirection="Clockwise">
+                                                                <ArcSegment.Point>
+                                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value" Converter="{StaticResource ValueToPointConverter}"></Binding>
+                                                                </ArcSegment.Point>
+                                                                <ArcSegment.IsLargeArc>
+                                                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value" Converter="{StaticResource ValueToIsLargeArcConverter}"></Binding>
+                                                                </ArcSegment.IsLargeArc>
+                                                            </ArcSegment>
+                                                        </PathFigure>
+                                                    </PathGeometry>
+                                                </CombinedGeometry.Geometry1>
+                                                <CombinedGeometry.Geometry2>
+                                                    <PathGeometry>
+                                                        <PathFigure StartPoint="10,10" IsClosed="True">
+                                                            <LineSegment Point="10,2" />
+                                                            <ArcSegment Size="8,8" SweepDirection="Clockwise" Point="9.9,2" IsLargeArc="True">                   
+                                                            </ArcSegment>
+                                                        </PathFigure>
+                                                    </PathGeometry>
+                                                </CombinedGeometry.Geometry2>
+                                            </CombinedGeometry>
+                                        </GeometryGroup>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingImage.Drawing>
+                        </DrawingImage>
+                    </Image.Source>
+                </Image>
+            </Grid>
+        </Viewbox>
+        <ControlTemplate.Triggers>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="False" />
+                    <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="pie" Property="Opacity" Value="0.01" />                        <!--Stopped + show PauseImage-->
+                <Setter TargetName="pauseImage" Property="Opacity" Value="1" />
+                <Setter TargetName="playImage" Property="Opacity" Value="0.01" />
+                <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />                     <!--Running + show PlayImage-->
+                    <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="pie" Property="Opacity" Value="1"  />
+                <Setter TargetName="playImage" Property="Opacity" Value="1" />
+                <Setter TargetName="playImage" Property="BitmapEffect">
+                    <Setter.Value>
+                        <OuterGlowBitmapEffect GlowColor="White" GlowSize="5" />
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="pauseImage" Property="Opacity" Value="0.01"  />
+                <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>                    
+                    <Condition Property="IsMouseOver" Value="False" />                 <!--Running + no show + no bg brush-->
+                    <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="pie" Property="Opacity" Value="1" />
+                <Setter TargetName="pauseImage" Property="Opacity" Value="0.01" />
+                <Setter TargetName="playImage" Property="Opacity" Value="0.01" />               
+            </MultiTrigger>            
+            
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />                    <!--Stopped + PauseImage-->
+                    <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="pie" Property="Opacity" Value="0.01" />
+                <Setter TargetName="playImage" Property="Opacity" Value="0.01" />
+                <Setter TargetName="pauseImage" Property="Opacity" Value="1" />
+                <Setter TargetName="pauseImage" Property="BitmapEffect">
+                    <Setter.Value>
+                        <OuterGlowBitmapEffect GlowColor="White" GlowSize="5" />
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- AutoClick : PieProgressBar Style -->
+    <Style x:Key="PieProgressBarStyle" TargetType="{x:Type views:WPFClickTypeWatch}">
+        <Setter Property="Template" Value="{StaticResource PieProgressBarTemplate}"/>
+    </Style>
+
+    <!-- ShowEditorButtonTemplate -->
+    <!--<ControlTemplate x:Key="ShowEditorButtonTemplate" TargetType="{x:Type views:ActionOnMouseEnterButton}">
+        <Grid>
+            <Image Name="ConfigurationButtonImage" Source="/AutoClick;component/Res/Images/EditorLogo.png" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="views:ActionOnMouseEnterButton.Selected" Value="True">
+                <Setter TargetName="ConfigurationButtonImage" Property="Source" Value="/AutoClick;component/Res/Images/EditorLogoSelected.png" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>-->
+
+    <!-- AutoClick : PauseContent -->
+    <ContentControl x:Key="PauseContent">
+        <Viewbox>
+            <Image Source="/AutoClick;component/Res/Images/Pause.png"/>
+        </Viewbox>
+    </ContentControl>
+    <!-- AutoClick : PlayContent -->
+    <ContentControl x:Key="PlayContent">
+        <Viewbox>
+            <Image Source="/AutoClick;component/Res/Images/Play.png"/>
+        </Viewbox>
+    </ContentControl>
+    <!-- AutoClick : EditorHiddenContent -->
+    <ContentControl x:Key="EditorHiddenContent">
+        <Viewbox>
+            <Image Source="/AutoClick;component/Res/Images/EditorLogo.png"/>
+        </Viewbox>
+    </ContentControl>
+
+    <!-- AutoClick : PauseButtonStyle -->
+    <Style x:Key="PauseButtonStyle" TargetType="{x:Type views:ActionOnMouseEnterButton}">
+        <Setter Property="Content" Value="{StaticResource PauseContent}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type views:ActionOnMouseEnterButton}">
+                    <Button Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Content="{TemplateBinding Content}">
+                    </Button>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="views:ActionOnMouseEnterButton.IsPaused" Value="True">
+                <Setter Property="Content" Value="{StaticResource PlayContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- AutoClick : AutoClickTemplate -->
+    <ControlTemplate x:Key="AutoClickTemplate">
+        <StackPanel Orientation="Vertical">
+
+            <DockPanel LastChildFill="False">
+                <!-- The Pause/Resume button -->
+                <!--<views:ActionOnMouseEnterButton Width="20" Height="20" DockPanel.Dock="Left"
+                                              MouseEnterCommand="{Binding TogglePauseCommand}" Style="{StaticResource PauseButtonStyle}"                                              
+                                              IsPaused="{Binding IsPaused, Mode=OneWay}" />-->
+                <!-- The Show/Hide Editor button -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <views:ActionOnMouseEnterButton Selected="{Binding IsEditorOpened}"  
+                                              MouseEnterCommand="{Binding ToggleEditorVisibilityCommand}"                                              
+                                              Style="{StaticResource SelectedIsPressedButtonStyle}"
+                                              Content="{StaticResource EditorHiddenContent}"
+                                              Width="20" Height="20" />
+                    <views:ActionOnMouseEnterButton
+                                              MouseEnterCommand="{Binding ShowHelpCommand}"                                           
+                                              Style="{StaticResource SelectedIsPressedButtonStyle}"      
+                                              Width="20" Height="20" ToolTip="Afficher l'aide de l'auto-click">
+                        <Image Source="/AutoClick;component/Res/Images/help.png" Width="16" Height="16"></Image>
+                    </views:ActionOnMouseEnterButton>
+                </StackPanel>
+            </DockPanel>
+
+            <!-- The pie-shaped progressbar -->
+            <views:WPFClickTypeWatch IsPaused="{Binding IsPaused, Mode=OneWay}"  Style="{StaticResource PieProgressBarStyle}" Margin="10" MouseEnterCommand="{Binding TogglePauseCommand}"
+                                     Width="50" Height="50"
+                                     BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}">
+            </views:WPFClickTypeWatch>
+
+            <!-- The Panel showing the next click -->
+            <!--<Border Padding="3" Margin="8 0 8 3" CornerRadius="5" BorderThickness="1" BorderBrush="White">
+                <StackPanel x:Name="NextActionStackPanel" HorizontalAlignment="Center">
+                    <TextBlock Foreground="White" FontSize="8" HorizontalAlignment="Center" TextAlignment="Center" Text="Prochaine action : "></TextBlock>
+                    <ItemsControl x:Name="NextInstructionsStackPanel" Width="75" ItemsSource="{Binding Selector.ClicksVM.NextClick}" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Image Width="18" Height="24" Source="{Binding Mode=OneWay, Converter={StaticResource InstructionToImageConverter}}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>-->
+
+            <!-- The panel containing the clicks -->
+            <!--<ContentControl Template="{DynamicResource RunningClickTypeSelectorTemplate}"  DataContext="{Binding Selector.Service}"/>-->
+        </StackPanel>
+    </ControlTemplate>
+
+</ResourceDictionary>

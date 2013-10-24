@@ -18,27 +18,6 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <!--<Border BorderBrush="Black" CornerRadius="5">
-            <Border.Style>
-                <Style TargetType="{x:Type Border}">
-                    <Style.Triggers>                        
-                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                            <Setter Property="BorderThickness" Value="8" />
-                        </DataTrigger>
-                        <Trigger Property="CornerRadius" Value="5">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Name="HightlightStoryboard">
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.3" To="0.8" AutoReverse="True" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="BorderThickness" Value="0" />
-                </Style>
-            </Border.Style>
-        </Border>-->
         <Viewbox Stretch="Fill">
             <Border>
                 <ContentControl Template="{StaticResource ClickTypeSelectorTemplate}"/>

@@ -107,19 +107,18 @@ namespace MouseRadar
                 {
                     _radar.Model.LapCount = 0;
                     ((IActionnableElement)_child[0]).ActionType = ActionType.UpToParent;
-                }
-                
-                if( e.Element == _child[0] )
-                {
-                    IsActive = true;
                     
                 }
             };
             
             Highliter.Service.SelectElement += ( o, e ) =>
             {
-                if( e.Element == this ) ((IActionnableElement)_child[0]).ActionType = ActionType.StayOnTheSame;
-                else if(e.Element == _child[0]) TranslateRadar();
+                if( e.Element == this )
+                {
+                    ((IActionnableElement)_child[0]).ActionType = ActionType.StayOnTheSame;
+                    IsActive = true;
+                }
+                else if( e.Element == _child[0] ) TranslateRadar();
             };
             Highliter.Service.EndHighlight += ( o, e ) =>
             {
@@ -127,7 +126,7 @@ namespace MouseRadar
                 Blur();
         
                 Console.WriteLine( "End" );
-                if(e.Element == _child[0]) IsActive = false;
+   
             };
 
             _radar.ScreenBoundCollide += ( o, e ) => {
@@ -179,7 +178,15 @@ namespace MouseRadar
         {
 
         }
-
+        void Pause()
+        {
+            _radar.StopTranslation();
+            _radar.StopRotation();
+        }
+        void Resume()
+        {
+            _radar.StartRotation();
+        }
         void Focus()
         {
             _radar.Model.Opacity = (float)(Configuration.User.GetOrSet( "Opacity", 100 )) / 100f;

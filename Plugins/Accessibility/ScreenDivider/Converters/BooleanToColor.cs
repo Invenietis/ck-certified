@@ -18,7 +18,7 @@ namespace ScreenDivider.Converters
         public bool UseHidden { get; set; }
         public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
         {
-            string color = ConfigurationManager.AppSettings["Background"] ?? "#FF9900";
+            string color = "#FF9900";
             var val = System.Convert.ToBoolean( value, CultureInfo.InvariantCulture );
             if( this.IsReversed )
             {

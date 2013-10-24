@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using ScreenDivider.ViewModels;
-using ScreenDivider.Views;
 
 namespace ScreenDivider.Views
 {

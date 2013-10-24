@@ -111,7 +111,7 @@ namespace ScreenDivider.Views
             }
         }
 
-        private void OnExit( object sender, ScreenDivider.Events.ExitPanelEventArgs args )
+        private void OnExit( object sender, ExitPanelEventArgs args )
         {
             foreach( var dp in _dockPanels )
             {

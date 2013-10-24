@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ScreenDivider.Converters"
-        xmlns:views="clr-namespace:ScreenDivider.Views"
         xmlns:viewModels="clr-namespace:ScreenDivider.ViewModels"
         Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True"
         x:Name="MWin" Topmost="True">

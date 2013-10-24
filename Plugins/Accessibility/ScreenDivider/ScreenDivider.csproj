@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -80,6 +80,7 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VirtualElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Res\ArrowTurnLeftDown.png" />
@@ -111,6 +112,10 @@
     <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
       <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
       <Name>HighlightModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeyScroller\KeyScroller.csproj">
+      <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
+      <Name>KeyScroller</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

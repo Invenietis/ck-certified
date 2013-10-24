@@ -8,19 +8,33 @@ using System.Windows;
 using System.Windows.Forms;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Core;
 using CommonServices.Accessibility;
 using ScreenDivider.ViewModels;
 using ScreenDivider.Views;
 using ScreenDivider.Events;
 using System.Windows.Controls;
+using HighlightModel;
+using KeyScroller;
 
-namespace CK.Plugins.ScreenDivider
+namespace ScreenDivider
 {
-    public class ScreenDivider : IPlugin
+    [Plugin( ScreenDividerPlugin.PluginIdString,
+           PublicName = ScreenDividerPlugin.PluginPublicName,
+           Version = ScreenDividerPlugin.PluginIdVersion,
+           Categories = new string[] { "Visual", "Accessibility" } )]
+    public class ScreenDividerPlugin : IPlugin, IHighlightableElement
     {
+        const string PluginIdString = "{7942DA26-8181-4B32-9F94-03C4DB0D7915}";
+        Guid PluginGuid = new Guid( PluginIdString );
+        const string PluginIdVersion = "1.0.0";
+        const string PluginPublicName = "Screen Divider";
+
         IList<MainWindow> _attachedWindows = new List<MainWindow>();
         int _currentWindow = -1;
         int _loop = 0;
+
+        IList<IHighlightableElement> _root = new List<IHighlightableElement>() { new VirtualElement() };
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -145,7 +159,6 @@ namespace CK.Plugins.ScreenDivider
             else
             {
                 _loop = 0;
-
                 PauseAllWindows();
             }
         }
@@ -201,6 +214,7 @@ namespace CK.Plugins.ScreenDivider
 
         private void UnregisterHighlighter()
         {
+            Highlighter.Service.UnregisterTree( this );
             Highlighter.Service.BeginHighlight -= OnBeginHighlight;
             Highlighter.Service.EndHighlight -= OnEndHighlight;
             Highlighter.Service.SelectElement -= OnSelectElement;
@@ -208,6 +222,7 @@ namespace CK.Plugins.ScreenDivider
 
         private void RegisterHighlighter()
         {
+            Highlighter.Service.RegisterTree( this );
             Highlighter.Service.BeginHighlight += OnBeginHighlight;
             Highlighter.Service.EndHighlight += OnEndHighlight;
             Highlighter.Service.SelectElement += OnSelectElement;
@@ -217,7 +232,7 @@ namespace CK.Plugins.ScreenDivider
 
         public void Start()
         {
-            throw new NotImplementedException();
+            InitializeHighligther();
         }
 
         private void PauseAllWindows()
@@ -228,12 +243,45 @@ namespace CK.Plugins.ScreenDivider
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            UnInitializeHighlighter();
         }
 
         public void Teardown()
         {
-            throw new NotImplementedException();
         }
+
+        #region IHighlightableElement Members
+
+        public ICKReadOnlyList<IHighlightableElement> Children
+        {
+            get { return _root.ToReadOnlyList(); }
+        }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return (int)CurrentWindow.Width; }
+        }
+
+        public int Height
+        {
+            get { return (int)CurrentWindow.Height; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.None; }
+        }
+
+        #endregion
     }
 }

@@ -39,7 +39,7 @@ namespace ScreenDivider.ViewModels
         /// <summary>
         /// This property getting the max deep
         /// </summary>
-        public int MaxDeep { get { return Int32.Parse( ConfigurationManager.AppSettings["MaxDeep"] ); } }
+        public int MaxDeep { get { return 7; } }
 
         public GridViewModel( WindowViewModel window )
         {
@@ -54,7 +54,7 @@ namespace ScreenDivider.ViewModels
                 else
                     _timer.Stop();
             };
-            _timer.Interval = new TimeSpan( 0, 0, 0, 0, Int32.Parse( ConfigurationManager.AppSettings["TimeToSwitch"] ) );
+            _timer.Interval = new TimeSpan( 0, 0, 0, 0, 2 );
         }
 
         internal void PauseWindowOwner()
@@ -120,8 +120,8 @@ namespace ScreenDivider.ViewModels
             _timer.Stop();
             if( _panels.Count <= 1 )
             {
-                if( (_loop > Int32.Parse( ConfigurationManager.AppSettings["ScrollingBeforeStop"] ?? "0" )) ) LastNodeBeforeGoToWindow( this, new GoToWindowEventArgs() );
-                if( !_window.IsPause && (_loop >= Int32.Parse( ConfigurationManager.AppSettings["ScrollingBeforeStop"] ?? "0" ) || _window.IsOnlyOne) )
+                if( (_loop > 2) ) LastNodeBeforeGoToWindow( this, new GoToWindowEventArgs() );
+                if( !_window.IsPause && (_loop >= 2 || _window.IsOnlyOne) )
                 {
                     _loop = 0;
                     PauseWindowOwner();

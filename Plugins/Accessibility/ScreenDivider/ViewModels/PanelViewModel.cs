@@ -17,15 +17,15 @@ namespace ScreenDivider.ViewModels
         PanelViewModel _parent = null;
         GridViewModel _grid = null;
 
-        public int MaxColumnByRowProperty { get { return Int32.Parse( ConfigurationManager.AppSettings["MaxColumnByRow"] ); } }
+        public int MaxColumnByRowProperty { get { return 2; } }
 
-        public int MaxRowProperty { get { return Int32.Parse( ConfigurationManager.AppSettings["MaxRow"] ); } }
+        public int MaxRowProperty { get { return 2; } }
 
         int SwitchLoop
         {
             get
             {
-                int d = MaxColumnByRowProperty * MaxRowProperty * Int32.Parse( ConfigurationManager.AppSettings["Loop"] ) - 1;
+                int d = MaxColumnByRowProperty * MaxRowProperty * 2 - 1;
                 return d;
             }
         }

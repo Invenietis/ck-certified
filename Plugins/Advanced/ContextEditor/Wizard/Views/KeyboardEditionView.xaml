@@ -17,8 +17,20 @@
                 <ResourceDictionary Source="pack://application:,,,/KeyboardEditor;component/Wizard/Views/Images.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate x:Key="OtherTemplate">
+                <Button Style="{StaticResource StandardButtonStyle}" IsEnabled="False" VerticalAlignment="Center" Content="{Binding Name}" />
+            </DataTemplate>
+
+            <DataTemplate x:Key="KeyModeBaseTemplate">
+                <StackPanel Orientation="Vertical">
+                    <Button Style="{StaticResource StandardButtonStyle}" IsEnabled="False" VerticalAlignment="Center" Content="{Binding SectionName}" />
+                    <Button Style="{StaticResource StandardButtonStyle}" IsEnabled="False" VerticalAlignment="Center" Content="{Binding ModeName}" />
+                </StackPanel>
+            </DataTemplate>
+
             <ctrls:FolderConverter x:Key="folderConverter"/>
             <vm:ModeTypeToSelectedConverter x:Key="modeTypeToSelectedConverter"/>
+            <vm:BreadcrumbTemplateSelector x:Key="breadcrumbTemplateSelector" KeyModeBaseTemplate="{StaticResource KeyModeBaseTemplate}" OtherTemplate="{StaticResource OtherTemplate}"/>
 
             <Style TargetType="{x:Type TabControl}" x:Key="KeyEditionUCStyle">
                 <Setter Property="Background" Value="White"/>
@@ -26,18 +38,10 @@
 
             <!-- When editing a key -->
             <DataTemplate x:Key="KeyEditionDataTemplate">
-                <!--<TabControl Style="{StaticResource KeyEditionUCStyle}" Width="Auto" Height="Auto" >
-                    <TabItem x:Uid="keyboard-editor-key-tabitem-aspect" Header="Aspect and position" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Layout, Converter={StaticResource modeTypeToSelectedConverter}}">
-                        <local:LayoutKeyEditionUserControl DataContext="{Binding}"  />
-                    </TabItem>
-                    <TabItem x:Uid="keyboard-editor-key-tabitem-config" Header="General configuration" IsSelected="{Binding Context.CurrentlyDisplayedModeType, ConverterParameter=Mode, Converter={StaticResource modeTypeToSelectedConverter}}">
-                        <local:KeyModeEditionUserControl DataContext="{Binding}"/>
-                    </TabItem>
-                </TabControl>-->
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding SelectKeyModeCommand}" Content="Content and Actions"></Button>
-                    <Button Command="{Binding SelectLayoutKeyModeCommand}">
-                        <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding SelectKeyModeCommand}" Content="Content and Actions" Margin="5"></Button>
+                    <Button Command="{Binding SelectLayoutKeyModeCommand}" Margin="5">
+                        <StackPanel Orientation="Vertical">
                             <TextBlock Text="Design" />
                             <TextBlock Text="(Background, Font, Dimensions and Position)" />
                         </StackPanel>
@@ -47,12 +51,12 @@
 
             <!-- When editing a KeyMode -->
             <DataTemplate x:Key="KeyModeEditionDataTemplate">
-                <TextBlock Text="Oh damn ! I'm a KeyMode !"></TextBlock>
+                <local:KeyModeEditionUserControl DataContext="{Binding}"/>
             </DataTemplate>
 
             <!-- When editing a LayoutKeyMode -->
             <DataTemplate x:Key="LayoutKeyModeEditionDataTemplate">
-                <TextBlock Text="Oh damn ! I'm a LayoutKeyMode !"></TextBlock>
+                <local:LayoutKeyEditionUserControl DataContext="{Binding}"  />
             </DataTemplate>
 
             <!-- When editing a keyboard -->
@@ -189,8 +193,10 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Style="{StaticResource StandardButtonStyle}" IsEnabled="False" VerticalAlignment="Center" Content="{Binding SelectedElement.Name}" />
+                        <ContentControl ContentTemplateSelector="{StaticResource breadcrumbTemplateSelector}" DataContext="{Binding SelectedElement}" Content="{Binding}"/>
                     </StackPanel>
+
+
 
                     <!-- Edited keyboard view -->
                     <Viewbox Stretch="Uniform" Grid.Column="1" DockPanel.Dock="Top">

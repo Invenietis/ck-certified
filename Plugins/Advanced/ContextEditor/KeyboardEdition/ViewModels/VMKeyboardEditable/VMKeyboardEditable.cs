@@ -77,11 +77,6 @@ namespace KeyboardEditor.ViewModels
 
         internal override void Dispose()
         {
-            //foreach( VMZoneEditable zone in Zones )
-            //{
-            //    zone.Dispose();
-            //}
-
             _zones.Clear();
             _keys.Clear();
             _keyboardModes.Clear();
@@ -103,7 +98,6 @@ namespace KeyboardEditor.ViewModels
             Model.CurrentModeChanged += OnModeChanged;
         }
 
-
         private void UnregisterEvents()
         {
             _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
@@ -118,8 +112,6 @@ namespace KeyboardEditor.ViewModels
             Model.CurrentModeChanged -= OnModeChanged;
         }
 
-       
-
         public void TriggerPropertyChanged()
         {
             OnPropertyChanged( "Keys" );
@@ -130,7 +122,22 @@ namespace KeyboardEditor.ViewModels
 
         private void OnModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
+            RefreshCurrentKeyMode();
             RefreshModes();
+        }
+
+        internal void RefreshCurrentKeyMode()
+        {
+            //When the user is looking at the configuration of a key and that the mode changes, we need to get the current Selected Element to the VMKeyMode corresponding to the new mode
+            if( Context.SelectedElement is VMKeyModeBase )
+            {
+                var obj = ( (VMKeyEditable)( (VMKeyModeBase)Context.SelectedElement ).Parent );
+
+                if( Context.SelectedElement is VMKeyModeEditable )
+                    Context.SelectedElement = obj.KeyModeVM;
+                else if( Context.SelectedElement is VMLayoutKeyModeEditable )
+                    Context.SelectedElement = obj.LayoutKeyModeVM;
+            }
         }
 
         private void RefreshModes()

@@ -120,6 +120,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ContentSection" xml:space="preserve">
+    <value>Content</value>
+  </data>
   <data name="DefaultMode" xml:space="preserve">
     <value>Default mode</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="DeleteZoneConfirmation" xml:space="preserve">
     <value>Are yout sure that you want to delete this zone ?</value>
+  </data>
+  <data name="DesignSection" xml:space="preserve">
+    <value>Design</value>
   </data>
   <data name="EndingStepDesc" xml:space="preserve">
     <value>Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard.</value>

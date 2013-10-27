@@ -62,6 +62,7 @@ namespace KeyboardEditor.ViewModels
             foreach( var keyMode in KeyModes )
             {
                 keyMode.TriggerPropertyChanged( "IsSelected" );
+                keyMode.TriggerModeChanged();
             }
 
             foreach( var layoutKeyMode in LayoutKeyModes )
@@ -122,6 +123,7 @@ namespace KeyboardEditor.ViewModels
                             mode.Visible = true;
                         }
 
+                        Context.KeyboardVM.RefreshCurrentKeyMode();
                         RefreshKeyboardModelViewModels();
                     } );
                 }

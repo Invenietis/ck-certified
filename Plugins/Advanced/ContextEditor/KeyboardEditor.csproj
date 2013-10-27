@@ -133,6 +133,7 @@
     <Compile Include="KeyboardEdition\Components\Converters\ImageConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
+    <Compile Include="KeyboardEdition\BreadcrumbTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SendKeyCommandParameter.cs" />
     <Compile Include="KeyboardEdition\ViewModels\KeyCommands\IKeyCommandParameter.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SimpleKeyCommandParameter.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeBase.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMLayoutKeyModeEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs" />

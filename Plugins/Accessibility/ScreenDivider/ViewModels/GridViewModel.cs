@@ -54,7 +54,7 @@ namespace ScreenDivider.ViewModels
                 else
                     _timer.Stop();
             };
-            _timer.Interval = new TimeSpan( 0, 0, 0, 0, 2 );
+            _timer.Interval = new TimeSpan( 0, 0, 0, 0, 2000 );
         }
 
         internal void PauseWindowOwner()

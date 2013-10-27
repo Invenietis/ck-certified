@@ -149,14 +149,17 @@ namespace ScreenDivider
         {
             //if( _loop++ < MaxLoop )
             //{
-            if( _currentWindow < _attachedWindows.Count - 1 ) _currentWindow++;
-            else _currentWindow = 0;
+            if( !IsEnter )
+            {
+                if( _currentWindow < _attachedWindows.Count - 1 ) _currentWindow++;
+                else _currentWindow = 0;
 
-            if( _currentWindow > 0 ) ((WindowViewModel)_attachedWindows[_currentWindow - 1].DataContext).IsActive = false;
-            else ((WindowViewModel)_attachedWindows[_attachedWindows.Count - 1].DataContext).IsActive = false;
+                if( _currentWindow > 0 ) ((WindowViewModel)_attachedWindows[_currentWindow - 1].DataContext).IsActive = false;
+                else ((WindowViewModel)_attachedWindows[_attachedWindows.Count - 1].DataContext).IsActive = false;
 
-            ((WindowViewModel)_attachedWindows[_currentWindow].DataContext).IsActive = true;
-            _attachedWindows[_currentWindow].Focus();
+                ((WindowViewModel)_attachedWindows[_currentWindow].DataContext).IsActive = true;
+                _attachedWindows[_currentWindow].Focus();
+            }
             //}
             //else
             //{
@@ -226,8 +229,8 @@ namespace ScreenDivider
         private void RegisterHighlighter()
         {
             Highlighter.Service.RegisterTree( this );
-            Highlighter.Service.BeginHighlight += OnBeginHighlight;
-            Highlighter.Service.EndHighlight += OnEndHighlight;
+            //Highlighter.Service.BeginHighlight += OnBeginHighlight;
+            //Highlighter.Service.EndHighlight += OnEndHighlight;
             Highlighter.Service.SelectElement += OnSelectElement;
         }
 
@@ -235,6 +238,13 @@ namespace ScreenDivider
 
         public void Start()
         {
+            if( _attachedWindows.Count == 1 )
+            {
+                MainWindow w = _attachedWindows[0];
+                WindowViewModel wdc = (WindowViewModel)w.DataContext;
+                CreateFirstGrid( w, wdc, true );
+                _currentWindow = 0;
+            }
             InitializeHighligther();
         }
 

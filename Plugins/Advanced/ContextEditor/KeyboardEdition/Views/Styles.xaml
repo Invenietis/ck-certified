@@ -19,7 +19,19 @@
     <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <vm:ImageConverter x:Key="imageconverter"/>
+
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="Calibri"></Setter>
+    </Style>
     
+    <Style TargetType="{x:Type TextBlock}" x:Key="SectionHeaderStyle">
+        <Setter Property="Margin" Value="5 5 5 2"></Setter>
+        <Setter Property="FontSize" Value="10"></Setter>
+        <Setter Property="FontFamily" Value="Malgun Gothic"></Setter>
+        <Setter Property="Foreground" Value="#FF065AA0"></Setter>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
+    </Style>
+
     <Style TargetType="Border" x:Key="Rounded">
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="BorderBrush" Value="Gray"></Setter>

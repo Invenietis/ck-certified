@@ -21,7 +21,7 @@ namespace MouseRadar
            PublicName = MouseRadar.PluginPublicName,
            Version = MouseRadar.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class MouseRadar : IPlugin, IActionnableElement
+    public class MouseRadar : IPlugin, IActionableElement
     {
         internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -32,7 +32,6 @@ namespace MouseRadar
 
         ICKReadOnlyList<IHighlightableElement> _child;
         Radar _radar;
-        //VirtualElement _vElement;
         
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
@@ -50,7 +49,7 @@ namespace MouseRadar
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _child = new CKReadOnlyListMono<IHighlightableElement>( new VirtualElement() { ActionType = KeyScroller.ActionType.StayOnTheSame } );
+            _child = CKReadOnlyListEmpty<IHighlightableElement>.Empty;
             return true;
         }
 
@@ -100,9 +99,8 @@ namespace MouseRadar
             
             Highliter.Service.BeginHighlight += ( o, e ) =>
             {
-                if( e.Element != this && e.Element != _child.Single() ) return;
+                if( e.Element != this ) return;
                 Focus();
-                Console.WriteLine( "Begin" );
 
                 if( _radar.Model.LapCount >= 3 )
                 {
@@ -112,7 +110,6 @@ namespace MouseRadar
             
             Highliter.Service.SelectElement += ( o, e ) =>
             {
-                Console.WriteLine( "Element " + e.Element );
                 if( e.Element != this ) return;
 
                 if( IsActive ) TranslateRadar();
@@ -124,7 +121,7 @@ namespace MouseRadar
                 if( e.Element != this ) return;
                 Blur();
         
-                Console.WriteLine( "End" );
+  
                 if (ActionType != ActionType.StayOnTheSame ) Pause();
             };
 

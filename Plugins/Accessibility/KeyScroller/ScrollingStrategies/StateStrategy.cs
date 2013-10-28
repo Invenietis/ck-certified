@@ -43,9 +43,9 @@ namespace KeyScroller
             if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
             else elements = RegisteredElements;
 
-            if( _currentId > -1 && elements[_currentId] is IActionnableElement )
+            if( _currentId > -1 && elements[_currentId] is IActionableElement )
             {
-                var e = (IActionnableElement)elements[_currentId];
+                var e = (IActionableElement)elements[_currentId];
                 actionType = e.ActionType;
             }
 
@@ -84,7 +84,7 @@ namespace KeyScroller
         }
     }
 
-    public interface IActionnableElement : IHighlightableElement
+    public interface IActionableElement : IHighlightableElement
     {
         ActionType ActionType { get; set; }
     }

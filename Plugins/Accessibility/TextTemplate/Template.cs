@@ -13,14 +13,9 @@ namespace TextTemplate
         string _stringToFormat;
         
         /// <summary>
-        /// Get the list of the static text
+        /// Get the list of the TextFragment
         /// </summary>
-        public List<string> TextData { get; private set; }
-
-        /// <summary>
-        /// Dictionary that contains user values
-        /// </summary>
-        public Dictionary<string, string> Placeholders { get; private set; }
+        public List<IText> TextFragments { get; private set; }
 
 
         /// <summary>
@@ -30,50 +25,66 @@ namespace TextTemplate
         /// <returns></returns>
         public static Template Load(string tmpl)
         {
-            Template t = new Template();
-            t.Placeholders = new Dictionary<string, string>();
-            t.TextData = new List<string>();
-            t._stringToFormat = "";
+            Template template = new Template();
+            template.TextFragments = new List<IText>();
+            template._stringToFormat = "";
             string staticText = "";
+            IText text;
 
             var prevIndex = 0;
-            var i = 0;
+         
 
             Match m = ParseRegex.Match(tmpl);
             while(m.Success)
             {
-                staticText = tmpl.Substring(prevIndex, m.Index - prevIndex);
+                //Non editable text
+                if (m.Index > 0) //false if the template start with an editable
+                {
+                    staticText = tmpl.Substring(prevIndex, m.Index - prevIndex);
+                    int newLine = staticText.IndexOf(Environment.NewLine);
+                    if (newLine > -1)
+                    {
+                        var fragments = staticText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < fragments.Length; i++ )
+                        {
+                            //newLine at the begining
+                            if (newLine == 0) template.TextFragments.Add(new NewLine());
 
-                if( !t.Placeholders.ContainsKey(m.Value))
-                    t.Placeholders.Add(m.Value, "");
-                
-                t._stringToFormat += staticText + "{" + IndexOfKey(t.Placeholders.Keys,m.Value)  + "}";
-                t.TextData.Add(staticText);
+                            text = new TextFragment(false, fragments[i]);
+                            template.TextFragments.Add(text);
+
+                            //newLine not at the begining
+                            if (newLine > 0) template.TextFragments.Add(new NewLine());
+                        }
+                    }
+                    else
+                    {
+                        text = new TextFragment(false, staticText);
+                        template.TextFragments.Add(text);
+                    }
+                }
+
+                //Editable text
+                text = template.TextFragments.SingleOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
+                if(text == null) text = new TextFragment(true, m.Groups["token"].Value); //if not, create a new one
+                text.Placeholder = m.Value;
+                template.TextFragments.Add(text);
+
+                template._stringToFormat += staticText + "{" + (template.TextFragments.Count - 1) + "}";
 
                 prevIndex = m.Index + m.Length;
                 m = m.NextMatch();
-                ++i;
             }
+
             if (prevIndex < tmpl.Length)
             {
                 staticText = tmpl.Substring(prevIndex);
-                t.TextData.Add(staticText);
-                staticText += staticText;
+                text = new TextFragment(false, staticText);
+                template.TextFragments.Add(text);
+                template._stringToFormat += staticText;
             }
 
-            return t;
-        }
-        
-        static int IndexOfKey(IEnumerable<string> keys, string key)
-        {
-            int i = 0;
-            foreach(string k in keys)
-            {
-                if (k == key) return i;
-                ++i;
-            }
-
-            return -1;
+            return template;
         }
 
         /// <summary>
@@ -82,8 +93,7 @@ namespace TextTemplate
         /// <returns></returns>
         public string GenerateFormatedString()
         {
-            return String.Format(_stringToFormat, Placeholders.Keys.ToArray());
+            return String.Format(_stringToFormat, TextFragments.Select(x => x.Text).ToArray());
         }
     }
-
 }

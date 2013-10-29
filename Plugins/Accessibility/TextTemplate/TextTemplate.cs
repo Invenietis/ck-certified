@@ -19,10 +19,12 @@ namespace TextTemplate
 
         public override bool Setup(IPluginSetupInfo info)
         {
-            _editor = new TemplateEditor();
-            Template p = Template.Load("blabla balbas qscmqmsc  poi {{caca}} sklqskcj qslkcjqkskjeziofzef^$i<sd sd {{nom}} qmskdlqsc {{caca}} qscqscqsccqsc");
+            
+            Exec("blabla balbas qscmqmsc  poi \r\n{{caca}} sklqskcj qslkcjqkskjeziofzef^$i<sd sd {{nom}}" + Environment.NewLine + "qmskdlqsc {{caca}} qscqscqsccqsc");
+
             return base.Setup(info);
         }
+
         protected override void OnCommandSent(object sender, CommandSentEventArgs e)
         {
             string cmd;
@@ -42,10 +44,9 @@ namespace TextTemplate
 
         public void Exec(string template)
         {
-            /*
-            if (_actions.ContainsKey(actionKey))
-                _actions[actionKey]();
-             * */
+            Template p = Template.Load(template);
+            _editor = new TemplateEditor(p);
+            _editor.Show();
         }
     }
 }

@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+            Width="424" Height="700">
+    <StackPanel Margin="0">
+        <StackPanel x:Name="sheet" Margin="10"  Width="404" Height="580" HorizontalAlignment="Center" VerticalAlignment="Center">
             
-    </Grid>
+        </StackPanel>
+        <WrapPanel Background="Gray" Margin="0" Height="80">
+            <Button>OK</Button>
+        </WrapPanel>
+    </StackPanel>
 </Window>

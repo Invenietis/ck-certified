@@ -59,12 +59,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Template.cs" />
+    <Compile Include="TextFragment.cs" />
     <Compile Include="TextTemplate.cs" />
     <Compile Include="View\TemplateEditor.xaml.cs">
       <DependentUpon>TemplateEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\TemplateEditorViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Advanced\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">

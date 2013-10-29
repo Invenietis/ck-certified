@@ -19,9 +19,51 @@ namespace TextTemplate
     /// </summary>
     public partial class TemplateEditor : Window
     {
-        public TemplateEditor()
+        Template _template;
+
+        public TemplateEditor(Template template)
         {
+            _template = template;
             InitializeComponent();
+            RenderTemplate();
+        }
+
+        void RenderTemplate()
+        {
+            StackPanel sp = (StackPanel)FindName("sheet");
+            WrapPanel wp = new WrapPanel();
+
+            foreach(IText text in _template.TextFragments)
+            {
+                TextBlock block;
+                TextBox editable;
+
+                if (text.IsEditable)
+                {
+                    editable = new TextBox();
+                    editable.Text = text.Placeholder;
+                    var b =  new Binding("Text");
+                    b.Source = text;
+                    editable.SetBinding(TextBox.TextProperty,b);
+                    wp.Children.Add(editable);
+                }
+                else
+                {
+                    if (text is NewLine)
+                    {
+                        sp.Children.Add(wp);
+                        wp = new WrapPanel();
+                    }
+                    else
+                    {
+                        block = new TextBlock();
+                        block.Text = text.Text;
+                        wp.Children.Add(block);
+                    }
+                }
+            }
+
+            if( wp.Children.Count > 0 ) sp.Children.Add(wp);
         }
     }
 }

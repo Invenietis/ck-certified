@@ -21,7 +21,7 @@ namespace MouseRadar
            PublicName = MouseRadar.PluginPublicName,
            Version = MouseRadar.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class MouseRadar : IPlugin, IHighlightableElement
+    public class MouseRadar : IPlugin, IActionableElement
     {
         internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -32,7 +32,6 @@ namespace MouseRadar
 
         ICKReadOnlyList<IHighlightableElement> _child;
         Radar _radar;
-        VirtualElement _vElement;
         
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
@@ -50,7 +49,7 @@ namespace MouseRadar
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _child = new CKReadOnlyListMono<IHighlightableElement>( new VirtualElement() { ActionType = KeyScroller.ActionType.StayOnTheSame } );
+            _child = CKReadOnlyListEmpty<IHighlightableElement>.Empty;
             return true;
         }
 
@@ -100,33 +99,30 @@ namespace MouseRadar
             
             Highliter.Service.BeginHighlight += ( o, e ) =>
             {
-                if( e.Element != this && e.Element != _child[0] ) return;
+                if( e.Element != this ) return;
                 Focus();
-                Console.WriteLine( "Begin" );
+
                 if( _radar.Model.LapCount >= 3 )
                 {
-                    _radar.Model.LapCount = 0;
-                    ((IActionnableElement)_child[0]).ActionType = ActionType.UpToParent;
-                    
+                    ActionType = ActionType.Normal;
                 }
             };
             
             Highliter.Service.SelectElement += ( o, e ) =>
             {
-                if( e.Element == this )
-                {
-                    ((IActionnableElement)_child[0]).ActionType = ActionType.StayOnTheSame;
-                    IsActive = true;
-                }
-                else if( e.Element == _child[0] ) TranslateRadar();
+                if( e.Element != this ) return;
+
+                if( IsActive ) TranslateRadar();
+                else Resume();
             };
+
             Highliter.Service.EndHighlight += ( o, e ) =>
             {
-                if( e.Element != this && e.Element != _child[0] ) return;
+                if( e.Element != this ) return;
                 Blur();
         
-                Console.WriteLine( "End" );
-   
+  
+                if (ActionType != ActionType.StayOnTheSame ) Pause();
             };
 
             _radar.ScreenBoundCollide += ( o, e ) => {
@@ -159,10 +155,13 @@ namespace MouseRadar
 
             _radar.Show();
             _radar.Launch();
+            IsActive = true;
+            Pause();
         }
 
         void TranslateRadar()
         {
+            if( !IsActive ) return;
             if(_radar.IsTranslating()) _radar.StopTranslation();
             else _radar.StartTranslation();
             _radar.Model.LapCount = 0;
@@ -180,12 +179,20 @@ namespace MouseRadar
         }
         void Pause()
         {
-            _radar.StopTranslation();
+            
+            Console.WriteLine( "Pause" );
+            
             _radar.StopRotation();
+            _radar.StopTranslation( false );
+            _radar.Model.LapCount = 0;
+            IsActive = false;
         }
         void Resume()
         {
+            Console.WriteLine( "Resume" );
+            ActionType = ActionType.StayOnTheSame;
             _radar.StartRotation();
+            IsActive = true;
         }
         void Focus()
         {
@@ -202,7 +209,7 @@ namespace MouseRadar
 
         public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return _child; }
+            get { return CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         public int X
@@ -229,6 +236,12 @@ namespace MouseRadar
         {
             get { return SkippingBehavior.None; }
         }
+
+        #endregion
+
+        #region IActionnableElement Members
+
+        public ActionType ActionType { get; set; }
 
         #endregion
     }

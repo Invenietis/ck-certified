@@ -16,11 +16,11 @@ namespace TextTemplate
     {
         const string CMD = "placeholder:";
         TemplateEditor _editor;
+        Template _current;
 
         public override bool Setup(IPluginSetupInfo info)
         {
-            
-            Exec("blabla balbas qscmqmsc  poi \r\n{{caca}} sklqskcj qslkcjqkskjeziofzef^$i<sd sd {{nom}}" + Environment.NewLine + "qmskdlqsc {{caca}} qscqscqsccqsc");
+            LaunchEditor("blabla balbas qscmqmsc  poi \r\n{{caca}} sklqskcj qslkcjqkskjeziofzef^$i<sd sd {{nom}}" + Environment.NewLine + "qmskdlqsc {{caca}} qscqscqsccqsc");
 
             return base.Setup(info);
         }
@@ -38,15 +38,26 @@ namespace TextTemplate
                     if (p.IsString(out m))
                         if (p.Match(CommandParser.Token.ClosePar))
                             if (cmd == CMD)
-                                Exec(m);
+                                LaunchEditor(m);
             }
         }
 
-        public void Exec(string template)
+        public void LaunchEditor(string template)
         {
-            Template p = Template.Load(template);
-            _editor = new TemplateEditor(p);
+            _current = Template.Load(template);
+            _editor = new TemplateEditor(_current);
+
+            _editor.Closed += (o, e) =>
+            {
+                SendFormatedTemplate();
+            };
+
             _editor.Show();
+        }
+        
+        public void SendFormatedTemplate()
+        {
+
         }
     }
 }

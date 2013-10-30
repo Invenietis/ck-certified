@@ -7,7 +7,7 @@ namespace TextTemplate
 {
     public class TextFragment : IText
     {
-        string _text;
+        protected string _text;
 
         public bool IsEditable { get; private set; }
 
@@ -29,15 +29,21 @@ namespace TextTemplate
             _text = text;
             Placeholder = "";
         }
+
+        public TextFragment()
+        {
+            IsEditable = false;
+            _text = "";
+            Placeholder = "";
+        }
     }
 
     //New line !
-    public class NewLine : IText
+    public class NewLine : TextFragment
     {
-        public bool IsEditable { get { return false; } }
-
-        public string Text { get { return Environment.NewLine; } set { } }
-
-        public string Placeholder { get { return ""; } set { } }
+        public NewLine() : base()
+        {
+            _text = Environment.NewLine;
+        }
     }
 }

@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using CK.Core;
 
 namespace TextTemplate
 {
     public class Template
     {
-        static readonly Regex ParseRegex = new Regex("{{(?<token>.*?)}}");
+        static readonly string OpenTag = "{{";
+        static readonly string CloseTag = "}}";
+        static readonly Regex ParseRegex = new Regex(String.Format("{0}(?<token>.*?){1}", OpenTag, CloseTag));
         
         string _stringToFormat;
         
         /// <summary>
         /// Get the list of the TextFragment
         /// </summary>
-        public List<IText> TextFragments { get; private set; }
+        public IReadOnlyList<IText> TextFragments { get; private set; }
 
 
         /// <summary>
@@ -26,7 +29,7 @@ namespace TextTemplate
         public static Template Load(string tmpl)
         {
             Template template = new Template();
-            template.TextFragments = new List<IText>();
+            List<IText> textFragmenst = new List<IText>();
             template._stringToFormat = "";
             string staticText = "";
             IText text;
@@ -42,35 +45,36 @@ namespace TextTemplate
                 {
                     staticText = tmpl.Substring(prevIndex, m.Index - prevIndex);
                     int newLine = staticText.IndexOf(Environment.NewLine);
+
                     if (newLine > -1)
                     {
                         var fragments = staticText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                         for (int i = 0; i < fragments.Length; i++ )
                         {
                             //newLine at the begining
-                            if (newLine == 0) template.TextFragments.Add(new NewLine());
+                            if (newLine == 0) textFragmenst.Add(new NewLine());
 
                             text = new TextFragment(false, fragments[i]);
-                            template.TextFragments.Add(text);
+                            textFragmenst.Add(text);
 
                             //newLine not at the begining
-                            if (newLine > 0) template.TextFragments.Add(new NewLine());
+                            if (newLine > 0) textFragmenst.Add(new NewLine());
                         }
                     }
                     else
                     {
                         text = new TextFragment(false, staticText);
-                        template.TextFragments.Add(text);
+                        textFragmenst.Add(text);
                     }
                 }
 
                 //Editable text
-                text = template.TextFragments.SingleOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
+                text = textFragmenst.SingleOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
                 if(text == null) text = new TextFragment(true, m.Groups["token"].Value); //if not, create a new one
                 text.Placeholder = m.Value;
-                template.TextFragments.Add(text);
+                textFragmenst.Add(text);
 
-                template._stringToFormat += staticText + "{" + (template.TextFragments.Count - 1) + "}";
+                template._stringToFormat += staticText + "{" + (textFragmenst.Count - 1) + "}";
 
                 prevIndex = m.Index + m.Length;
                 m = m.NextMatch();
@@ -80,9 +84,10 @@ namespace TextTemplate
             {
                 staticText = tmpl.Substring(prevIndex);
                 text = new TextFragment(false, staticText);
-                template.TextFragments.Add(text);
+                textFragmenst.Add(text);
                 template._stringToFormat += staticText;
             }
+            template.TextFragments = new CKReadOnlyListOnIList<IText>(textFragmenst);
 
             return template;
         }

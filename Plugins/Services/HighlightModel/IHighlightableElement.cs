@@ -39,4 +39,17 @@ namespace HighlightModel
         /// </summary>
         SkippingBehavior Skip { get; }
     }
+
+    public interface IActionableElement : IHighlightableElement
+    {
+        ActionType ActionType { get; set; }
+    }
+
+    public enum ActionType
+    {
+        Normal = 0,
+        EnterChild = 1,
+        UpToParent = 2,
+        StayOnTheSame = 3
+    }
 }

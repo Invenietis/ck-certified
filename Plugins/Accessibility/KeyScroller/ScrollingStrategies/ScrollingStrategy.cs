@@ -11,14 +11,6 @@ using System.Diagnostics;
 
 namespace KeyScroller
 {
-    public enum ActionType
-    {
-        Normal = 0,
-        EnterChild = 1,
-        UpToParent = 2,
-        StayOnTheSame = 3
-    }
-
     public abstract class ScrollingStrategy : IScrollingStrategy
     {
         ICKReadOnlyList<IHighlightableElement> _roElements;

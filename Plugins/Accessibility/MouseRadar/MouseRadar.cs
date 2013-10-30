@@ -104,7 +104,7 @@ namespace MouseRadar
 
                 if( _radar.Model.LapCount >= 3 )
                 {
-                    ActionType = KeyScroller.ActionType.Normal;
+                    ActionType = ActionType.Normal;
                 }
             };
             

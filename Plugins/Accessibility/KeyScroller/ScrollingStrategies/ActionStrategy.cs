@@ -10,16 +10,16 @@ using HighlightModel;
 
 namespace KeyScroller
 {
-    [StrategyAttribute( StateStrategy.StrategyName )]
-    public class StateStrategy : ScrollingStrategy
+    [StrategyAttribute( ActionStrategy.StrategyName )]
+    public class ActionStrategy : ScrollingStrategy
     {
-        const string StrategyName = "StateStrategy";
+        const string StrategyName = "ActionStrategy";
         public override string Name
         {
             get { return StrategyName; }
         }
 
-        public StateStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ActionStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer , elements, configuration )
         {
 
@@ -82,10 +82,5 @@ namespace KeyScroller
             }
             return GetSkipBehavior( nextElement );
         }
-    }
-
-    public interface IActionableElement : IHighlightableElement
-    {
-        ActionType ActionType { get; set; }
     }
 }

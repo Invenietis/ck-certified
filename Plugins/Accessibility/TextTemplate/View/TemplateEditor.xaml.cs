@@ -19,21 +19,28 @@ namespace TextTemplate
     /// </summary>
     public partial class TemplateEditor : Window
     {
-        Template _template;
+        Dictionary<IText, UIElement> _bindings;
+        TemplateEditorViewModel _model;
 
-        public TemplateEditor(Template template)
+        public TemplateEditor(TemplateEditorViewModel model)
         {
-            _template = template;
+            _model = model;
             InitializeComponent();
             RenderTemplate();
+            _model.TemplateValidated += (o, e) =>
+            {
+                Close();
+            };
+            DataContext = model;
         }
 
         void RenderTemplate()
         {
             StackPanel sp = (StackPanel)FindName("sheet");
             WrapPanel wp = new WrapPanel();
+            _bindings = new Dictionary<IText, UIElement>();
 
-            foreach(IText text in _template.TextFragments)
+            foreach(IText text in _model.Template.TextFragments)
             {
                 TextBlock block;
                 TextBox editable;
@@ -41,10 +48,13 @@ namespace TextTemplate
                 if (text.IsEditable)
                 {
                     editable = new TextBox();
+                    editable.DataContext = text;
                     editable.Text = text.Placeholder;
+
                     var b =  new Binding("Text");
                     b.Source = text;
-                    editable.SetBinding(TextBox.TextProperty,b);
+                    editable.SetBinding(TextBox.TextProperty, b);
+                    _bindings[text] = editable;
                     wp.Children.Add(editable);
                 }
                 else
@@ -64,6 +74,12 @@ namespace TextTemplate
             }
 
             if( wp.Children.Count > 0 ) sp.Children.Add(wp);
+        }
+
+        public void FocusOnElement(IText text)
+        {
+            if (!_bindings.ContainsKey(text)) return;
+            _bindings[text].Focus();
         }
     }
 }

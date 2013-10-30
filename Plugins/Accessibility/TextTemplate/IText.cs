@@ -1,11 +1,12 @@
-﻿using System;
+﻿using HighlightModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace TextTemplate
 {
-    public interface IText
+    public interface IText : IActionableElement
     {
         /// <summary>
         /// True if the property Text is writeable
@@ -21,5 +22,10 @@ namespace TextTemplate
         /// The text placeholder
         /// </summary>
         string Placeholder { get; set; }
+
+        /// <summary>
+        /// Wheter the IText is highlight or not
+        /// </summary>
+        bool IsHighlighted { get; set; }
     }
 }

@@ -47,7 +47,7 @@ namespace KeyScroller
 
         protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
         {
-            SelectElement( sender, eventArgs );
+            if(SelectElement != null) SelectElement( sender, eventArgs );
         }
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {

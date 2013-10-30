@@ -35,7 +35,6 @@ namespace KeyScroller
             
         }
 
-
         protected override IHighlightableElement GetNextElement( ActionType actionType )
         {
             ICKReadOnlyList<IHighlightableElement> elements = null;
@@ -43,10 +42,10 @@ namespace KeyScroller
             if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
             else elements = RegisteredElements;
 
-            if( _currentId > -1 && elements[_currentId] is IActionableElement )
+            if( _currentId > -1 )
             {
-                var e = (IActionableElement)elements[_currentId];
-                actionType = e.ActionType;
+                var e = elements[_currentId] as IActionableElement;
+                if ( e != null ) actionType = e.ActionType;
             }
 
             _actionType = ActionType.Normal;

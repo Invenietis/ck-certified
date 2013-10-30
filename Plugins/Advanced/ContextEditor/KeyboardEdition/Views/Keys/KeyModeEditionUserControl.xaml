@@ -34,10 +34,6 @@
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
             <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" SendStringDataTemplate="{StaticResource sendstringdatatemplate}" SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" />
 
-            <Style x:Key="SectionSeperatorStyle" TargetType="{x:Type Separator}">
-                <Setter Property="Background" Value="#FF065AA0"></Setter>
-            </Style>
-
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsFallback}" Value="False">
@@ -77,6 +73,7 @@
                         </Style.Triggers>
                     </Style>
                 </DockPanel.Style>
+                
                 <!-- Mode : Fallback warning -->
                 <Border Style="{StaticResource WarningPanelStyle}" Margin="5 5 0 0">
                     <StackPanel Style="{StaticResource KeyModeWarningDisplayStyle}">
@@ -184,7 +181,7 @@
                     </DockPanel>
                 </StackPanel>
 
-                <Border DockPanel.Dock="Right" Padding="0" Margin="5" Width="150">
+                <Border DockPanel.Dock="Right" Margin="5" Width="150">
                     <StackPanel>
                         <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : "/>
                         <Separator Background="#FF065AA0"/>
@@ -256,8 +253,8 @@
                                     <ContentControl Margin="0 5 0 0" ContentTemplateSelector="{StaticResource addactiondatatemplateselector}" Content="{Binding KeyCommand.Parameter}" />
                                 </StackPanel>
                                 <StackPanel Margin="0 5 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
-                                    <Button IsEnabled="{Binding KeyCommandTypeProvider.KeyCommand.IsValid}" Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0"></Button>
-                                    <Button Content="Cancel" Command="{Binding CancelChangesCommand}"></Button>
+                                    <Button Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding KeyCommandTypeProvider.KeyCommand.IsValid}" />
+                                    <Button Content="Cancel" Command="{Binding CancelChangesCommand}" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>

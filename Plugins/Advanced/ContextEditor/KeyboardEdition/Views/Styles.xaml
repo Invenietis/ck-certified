@@ -1,4 +1,5 @@
 ﻿<ResourceDictionary 
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"         
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
@@ -19,11 +20,44 @@
     <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <vm:ImageConverter x:Key="imageconverter"/>
-
+    <SolidColorBrush Color="#FF065AA0" x:Key="EditorMainColor"/>
+    <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
+    
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="Calibri"></Setter>
     </Style>
-    
+
+    <Style x:Key="SectionSeperatorStyle" TargetType="{x:Type Separator}">
+        <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="ModernUIButtonStyle">
+        <Setter Property="Foreground" Value="{StaticResource EditorMainColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Microsoft_Windows_Themes:ButtonChrome x:Name="Chrome" RoundCorners="False" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Microsoft_Windows_Themes:ButtonChrome>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource EditorLightColor}"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
+                <!--<Setter Property="Foreground" Value="Black"></Setter>-->
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type TextBlock}" x:Key="SectionHeaderStyle">
         <Setter Property="Margin" Value="5 5 5 2"></Setter>
         <Setter Property="FontSize" Value="10"></Setter>
@@ -332,7 +366,7 @@
 
     <ControlTemplate TargetType="{x:Type vm:ActionControl}" x:Key="SimpleActionControlTemplate">
         <DockPanel LastChildFill="True" Margin="2">
-            <Button x:Name="button" ToolTip="{TemplateBinding Text}" Height="24" Width="24" Margin="2"
+            <Button x:Name="button" ToolTip="{TemplateBinding Text}" Height="24" Width="24"
                     DockPanel.Dock="Right" HorizontalAlignment="Right" 
                     VerticalAlignment="Center" Command="{TemplateBinding Action}">
                 <Image Source="{TemplateBinding ImageSource, Converter={StaticResource imageconverter}}" Stretch="Fill" />

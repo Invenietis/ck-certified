@@ -16,6 +16,7 @@ namespace KeyboardEditor.KeyboardEdition
     {
         public SendKeyCommandParameterManager()
         {
+            //TODO : use resx
             _values = new Dictionary<string, CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys>();
 
             _values.Add( "+ (addition)", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.Add );

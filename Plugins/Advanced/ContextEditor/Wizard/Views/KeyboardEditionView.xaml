@@ -38,15 +38,25 @@
 
             <!-- When editing a key -->
             <DataTemplate x:Key="KeyEditionDataTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding SelectKeyModeCommand}" Content="Content and Actions" Margin="5"></Button>
-                    <Button Command="{Binding SelectLayoutKeyModeCommand}" Margin="5">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Design" />
-                            <TextBlock Text="(Background, Font, Dimensions and Position)" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+                <UniformGrid Columns="2">
+                    <DockPanel MinHeight="100" LastChildFill="True">
+                        <Button DockPanel.Dock="Left" Command="{Binding SelectKeyModeCommand}" 
+                                Style="{StaticResource ModernUIButtonStyle}"
+                                Content="Content and Actions" 
+                                Margin="5">
+                        </Button>
+                    </DockPanel>
+                    <DockPanel MinHeight="100" LastChildFill="True">
+                        <Button DockPanel.Dock="Right" Command="{Binding SelectLayoutKeyModeCommand}" 
+                                Style="{StaticResource ModernUIButtonStyle}"
+                                Margin="5">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Design" />
+                                <TextBlock Text="(Background, Font, Dimensions and Position)" />
+                            </StackPanel>
+                        </Button>
+                    </DockPanel>
+                </UniformGrid>
             </DataTemplate>
 
             <!-- When editing a KeyMode -->

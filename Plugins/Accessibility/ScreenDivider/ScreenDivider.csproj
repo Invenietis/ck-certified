@@ -80,7 +80,6 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VirtualElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Res\ArrowTurnLeftDown.png" />

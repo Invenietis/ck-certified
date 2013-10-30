@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:ScreenDivider.Converters"
         xmlns:viewModels="clr-namespace:ScreenDivider.ViewModels"
         Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True"
-        x:Name="MWin" Topmost="True">
+        x:Name="MWin" Topmost="False">
     <Window.Resources>
         <local:BooleanToColor x:Key="BooleanToColor" />
         <local:BooleanToOpacity x:Key="BooleanToOpacity" />

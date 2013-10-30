@@ -23,7 +23,7 @@ namespace ScreenDivider
            PublicName = ScreenDividerPlugin.PluginPublicName,
            Version = ScreenDividerPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class ScreenDividerPlugin : IPlugin, IHighlightableElement
+    public class ScreenDividerPlugin : IPlugin, IActionableElement
     {
         const string PluginIdString = "{7942DA26-8181-4B32-9F94-03C4DB0D7915}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -33,8 +33,7 @@ namespace ScreenDivider
         IList<MainWindow> _attachedWindows = new List<MainWindow>();
         int _currentWindow = -1;
         int _loop = 0;
-
-        IList<IHighlightableElement> _root = new List<IHighlightableElement>() { new VirtualElement() };
+        bool _switchingActive = true;
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -53,6 +52,8 @@ namespace ScreenDivider
         {
             foreach( Screen s in Screen.AllScreens.Reverse() )
                 ConfigureScreen( s );
+
+            ActionType = ActionType.StayOnTheSame;
 
             return true;
         }
@@ -88,26 +89,30 @@ namespace ScreenDivider
             WindowViewModel wdc = (WindowViewModel)w.DataContext;
             if( !wdc.IsEnter )
             {
-                _attachedWindows.Where( a => a != w ).All( ( a ) =>
+                if( ActionType == ActionType.StayOnTheSame )
+                {
+                    _attachedWindows.Where( a => a != w ).All( ( a ) =>
                     {
                         a.Hide();
                         return true;
                     }
-                );
+                    );
 
-                CreateFirstGrid( w, wdc );
-                _loop = 0;
-                //else
-                //{
-                //    PauseAllWindows();
-                //    //_timer.Start();
-                //}
+                    CreateFirstGrid( w, wdc );
+                    _loop = 0;
+                }
+                else
+                {
+                    PauseAllWindows();
+                }
             }
             else
             {
-                //_timer.Stop();
                 wdc.Enter();
             }
+
+            ActionType = ActionType.StayOnTheSame;
+            _switchingActive = true;
         }
 
         private void CreateFirstGrid( MainWindow w, WindowViewModel wdc, bool onlyOneMode = false )
@@ -147,6 +152,7 @@ namespace ScreenDivider
 
         void SwitchWindow()
         {
+            if( !_switchingActive ) return;
             if( _loop++ < MaxLoop )
             {
                 if( !IsEnter )
@@ -163,7 +169,8 @@ namespace ScreenDivider
             }
             else
             {
-                ((IActionnableElement)_root[0]).ActionType = ActionType.UpToParent;
+                ActionType = ActionType.Normal;
+                _switchingActive = false;
                 _loop = 0;
                 PauseAllWindows();
             }
@@ -239,6 +246,7 @@ namespace ScreenDivider
 
         public void Start()
         {
+            ActionType = ActionType.StayOnTheSame;
             if( _attachedWindows.Count == 1 )
             {
                 MainWindow w = _attachedWindows[0];
@@ -268,7 +276,7 @@ namespace ScreenDivider
 
         public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return _root.ToReadOnlyList(); }
+            get { return CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         public int X
@@ -295,6 +303,12 @@ namespace ScreenDivider
         {
             get { return SkippingBehavior.None; }
         }
+
+        #endregion
+
+        #region IActionableElement Members
+
+        public ActionType ActionType { get; set; }
 
         #endregion
     }

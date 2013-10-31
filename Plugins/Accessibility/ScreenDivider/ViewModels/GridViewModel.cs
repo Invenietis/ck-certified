@@ -47,14 +47,14 @@ namespace ScreenDivider.ViewModels
             var m = new PanelViewModel( this );
             _panels.Push( m );
 
-            _timer.Tick += delegate( object s, EventArgs args )
-            {
-                if( Current != null )
-                    Current.Switch();
-                else
-                    _timer.Stop();
-            };
-            _timer.Interval = new TimeSpan( 0, 0, 0, 0, 2000 );
+            //_timer.Tick += delegate( object s, EventArgs args )
+            //{
+            //    if( Current != null )
+            //        Current.Switch();
+            //    else
+            //        _timer.Stop();
+            //};
+            //_timer.Interval = new TimeSpan( 0, 0, 0, 0, 2000 );
         }
 
         internal void PauseWindowOwner()
@@ -68,7 +68,7 @@ namespace ScreenDivider.ViewModels
         public void Switch()
         {
             Debug.Assert( Current != null );
-            _timer.Start();
+            if( Current != null ) Current.Switch();
         }
 
         /// <summary>

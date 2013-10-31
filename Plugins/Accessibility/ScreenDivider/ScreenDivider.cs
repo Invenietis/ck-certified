@@ -153,9 +153,10 @@ namespace ScreenDivider
         void SwitchWindow()
         {
             if( !_switchingActive ) return;
-            if( _loop++ < MaxLoop )
+
+            if( !IsEnter )
             {
-                if( !IsEnter )
+                if( _loop++ < MaxLoop )
                 {
                     if( _currentWindow < _attachedWindows.Count - 1 ) _currentWindow++;
                     else _currentWindow = 0;
@@ -166,13 +167,18 @@ namespace ScreenDivider
                     ((WindowViewModel)_attachedWindows[_currentWindow].DataContext).IsActive = true;
                     _attachedWindows[_currentWindow].Focus();
                 }
+                else
+                {
+                    ActionType = ActionType.Normal;
+                    _switchingActive = false;
+                    _loop = 0;
+                    PauseAllWindows();
+                }
             }
             else
             {
-                ActionType = ActionType.Normal;
-                _switchingActive = false;
-                _loop = 0;
-                PauseAllWindows();
+                var m = (WindowViewModel)CurrentWindow.DataContext;
+                if( m != null ) m.Switch();
             }
         }
 
@@ -187,8 +193,7 @@ namespace ScreenDivider
 
         void OnBeginHighlight( object sender, HighlightEventArgs e )
         {
-            if( !IsEnter )
-                SwitchWindow();
+            SwitchWindow();
         }
 
         void OnEndHighlight( object sender, HighlightEventArgs e )
@@ -266,6 +271,11 @@ namespace ScreenDivider
         public void Stop()
         {
             UnInitializeHighlighter();
+            foreach( var w in _attachedWindows )
+            {
+                w.Close();
+            }
+            _attachedWindows.Clear();
         }
 
         public void Teardown()

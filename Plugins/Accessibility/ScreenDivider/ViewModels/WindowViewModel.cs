@@ -58,6 +58,11 @@ namespace ScreenDivider.ViewModels
             return null;
         }
 
+        public void Switch()
+        {
+            GridOwned.Switch();
+        }
+
         public void Exit()
         {
             GridOwned.ExitCommand();

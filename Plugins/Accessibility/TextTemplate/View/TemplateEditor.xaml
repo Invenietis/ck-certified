@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-            Width="424" Height="700">
+             mc:Ignorable="d"   
+            ShowInTaskbar="False"
+            Width="424" Height="200"
+            Topmost="True"
+            ResizeMode="CanMinimize"
+            WindowStyle="ToolWindow"
+        >
     <StackPanel Margin="0">
         <StackPanel.Resources>
             <SolidColorBrush x:Key="bg" Color="{Binding Path=HighlightColor}" />
@@ -30,11 +35,12 @@
                 </Style.Triggers>
             </Style>
         </StackPanel.Resources>
-        <StackPanel x:Name="sheet" Margin="10"  Width="404" Height="580" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel x:Name="sheet" Margin="10"  HorizontalAlignment="Center" VerticalAlignment="Center">
         </StackPanel>
-        <WrapPanel Background="Gray" Margin="0" Height="80">
+        <WrapPanel Margin="0" Height="80">
             <Button Command="{Binding ValidateTemplate}" Style="{StaticResource ResourceKey=ok}">OK</Button>
             <Button Command="{Binding Cancel}" Style="{StaticResource ResourceKey=cancel}">Cancel</Button>
         </WrapPanel>
     </StackPanel>
+
 </Window>

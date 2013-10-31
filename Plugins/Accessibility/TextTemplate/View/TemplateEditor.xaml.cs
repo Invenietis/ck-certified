@@ -28,6 +28,11 @@ namespace TextTemplate
             InitializeComponent();
             RenderTemplate();
             DataContext = model;
+            this.MouseDown += (o, e) =>
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                    this.DragMove();
+            };
         }
 
         void RenderTemplate()

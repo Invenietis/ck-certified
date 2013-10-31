@@ -27,10 +27,6 @@ namespace TextTemplate
             _model = model;
             InitializeComponent();
             RenderTemplate();
-            _model.TemplateValidated += (o, e) =>
-            {
-                Close();
-            };
             DataContext = model;
         }
 

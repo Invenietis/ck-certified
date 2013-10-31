@@ -1,6 +1,7 @@
 ﻿using BasicCommandHandlers;
 using CK.Core;
 using CK.Plugin;
+using CK.Plugins.SendInputDriver;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace TextTemplate
 {
@@ -26,6 +28,9 @@ namespace TextTemplate
         [DynamicService(Requires = RunningRequirement.MustExistAndRun)]
         public IService<IHighlighterService> Highlighter { get; set; }
 
+        [DynamicService(Requires = RunningRequirement.MustExistAndRun)]
+        public IService<ISendStringService> SendService { get; set; }
+
         public override bool Setup(IPluginSetupInfo info)
         {
             _viewModel = new TemplateEditorViewModel();
@@ -33,7 +38,13 @@ namespace TextTemplate
             {
                 string generatedText = _viewModel.Template.GenerateFormatedString();
                 Console.WriteLine(generatedText);
+                _editor.WindowState = System.Windows.WindowState.Minimized;
                 SendFormatedTemplate();
+                _editor.Close();
+            };
+            _viewModel.Canceled += (o, e) =>
+            {
+                _editor.Close();
             };
             return base.Setup(info);
         }
@@ -41,7 +52,7 @@ namespace TextTemplate
         public override void Start()
         {
             base.Start();
-            LaunchEditor("blabla balbas qscmqmsc  poi \r\n{{caca}} sklqskcj qslkcjqkskjeziofzef^$i<sd sd {{nom}}" + Environment.NewLine + "qmskdlqsc {{caca}} qscqscqsccqsc");
+            LaunchEditor("J'aime la soeur à {{jlk}} mais j'aime pas {{jlk}}");
             Highlighter.Service.RegisterTree(this);
             Highlighter.Service.BeginHighlight += (o, e) =>
             {
@@ -49,18 +60,24 @@ namespace TextTemplate
                 {
                     foreach(var elem in Children)
                     {
-                        IActionableElement aElem = (IActionableElement) elem;
-                        if (aElem.ActionType == ActionType.UpToParent) aElem.ActionType = ActionType.Normal;
+                        IActionableElement aElem = elem as IActionableElement;
+                        if (aElem != null && aElem.ActionType == ActionType.UpToParent) aElem.ActionType = ActionType.Normal;
                     }
                 }
-                else if(e.Element is IText)
+                else 
                 {
-                    IText t = (IText)e.Element;
-
-                    t.IsHighlighted = true;
-                    _viewModel.Template.TextFragments.IndexOf(x => x.IsHighlighted == true);
-                    Console.WriteLine("Text highlighted : " + t.Text);
-                    _editor.FocusOnElement(t);
+                    if (e.Element is IHighlightable)
+                    {
+                        IHighlightable h = (IHighlightable)e.Element;
+                        h.IsHighlighted = true;
+                    }
+                    if (e.Element is IText)
+                    {
+                        IText t = (IText)e.Element;
+                        _viewModel.Template.TextFragments.IndexOf(x => x.IsHighlighted == true);
+                        Console.WriteLine("Text highlighted : " + t.Text);
+                        _editor.FocusOnElement(t);
+                    }
                 }
             };
             Highlighter.Service.SelectElement += (o, e) =>
@@ -70,13 +87,18 @@ namespace TextTemplate
                     IText t = (IText)e.Element;
                     t.ActionType = ActionType.UpToParent;
                 }
+                else if (e.Element is ICommand)
+                {
+                    ICommand cmd = e.Element as ICommand;
+                    cmd.Execute(null);
+                }
             };
             Highlighter.Service.EndHighlight += (o, e) =>
             {
-                if (e.Element is IText)
+                if (e.Element is IHighlightable)
                 {
-                    IText t = (IText)e.Element;
-                    t.IsHighlighted = false;
+                    IHighlightable h = (IHighlightable)e.Element;
+                    h.IsHighlighted = false;
                 }
             };
         }
@@ -106,15 +128,19 @@ namespace TextTemplate
             var list = _viewModel.Template.TextFragments.Where(t => t.IsEditable == true)
                 .Cast<IHighlightableElement>()
                 .ToList();
+            
+            //Ok Button
+            list.Add(_viewModel.ValidateTemplate);
 
+            //Cancel button
+            list.Add(_viewModel.Cancel);
             _children = new CKReadOnlyListOnIList<IHighlightableElement>(list);
-
             _editor.Show();
         }
         
         public void SendFormatedTemplate()
         {
-            //TODO Send string
+            SendService.Service.SendString(_viewModel.Template.GenerateFormatedString());
         }
 
         public CK.Core.ICKReadOnlyList<IHighlightableElement> Children

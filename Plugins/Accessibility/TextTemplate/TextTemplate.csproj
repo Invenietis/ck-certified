@@ -47,6 +47,10 @@
     <Reference Include="Microsoft.TeamFoundation, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\SendInputDriver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -71,6 +75,10 @@
     <Compile Include="View\TemplateEditorViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Host.Services\Host.Services.csproj">
+      <Project>{97c12498-7a6e-4a87-8889-c965509443e8}</Project>
+      <Name>Host.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
       <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
       <Name>CK.WPF.ViewModel</Name>

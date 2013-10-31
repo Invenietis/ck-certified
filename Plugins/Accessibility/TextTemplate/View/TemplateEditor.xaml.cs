@@ -52,6 +52,7 @@ namespace TextTemplate
                     editable.Text = text.Placeholder;
 
                     var b =  new Binding("Text");
+                    b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     b.Source = text;
                     editable.SetBinding(TextBox.TextProperty, b);
                     _bindings[text] = editable;

@@ -16,7 +16,7 @@ namespace TextTemplate
 
         public Template Template { get; set; }
 
-        public Color HighlightColor { get; set; }
+        public Color HighlightColor { get { return Color.FromRgb(200, 12, 89); }  }
 
         public ICommand ValidateTemplate
         {

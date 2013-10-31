@@ -33,6 +33,7 @@ namespace TextTemplate
             {
                 string generatedText = _viewModel.Template.GenerateFormatedString();
                 Console.WriteLine(generatedText);
+                SendFormatedTemplate();
             };
             return base.Setup(info);
         }
@@ -107,17 +108,13 @@ namespace TextTemplate
                 .ToList();
 
             _children = new CKReadOnlyListOnIList<IHighlightableElement>(list);
-            _editor.Closed += (o, e) =>
-            {
-                SendFormatedTemplate();
-            };
 
             _editor.Show();
         }
         
         public void SendFormatedTemplate()
         {
-
+            //TODO Send string
         }
 
         public CK.Core.ICKReadOnlyList<IHighlightableElement> Children

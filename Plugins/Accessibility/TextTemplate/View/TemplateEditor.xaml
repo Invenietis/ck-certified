@@ -7,10 +7,11 @@
             Width="424" Height="700">
     <StackPanel Margin="0">
         <StackPanel.Resources>
+            <SolidColorBrush x:Key="bg" Color="{Binding Path=HighlightColor}" />
             <Style TargetType="TextBox">
                 <Style.Triggers >
                     <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="true">
-                        <Setter Property="TextBox.Foreground" Value="Pink" />
+                        <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=bg}}" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

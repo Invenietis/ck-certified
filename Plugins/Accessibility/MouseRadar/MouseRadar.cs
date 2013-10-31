@@ -45,6 +45,33 @@ namespace MouseRadar
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> Highliter { get; set; }
 
+        void Pause()
+        {
+
+            Console.WriteLine("Pause");
+
+            _radar.StopRotation();
+            _radar.StopTranslation(false);
+            _radar.Model.LapCount = 0;
+            IsActive = false;
+        }
+        void Resume()
+        {
+            Console.WriteLine("Resume");
+            ActionType = ActionType.StayOnTheSame;
+            _radar.StartRotation();
+            IsActive = true;
+        }
+        void Focus()
+        {
+            _radar.Model.Opacity = (float)(Configuration.User.GetOrSet("Opacity", 100)) / 100f;
+        }
+
+        void Blur()
+        {
+            _radar.Model.Opacity = _blurOpacity;
+        }
+
         #region IPlugin Members
 
         public bool Setup( IPluginSetupInfo info )
@@ -83,7 +110,7 @@ namespace MouseRadar
 
         public void Start()
         {
-            Configuration.ConfigChanged += OnConfigChanged;
+           
             _radar = new Radar( MouseDriver.Service );
 
             _radar.Model.Opacity = (float)(Configuration.User.GetOrSet( "Opacity", 100 )) / 100f - .5f;
@@ -152,11 +179,11 @@ namespace MouseRadar
                 }
                 if( e.ScreenBound != ScreenBound.None ) _radar.StopTranslation();
             };
-
             _radar.Show();
             _radar.Launch();
             IsActive = true;
             Pause();
+            Configuration.ConfigChanged += OnConfigChanged;
         }
 
         void TranslateRadar()
@@ -177,32 +204,7 @@ namespace MouseRadar
         {
 
         }
-        void Pause()
-        {
-            
-            Console.WriteLine( "Pause" );
-            
-            _radar.StopRotation();
-            _radar.StopTranslation( false );
-            _radar.Model.LapCount = 0;
-            IsActive = false;
-        }
-        void Resume()
-        {
-            Console.WriteLine( "Resume" );
-            ActionType = ActionType.StayOnTheSame;
-            _radar.StartRotation();
-            IsActive = true;
-        }
-        void Focus()
-        {
-            _radar.Model.Opacity = (float)(Configuration.User.GetOrSet( "Opacity", 100 )) / 100f;
-        }
 
-        void Blur()
-        {
-            _radar.Model.Opacity = _blurOpacity;
-        }
         #endregion
 
         #region IHighlightableElement Members

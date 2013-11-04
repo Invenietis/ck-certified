@@ -20,6 +20,7 @@
     <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <vm:ImageConverter x:Key="imageconverter"/>
+    
     <SolidColorBrush Color="#FF065AA0" x:Key="EditorMainColor"/>
     <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
     
@@ -53,7 +54,10 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
-                <!--<Setter Property="Foreground" Value="Black"></Setter>-->
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="LightGray"></Setter>
+                <Setter Property="Background" Value="Gray"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

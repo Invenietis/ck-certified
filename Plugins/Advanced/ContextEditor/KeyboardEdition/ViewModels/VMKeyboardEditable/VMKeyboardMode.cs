@@ -70,5 +70,7 @@ namespace KeyboardEditor.ViewModels
                 return _applyToCurrentModeCommand;
             }
         }
+
+        public string ModeName { get { return Mode.ToString(); } }
     }
 }

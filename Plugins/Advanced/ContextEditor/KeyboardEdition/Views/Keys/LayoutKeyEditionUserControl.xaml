@@ -43,7 +43,7 @@
 
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderThickness="1" Background="White">
+    <Border>
         <StackPanel Orientation="Vertical">
             
             <DockPanel LastChildFill="False">
@@ -91,7 +91,6 @@
             </DockPanel>
             <DockPanel LastChildFill="True">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-
 
                     <!-- panel that wraps together all the layout configuration -->
                     <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsFallback, Converter={StaticResource notconverter}}">

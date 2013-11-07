@@ -116,9 +116,16 @@ namespace Host
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );
-            hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun ); //KeyboardContext
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{1DB78D66-B5EC-43AC-828C-CCAB91FA6210}" ), RunningRequirement.MustExistAndRun ); //HelpService
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun ); //SendString
+
+            //Making sure that these services are started regardless of the keyboard being opened at launch.
+            //This way, even keyboards created by a user can use the differents key protocols.
+            //We'll be able to remove that once the editor has the capacity to update the edited keyboard's RequirementLayer.
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{04B1B7F5-6CD8-4691-B5FD-2C4401C3AC0C}" ), RunningRequirement.MustExistAndRun ); //IChangeKeyboardCommandHandlerService
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun ); //IClicCommandHandlerService
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" ), RunningRequirement.MustExistAndRun ); //IModeCommandHandlerService
 
             ctx.PluginRunner.Add( hostRequirements );
 

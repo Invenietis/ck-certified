@@ -11,7 +11,6 @@ using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
-using InputTrigger;
 
 namespace KeyScroller
 {
@@ -221,7 +220,6 @@ namespace KeyScroller
         private void OnInputTriggered( ITrigger t )
         {
             _scrollingStrategy.OnExternalEvent();
-            Console.WriteLine( "Triggered : " + t.KeyCode );
         }
     }
 }

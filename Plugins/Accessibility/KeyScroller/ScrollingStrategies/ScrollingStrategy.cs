@@ -182,7 +182,6 @@ namespace KeyScroller
 
             StartTimer();
 
-            Console.Out.WriteLine( "Registering " + Name );
             _timer.Tick += OnInternalBeat;
             _configuration.ConfigChanged += OnConfigChanged;
             _isStarted = true;

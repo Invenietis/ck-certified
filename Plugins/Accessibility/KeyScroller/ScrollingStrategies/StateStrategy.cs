@@ -22,7 +22,6 @@ namespace KeyScroller
         public StateStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer , elements, configuration )
         {
-
         }
 
         public override void OnExternalEvent()

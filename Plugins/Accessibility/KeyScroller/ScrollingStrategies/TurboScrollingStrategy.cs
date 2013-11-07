@@ -89,7 +89,7 @@ namespace KeyScroller
             if( _currentElement != null && ( !IsTurboMode || _currentElementParents.Count == 0 ) ) //Minimized
             {
                 FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.StayOnTheSame;
+                _actionType = ActionType.UpToParent; //TODOJL : RelativeRoot  //We don't let the element decide where we should scroll, we directly go back to the relative root
                 _timer.Interval = TurboInterval;
             }
             else if( IsTurboMode )

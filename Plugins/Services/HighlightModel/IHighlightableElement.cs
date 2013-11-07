@@ -38,5 +38,7 @@ namespace HighlightModel
         /// Gets if the element has to be skipped by the scoll algorythm.
         /// </summary>
         SkippingBehavior Skip { get; }
+
+
     }
 }

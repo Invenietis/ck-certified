@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KeyScroller.Resources {
+namespace MouseRadar.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace KeyScroller.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KeyScroller.Resources.R", typeof(R).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MouseRadar.Resources.R", typeof(R).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,110 +61,101 @@ namespace KeyScroller.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scrolling by zone.
+        ///   Looks up a localized string similar to Arrow color.
         /// </summary>
-        public static string BasicScrollingStrategy {
+        public static string ArrowColor {
             get {
-                return ResourceManager.GetString("BasicScrollingStrategy", resourceCulture);
+                return ResourceManager.GetString("ArrowColor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to left click.
+        ///   Looks up a localized string similar to Fast.
         /// </summary>
-        public static string LeftClick {
+        public static string HighSpeed {
             get {
-                return ResourceManager.GetString("LeftClick", resourceCulture);
+                return ResourceManager.GetString("HighSpeed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Listening to the &quot;{0}&quot; key.
+        ///   Looks up a localized string similar to Slow.
         /// </summary>
-        public static string Listening {
+        public static string LowSpeed {
             get {
-                return ResourceManager.GetString("Listening", resourceCulture);
+                return ResourceManager.GetString("LowSpeed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to middle click.
+        ///   Looks up a localized string similar to Medium.
         /// </summary>
-        public static string MiddleClick {
+        public static string MediumSpeed {
             get {
-                return ResourceManager.GetString("MiddleClick", resourceCulture);
+                return ResourceManager.GetString("MediumSpeed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No key selected.
+        ///   Looks up a localized string similar to Opacity.
         /// </summary>
-        public static string NothingSelected {
+        public static string Opacity {
             get {
-                return ResourceManager.GetString("NothingSelected", resourceCulture);
+                return ResourceManager.GetString("Opacity", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Listening to the {0}.
+        ///   Looks up a localized string similar to Radar.
         /// </summary>
-        public static string PointerListening {
+        public static string Radar {
             get {
-                return ResourceManager.GetString("PointerListening", resourceCulture);
+                return ResourceManager.GetString("Radar", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to right click.
+        ///   Looks up a localized string similar to Radar color.
         /// </summary>
-        public static string RightClick {
+        public static string RadarColor {
             get {
-                return ResourceManager.GetString("RightClick", resourceCulture);
+                return ResourceManager.GetString("RadarColor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scroll editor.
+        ///   Looks up a localized string similar to Radar configuration.
         /// </summary>
-        public static string ScrollEditor {
+        public static string RadarConfiguration {
             get {
-                return ResourceManager.GetString("ScrollEditor", resourceCulture);
+                return ResourceManager.GetString("RadarConfiguration", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scrolling key by key.
+        ///   Looks up a localized string similar to Radar radius.
         /// </summary>
-        public static string SimpleScrollingStrategy {
+        public static string RadarRadius {
             get {
-                return ResourceManager.GetString("SimpleScrollingStrategy", resourceCulture);
+                return ResourceManager.GetString("RadarRadius", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scrolling by half-zone.
+        ///   Looks up a localized string similar to Rotation speed.
         /// </summary>
-        public static string SplitScrollingStrategy {
+        public static string RadarRotationSpeed {
             get {
-                return ResourceManager.GetString("SplitScrollingStrategy", resourceCulture);
+                return ResourceManager.GetString("RadarRotationSpeed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to State.
+        ///   Looks up a localized string similar to Move speed.
         /// </summary>
-        public static string StateStrategy {
+        public static string RadarTranslationSpeed {
             get {
-                return ResourceManager.GetString("StateStrategy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fast scrolling (key by key).
-        /// </summary>
-        public static string TurboScrollingStrategy {
-            get {
-                return ResourceManager.GetString("TurboScrollingStrategy", resourceCulture);
+                return ResourceManager.GetString("RadarTranslationSpeed", resourceCulture);
             }
         }
     }

@@ -49,6 +49,7 @@ namespace Host.VM
         AutoClickViewModel _acVm;
         WordPredictionViewModel _wpVm;
         AppAdvancedConfigViewModel _appAdvcVm;
+        MouseRadarViewModel _radar;
 
         public AppConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -86,6 +87,13 @@ namespace Host.VM
                 this.Items.Add( action );
             }
 
+            {
+                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartRadarEditor ) );
+                action.ImagePath = "Forward.png";
+                action.DisplayName = R.RadarConfiguration;
+                this.Items.Add( action );
+            }
+
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
             
             base.OnInitialize();
@@ -106,6 +114,12 @@ namespace Host.VM
         public void StartScrollEditor()
         {
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{48D3977C-EC26-48EF-8E47-806E11A1C041}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.PluginRunner.Apply();
+        }
+
+        public void StartRadarEditor()
+        {
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }

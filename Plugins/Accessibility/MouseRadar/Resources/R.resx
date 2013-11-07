@@ -117,40 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BasicScrollingStrategy" xml:space="preserve">
-    <value>Scrolling by zone</value>
+  <data name="ArrowColor" xml:space="preserve">
+    <value>Arrow color</value>
   </data>
-  <data name="LeftClick" xml:space="preserve">
-    <value>left click</value>
+  <data name="HighSpeed" xml:space="preserve">
+    <value>Fast</value>
   </data>
-  <data name="Listening" xml:space="preserve">
-    <value>Listening to the "{0}" key</value>
+  <data name="LowSpeed" xml:space="preserve">
+    <value>Slow</value>
   </data>
-  <data name="MiddleClick" xml:space="preserve">
-    <value>middle click</value>
+  <data name="MediumSpeed" xml:space="preserve">
+    <value>Medium</value>
   </data>
-  <data name="NothingSelected" xml:space="preserve">
-    <value>No key selected</value>
+  <data name="Opacity" xml:space="preserve">
+    <value>Opacity</value>
   </data>
-  <data name="PointerListening" xml:space="preserve">
-    <value>Listening to the {0}</value>
+  <data name="Radar" xml:space="preserve">
+    <value>Radar</value>
   </data>
-  <data name="RightClick" xml:space="preserve">
-    <value>right click</value>
+  <data name="RadarColor" xml:space="preserve">
+    <value>Radar color</value>
   </data>
-  <data name="ScrollEditor" xml:space="preserve">
-    <value>Scroll editor</value>
+  <data name="RadarConfiguration" xml:space="preserve">
+    <value>Radar configuration</value>
   </data>
-  <data name="SimpleScrollingStrategy" xml:space="preserve">
-    <value>Scrolling key by key</value>
+  <data name="RadarRadius" xml:space="preserve">
+    <value>Radar radius</value>
   </data>
-  <data name="StateStrategy" xml:space="preserve">
-    <value>State</value>
+  <data name="RadarRotationSpeed" xml:space="preserve">
+    <value>Rotation speed</value>
   </data>
-  <data name="TurboScrollingStrategy" xml:space="preserve">
-    <value>Fast scrolling (key by key)</value>
-  </data>
-  <data name="SplitScrollingStrategy" xml:space="preserve">
-    <value>Scrolling by half-zone</value>
+  <data name="RadarTranslationSpeed" xml:space="preserve">
+    <value>Move speed</value>
   </data>
 </root>

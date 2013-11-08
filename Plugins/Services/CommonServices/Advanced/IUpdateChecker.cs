@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin;
 using CK.Core;
+using CK.Context.SemVer;
 
 namespace CommonServices
 {
@@ -55,9 +56,11 @@ namespace CommonServices
 
         event EventHandler StateChanged;
 
-        Version NewVersion { get; }
+        SemanticVersion20 NewVersion { get; }
 
         bool IsBusy { get; }
+
+        bool ShouldIncludePrerelease { get; set; }
 
         void CheckForUpdate();
         

@@ -41,6 +41,7 @@ using System.Security.Principal;
 using CK.Windows.App;
 using System.Threading.Tasks;
 using System.Threading;
+using CK.Context.SemVer;
 
 namespace UpdateChecker
 {
@@ -70,7 +71,24 @@ namespace UpdateChecker
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public Version NewVersion { get; private set; }
+        public SemanticVersion20 NewVersion { get; private set; }
+
+        bool? _shouldIncludePrerelease;
+        public bool ShouldIncludePrerelease
+        {
+            get
+            {
+                if( !_shouldIncludePrerelease.HasValue )
+                    _shouldIncludePrerelease = (bool)Configuration.System.GetOrSet<bool>( "ShouldIncludePrerelease", false );
+
+                return _shouldIncludePrerelease.Value;
+            }
+            set
+            {
+                _shouldIncludePrerelease = value;
+                Configuration.System["ShouldIncludePrerelease"] = value;
+            }
+        }
 
         public UpdateVersionState VersionState
         {
@@ -128,6 +146,20 @@ namespace UpdateChecker
             if( _downloading != null ) _downloading.Dispose();
         }
 
+        string GetCheckUpdateUrl( string distributionName )
+        {
+            string url = GetServerUrl() + "v2/update/" + distributionName;
+            if( ShouldIncludePrerelease )
+                url += "?includeprerelease=" + ShouldIncludePrerelease.ToString();
+
+            return url;
+        }
+
+        string GetDownloadUrl( string distributionName, SemanticVersion20 version )
+        {
+            return GetServerUrl() + string.Format( "v2/update/{0}/{1}/installer", distributionName, version.ToString() );
+        }
+
         private string GetServerUrl()
         {
             // Gets the UpdateServerUrl now (to correctly handle configuration changes).
@@ -154,12 +186,8 @@ namespace UpdateChecker
 
             UpdateVersionState savedState = _versionState;
             VersionState = UpdateVersionState.CheckingForNewVersion;
-            string httpRequest = GetServerUrl() + "version/updated/currentversion/" + HostInformation.AppName + @"-" + _distributionName + "/" + HostInformation.AppVersion.ToString();
-            Task.Factory.StartNew( () =>
-            {
-                // This task exist to bypass the long proxy lookup (10s on my Comp) that freez the OS during bootstrap of the update checker
-                _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );//gets the new version from its package repository
-            } );
+            string httpRequest = GetCheckUpdateUrl( _distributionName );
+            _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );
         }
 
         void _webClient_DownloadDataCompleted( object sender, DownloadDataCompletedEventArgs e )
@@ -178,14 +206,14 @@ namespace UpdateChecker
                 Debug.Assert( _versionState == UpdateVersionState.CheckingForNewVersion );
                 try
                 {
-                    string version = Encoding.UTF8.GetString( e.Result );
-                    NewVersion = new Version( version );
-                    if( NewVersion > HostInformation.AppVersion )//If the version retrieved from the server is greater than the currently installed one
+                    string version = Encoding.UTF8.GetString( e.Result ).Replace( "\"", string.Empty );
+                    NewVersion = SemanticVersion20.Parse( version );
+                    if( NewVersion > SemanticVersion20.Parse( HostInformation.AppVersion.ToString() ) )//If the version retrieved from the server is greater than the currently installed one
                     {
                         //If the version retrived from the server is greater than the one that has been downloaded last
                         string retrievedVersionString = Configuration.System.GetOrSet<string>( "LastDownloadedVersion", "0.0.0" );
-                        Version retrievedVersion;
-                        if( Version.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
+                        SemanticVersion20 retrievedVersion;
+                        if( SemanticVersion20.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
                         {
                             VersionState = UpdateVersionState.NewerVersionAvailable;
                             // Ask the user to download it.
@@ -209,7 +237,7 @@ namespace UpdateChecker
             UpdateDownloadState savedState = _downloadState;
             _downloading = new TemporaryFile();
             DownloadState = UpdateDownloadState.Downloading;
-            string httpRequest = GetServerUrl() + "version/updated/download/" + Path.Combine( HostInformation.AppName + @"-" + _distributionName, HostInformation.AppVersion.ToString() );
+            string httpRequest = GetDownloadUrl( _distributionName, NewVersion );
             _webClient.DownloadFileAsync( new Uri( httpRequest ), _downloading.Path, savedState );
             if( Notifications != null )
                 _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
@@ -237,6 +265,8 @@ namespace UpdateChecker
                     string newVersionDir = Path.Combine( HostInformation.CommonApplicationDataPath, "Updates" ); //puts the exe in ProgramData/Appname/DistributionName/Updates
                     Directory.CreateDirectory( newVersionDir );
                     string updateFilePath = Path.Combine( newVersionDir, "Update.exe" );
+                    if( File.Exists( updateFilePath ) ) File.Delete( updateFilePath );
+
                     File.Move( _downloading.Path, updateFilePath );
 
                     //Giving read/write/execute rights to any user on the Update.exe file.
@@ -269,16 +299,13 @@ namespace UpdateChecker
             mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
             mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
 
-            Application.Current.Dispatcher.Invoke( new Action( () =>
-            {
-                CustomMsgBox msg = new CustomMsgBox( ref mvm );
-                msg.ShowDialog();
+            CustomMsgBox msg = new CustomMsgBox( ref mvm );
+            msg.ShowDialog();
 
-                if( mvm.ModalResult == ModalResult.Yes )
-                {
-                    StartDownload();
-                }
-            } ) );
+            if( mvm.ModalResult == ModalResult.Yes )
+            {
+                StartDownload();
+            }
         }
 
         private void OnNewerVersionDownloaded()
@@ -286,13 +313,8 @@ namespace UpdateChecker
             ModalViewModel mvm = new ModalViewModel( R.UpdateDownloadedTitle, R.UpdateDownloadedContent );
             mvm.Buttons.Add( new ModalButton( mvm, R.Ok, null, ModalResult.Ok ) );
 
-            Application.Current.Dispatcher.Invoke( new Action( () =>
-            {
-                CustomMsgBox msg = new CustomMsgBox( ref mvm );
-                msg.ShowDialog();
-            } ) );
-
-
+            CustomMsgBox msg = new CustomMsgBox( ref mvm );
+            msg.ShowDialog();
         }
     }
 }

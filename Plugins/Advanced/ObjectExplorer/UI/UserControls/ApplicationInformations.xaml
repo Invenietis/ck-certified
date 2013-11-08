@@ -40,47 +40,55 @@
 
         <GroupBox Grid.Row="2" Grid.ColumnSpan="2" HeaderTemplate="{StaticResource BoldHeaderTemplate}" Header="Applications Paths" >
             <StackPanel Orientation="Vertical" Margin="0 5 0 0">
-                <DockPanel LastChildFill="False">
+                <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="Context Path : " VerticalAlignment="Center"/>
-                    <Label Content="{Binding ContextPath, Mode=OneWay}" VerticalAlignment="Center"/>
                     <Button DockPanel.Dock="Right" Command="{Binding OpenFileCommand}" CommandParameter="{Binding ContextPath, Mode=OneWay}">
-                        <Image Width="18" ToolTip="Open the file" VerticalAlignment="Center">
+                        <Image Width="18" ToolTip="Open the directory" VerticalAlignment="Center">
                             <Image.Source>
                                 <BitmapImage DecodePixelWidth="18" UriSource="../Resources/DetailsImages/openFile.png" />
                             </Image.Source>
                         </Image>
                     </Button>
+                    <TextBox BorderThickness="0" Margin="0 0 5 0" IsReadOnly="True" Text="{Binding ContextPath, Mode=OneWay}" VerticalAlignment="Center"/>
                 </DockPanel>
-                <DockPanel LastChildFill="False">
+                <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="User Configuration Path : " VerticalAlignment="Center" />
                     <Button DockPanel.Dock="Right" Command="{Binding OpenFileCommand}" CommandParameter="{Binding UserConfigurationPath, Mode=OneWay}">
-                        <Image Width="18" ToolTip="Open the file" VerticalAlignment="Center">
+                        <Image Width="18" ToolTip="Open the directory" VerticalAlignment="Center">
                             <Image.Source>
                                 <BitmapImage DecodePixelWidth="18" UriSource="../Resources/DetailsImages/openFile.png" />
                             </Image.Source>
                         </Image>
                     </Button>
-                    <Label Content="{Binding UserConfigurationPath, Mode=OneWay}" VerticalAlignment="Center" />
+                    <TextBox BorderThickness="0" Margin="0 0 5 0" IsReadOnly="True" Text="{Binding UserConfigurationPath, Mode=OneWay}" VerticalAlignment="Center" />
                 </DockPanel>
-                <DockPanel LastChildFill="False">
+                <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="System Configuration Path : " VerticalAlignment="Center"/>
-                    <Label Content="{Binding SystemConfigurationPath, Mode=OneWay}" VerticalAlignment="Center" />
                     <Button DockPanel.Dock="Right" Command="{Binding OpenFileCommand}" CommandParameter="{Binding SystemConfigurationPath, Mode=OneWay}">
-                        <Image Width="18" ToolTip="Open the file" VerticalAlignment="Center" >
+                        <Image Width="18" ToolTip="Open the directory" VerticalAlignment="Center" >
                             <Image.Source>
                                 <BitmapImage DecodePixelWidth="18" UriSource="../Resources/DetailsImages/openFile.png" />
                             </Image.Source>
                         </Image>
                     </Button>
+                    <TextBox BorderThickness="0" Margin="0 0 5 0" IsReadOnly="True" Text="{Binding SystemConfigurationPath, Mode=OneWay}" VerticalAlignment="Center" />
                 </DockPanel>
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="3" Grid.ColumnSpan="2" Header="Other informations" HeaderTemplate="{StaticResource BoldHeaderTemplate}" >
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock FontWeight="Bold" Text="Distribution Name : " VerticalAlignment="Center"/>
-                    <Label Content="{Binding DistributionName, Mode=OneWay}" VerticalAlignment="Center" />
-                </StackPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="Distribution Name : " VerticalAlignment="Center"/>
+                    <TextBox BorderThickness="0" DockPanel.Dock="Left" Text="{Binding DistributionName, Mode=OneWay}" VerticalAlignment="Center" IsReadOnly="True"/>
+                </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="Version : " VerticalAlignment="Center"/>
+                    <TextBox BorderThickness="0" DockPanel.Dock="Left" Text="{Binding Version, Mode=OneWay}" VerticalAlignment="Center" IsReadOnly="True"/>
+                </DockPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="Application unique identifier : " VerticalAlignment="Center"/>
+                    <TextBox BorderThickness="0" DockPanel.Dock="Left" Text="{Binding ApplicationId, Mode=OneWay}" VerticalAlignment="Center" IsReadOnly="True"/>
+                </DockPanel>
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Header="Actions" HeaderTemplate="{StaticResource BoldHeaderTemplate}" >

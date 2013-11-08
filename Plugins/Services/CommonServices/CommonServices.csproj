@@ -93,7 +93,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accessibility\IHelpService.cs" />
     <Compile Include="Accessibility\IKeyboardDriver.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
     <Compile Include="Advanced\Commands\IHelpCommandHandlerService.cs" />

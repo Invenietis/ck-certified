@@ -1,0 +1,104 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using CK.Context;
+using CK.Core;
+using CK.Plugin;
+using Ionic.Zip;
+
+namespace Help
+{
+    internal class HelpContentManipulator
+    {
+        const string DefaultCulture = "en";
+
+        IHostInformation _hostInformations;
+
+        public HelpContentManipulator( IHostInformation hostInformations )
+        {
+            _hostInformations = hostInformations;
+        }
+
+        public string HelpBaseDirectory { get { return Path.Combine( _hostInformations.ApplicationDataPath, "HelpContents" ); } }
+
+        public string NoContentFilePath { get { return Path.Combine( HelpBaseDirectory, "Default", "nocontent.html" ); } }
+
+        #region Read
+
+        public string GetHelpContentFilePath( IVersionedUniqueId pluginName, string culture = null )
+        {
+            if( culture == null ) culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
+
+            // try to load the help of the plugin in the good culture (current or given)
+            string localhelp = Path.Combine( GetBaseHelpDirectoryForPlugin( pluginName ), culture, "index.html" );
+            if( !File.Exists( localhelp ) )
+            {
+                // if the help does not exists, and if the given culture is already the default, there is no help content
+                if( culture == DefaultCulture )
+                {
+                    localhelp = NoContentFilePath;
+                }
+                else
+                {
+                    // if the given culture is still not the default, and a specialized culture, try to load the help for the base culture
+                    if( culture.Contains( '-' ) ) return GetHelpContentFilePath( pluginName, culture.Substring( culture.IndexOf( '-' ) ) );
+                    else return GetHelpContentFilePath( pluginName, DefaultCulture );
+                }
+
+            }
+
+            return localhelp;
+        }
+
+        string GetBaseHelpDirectoryForPlugin( IVersionedUniqueId pluginName, string culture = null )
+        {
+            string path = Path.Combine( HelpBaseDirectory, pluginName.UniqueId.ToString( "B" ), pluginName.Version.ToString() );
+            if( !string.IsNullOrEmpty( culture ) )
+            {
+                path = Path.Combine( path, culture );
+            }
+
+            return path;
+        }
+
+        #endregion
+
+        #region Write
+
+        public void FindOrCreateBaseContent()
+        {
+            string baseContentPath = Path.Combine( HelpBaseDirectory, "Default" );
+            if( !Directory.Exists( baseContentPath ) )
+            {
+                UnzipAndExtractStream( typeof( HelpContentManipulator ).Assembly.GetManifestResourceStream( "Help.Res.helpbase.zip" ), HelpBaseDirectory );
+            }
+        }
+
+        public void RegisterHelpContent( IVersionedUniqueId plugin, Func<Stream> contentAccessor, string culture = null )
+        {
+            string pluginHelpDirectoryPath = GetBaseHelpDirectoryForPlugin( plugin, culture );
+            if( !Directory.Exists( pluginHelpDirectoryPath ) )
+            {
+                UnzipAndExtractStream( contentAccessor(), pluginHelpDirectoryPath );
+            }
+        }
+
+        #endregion
+
+        #region Utility
+
+        void UnzipAndExtractStream( Stream zipContent, string pathToExtract )
+        {
+            using( zipContent )
+            using( var zipFile = ZipFile.Read( zipContent ) )
+            {
+                zipFile.ExtractAll( pathToExtract, ExtractExistingFileAction.OverwriteSilently );
+            }
+        }
+
+        #endregion
+    }
+}

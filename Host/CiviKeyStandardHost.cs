@@ -54,7 +54,6 @@ namespace Host
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
-        IVersionedUniqueId _fakeUniqueIdForTheHost;
 
         /// <summary>
         /// The SubAppName is the name of the package (Standard, Steria etc...)
@@ -70,16 +69,7 @@ namespace Host
         /// Singleton instance.
         /// </summary>
         static readonly public CivikeyStandardHost Instance = new CivikeyStandardHost( CKApp.CurrentParameters );
-
-        public event EventHandler<HostHelpEventArgs> ShowHostHelp;
-
-        public void FireShowHostHelp()
-        {
-            if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty.ToString( "B" ), AppVersion.ToString() );
-            if( ShowHostHelp != null )
-                ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
-        }
-
+        
         /// <summary>
         /// Gets a unique identifier for a CiviKey application
         /// Is mainly used to identify an instance of CiviKey in crashlogs
@@ -95,7 +85,7 @@ namespace Host
         /// </summary>
         public SemanticVersion20 AppVersion
         {
-            get { return _appVersion ?? (_appVersion = SemanticVersion20.Parse( (string)SystemConfig.GetOrSet( "Version", "2.5" ) )); }
+            get { return _appVersion ?? (_appVersion = SemanticVersion20.Parse( (string)SystemConfig.GetOrSet( "Version", "2.7" ) )); }
         }
 
         public override IContext CreateContext()
@@ -304,5 +294,27 @@ namespace Host
         {
             get { return applicationParameters.DistribName; }
         }
+
+        #region IHostHelp Members
+
+        public event EventHandler<EventArgs> ShowHostHelp;
+
+        public IVersionedUniqueId FakeHostHelpId
+        {
+            get { return new SimpleVersionedUniqueId( Guid.Empty.ToString( "B" ), AppVersion.ToString() ); }
+        }
+
+        public void FireShowHostHelp()
+        {
+            if( ShowHostHelp != null )
+                ShowHostHelp( this, EventArgs.Empty );
+        }
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( CivikeyStandardHost ).Assembly.GetManifestResourceStream( "Host.Resources.hosthelpcontent.zip" );
+        }
+
+        #endregion
     }
 }

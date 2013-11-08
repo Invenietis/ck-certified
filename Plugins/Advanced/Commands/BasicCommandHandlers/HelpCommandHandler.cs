@@ -28,6 +28,7 @@ using CK.Plugin;
 using CK.Core;
 using CK.Context;
 using CommonServices.Accessibility;
+using Help.Services;
 
 namespace BasicCommandHandlers
 {
@@ -40,7 +41,7 @@ namespace BasicCommandHandlers
         IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", new Version( "1.0.0" ) );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IHelpService> HelpService { get; set; }
+        public IService<IHelpViewerService> HelpService { get; set; }
 
         //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         //public IService<ISkinService> SkinService { get; set; }

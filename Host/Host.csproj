@@ -269,6 +269,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <EmbeddedResource Include="Resources\hosthelpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AppView.xaml">
@@ -296,6 +297,10 @@
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Services\HelpServices\HelpServices.csproj">
+      <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
+      <Name>HelpServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

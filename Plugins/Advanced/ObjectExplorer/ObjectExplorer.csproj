@@ -443,6 +443,10 @@
       <Name>CommonServices</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\HelpServices\HelpServices.csproj">
+      <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
+      <Name>HelpServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="UI\Resources\LogImages\Maximize.png" />

@@ -30,8 +30,8 @@ using System.Windows;
 using CommonServices;
 using Host.Services;
 using System;
-using CommonServices.Accessibility;
 using CK.Core;
+using Help.Services;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -50,7 +50,7 @@ namespace CK.Plugins.ObjectExplorer
         public VMIContextViewModel VMIContext { get; private set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IHelpService HelpService { get; set; }
+        public IHelpViewerService HelpService { get; set; }
 
         [RequiredService( Required = true )]
         public IContext Context { get; set; }

@@ -35,12 +35,13 @@ namespace CommonServices
     {
         Unknown,
         CheckingForNewVersion,
+        DownloadingReleaseNotes,
         NoNewerVersion,
         NewerVersionAvailable,
         ErrorWhileCheckingVersion
     }
 
-    public enum UpdateDownloadState
+    public enum DownloadState
     {
         None,
         Downloading,
@@ -52,7 +53,7 @@ namespace CommonServices
     {
         UpdateVersionState VersionState { get; }
         
-        UpdateDownloadState DownloadState { get; }
+        DownloadState DownloadState { get; }
 
         event EventHandler StateChanged;
 

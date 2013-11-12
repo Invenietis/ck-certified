@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CK.Context;
 using CK.Core;
 using CK.Plugin;
+using CK.Plugin.Config;
+using Common.Logging;
 using Help.Services;
 using Host.Services;
+using Ionic.Zip;
 
 namespace Help.UpdateManager
 {
@@ -21,6 +26,8 @@ namespace Help.UpdateManager
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "Help updater";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+
+        static ILog _log = LogManager.GetLogger( typeof( HelpUpdateManager ) );
 
         HttpClient _http;
         HelpContentManipulator _helpContents;
@@ -39,6 +46,8 @@ namespace Help.UpdateManager
         IHostHelp _hostHelp;
         public IHostHelp HostHelp { get { return _hostHelp ?? (_hostHelp = Context.ServiceContainer.GetService<IHostHelp>()); } }
 
+        public IPluginConfigAccessor Configuration { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
             _http = new HttpClient();
@@ -47,13 +56,16 @@ namespace Help.UpdateManager
 
         public void Start()
         {
+            HelpServerUrl = Configuration.System.GetOrSet( "HelpServerUrl", "http://api.civikey.invenietis.com/" );
+            if( !HelpServerUrl.EndsWith( "/" ) ) HelpServerUrl += "/";
+
             _helpContents = new HelpContentManipulator( HostInformations );
             PluginRunner.ApplyDone += OnPluginRunnerApplyDone;
 
             _helpContents.FindOrCreateBaseContent();
-            RegisterAllAvailableDefaultHelpContents( includeHost: true );
 
-            AutoUpdate();
+            RegisterAllAvailableDefaultHelpContentsAsync();
+            AutoUpdateAsync();
         }
 
 
@@ -67,30 +79,34 @@ namespace Help.UpdateManager
             _http.Dispose();
         }
 
-        #region Auto register marked plugins
+        string HelpServerUrl { get; set; }
+
 
         void OnPluginRunnerApplyDone( object sender, ApplyDoneEventArgs e )
         {
             if( e.Success )
-                RegisterAllAvailableDefaultHelpContents();
+            {
+                RegisterAllAvailableDefaultHelpContentsAsync();
+                AutoUpdateAsync();
+            }
         }
 
-        void RegisterAllAvailableDefaultHelpContents( bool includeHost = false )
+        #region Auto register marked plugins
+
+        Task RegisterAllAvailableDefaultHelpContentsAsync()
         {
             IEnumerable<IPluginProxy> inspectablePlugins = PluginRunner.PluginHost.LoadedPlugins
                                                                 .Where( IsHelpablePlugin );
-
-            foreach( var p in inspectablePlugins )
+            return Task.Factory.StartNew( () =>
             {
-                IHaveDefaultHelp helpP = p.RealPluginObject as IHaveDefaultHelp;
-                _helpContents.RegisterHelpContent( p, helpP.GetDefaultHelp );
-            }
+                foreach( var p in inspectablePlugins )
+                {
+                    IHaveDefaultHelp helpP = p.RealPluginObject as IHaveDefaultHelp;
+                    _helpContents.FindOrCreateDefaultContent( p, helpP.GetDefaultHelp );
+                }
 
-            if( includeHost )
-            {
-                _helpContents.RegisterHelpContent( HostHelp.FakeHostHelpId, HostHelp.GetDefaultHelp );
-            }
-
+                _helpContents.FindOrCreateDefaultContent( HostHelp.FakeHostHelpId, HostHelp.GetDefaultHelp );
+            } );
         }
 
         bool IsHelpablePlugin( IPluginProxy pluginProxy )
@@ -106,68 +122,121 @@ namespace Help.UpdateManager
         /// <summary>
         /// Automatically update help contents of currently started plugin when it's possible
         /// </summary>
-        public void AutoUpdate()
+        Task AutoUpdateAsync()
         {
-            int maxParalleleRequests = 5;
-            int currentRequestCount = 0;
-            IList<IPluginProxy> pluginsToProcess = PluginRunner.PluginHost.LoadedPlugins
-                                                        .Where( p => p.Status == InternalRunningStatus.Started ).ToList();
+            IList<IVersionedUniqueId> pluginsToProcess =  PluginRunner.PluginHost.LoadedPlugins.Cast<IVersionedUniqueId>().ToList();
+            pluginsToProcess.Add( HostHelp.FakeHostHelpId );
 
-            List<Task> currentTasks = new List<Task>(5);
+            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 5 };
 
-            while( currentRequestCount < pluginsToProcess.Count )
-            {
-                currentTasks.Clear();
+            return Task.Factory.StartNew( () => Parallel.ForEach( pluginsToProcess, parallelOptions, item => AutoUpdateAsync( item ).Wait() ) );
+        }
 
-                for( int i = currentRequestCount; i < maxParalleleRequests; i++ )
+        Task AutoUpdateAsync( IVersionedUniqueId plugin )
+        {
+            return CheckForUpdate( plugin )
+                .ContinueWith( u =>
                 {
-                    if( i == pluginsToProcess.Count ) break;
-
-                    var currentPlugin = pluginsToProcess[i];
-                    var checkTask = CheckForUpdate( currentPlugin );
-                    checkTask.ContinueWith( u =>
+                    if( u.Result )
                     {
-                        if( u.Result )
-                        {
-                            var dlTask = DownloadUpdate( currentPlugin );
-                            dlTask.ContinueWith( t => InstallUpdate( currentPlugin, t.Result ) );
-                            dlTask.Start();
-                        }
-                    } );
-
-                    currentTasks.Add( checkTask );
-                    checkTask.Start();
-                }
-                Task.WaitAll( currentTasks.ToArray() );
-            }
+                        DownloadUpdate( plugin )
+                            .ContinueWith( t => InstallUpdate( plugin, t.Result ) )
+                            .Wait();
+                    }
+                } );
         }
 
         Task<bool> CheckForUpdate( IVersionedUniqueId plugin )
         {
             // lookup and found the help hash
-            // create the update url to request
-            // start the request and return the task
-
-            return _http.GetAsync( "http://api.civikey.local/v2/help/pluginid/1.0.0/fr-FR/HASH/isupdated" ).ContinueWith( r =>
+            string hash = "HASHNOTFOUND";
+            var helpIndex = _helpContents.GetHelpContentFilePath( plugin );
+            if( helpIndex != _helpContents.NoContentFilePath )
             {
-                var res = r.Result;
-                return false;
+                var hashFile = new FileInfo( helpIndex ).Directory.EnumerateFiles( "hash" ).FirstOrDefault();
+                if( hashFile != null )
+                {
+                    using( var rdr = hashFile.OpenText() )
+                        hash = rdr.ReadLine();
+                }
+            }
+
+            // create the update url to request
+            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}/{4}/isupdated", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TwoLetterISOLanguageName, hash );
+
+            // start the request and return the task
+            return _http.GetAsync( url ).ContinueWith( u =>
+            {
+                // parse the result to return if the plugin has a new help content that we have to download
+                bool result = false;
+                if( u.Result.StatusCode == System.Net.HttpStatusCode.OK )
+                {
+                    string rawresult = u.Result.Content.ReadAsStringAsync().Result;
+                    bool.TryParse( rawresult, out result );
+                }
+                return result;
             } );
         }
 
         Task<TemporaryFile> DownloadUpdate( IVersionedUniqueId plugin )
         {
             // create the download url
+            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TwoLetterISOLanguageName );
+
             // start the request
             // and continue with
-
-            throw new NotImplementedException();
+            return _http.GetStreamAsync( url ).ContinueWith( t =>
+            {
+                var tempFile = new TemporaryFile( ".zip" );
+                using( var s = File.OpenWrite( tempFile.Path ) )
+                    t.Result.CopyTo( s );
+                return tempFile;
+            } );
         }
 
         void InstallUpdate( IVersionedUniqueId plugin, TemporaryFile file, bool force = false )
         {
-            // analyse the file
-            // if !force, then check if it can be safely installed
+            HelpManifestData manifest = null;
+
+            try
+            {
+                // open the zip file
+                using( ZipFile zip = ZipFile.Read( file.Path ) )
+                {
+                    var manifestEntry = zip.Where( z => z.FileName == "manifest.xml" ).FirstOrDefault();
+                    if( manifestEntry != null )
+                    {
+                        var ms = new MemoryStream();
+                        manifestEntry.Extract( ms );
+                        try
+                        {
+                            manifest = HelpManifestData.Deserialize( ms );
+                        }
+                        catch( Exception ex )
+                        {
+                            _log.Error( "Unable to parse manifest", ex );
+                            return;
+                        }
+                    }
+                }
+            }
+            catch( Exception ex )
+            {
+                _log.Error( "Unable to read downloaded help content as a zip file", ex );
+                return;
+            }
+
+            if( force || IsInstallationPossibleAutomatically( plugin, manifest ) )
+            {
+                SimpleVersionedUniqueId pluginIdBasedOnManifest = new SimpleVersionedUniqueId( manifest.PluginId, manifest.Version );
+                _helpContents.InstallDownloadedHelpContent( pluginIdBasedOnManifest, () => File.OpenRead( file.Path ), manifest.Culture );
+            }
+
+        }
+
+        bool IsInstallationPossibleAutomatically( IVersionedUniqueId plugin, HelpManifestData manifest )
+        {
+            return true;
         }
 
         #endregion

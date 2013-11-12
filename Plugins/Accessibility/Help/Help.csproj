@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HelpContentManipulator.cs" />
+    <Compile Include="HelpManifestData.cs" />
     <Compile Include="Update\HelpUpdateManager.cs" />
     <Compile Include="Viewer\HelpBrowser.xaml.cs">
       <DependentUpon>HelpBrowser.xaml</DependentUpon>

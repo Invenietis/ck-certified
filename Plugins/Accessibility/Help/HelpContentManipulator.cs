@@ -22,7 +22,7 @@ namespace Help
             _hostInformations = hostInformations;
         }
 
-        public string HelpBaseDirectory { get { return Path.Combine( _hostInformations.ApplicationDataPath, "HelpContents" ); } }
+        public string HelpBaseDirectory { get { return Path.Combine( _hostInformations.CommonApplicationDataPath, "HelpContents" ); } }
 
         public string NoContentFilePath { get { return Path.Combine( HelpBaseDirectory, "Default", "nocontent.html" ); } }
 
@@ -30,10 +30,10 @@ namespace Help
 
         public string GetHelpContentFilePath( IVersionedUniqueId pluginName, string culture = null )
         {
-            if( culture == null ) culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
+            if( culture == null ) culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
             // try to load the help of the plugin in the good culture (current or given)
-            string localhelp = Path.Combine( GetBaseHelpDirectoryForPlugin( pluginName ), culture, "index.html" );
+            string localhelp = Path.Combine( GetBaseHelpDirectoryForPlugin( pluginName, culture ), "index.html" );
             if( !File.Exists( localhelp ) )
             {
                 // if the help does not exists, and if the given culture is already the default, there is no help content
@@ -77,7 +77,7 @@ namespace Help
             }
         }
 
-        public void RegisterHelpContent( IVersionedUniqueId plugin, Func<Stream> contentAccessor, string culture = null )
+        public void FindOrCreateDefaultContent( IVersionedUniqueId plugin, Func<Stream> contentAccessor, string culture = null )
         {
             string pluginHelpDirectoryPath = GetBaseHelpDirectoryForPlugin( plugin, culture );
             if( !Directory.Exists( pluginHelpDirectoryPath ) )
@@ -86,16 +86,42 @@ namespace Help
             }
         }
 
+        public void InstallDownloadedHelpContent( IVersionedUniqueId plugin, Func<Stream> contentAccessor, string culture )
+        {
+            string pluginHelpDirectoryPath = GetBaseHelpDirectoryForPlugin( plugin, culture );
+            UnzipAndExtractStream( contentAccessor(), pluginHelpDirectoryPath, "content" );
+        }
+
         #endregion
 
         #region Utility
 
-        void UnzipAndExtractStream( Stream zipContent, string pathToExtract )
+        void UnzipAndExtractStream( Stream zipContent, string pathToExtract, string innerPathFilter = null )
         {
             using( zipContent )
             using( var zipFile = ZipFile.Read( zipContent ) )
             {
-                zipFile.ExtractAll( pathToExtract, ExtractExistingFileAction.OverwriteSilently );
+                if( string.IsNullOrEmpty( innerPathFilter ) )
+                    zipFile.ExtractAll( pathToExtract, ExtractExistingFileAction.OverwriteSilently );
+                else
+                {
+                    DirectoryInfo tempDir = new DirectoryInfo( pathToExtract ).Parent.CreateSubdirectory( Path.GetRandomFileName() );
+
+                    if( !innerPathFilter.EndsWith( "/" ) ) innerPathFilter += "/";
+                    var filesToExtract = zipFile.Where( z => z.FileName.StartsWith( innerPathFilter ) );
+
+                    foreach( var e in filesToExtract )
+                    {
+                        e.Extract( tempDir.FullName, ExtractExistingFileAction.OverwriteSilently );
+                    }
+
+                    // clean the directory
+                    DirectoryInfo directoryToExtract = new DirectoryInfo( pathToExtract );
+                    if( directoryToExtract.Exists ) directoryToExtract.Delete( true );
+
+                    FileUtil.CopyDirectory( new DirectoryInfo( Path.Combine( tempDir.FullName, innerPathFilter ) ), directoryToExtract );
+                    tempDir.Delete( true );
+                }
             }
         }
 

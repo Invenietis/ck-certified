@@ -169,7 +169,7 @@ namespace UpdateChecker
         private string GetServerUrl()
         {
             // Gets the UpdateServerUrl now (to correctly handle configuration changes).
-            string server = (string)Configuration.System["UpdateServerUrl"] ?? "http://releases.civikey.invenietis.com/";
+            string server = Configuration.System.GetOrSet( "UpdateServerUrl", "http://api.civikey.invenietis.com/" );
             if( !server.EndsWith( "/" ) ) server += "/";
             return server;
         }

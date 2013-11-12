@@ -10,7 +10,7 @@ using CK.Plugin;
 
 namespace Help.Services
 {
-    public interface IHaveDefaultHelp : IDynamicService
+    public interface IHaveDefaultHelp
     {
         Stream GetDefaultHelp();
     }

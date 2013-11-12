@@ -38,7 +38,7 @@ namespace BasicCommandHandlers
     public class HelpCommandHandler : BasicCommandHandler, IHelpCommandHandlerService
     {
         const string PROTOCOL = "help:";
-        IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", new Version( "1.0.0" ) );
+        IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", new Version( "1.5.0" ) );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHelpViewerService> HelpService { get; set; }
@@ -58,8 +58,7 @@ namespace BasicCommandHandlers
 
         public void ShowHelp()
         {
-            //if( HelpService.Status == InternalRunningStatus.Started
-            //    && SkinService.Status == InternalRunningStatus.Started ) HelpService.Service.ShowHelpFor( SkinService.Service.PluginUniqueId, true );
+            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.ShowHelpFor( skinUniqueId, true );
         }
     }
 }

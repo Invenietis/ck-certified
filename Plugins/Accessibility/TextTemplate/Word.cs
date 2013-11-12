@@ -8,7 +8,10 @@ using System.Text;
 
 namespace TextTemplate
 {
-    public class TextFragment : IText, INotifyPropertyChanged
+    /// <summary>
+    /// An IText whithout new lines and whitespaces (except user input whitespaces)
+    /// </summary>
+    public class Word : IText, INotifyPropertyChanged
     {
         protected string _text;
         protected bool _isHighlighted;
@@ -28,14 +31,14 @@ namespace TextTemplate
 
         public string Placeholder { get; set; }
 
-        public TextFragment(bool editable, string text)
+        public Word(bool editable, string text)
         {
             IsEditable = editable;
             _text = text;
             Placeholder = "";
         }
 
-        public TextFragment()
+        public Word()
         {
             IsEditable = false;
             _text = "";
@@ -81,11 +84,21 @@ namespace TextTemplate
     }
 
     //New line !
-    public class NewLine : TextFragment
+    public class NewLine : Word
     {
         public NewLine() : base()
         {
             _text = Environment.NewLine;
+        }
+    }
+
+    //New line !
+    public class WhiteSpace : Word
+    {
+        public WhiteSpace()
+            : base()
+        {
+            _text = " ";
         }
     }
 }

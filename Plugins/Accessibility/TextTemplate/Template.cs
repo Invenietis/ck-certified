@@ -16,10 +16,9 @@ namespace TextTemplate
         string _stringToFormat;
         
         /// <summary>
-        /// Get the list of the TextFragment
+        /// Get the word list
         /// </summary>
         public IReadOnlyList<IText> TextFragments { get; private set; }
-
 
         /// <summary>
         /// Return a new Template from the given string
@@ -29,14 +28,12 @@ namespace TextTemplate
         public static Template Load(string tmpl)
         {
             Template template = new Template();
-            List<IText> textFragmenst = new List<IText>();
+            List<IText> textFragments = new List<IText>();
             template._stringToFormat = "";
             string staticText = "";
             IText text;
-
             var prevIndex = 0;
          
-
             Match m = ParseRegex.Match(tmpl);
             while(m.Success)
             {
@@ -44,37 +41,30 @@ namespace TextTemplate
                 if (m.Index > 0) //false if the template start with an editable
                 {
                     staticText = tmpl.Substring(prevIndex, m.Index - prevIndex);
-                    int newLine = staticText.IndexOf(Environment.NewLine);
-
-                    if (newLine > -1)
+                    int space = staticText.IndexOf(' ');
+                    if ( space > -1)
                     {
-                        var fragments = staticText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        var fragments = staticText.Split(new string[] { " " }, StringSplitOptions.None);
                         for (int i = 0; i < fragments.Length; i++ )
                         {
-                            //newLine at the begining
-                            if (newLine == 0) textFragmenst.Add(new NewLine());
-
-                            text = new TextFragment(false, fragments[i]);
-                            textFragmenst.Add(text);
-
-                            //newLine not at the begining
-                            if (newLine > 0) textFragmenst.Add(new NewLine());
+                            if (fragments[i].Length > 0 ) SplitNewlines(textFragments, fragments[i]);
+                            if (i < fragments.Length - 1) //not add to the end to avoid duplicates whitespaces
+                                textFragments.Add(new WhiteSpace());
                         }
                     }
                     else
                     {
-                        text = new TextFragment(false, staticText);
-                        textFragmenst.Add(text);
+                        SplitNewlines(textFragments, staticText);
                     }
                 }
 
                 //Editable text
-                text = textFragmenst.SingleOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
-                if(text == null) text = new TextFragment(true, m.Groups["token"].Value); //if not, create a new one
+                text = textFragments.SingleOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
+                if(text == null) text = new Word(true, m.Groups["token"].Value); //if not, create a new one
                 text.Placeholder = m.Value;
-                textFragmenst.Add(text);
+                textFragments.Add(text);
 
-                template._stringToFormat += staticText + "{" + (textFragmenst.Count - 1) + "}";
+                template._stringToFormat += staticText + "{" + (textFragments.Count - 1) + "}";
 
                 prevIndex = m.Index + m.Length;
                 m = m.NextMatch();
@@ -83,13 +73,39 @@ namespace TextTemplate
             if (prevIndex < tmpl.Length)
             {
                 staticText = tmpl.Substring(prevIndex);
-                text = new TextFragment(false, staticText);
-                textFragmenst.Add(text);
+                text = new Word(false, staticText);
+                textFragments.Add(text);
                 template._stringToFormat += staticText;
             }
-            template.TextFragments = new CKReadOnlyListOnIList<IText>(textFragmenst);
+            template.TextFragments = new CKReadOnlyListOnIList<IText>(textFragments);
 
             return template;
+        }
+
+        static void SplitNewlines(List<IText> textFragments, string staticText)
+        {
+            IText text;
+
+            int newLine = staticText.IndexOf(Environment.NewLine);
+            if (newLine > -1)
+            {
+                var newLineFragments = staticText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                for (int i = 0; i < newLineFragments.Length; i++)
+                {
+                    if (newLineFragments[i].Length > 0)
+                    {
+                        text = new Word(false, newLineFragments[i]);
+                        textFragments.Add(text);
+                    }
+                    if (i < newLineFragments.Length - 1) //avoid duplicates new line
+                        textFragments.Add(new NewLine());
+                }
+            }
+            else
+            {
+                text = new Word(false, staticText);
+                textFragments.Add(text);
+            }
         }
 
         /// <summary>

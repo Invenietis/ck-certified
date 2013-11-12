@@ -19,7 +19,7 @@ namespace TextTemplate
     /// </summary>
     public partial class TemplateEditor : Window
     {
-        Dictionary<IText, UIElement> _bindings;
+        Dictionary<IText, TextBox> _bindings;
         TemplateEditorViewModel _model;
 
         public TemplateEditor(TemplateEditorViewModel model)
@@ -38,12 +38,18 @@ namespace TextTemplate
         void RenderTemplate()
         {
             StackPanel sp = (StackPanel)FindName("sheet");
+            sp.MouseDown += (o, e) =>
+            {
+                if (e.ChangedButton == MouseButton.Left)
+                    this.DragMove();
+            };
+
             WrapPanel wp = new WrapPanel();
-            _bindings = new Dictionary<IText, UIElement>();
+            _bindings = new Dictionary<IText, TextBox>();
 
             foreach(IText text in _model.Template.TextFragments)
             {
-                TextBlock block;
+                Label block;
                 TextBox editable;
 
                 if (text.IsEditable)
@@ -56,6 +62,14 @@ namespace TextTemplate
                     b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                     b.Source = text;
                     editable.SetBinding(TextBox.TextProperty, b);
+                    editable.GotFocus += (o, e) =>
+                    {
+                        editable.SelectAll();
+                    };
+                    editable.MouseUp += (o, e) =>
+                    {
+                        editable.SelectAll();
+                    };
                     _bindings[text] = editable;
                     wp.Children.Add(editable);
                 }
@@ -68,8 +82,8 @@ namespace TextTemplate
                     }
                     else
                     {
-                        block = new TextBlock();
-                        block.Text = text.Text;
+                        block = new Label();
+                        block.Content = text.Text;
                         wp.Children.Add(block);
                     }
                 }

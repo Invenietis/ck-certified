@@ -52,7 +52,12 @@ namespace TextTemplate
         public override void Start()
         {
             base.Start();
-            LaunchEditor("J'aime la soeur à {{jlk}} mais j'aime pas {{jlk}}");
+            LaunchEditor(@"J'aime les {{fruit}}s bien {{couleur}}s mais je n'aime pas la couleur {{couleur}}.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu dolor sed tortor congue egestas commodo et quam. Proin tempus bibendum sem, sed sagittis quam bibendum eu. Vestibulum ullamcorper arcu mi, at laoreet sem luctus at. Nulla tristique lacus sit amet augue imperdiet luctus. Pellentesque massa nisl, viverra ut interdum sed, vestibulum sit amet lectus. Fusce tristique aliquet lectus dignissim iaculis. Ut ac neque eleifend, eleifend justo eu, mollis metus. Nunc varius leo at orci sagittis, non volutpat dolor suscipit. Nunc tempus eget justo non volutpat. Etiam scelerisque, elit non gravida aliquam, turpis erat iaculis nulla, nec fermentum eros nibh vel mauris. Curabitur eu est ut ipsum facilisis commodo. Suspendisse molestie est sit amet magna scelerisque, vitae rutrum est pellentesque.
+
+Pellentesque in porttitor risus, vitae sagittis nunc. Aenean {{truc}}facilisis erat vitae tortor vehicula, sit amet pellentesque nisi euismod. Integer eu diam consectetur, varius tellus id, volutpat mauris. Curabitur in sem libero. {{Vivamus}} nunc enim, sollicitudin at enim non, feugiat elementum felis. Sed non velit semper, dapibus ligula a, auctor elit. Sed non sapien vitae nulla fermentum facilisis eu sed ipsum. Integer nec ante lectus. Mauris pretium nisi non fermentum aliquam. Morbi imperdiet, orci quis malesuada ultrices, est massa tristique sem, sit amet placerat neque libero in ante. Nam a tristique enim. Vivamus eu interdum arcu. Quisque gravida sapien mi, volutpat fringilla leo ornare in.
+
+Cras non lorem facilisis, facilisis felis sed, eleifend augue. Praesent vitae sagittis nibh. Aliquam pharetra semper justo, quis euismod nibh lacinia quis. Quisque feugiat, felis sed malesuada vehicula, metus leo dictum dui, eget blandit eros ligula ac libero. Praesent feugiat est libero, quis vehicula felis gravida mollis. Proin convallis risus id aliquam porta. Suspendisse non feugiat sem. Maecenas in justo sit amet massa iaculis dignissim. Fusce volutpat magna in tortor rutrum iaculis. Praesent dictum imperdiet odio, at luctus risus tempor vel. Pellentesque eget ante nunc. Donec aliquet sem at massa bibendum commodo. Donec quis nisl magna. Nullam nisl velit, ultrices eu nisl gravida, tincidunt condimentum massa. Aenean lobortis dui sit amet tellus porttitor pellentesque.
+{{Nom}}  {{Prénom}} ...");
             Highlighter.Service.RegisterTree(this);
             Highlighter.Service.BeginHighlight += (o, e) =>
             {

@@ -25,6 +25,12 @@ namespace TextTemplate
 
         public Color HighlightColor { get { return Color.FromRgb(200, 12, 89); }  }
 
+        public Color HighlightBackgroundColor { get { return Color.FromArgb(128, 12, 200, 89); } }
+
+        public Color PlaceholderColor { get { return Color.FromArgb(255, 12, 89, 200); } }
+
+        public int FontSize { get { return 16; } }
+
         public HighlightableCommand ValidateTemplate
         {
             get

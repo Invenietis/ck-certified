@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using CK.Context;
 using CK.Core;
 using CK.Plugin;
@@ -20,6 +22,7 @@ namespace Help.UpdateManager
         const string PluginPublicName = "Help updater";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
+        HttpClient _http;
         HelpContentManipulator _helpContents;
 
         [RequiredService]
@@ -38,6 +41,7 @@ namespace Help.UpdateManager
 
         public bool Setup( IPluginSetupInfo info )
         {
+            _http = new HttpClient();
             return true;
         }
 
@@ -48,6 +52,8 @@ namespace Help.UpdateManager
 
             _helpContents.FindOrCreateBaseContent();
             RegisterAllAvailableDefaultHelpContents( includeHost: true );
+
+            AutoUpdate();
         }
 
 
@@ -58,6 +64,7 @@ namespace Help.UpdateManager
 
         public void Teardown()
         {
+            _http.Dispose();
         }
 
         #region Auto register marked plugins
@@ -96,14 +103,71 @@ namespace Help.UpdateManager
 
         #region Update management
 
-        public void SoftUpdate()
+        /// <summary>
+        /// Automatically update help contents of currently started plugin when it's possible
+        /// </summary>
+        public void AutoUpdate()
         {
+            int maxParalleleRequests = 5;
+            int currentRequestCount = 0;
+            IList<IPluginProxy> pluginsToProcess = PluginRunner.PluginHost.LoadedPlugins
+                                                        .Where( p => p.Status == InternalRunningStatus.Started ).ToList();
 
+            List<Task> currentTasks = new List<Task>(5);
+
+            while( currentRequestCount < pluginsToProcess.Count )
+            {
+                currentTasks.Clear();
+
+                for( int i = currentRequestCount; i < maxParalleleRequests; i++ )
+                {
+                    if( i == pluginsToProcess.Count ) break;
+
+                    var currentPlugin = pluginsToProcess[i];
+                    var checkTask = CheckForUpdate( currentPlugin );
+                    checkTask.ContinueWith( u =>
+                    {
+                        if( u.Result )
+                        {
+                            var dlTask = DownloadUpdate( currentPlugin );
+                            dlTask.ContinueWith( t => InstallUpdate( currentPlugin, t.Result ) );
+                            dlTask.Start();
+                        }
+                    } );
+
+                    currentTasks.Add( checkTask );
+                    checkTask.Start();
+                }
+                Task.WaitAll( currentTasks.ToArray() );
+            }
         }
 
-        public void FullUpdate()
+        Task<bool> CheckForUpdate( IVersionedUniqueId plugin )
         {
+            // lookup and found the help hash
+            // create the update url to request
+            // start the request and return the task
 
+            return _http.GetAsync( "http://api.civikey.local/v2/help/pluginid/1.0.0/fr-FR/HASH/isupdated" ).ContinueWith( r =>
+            {
+                var res = r.Result;
+                return false;
+            } );
+        }
+
+        Task<TemporaryFile> DownloadUpdate( IVersionedUniqueId plugin )
+        {
+            // create the download url
+            // start the request
+            // and continue with
+
+            throw new NotImplementedException();
+        }
+
+        void InstallUpdate( IVersionedUniqueId plugin, TemporaryFile file, bool force = false )
+        {
+            // analyse the file
+            // if !force, then check if it can be safely installed
         }
 
         #endregion

@@ -40,11 +40,20 @@ namespace Host.VM
         ISimplePluginRunner _runner;
         IUserConfiguration _userConfig;
 
-
-        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginId )
+        /// <summary>
+        /// Ctor of a ConfigFeatureStarter.
+        /// Be careful with the list of Guid passed as parameter.
+        /// When stopped, ALL these plugins' user configuration will be set to Manual and receive a "Stop" LiveUserAction.
+        /// Plugins that are used by other plugins/feature must not be added in this list. (use service requirements in the plugins when possible)
+        /// </summary>
+        /// <param name="configManager"></param>
+        /// <param name="runner"></param>
+        /// <param name="userConfig"></param>
+        /// <param name="mainPluginIds"></param>
+        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] mainPluginIds )
             : base( configManager )
         {
-            _pluginIds = pluginId;
+            _pluginIds = mainPluginIds;
             _runner = runner;
             _userConfig = userConfig;
 

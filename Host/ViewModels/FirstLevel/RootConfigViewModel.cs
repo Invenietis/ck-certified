@@ -71,10 +71,7 @@ namespace Host
             var g = this.AddGroup();
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
-            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId,
-                                                new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ),
-                                                new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ),
-                                                new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" ) ) { DisplayName = "Défilement clavier" };
+            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId ) { DisplayName = R.ScrollingSectionName };
 
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor

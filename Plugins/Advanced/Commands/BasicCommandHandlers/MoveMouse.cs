@@ -40,6 +40,7 @@ namespace BasicCommandHandlers
     {
         const string PROTOCOL = "movemouse:";
         const int STEP = 5;
+        bool _isInMotion = false;
 
         DispatcherTimer _timer;
         Action _currentMotionFunction;
@@ -47,7 +48,7 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IHighlighterService> HighlighterService { get; set; }
 
         public override bool Setup( IPluginSetupInfo info )
@@ -68,20 +69,22 @@ namespace BasicCommandHandlers
         {
             if( e.Command.StartsWith( PROTOCOL ) )
             {
-                if( HighlighterService.Service.IsHighlighting )
+                if( _isInMotion )
                 {
-                    HighlighterService.Service.Pause();
+                    if( HighlighterService.Status.IsStartingOrStarted ) HighlighterService.Service.Resume();
+                    EndMouseMotion();
+                    _isInMotion = false;
+                }
+                else
+                {
+                    if( HighlighterService.Status.IsStartingOrStarted ) HighlighterService.Service.Pause();
 
                     string[] parameters = e.Command.Substring( PROTOCOL.Length ).Trim().Split( ',' );
                     string direction = parameters[0];
                     int speed = int.Parse( parameters[1] );
 
                     BeginMouseMotion( direction, speed );
-                }
-                else
-                {
-                    HighlighterService.Service.Resume();
-                    EndMouseMotion();
+                    _isInMotion = true;
                 }
             }
         }

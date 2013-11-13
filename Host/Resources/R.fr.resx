@@ -324,4 +324,7 @@
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
     <value>Activer la prédiction sémantique (analyse de la structure de la phrase)</value>
   </data>
+  <data name="ScrollingSectionName" xml:space="preserve">
+    <value>le défilement</value>
+  </data>
 </root>

@@ -324,4 +324,7 @@
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
     <value>Uses semantic prediction</value>
   </data>
+  <data name="ScrollingSectionName" xml:space="preserve">
+    <value>Scrolling</value>
+  </data>
 </root>

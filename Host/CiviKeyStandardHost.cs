@@ -126,6 +126,9 @@ namespace Host
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{04B1B7F5-6CD8-4691-B5FD-2C4401C3AC0C}" ), RunningRequirement.MustExistAndRun ); //IChangeKeyboardCommandHandlerService
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun ); //IClicCommandHandlerService
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" ), RunningRequirement.MustExistAndRun ); //IModeCommandHandlerService
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun ); //IMoveMouseCommandHandler
+            
+
 
             ctx.PluginRunner.Add( hostRequirements );
 

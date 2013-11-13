@@ -46,7 +46,7 @@ namespace PointerDeviceDriver
         readonly SynchronizationContext _syncCtx;
         PointStruct _lastPointerPosition;
         WindowsHook _windowsHook;
-        bool _pointerPositionViaTimer;
+        bool _pointerPositionViaTimer = false;
 
         public event PointerDeviceEventHandler InternalPointerMove;
         public event PointerDeviceEventHandler PointerButtonDown;

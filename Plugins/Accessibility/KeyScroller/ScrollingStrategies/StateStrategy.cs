@@ -58,7 +58,7 @@ namespace KeyScroller
             }
             else
             {
-                if( actionType == ActionType.StayOnTheSame )
+                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameForever )
                 {
                     nextElement = GetStayOnTheSame( elements );
                 }

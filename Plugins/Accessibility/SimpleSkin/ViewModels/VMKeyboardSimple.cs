@@ -304,6 +304,23 @@ namespace SimpleSkin.ViewModels
             }
         }
 
+        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        {
+            IsHighlighting = true;
+            return null;
+        }
+
+        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        {
+            IsHighlighting = false;
+            return null;
+        }
+
+        public ScrollingDirective SelectElement()
+        {
+            return new ScrollingDirective( ActionType.Normal );
+        }
+
         #endregion
 
         #region Threadsafe updates
@@ -347,7 +364,6 @@ namespace SimpleSkin.ViewModels
         }
 
         #endregion
-
 
     }
 }

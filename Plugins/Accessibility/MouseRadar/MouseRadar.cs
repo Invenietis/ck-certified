@@ -21,7 +21,7 @@ namespace MouseRadar
            PublicName = MouseRadar.PluginPublicName,
            Version = MouseRadar.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class MouseRadar : IPlugin, IActionableElement
+    public class MouseRadar : IPlugin, IHighlightableElement
     {
         internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -32,10 +32,10 @@ namespace MouseRadar
 
         ICKReadOnlyList<IHighlightableElement> _child;
         Radar _radar;
-        
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
-        
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> ExternalInput { get; set; }
 
@@ -43,28 +43,27 @@ namespace MouseRadar
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IHighlighterService> Highliter { get; set; }
+        public IService<IHighlighterService> Highlighter { get; set; }
 
         void Pause()
         {
-
-            Console.WriteLine("Pause");
+            Console.WriteLine( "Pause" );
 
             _radar.StopRotation();
-            _radar.StopTranslation(false);
+            _radar.StopTranslation( false );
             _radar.Model.LapCount = 0;
             IsActive = false;
         }
         void Resume()
         {
-            Console.WriteLine("Resume");
-            ActionType = ActionType.StayOnTheSame;
+            Console.WriteLine( "Resume" );
+            ActionType = ActionType.StayOnTheSameForever;
             _radar.StartRotation();
             IsActive = true;
         }
         void Focus()
         {
-            _radar.Model.Opacity = (float)(Configuration.User.GetOrSet("Opacity", 100)) / 100f;
+            _radar.Model.Opacity = (float)( Configuration.User.GetOrSet( "Opacity", 100 ) ) / 100f;
         }
 
         void Blur()
@@ -80,12 +79,12 @@ namespace MouseRadar
             return true;
         }
 
-        void OnConfigChanged(object sender, ConfigChangedEventArgs e)
+        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             switch( e.Key )
             {
-                case "Opacity" :
-                    _radar.Model.Opacity = (int) e.Value / 100f;
+                case "Opacity":
+                    _radar.Model.Opacity = (int)e.Value / 100f;
                     break;
                 case "RadarSize":
                     _radar.Model.RadarSize = (int)e.Value * 2;
@@ -100,63 +99,35 @@ namespace MouseRadar
                     _radar.TranslationSpeed = (int)e.Value;
                     break;
                 case "ArrowColor":
-                    _radar.Model.SetArrowColor((Color)e.Value);
+                    _radar.Model.SetArrowColor( (Color)e.Value );
                     break;
                 case "CircleColor":
-                    _radar.Model.SetCircleColor((Color)e.Value );
+                    _radar.Model.SetCircleColor( (Color)e.Value );
                     break;
             }
         }
 
         public void Start()
         {
-           
             _radar = new Radar( MouseDriver.Service );
 
-            _radar.Model.Opacity = (float)(Configuration.User.GetOrSet( "Opacity", 100 )) / 100f - .5f;
+            _radar.Model.Opacity = (float)( Configuration.User.GetOrSet( "Opacity", 100 ) ) / 100f - .5f;
             _radar.Model.RadarSize = Configuration.User.GetOrSet( "RadarSize", 50 ) * 2;
-            _radar.Model.ArrowColor = new SolidColorBrush(Configuration.User.GetOrSet("ArrowColor", Color.FromRgb(0, 0, 0)));
+            _radar.Model.ArrowColor = new SolidColorBrush( Configuration.User.GetOrSet( "ArrowColor", Color.FromRgb( 0, 0, 0 ) ) );
             _radar.Model.CircleColor = new SolidColorBrush( Configuration.User.GetOrSet( "CircleColor", Color.FromRgb( 0, 0, 0 ) ) );
 
             _radar.RotationSpeed = Configuration.User.GetOrSet( "RotationSpeed", 1 );
             _radar.TranslationSpeed = Configuration.User.GetOrSet( "TranslationSpeed", 1 );
 
             //ExternalInput.Service.RegisterFor( ExternalInput.Service.DefaultTrigger, TranslateRadar );
-            Highliter.Service.RegisterTree( this );
-            
-            Highliter.Service.BeginHighlight += ( o, e ) =>
+            Highlighter.Service.RegisterTree( this );
+
+            _radar.ScreenBoundCollide += ( o, e ) =>
             {
-                if( e.Element != this ) return;
-                Focus();
 
-                if( _radar.Model.LapCount >= 3 )
-                {
-                    ActionType = KeyScroller.ActionType.Normal;
-                }
-            };
-            
-            Highliter.Service.SelectElement += ( o, e ) =>
-            {
-                if( e.Element != this ) return;
-
-                if( IsActive ) TranslateRadar();
-                else Resume();
-            };
-
-            Highliter.Service.EndHighlight += ( o, e ) =>
-            {
-                if( e.Element != this ) return;
-                Blur();
-        
-  
-                if (ActionType != ActionType.StayOnTheSame ) Pause();
-            };
-
-            _radar.ScreenBoundCollide += ( o, e ) => {
-                
                 switch( e.ScreenBound )
                 {
-                    case ScreenBound.Left :
+                    case ScreenBound.Left:
                         _radar.Model.AngleMin = 270;
                         _radar.Model.AngleMax = 90;
                         break;
@@ -172,7 +143,7 @@ namespace MouseRadar
                         _radar.Model.AngleMin = 180;
                         _radar.Model.AngleMax = 360;
                         break;
-                    default :
+                    default:
                         _radar.Model.AngleMin = 0;
                         _radar.Model.AngleMax = 360;
                         break;
@@ -189,7 +160,7 @@ namespace MouseRadar
         void TranslateRadar()
         {
             if( !IsActive ) return;
-            if(_radar.IsTranslating()) _radar.StopTranslation();
+            if( _radar.IsTranslating() ) _radar.StopTranslation();
             else _radar.StartTranslation();
             _radar.Model.LapCount = 0;
         }
@@ -197,7 +168,7 @@ namespace MouseRadar
         public void Stop()
         {
             _radar.Dispose();
-           // ExternalInput.Service.Unregister(ExternalInput.Service.DefaultTrigger ,TranslateRadar);
+            // ExternalInput.Service.Unregister(ExternalInput.Service.DefaultTrigger ,TranslateRadar);
         }
 
         public void Teardown()
@@ -221,7 +192,7 @@ namespace MouseRadar
 
         public int Y
         {
-            get { return (int) _radar.Top; }
+            get { return (int)_radar.Top; }
         }
 
         public int Width
@@ -246,5 +217,34 @@ namespace MouseRadar
         public ActionType ActionType { get; set; }
 
         #endregion
+
+        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        {
+            Focus();
+
+            if( _radar.Model.LapCount >= 3 )
+            {
+                ActionType = ActionType.Normal;
+            }
+
+            return null;
+        }
+
+        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        {
+            Blur();
+
+            if( ActionType != ActionType.StayOnTheSameForever ) Pause();
+
+            return null;
+        }
+
+        public ScrollingDirective SelectElement()
+        {
+            if( IsActive ) TranslateRadar();
+            else Resume();
+
+            return new ScrollingDirective( ActionType );
+        }
     }
 }

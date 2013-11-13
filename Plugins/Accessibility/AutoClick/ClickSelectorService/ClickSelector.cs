@@ -36,7 +36,6 @@ using CK.Plugin;
 using CK.Core;
 using CommonServices.Accessibility;
 using HighlightModel;
-using CK.WindowManager.Model;
 
 namespace CK.Plugins.AutoClick
 {
@@ -54,11 +53,11 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowManager> WindowManager { get; set; }
+        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        //public IService<IWindowManager> WindowManager { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowBinder> WindowBinder { get; set; }
+        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        //public IService<IWindowBinder> WindowBinder { get; set; }
 
         private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         private ClickSelectorWindow _clickSelectorWindow;
@@ -89,7 +88,7 @@ namespace CK.Plugins.AutoClick
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
             _clickSelectorWindow.Show();
 
-            WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
+            //WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
         }
 
         void Highlighter_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
@@ -167,16 +166,10 @@ namespace CK.Plugins.AutoClick
         private void RegisterHighlighterService()
         {
             Highlighter.Service.RegisterTree( this );
-            Highlighter.Service.BeginHighlight += OnBeginHighlight;
-            Highlighter.Service.EndHighlight += OnEndHighlight;
-            Highlighter.Service.SelectElement += OnScrollerSelect;
         }
 
         private void UnregisterHighlighterService()
         {
-            Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-            Highlighter.Service.EndHighlight -= OnEndHighlight;
-            Highlighter.Service.SelectElement -= OnScrollerSelect;
             Highlighter.Service.UnregisterTree( this );
         }
 
@@ -192,44 +185,6 @@ namespace CK.Plugins.AutoClick
                 {
                     click.IsHighlighted = value;
                 }
-            }
-        }
-
-        private void OnBeginHighlight( object sender, HighlightEventArgs e )
-        {
-            if( e.Element == this )
-            {
-                IsHighlighted = true;
-            }
-            else if( e.Element is ClickEmbedderVM )
-            {
-                var result = ClicksVM.SingleOrDefault( ( el ) => el == e.Element );
-                Debug.Assert( result != null, "BeginHighlight was called on a ClickType that does not exist" );
-                result.IsHighlighted = true;
-            }
-        }
-
-        private void OnEndHighlight( object sender, HighlightEventArgs e )
-        {
-            if( e.Element is ClickSelector )
-            {
-                IsHighlighted = false;
-            }
-            else if( e.Element is ClickEmbedderVM )
-            {
-                ClickEmbedderVM clickEmbedder = ClicksVM.SingleOrDefault( ( el ) => el == e.Element );
-                Debug.Assert( clickEmbedder != null, "EndHighlight was called on a ClickType that does not exist" );
-                clickEmbedder.IsHighlighted = false;
-            }
-        }
-
-        void OnScrollerSelect( object sender, HighlightEventArgs e )
-        {
-            if( e.Element is ClickEmbedderVM )
-            {
-                ClickEmbedderVM clickEmbedder = ClicksVM.SingleOrDefault( ( el ) => el == e.Element );
-                Debug.Assert( clickEmbedder != null, "SelectElement was called on a ClickType that does not exist" );
-                clickEmbedder.DoSelect();
             }
         }
 
@@ -261,5 +216,23 @@ namespace CK.Plugins.AutoClick
         }
 
         #endregion
+
+
+        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        {
+            IsHighlighted = true;
+            return null;
+        }
+
+        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        {
+            IsHighlighted = false;
+            return null;
+        }
+
+        public ScrollingDirective SelectElement()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -232,5 +232,20 @@ namespace CK.Plugins.AutoClick.ViewModel
         {
             get { return SkippingBehavior.EnterChildren; }
         }
+
+        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        {
+            return null;
+        }
+
+        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        {
+            return null;
+        }
+
+        public ScrollingDirective SelectElement()
+        {
+            return null;
+        }
     }
 }

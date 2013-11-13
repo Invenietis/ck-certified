@@ -11,14 +11,6 @@ using System.Diagnostics;
 
 namespace KeyScroller
 {
-    public enum ActionType
-    {
-        Normal = 0,
-        EnterChild = 1,
-        UpToParent = 2,
-        StayOnTheSame = 3
-    }
-
     public abstract class ScrollingStrategy : IScrollingStrategy
     {
         ICKReadOnlyList<IHighlightableElement> _roElements;
@@ -43,31 +35,38 @@ namespace KeyScroller
             _timer = timer;
             _currentElementParents = new Stack<IHighlightableElement>();
             _configuration = configuration;
+            _lastDirective = new ScrollingDirective( ActionType.EnterChild );
         }
 
         #region IScrollingStrategy Members
 
-        public event EventHandler<HighlightEventArgs> BeginHighlight;
-
-        public event EventHandler<HighlightEventArgs> EndHighlight;
-
-        public event EventHandler<HighlightEventArgs> SelectElement;
-
+        ScrollingDirective _lastDirective;
         protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
         {
-            SelectElement( sender, eventArgs );
+            if( _currentElement != null )
+            {
+                ScrollingDirective directive = _currentElement.SelectElement();
+                if( directive != null )
+                {
+                    _lastDirective = directive;
+                }
+                else
+                {
+                    _lastDirective = new ScrollingDirective( ActionType.Normal );
+                }
+            }
         }
 
-        int swallowedBeatsCount = 0;
+        //int swallowedBeatsCount = 0;
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            //In case we are scrolling on the top level, we slow the scroller down by swallowing every other beat.
-            if( _currentElementParents.Count == 0 && swallowedBeatsCount < 1 )
-            {
-                swallowedBeatsCount++;
-                return;
-            }
-            swallowedBeatsCount = 0;
+            ////In case we are scrolling on the top level, we slow the scroller down by swallowing every other beat.
+            //if( _currentElementParents.Count == 0 && swallowedBeatsCount < 1 )
+            //{
+            //    swallowedBeatsCount++;
+            //    return;
+            //}
+            //swallowedBeatsCount = 0;
 
             if( _currentElement != null ) FireEndHighlight();
 
@@ -102,7 +101,9 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetStayOnTheSame( ICKReadOnlyList<IHighlightableElement> elements )
         {
-            _actionType = ActionType.Normal;
+            //Commented because only the element can get the scrolling strategy out of a "StayOnTheSame"
+            //_actionType = ActionType.Normal;
+
             return elements[_currentId];
         }
 
@@ -133,8 +134,9 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetNextElement( ActionType actionType )
         {
-            // reset the action type to normal
-            _actionType = ActionType.Normal;
+            // reset the action type to normal if we are not on a StayOnTheSame
+            if( _actionType != ActionType.StayOnTheSameForever )
+                _actionType = ActionType.Normal;
 
             IHighlightableElement nextElement = null;
 
@@ -149,7 +151,7 @@ namespace KeyScroller
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 
-                if( actionType == ActionType.StayOnTheSame )
+                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameForever )
                 {
                     nextElement = GetStayOnTheSame( elements );
                 }
@@ -242,14 +244,18 @@ namespace KeyScroller
 
         #endregion
 
+        IHighlightableElement _previousElement;
+
         void FireBeginHighlight()
         {
-            if( BeginHighlight != null ) BeginHighlight( this, new HighlightEventArgs( _currentElement ) );
+            if( _currentElement != null ) _currentElement.BeginHighlight( new ScrollingInfo( _timer.Interval, _previousElement ) );
         }
 
         void FireEndHighlight()
         {
-            if( EndHighlight != null ) EndHighlight( this, new HighlightEventArgs( _currentElement ) );
+            if( _currentElement != null ) _currentElement.EndHighlight( new ScrollingInfo( _timer.Interval, _previousElement ) );
+
+            _previousElement = _currentElement;
             _currentElement = null;
         }
 

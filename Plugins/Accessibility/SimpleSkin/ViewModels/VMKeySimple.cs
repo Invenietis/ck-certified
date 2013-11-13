@@ -711,5 +711,32 @@ namespace SimpleSkin.ViewModels
                 _del();
             }
         }
+
+
+        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        {
+            IsHighlighting = true;
+            return null;
+        }
+
+        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        {
+            IsHighlighting = false;
+            return null;
+        }
+
+        public ScrollingDirective SelectElement()
+        {
+            if( KeyDownCommand.CanExecute( null ) )
+            {
+                KeyDownCommand.Execute( null );
+                if( KeyUpCommand.CanExecute( null ) )
+                {
+                    KeyUpCommand.Execute( null );
+                }
+            }
+
+            return new ScrollingDirective( ActionType.RelativeRoot );
+        }
     }
 }

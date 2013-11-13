@@ -49,7 +49,6 @@ namespace Host.VM
         AutoClickViewModel _acVm;
         WordPredictionViewModel _wpVm;
         AppAdvancedConfigViewModel _appAdvcVm;
-        MouseRadarViewModel _radar;
 
         public AppConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )

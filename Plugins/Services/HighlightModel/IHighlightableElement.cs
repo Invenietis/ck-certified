@@ -64,8 +64,14 @@ namespace HighlightModel
     /// </summary>
     public class ScrollingDirective
     {
+        public ScrollingDirective(ActionType nextActionType, ActionTime actionTime = HighlightModel.ActionTime.NextTick)
+        {
+            NextActionType = nextActionType;
+            ActionTime = actionTime;
+        }
+
         public ActionTime ActionTime { get; private set; }
-        public ActionType NextElement { get; set; }
+        public ActionType NextActionType { get; set; }
     }
 
     /// <summary>
@@ -80,8 +86,8 @@ namespace HighlightModel
             PreviousElement = previousElement;
         }
 
-        TimeSpan TickInterval { get; private set; }
-        IHighlightableElement PreviousElement { get; private set; }
+        public TimeSpan TickInterval { get; private set; }
+        public IHighlightableElement PreviousElement { get; private set; }
     }
 
 
@@ -119,17 +125,21 @@ namespace HighlightModel
         /// </summary>
         UpToParent = 2,
         /// <summary>
-        /// Stay on the current element
+        /// Stay on the current element until the next tick
         /// </summary>
-        StayOnTheSame = 3,
+        StayOnTheSameOnce = 3,
+        /// <summary>
+        /// Stay on the current element until the element says otherwise
+        /// </summary>
+        StayOnTheSameForever = 4,
         /// <summary>
         /// Go up to the root of the tree containing the element
         /// </summary>
-        RelativeRoot = 4,
+        RelativeRoot = 5,
         /// <summary>
         /// Go up to the very root of the keyscroller (to the parent of the RelativeRoot)
         /// </summary>
-        AbsoluteRoot = 5,
+        AbsoluteRoot = 6,
     }
 
 }

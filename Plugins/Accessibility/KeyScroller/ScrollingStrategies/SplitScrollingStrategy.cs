@@ -119,7 +119,7 @@ namespace KeyScroller
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 
-                if( actionType == ActionType.StayOnTheSame )
+                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameForever )
                 {
                     _nextElement = GetStayOnTheSame( elements );
                 }

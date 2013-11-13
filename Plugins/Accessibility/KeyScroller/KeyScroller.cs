@@ -161,59 +161,59 @@ namespace KeyScroller
             _scrollingStrategy.Resume();
         }
 
-        public event EventHandler<HighlightEventArgs> BeginHighlight
-        {
-            add
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.BeginHighlight += value;
-                }
-            }
-            remove
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.BeginHighlight -= value;
-                }
-            }
-        }
+        //public event EventHandler<HighlightEventArgs> BeginHighlight
+        //{
+        //    add
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.BeginHighlight += value;
+        //        }
+        //    }
+        //    remove
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.BeginHighlight -= value;
+        //        }
+        //    }
+        //}
 
-        public event EventHandler<HighlightEventArgs> EndHighlight
-        {
-            add
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.EndHighlight += value;
-                }
-            }
-            remove
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.EndHighlight -= value;
-                }
-            }
-        }
+        //public event EventHandler<HighlightEventArgs> EndHighlight
+        //{
+        //    add
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.EndHighlight += value;
+        //        }
+        //    }
+        //    remove
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.EndHighlight -= value;
+        //        }
+        //    }
+        //}
 
-        public event EventHandler<HighlightEventArgs> SelectElement
-        {
-            add
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.SelectElement += value;
-                }
-            }
-            remove
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.SelectElement -= value;
-                }
-            }
-        }
+        //public event EventHandler<HighlightEventArgs> SelectElement
+        //{
+        //    add
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.SelectElement += value;
+        //        }
+        //    }
+        //    remove
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.SelectElement -= value;
+        //        }
+        //    }
+        //}
 
         #endregion
 

@@ -65,13 +65,13 @@ namespace KeyScroller
             }
         }
 
-        internal override void OnExternalEvent()
+        public override void OnExternalEvent()
         {
             if( _currentElement != null )
             {
                 FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.UpToParent; //We directly go back to the relative root
-                //TODOJL : RelativeRoot
+                //Commented because the element itself will tell the scroller where it should go from now
+                //_actionType = ActionType.UpToParent; 
             }
         }
     }

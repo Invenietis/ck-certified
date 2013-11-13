@@ -18,18 +18,18 @@ using CK.Storage;
 using CK.Windows.App;
 using CK.Windows.Config;
 using CommonServices;
+using Help.Services;
 using KeyboardEditor.Resources;
 using KeyboardEditor.s;
 using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
-using CommonServices.Accessibility;
 
 namespace KeyboardEditor
 {
     [Plugin( KeyboardEditor.PluginIdString,
         PublicName = PluginPublicName,
         Version = KeyboardEditor.PluginIdVersion )]
-    public partial class KeyboardEditor : IPlugin, IKeyboardEditorRoot
+    public partial class KeyboardEditor : IPlugin, IKeyboardEditorRoot, IHaveDefaultHelp
     {
         const string PluginIdString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -44,7 +44,7 @@ namespace KeyboardEditor
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IHelpService> HelpService { get; set; }
+        public IService<IHelpViewerService> HelpService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -81,27 +81,11 @@ namespace KeyboardEditor
             //RegisterHotKeys();
 
             _mainWindow.Closing += OnWindowClosing;
-
-            if( HelpService.Status == InternalRunningStatus.Started )
-            {
-                HelpService.Service.RegisterHelpContent( PluginId, typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" ) );
-            }
-            else if( HelpService.Status.IsStoppedOrDisabled ) HelpService.ServiceStatusChanged += HelpService_ServiceStatusChanged;
-        }
-
-        void HelpService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                HelpService.Service.RegisterHelpContent( PluginId, typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" ) );
-            }
         }
 
         public void Stop()
         {
             _stopping = true;
-
-            HelpService.ServiceStatusChanged -= HelpService_ServiceStatusChanged;
 
             if( _mainWindow != null )
                 _mainWindow.Close();
@@ -317,6 +301,15 @@ namespace KeyboardEditor
             }
 
             KeyboardBackup = null;
+        }
+
+        #endregion
+
+        #region IHaveDefaultHelp Members
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" );
         }
 
         #endregion

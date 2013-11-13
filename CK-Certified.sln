@@ -101,7 +101,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Help", "Plugins\Accessibili
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowManager.Model", "Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj", "{FDA960F6-D429-4696-9306-B473DAE41E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Certified.WindowManager.Test", "CK.Certified.WindowManager.Test\CK.Certified.WindowManager.Test.csproj", "{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Certified.WindowManager.Test", "Tests\CK.Certified.WindowManager.Test\CK.Certified.WindowManager.Test.csproj", "{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowManager", "Plugins\Accessibility\CK.WindowManager\CK.WindowManager.csproj", "{968FC28C-D500-41AA-AB45-0FC4581B8713}"
 EndProject

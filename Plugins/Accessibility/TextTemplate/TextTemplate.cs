@@ -19,7 +19,7 @@ namespace TextTemplate
         PublicName = "Text Template")]
     public class TextTemplate : BasicCommandHandler, IHighlightableElement
     {
-        const string CMD = "placeholder:";
+        const string CMD = "placeholder";
         TemplateEditor _editor;
         TemplateEditorViewModel _viewModel;
 
@@ -52,12 +52,7 @@ namespace TextTemplate
         public override void Start()
         {
             base.Start();
-            LaunchEditor(@"J'aime les {{fruit}}s bien {{couleur}}s mais je n'aime pas la couleur {{couleur}}.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu dolor sed tortor congue egestas commodo et quam. Proin tempus bibendum sem, sed sagittis quam bibendum eu. Vestibulum ullamcorper arcu mi, at laoreet sem luctus at. Nulla tristique lacus sit amet augue imperdiet luctus. Pellentesque massa nisl, viverra ut interdum sed, vestibulum sit amet lectus. Fusce tristique aliquet lectus dignissim iaculis. Ut ac neque eleifend, eleifend justo eu, mollis metus. Nunc varius leo at orci sagittis, non volutpat dolor suscipit. Nunc tempus eget justo non volutpat. Etiam scelerisque, elit non gravida aliquam, turpis erat iaculis nulla, nec fermentum eros nibh vel mauris. Curabitur eu est ut ipsum facilisis commodo. Suspendisse molestie est sit amet magna scelerisque, vitae rutrum est pellentesque.
-
-Pellentesque in porttitor risus, vitae sagittis nunc. Aenean {{truc}}facilisis erat vitae tortor vehicula, sit amet pellentesque nisi euismod. Integer eu diam consectetur, varius tellus id, volutpat mauris. Curabitur in sem libero. {{Vivamus}} nunc enim, sollicitudin at enim non, feugiat elementum felis. Sed non velit semper, dapibus ligula a, auctor elit. Sed non sapien vitae nulla fermentum facilisis eu sed ipsum. Integer nec ante lectus. Mauris pretium nisi non fermentum aliquam. Morbi imperdiet, orci quis malesuada ultrices, est massa tristique sem, sit amet placerat neque libero in ante. Nam a tristique enim. Vivamus eu interdum arcu. Quisque gravida sapien mi, volutpat fringilla leo ornare in.
-
-Cras non lorem facilisis, facilisis felis sed, eleifend augue. Praesent vitae sagittis nibh. Aliquam pharetra semper justo, quis euismod nibh lacinia quis. Quisque feugiat, felis sed malesuada vehicula, metus leo dictum dui, eget blandit eros ligula ac libero. Praesent feugiat est libero, quis vehicula felis gravida mollis. Proin convallis risus id aliquam porta. Suspendisse non feugiat sem. Maecenas in justo sit amet massa iaculis dignissim. Fusce volutpat magna in tortor rutrum iaculis. Praesent dictum imperdiet odio, at luctus risus tempor vel. Pellentesque eget ante nunc. Donec aliquet sem at massa bibendum commodo. Donec quis nisl magna. Nullam nisl velit, ultrices eu nisl gravida, tincidunt condimentum massa. Aenean lobortis dui sit amet tellus porttitor pellentesque.
-{{Nom}}  {{Prénom}} ...");
+            Skip = SkippingBehavior.Skip;
             Highlighter.Service.RegisterTree(this);
             Highlighter.Service.BeginHighlight += (o, e) =>
             {
@@ -110,28 +105,21 @@ Cras non lorem facilisis, facilisis felis sed, eleifend augue. Praesent vitae sa
 
         protected override void OnCommandSent(object sender, CommandSentEventArgs e)
         {
-            string cmd;
-            string m;
-
-            CommandParser p = new CommandParser(e.Command);
-
-            if (!e.Canceled && p.IsIdentifier(out cmd) && cmd == CMD)
+            Command cmd = new Command(e.Command);
+            if (!e.Canceled && cmd.Name == CMD)
             {
-                if (p.Match(CommandParser.Token.OpenPar))
-                    if (p.IsString(out m))
-                        if (p.Match(CommandParser.Token.ClosePar))
-                            if (cmd == CMD)
-                                LaunchEditor(m);
+                LaunchEditor(cmd.Content);
             }
         }
 
         public void LaunchEditor(string template)
         {
             _viewModel.Template = Template.Load(template);
-
+            if (_editor != null) _editor.Close();
             _editor = new TemplateEditor(_viewModel);
             var list = _viewModel.Template.TextFragments.Where(t => t.IsEditable == true)
                 .Cast<IHighlightableElement>()
+                .Distinct()
                 .ToList();
             
             //Ok Button
@@ -140,7 +128,12 @@ Cras non lorem facilisis, facilisis felis sed, eleifend augue. Praesent vitae sa
             //Cancel button
             list.Add(_viewModel.Cancel);
             _children = new CKReadOnlyListOnIList<IHighlightableElement>(list);
+            Skip = SkippingBehavior.None;
             _editor.Show();
+            _editor.Closed += (o, e) =>
+            {
+                Skip = SkippingBehavior.Skip;
+            };
         }
         
         public void SendFormatedTemplate()
@@ -178,7 +171,23 @@ Cras non lorem facilisis, facilisis felis sed, eleifend augue. Praesent vitae sa
 
         public SkippingBehavior Skip
         {
-            get { return SkippingBehavior.None; }
+            get;
+            private set;
+        }
+    }
+
+    public class Command
+    {
+        static readonly string SeparationToken = ":";
+        public string Name { get; private set; }
+
+        public string Content { get; private set; }
+
+        public Command(string cmd)
+        {
+            int pos = cmd.IndexOf(SeparationToken);
+            Name = cmd.Substring(0, pos);
+            Content = cmd.Substring(pos + SeparationToken.Length);
         }
     }
 }

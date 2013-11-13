@@ -64,7 +64,7 @@ namespace TextTemplate
                 text.Placeholder = m.Value;
                 textFragments.Add(text);
 
-                template._stringToFormat += staticText + "{" + (textFragments.Count - 1) + "}";
+                template._stringToFormat += staticText + "{" + (textFragments.IndexOf(text)) + "}";
 
                 prevIndex = m.Index + m.Length;
                 m = m.NextMatch();
@@ -114,7 +114,7 @@ namespace TextTemplate
         /// <returns></returns>
         public string GenerateFormatedString()
         {
-            return String.Format(_stringToFormat, TextFragments.Select(x => x.Text).ToArray());
+            return String.Format(_stringToFormat, TextFragments.Distinct().Select(x => x.Text).ToArray());
         }
     }
 }

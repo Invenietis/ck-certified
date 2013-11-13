@@ -18,12 +18,36 @@ namespace FileLauncher
         Guid PluginGuid = new Guid(PluginIdString);
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "File Launcher";
+        const string CMD = "launch";
+        List<FileInfo> _apps;
 
         public override void Start()
         {
             base.Start();
-            var list = RegistryApplication.Crawl();
-            RegistryApplication.Launch(list.FirstOrDefault());
+            _apps = RegistryApplication.Crawl();
+        }
+
+        protected override void OnCommandSent(object sender, CommandSentEventArgs e)
+        {
+            Command cmd = new Command(e.Command);
+            if (cmd.Name != CMD) return;
+            var f = _apps.Where(a => a.FileName.Equals( cmd.Content, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            if (f != null) RegistryApplication.Launch(f);
+        }
+    }
+
+    public class Command
+    {
+        static readonly string SeparationToken = ":";
+        public string Name { get; private set; }
+
+        public string Content { get; private set; }
+
+        public Command(string cmd)
+        {
+            int pos = cmd.IndexOf(SeparationToken);
+            Name = cmd.Substring(0, pos);
+            Content = cmd.Substring(pos + SeparationToken.Length);
         }
     }
 }

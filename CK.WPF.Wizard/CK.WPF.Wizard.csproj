@@ -49,17 +49,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CK.Reflection.2.8.14\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Config, Version=2.9.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Config, Version=2.10.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Config.2.9.14-develop\lib\net40\CK.Windows.Config.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Config.2.10.0-develop\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Core, Version=2.9.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Core, Version=2.10.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Core.2.9.14-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Core.2.10.0-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Interop, Version=2.9.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Interop, Version=2.10.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Windows.Interop.2.9.14-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+      <HintPath>..\packages\CK.Windows.Interop.2.10.0-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

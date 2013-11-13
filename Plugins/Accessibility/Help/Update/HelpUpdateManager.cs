@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -162,7 +163,7 @@ namespace Help.UpdateManager
             }
 
             // create the update url to request
-            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}/{4}/isupdated", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TwoLetterISOLanguageName, hash );
+            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}/{4}/isupdated", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
 
             // start the request and return the task
             return _http.GetAsync( url ).ContinueWith( u =>
@@ -181,7 +182,7 @@ namespace Help.UpdateManager
         Task<TemporaryFile> DownloadUpdate( IVersionedUniqueId plugin )
         {
             // create the download url
-            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TwoLetterISOLanguageName );
+            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName );
 
             // start the request
             // and continue with
@@ -236,7 +237,30 @@ namespace Help.UpdateManager
 
         bool IsInstallationPossibleAutomatically( IVersionedUniqueId plugin, HelpManifestData manifest )
         {
-            return true;
+            Version manifestVersion = new Version(manifest.Version);
+
+            Debug.Assert( plugin.UniqueId.ToString( "B" ) == manifest.PluginId );
+            Debug.Assert( plugin.Version >= manifestVersion );
+
+            var currentHelpFile = new FileInfo( _helpContents.GetHelpContentFilePath( plugin, CultureInfo.CurrentCulture.TextInfo.CultureName ) );
+            if( currentHelpFile.FullName != _helpContents.NoContentFilePath )
+            {
+                string currentCulture = currentHelpFile.Directory.Name;
+                Version currentVersion = new Version( currentHelpFile.Directory.Parent.Name );
+
+                // if the manifest version is lesser than the current version we shouldn't install the help content
+                // otherwise we can delete a better local version
+                if( currentVersion <= manifestVersion )
+                {
+                    return manifest.Culture == CultureInfo.CurrentCulture.TextInfo.CultureName
+                        || manifest.Culture == CultureInfo.CurrentCulture.TwoLetterISOLanguageName
+                        || manifest.Culture == currentCulture;
+                }
+
+                return false;
+            }
+            else
+                return true; // by default if there is no local help, use the remote one it's better than nothing
         }
 
         #endregion

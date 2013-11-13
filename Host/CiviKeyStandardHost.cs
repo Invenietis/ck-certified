@@ -69,14 +69,15 @@ namespace Host
         /// Singleton instance.
         /// </summary>
         static readonly public CivikeyStandardHost Instance = new CivikeyStandardHost( CKApp.CurrentParameters );
-        
+
         /// <summary>
         /// Gets a unique identifier for a CiviKey application
         /// Is mainly used to identify an instance of CiviKey in crashlogs
         /// </summary>
         public IUniqueId ApplicationUniqueId
         {
-            get; private set;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -301,7 +302,10 @@ namespace Host
 
         public IVersionedUniqueId FakeHostHelpId
         {
-            get { return new SimpleVersionedUniqueId( Guid.Empty.ToString( "B" ), AppVersion.ToString() ); }
+            get
+            {
+                return new SimpleVersionedUniqueId( Guid.Empty, new Version( AppVersion.Major, AppVersion.Minor, AppVersion.Patch ) );
+            }
         }
 
         public void FireShowHostHelp()

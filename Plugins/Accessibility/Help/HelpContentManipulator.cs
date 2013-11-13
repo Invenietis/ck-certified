@@ -30,7 +30,7 @@ namespace Help
 
         public string GetHelpContentFilePath( IVersionedUniqueId pluginName, string culture = null )
         {
-            if( culture == null ) culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            if( culture == null ) culture = CultureInfo.CurrentCulture.TextInfo.CultureName;
 
             // try to load the help of the plugin in the good culture (current or given)
             string localhelp = Path.Combine( GetBaseHelpDirectoryForPlugin( pluginName, culture ), "index.html" );
@@ -44,7 +44,7 @@ namespace Help
                 else
                 {
                     // if the given culture is still not the default, and a specialized culture, try to load the help for the base culture
-                    if( culture.Contains( '-' ) ) return GetHelpContentFilePath( pluginName, culture.Substring( culture.IndexOf( '-' ) ) );
+                    if( culture.Contains( '-' ) ) return GetHelpContentFilePath( pluginName, culture.Substring( 0, culture.IndexOf( '-' ) ) );
                     else return GetHelpContentFilePath( pluginName, DefaultCulture );
                 }
 

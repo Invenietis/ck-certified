@@ -66,8 +66,6 @@ namespace KeyScroller
                 default:
                     if( element != null && element.Children.Count > 0 && !element.IsHighlightableTreeRoot )
                     {
-                        //if( element.IsHighlightableTreeRoot ) return GetNextElement( ActionType.Normal );
-                        //else 
                         return GetNextElement( ActionType.EnterChild );
                     }
                     return element;

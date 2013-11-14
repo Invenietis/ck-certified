@@ -736,7 +736,7 @@ namespace SimpleSkin.ViewModels
                 }
             }
 
-            scrollingDirective.NextActionType = ActionType.StayOnTheSameOnce;
+            scrollingDirective.NextActionType = ActionType.RelativeRoot;
             return scrollingDirective;
         }
 

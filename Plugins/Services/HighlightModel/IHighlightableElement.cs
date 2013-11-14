@@ -152,11 +152,11 @@ namespace HighlightModel
         /// </summary>
         StayOnTheSameForever = 4,
         /// <summary>
-        /// Go up to the root of the tree containing the element
+        /// Go up to the root of the tree containing the element, and start iterating on its first child
         /// </summary>
         RelativeRoot = 5,
         /// <summary>
-        /// Go up to the very root of the keyscroller (to the parent of the RelativeRoot)
+        /// Go up to the very root of the keyscroller (to the parent of the RelativeRoot), and start iterating on its first child
         /// </summary>
         AbsoluteRoot = 6,
     }

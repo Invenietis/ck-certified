@@ -108,7 +108,15 @@ namespace KeyScroller
             if( actionType != ActionType.StayOnTheSameForever )
                 _lastDirective.NextActionType = ActionType.Normal;
 
-            if( actionType == ActionType.UpToParent )
+            if( actionType == ActionType.AbsoluteRoot )
+            {
+                _nextElement = GetUpToAbsoluteRoot();
+            }
+            else if( actionType == ActionType.RelativeRoot )
+            {
+                _nextElement = GetUpToRelativeRoot();
+            }
+            else if( actionType == ActionType.UpToParent )
             {
                 _nextElement = GetUpToParent();
             }

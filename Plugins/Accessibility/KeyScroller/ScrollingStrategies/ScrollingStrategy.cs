@@ -40,6 +40,42 @@ namespace KeyScroller
 
         #region IScrollingStrategy Members
 
+        /// <summary>
+        /// Goes up in the tree and returns the root of the first registered tree
+        /// </summary>
+        /// <returns>The root of the first registered tree</returns>
+        protected virtual IHighlightableElement GetUpToAbsoluteRoot()
+        {
+            _currentId = -1;
+            _currentElementParents = new Stack<IHighlightableElement>();
+
+            return RegisteredElements.FirstOrDefault();
+        }
+
+        
+        /// <summary>
+        /// Goes up in the tree and returns the first child of the relative root of the current element's tree 
+        /// For example : the RelativeRoot of the keyboard is the VMKeyboard itself. We are going to get the keyboard's first child and to start iterating on it directly. 
+        /// </summary>
+        /// <returns>The first child of the current element's relative root</returns>
+        protected virtual IHighlightableElement GetUpToRelativeRoot()
+        {
+            if( _currentElementParents.Count == 0 ) return _currentElement;
+
+            //Getting the children of the root element of the current tree
+            
+            ICKReadOnlyList<IHighlightableElement> rootChildren = null;
+            while( _currentElementParents.Count > 1 )
+            {
+                _currentElementParents.Pop();
+            }
+            rootChildren = _currentElementParents.Peek().Children;
+
+            //Returning the first child.
+            _currentId = -1;
+            return rootChildren.First();
+        }
+
         protected virtual IHighlightableElement GetUpToParent()
         {
             IHighlightableElement nextElement = null;
@@ -47,11 +83,11 @@ namespace KeyScroller
             if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
             IHighlightableElement parent = _currentElementParents.Pop();
-            ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
-            if( _currentElementParents.Count > 0 ) parentSibblings = _currentElementParents.Peek().Children;
-            else parentSibblings = RegisteredElements;
+            ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
+            if( _currentElementParents.Count > 0 ) parentSiblings = _currentElementParents.Peek().Children;
+            else parentSiblings = RegisteredElements;
 
-            _currentId = parentSibblings.IndexOf( parent );
+            _currentId = parentSiblings.IndexOf( parent );
             nextElement = parent;
 
             // if the parent skipping behavior is enter children, we skip it
@@ -66,9 +102,6 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetStayOnTheSame( ICKReadOnlyList<IHighlightableElement> elements )
         {
-            //Commented because only the element can get the scrolling strategy out of a "StayOnTheSameForever"
-            //_actionType = ActionType.Normal;
-
             return elements[_currentId];
         }
 
@@ -99,13 +132,21 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetNextElement( ActionType actionType )
         {
-            // reset the action type to normal if we are not on a StayOnTheSame
+            // reset the action type to normal if we are not on a StayOnTheSameForever
             if( actionType != ActionType.StayOnTheSameForever )
                 _lastDirective.NextActionType = ActionType.Normal;
 
             IHighlightableElement nextElement = null;
 
-            if( actionType == ActionType.UpToParent )
+            if( actionType == ActionType.AbsoluteRoot )
+            {
+                nextElement = GetUpToAbsoluteRoot();
+            }
+            else if( actionType == ActionType.RelativeRoot )
+            {
+                nextElement = GetUpToRelativeRoot();
+            }
+            else if( actionType == ActionType.UpToParent )
             {
                 nextElement = GetUpToParent();
             }

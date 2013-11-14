@@ -231,7 +231,7 @@ namespace MouseRadar
             if( _radar.Model.LapCount >= _lapCount )
             {
                 //Once arrived at the end of the last lap, we release the scroller.
-                scrollingDirective.NextActionType = ActionType = ActionType.UpToParent;
+                scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
             }
 
             return scrollingDirective;

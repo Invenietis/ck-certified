@@ -94,34 +94,39 @@ namespace SimpleSkin
         {
         }
 
-        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             if( Parent.IsViewHidden )
             {
                 IsHighlighted = true;
             }
 
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
             if( Parent.IsViewHidden )
             {
                 IsHighlighted = false;
             }
 
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective SelectElement()
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
             if( Parent.IsViewHidden )
             {
                 Parent.RestoreSkin();
             }
 
-            return null;
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
         }
     }
 }

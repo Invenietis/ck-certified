@@ -202,7 +202,6 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         #endregion
 
-
         public Core.ICKReadOnlyList<IHighlightableElement> Children
         {
             get { return ReadOnlyClicksVM; }
@@ -233,19 +232,24 @@ namespace CK.Plugins.AutoClick.ViewModel
             get { return SkippingBehavior.EnterChildren; }
         }
 
-        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective SelectElement()
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            return null;
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
         }
     }
 }

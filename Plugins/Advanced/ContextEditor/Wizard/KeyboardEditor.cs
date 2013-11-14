@@ -57,7 +57,7 @@ namespace KeyboardEditor
         public VMContextEditable EditedContext { get; set; }
         internal AppViewModel AppViewModel { get { return _appViewModel; } }
 
-        WindowInteropHelper _interopHelper;
+        //WindowInteropHelper _interopHelper;
         WindowManager _windowManager;
         AppViewModel _appViewModel;
         Window _mainWindow;

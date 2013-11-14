@@ -29,6 +29,7 @@ namespace MouseRadar
         const string PluginPublicName = "Mouse Radar";
         public bool IsActive { get; private set; }
         public float _blurOpacity = .1f;
+        int _lapCount = 1; //TODO : 3, or configurable
 
         ICKReadOnlyList<IHighlightableElement> _child;
         Radar _radar;
@@ -57,6 +58,7 @@ namespace MouseRadar
         void Resume()
         {
             Console.WriteLine( "Resume" );
+
             ActionType = ActionType.StayOnTheSameForever;
             _radar.StartRotation();
             IsActive = true;
@@ -119,7 +121,12 @@ namespace MouseRadar
             _radar.RotationSpeed = Configuration.User.GetOrSet( "RotationSpeed", 1 );
             _radar.TranslationSpeed = Configuration.User.GetOrSet( "TranslationSpeed", 1 );
 
+            ActionType = HighlightModel.ActionType.StayOnTheSameForever;
+
             //ExternalInput.Service.RegisterFor( ExternalInput.Service.DefaultTrigger, TranslateRadar );
+
+            //TODO : check that the service is available before registering
+            //TODO : bind to the Service Status changed event (otherwise, if the radar is launched when the scrolling plugin is off, we'll get an exception)
             Highlighter.Service.RegisterTree( this );
 
             _radar.ScreenBoundCollide += ( o, e ) =>
@@ -168,6 +175,8 @@ namespace MouseRadar
         public void Stop()
         {
             _radar.Dispose();
+            if( Highlighter.Status.IsStartingOrStarted )
+                Highlighter.Service.UnregisterTree( this );
             // ExternalInput.Service.Unregister(ExternalInput.Service.DefaultTrigger ,TranslateRadar);
         }
 
@@ -212,39 +221,55 @@ namespace MouseRadar
 
         #endregion
 
-        #region IActionnableElement Members
-
         public ActionType ActionType { get; set; }
 
-        #endregion
-
-        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            Focus();
+            if( beginScrollingInfo.PreviousElement != this ) //otherwise we should already be focused
+                Focus();
 
-            if( _radar.Model.LapCount >= 3 )
+            if( _radar.Model.LapCount >= _lapCount )
             {
-                ActionType = ActionType.Normal;
+                //Once arrived at the end of the last lap, we release the scroller.
+                scrollingDirective.NextActionType = ActionType = ActionType.UpToParent;
             }
 
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            Blur();
+            if( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
+                Blur();
 
-            if( ActionType != ActionType.StayOnTheSameForever ) Pause();
+            //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it)
+            if( ActionType != ActionType.StayOnTheSameForever && IsActive )
+            {
+                Pause();
+            }
 
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective SelectElement()
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
             if( IsActive ) TranslateRadar();
             else Resume();
 
-            return new ScrollingDirective( ActionType );
+            //In any case, when we trigger the input when on the radar, we set the NextType as ActionType.StayOnTheSameForever.
+            scrollingDirective.NextActionType = ActionType = ActionType.StayOnTheSameForever;
+
+            //Each time the input is triggered, we reset the lapcount and the starting angle of the lap count. (thaks to that, we release th escroller in an homegenous way : X laps after the last call to SelectElement)
+            _radar.Model.LapCount = 0;
+            _radar.Model.StartingAngle = _radar.Model.Angle;
+
+            return scrollingDirective;
+        }
+
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
         }
     }
 }

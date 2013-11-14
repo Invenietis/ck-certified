@@ -36,6 +36,8 @@ using CK.Plugin;
 using CK.Core;
 using CommonServices.Accessibility;
 using HighlightModel;
+using CK.Plugin.Config;
+using CK.Windows;
 
 namespace CK.Plugins.AutoClick
 {
@@ -62,6 +64,8 @@ namespace CK.Plugins.AutoClick
         private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         private ClickSelectorWindow _clickSelectorWindow;
 
+        public IPluginConfigAccessor Config { get; set; }
+
         public ClicksVM ClicksVM { get; set; }
         public ICKReadOnlyList<ClickEmbedderVM> ReadOnlyClicksVM { get { return _clicksVmReadOnlyAdapter.ToReadOnlyList(); } }
 
@@ -83,12 +87,37 @@ namespace CK.Plugins.AutoClick
                 RegisterHighlighterService();
             }
 
+            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
+            int defaultWidth = defaultHeight / 4;
+
             Highlighter.ServiceStatusChanged += Highlighter_ServiceStatusChanged;
 
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
+
+            if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) )
+            {
+                SetDefaultWindowPosition( defaultWidth, defaultHeight );
+            }
+            else
+            {
+                _clickSelectorWindow.Width = _clickSelectorWindow.Height = 0;
+            }
+
             _clickSelectorWindow.Show();
 
+            //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
+            if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) ) Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
+            CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
+
             //WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
+        }
+
+        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
+        {
+            _clickSelectorWindow.Top = 100;
+            _clickSelectorWindow.Left = (int)System.Windows.SystemParameters.WorkArea.Width - defaultWidth;
+            _clickSelectorWindow.Width = defaultWidth;
+            _clickSelectorWindow.Height = defaultHeight;
         }
 
         void Highlighter_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
@@ -106,6 +135,7 @@ namespace CK.Plugins.AutoClick
         public void Stop()
         {
             UnregisterHighlighterService();
+            Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
 
             _clickSelectorWindow.Close();
             _clickSelectorWindow = null;
@@ -132,9 +162,9 @@ namespace CK.Plugins.AutoClick
 
             clickToLaunch = ClicksVM.GetNextClick( true );
 
-            if( AutoClickClickTypeChosen != null && clickToLaunch != null )
+            if( ClickChosen != null && clickToLaunch != null )
             {
-                AutoClickClickTypeChosen( this, new ClickTypeEventArgs( clickToLaunch ) );
+                ClickChosen( this, new ClickTypeEventArgs( clickToLaunch ) );
             }
         }
 
@@ -145,17 +175,17 @@ namespace CK.Plugins.AutoClick
         /// <summary>
         /// Event fired when a click has been chosen
         /// </summary>
-        public event ClickTypeChosenEventHandler AutoClickClickTypeChosen;
+        public event ClickChosenEventHandler ClickChosen;
 
         /// <summary>
         /// Event fired when the AutoClickPlugin should be stopped
         /// </summary>
-        public event AutoClickStopEventHandler AutoClickStopEvent;
+        public event EventHandler StopEvent;
 
         /// <summary>
         /// Event fired when the AutoclickPlugin may go back to work
         /// </summary>
-        public event AutoClickResumeEventHandler AutoClickResumeEvent;
+        public event EventHandler ResumeEvent;
 
         #endregion
 
@@ -165,12 +195,18 @@ namespace CK.Plugins.AutoClick
 
         private void RegisterHighlighterService()
         {
-            Highlighter.Service.RegisterTree( this );
+            if( Highlighter.Status.IsStartingOrStarted )
+            {
+                Highlighter.Service.RegisterTree( this );
+            }
         }
 
         private void UnregisterHighlighterService()
         {
-            Highlighter.Service.UnregisterTree( this );
+            if( Highlighter.Status.IsStartingOrStarted )
+            {
+                Highlighter.Service.UnregisterTree( this );
+            }
         }
 
         bool _isHighlighted;
@@ -218,21 +254,27 @@ namespace CK.Plugins.AutoClick
         #endregion
 
 
-        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             IsHighlighted = true;
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
             IsHighlighted = false;
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective SelectElement()
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            scrollingDirective.NextActionType = ActionType.EnterChild;
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
         }
     }
 }

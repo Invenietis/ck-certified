@@ -41,8 +41,12 @@ namespace KeyScroller
 
             int parentId = parentSibblings.IndexOf( parent );
 
-            //Range test
-            if( parentId == parentSibblings.Count - 1 ) parentId = 0;
+            //Range test                            //When at the end of the keyboard, we get out of the keyboard
+            if( parentId == parentSibblings.Count - 1 )
+            {
+                parentId = 0;
+                GetNextElement( ActionType.UpToParent );
+            }
             else ++parentId;
 
             nextElement = parentSibblings[parentId];
@@ -60,7 +64,12 @@ namespace KeyScroller
                 case SkippingBehavior.Skip:
                     return GetNextElement( ActionType.Normal );
                 default:
-                    if( element != null && element.Children.Count > 0 ) return GetNextElement( ActionType.EnterChild );
+                    if( element != null && element.Children.Count > 0 && !element.IsHighlightableTreeRoot )
+                    {
+                        //if( element.IsHighlightableTreeRoot ) return GetNextElement( ActionType.Normal );
+                        //else 
+                        return GetNextElement( ActionType.EnterChild );
+                    }
                     return element;
             }
         }
@@ -69,7 +78,7 @@ namespace KeyScroller
         {
             if( _currentElement != null )
             {
-                FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
+                FireSelectElement();
                 //Commented because the element itself will tell the scroller where it should go from now
                 //_actionType = ActionType.UpToParent; 
             }

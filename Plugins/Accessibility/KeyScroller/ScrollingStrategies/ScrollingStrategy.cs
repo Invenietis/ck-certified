@@ -16,13 +16,14 @@ namespace KeyScroller
         ICKReadOnlyList<IHighlightableElement> _roElements;
 
         protected List<IHighlightableElement> _elements;
-        protected DispatcherTimer _timer;
         protected IPluginConfigAccessor _configuration;
-
+        protected DispatcherTimer _timer;
         protected int _currentId = -1;
+
         protected Stack<IHighlightableElement> _currentElementParents = null;
+        protected IHighlightableElement _previousElement = null;
         protected IHighlightableElement _currentElement = null;
-        protected ActionType _actionType = ActionType.EnterChild;
+        protected ScrollingDirective _lastDirective;
 
         internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
@@ -35,45 +36,9 @@ namespace KeyScroller
             _timer = timer;
             _currentElementParents = new Stack<IHighlightableElement>();
             _configuration = configuration;
-            _lastDirective = new ScrollingDirective( ActionType.EnterChild );
         }
 
         #region IScrollingStrategy Members
-
-        ScrollingDirective _lastDirective;
-        protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
-        {
-            if( _currentElement != null )
-            {
-                ScrollingDirective directive = _currentElement.SelectElement();
-                if( directive != null )
-                {
-                    _lastDirective = directive;
-                }
-                else
-                {
-                    _lastDirective = new ScrollingDirective( ActionType.Normal );
-                }
-            }
-        }
-
-        //int swallowedBeatsCount = 0;
-        protected virtual void OnInternalBeat( object sender, EventArgs e )
-        {
-            ////In case we are scrolling on the top level, we slow the scroller down by swallowing every other beat.
-            //if( _currentElementParents.Count == 0 && swallowedBeatsCount < 1 )
-            //{
-            //    swallowedBeatsCount++;
-            //    return;
-            //}
-            //swallowedBeatsCount = 0;
-
-            if( _currentElement != null ) FireEndHighlight();
-
-            // highlight the next element
-            _currentElement = GetNextElement( _actionType );
-            FireBeginHighlight();
-        }
 
         protected virtual IHighlightableElement GetUpToParent()
         {
@@ -101,7 +66,7 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetStayOnTheSame( ICKReadOnlyList<IHighlightableElement> elements )
         {
-            //Commented because only the element can get the scrolling strategy out of a "StayOnTheSame"
+            //Commented because only the element can get the scrolling strategy out of a "StayOnTheSameForever"
             //_actionType = ActionType.Normal;
 
             return elements[_currentId];
@@ -135,8 +100,8 @@ namespace KeyScroller
         protected virtual IHighlightableElement GetNextElement( ActionType actionType )
         {
             // reset the action type to normal if we are not on a StayOnTheSame
-            if( _actionType != ActionType.StayOnTheSameForever )
-                _actionType = ActionType.Normal;
+            if( actionType != ActionType.StayOnTheSameForever )
+                _lastDirective.NextActionType = ActionType.Normal;
 
             IHighlightableElement nextElement = null;
 
@@ -193,10 +158,7 @@ namespace KeyScroller
         {
             if( _timer.IsEnabled )
             {
-                if( _currentElement != null )
-                {
-                    FireEndHighlight();
-                }
+                FireEndHighlight( _currentElement, null );
                 _timer.IsEnabled = false;
             }
             _timer.Tick -= OnInternalBeat;
@@ -208,9 +170,9 @@ namespace KeyScroller
         {
             if( _timer.IsEnabled )
             {
-                if( forceEndHighlight && _currentElement != null )
+                if( forceEndHighlight )
                 {
-                    FireEndHighlight();
+                    FireEndHighlight( _currentElement, null );
                 }
                 _timer.Stop();
             }
@@ -242,21 +204,62 @@ namespace KeyScroller
 
         public abstract void OnExternalEvent();
 
-        #endregion
-
-        IHighlightableElement _previousElement;
-
-        void FireBeginHighlight()
+        int swallowedBeatsCount = 0;
+        protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            if( _currentElement != null ) _currentElement.BeginHighlight( new ScrollingInfo( _timer.Interval, _previousElement ) );
+            if( _lastDirective == null ) _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.NextTick );
+
+            //Saving the currently highlighted element
+            _previousElement = _currentElement;
+
+            //Fetching the next element
+            _currentElement = GetNextElement( _lastDirective.NextActionType );
+
+            //End highlight on the previous element (if different from the current one)
+            if( _previousElement != null )
+                FireEndHighlight( _previousElement, _currentElement );
+
+            //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
+            if( _currentElement != null )
+                FireBeginHighlight();
         }
 
-        void FireEndHighlight()
+        /// <summary>
+        /// Calls the SelectElement method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to SelectElement.
+        /// </summary>
+        protected void FireSelectElement()
         {
-            if( _currentElement != null ) _currentElement.EndHighlight( new ScrollingInfo( _timer.Interval, _previousElement ) );
+            if( _currentElement != null )
+            {
+                _lastDirective = _currentElement.SelectElement( _lastDirective );
+            }
+        }
 
-            _previousElement = _currentElement;
-            _currentElement = null;
+        #endregion
+
+        /// <summary>
+        /// Calls the BeginHighlight method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to BeginHighlight.
+        /// </summary>
+        void FireBeginHighlight()
+        {
+            if( _currentElement != null )
+            {
+                _lastDirective = _currentElement.BeginHighlight( new BeginScrollingInfo( _timer.Interval, _previousElement ), _lastDirective );
+            }
+        }
+
+        /// <summary>
+        /// Calls the EndHighlight method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to EndHighlight.
+        /// </summary>
+        void FireEndHighlight( IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        {
+            if( previouslyHighlightedElement != null )
+            {
+                _lastDirective = previouslyHighlightedElement.EndHighlight( new EndScrollingInfo( _timer.Interval, previouslyHighlightedElement, elementToBeHighlighted ), _lastDirective );
+            }
         }
 
         #region IScrollingStrategy Members
@@ -271,7 +274,7 @@ namespace KeyScroller
             if( _currentElementParents.Contains( unregisteredElement ) )
             {
                 //The unregistered element is one of the parents of the current element, so we need to stop iterating on this element and start on the next one.
-                if( _currentElement != null ) FireEndHighlight();
+                FireEndHighlight( _currentElement, null );
 
                 //We flush the parent list. When we call the next element, we'll be on the next registered tree
                 _currentElementParents = new Stack<IHighlightableElement>();

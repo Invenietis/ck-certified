@@ -189,7 +189,6 @@ namespace SimpleSkinEditor
         {
             if( close && !Stopping )
             {
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( SimpleSkinEditor.PluginIdString ), ConfigUserAction.Stopped );
                 Context.GetService<ISimplePluginRunner>( true ).Apply();
             }
             base.OnDeactivate( close );

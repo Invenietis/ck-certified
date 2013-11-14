@@ -713,19 +713,19 @@ namespace SimpleSkin.ViewModels
         }
 
 
-        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             IsHighlighting = true;
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
             IsHighlighting = false;
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective SelectElement()
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
             if( KeyDownCommand.CanExecute( null ) )
             {
@@ -736,7 +736,14 @@ namespace SimpleSkin.ViewModels
                 }
             }
 
-            return new ScrollingDirective( ActionType.RelativeRoot );
+            scrollingDirective.NextActionType = ActionType.StayOnTheSameOnce;
+            return scrollingDirective;
+        }
+
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
         }
     }
 }

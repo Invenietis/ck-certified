@@ -33,13 +33,12 @@ namespace KeyScroller
         {
             if( _currentElement != null )
             {
-                if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
+                if( _currentElement.Children.Count > 0 ) _lastDirective.NextActionType = ActionType.EnterChild;
                 else
                 {
-                    //FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                    _actionType = ActionType.StayOnTheSameOnce;
+                    _lastDirective.NextActionType = ActionType.StayOnTheSameOnce;
                 }
-                FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
+                FireSelectElement();
             }
         }
     }

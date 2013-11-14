@@ -221,23 +221,29 @@ namespace CK.Plugins.AutoClick.ViewModel
         }
 
 
-        public ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             IsHighlighted = true;
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo )
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
             IsHighlighted = false;
-            return null;
+            return scrollingDirective;
         }
 
-        public ScrollingDirective SelectElement()
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
             DoSelect();
             //TODO : DoClick;
-            return new ScrollingDirective( ActionType.AbsoluteRoot );
+
+            scrollingDirective.NextActionType = ActionType.AbsoluteRoot;
+            return scrollingDirective;
+        }
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
         }
     }
 

@@ -18,6 +18,7 @@ namespace MouseRadar
         SolidColorBrush _arrowColor;
         int _radarSize;
         float _opacity;
+        public float StartingAngle { get; set; }
         public float AngleMin { get; set; }
         public float AngleMax { get; set; }
         public Point ScreenScale { get; set; }
@@ -112,7 +113,7 @@ namespace MouseRadar
                     if( value >= AngleMax && value <= AngleMin )
                     {
                         _angle = value - AngleMax + AngleMin;
-                        LapCount++;
+                        //LapCount++;
                     }
                     else if( value >= 360 ) _angle = value - 360; //When angle > 360 restart to 0
                     else _angle = value;
@@ -123,15 +124,17 @@ namespace MouseRadar
                     if( value >= AngleMax )
                     {
                         _angle = value - AngleMax + AngleMin;
-                        LapCount++;
+                        //LapCount++;
                     }
                     else if( value < AngleMin )
                     {
                         _angle = value + AngleMax;//Jump to AngleMax when Angle < AngleMin
-                        LapCount++;
+                        //LapCount++;
                     }
                     else _angle = value;
                 }
+
+                if( _angle == StartingAngle ) { LapCount++; Console.Out.WriteLine( "Lap++, new value : " + LapCount );}
                 
                 FirePropertyChanged( "Angle" );
             }

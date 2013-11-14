@@ -42,21 +42,26 @@ namespace HighlightModel
         /// <summary>
         /// Called by the <see cref="KeyScroller"/> when the element is being scrolled on
         /// </summary>
-        /// <param name="scrollingInfo">Gets information about the scroller configuration & state</param>
+        /// <param name="beginScrollingInfo">Gets information about the scroller configuration & state</param>
         /// <returns>Directives used to choose the next element (return null if you don't want to change the default behavior)</returns>
-        ScrollingDirective BeginHighlight( ScrollingInfo scrollingInfo );
+        ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective );
 
         /// <summary>
         /// Called by the <see cref="KeyScroller"/> when the element is not being scrolled on anymore
         /// </summary>
-        /// <param name="scrollingInfo">Gets information about the scroller configuration & state</param>
+        /// <param name="endScrollingInfo">Gets information about the scroller configuration & state</param>
         /// <returns>Directives used to choose the next element (return null if you don't want to change the default behavior)</returns>
-        ScrollingDirective EndHighlight( ScrollingInfo scrollingInfo );
+        ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective );
         /// <summary>
         /// Called by the <see cref="KeyScroller"/> when the element was being scrolled on when the triggering input was pressed
         /// </summary>
         /// <returns>Directives used to choose the next element (return null if you don't want to change the default behavior)</returns>
-        ScrollingDirective SelectElement();
+        ScrollingDirective SelectElement( ScrollingDirective scrollingDirective );
+
+        /// <summary>
+        /// Gets whether this element is the root of its tree
+        /// </summary>
+        bool IsHighlightableTreeRoot { get; }
     }
 
     /// <summary>
@@ -64,7 +69,7 @@ namespace HighlightModel
     /// </summary>
     public class ScrollingDirective
     {
-        public ScrollingDirective(ActionType nextActionType, ActionTime actionTime = HighlightModel.ActionTime.NextTick)
+        public ScrollingDirective( ActionType nextActionType, ActionTime actionTime = HighlightModel.ActionTime.NextTick )
         {
             NextActionType = nextActionType;
             ActionTime = actionTime;
@@ -78,9 +83,9 @@ namespace HighlightModel
     /// Information about the scrolling device's configuration & state.
     /// Contains the time interval between two scrolling beats and the element that was previously scrolled on
     /// </summary> 
-    public class ScrollingInfo
+    public class BeginScrollingInfo
     {
-        public ScrollingInfo( TimeSpan tickInterval, IHighlightableElement previousElement )
+        public BeginScrollingInfo( TimeSpan tickInterval, IHighlightableElement previousElement )
         {
             TickInterval = tickInterval;
             PreviousElement = previousElement;
@@ -88,6 +93,20 @@ namespace HighlightModel
 
         public TimeSpan TickInterval { get; private set; }
         public IHighlightableElement PreviousElement { get; private set; }
+    }
+
+    public class EndScrollingInfo
+    {
+        public EndScrollingInfo( TimeSpan tickInterval, IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        {
+            TickInterval = tickInterval;
+            PreviouslyHighlightedElement = previouslyHighlightedElement;
+            ElementToBeHighlighted = elementToBeHighlighted;
+        }
+
+        public TimeSpan TickInterval { get; private set; }
+        public IHighlightableElement PreviouslyHighlightedElement { get; private set; }
+        public IHighlightableElement ElementToBeHighlighted { get; private set; }
     }
 
 

@@ -20,7 +20,7 @@ namespace KeyScroller
         }
 
         public StateStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
-            : base( timer , elements, configuration )
+            : base( timer, elements, configuration )
         {
         }
 
@@ -28,10 +28,10 @@ namespace KeyScroller
         {
             if( _currentElement != null )
             {
-                FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.EnterChild;
+                FireSelectElement();
+                _lastDirective.NextActionType = ActionType.EnterChild;
             }
-            
+
         }
 
 
@@ -48,7 +48,7 @@ namespace KeyScroller
                 actionType = e.ActionType;
             }
 
-            _actionType = ActionType.Normal;
+            _lastDirective.NextActionType = ActionType.Normal;
 
             IHighlightableElement nextElement = null;
 

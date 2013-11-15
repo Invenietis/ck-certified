@@ -150,7 +150,7 @@ namespace HighlightModel
         /// <summary>
         /// Stay on the current element until the element says otherwise
         /// </summary>
-        StayOnTheSameForever = 4,
+        StayOnTheSameLocked = 4,
         /// <summary>
         /// Go up to the root of the tree containing the element, and start iterating on its first child
         /// </summary>

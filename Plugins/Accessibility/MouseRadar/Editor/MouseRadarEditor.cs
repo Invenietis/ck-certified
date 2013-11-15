@@ -23,7 +23,7 @@ namespace MouseRadar.Editor
         const string PluginPublicName = "Radar Editor";
 
         EditorViewModel _editor;
-        [ConfigurationAccessor( MouseRadar.PluginIdString )]
+        [ConfigurationAccessor( MouseRadarPlugin.PluginIdString )]
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

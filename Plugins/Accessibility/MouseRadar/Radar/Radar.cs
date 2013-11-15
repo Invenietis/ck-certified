@@ -9,91 +9,168 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using CommonServices;
 using System.Drawing.Drawing2D;
+using HighlightModel;
+using System.Diagnostics;
 namespace MouseRadar
 {
+    public enum RadarStep
+    {
+        Paused = 0,
+        Rotating = 1,
+        Translating = 2
+    }
+
     public partial class Radar : IDisposable
     {
         IPointerDeviceDriver _mouseDriver;
+        //int _translationDirection = 1;
+        //int _rotationDirection = 1;
         int _originX;
         int _originY;
-        int _translationDirection = 1;
-        int _rotationDirection = 1;
         int _rayon;
 
         ScreenBound _previousCollision = ScreenBound.None;
         DispatcherTimer _timerRotate;
         DispatcherTimer _timerTranslate;
-        public event EventHandler<ScreenBoundCollideEventArgs> ScreenBoundCollide;
-        public double Radian { get; private set; }
-        public int RotationSpeed { get; set; }
-        public int TranslationSpeed { get; set; }
+        internal double Radian { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the number of ticks required to move the mouse to a total of 300 pixels
+        /// </summary>
+        internal int TranslationSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of ticks required to turn full circle
+        /// </summary>
+        internal int RotationSpeed { get; set; }
+
         public bool SnakeMode { get; set; }
+        internal RadarStep CurrentStep { get; private set; }
 
-        public RadarViewModel Model { get; private set; }
+        internal RadarViewModel ViewModel { get; private set; }
 
-        public Radar( IPointerDeviceDriver pdd )
+        internal Radar( IPointerDeviceDriver pdd )
             : this()
         {
-            Model = new RadarViewModel();
-            Model.SetCircleColor( Color.FromRgb( 0, 0, 0 ) );
-            Model.SetArrowColor( Color.FromRgb( 0, 0, 0 ) );
-            Model.Opacity = 1;
-            Model.RadarSize = 100;
+            ViewModel = new RadarViewModel();
+            ViewModel.SetCircleColor( Color.FromRgb( 0, 0, 0 ) );
+            ViewModel.SetArrowColor( Color.FromRgb( 0, 0, 0 ) );
+            ViewModel.Opacity = 1;
+            ViewModel.RadarSize = 100;
             SnakeMode = false;
-            DataContext = Model;
+            DataContext = ViewModel;
             _mouseDriver = pdd;
-            Left = pdd.CurrentPointerXLocation - Model.WindowSize / 2;
-            Top = pdd.CurrentPointerYLocation - Model.WindowSize / 2;
+            Left = pdd.CurrentPointerXLocation - ViewModel.WindowSize / 2;
+            Top = pdd.CurrentPointerYLocation - ViewModel.WindowSize / 2;
             RotationSpeed = 1;
             TranslationSpeed = 1;
 
+            CurrentStep = RadarStep.Paused;
+
             _timerRotate = new DispatcherTimer( DispatcherPriority.Send );
-            _timerRotate.Interval = new TimeSpan( 10000 * 17 );  //60 fps
-            _timerRotate.Tick += ( o, e ) =>
-            {
-                Model.Angle += (float)RotationSpeed / 1f;
-            };
+            _timerRotate.Interval = new TimeSpan( 10000 * 17 );  //60 fps -> 60° per second
 
             _timerTranslate = new DispatcherTimer( DispatcherPriority.Send );
-            _timerTranslate.Interval = new TimeSpan( 10000 * 17 ); //60 fps
-            _timerTranslate.Tick += ProcessTranslation;
+            _timerTranslate.Interval = new TimeSpan( 10000 * 17 ); //60 fps -> 60px per second  
 
             _mouseDriver.PointerMove += OnMouseLocationChanged;
-            Model.PropertyChanged += ( o, e ) =>
+            ViewModel.PropertyChanged += ( o, e ) =>
             {
                 if( e.PropertyName == "WindowSize" )
                 {
-                    Width = Model.WindowSize;
-                    Height = Model.WindowSize;
+                    Width = ViewModel.WindowSize;
+                    Height = ViewModel.WindowSize;
                 }
             };
         }
 
-
-        public void Launch()
+        internal void Initialize()
         {
             PresentationSource source = PresentationSource.FromVisual( this );
-            Model.ScreenScale = new Point( source.CompositionTarget.TransformToDevice.M11, source.CompositionTarget.TransformToDevice.M22 );
-            StartRotation();
+            ViewModel.ScreenScale = new Point( source.CompositionTarget.TransformToDevice.M11, source.CompositionTarget.TransformToDevice.M22 );
+            StartRotation(); //Do we really need to start the rotation if we're goind to Pause right after ? (see MouseRadar.cs)
             UpdateLocation( _mouseDriver.CurrentPointerXLocation, _mouseDriver.CurrentPointerYLocation );
         }
 
-        private ScreenBound CheckBoundCollision( Point p, int precision = 0 )
+        internal void Tick( BeginScrollingInfo scrollingInfo )
         {
-            Screen current = Screen.FromPoint( new System.Drawing.Point( (int)p.X, (int)p.Y ) );
-
-            ScreenBound collision = ScreenBound.None;
-            if( p.X - precision <= current.Bounds.Left ) collision = ScreenBound.Left;
-            if( p.X + precision >= current.Bounds.Right - 1 ) //X can't be equal to current.Bounds.Right (current.Bounds.Right - 1 max)
-                collision = ScreenBound.Right;
-            if( p.Y - precision <= current.Bounds.Top ) collision = ScreenBound.Top;
-            if( p.Y + precision >= current.Bounds.Bottom - 1 )
-                collision = ScreenBound.Bottom; //Y can't be equal to current.Bounds.Bottom (current.Bounds.Bottom - 1 max)
-            //Console.WriteLine( "Colision: " + collision );
-            return collision;
+            if( CurrentStep == RadarStep.Rotating )
+            {
+                ProcessRotation();
+            }
+            else if( CurrentStep == RadarStep.Translating )
+            {
+                ProcessTranslation();
+            }
         }
 
-        void ProcessTranslation( object sender, EventArgs e )
+        internal void Pause()
+        {
+            CurrentStep = RadarStep.Paused;
+            ViewModel.LapCount = 0;
+        }
+
+        internal RadarStep ToNextStep()
+        {
+            if( CurrentStep == RadarStep.Paused )
+            {
+                StartRotation();
+            }
+            else if( CurrentStep == RadarStep.Rotating )
+            {
+                StopRotation();
+                StartTranslation();
+            }
+            else if(CurrentStep == RadarStep.Translating)
+            {
+                StopTranslation();
+                StartRotation();
+            }
+
+            //Each time the input is triggered, we reset the lapcount and the starting angle of the lap count. (thanks to that, we release the scroller in an homogenous way : X laps after the last call to SelectElement)
+            ViewModel.LapCount = 0;
+            ViewModel.StartingAngle = ViewModel.Angle;
+
+            return CurrentStep;
+        }
+
+        #region Rotation
+
+        void StartRotation()
+        {
+            CurrentStep = RadarStep.Rotating;
+        }
+
+        void StopRotation()
+        {
+
+        }
+
+        void ProcessRotation()
+        {
+            ViewModel.Angle += (float)RotationSpeed / 1f;
+        }
+
+        #endregion
+
+        #region Translation
+
+        void StartTranslation()
+        {
+            _originX = _mouseDriver.CurrentPointerXLocation;
+            _originY = _mouseDriver.CurrentPointerYLocation;
+            Radian = ViewModel.Angle / 180 * Math.PI;
+            _rayon = 0;
+
+            CurrentStep = RadarStep.Translating;
+        }
+
+        void StopTranslation()
+        {
+
+        }
+
+        void ProcessTranslation()
         {
             int moveX = _mouseDriver.CurrentPointerXLocation;
             int moveY = _mouseDriver.CurrentPointerYLocation;
@@ -185,39 +262,20 @@ namespace MouseRadar
                     break;
             }
 
-            if( collision != ScreenBound.None ) FireScreenBoundCollide( collision );
+            if( collision != ScreenBound.None ) ScreenBoundCollide( collision );
             _mouseDriver.MovePointer( moveX, moveY );
         }
 
-        public void StartRotation()
+        Point GetTranslation( int x, int y )
         {
-            _timerRotate.Start();
-        }
-        public bool IsTranslating()
-        {
-            return _timerTranslate.IsEnabled;
-        }
-        public void StopRotation()
-        {
-            _timerRotate.Stop();
+            double rad = ViewModel.Angle / 180 * Math.PI;
+            _rayon += TranslationSpeed;
+            return new Point( _originX + _rayon * Math.Cos( rad ), _originY + _rayon * Math.Sin( rad ) );
         }
 
-        public void StartTranslation()
-        {
-            _originX = _mouseDriver.CurrentPointerXLocation;
-            _originY = _mouseDriver.CurrentPointerYLocation;
-            Radian = Model.Angle / 180 * Math.PI;
-            _rayon = 0;
+        #endregion
 
-            _timerRotate.Stop();
-            _timerTranslate.Start();
-        }
-
-        public void StopTranslation( bool startRotation = true )
-        {
-            _timerTranslate.Stop();
-            if( startRotation ) _timerRotate.Start();
-        }
+        #region Collisions
 
         void OnMouseLocationChanged( object sender, PointerDeviceEventArgs e )
         {
@@ -226,39 +284,73 @@ namespace MouseRadar
 
         public void UpdateLocation( int x, int y )
         {
-            Left = ( x / Model.ScreenScale.X ) - ( Model.WindowSize / 2 );
-            Top = ( y / Model.ScreenScale.Y ) - ( Model.WindowSize / 2 );
+            Left = ( x / ViewModel.ScreenScale.X ) - ( ViewModel.WindowSize / 2 );
+            Top = ( y / ViewModel.ScreenScale.Y ) - ( ViewModel.WindowSize / 2 );
 
             if( _previousCollision != ScreenBound.None && CheckBoundCollision( new Point( x, y ) ) == ScreenBound.None )
-                FireScreenBoundCollide( ScreenBound.None );
+                ScreenBoundCollide( ScreenBound.None );
         }
 
-        Point GetTranslation( int x, int y )
+        ScreenBound CheckBoundCollision( Point p, int precision = 0 )
         {
+            Screen current = Screen.FromPoint( new System.Drawing.Point( (int)p.X, (int)p.Y ) );
 
-            double rad = Model.Angle / 180 * Math.PI;
-            _rayon += TranslationSpeed;
-            return new Point( _originX + _rayon * Math.Cos( rad ), _originY + _rayon * Math.Sin( rad ) );
+            ScreenBound collision = ScreenBound.None;
+            if( p.X - precision <= current.Bounds.Left ) collision = ScreenBound.Left;
+            if( p.X + precision >= current.Bounds.Right - 1 ) //X can't be equal to current.Bounds.Right (current.Bounds.Right - 1 max)
+                collision = ScreenBound.Right;
+            if( p.Y - precision <= current.Bounds.Top ) collision = ScreenBound.Top;
+            if( p.Y + precision >= current.Bounds.Bottom - 1 )
+                collision = ScreenBound.Bottom; //Y can't be equal to current.Bounds.Bottom (current.Bounds.Bottom - 1 max)
+            return collision;
         }
 
-        void FireScreenBoundCollide( ScreenBound bound )
+        void ScreenBoundCollide( ScreenBound bound )
         {
             _previousCollision = bound;
-            if( ScreenBoundCollide != null )
-                ScreenBoundCollide( this, new ScreenBoundCollideEventArgs( bound ) );
+
+            switch( bound )
+            {
+                case ScreenBound.Left:
+                    ViewModel.AngleMin = 270;
+                    ViewModel.AngleMax = 90;
+                    break;
+                case ScreenBound.Top:
+                    ViewModel.AngleMin = 0;
+                    ViewModel.AngleMax = 180;
+                    break;
+                case ScreenBound.Right:
+                    ViewModel.AngleMin = 90;
+                    ViewModel.AngleMax = 270;
+                    break;
+                case ScreenBound.Bottom:
+                    ViewModel.AngleMin = 180;
+                    ViewModel.AngleMax = 360;
+                    break;
+                default:
+                    ViewModel.AngleMin = 0;
+                    ViewModel.AngleMax = 360;
+                    break;
+            }
+
+            if( bound != ScreenBound.None )
+            {
+                StopTranslation();
+                StartRotation();
+            }
         }
 
-        #region IDisposable Members
+        #endregion
 
         public void Dispose()
         {
             _timerRotate.Stop();
             _timerTranslate.Stop();
+            
             _mouseDriver.PointerMove -= OnMouseLocationChanged;
             this.Close();
         }
 
-        #endregion
     }
 
     public enum ScreenBound
@@ -270,13 +362,4 @@ namespace MouseRadar
         Bottom
     }
 
-    public class ScreenBoundCollideEventArgs : EventArgs
-    {
-        public ScreenBound ScreenBound { get; private set; }
-
-        public ScreenBoundCollideEventArgs( ScreenBound b )
-        {
-            ScreenBound = b;
-        }
-    }
 }

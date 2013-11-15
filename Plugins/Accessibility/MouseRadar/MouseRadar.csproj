@@ -100,7 +100,7 @@
     </Compile>
     <Compile Include="Editor\EditorViewModel.cs" />
     <Compile Include="Editor\MouseRadarEditor.cs" />
-    <Compile Include="MouseRadar.cs" />
+    <Compile Include="MouseRadarPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Radar\Radar.xaml.cs">
       <DependentUpon>Radar.xaml</DependentUpon>

@@ -22,7 +22,7 @@ namespace MouseRadar
         public float AngleMin { get; set; }
         public float AngleMax { get; set; }
         public Point ScreenScale { get; set; }
-        public int LapCount { get; set; }
+        public int LapCount { get; internal set; }
 
         public RadarViewModel()
         {
@@ -31,7 +31,7 @@ namespace MouseRadar
             AngleMax = 360;
             ScreenScale = new Point();
         }
-        
+
         public float Opacity
         {
             get { return _opacity; }
@@ -73,7 +73,7 @@ namespace MouseRadar
 
         public int RotationOriginX
         {
-            get { return -  RadarSize / 2 + ARROW_LENGTH / 2; }
+            get { return -RadarSize / 2 + ARROW_LENGTH / 2; }
         }
 
         public int RotationOriginY
@@ -113,7 +113,6 @@ namespace MouseRadar
                     if( value >= AngleMax && value <= AngleMin )
                     {
                         _angle = value - AngleMax + AngleMin;
-                        //LapCount++;
                     }
                     else if( value >= 360 ) _angle = value - 360; //When angle > 360 restart to 0
                     else _angle = value;
@@ -124,30 +123,28 @@ namespace MouseRadar
                     if( value >= AngleMax )
                     {
                         _angle = value - AngleMax + AngleMin;
-                        //LapCount++;
                     }
                     else if( value < AngleMin )
                     {
                         _angle = value + AngleMax;//Jump to AngleMax when Angle < AngleMin
-                        //LapCount++;
                     }
                     else _angle = value;
                 }
 
-                if( _angle == StartingAngle ) { LapCount++; Console.Out.WriteLine( "Lap++, new value : " + LapCount );}
-                
+                if( _angle == StartingAngle ) { LapCount++; Console.Out.WriteLine( "Lap++, new value : " + LapCount ); }
+
                 FirePropertyChanged( "Angle" );
             }
         }
 
         public void SetCircleColor( Color c )
         {
-            CircleColor = new SolidColorBrush( c ); //Color.FromArgb( a, r, g, b ) );
+            CircleColor = new SolidColorBrush( c );
         }
 
         public void SetArrowColor( Color c )
         {
-            ArrowColor = new SolidColorBrush(c); //Color.FromArgb( a, r, g, b ) );
+            ArrowColor = new SolidColorBrush( c );
         }
 
         #region INotifyPropertyChanged Members

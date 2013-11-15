@@ -105,7 +105,7 @@ namespace KeyScroller
         protected override IHighlightableElement GetNextElement( ActionType actionType )
         {
             // reset the action type to normal
-            if( actionType != ActionType.StayOnTheSameForever )
+            if( actionType != ActionType.StayOnTheSameLocked )
                 _lastDirective.NextActionType = ActionType.Normal;
 
             if( actionType == ActionType.AbsoluteRoot )
@@ -127,7 +127,7 @@ namespace KeyScroller
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 
-                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameForever )
+                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
                 {
                     _nextElement = GetStayOnTheSame( elements );
                 }

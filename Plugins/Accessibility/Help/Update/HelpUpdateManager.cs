@@ -20,7 +20,7 @@ using Ionic.Zip;
 namespace Help.UpdateManager
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class HelpUpdateManager : IPlugin
+    public class HelpUpdateManager : IPlugin, IHelpUpdaterService
     {
         const string PluginGuidString = "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}";
         Guid PluginGuid = new Guid( PluginGuidString );

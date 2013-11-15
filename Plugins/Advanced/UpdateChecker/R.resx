@@ -124,8 +124,7 @@
     <value>Ok</value>
   </data>
   <data name="UpdateAvailableContent" xml:space="preserve">
-    <value>An update is available (version {0}).
-Would you like to download it ?</value>
+    <value>An update is available (version {0}). Would you like to download it ?</value>
   </data>
   <data name="UpdateAvailableTitle" xml:space="preserve">
     <value>Update available</value>

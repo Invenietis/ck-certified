@@ -1,0 +1,27 @@
+﻿<Window x:Class="UpdateChecker.View.NewerVersionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:r="clr-namespace:UpdateChecker.View"
+        SizeToContent="Height"     
+        MaxHeight="500"
+        MinWidth="300" 
+        Width="400"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=r:NewerVersionViewModel}">
+    <DockPanel Margin="10">
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True" >
+            <Image DockPanel.Dock="Left" Source="Resources/download.png" Width="48" VerticalAlignment="Top"/>
+            <TextBlock Text="{Binding Header}" TextWrapping="WrapWithOverflow" Margin="10 0 0 0" VerticalAlignment="Center" FontSize="15"/>
+        </DockPanel>
+        <DockPanel Margin="0 10 0 0" DockPanel.Dock="Bottom" LastChildFill="False">
+            <Button Padding="5" Margin="10 0 0 0" Content="{Binding No}" Command="{Binding CancelCommand}" DockPanel.Dock="Right"/>
+            <Button Padding="5" Content="{Binding Yes}" DockPanel.Dock="Right" Command="{Binding OkCommand}"/>
+        </DockPanel>
+        <Label Margin="0 10 0 0" DockPanel.Dock="Top" FontSize="15" BorderBrush="LightGray" FontStyle="Italic" BorderThickness="0 0 0 1" Visibility="{Binding BrowserVisibility}" Content="Release notes"/>
+        <ScrollViewer Margin="6 0 0 0" DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto" Visibility="{Binding BrowserVisibility}">
+            <WebBrowser x:Name="_browser" MinHeight="0" />
+        </ScrollViewer>
+    </DockPanel>
+</Window>

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IHaveDefaultHelp.cs" />
+    <Compile Include="IHelpUpdaterService.cs" />
     <Compile Include="IHelpViewerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

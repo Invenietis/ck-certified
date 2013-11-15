@@ -43,6 +43,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using CK.Context.SemVer;
 using Common.Logging;
+using UpdateChecker.View;
 
 namespace UpdateChecker
 {
@@ -216,7 +217,7 @@ namespace UpdateChecker
                 {
                     if( _versionState == UpdateVersionState.CheckingForNewVersion )
                     {
-                        if(  e.Error != null )
+                        if( e.Error != null )
                         {
                             _log.Error( "Error while checking version", e.Error );
                             VersionState = UpdateVersionState.ErrorWhileCheckingVersion;
@@ -324,18 +325,18 @@ namespace UpdateChecker
 
         void OnNewerVersionAvailable( string releaseNotes )
         {
-            //ModalViewModel mvm = new ModalViewModel( R.UpdateAvailableTitle, String.Format( R.UpdateAvailableContent, NewVersion.ToString() ) );
-            ModalViewModel mvm = new ModalViewModel( R.UpdateAvailableTitle, releaseNotes );
-            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
-            mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-
-            CustomMsgBox msg = new CustomMsgBox( ref mvm );
-            msg.ShowDialog();
-
-            if( mvm.ModalResult == ModalResult.Yes )
+            var wnd = new NewerVersionView();
+            var vm = new NewerVersionViewModel( releaseNotes, NewVersion.ToString(), r =>
             {
+                wnd.DialogResult = r;
+                wnd.Close();
+            }, s => wnd.SetBrowserContent( s ) );
+
+            wnd.DataContext = vm;
+
+            bool? shouldStartDownload = wnd.ShowDialog();
+            if( shouldStartDownload.HasValue && shouldStartDownload.Value )
                 StartDownload();
-            }
         }
 
         void OnNewerVersionDownloaded()

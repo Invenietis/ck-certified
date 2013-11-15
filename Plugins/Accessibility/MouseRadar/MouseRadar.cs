@@ -37,9 +37,6 @@ namespace MouseRadar
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<ITriggerService> ExternalInput { get; set; }
-
         [ConfigurationAccessor( MouseRadar.PluginIdString )]
         public IPluginConfigAccessor Configuration { get; set; }
 
@@ -232,6 +229,7 @@ namespace MouseRadar
             {
                 //Once arrived at the end of the last lap, we release the scroller.
                 scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
+                scrollingDirective.ActionTime = ActionTime.Immediate;
             }
 
             return scrollingDirective;
@@ -263,6 +261,7 @@ namespace MouseRadar
             _radar.Model.LapCount = 0;
             _radar.Model.StartingAngle = _radar.Model.Angle;
 
+            scrollingDirective.ActionTime = ActionTime.Immediate;
             return scrollingDirective;
         }
 

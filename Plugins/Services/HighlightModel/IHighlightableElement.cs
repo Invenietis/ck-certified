@@ -75,7 +75,7 @@ namespace HighlightModel
             ActionTime = actionTime;
         }
 
-        public ActionTime ActionTime { get; private set; }
+        public ActionTime ActionTime { get; set; }
         public ActionType NextActionType { get; set; }
     }
 

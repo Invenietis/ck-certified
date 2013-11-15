@@ -122,7 +122,6 @@
     <Compile Include="ScrollingStrategies\ScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\SimpleScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\SplitScrollingStrategy.cs" />
-    <Compile Include="ScrollingStrategies\StateStrategy.cs" />
     <Compile Include="ScrollingStrategies\StrategyAttribute.cs" />
     <Compile Include="ScrollingStrategies\TurboScrollingStrategy.cs" />
   </ItemGroup>

@@ -38,8 +38,6 @@ namespace KeyScroller
             _configuration = configuration;
         }
 
-        #region IScrollingStrategy Members
-
         /// <summary>
         /// Goes up in the tree and returns the root of the first registered tree
         /// </summary>
@@ -51,7 +49,6 @@ namespace KeyScroller
 
             return RegisteredElements.FirstOrDefault();
         }
-
         
         /// <summary>
         /// Goes up in the tree and returns the first child of the relative root of the current element's tree 
@@ -245,10 +242,11 @@ namespace KeyScroller
 
         public abstract void OnExternalEvent();
 
-        int swallowedBeatsCount = 0;
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
             if( _lastDirective == null ) _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.NextTick );
+
+            //Console.Out.WriteLine( "BEAT ! Date : " + DateTime.UtcNow.Second );
 
             //Saving the currently highlighted element
             _previousElement = _currentElement;
@@ -274,36 +272,27 @@ namespace KeyScroller
             if( _currentElement != null )
             {
                 _lastDirective = _currentElement.SelectElement( _lastDirective );
-            }
-        }
 
-        #endregion
-
-        /// <summary>
-        /// Calls the BeginHighlight method of the current IHighlightableElement
-        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to BeginHighlight.
-        /// </summary>
-        void FireBeginHighlight()
-        {
-            if( _currentElement != null )
-            {
-                _lastDirective = _currentElement.BeginHighlight( new BeginScrollingInfo( _timer.Interval, _previousElement ), _lastDirective );
+                EnsureReactivity();
             }
         }
 
         /// <summary>
-        /// Calls the EndHighlight method of the current IHighlightableElement
-        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to EndHighlight.
+        /// if the directive is to react instantly, we stop the timer, simulate a tick, and relaunch the timer.
         /// </summary>
-        void FireEndHighlight( IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        private void EnsureReactivity()
         {
-            if( previouslyHighlightedElement != null )
+            if( _lastDirective != null && _lastDirective.ActionTime == ActionTime.Immediate )
             {
-                _lastDirective = previouslyHighlightedElement.EndHighlight( new EndScrollingInfo( _timer.Interval, previouslyHighlightedElement, elementToBeHighlighted ), _lastDirective );
+                //Setting the ActionTime back to NextTick. Immediate has to be set explicitely at each step;
+                _lastDirective.ActionTime = ActionTime.NextTick;
+
+                _timer.Stop();
+                OnInternalBeat( this, EventArgs.Empty );
+                //Console.Out.WriteLine( "Immediate !" );
+                _timer.Start();
             }
         }
-
-        #region IScrollingStrategy Members
 
         public abstract string Name
         {
@@ -323,6 +312,30 @@ namespace KeyScroller
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Calls the BeginHighlight method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to BeginHighlight.
+        /// </summary>
+        void FireBeginHighlight()
+        {
+            if( _currentElement != null )
+            {
+                _lastDirective = _currentElement.BeginHighlight( new BeginScrollingInfo( _timer.Interval, _previousElement ), _lastDirective );
+                EnsureReactivity();
+            }
+        }
+
+        /// <summary>
+        /// Calls the EndHighlight method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to EndHighlight.
+        /// </summary>
+        void FireEndHighlight( IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        {
+            if( previouslyHighlightedElement != null )
+            {
+                _lastDirective = previouslyHighlightedElement.EndHighlight( new EndScrollingInfo( _timer.Interval, previouslyHighlightedElement, elementToBeHighlighted ), _lastDirective );
+                EnsureReactivity();
+            }
+        }
     }
 }

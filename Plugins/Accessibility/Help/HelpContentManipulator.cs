@@ -86,10 +86,16 @@ namespace Help
             }
         }
 
-        public void InstallDownloadedHelpContent( IVersionedUniqueId plugin, Func<Stream> contentAccessor, string culture )
+        public void InstallDownloadedHelpContent( IVersionedUniqueId plugin, Func<Stream> contentAccessor, string culture, bool clean = false )
         {
-            string pluginHelpDirectoryPath = GetBaseHelpDirectoryForPlugin( plugin, culture );
-            UnzipAndExtractStream( contentAccessor(), pluginHelpDirectoryPath, "content" );
+            DirectoryInfo pluginHelpDirectory = new DirectoryInfo( GetBaseHelpDirectoryForPlugin( plugin, culture ) );
+            if( clean && pluginHelpDirectory.Parent.Exists )
+            {
+                pluginHelpDirectory.Parent.Delete( true );
+                pluginHelpDirectory.Create();
+            }
+
+            UnzipAndExtractStream( contentAccessor(), pluginHelpDirectory.FullName, "content" );
         }
 
         #endregion

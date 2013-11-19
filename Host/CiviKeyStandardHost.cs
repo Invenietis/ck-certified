@@ -39,6 +39,7 @@ using System.ComponentModel;
 using CK.Plugin.Config;
 using Common.Logging;
 using CK.Context.SemVer;
+using Help.Services;
 
 namespace Host
 {
@@ -104,9 +105,12 @@ namespace Host
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
-            
+
             hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
             hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+
+            // Because the ServiceRequirements are buggy
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
 
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SindInput
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
@@ -303,11 +307,11 @@ namespace Host
 
         public event EventHandler<EventArgs> ShowHostHelp;
 
-        public IVersionedUniqueId FakeHostHelpId
+        public INamedVersionedUniqueId FakeHostHelpId
         {
             get
             {
-                return new SimpleVersionedUniqueId( Guid.Empty, new Version( AppVersion.Major, AppVersion.Minor, AppVersion.Patch ) );
+                return new SimpleNamedVersionedUniqueId( Guid.Empty, new Version( AppVersion.Major, AppVersion.Minor, AppVersion.Patch ), "Application" );
             }
         }
 

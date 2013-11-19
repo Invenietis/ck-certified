@@ -34,7 +34,7 @@ namespace Host.Services
     {
         event EventHandler<EventArgs> ShowHostHelp;
 
-        IVersionedUniqueId FakeHostHelpId { get; }
+        INamedVersionedUniqueId FakeHostHelpId { get; }
     }
     
 }

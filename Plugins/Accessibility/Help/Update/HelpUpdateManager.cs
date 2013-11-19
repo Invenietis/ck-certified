@@ -14,10 +14,11 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using Common.Logging;
 using Help.Services;
+using Help.Update.ManualUpdate;
 using Host.Services;
 using Ionic.Zip;
 
-namespace Help.UpdateManager
+namespace Help.Update
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
     public class HelpUpdateManager : IPlugin, IHelpUpdaterService
@@ -30,6 +31,7 @@ namespace Help.UpdateManager
 
         static ILog _log = LogManager.GetLogger( typeof( HelpUpdateManager ) );
 
+        string _helpServerUrl;
         HttpClient _http;
         HelpContentManipulator _helpContents;
 
@@ -57,18 +59,14 @@ namespace Help.UpdateManager
 
         public void Start()
         {
-            HelpServerUrl = Configuration.System.GetOrSet( "HelpServerUrl", "http://api.civikey.invenietis.com/" );
-            if( !HelpServerUrl.EndsWith( "/" ) ) HelpServerUrl += "/";
+            _helpServerUrl = Configuration.System.GetOrSet( "HelpServerUrl", "http://api.civikey.invenietis.com/" );
+            if( !_helpServerUrl.EndsWith( "/" ) ) _helpServerUrl += "/";
 
             _helpContents = new HelpContentManipulator( HostInformations );
             PluginRunner.ApplyDone += OnPluginRunnerApplyDone;
 
             _helpContents.FindOrCreateBaseContent();
-
-            RegisterAllAvailableDefaultHelpContentsAsync();
-            AutoUpdateAsync();
         }
-
 
         public void Stop()
         {
@@ -80,14 +78,11 @@ namespace Help.UpdateManager
             _http.Dispose();
         }
 
-        string HelpServerUrl { get; set; }
-
-
         void OnPluginRunnerApplyDone( object sender, ApplyDoneEventArgs e )
         {
             if( e.Success )
             {
-                RegisterAllAvailableDefaultHelpContentsAsync();
+                RegisterAllAvailableDefaultHelpContentsAsync().Wait();
                 AutoUpdateAsync();
             }
         }
@@ -118,6 +113,26 @@ namespace Help.UpdateManager
 
         #endregion
 
+        #region Events management
+
+        public event EventHandler<HelpUpdateEventArgs> UpdateAvailable;
+
+        public event EventHandler<HelpUpdateDownloadedEventArgs> UpdateDownloaded;
+
+        public event EventHandler<HelpUpdateDownloadedEventArgs> UpdateInstalled;
+
+        void InvokeEvent<T>( EventHandler<T> eventHandler, T eventArgs )
+            where T : EventArgs
+        {
+            Application.Current.Dispatcher.BeginInvoke( (Action)(() =>
+            {
+                if( eventHandler != null )
+                    eventHandler( this, eventArgs );
+            }) );
+        }
+
+        #endregion
+
         #region Update management
 
         /// <summary>
@@ -125,7 +140,7 @@ namespace Help.UpdateManager
         /// </summary>
         Task AutoUpdateAsync()
         {
-            IList<IVersionedUniqueId> pluginsToProcess =  PluginRunner.PluginHost.LoadedPlugins.Cast<IVersionedUniqueId>().ToList();
+            IList<INamedVersionedUniqueId> pluginsToProcess =  PluginRunner.PluginHost.LoadedPlugins.Cast<INamedVersionedUniqueId>().ToList();
             pluginsToProcess.Add( HostHelp.FakeHostHelpId );
 
             var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 5 };
@@ -133,21 +148,34 @@ namespace Help.UpdateManager
             return Task.Factory.StartNew( () => Parallel.ForEach( pluginsToProcess, parallelOptions, item => AutoUpdateAsync( item ).Wait() ) );
         }
 
-        Task AutoUpdateAsync( IVersionedUniqueId plugin )
+        Task AutoUpdateAsync( INamedVersionedUniqueId plugin )
         {
-            return CheckForUpdate( plugin )
+            return CheckForUpdate( plugin, true )
                 .ContinueWith( u =>
                 {
                     if( u.Result )
                     {
-                        DownloadUpdate( plugin )
-                            .ContinueWith( t => InstallUpdate( plugin, t.Result ) )
+                        DownloadUpdate( plugin, true )
+                            .ContinueWith( t => AutoInstallUpdate( plugin, t.Result ) )
                             .Wait();
                     }
                 } );
         }
 
-        Task<bool> CheckForUpdate( IVersionedUniqueId plugin )
+        Task ManualUpdateAsync( INamedVersionedUniqueId plugin )
+        {
+            return CheckForUpdate( plugin, false )
+                .ContinueWith( u =>
+                {
+                    if( u.Result )
+                    {
+                        DownloadUpdate( plugin, false )
+                            .Wait();
+                    }
+                } );
+        }
+
+        Task<bool> CheckForUpdate( INamedVersionedUniqueId plugin, bool silent = false )
         {
             // lookup and found the help hash
             string hash = "HASHNOTFOUND";
@@ -163,7 +191,7 @@ namespace Help.UpdateManager
             }
 
             // create the update url to request
-            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}/{4}/isupdated", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
+            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}/{4}/isupdated", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
 
             // start the request and return the task
             return _http.GetAsync( url ).ContinueWith( u =>
@@ -175,71 +203,42 @@ namespace Help.UpdateManager
                     string rawresult = u.Result.Content.ReadAsStringAsync().Result;
                     bool.TryParse( rawresult, out result );
                 }
+                if( result && !silent )
+                    InvokeEvent( UpdateAvailable, new HelpUpdateEventArgs( plugin ) );
                 return result;
             } );
         }
 
-        Task<TemporaryFile> DownloadUpdate( IVersionedUniqueId plugin )
+        Task<DownloadResult> DownloadUpdate( INamedVersionedUniqueId plugin, bool silent = false )
         {
             // create the download url
-            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}", HelpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName );
+            string url = string.Format( "{0}v2/help/{1}/{2}/{3}", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName );
 
             // start the request
             // and continue with
             return _http.GetStreamAsync( url ).ContinueWith( t =>
             {
-                var tempFile = new TemporaryFile( ".zip" );
-                using( var s = File.OpenWrite( tempFile.Path ) )
-                    t.Result.CopyTo( s );
-                return tempFile;
+                var r = new DownloadResult( _log, t.Result );
+                if( !silent )
+                    InvokeEvent( UpdateDownloaded, new HelpUpdateDownloadedEventArgs( plugin, r ) );
+
+                return r;
             } );
         }
 
-        void InstallUpdate( IVersionedUniqueId plugin, TemporaryFile file, bool force = false )
+        void AutoInstallUpdate( INamedVersionedUniqueId plugin, DownloadResult downloadResult )
         {
-            HelpManifestData manifest = null;
-
-            try
+            if( IsInstallationPossibleAutomatically( plugin, downloadResult ) )
             {
-                // open the zip file
-                using( ZipFile zip = ZipFile.Read( file.Path ) )
-                {
-                    var manifestEntry = zip.Where( z => z.FileName == "manifest.xml" ).FirstOrDefault();
-                    if( manifestEntry != null )
-                    {
-                        var ms = new MemoryStream();
-                        manifestEntry.Extract( ms );
-                        try
-                        {
-                            manifest = HelpManifestData.Deserialize( ms );
-                        }
-                        catch( Exception ex )
-                        {
-                            _log.Error( "Unable to parse manifest", ex );
-                            return;
-                        }
-                    }
-                }
+                DoInstallUpdate( plugin, downloadResult );
             }
-            catch( Exception ex )
-            {
-                _log.Error( "Unable to read downloaded help content as a zip file", ex );
-                return;
-            }
-
-            if( force || IsInstallationPossibleAutomatically( plugin, manifest ) )
-            {
-                SimpleVersionedUniqueId pluginIdBasedOnManifest = new SimpleVersionedUniqueId( manifest.PluginId, manifest.Version );
-                _helpContents.InstallDownloadedHelpContent( pluginIdBasedOnManifest, () => File.OpenRead( file.Path ), manifest.Culture );
-            }
-
         }
 
-        bool IsInstallationPossibleAutomatically( IVersionedUniqueId plugin, HelpManifestData manifest )
+        bool IsInstallationPossibleAutomatically( IVersionedUniqueId plugin, DownloadResult downloadResult )
         {
-            Version manifestVersion = new Version(manifest.Version);
+            Version manifestVersion = new Version( downloadResult.Version );
 
-            Debug.Assert( plugin.UniqueId.ToString( "B" ) == manifest.PluginId );
+            Debug.Assert( plugin.UniqueId.ToString( "B" ) == downloadResult.Manifest.PluginId );
             Debug.Assert( plugin.Version >= manifestVersion );
 
             var currentHelpFile = new FileInfo( _helpContents.GetHelpContentFilePath( plugin, CultureInfo.CurrentCulture.TextInfo.CultureName ) );
@@ -252,9 +251,9 @@ namespace Help.UpdateManager
                 // otherwise we can delete a better local version
                 if( currentVersion <= manifestVersion )
                 {
-                    return manifest.Culture == CultureInfo.CurrentCulture.TextInfo.CultureName
-                        || manifest.Culture == CultureInfo.CurrentCulture.TwoLetterISOLanguageName
-                        || manifest.Culture == currentCulture;
+                    return downloadResult.Culture == CultureInfo.CurrentCulture.TextInfo.CultureName
+                        || downloadResult.Culture == CultureInfo.CurrentCulture.TwoLetterISOLanguageName
+                        || downloadResult.Culture == currentCulture;
                 }
 
                 return false;
@@ -263,6 +262,42 @@ namespace Help.UpdateManager
                 return true; // by default if there is no local help, use the remote one it's better than nothing
         }
 
+        void ManualInstallUpdate( INamedVersionedUniqueId plugin, IDownloadResult downloadResult )
+        {
+            DoInstallUpdate( plugin, downloadResult, true );
+            InvokeEvent( UpdateInstalled, new HelpUpdateDownloadedEventArgs( plugin, downloadResult ) );
+        }
+
+        void DoInstallUpdate( INamedVersionedUniqueId plugin, IDownloadResult downloadResult, bool clean = false )
+        {
+            SimpleVersionedUniqueId pluginIdBasedOnManifest = new SimpleVersionedUniqueId( plugin.UniqueId, Version.Parse( downloadResult.Version ) );
+            _helpContents.InstallDownloadedHelpContent( pluginIdBasedOnManifest, () => File.OpenRead( downloadResult.File.Path ), downloadResult.Culture, clean );
+        }
+
         #endregion
+
+        #region Manual Update
+
+        public void StartManualUpdate()
+        {
+            var vm = new MainViewModel( this, ManualInstallUpdate );
+            var wnd = new MainView();
+            wnd.DataContext = vm;
+
+            wnd.Show();
+
+            vm.IsBusy = true;
+            IList<INamedVersionedUniqueId> pluginsToProcess =  PluginRunner.PluginHost.LoadedPlugins.Cast<INamedVersionedUniqueId>().ToList();
+            pluginsToProcess.Add( HostHelp.FakeHostHelpId );
+
+            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 5 };
+
+            Task.Factory
+                .StartNew( () => Parallel.ForEach( pluginsToProcess, parallelOptions, item => ManualUpdateAsync( item ).Wait() ) )
+                .ContinueWith( t => vm.IsBusy = false );
+        }
+
+        #endregion
+
     }
 }

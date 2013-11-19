@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ApplicationId" Type="System.Guid" Scope="User">
-      <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
+      <Value Profile="(Default)">00000000-0000-1000-0000-000000000000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

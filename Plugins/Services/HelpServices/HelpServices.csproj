@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDownloadResult.cs" />
     <Compile Include="IHaveDefaultHelp.cs" />
     <Compile Include="IHelpUpdaterService.cs" />
     <Compile Include="IHelpViewerService.cs" />

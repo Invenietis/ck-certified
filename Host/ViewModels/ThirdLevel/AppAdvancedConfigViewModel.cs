@@ -65,6 +65,8 @@ namespace Host.VM
             g.AddProperty( R.ShowTaskbarIcon, _app, a => a.ShowTaskbarIcon );
             g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
             g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
+            
+            this.AddAction( "Check online help contents", _app.HelpUpdaterService.StartManualUpdate );
 
             string stopReminderFolderPath = Path.Combine( _app.CivikeyHost.ApplicationDataPath, "Updates" );
             if( !Directory.Exists( stopReminderFolderPath ) ) Directory.CreateDirectory( stopReminderFolderPath );

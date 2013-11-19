@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Context, Version=2.10.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Context.2.10.0-develop\lib\net40\CK.Context.dll</HintPath>
@@ -99,6 +103,9 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.6\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -109,8 +116,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HelpContentManipulator.cs" />
-    <Compile Include="HelpManifestData.cs" />
+    <Compile Include="Update\DownloadResult.cs" />
     <Compile Include="Update\HelpUpdateManager.cs" />
+    <Compile Include="Update\ManualUpdate\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Update\ManualUpdate\MainViewModel.cs" />
+    <Compile Include="Update\ManualUpdate\PluginUpdateViewModel.cs" />
     <Compile Include="Viewer\HelpBrowser.xaml.cs">
       <DependentUpon>HelpBrowser.xaml</DependentUpon>
     </Compile>
@@ -128,6 +140,10 @@
       <Project>{97c12498-7a6e-4a87-8889-c965509443e8}</Project>
       <Name>Host.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
+      <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
+      <Name>CK.WPF.ViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
@@ -138,10 +154,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Update\ManualUpdate\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Viewer\HelpBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Update\ManualUpdate\Images\dl.png" />
+    <Resource Include="Update\ManualUpdate\Images\icon.png" />
+    <Resource Include="Update\ManualUpdate\Images\install.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

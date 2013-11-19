@@ -36,6 +36,7 @@ using Host.Resources;
 using CK.Windows.App;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using Help.Services;
 
 namespace Host
 {
@@ -81,6 +82,8 @@ namespace Host
         internal ISimplePluginRunner PluginRunner { get { return CivikeyHost.Context.PluginRunner; } }
 
         public ConfigManager ConfigManager { get; private set; }
+
+        public IHelpUpdaterService HelpUpdaterService { get { return CivikeyHost.Context.GetService<IHelpUpdaterService>(); } }
 
         public string AppVersion { get { return CivikeyHost.AppVersion.ToString(); } }
 

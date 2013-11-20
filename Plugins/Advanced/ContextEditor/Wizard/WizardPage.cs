@@ -37,7 +37,7 @@ namespace KeyboardEditor
             {
                 if( _showHelpCommand == null )
                 {
-                    _showHelpCommand = new KeyCommand( () => Root.ShowHelp() );
+                    _showHelpCommand = new CK.Windows.App.VMCommand( () => Root.ShowHelp() );
                 }
                 return _showHelpCommand;
             }

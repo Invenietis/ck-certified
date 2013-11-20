@@ -38,8 +38,8 @@ using CK.Plugin.Config;
 using Caliburn.Micro;
 using System.Windows;
 using CommonServices;
-using CommonServices.Accessibility;
 using System.Windows.Controls;
+using Help.Services;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -61,7 +61,7 @@ namespace CK.Plugins.ObjectExplorer
 
         public IContext Context { get; private set; }
         public IPluginConfigAccessor Config { get; private set; }
-        public IHelpService HelpService { get; private set; }
+        public IHelpViewerService HelpService { get; private set; }
 
         PluginRunner _pluginRunner;
         PluginRunner PluginRunner { get { return _pluginRunner; } }
@@ -110,7 +110,7 @@ namespace CK.Plugins.ObjectExplorer
             }
         }
 
-        public VMIContextViewModel( IContext context, IPluginConfigAccessor config, ILogService logService, IHelpService helpService )
+        public VMIContextViewModel( IContext context, IPluginConfigAccessor config, ILogService logService, IHelpViewerService helpService )
         {
             DisplayName = "Object explorer";
 

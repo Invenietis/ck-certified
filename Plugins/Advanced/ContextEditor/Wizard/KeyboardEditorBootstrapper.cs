@@ -7,7 +7,7 @@ using Caliburn.Micro;
 
 namespace KeyboardEditor
 {
-    internal class KeyboardEditorBootstrapper : Bootstrapper
+    internal class KeyboardEditorBootstrapper : BootstrapperBase
     {
         public KeyboardEditorBootstrapper()
             : base( false )

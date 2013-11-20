@@ -757,9 +757,9 @@ namespace KeyboardEditor.ViewModels
 
         void SetCommands()
         {
-            _keyDownCmd = new KeyCommand( () => { if( !_key.IsDown )_key.Push(); } );
-            _keyUpCmd = new KeyCommand( () => { if( _key.IsDown ) _key.Release(); } );
-            _keyPressedCmd = new KeyCommand( () => { if( _key.IsDown )_key.Release( true ); } );
+            _keyDownCmd = new CK.Windows.App.VMCommand( () => { if( !_key.IsDown )_key.Push(); } );
+            _keyUpCmd = new CK.Windows.App.VMCommand( () => { if( _key.IsDown ) _key.Release(); } );
+            _keyPressedCmd = new CK.Windows.App.VMCommand( () => { if( _key.IsDown )_key.Release( true ); } );
         }
 
         CK.Windows.App.VMCommand _deleteKeyCommand;
@@ -792,28 +792,6 @@ namespace KeyboardEditor.ViewModels
                 Context.SelectedElement = Parent;
                 Model.Destroy();
             }
-        }
-    }
-
-    internal class KeyCommand : ICommand
-    {
-        Action _del;
-
-        public KeyCommand( Action del )
-        {
-            _del = del;
-        }
-
-        public bool CanExecute( object parameter )
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute( object parameter )
-        {
-            _del();
         }
     }
 }

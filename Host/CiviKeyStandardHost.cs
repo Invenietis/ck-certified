@@ -38,6 +38,8 @@ using CK.Core;
 using System.ComponentModel;
 using CK.Plugin.Config;
 using Common.Logging;
+using CK.Context.SemVer;
+using Help.Services;
 
 namespace Host
 {
@@ -49,44 +51,10 @@ namespace Host
     {
         static ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
         Guid _guid;
-        Version _appVersion;
+        SemanticVersion20 _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
         CKAppParameters applicationParameters;
-        IVersionedUniqueId _fakeUniqueIdForTheHost;
-
-        public event EventHandler<HostHelpEventArgs> ShowHostHelp;
-
-        public void FireShowHostHelp()
-        {
-            if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
-            if( ShowHostHelp != null )
-                ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
-        }
-
-        /// <summary>
-        /// Gets a unique identifier for a CiviKey application
-        /// Is mainly used to identify an instance of CiviKey in crashlogs
-        /// TODO : this hsould be put in the CK-Desktop layer in order to be transmitted directly to the crashlog web server, and stored in files corresponding to this GUID
-        /// </summary>
-        private Guid ApplicationGUID
-        {
-            get
-            {
-                if( _guid == Guid.Empty ) _guid = (Guid)SystemConfig.GetOrSet( "Guid", Guid.NewGuid() );
-
-                return _guid;
-            }
-        }
-
-        /// <summary>
-        /// Gets the current version of the Civikey-Standard application.
-        /// It is stored in the system configuration file and updated by the installer.
-        /// </summary>
-        public Version AppVersion
-        {
-            get { return _appVersion ?? ( _appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) ) ); }
-        }
 
         /// <summary>
         /// The SubAppName is the name of the package (Standard, Steria etc...)
@@ -95,6 +63,7 @@ namespace Host
         private CivikeyStandardHost( CKAppParameters parameters )
         {
             applicationParameters = parameters;
+            ApplicationUniqueId = new SimpleUniqueId( App.ApplicationId );
         }
 
         /// <summary>
@@ -102,26 +71,51 @@ namespace Host
         /// </summary>
         static readonly public CivikeyStandardHost Instance = new CivikeyStandardHost( CKApp.CurrentParameters );
 
+        /// <summary>
+        /// Gets a unique identifier for a CiviKey application
+        /// Is mainly used to identify an instance of CiviKey in crashlogs
+        /// </summary>
+        public IUniqueId ApplicationUniqueId
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the current version of the Civikey-Standard application.
+        /// It is stored in the system configuration file and updated by the installer.
+        /// </summary>
+        public SemanticVersion20 AppVersion
+        {
+            get { return _appVersion ?? (_appVersion = SemanticVersion20.Parse( (string)SystemConfig.GetOrSet( "Version", "2.7" ) )); }
+        }
+
         public override IContext CreateContext()
         {
             IContext ctx = base.CreateContext();
 
             _log.Debug( "LAUNCHING" );
-            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationGUID ) );
+            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
 
             _notificationMngr = new NotificationManager();
-            
+
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
 
             RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
-            hostRequirements.ServiceRequirements.AddOrSet( "CommonServices.Accessbility.IHelpService", RunningRequirement.MustExistAndRun );
+
+            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
+            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+
+            // Because the ServiceRequirements are buggy
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
+
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SindInput
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
 
-            ctx.PluginRunner.Add( hostRequirements )                                                                                                                                                                                                                    ;
+            ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
@@ -140,7 +134,7 @@ namespace Host
                 //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
-            Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
+            Context.PluginRunner.ApplyDone += OnApplyDone;
 
             _firstApplySucceed = Context.PluginRunner.Apply();
 
@@ -308,5 +302,30 @@ namespace Host
         {
             get { return applicationParameters.DistribName; }
         }
+
+        #region IHostHelp Members
+
+        public event EventHandler<EventArgs> ShowHostHelp;
+
+        public INamedVersionedUniqueId FakeHostHelpId
+        {
+            get
+            {
+                return new SimpleNamedVersionedUniqueId( Guid.Empty, new Version( AppVersion.Major, AppVersion.Minor, AppVersion.Patch ), "Application" );
+            }
+        }
+
+        public void FireShowHostHelp()
+        {
+            if( ShowHostHelp != null )
+                ShowHostHelp( this, EventArgs.Empty );
+        }
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( CivikeyStandardHost ).Assembly.GetManifestResourceStream( "Host.Resources.hosthelpcontent.zip" );
+        }
+
+        #endregion
     }
 }

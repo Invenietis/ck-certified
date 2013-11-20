@@ -29,6 +29,7 @@ using System.Threading;
 using System.Globalization;
 using System.Reflection;
 using Host.Services.Helpers;
+using Host.Properties;
 
 namespace Host
 {
@@ -38,6 +39,20 @@ namespace Host
     public partial class App : Application
     {
         public static new App Current { get { return (App)Application.Current; } }
+
+        public static Guid ApplicationId
+        {
+            get
+            {
+                if( Settings.Default.ApplicationId == Guid.Empty )
+                {
+                    Settings.Default["ApplicationId"] = Guid.NewGuid();
+                    Settings.Default.Save();
+                }
+
+                return Settings.Default.ApplicationId;
+            }
+        }
 
         [STAThread]
         public static void Main( string[] args )
@@ -58,12 +73,10 @@ namespace Host
             var attribute = Assembly.GetExecutingAssembly()
                                         .GetCustomAttributes( typeof( DistributionAttribute ), false )
                                         .Cast<DistributionAttribute>().SingleOrDefault();
-            if( attribute != null && !String.IsNullOrWhiteSpace(attribute.DistributionName) ) distributionName = attribute.DistributionName; 
-            
+            if( attribute != null && !String.IsNullOrWhiteSpace( attribute.DistributionName ) ) distributionName = attribute.DistributionName;
 
             // Crash logs upload and updater availability is managed during this initialization.
-             
-            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", distributionName ) ) )
+            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", distributionName, string.Format( "http://api.civikey.invenietis.com/v2/crash/{0}", ApplicationId ) ) ) )
             {
                 // Common logger is actually bound to log4net.UpdateDone
 

@@ -40,11 +40,13 @@ using CK.Windows.Helpers;
 using CommonServices.Accessibility;
 using CK.Windows.Core;
 using CK.WindowManager.Model;
+using System.IO;
+using Help.Services;
 
 namespace CK.Plugins.AutoClick
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class AutoClick : VMBase, IPlugin
+    public class AutoClick : VMBase, IPlugin, IHaveDefaultHelp
     {
         const string PluginGuidString = "{989BE0E6-D710-489e-918F-FBB8700E2BB2}";
         Guid PluginGuid = new Guid( PluginGuidString );
@@ -59,8 +61,8 @@ namespace CK.Plugins.AutoClick
         public IService<IMouseWatcher> MouseWatcher { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IHelpService> HelpService { get; set; }
-       
+        public IService<IHelpViewerService> HelpService { get; set; }
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IClickSelector> Selector { get; set; }
 
@@ -125,12 +127,10 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
-            if( HelpService.Status == InternalRunningStatus.Started ) HelpService.Service.RegisterHelpContent( PluginId, typeof( AutoClick ).Assembly.GetManifestResourceStream( "AutoClick.Res.helpcontent.zip" ) );
-
             _isPaused = true;
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
 
-            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
+            int defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 4;
             int defaultWidth = defaultHeight / 4;
 
             if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
@@ -160,7 +160,7 @@ namespace CK.Plugins.AutoClick
 
             //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
             if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_autoClickWindow.Left, (int)_autoClickWindow.Top ) )
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _autoClickWindow.Left + _autoClickWindow.ActualWidth ), (int)_autoClickWindow.Top ) ) )
+                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_autoClickWindow.Left + _autoClickWindow.ActualWidth), (int)_autoClickWindow.Top ) ) )
             {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
@@ -429,13 +429,13 @@ namespace CK.Plugins.AutoClick
         {
             get
             {
-                return _showHelpCommand ?? ( _showHelpCommand = new VMCommand( () =>
+                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
                 {
                     if( HelpService.Status == InternalRunningStatus.Started )
                     {
                         HelpService.Service.ShowHelpFor( PluginId, true );
                     }
-                } ) );
+                } ));
             }
         }
 
@@ -533,6 +533,15 @@ namespace CK.Plugins.AutoClick
                 }
                 return _decrementCountDownDurationCommand;
             }
+        }
+
+        #endregion
+
+        #region IHaveDefaultHelp Members
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( AutoClick ).Assembly.GetManifestResourceStream( "AutoClick.Res.helpcontent.zip" );
         }
 
         #endregion

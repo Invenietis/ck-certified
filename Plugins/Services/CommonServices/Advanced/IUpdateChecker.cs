@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using CK.Plugin;
 using CK.Core;
+using CK.Context.SemVer;
 
 namespace CommonServices
 {
@@ -34,12 +35,13 @@ namespace CommonServices
     {
         Unknown,
         CheckingForNewVersion,
+        DownloadingReleaseNotes,
         NoNewerVersion,
         NewerVersionAvailable,
         ErrorWhileCheckingVersion
     }
 
-    public enum UpdateDownloadState
+    public enum DownloadState
     {
         None,
         Downloading,
@@ -51,13 +53,15 @@ namespace CommonServices
     {
         UpdateVersionState VersionState { get; }
         
-        UpdateDownloadState DownloadState { get; }
+        DownloadState DownloadState { get; }
 
         event EventHandler StateChanged;
 
-        Version NewVersion { get; }
+        SemanticVersion20 NewVersion { get; }
 
         bool IsBusy { get; }
+
+        bool ShouldIncludePrerelease { get; set; }
 
         void CheckForUpdate();
         

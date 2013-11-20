@@ -34,19 +34,20 @@
   <ItemGroup>
     <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model">
-      <HintPath>..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\packages\CK-Plugin.2.10.0-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Model">
-      <HintPath>..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\..\packages\CK-Plugin.2.10.0-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+      <HintPath>..\..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -68,11 +69,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
+    <ProjectReference Include="..\..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
       <Project>{fda960f6-d429-4696-9306-b473dae41e5b}</Project>
       <Name>CK.WindowManager.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugins\Accessibility\CK.WindowManager\CK.WindowManager.csproj">
+    <ProjectReference Include="..\..\Plugins\Accessibility\CK.WindowManager\CK.WindowManager.csproj">
       <Project>{968fc28c-d500-41aa-ab45-0fc4581b8713}</Project>
       <Name>CK.WindowManager</Name>
     </ProjectReference>

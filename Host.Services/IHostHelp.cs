@@ -26,17 +26,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CK.Core;
+using Help.Services;
 
 namespace Host.Services
 {
-    public interface IHostHelp
+    public interface IHostHelp : IHaveDefaultHelp
     {
-        event EventHandler<HostHelpEventArgs> ShowHostHelp;
-    }
+        event EventHandler<EventArgs> ShowHostHelp;
 
-    public class HostHelpEventArgs : EventArgs
-    {
-        public IVersionedUniqueId HostUniqueId { get; set; }
+        INamedVersionedUniqueId FakeHostHelpId { get; }
     }
     
 }

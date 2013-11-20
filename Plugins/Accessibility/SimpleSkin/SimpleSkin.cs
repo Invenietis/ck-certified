@@ -45,6 +45,8 @@ using CK.WPF.ViewModel;
 using System.Threading;
 using CK.Windows.Core;
 using CK.WindowManager.Model;
+using System.IO;
+using Help.Services;
 
 namespace SimpleSkin
 {
@@ -53,7 +55,7 @@ namespace SimpleSkin
         PublicName = PluginPublicName,
         Version = SimpleSkin.PluginIdVersion,
         Categories = new string[] { "Visual", "Accessibility" } )]
-    public partial class SimpleSkin : IPlugin
+    public partial class SimpleSkin : IPlugin, IHaveDefaultHelp
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -85,7 +87,7 @@ namespace SimpleSkin
         public IService<ISendStringService> SendStringService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IHelpService> HelpService { get; set; }
+        public IService<IHelpViewerService> HelpService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -117,8 +119,6 @@ namespace SimpleSkin
 
         public void Start()
         {
-            if( HelpService.Status.IsStartingOrStarted ) HelpService.Service.RegisterHelpContent( PluginId, typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" ) );
-
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 _noFocusWindowManager = new CKNoFocusWindowManager();
@@ -617,6 +617,15 @@ namespace SimpleSkin
 
         #endregion
 
+
+        #region IHaveDefaultHelp Members
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( SimpleSkin ).Assembly.GetManifestResourceStream( "SimpleSkin.Res.helpcontent.zip" );
+        }
+
+        #endregion
     }
 
 

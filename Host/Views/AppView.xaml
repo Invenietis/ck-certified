@@ -21,8 +21,7 @@
     <Window.Visibility>
         <Binding Path="IsVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibilityConverter}" ConverterParameter="Hidden"/>
     </Window.Visibility>
-    <Grid Name="grid">
-        <!--<tb:TaskbarIcon 
+    <!--<tb:TaskbarIcon 
                 x:Name="taskbarIcon"
                 IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico"
                 ToolTipText="CiviKey" 
@@ -31,19 +30,16 @@
                 Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                 ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
         </tb:TaskbarIcon>-->
-        <StackPanel>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Image Grid.Row="0" Height="100" Source="SplashTransparent.png"></Image>
-                <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
-                    <Label Grid.Row="0" Content="{Binding AppVersion}"></Label>
-                    <ckcontrols:ImageButton x:Uid="HelpButton" Source="Images/help.png" Width="16" Height="16" Margin="0 0 10 0" ToolTip="Help" Command="{Binding ShowHelpCommand}"></ckcontrols:ImageButton>
-                </StackPanel>
-                <ContentControl  Grid.Row="1" Content="{Binding ConfigManager}"/>
-            </Grid>
+    <Grid Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Height="100" Source="SplashTransparent.png"></Image>
+        <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
+            <Label Grid.Row="0" Content="{Binding AppVersion}"></Label>
+            <ckcontrols:ImageButton x:Uid="HelpButton" Source="Images/help.png" Width="16" Height="16" Margin="0 0 10 0" ToolTip="Help" Command="{Binding ShowHelpCommand}"></ckcontrols:ImageButton>
         </StackPanel>
+        <ContentControl  Grid.Row="1" Content="{Binding ConfigManager}"/>
     </Grid>
 </Window>

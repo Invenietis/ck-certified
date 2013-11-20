@@ -12,16 +12,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace OnlineHelp
+namespace UpdateChecker.View
 {
     /// <summary>
-    /// Interaction logic for HelpBrowser.xaml
+    /// Interaction logic for NewerVersionView.xaml
     /// </summary>
-    public partial class HelpBrowser : Window
+    public partial class NewerVersionView : Window
     {
-        public HelpBrowser()
+        public NewerVersionView()
         {
             InitializeComponent();
+        }
+
+        public void SetBrowserContent( string content )
+        {
+            _browser.NavigateToString( content );
         }
     }
 }

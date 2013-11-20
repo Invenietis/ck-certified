@@ -41,6 +41,9 @@ using System.Security.Principal;
 using CK.Windows.App;
 using System.Threading.Tasks;
 using System.Threading;
+using CK.Context.SemVer;
+using Common.Logging;
+using UpdateChecker.View;
 
 namespace UpdateChecker
 {
@@ -52,15 +55,15 @@ namespace UpdateChecker
     public class UpdateChecker : IPlugin, IUpdateChecker
     {
         const string PluginIdentifier = "{11C83441-6818-4A8B-97A0-1761E1A54251}";
-        const string PluginVersion = "1.0.0";
-        string _distributionName; //Can be "Standard" or "Steria" etc...
+        const string PluginVersion = "2.0.0";
+
+        static ILog _log = LogManager.GetLogger<UpdateChecker>();
 
         UpdateVersionState _versionState;
-        UpdateDownloadState _downloadState;
+        DownloadState _downloadState;
         WebClient _webClient;
         TemporaryFile _downloading;
         IDisposable _downloadingNotificationHandler;
-        static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<UpdateChecker>();
 
         [RequiredService]
         public INotificationService Notifications { get; set; }
@@ -70,7 +73,24 @@ namespace UpdateChecker
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public Version NewVersion { get; private set; }
+        public SemanticVersion20 NewVersion { get; private set; }
+
+        bool? _shouldIncludePrerelease;
+        public bool ShouldIncludePrerelease
+        {
+            get
+            {
+                if( !_shouldIncludePrerelease.HasValue )
+                    _shouldIncludePrerelease = (bool)Configuration.System.GetOrSet<bool>( "ShouldIncludePrerelease", false );
+
+                return _shouldIncludePrerelease.Value;
+            }
+            set
+            {
+                _shouldIncludePrerelease = value;
+                Configuration.System["ShouldIncludePrerelease"] = value;
+            }
+        }
 
         public UpdateVersionState VersionState
         {
@@ -85,7 +105,7 @@ namespace UpdateChecker
             }
         }
 
-        public UpdateDownloadState DownloadState
+        public DownloadState DownloadState
         {
             get { return _downloadState; }
             set
@@ -103,12 +123,12 @@ namespace UpdateChecker
         public bool Setup( IPluginSetupInfo info )
         {
             _versionState = UpdateVersionState.Unknown;
-            _downloadState = UpdateDownloadState.None;
+            _downloadState = DownloadState.None;
             _webClient = new WebClient();
             // Used to read the available version.
-            _webClient.DownloadDataCompleted += new DownloadDataCompletedEventHandler( _webClient_DownloadDataCompleted );
+            _webClient.DownloadDataCompleted += new DownloadDataCompletedEventHandler( OnDownloadDataCompleted );
             // Used to download the new version.
-            _webClient.DownloadFileCompleted += new AsyncCompletedEventHandler( _webClient_DownloadFileCompleted );
+            _webClient.DownloadFileCompleted += new AsyncCompletedEventHandler( OnDownloadFileCompleted );
             return true;
         }
 
@@ -128,10 +148,29 @@ namespace UpdateChecker
             if( _downloading != null ) _downloading.Dispose();
         }
 
+        string GetCheckUpdateUrl( string distributionName )
+        {
+            string url = GetServerUrl() + "v2/update/" + distributionName;
+            if( ShouldIncludePrerelease )
+                url += "?includeprerelease=" + ShouldIncludePrerelease.ToString();
+
+            return url;
+        }
+
+        string GetReleaseNoteUrl( string distributionName, SemanticVersion20 version )
+        {
+            return GetServerUrl() + string.Format( "v2/update/{0}/{1}/release-notes", distributionName, version.ToString() );
+        }
+
+        string GetDownloadUrl( string distributionName, SemanticVersion20 version )
+        {
+            return GetServerUrl() + string.Format( "v2/update/{0}/{1}/installer", distributionName, version.ToString() );
+        }
+
         private string GetServerUrl()
         {
             // Gets the UpdateServerUrl now (to correctly handle configuration changes).
-            string server = (string)Configuration.System["UpdateServerUrl"] ?? "http://releases.civikey.invenietis.com/";
+            string server = Configuration.System.GetOrSet( "UpdateServerUrl", "http://api.civikey.invenietis.com/" );
             if( !server.EndsWith( "/" ) ) server += "/";
             return server;
         }
@@ -139,7 +178,7 @@ namespace UpdateChecker
         private void CheckNotBusy()
         {
             if( _webClient.IsBusy ) throw new InvalidOperationException();
-            Debug.Assert( _versionState != UpdateVersionState.CheckingForNewVersion && _downloadState != UpdateDownloadState.Downloading );
+            Debug.Assert( _versionState != UpdateVersionState.CheckingForNewVersion && _downloadState != DownloadState.Downloading );
         }
 
         public bool IsBusy
@@ -150,50 +189,68 @@ namespace UpdateChecker
         public void CheckForUpdate()
         {
             CheckNotBusy();
-            _distributionName = HostInformation.SubAppName;
 
             UpdateVersionState savedState = _versionState;
             VersionState = UpdateVersionState.CheckingForNewVersion;
-            string httpRequest = GetServerUrl() + "version/updated/currentversion/" + HostInformation.AppName + @"-" + _distributionName + "/" + HostInformation.AppVersion.ToString();
-            Task.Factory.StartNew( () =>
-            {
-                // This task exist to bypass the long proxy lookup (10s on my Comp) that freez the OS during bootstrap of the update checker
-                _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );//gets the new version from its package repository
-            } );
+            string httpRequest = GetCheckUpdateUrl( HostInformation.SubAppName );
+
+            _webClient.DownloadDataAsync( new Uri( httpRequest ), savedState );
         }
 
-        void _webClient_DownloadDataCompleted( object sender, DownloadDataCompletedEventArgs e )
+        void StartDownloadReleaseNotes()
+        {
+            VersionState = UpdateVersionState.DownloadingReleaseNotes;
+            _webClient.DownloadDataAsync( new Uri( GetReleaseNoteUrl( HostInformation.SubAppName, NewVersion ) ) );
+        }
+
+        void OnDownloadDataCompleted( object sender, DownloadDataCompletedEventArgs e )
         {
             if( e.Cancelled )
             {
                 VersionState = (UpdateVersionState)e.UserState;
             }
-            else if( e.Error != null )
-            {
-                _log.Error( "Error while checking version", e.Error );
-                VersionState = UpdateVersionState.ErrorWhileCheckingVersion;
-            }
             else
             {
-                Debug.Assert( _versionState == UpdateVersionState.CheckingForNewVersion );
+                Debug.Assert( _versionState == UpdateVersionState.CheckingForNewVersion || _versionState == UpdateVersionState.DownloadingReleaseNotes );
+
                 try
                 {
-                    string version = Encoding.UTF8.GetString( e.Result );
-                    NewVersion = new Version( version );
-                    if( NewVersion > HostInformation.AppVersion )//If the version retrieved from the server is greater than the currently installed one
+                    if( _versionState == UpdateVersionState.CheckingForNewVersion )
                     {
-                        //If the version retrived from the server is greater than the one that has been downloaded last
-                        string retrievedVersionString = Configuration.System.GetOrSet<string>( "LastDownloadedVersion", "0.0.0" );
-                        Version retrievedVersion;
-                        if( Version.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
+                        if( e.Error != null )
                         {
-                            VersionState = UpdateVersionState.NewerVersionAvailable;
-                            // Ask the user to download it.
-                            OnNewerVersionAvailable();
+                            _log.Error( "Error while checking version", e.Error );
+                            VersionState = UpdateVersionState.ErrorWhileCheckingVersion;
+                            return;
                         }
-                    }
 
-                    VersionState = UpdateVersionState.NoNewerVersion;
+                        string version = Encoding.UTF8.GetString( e.Result ).Replace( "\"", string.Empty );
+                        NewVersion = SemanticVersion20.Parse( version );
+                        if( NewVersion > SemanticVersion20.Parse( HostInformation.AppVersion.ToString() ) )//If the version retrieved from the server is greater than the currently installed one
+                        {
+                            // If the version retrived from the server is greater than the one that has been downloaded last
+                            string retrievedVersionString = Configuration.System.GetOrSet<string>( "LastDownloadedVersion", "0.0.0" );
+                            SemanticVersion20 retrievedVersion;
+                            if( SemanticVersion20.TryParse( retrievedVersionString, out retrievedVersion ) && retrievedVersion < NewVersion )
+                            {
+                                // if a new version is available, try to download release notes before we show the update to the user.
+                                StartDownloadReleaseNotes();
+                            }
+                        }
+                        else
+                            VersionState = UpdateVersionState.NoNewerVersion;
+                    }
+                    else if( _versionState == UpdateVersionState.DownloadingReleaseNotes )
+                    {
+                        VersionState = UpdateVersionState.NewerVersionAvailable;
+                        string rn = null;
+                        if( e.Error == null )
+                        {
+                            rn = Encoding.UTF8.GetString( e.Result );
+                        }
+                        // Ask the user to download it.
+                        OnNewerVersionAvailable( rn );
+                    }
                 }
                 catch( Exception ex )
                 {
@@ -206,37 +263,40 @@ namespace UpdateChecker
         public void StartDownload()
         {
             CheckNotBusy();
-            UpdateDownloadState savedState = _downloadState;
+            DownloadState savedState = _downloadState;
             _downloading = new TemporaryFile();
-            DownloadState = UpdateDownloadState.Downloading;
-            string httpRequest = GetServerUrl() + "version/updated/download/" + Path.Combine( HostInformation.AppName + @"-" + _distributionName, HostInformation.AppVersion.ToString() );
+            DownloadState = DownloadState.Downloading;
+            string httpRequest = GetDownloadUrl( HostInformation.SubAppName, NewVersion );
             _webClient.DownloadFileAsync( new Uri( httpRequest ), _downloading.Path, savedState );
+
             if( Notifications != null )
                 _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
         }
 
-        void _webClient_DownloadFileCompleted( object sender, AsyncCompletedEventArgs e )
+        void OnDownloadFileCompleted( object sender, AsyncCompletedEventArgs e )
         {
             if( _downloadingNotificationHandler != null )
                 _downloadingNotificationHandler.Dispose();
 
             if( e.Cancelled )
             {
-                DownloadState = (UpdateDownloadState)e.UserState;
+                DownloadState = (DownloadState)e.UserState;
             }
             else if( e.Error != null )
             {
                 _log.Error( "Error while downloading", e.Error );
-                DownloadState = UpdateDownloadState.ErrorWhileDownloading;
+                DownloadState = DownloadState.ErrorWhileDownloading;
             }
             else
             {
-                Debug.Assert( _downloadState == UpdateDownloadState.Downloading );
+                Debug.Assert( _downloadState == DownloadState.Downloading );
                 try
                 {
                     string newVersionDir = Path.Combine( HostInformation.CommonApplicationDataPath, "Updates" ); //puts the exe in ProgramData/Appname/DistributionName/Updates
                     Directory.CreateDirectory( newVersionDir );
                     string updateFilePath = Path.Combine( newVersionDir, "Update.exe" );
+                    if( File.Exists( updateFilePath ) ) File.Delete( updateFilePath );
+
                     File.Move( _downloading.Path, updateFilePath );
 
                     //Giving read/write/execute rights to any user on the Update.exe file.
@@ -251,48 +311,41 @@ namespace UpdateChecker
 
                     _downloading.Dispose();
                     _downloading = null;
-                    DownloadState = UpdateDownloadState.Downloaded;
+                    DownloadState = DownloadState.Downloaded;
                     // Warn the user that the download is available.
                     OnNewerVersionDownloaded();
                 }
                 catch( Exception ex )
                 {
                     _log.Error( "Error while downloading", ex );
-                    DownloadState = UpdateDownloadState.ErrorWhileDownloading;
+                    DownloadState = DownloadState.ErrorWhileDownloading;
                 }
             }
         }
 
-        private void OnNewerVersionAvailable()
+        void OnNewerVersionAvailable( string releaseNotes )
         {
-            ModalViewModel mvm = new ModalViewModel( R.UpdateAvailableTitle, String.Format( R.UpdateAvailableContent, NewVersion.ToString() ) );
-            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
-            mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-
-            Application.Current.Dispatcher.Invoke( new Action( () =>
+            var wnd = new NewerVersionView();
+            var vm = new NewerVersionViewModel( releaseNotes, NewVersion.ToString(), r =>
             {
-                CustomMsgBox msg = new CustomMsgBox( ref mvm );
-                msg.ShowDialog();
+                wnd.DialogResult = r;
+                wnd.Close();
+            }, s => wnd.SetBrowserContent( s ) );
 
-                if( mvm.ModalResult == ModalResult.Yes )
-                {
-                    StartDownload();
-                }
-            } ) );
+            wnd.DataContext = vm;
+
+            bool? shouldStartDownload = wnd.ShowDialog();
+            if( shouldStartDownload.HasValue && shouldStartDownload.Value )
+                StartDownload();
         }
 
-        private void OnNewerVersionDownloaded()
+        void OnNewerVersionDownloaded()
         {
             ModalViewModel mvm = new ModalViewModel( R.UpdateDownloadedTitle, R.UpdateDownloadedContent );
             mvm.Buttons.Add( new ModalButton( mvm, R.Ok, null, ModalResult.Ok ) );
 
-            Application.Current.Dispatcher.Invoke( new Action( () =>
-            {
-                CustomMsgBox msg = new CustomMsgBox( ref mvm );
-                msg.ShowDialog();
-            } ) );
-
-
+            CustomMsgBox msg = new CustomMsgBox( ref mvm );
+            msg.ShowDialog();
         }
     }
 }

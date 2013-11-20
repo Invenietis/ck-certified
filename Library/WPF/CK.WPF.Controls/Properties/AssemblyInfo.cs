@@ -36,7 +36,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Microsoft" )]
 [assembly: AssemblyProduct( "CK.WPF.Controls" )]
-[assembly: AssemblyCopyright( "Copyright © Microsoft 2010" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2013" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 [assembly: XmlnsDefinition( "http://schemas.civikey.org/CustomControls", "CK.WPF.Controls" )]

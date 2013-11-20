@@ -191,7 +191,7 @@ namespace Help.Update
             }
 
             // create the update url to request
-            string url = string.Format( "{0}/v2/help/{1}/{2}/{3}/{4}/isupdated", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
+            string url = string.Format( "{0}v2/help/{1}/{2}/{3}/{4}/isupdated", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
 
             // start the request and return the task
             return _http.GetAsync( url ).ContinueWith( u =>

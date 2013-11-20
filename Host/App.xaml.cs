@@ -76,8 +76,7 @@ namespace Host
             if( attribute != null && !String.IsNullOrWhiteSpace( attribute.DistributionName ) ) distributionName = attribute.DistributionName;
 
             // Crash logs upload and updater availability is managed during this initialization.
-                                                                                                                // TODO : replace this URL with the remote one
-            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", distributionName, string.Format( "http://api.civikey.local/v2/crash/{0}", ApplicationId ) ) ) )
+            using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", distributionName, string.Format( "http://api.civikey.invenietis.com/v2/crash/{0}", ApplicationId ) ) ) )
             {
                 // Common logger is actually bound to log4net.UpdateDone
 

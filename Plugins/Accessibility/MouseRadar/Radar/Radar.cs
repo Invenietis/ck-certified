@@ -53,8 +53,8 @@ namespace MouseRadar
             : this()
         {
             ViewModel = new RadarViewModel();
-            ViewModel.SetCircleColor( Color.FromRgb( 0, 0, 0 ) );
-            ViewModel.SetArrowColor( Color.FromRgb( 0, 0, 0 ) );
+            ViewModel.SetCircleColor( Colors.Black );
+            ViewModel.SetArrowColor( Colors.Black );
             ViewModel.Opacity = 1;
             ViewModel.RadarSize = 100;
             SnakeMode = false;
@@ -62,16 +62,18 @@ namespace MouseRadar
             _mouseDriver = pdd;
             Left = pdd.CurrentPointerXLocation - ViewModel.WindowSize / 2;
             Top = pdd.CurrentPointerYLocation - ViewModel.WindowSize / 2;
-            RotationSpeed = 1;
+            RotationSpeed = 10;
             TranslationSpeed = 1;
 
             CurrentStep = RadarStep.Paused;
 
-            _timerRotate = new DispatcherTimer( DispatcherPriority.Send );
-            _timerRotate.Interval = new TimeSpan( 10000 * 17 );  //60 fps -> 60° per second
+            _timerRotate = new DispatcherTimer( DispatcherPriority.Normal );
+            _timerRotate.Interval = new TimeSpan( 0 );
+            _timerRotate.Tick += ProcessRotation;
 
-            _timerTranslate = new DispatcherTimer( DispatcherPriority.Send );
-            _timerTranslate.Interval = new TimeSpan( 10000 * 17 ); //60 fps -> 60px per second  
+            _timerTranslate = new DispatcherTimer( DispatcherPriority.Normal );
+            _timerTranslate.Interval = new TimeSpan( 0 );
+            _timerTranslate.Tick += ProcessTranslation;
 
             _mouseDriver.PointerMove += OnMouseLocationChanged;
             ViewModel.PropertyChanged += ( o, e ) =>
@@ -92,21 +94,34 @@ namespace MouseRadar
             UpdateLocation( _mouseDriver.CurrentPointerXLocation, _mouseDriver.CurrentPointerYLocation );
         }
 
+        const int rotationWeight = 100; //angle rotation weight (used to balance calculation of the rotation tick).
+        const int distanceWeight = 200; //pixels movement weight (used to balance calculation of the translation tick).
+
+        void ProcessScrollingTick( TimeSpan newScrollingTick )
+        {
+            if( newScrollingTick != _previousScrollingTick )
+            {
+                _previousScrollingTick = newScrollingTick;
+
+                int rotateTickTime = (int)( RotationSpeed * newScrollingTick.TotalMilliseconds ) / rotationWeight; //interval between two ticks for the rotation timer
+                _timerRotate.Interval = new TimeSpan( 0, 0, 0, 0, rotateTickTime );
+
+                int translateTickTime = (int)( TranslationSpeed * newScrollingTick.TotalMilliseconds ) / distanceWeight; //interval between two ticks for the translation timer
+                _timerTranslate.Interval = new TimeSpan( 0, 0, 0, 0, translateTickTime );
+            }
+        }
+
+        TimeSpan _previousScrollingTick = new TimeSpan( 0 );
         internal void Tick( BeginScrollingInfo scrollingInfo )
         {
-            if( CurrentStep == RadarStep.Rotating )
-            {
-                ProcessRotation();
-            }
-            else if( CurrentStep == RadarStep.Translating )
-            {
-                ProcessTranslation();
-            }
+            ProcessScrollingTick( scrollingInfo.TickInterval );
         }
 
         internal void Pause()
         {
             CurrentStep = RadarStep.Paused;
+            StopRotation();
+            StopTranslation();
             ViewModel.LapCount = 0;
         }
 
@@ -121,13 +136,14 @@ namespace MouseRadar
                 StopRotation();
                 StartTranslation();
             }
-            else if(CurrentStep == RadarStep.Translating)
+            else if( CurrentStep == RadarStep.Translating )
             {
                 StopTranslation();
                 StartRotation();
             }
 
             //Each time the input is triggered, we reset the lapcount and the starting angle of the lap count. (thanks to that, we release the scroller in an homogenous way : X laps after the last call to SelectElement)
+            Console.Out.WriteLine( "LapCount = 0" );
             ViewModel.LapCount = 0;
             ViewModel.StartingAngle = ViewModel.Angle;
 
@@ -139,14 +155,15 @@ namespace MouseRadar
         void StartRotation()
         {
             CurrentStep = RadarStep.Rotating;
+            _timerRotate.Start();
         }
 
         void StopRotation()
         {
-
+            _timerRotate.Stop();
         }
 
-        void ProcessRotation()
+        void ProcessRotation( object sender, EventArgs e )
         {
             ViewModel.Angle += (float)RotationSpeed / 1f;
         }
@@ -163,14 +180,15 @@ namespace MouseRadar
             _rayon = 0;
 
             CurrentStep = RadarStep.Translating;
+            _timerTranslate.Start();
         }
 
         void StopTranslation()
         {
-
+            _timerTranslate.Stop();
         }
 
-        void ProcessTranslation()
+        void ProcessTranslation( object sender, EventArgs e )
         {
             int moveX = _mouseDriver.CurrentPointerXLocation;
             int moveY = _mouseDriver.CurrentPointerYLocation;
@@ -346,7 +364,7 @@ namespace MouseRadar
         {
             _timerRotate.Stop();
             _timerTranslate.Stop();
-            
+
             _mouseDriver.PointerMove -= OnMouseLocationChanged;
             this.Close();
         }

@@ -96,8 +96,8 @@ namespace MouseRadar.Editor
         {
             get 
             {
-                if( TranslationSpeed < 5 ) return R.LowSpeed;
-                if( TranslationSpeed < 10 ) return R.MediumSpeed;
+                if( TranslationSpeed < 3 ) return R.LowSpeed;
+                if( TranslationSpeed < 7 ) return R.MediumSpeed;
                 else return R.HighSpeed;
             }
         }
@@ -106,8 +106,8 @@ namespace MouseRadar.Editor
         {
             get
             {
-                if( RotationSpeed < 5 ) return R.LowSpeed;
-                if( RotationSpeed < 10 ) return R.MediumSpeed;
+                if( RotationSpeed < 3 ) return R.LowSpeed;
+                if( RotationSpeed < 7 ) return R.MediumSpeed;
                 else return R.HighSpeed;
             }
         }

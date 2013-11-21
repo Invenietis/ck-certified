@@ -33,7 +33,7 @@ namespace MouseRadar
 
         float _blurredOpacity;
         float _focusedOpacity;
-        int _lapCount = 1; //TODO : 3, or configurable
+        int _lapCount = 2; //TODO : 3, or configurable
 
         Radar _radar;
 

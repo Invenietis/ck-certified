@@ -76,14 +76,14 @@
                                VerticalAlignment="Center" 
                                Margin="0 0 10 0" />
                     <StackPanel Width="170" HorizontalAlignment="Right">
-                        <Slider VerticalAlignment="Center" Minimum="1" Maximum="15" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding RotationSpeed}"/>
+                        <Slider VerticalAlignment="Center" Minimum="1" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding RotationSpeed}"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedRotationSpeed}" />
                     </StackPanel>
                 </DockPanel>
                 <DockPanel>
                     <TextBlock  x:Uid="turbo-speed"  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0"  Text="{x:Static r:R.RadarTranslationSpeed}" />
                     <StackPanel Width="170" HorizontalAlignment="Right">
-                        <Slider Minimum="1" Maximum="15" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding TranslationSpeed}"/>
+                        <Slider Minimum="1" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding TranslationSpeed}"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{Binding FormatedTranslationSpeed}" />
                     </StackPanel>
                 </DockPanel>

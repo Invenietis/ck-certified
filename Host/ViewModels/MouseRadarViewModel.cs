@@ -118,14 +118,6 @@ namespace Host.VM
 
             var g = this.AddGroup( );
 
-            //ConfigItemMillisecondProperty p2 = new ConfigItemMillisecondProperty( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, h => h.TimeBeforeCountDownStarts ) );
-            //p2.DisplayName = R.AutoClickTimeBeforeCountDownStarts;
-            //g.Items.Add( p2 );
-
-            //ConfigItemMillisecondProperty p = new ConfigItemMillisecondProperty( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, h => h.CountDownDuration ) );
-            //p.DisplayName = R.AutoClickCountDownDuration;
-            //g.Items.Add( p );
-
             g.AddProperty( "Taille du radar (rayon)", this, h => RadarSize );
 
             g.AddProperty( "Opacité du radar", this, h => Opacity );

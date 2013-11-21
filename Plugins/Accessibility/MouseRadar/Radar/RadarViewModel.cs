@@ -113,6 +113,7 @@ namespace MouseRadar
                     if( value >= AngleMax && value <= AngleMin )
                     {
                         _angle = value - AngleMax + AngleMin;
+                        LapCount++;
                     }
                     else if( value >= 360 ) _angle = value - 360; //When angle > 360 restart to 0
                     else _angle = value;
@@ -123,6 +124,7 @@ namespace MouseRadar
                     if( value >= AngleMax )
                     {
                         _angle = value - AngleMax + AngleMin;
+                        LapCount++; 
                     }
                     else if( value < AngleMin )
                     {
@@ -130,8 +132,6 @@ namespace MouseRadar
                     }
                     else _angle = value;
                 }
-
-                if( _angle == StartingAngle ) { LapCount++; Console.Out.WriteLine( "Lap++, new value : " + LapCount ); }
 
                 FirePropertyChanged( "Angle" );
             }

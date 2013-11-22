@@ -79,10 +79,27 @@ namespace KeyScroller
             // if there is no parent, go to normal next element
             if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
+            //IHighlightableElement parent = _currentElementParents.Pop();
+            //ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
+            //if( _currentElementParents.Count > 0 ) parentSiblings = _currentElementParents.Peek().Children;
+            //else parentSiblings = RegisteredElements;
+
+            //We get the parent and fetch its siblings
             IHighlightableElement parent = _currentElementParents.Pop();
             ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
-            if( _currentElementParents.Count > 0 ) parentSiblings = _currentElementParents.Peek().Children;
-            else parentSiblings = RegisteredElements;
+            if( _currentElementParents.Count > 0 )
+            {
+                parentSiblings = _currentElementParents.Peek().Children;
+            }
+            else
+            {
+                //there, we actually are at the root level
+                Debug.Assert( parent.IsHighlightableTreeRoot );
+                parentSiblings = RegisteredElements;
+
+                //If this tree is the only tree at the root level, we directly start iterating on its children
+                if( parentSiblings.Count == 1 ) return GetNextElement( ActionType.EnterChild );
+            }
 
             _currentId = parentSiblings.IndexOf( parent );
             nextElement = parent;

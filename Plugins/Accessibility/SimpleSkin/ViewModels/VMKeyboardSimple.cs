@@ -306,13 +306,16 @@ namespace SimpleSkin.ViewModels
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            IsHighlighting = true;
+
+            if( beginScrollingInfo.PreviousElement != this )
+                IsHighlighting = true;
             return scrollingDirective;
         }
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            IsHighlighting = false;
+            if( endScrollingInfo.ElementToBeHighlighted != this )
+                IsHighlighting = false;
             return scrollingDirective;
         }
 
@@ -369,6 +372,6 @@ namespace SimpleSkin.ViewModels
         }
 
         #endregion
-       
+
     }
 }

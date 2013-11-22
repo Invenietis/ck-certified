@@ -62,10 +62,10 @@ namespace SimpleSkin
 
         public bool IsViewHidden { get { return _viewHidden; } }
         public IPluginConfigAccessor Config { get; set; }
-        IHostManipulator _hostManipulator;
         VMContextCurrentKeyboardSimple _ctxVm;
-        SkinWindow _skinWindow;
+        IHostManipulator _hostManipulator;
         DispatcherTimer _timer;
+        SkinWindow _skinWindow;
         MiniViewVM _miniViewVm;
         MiniView _miniView;
         bool _forceClose;

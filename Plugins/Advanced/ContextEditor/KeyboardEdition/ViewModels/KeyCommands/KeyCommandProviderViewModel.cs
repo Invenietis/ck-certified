@@ -1,4 +1,5 @@
 ﻿using CK.Keyboard.Model;
+using CK.Plugin;
 using KeyboardEditor.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,18 @@ using System.Text;
 
 namespace KeyboardEditor.KeyboardEdition
 {
+
     public class KeyCommandProviderViewModel : INotifyPropertyChanged
     {
         Dictionary<string, KeyCommandTypeViewModel> _availableTypes;
         public IEnumerable<KeyCommandTypeViewModel> AvailableTypes { get { return _availableTypes.Values; } }
+        internal Dictionary<string, KeyCommandTypeViewModel> AvailableTypesInternal { get { return _availableTypes; } }
+
+        public KeyCommandProviderViewModel()
+        {
+            _availableTypes = new Dictionary<string, KeyCommandTypeViewModel>();
+            KeyCommand = new KeyCommandViewModel();
+        }
 
         public KeyCommandTypeViewModel SelectedKeyCommandType
         {
@@ -45,18 +54,6 @@ namespace KeyboardEditor.KeyboardEdition
             }
         }
 
-        public KeyCommandProviderViewModel( ICollection<IKeyboard> keyboards )
-        {
-            _availableTypes = new Dictionary<string, KeyCommandTypeViewModel>();
-
-            //TODO: implement a register behavior
-            _availableTypes.Add( "sendString", new KeyCommandTypeViewModel( "sendString", "Ecrire une lettre ou une phrase", "Permet d'écrire n'importe quelle chaine de caractère", typeof( SimpleKeyCommandParameterManager ) ) );
-            _availableTypes.Add( "sendKey", new KeyCommandTypeViewModel( "sendKey", "Touche spéciale (F11, Entrée, Suppr ...)", "Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...", typeof( SendKeyCommandParameterManager ) ) );
-            _availableTypes.Add( "keyboardswitch", new KeyCommandTypeViewModel( "keyboardswitch", "Changer de clavier", "Permet de changer de clavier", new Func<SwitchKeyboardCommandParameterManager>( () => { return new SwitchKeyboardCommandParameterManager( keyboards ); } ) ) );
-
-            KeyCommand = new KeyCommandViewModel();
-        }
-
         public void FlushCurrentKeyCommand()
         {
             SelectedKeyCommandType = null;
@@ -73,27 +70,31 @@ namespace KeyboardEditor.KeyboardEdition
             KeyCommand = new KeyCommandViewModel();
 
             //not using the Split method in order to let a parameter use the ':' char
-            string innerName = keyCommand.Substring( 0, keyCommand.IndexOf( ':' ) );
-            string parameter = keyCommand.Substring( keyCommand.IndexOf( ':' ) + 1 );
+            int idx = keyCommand.IndexOf( ':' );
+            string protocol = keyCommand.Substring( 0, idx );
+            string parameter = keyCommand.Substring( idx + 1 );
 
-            KeyCommand.Type = GetKeyCommandType( innerName );
+            KeyCommand.Type = GetKeyCommandType( protocol );
             SelectedKeyCommandType = KeyCommand.Type;
             if( KeyCommand.Type.IsValid )
             {
                 KeyCommand.Parameter = SelectedKeyCommandType.CreateParameterManager();
+                if( KeyCommand.Parameter == null ) throw new ArgumentNullException( String.Format( "Null value retrieved while trying to retrieve the IKeyCommandParameterManager for the KeyCommandTypeViewModel handling the protocol '{0}'", protocol ) );
+
                 KeyCommand.Parameter.FillFromString( parameter );
             }
             OnPropertyChanged( "KeyCommand" );
         }
 
-        public KeyCommandTypeViewModel GetKeyCommandType( string innerName )
+        public KeyCommandTypeViewModel GetKeyCommandType( string protocol )
         {
-            //If the innerName is not recognized, we'll add an Invalid KeyCommandType.
-            KeyCommandTypeViewModel keyCommandType = new KeyCommandTypeViewModel( innerName, innerName );
-            _availableTypes.TryGetValue( innerName, out keyCommandType );
+            //If the protocol is not recognized, we'll add an Invalid KeyCommandType.
+            KeyCommandTypeViewModel keyCommandType = new KeyCommandTypeViewModel( protocol, protocol );
+            _availableTypes.TryGetValue( protocol, out keyCommandType );
             return keyCommandType;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }

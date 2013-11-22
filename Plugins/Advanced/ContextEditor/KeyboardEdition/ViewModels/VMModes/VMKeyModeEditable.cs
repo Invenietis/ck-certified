@@ -51,12 +51,7 @@ namespace KeyboardEditor.ViewModels
                 _commands.Add( cmd );
             }
 
-            //TODO : implement a registering behavior
-            _keyCommandTypeProvider = new KeyCommandProviderViewModel(Context.KeyboardContext.Keyboards.ToList());
-
             RegisterEvents();
-
-
         }
 
         #region Properties
@@ -322,7 +317,7 @@ namespace KeyboardEditor.ViewModels
         KeyCommandProviderViewModel _keyCommandTypeProvider;
         public KeyCommandProviderViewModel KeyCommandTypeProvider
         {
-            get { return _keyCommandTypeProvider; }
+            get { return Context.ProtocolManagerService.Service.KeyCommandProviderViewModel; }
             set
             {
                 _keyCommandTypeProvider = value;

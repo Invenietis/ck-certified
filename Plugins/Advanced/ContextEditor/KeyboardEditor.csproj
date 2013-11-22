@@ -135,6 +135,8 @@
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
     <Compile Include="KeyboardEdition\BreadcrumbTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\IProtocolManagerRegisteringService.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\ProtocoleManagerService.cs" />
     <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SwitchKeyboardCommandParameter.cs" />
     <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SendKeyCommandParameter.cs" />
     <Compile Include="KeyboardEdition\ViewModels\KeyCommands\IKeyCommandParameter.cs" />

@@ -33,7 +33,7 @@ namespace KeyboardEditor.KeyboardEdition
         IKeyCommandParameterManager _parameter;
         /// <summary>
         /// The parameter of the KeyCommand. For a SendString, the parameter will be the value to be sent.
-        /// This object needs to implement <see cref="IKeyCommandParameterManager"/>. The result of the call to <see cref="IKeyCommandParameterManager.GetCommandString()"/> will be set after the <see cref="InnerName"/> and its following ":".
+        /// This object needs to implement <see cref="IKeyCommandParameterManager"/>. The result of the call to <see cref="IKeyCommandParameterManager.GetCommandString()"/> will be set after the <see cref="Protocol"/> and its following ":".
         /// (ex: if the parameter returns "Hello" and the KeyCommand Name is "sendString", the ToString() result will be "sendString:Hello")
         /// </summary>
         public IKeyCommandParameterManager Parameter
@@ -68,7 +68,7 @@ namespace KeyboardEditor.KeyboardEdition
 
         public override string ToString()
         {
-            return String.Format( "{0}:{1}", Type.InnerName, Parameter.GetParameterString() );
+            return String.Format( "{0}:{1}", Type.Protocol, Parameter.GetParameterString() );
         }
 
         private void OnPropertyChanged( string propertyName )

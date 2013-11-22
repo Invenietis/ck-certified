@@ -12,15 +12,15 @@ namespace KeyboardEditor.KeyboardEdition
         /// Valid Constructor for a KeyCommandType, this object must be capable of creating on the fly its KeyCommandParameterManager.
         /// Here by using Activator.CreateInstance(Type).
         /// </summary>
-        /// <param name="innerName">Will be used as key of a dictionary. Must be unique.</param>
+        /// <param name="protocol">The protocol that is handled.</param>
         /// <param name="name">The name displayed in the list of available editors. Must be multilingual.</param>
         /// <param name="description">A description of the protocol that is handled by this object. Must be multilingual.</param>
         /// <param name="keyCommandParameterManagerType">The type of the IKeyCommandParameterMaanger that handles the parameters of this protocol. Must implement IKeyCommandParameter.</param>
-        public KeyCommandTypeViewModel( string innerName, string name, string description, Type keyCommandParameterManagerType )
+        public KeyCommandTypeViewModel( string protocol, string name, string description, Type keyCommandParameterManagerType )
         {
-            if( !typeof( IKeyCommandParameterManager ).IsAssignableFrom( keyCommandParameterManagerType ) ) throw new ArgumentException( String.Format( "The keyCommandParameterType ({0}) for the KeyCommandType {1} doesn't implement IKeyCommandParameter", keyCommandParameterManagerType.ToString(), innerName ) );
+            if( !typeof( IKeyCommandParameterManager ).IsAssignableFrom( keyCommandParameterManagerType ) ) throw new ArgumentException( String.Format( "The keyCommandParameterType ({0}) for the KeyCommandType {1} doesn't implement IKeyCommandParameter", keyCommandParameterManagerType.ToString(), protocol ) );
 
-            InnerName = innerName;
+            Protocol = protocol;
             Name = name;
             Description = description;
             CreateParameterManager = new Func<IKeyCommandParameterManager>( () => { return (IKeyCommandParameterManager)Activator.CreateInstance( keyCommandParameterManagerType ); } );
@@ -32,16 +32,14 @@ namespace KeyboardEditor.KeyboardEdition
         /// Valid Constructor for a KeyCommandType, this object must be capable of creating on the fly its KeyCommandParameterManager.
         /// Here by using the Func set as parameter.
         /// </summary>
-        /// <param name="innerName">Will be used as key of a dictionary. Must be unique.</param>
+        /// <param name="protocol">The protocol that is handled.</param>
         /// <param name="name">The name displayed in the list of available editors. Must be multilingual.</param>
         /// <param name="description">A description of the protocol that is handled by this object. Must be multilingual.</param>
         /// <param name="keyCommandParameterManagerFunc">A Func that returns an instance of an implementation of IKeyCommandParameterManager that handles a protocol. Must not return null.</param>
-        public KeyCommandTypeViewModel( string innerName, string name, string description, Func<IKeyCommandParameterManager> keyCommandParameterManagerFunc )
+        public KeyCommandTypeViewModel( string protocol, string name, string description, Func<IKeyCommandParameterManager> keyCommandParameterManagerFunc )
         {
-            //var returnValue = keyCommandParameterManagerFunc();
-            //if( returnValue == null ) throw new ArgumentNullException( String.Format( "Null value retrieved while trying to retrieve the IKeyCommandParameterMaanger for the KeyCommandTypeViewModel named {0} ({1})", innerName, name ) );
-
-            InnerName = innerName;
+            
+            Protocol = protocol;
             Name = name;
             Description = description;
             CreateParameterManager = keyCommandParameterManagerFunc;
@@ -50,16 +48,16 @@ namespace KeyboardEditor.KeyboardEdition
         /// <summary>
         /// Internal ctor used to create an invalid KeyCommandTypeViewModel
         /// </summary>
-        internal KeyCommandTypeViewModel( string innerName, string name )
+        internal KeyCommandTypeViewModel( string protocol, string name )
         {
-            InnerName = innerName;
+            Protocol = protocol;
             Name = name;
         }
 
         /// <summary>
-        /// Gets whether the current KeyCommandType InnerName is recognized by a registered command handler
+        /// Gets whether the current KeyCommandType Protocol is recognized by a registered command handler
         /// </summary>
-        public bool IsValid { get { return !String.IsNullOrWhiteSpace( InnerName ); } }
+        public bool IsValid { get { return !String.IsNullOrWhiteSpace( Protocol ); } }
 
         /// <summary>
         /// Gets a user-friendly name (displayed to the user : must be multilingual)
@@ -71,7 +69,7 @@ namespace KeyboardEditor.KeyboardEdition
         /// </summary>
         public string Description { get; internal set; }
 
-        public string InnerName { get; private set; }
+        public string Protocol { get; private set; }
 
         ///// <summary>
         ///// The object that will handle the parameter of the KeyCommand handled by this object.

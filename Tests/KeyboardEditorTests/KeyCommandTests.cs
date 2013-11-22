@@ -23,7 +23,7 @@ namespace KeyboardEditorTests
 
             Assert.NotNull( provider.KeyCommand );
             Assert.That( provider.KeyCommand.Type.Description == "Permet d'écrire n'importe quelle chaine de caractère" );
-            Assert.That( provider.KeyCommand.Type.InnerName == "sendString" );
+            Assert.That( provider.KeyCommand.Type.Protocol == "sendString" );
             Assert.That( provider.KeyCommand.Type.Name == "Ecrire une lettre ou une phrase" );
             Assert.IsTrue( provider.KeyCommand.Type.IsValid );
 
@@ -43,7 +43,7 @@ namespace KeyboardEditorTests
 
             Assert.NotNull( provider.KeyCommand );
             Assert.That( provider.KeyCommand.Type.Description == "Permet de simuler la pression sur une touche sépciale comme Entrée, les touches F1..12, Effacer, Suppr etc..." );
-            Assert.That( provider.KeyCommand.Type.InnerName == "sendKey" );
+            Assert.That( provider.KeyCommand.Type.Protocol == "sendKey" );
             Assert.That( provider.KeyCommand.Type.Name == "Touche spéciale (F11, Entrée, Suppr ...)" );
             Assert.IsTrue( provider.KeyCommand.Type.IsValid );
 

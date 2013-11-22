@@ -107,8 +107,8 @@ namespace MouseRadar.Editor
             get
             {
                 if( RotationSpeed < 3 ) return R.LowSpeed;
-                if( RotationSpeed < 7 ) return R.MediumSpeed;
-                else return R.HighSpeed;
+                if( RotationSpeed > 3 ) return R.HighSpeed;
+                else return R.MediumSpeed;
             }
         }
 

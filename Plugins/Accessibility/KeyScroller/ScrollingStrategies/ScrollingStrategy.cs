@@ -280,7 +280,7 @@ namespace KeyScroller
         /// <summary>
         /// if the directive is to react instantly, we stop the timer, simulate a tick, and relaunch the timer.
         /// </summary>
-        private void EnsureReactivity()
+        internal void EnsureReactivity()
         {
             if( _lastDirective != null && _lastDirective.ActionTime == ActionTime.Immediate )
             {

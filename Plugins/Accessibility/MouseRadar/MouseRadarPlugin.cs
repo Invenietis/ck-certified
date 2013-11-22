@@ -222,7 +222,7 @@ namespace MouseRadar
 
         public bool IsHighlightableTreeRoot
         {
-            get { return true; }
+            get { return _radar.CurrentStep == RadarStep.Paused; }//if the radar is not paused, it is scrolling, so we actually are NOT on the root, we are on a virtual step that is child of the root.
         }
 
         #endregion

@@ -77,8 +77,6 @@ namespace KeyScroller
             if( _currentElement != null )
             {
                 FireSelectElement();
-                //Commented because the element itself will tell the scroller where it should go from now
-                //_actionType = ActionType.UpToParent; 
             }
         }
     }

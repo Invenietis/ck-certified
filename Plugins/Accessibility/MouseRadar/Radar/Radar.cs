@@ -94,20 +94,25 @@ namespace MouseRadar
             UpdateLocation( _mouseDriver.CurrentPointerXLocation, _mouseDriver.CurrentPointerYLocation );
         }
 
-        const int rotationWeight = 100; //angle rotation weight (used to balance calculation of the rotation tick).
-        const int distanceWeight = 200; //pixels movement weight (used to balance calculation of the translation tick).
+        double weight = 40;
 
         void ProcessScrollingTick( TimeSpan newScrollingTick )
         {
-            if( newScrollingTick != _previousScrollingTick )
+            //Making sure the inner timers don't get a tick interval < 1 ms
+            if( newScrollingTick.TotalMilliseconds < weight ) newScrollingTick = new TimeSpan( 0, 0, 0, 0, (int)weight );
+
+            if( newScrollingTick.TotalMilliseconds != _previousScrollingTick.TotalMilliseconds )
             {
                 _previousScrollingTick = newScrollingTick;
 
-                int rotateTickTime = (int)( RotationSpeed * newScrollingTick.TotalMilliseconds ) / rotationWeight; //interval between two ticks for the rotation timer
-                _timerRotate.Interval = new TimeSpan( 0, 0, 0, 0, rotateTickTime );
+                double rotateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
+                _timerRotate.Interval = new TimeSpan( (long)rotateNanoTickTime );
 
-                int translateTickTime = (int)( TranslationSpeed * newScrollingTick.TotalMilliseconds ) / distanceWeight; //interval between two ticks for the translation timer
-                _timerTranslate.Interval = new TimeSpan( 0, 0, 0, 0, translateTickTime );
+                double translateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
+                _timerTranslate.Interval = new TimeSpan( (int)translateNanoTickTime );
+
+                //Console.Out.WriteLine( "Actual New beat : " + rotateNanoTickTime );
+                //Console.Out.WriteLine( "" );
             }
         }
 

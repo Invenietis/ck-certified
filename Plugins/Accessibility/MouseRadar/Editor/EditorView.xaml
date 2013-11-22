@@ -76,7 +76,7 @@
                                VerticalAlignment="Center" 
                                Margin="0 0 10 0" />
                     <StackPanel Width="170" HorizontalAlignment="Right">
-                        <Slider VerticalAlignment="Center" Minimum="1" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding RotationSpeed}"/>
+                        <Slider VerticalAlignment="Center" Minimum="1" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding RotationSpeed}"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedRotationSpeed}" />
                     </StackPanel>
                 </DockPanel>

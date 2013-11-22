@@ -28,11 +28,21 @@
                 </DockPanel>
             </DataTemplate>
 
+            <DataTemplate x:Key="switchkeyboarddatatemplate">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" Text="Nom du clavier : "></TextBlock>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedKeyboard}"></ComboBox>
+                </DockPanel>
+            </DataTemplate>
+
             <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:NotNullConverter x:Key="notnullconverter"/>
             <ckc:NotConverter x:Key="notconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
-            <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" SendStringDataTemplate="{StaticResource sendstringdatatemplate}" SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" />
+            <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" 
+                                              SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
+                                              SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" 
+                                              SwitchKeyboardDataTemplate="{StaticResource switchkeyboarddatatemplate}"/>
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>

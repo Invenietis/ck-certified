@@ -12,16 +12,9 @@ namespace KeyboardEditor.KeyboardEdition
     /// </summary>
     public class KeyCommandViewModel : INotifyPropertyChanged
     {
-        KeyCommandProviderViewModel _typeProvider;
-
-        public KeyCommandViewModel( KeyCommandProviderViewModel typeProvider )
-        {
-            _typeProvider = typeProvider;
-        }
-
         KeyCommandTypeViewModel _type;
         /// <summary>
-        /// The type of action. Contains a user friendly name, its inner name (user by the commadn handler) and a small description of what it does.
+        /// The type of action. Contains a user friendly name, its inner name (used by the command handler) and a small description of what it does.
         /// </summary>
         public KeyCommandTypeViewModel Type
         {
@@ -41,7 +34,7 @@ namespace KeyboardEditor.KeyboardEdition
         /// <summary>
         /// The parameter of the KeyCommand. For a SendString, the parameter will be the value to be sent.
         /// This object needs to implement <see cref="IKeyCommandParameterManager"/>. The result of the call to <see cref="IKeyCommandParameterManager.GetCommandString()"/> will be set after the <see cref="InnerName"/> and its following ":".
-        /// (ex: if the parameter returns "Hello" and the KeyCommand Name is "sendString", the result will be "sendString:Hello")
+        /// (ex: if the parameter returns "Hello" and the KeyCommand Name is "sendString", the ToString() result will be "sendString:Hello")
         /// </summary>
         public IKeyCommandParameterManager Parameter
         {

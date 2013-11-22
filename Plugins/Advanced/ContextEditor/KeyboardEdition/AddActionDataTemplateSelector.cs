@@ -12,6 +12,7 @@ namespace KeyboardEditor.ViewModels
     {
         public DataTemplate SendStringDataTemplate { get; set; }
         public DataTemplate SendKeyDataTemplate { get; set; }
+        public DataTemplate SwitchKeyboardDataTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
@@ -21,6 +22,7 @@ namespace KeyboardEditor.ViewModels
 
             if( keyCommandViewModel is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
             if( keyCommandViewModel is SendKeyCommandParameterManager ) return SendKeyDataTemplate;
+            if( keyCommandViewModel is SwitchKeyboardCommandParameterManager ) return SwitchKeyboardDataTemplate;
 
             throw new ArgumentException( String.Format( "The Bound object of the AddActionDataTemplateSelector : \"{0}\" is not of a recognized type.", keyCommandViewModel.GetType() ) );
         }

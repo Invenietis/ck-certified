@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CK.Keyboard.Model;
+using KeyboardEditor.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -17,7 +19,8 @@ namespace KeyboardEditor.KeyboardEdition
             set
             {
                 KeyCommand.Type = value;
-                if( value != null ) KeyCommand.Parameter = CreateKeyCommandParameter( KeyCommand.Type );
+                if( value != null ) KeyCommand.Parameter = KeyCommand.Type.CreateParameterManager();
+
                 OnPropertyChanged( "KeyCommand" );
                 OnPropertyChanged( "SelectedKeyCommandType" );
             }
@@ -29,6 +32,9 @@ namespace KeyboardEditor.KeyboardEdition
         }
 
         KeyCommandViewModel _keyCommand;
+        /// <summary>
+        /// The KeyCommand currently displayed and used in the editor.
+        /// </summary>
         public KeyCommandViewModel KeyCommand
         {
             get { return _keyCommand; }
@@ -39,15 +45,16 @@ namespace KeyboardEditor.KeyboardEdition
             }
         }
 
-        public KeyCommandProviderViewModel()
+        public KeyCommandProviderViewModel( ICollection<IKeyboard> keyboards )
         {
             _availableTypes = new Dictionary<string, KeyCommandTypeViewModel>();
 
             //TODO: implement a register behavior
             _availableTypes.Add( "sendString", new KeyCommandTypeViewModel( "sendString", "Ecrire une lettre ou une phrase", "Permet d'écrire n'importe quelle chaine de caractère", typeof( SimpleKeyCommandParameterManager ) ) );
-            _availableTypes.Add( "sendKey", new KeyCommandTypeViewModel( "sendKey", "Touche spéciale (F11, Entrée, Suppr ...)", "Permet de simuler la pression sur une touche sépciale comme Entrée, les touches F1..12, Effacer, Suppr etc...", typeof( SendKeyCommandParameterManager ) ) );
+            _availableTypes.Add( "sendKey", new KeyCommandTypeViewModel( "sendKey", "Touche spéciale (F11, Entrée, Suppr ...)", "Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...", typeof( SendKeyCommandParameterManager ) ) );
+            _availableTypes.Add( "keyboardswitch", new KeyCommandTypeViewModel( "keyboardswitch", "Changer de clavier", "Permet de changer de clavier", new Func<SwitchKeyboardCommandParameterManager>( () => { return new SwitchKeyboardCommandParameterManager( keyboards ); } ) ) );
 
-            KeyCommand = new KeyCommandViewModel( this );
+            KeyCommand = new KeyCommandViewModel();
         }
 
         public void FlushCurrentKeyCommand()
@@ -58,12 +65,12 @@ namespace KeyboardEditor.KeyboardEdition
 
         public void InitializeKeyCommand()
         {
-            KeyCommand = new KeyCommandViewModel( this );
+            KeyCommand = new KeyCommandViewModel();
         }
 
         public void CreateKeyCommand( string keyCommand )
         {
-            KeyCommand = new KeyCommandViewModel( this );
+            KeyCommand = new KeyCommandViewModel();
 
             //not using the Split method in order to let a parameter use the ':' char
             string innerName = keyCommand.Substring( 0, keyCommand.IndexOf( ':' ) );
@@ -72,30 +79,19 @@ namespace KeyboardEditor.KeyboardEdition
             KeyCommand.Type = GetKeyCommandType( innerName );
             SelectedKeyCommandType = KeyCommand.Type;
             if( KeyCommand.Type.IsValid )
-                KeyCommand.Parameter = CreateKeyCommandParameter( KeyCommand.Type, parameter );
+            {
+                KeyCommand.Parameter = SelectedKeyCommandType.CreateParameterManager();
+                KeyCommand.Parameter.FillFromString( parameter );
+            }
             OnPropertyChanged( "KeyCommand" );
         }
 
         public KeyCommandTypeViewModel GetKeyCommandType( string innerName )
         {
             //If the innerName is not recognized, we'll add an Invalid KeyCommandType.
-            KeyCommandTypeViewModel keyCommandType = new KeyCommandTypeViewModel() { InnerName = innerName, Name = innerName };
+            KeyCommandTypeViewModel keyCommandType = new KeyCommandTypeViewModel( innerName, innerName );
             _availableTypes.TryGetValue( innerName, out keyCommandType );
             return keyCommandType;
-        }
-
-        private IKeyCommandParameterManager CreateKeyCommandParameter( KeyCommandTypeViewModel keyCommandType )
-        {
-            IKeyCommandParameterManager keyCommandParameterManager = (IKeyCommandParameterManager)Activator.CreateInstance( keyCommandType.KeyCommandParameterType );
-            return keyCommandParameterManager;
-        }
-
-        private IKeyCommandParameterManager CreateKeyCommandParameter( KeyCommandTypeViewModel keyCommandType, string parameter )
-        {
-            IKeyCommandParameterManager keyCommandParameterManager = (IKeyCommandParameterManager)Activator.CreateInstance( keyCommandType.KeyCommandParameterType );
-            keyCommandParameterManager.FillFromString( parameter );
-
-            return keyCommandParameterManager;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

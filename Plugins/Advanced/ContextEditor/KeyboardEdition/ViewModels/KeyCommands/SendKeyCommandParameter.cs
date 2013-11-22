@@ -34,7 +34,7 @@ namespace KeyboardEditor.KeyboardEdition
             _values.Add( "Fleche vers la gauche", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.Left );
             _values.Add( "Flèche vers la droite", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.Right );
 
-            //TODO : Where is the "beginiing of the line" key ?
+            //TODO : Where is the "beginning of the line" key ?
             _values.Add( "Echap", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.Escape );
             _values.Add( "Fin", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.End );
             _values.Add( "Insert", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.Insert );

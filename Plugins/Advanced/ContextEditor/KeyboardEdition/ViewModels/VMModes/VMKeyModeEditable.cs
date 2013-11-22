@@ -52,7 +52,7 @@ namespace KeyboardEditor.ViewModels
             }
 
             //TODO : implement a registering behavior
-            _keyCommandTypeProvider = new KeyCommandProviderViewModel();
+            _keyCommandTypeProvider = new KeyCommandProviderViewModel(Context.KeyboardContext.Keyboards.ToList());
 
             RegisterEvents();
 

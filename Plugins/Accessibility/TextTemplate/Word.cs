@@ -15,6 +15,7 @@ namespace TextTemplate
     {
         protected string _text;
         protected bool _isHighlighted;
+        protected TextTemplate _textTemplate;
 
         public bool IsEditable { get; private set; }
 
@@ -31,11 +32,12 @@ namespace TextTemplate
 
         public string Placeholder { get; set; }
 
-        public Word(bool editable, string text)
+        public Word(bool editable, string text, TextTemplate tt)
         {
             IsEditable = editable;
             _text = text;
             Placeholder = "";
+            _textTemplate = tt;
         }
 
         public Word()
@@ -81,6 +83,32 @@ namespace TextTemplate
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
+        {
+            IsHighlighted = true;
+            if(_textTemplate != null) _textTemplate.FocusOnElement(this);
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight(EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective)
+        {
+            IsHighlighted = false;
+
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement(ScrollingDirective scrollingDirective)
+        {
+            scrollingDirective.NextActionType = HighlightModel.ActionType.AbsoluteRoot;
+            
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
+        }
     }
 
     //New line !

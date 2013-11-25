@@ -54,53 +54,7 @@ namespace TextTemplate
             base.Start();
             Skip = SkippingBehavior.Skip;
             Highlighter.Service.RegisterTree(this);
-            Highlighter.Service.BeginHighlight += (o, e) =>
-            {
-                if(e.Element == this)
-                {
-                    foreach(var elem in Children)
-                    {
-                        IActionableElement aElem = elem as IActionableElement;
-                        if (aElem != null && aElem.ActionType == ActionType.UpToParent) aElem.ActionType = ActionType.Normal;
-                    }
-                }
-                else 
-                {
-                    if (e.Element is IHighlightable)
-                    {
-                        IHighlightable h = (IHighlightable)e.Element;
-                        h.IsHighlighted = true;
-                    }
-                    if (e.Element is IText)
-                    {
-                        IText t = (IText)e.Element;
-                        _viewModel.Template.TextFragments.IndexOf(x => x.IsHighlighted == true);
-                        Console.WriteLine("Text highlighted : " + t.Text);
-                        _editor.FocusOnElement(t);
-                    }
-                }
-            };
-            Highlighter.Service.SelectElement += (o, e) =>
-            {
-                if(e.Element is IText)
-                {
-                    IText t = (IText)e.Element;
-                    t.ActionType = ActionType.UpToParent;
-                }
-                else if (e.Element is ICommand)
-                {
-                    ICommand cmd = e.Element as ICommand;
-                    cmd.Execute(null);
-                }
-            };
-            Highlighter.Service.EndHighlight += (o, e) =>
-            {
-                if (e.Element is IHighlightable)
-                {
-                    IHighlightable h = (IHighlightable)e.Element;
-                    h.IsHighlighted = false;
-                }
-            };
+            
         }
 
         protected override void OnCommandSent(object sender, CommandSentEventArgs e)
@@ -114,7 +68,7 @@ namespace TextTemplate
 
         public void LaunchEditor(string template)
         {
-            _viewModel.Template = Template.Load(template);
+            _viewModel.Template = Template.Load(template, this);
             if (_editor != null) _editor.Close();
             _editor = new TemplateEditor(_viewModel);
             var list = _viewModel.Template.TextFragments.Where(t => t.IsEditable == true)
@@ -173,6 +127,31 @@ namespace TextTemplate
         {
             get;
             private set;
+        }
+
+        public void FocusOnElement(IText text)
+        {
+            if (_editor != null) _editor.FocusOnElement(text);
+        }
+
+        public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
+        {
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight(EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective)
+        {
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement(ScrollingDirective scrollingDirective)
+        {
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
         }
     }
 

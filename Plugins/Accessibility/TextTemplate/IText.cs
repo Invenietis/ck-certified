@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TextTemplate
 {
-    public interface IText : IActionableElement, IHighlightable
+    public interface IText : IHighlightableElement, IHighlightable
     {
         /// <summary>
         /// True if the property Text is writeable

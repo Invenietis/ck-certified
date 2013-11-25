@@ -25,7 +25,7 @@ namespace TextTemplate
         /// </summary>
         /// <param name="tmpl"></param>
         /// <returns></returns>
-        public static Template Load(string tmpl)
+        public static Template Load(string tmpl, TextTemplate tt)
         {
             Template template = new Template();
             List<IText> textFragments = new List<IText>();
@@ -47,20 +47,20 @@ namespace TextTemplate
                         var fragments = staticText.Split(new string[] { " " }, StringSplitOptions.None);
                         for (int i = 0; i < fragments.Length; i++ )
                         {
-                            if (fragments[i].Length > 0 ) SplitNewlines(textFragments, fragments[i]);
+                            if (fragments[i].Length > 0 ) SplitNewlines(textFragments, fragments[i], tt);
                             if (i < fragments.Length - 1) //not add to the end to avoid duplicates whitespaces
                                 textFragments.Add(new WhiteSpace());
                         }
                     }
                     else
                     {
-                        SplitNewlines(textFragments, staticText);
+                        SplitNewlines(textFragments, staticText, tt);
                     }
                 }
 
                 //Editable text
                 text = textFragments.SingleOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
-                if(text == null) text = new Word(true, m.Groups["token"].Value); //if not, create a new one
+                if(text == null) text = new Word(true, m.Groups["token"].Value, tt); //if not, create a new one
                 text.Placeholder = m.Value;
                 textFragments.Add(text);
 
@@ -73,7 +73,7 @@ namespace TextTemplate
             if (prevIndex < tmpl.Length)
             {
                 staticText = tmpl.Substring(prevIndex);
-                text = new Word(false, staticText);
+                text = new Word(false, staticText, tt);
                 textFragments.Add(text);
                 template._stringToFormat += staticText;
             }
@@ -82,7 +82,7 @@ namespace TextTemplate
             return template;
         }
 
-        static void SplitNewlines(List<IText> textFragments, string staticText)
+        static void SplitNewlines(List<IText> textFragments, string staticText, TextTemplate tt)
         {
             IText text;
 
@@ -94,7 +94,7 @@ namespace TextTemplate
                 {
                     if (newLineFragments[i].Length > 0)
                     {
-                        text = new Word(false, newLineFragments[i]);
+                        text = new Word(false, newLineFragments[i], tt);
                         textFragments.Add(text);
                     }
                     if (i < newLineFragments.Length - 1) //avoid duplicates new line
@@ -103,7 +103,7 @@ namespace TextTemplate
             }
             else
             {
-                text = new Word(false, staticText);
+                text = new Word(false, staticText, tt);
                 textFragments.Add(text);
             }
         }

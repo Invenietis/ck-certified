@@ -116,5 +116,28 @@ namespace TextTemplate
         {
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
         }
+
+        public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
+        {
+            IsHighlighted = true;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight(EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective)
+        {
+            IsHighlighted = false;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement(ScrollingDirective scrollingDirective)
+        {
+            Execute(null);
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
+        }
     }
 }

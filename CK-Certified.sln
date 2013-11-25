@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{0C102B01-5ABA-4CC9-B531-78ECC48390F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{A33C8EA5-8043-4FD3-88E7-EC271AB68849}"
@@ -99,13 +101,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineHelp", "Plugins\Acces
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowManager.Model", "Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj", "{FDA960F6-D429-4696-9306-B473DAE41E5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseRadar", "Plugins\Accessibility\MouseRadar\MouseRadar.csproj", "{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.Certified.WindowManager.Test", "CK.Certified.WindowManager.Test\CK.Certified.WindowManager.Test.csproj", "{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowManager", "Plugins\Accessibility\CK.WindowManager\CK.WindowManager.csproj", "{968FC28C-D500-41AA-AB45-0FC4581B8713}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputTrigger", "Plugins\Accessibility\InputTrigger\InputTrigger.csproj", "{1B0EA719-1F21-4448-9FFA-BFAEBC78ECC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextTemplate", "Plugins\Accessibility\TextTemplate\TextTemplate.csproj", "{1C375DA4-D92C-4C92-9D82-DE9F4C417842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -439,16 +441,6 @@ Global
 		{FDA960F6-D429-4696-9306-B473DAE41E5B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FDA960F6-D429-4696-9306-B473DAE41E5B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FDA960F6-D429-4696-9306-B473DAE41E5B}.Release|x86.ActiveCfg = Release|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB}.Release|x86.ActiveCfg = Release|Any CPU
 		{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F41AB2-B70E-41F7-BB2F-E0A1AAFA2829}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -479,6 +471,16 @@ Global
 		{1B0EA719-1F21-4448-9FFA-BFAEBC78ECC4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1B0EA719-1F21-4448-9FFA-BFAEBC78ECC4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1B0EA719-1F21-4448-9FFA-BFAEBC78ECC4}.Release|x86.ActiveCfg = Release|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -506,9 +508,9 @@ Global
 		{99BB5255-DEA7-4548-A402-9DB077D195B7} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{61618F4C-1288-401F-8644-77990429918C} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{C7FBC63F-0E23-4560-A00C-21D61B70F2DA} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
-		{42BBFFFD-394B-49EC-9FE1-925D6A94EDBB} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{968FC28C-D500-41AA-AB45-0FC4581B8713} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{1B0EA719-1F21-4448-9FFA-BFAEBC78ECC4} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
+		{1C375DA4-D92C-4C92-9D82-DE9F4C417842} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{D0B46798-1A2E-420D-8B1D-1FCB3537E468} = {ADA48170-FF14-4038-A48B-64608BA3F01F}
 		{8E610388-F400-4D3E-83A2-A91A04B55558} = {ADA48170-FF14-4038-A48B-64608BA3F01F}
 		{6C45425E-6768-42E3-B0A5-4D603EB14426} = {03B3EFBD-880C-4ED6-9892-26C09E423919}

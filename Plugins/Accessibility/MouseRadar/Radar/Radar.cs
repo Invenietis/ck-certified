@@ -22,18 +22,26 @@ namespace MouseRadar
 
     public partial class Radar : IDisposable
     {
+        public static readonly int ROTATION_DELAY = 5000; //milliseconds
+
         IPointerDeviceDriver _mouseDriver;
         //int _translationDirection = 1;
         //int _rotationDirection = 1;
         int _originX;
         int _originY;
         int _rayon;
+        Stopwatch _watch;
 
         ScreenBound _previousCollision = ScreenBound.None;
         DispatcherTimer _timerRotate;
         DispatcherTimer _timerTranslate;
         internal double Radian { get; private set; }
 
+        /// <summary>
+        /// Fired when the rotation delay is reached
+        /// </summary>
+        public event EventHandler RotationDelayExpired;
+        
         /// <summary>
         /// Gets or sets the number of ticks required to move the mouse to a total of 300 pixels
         /// </summary>
@@ -159,6 +167,7 @@ namespace MouseRadar
 
         void StartRotation()
         {
+            _watch = Stopwatch.StartNew();
             CurrentStep = RadarStep.Rotating;
             _timerRotate.Start();
         }
@@ -166,11 +175,23 @@ namespace MouseRadar
         void StopRotation()
         {
             _timerRotate.Stop();
+            _watch.Stop();
         }
 
         void ProcessRotation( object sender, EventArgs e )
         {
+            if (_watch.ElapsedMilliseconds >= ROTATION_DELAY)
+            {
+                FireRotationDelayExpired();
+                _watch = Stopwatch.StartNew();
+            }
+
             ViewModel.Angle += (float)RotationSpeed / 1f;
+        }
+
+        private void FireRotationDelayExpired()
+        {
+            if (RotationDelayExpired != null) RotationDelayExpired(this, new EventArgs());
         }
 
         #endregion

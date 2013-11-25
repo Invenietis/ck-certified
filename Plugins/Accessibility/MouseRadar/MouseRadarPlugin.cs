@@ -28,12 +28,11 @@ namespace MouseRadar
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "Mouse Radar";
-
+        bool _yield;
         public bool IsActive { get { return _radar.CurrentStep != RadarStep.Paused; } }
 
         float _blurredOpacity;
         float _focusedOpacity;
-        int _lapCount = 2; //TODO : 3, or configurable
 
         Radar _radar;
 
@@ -101,6 +100,10 @@ namespace MouseRadar
             _radar.Initialize();
             Pause();
             Configuration.ConfigChanged += OnConfigChanged;
+            _radar.RotationDelayExpired += (o, e) =>
+            {
+                _yield = true;
+            };
         }
 
         public void Stop()
@@ -184,7 +187,7 @@ namespace MouseRadar
             else //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, we relay the scroller's tick to the radar.
                 _radar.Tick( beginScrollingInfo );
 
-            if( _radar.ViewModel.LapCount >= _lapCount )
+            if (_yield)
             {
                 //Once arrived at the end of the last lap, we release the scroller.
                 scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
@@ -194,16 +197,17 @@ namespace MouseRadar
             return scrollingDirective;
         }
 
-
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
             if( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
                 Blur();
 
-            //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it)
+            //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it) 
+            //_yeld variable can't be tested because it can be true 
             if( ActionType != ActionType.StayOnTheSameLocked && IsActive )
             {
                 Pause();
+                _yield = false;
             }
 
             return scrollingDirective;

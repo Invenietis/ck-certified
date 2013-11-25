@@ -135,15 +135,6 @@
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
     <Compile Include="KeyboardEdition\BreadcrumbTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\IProtocolManagerRegisteringService.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\ProtocoleManagerService.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SwitchKeyboardCommandParameter.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SendKeyCommandParameter.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\IKeyCommandParameter.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\KeyCommandTypeViewModel.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\KeyCommandProviderViewModel.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\KeyCommandViewModel.cs" />
-    <Compile Include="KeyboardEdition\ViewModels\KeyCommands\SimpleKeyCommandParameter.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeBase.cs" />
@@ -348,6 +339,14 @@
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\IProtocolManagerModel\IProtocolManagerModel.csproj">
+      <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
+      <Name>IProtocolManagerModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
+      <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
+      <Name>BasicCommandHandlers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

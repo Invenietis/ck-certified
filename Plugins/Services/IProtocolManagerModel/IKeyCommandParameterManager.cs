@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace IProtocolManagerModel
 {
     /// <summary>
     /// A class that implements this interface is capable of handling the string parameter of a KeyCommand : it can be filled from the parameter (which is a string), and can be written as a string.

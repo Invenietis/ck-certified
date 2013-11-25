@@ -1,9 +1,10 @@
-﻿using System;
+﻿using IProtocolManagerModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace BasicCommandHandlers
 {
     /// <summary>
     /// Most simple implementation of the IKeyCommandParameter interface.

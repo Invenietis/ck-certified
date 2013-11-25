@@ -1,4 +1,5 @@
-﻿using KeyboardEditor.KeyboardEdition;
+﻿using BasicCommandHandlers;
+using IProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace KeyboardEditor.ViewModels
 
             if( keyCommandViewModel is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
             if( keyCommandViewModel is SendKeyCommandParameterManager ) return SendKeyDataTemplate;
-            if( keyCommandViewModel is SwitchKeyboardCommandParameterManager ) return SwitchKeyboardDataTemplate;
+            if( keyCommandViewModel is ChangeKeyboardCommandParameterManager ) return SwitchKeyboardDataTemplate;
 
             throw new ArgumentException( String.Format( "The Bound object of the AddActionDataTemplateSelector : \"{0}\" is not of a recognized type.", keyCommandViewModel.GetType() ) );
         }

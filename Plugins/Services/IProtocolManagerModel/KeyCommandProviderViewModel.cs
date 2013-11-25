@@ -1,24 +1,20 @@
-﻿using CK.Keyboard.Model;
-using CK.Plugin;
-using KeyboardEditor.ViewModels;
+﻿using CK.Plugin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace IProtocolManagerModel
 {
 
     public class KeyCommandProviderViewModel : INotifyPropertyChanged
     {
-        Dictionary<string, KeyCommandTypeViewModel> _availableTypes;
-        public IEnumerable<KeyCommandTypeViewModel> AvailableTypes { get { return _availableTypes.Values; } }
-        internal Dictionary<string, KeyCommandTypeViewModel> AvailableTypesInternal { get { return _availableTypes; } }
+        public Dictionary<string, KeyCommandTypeViewModel> AvailableTypes { get; private set; }
 
         public KeyCommandProviderViewModel()
         {
-            _availableTypes = new Dictionary<string, KeyCommandTypeViewModel>();
+            AvailableTypes = new Dictionary<string, KeyCommandTypeViewModel>();
             KeyCommand = new KeyCommandViewModel();
         }
 
@@ -86,11 +82,17 @@ namespace KeyboardEditor.KeyboardEdition
             OnPropertyChanged( "KeyCommand" );
         }
 
+        /// <summary>
+        /// Gets the <see cref="KeyCommandTypeViewModel"/> for the specified protocol.
+        /// If the protocol is not handled, returns an empty <see cref="KeyCommandTypeViewModel"/>, with a IsValid property returning false
+        /// </summary>
+        /// <param name="protocol">The protocol (ex : sendString, sendKey, keyboardswitch...)</param>
+        /// <returns>The <see cref="KeyCommandTypeViewModel"/> corresponding to the protocol set as parameter. if the returned object's IsValid property returns false, the protocol is not handled</returns>
         public KeyCommandTypeViewModel GetKeyCommandType( string protocol )
         {
             //If the protocol is not recognized, we'll add an Invalid KeyCommandType.
             KeyCommandTypeViewModel keyCommandType = new KeyCommandTypeViewModel( protocol, protocol );
-            _availableTypes.TryGetValue( protocol, out keyCommandType );
+            AvailableTypes.TryGetValue( protocol, out keyCommandType );
             return keyCommandType;
         }
 

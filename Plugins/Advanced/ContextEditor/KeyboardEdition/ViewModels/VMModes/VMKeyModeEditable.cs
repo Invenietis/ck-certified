@@ -14,8 +14,8 @@ using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
 using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
-using KeyboardEditor.KeyboardEdition;
 using CK.Windows.App;
+using IProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels
 {

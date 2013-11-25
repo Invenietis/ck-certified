@@ -34,7 +34,7 @@ using System.Windows.Forms;
 using KeyboardEditor.Tools;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using KeyboardEditor.KeyboardEdition;
+using IProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels
 {

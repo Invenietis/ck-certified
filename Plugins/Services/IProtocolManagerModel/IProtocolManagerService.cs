@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace IProtocolManagerModel
 {
+    //TODO : Comments
     public interface IProtocolManagerService : IDynamicService
     {
         void Register( KeyCommandTypeViewModel keyCommandTypeViewModel );

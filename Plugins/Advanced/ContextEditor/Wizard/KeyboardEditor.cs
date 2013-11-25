@@ -23,7 +23,7 @@ using KeyboardEditor.s;
 using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
 using CommonServices.Accessibility;
-using KeyboardEditor.KeyboardEdition;
+using IProtocolManagerModel;
 
 namespace KeyboardEditor
 {

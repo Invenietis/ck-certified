@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace IProtocolManagerModel
 {
     public class KeyCommandTypeViewModel : INotifyPropertyChanged
     {
@@ -38,7 +38,7 @@ namespace KeyboardEditor.KeyboardEdition
         /// <param name="keyCommandParameterManagerFunc">A Func that returns an instance of an implementation of IKeyCommandParameterManager that handles a protocol. Must not return null.</param>
         public KeyCommandTypeViewModel( string protocol, string name, string description, Func<IKeyCommandParameterManager> keyCommandParameterManagerFunc )
         {
-            
+
             Protocol = protocol;
             Name = name;
             Description = description;
@@ -57,7 +57,7 @@ namespace KeyboardEditor.KeyboardEdition
         /// <summary>
         /// Gets whether the current KeyCommandType Protocol is recognized by a registered command handler
         /// </summary>
-        public bool IsValid { get { return !String.IsNullOrWhiteSpace( Protocol ); } }
+        public bool IsValid { get { return CreateParameterManager == null; } }
 
         /// <summary>
         /// Gets a user-friendly name (displayed to the user : must be multilingual)

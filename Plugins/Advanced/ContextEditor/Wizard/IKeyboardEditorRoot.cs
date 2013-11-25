@@ -8,7 +8,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 using KeyboardEditor.ViewModels;
-using KeyboardEditor.KeyboardEdition;
+using IProtocolManagerModel;
 
 namespace KeyboardEditor
 {

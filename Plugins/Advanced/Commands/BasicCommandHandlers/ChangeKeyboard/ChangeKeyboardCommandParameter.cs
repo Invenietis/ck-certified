@@ -1,12 +1,12 @@
 ﻿using CK.Keyboard.Model;
 using CK.Plugins.SendInputDriver;
-using KeyboardEditor.ViewModels;
+using IProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace BasicCommandHandlers
 {
     /// <summary>
     /// Implementation of the IKeyCommandParameter interface that enables switching to a keyboard.
@@ -14,11 +14,10 @@ namespace KeyboardEditor.KeyboardEdition
     /// Getting the Command string returns the value.
     /// This implementation is the name of the keyboard.
     /// </summary>
-    public class SwitchKeyboardCommandParameterManager : IKeyCommandParameterManager
+    public class ChangeKeyboardCommandParameterManager : IKeyCommandParameterManager
     {
-        public SwitchKeyboardCommandParameterManager( ICollection<IKeyboard> keyboards )
+        public ChangeKeyboardCommandParameterManager( ICollection<IKeyboard> keyboards )
         {
-            //TODO : fetch all the keyboards of the current context...
             _values = new Dictionary<string, IKeyboard>();
             foreach( var keyboard in keyboards )
             {

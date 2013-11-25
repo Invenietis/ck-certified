@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace KeyboardEditor.KeyboardEdition
+namespace IProtocolManagerModel
 {
     /// <summary>
     /// This class defines a KeyCommand.

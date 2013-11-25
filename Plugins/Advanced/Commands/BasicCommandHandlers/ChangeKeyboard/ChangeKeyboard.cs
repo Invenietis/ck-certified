@@ -28,18 +28,24 @@ using CK.Plugin;
 using CK.Core;
 using CK.Context;
 using CK.Keyboard.Model;
+using System.Linq;
+using IProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {
     [Plugin( "{04B1B7F5-6CD8-4691-B5FD-2C4401C3AC0C}", Categories = new string[] { "Advanced" },
         PublicName = "Change keyboard command handler",
-        Version = "1.0.0")]
+        Version = "1.0.0" )]
     public class ChangeKeyboardPlugin : BasicCommandHandler, IChangeKeyboardCommandHandlerService
     {
-        const string PROTOCOL = "keyboardswitch:";
+        const string PROTOCOL_BASE = "keyboardswitch";
+        const string PROTOCOL = PROTOCOL_BASE + ":";
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IKeyboardContext KeyboardContext { get; set; }
+        public IService<IKeyboardContext> KeyboardContext { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolManagerService> ProtocolManagerService { get; set; }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
@@ -54,12 +60,31 @@ namespace BasicCommandHandlers
         {
             if( !string.IsNullOrEmpty( keyboardName ) )
             {
-                var kb = KeyboardContext.Keyboards[keyboardName];
-                if( kb != null && KeyboardContext.CurrentKeyboard != kb )
+                var kb = KeyboardContext.Service.Keyboards[keyboardName];
+                if( kb != null && KeyboardContext.Service.CurrentKeyboard != kb )
                 {
-                    KeyboardContext.CurrentKeyboard = kb;
+                    KeyboardContext.Service.CurrentKeyboard = kb;
                 }
             }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            ProtocolManagerService.Service.Register(
+                    new KeyCommandTypeViewModel( PROTOCOL_BASE,
+                                                 "Changer de clavier",
+                                                 "Permet de changer de clavier",
+                                                 new Func<ChangeKeyboardCommandParameterManager>( () =>
+                                                 {
+                                                     return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() );
+                                                 } ) ) );
+        }
+
+        public override void Stop()
+        {
+            ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
+            base.Stop();
         }
     }
 }

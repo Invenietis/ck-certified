@@ -23,7 +23,7 @@ using KeyboardEditor.s;
 using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
 using CommonServices.Accessibility;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor
 {
@@ -56,7 +56,7 @@ namespace KeyboardEditor
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IProtocolManagerService> ProtocolManagerService { get; set; }
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         public VMContextEditable EditedContext { get; set; }
         internal AppViewModel AppViewModel { get { return _appViewModel; } }

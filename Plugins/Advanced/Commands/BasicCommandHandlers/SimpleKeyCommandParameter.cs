@@ -1,4 +1,4 @@
-﻿using IProtocolManagerModel;
+﻿using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace BasicCommandHandlers
     /// Getting the Command string returns the value.
     /// This implementation is all the sendString command needs.
     /// </summary>
-    public class SimpleKeyCommandParameterManager : IKeyCommandParameterManager
+    public class SimpleKeyCommandParameterManager : IProtocolParameterManager
     {
         string _value;
         public string Value

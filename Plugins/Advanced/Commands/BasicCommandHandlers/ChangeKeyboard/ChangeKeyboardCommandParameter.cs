@@ -1,6 +1,6 @@
 ﻿using CK.Keyboard.Model;
 using CK.Plugins.SendInputDriver;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace BasicCommandHandlers
     /// Getting the Command string returns the value.
     /// This implementation is the name of the keyboard.
     /// </summary>
-    public class ChangeKeyboardCommandParameterManager : IKeyCommandParameterManager
+    public class ChangeKeyboardCommandParameterManager : IProtocolParameterManager
     {
         public ChangeKeyboardCommandParameterManager( ICollection<IKeyboard> keyboards )
         {

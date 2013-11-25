@@ -15,7 +15,7 @@ using KeyboardEditor.Resources;
 using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
 using CK.Windows.App;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -199,7 +199,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _initializeCommand = new VMCommand( () =>
                     {
-                        KeyCommandTypeProvider.InitializeKeyCommand();
+                        ProtocolEditorsProvider.InitializeKeyCommand();
                         ShowKeyCommandCreationPanel = true;
                     } );
                 }
@@ -217,7 +217,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _saveCommand = new VMCommand( () =>
                     {
-                        DoAddKeyCommand( KeyCommandTypeProvider.KeyCommand.ToString() );
+                        DoAddKeyCommand( ProtocolEditorsProvider.ProtocolEditor.ToString() );
                         ShowKeyCommandCreationPanel = false;
 
                     } );
@@ -230,7 +230,7 @@ namespace KeyboardEditor.ViewModels
         private void DoAddKeyCommand( string keyCommand )
         {
             Model.OnKeyDownCommands.Commands.Add( keyCommand );
-            KeyCommandTypeProvider.FlushCurrentKeyCommand();
+            ProtocolEditorsProvider.FlushCurrentKeyCommand();
         }
 
         string _commandBeingChanged = String.Empty;
@@ -245,7 +245,7 @@ namespace KeyboardEditor.ViewModels
                     {
                         _commandBeingChanged = cmdString;
                         DoRemoveKeyCommand( cmdString );
-                        KeyCommandTypeProvider.CreateKeyCommand( cmdString );
+                        ProtocolEditorsProvider.CreateKeyCommand( cmdString );
                         ShowKeyCommandCreationPanel = true;
                     } );
                 }
@@ -271,7 +271,7 @@ namespace KeyboardEditor.ViewModels
                         }
                         else
                         {
-                            KeyCommandTypeProvider.FlushCurrentKeyCommand();
+                            ProtocolEditorsProvider.FlushCurrentKeyCommand();
                         }
                         ShowKeyCommandCreationPanel = false;
                     } );
@@ -314,14 +314,14 @@ namespace KeyboardEditor.ViewModels
                 throw new ArgumentException( "Trying to remove a command that cannot be found in the key commands. Key : " + Model.UpLabel + ", command : " + cmdString );
         }
 
-        KeyCommandProviderViewModel _keyCommandTypeProvider;
-        public KeyCommandProviderViewModel KeyCommandTypeProvider
+        VMProtocolEditorsProvider _keyCommandTypeProvider;
+        public VMProtocolEditorsProvider ProtocolEditorsProvider
         {
             get { return Context.ProtocolManagerService.Service.KeyCommandProviderViewModel; }
             set
             {
                 _keyCommandTypeProvider = value;
-                OnPropertyChanged( "KeyCommandTypeProvider" );
+                OnPropertyChanged( "ProtocolEditorsProvider" );
             }
         }
 

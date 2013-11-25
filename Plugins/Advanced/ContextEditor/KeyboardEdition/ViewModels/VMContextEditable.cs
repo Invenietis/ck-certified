@@ -34,7 +34,7 @@ using System.Windows.Forms;
 using KeyboardEditor.Tools;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -102,7 +102,7 @@ namespace KeyboardEditor.ViewModels
         public IPluginConfigAccessor SkinConfiguration { get; set; }
         public IContext Context { get { return _ctx; } }
 
-        internal IService<IProtocolManagerService> ProtocolManagerService { get { return _root.ProtocolManagerService; } }
+        internal IService<IProtocolEditorsManager> ProtocolManagerService { get { return _root.ProtocolManagerService; } }
 
         //TODO : check where this is used and remove it
         public IKeyboardContext Model { get { return KeyboardContext; } }

@@ -239,18 +239,18 @@
                         </StackPanel>
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
                             <TextBlock Text="Create a new action : " Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
-                            <StackPanel DataContext="{Binding KeyCommandTypeProvider}">
-                                <ComboBox ItemsSource="{Binding AvailableTypes.Values}" SelectedItem="{Binding SelectedKeyCommandType}">
+                            <StackPanel DataContext="{Binding ProtocolEditorsProvider}">
+                                <ComboBox ItemsSource="{Binding AvailableProtocolEditors.Values}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ContentControl Margin="0 5 0 0" ContentTemplateSelector="{StaticResource addactiondatatemplateselector}" Content="{Binding KeyCommand.Parameter}" />
+                                <ContentControl Margin="0 5 0 0" ContentTemplateSelector="{StaticResource addactiondatatemplateselector}" Content="{Binding ProtocolEditor.ParameterManager}" />
                             </StackPanel>
                             <StackPanel Margin="0 5 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding KeyCommandTypeProvider.KeyCommand.IsValid}"  Style="{StaticResource ModernUIButtonStyle}" />
+                                <Button Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding ProtocolEditorsProvider.ProtocolEditor.IsValid}"  Style="{StaticResource ModernUIButtonStyle}" />
                                 <Button Content="Cancel" Command="{Binding CancelChangesCommand}" Style="{StaticResource ModernUIButtonStyle}" />
                             </StackPanel>
                         </StackPanel>

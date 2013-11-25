@@ -29,7 +29,7 @@ using CK.Core;
 using CK.Context;
 using CK.Keyboard.Model;
 using System.Linq;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {
@@ -45,7 +45,7 @@ namespace BasicCommandHandlers
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IProtocolManagerService> ProtocolManagerService { get; set; }
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
@@ -72,7 +72,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                    new KeyCommandTypeViewModel( PROTOCOL_BASE,
+                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
                                                  "Changer de clavier",
                                                  "Permet de changer de clavier",
                                                  new Func<ChangeKeyboardCommandParameterManager>( () =>

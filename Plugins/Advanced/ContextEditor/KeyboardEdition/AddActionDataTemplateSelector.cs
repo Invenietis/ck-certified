@@ -1,5 +1,5 @@
 ﻿using BasicCommandHandlers;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,8 @@ namespace KeyboardEditor.ViewModels
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
             if( item == null ) return null;
-            if( !( item is IKeyCommandParameterManager ) ) throw new ArgumentException( "The DataContext of the AddActionDataTemplateSelector must be a KeyCommandViewModel" );
-            IKeyCommandParameterManager keyCommandViewModel = item as IKeyCommandParameterManager;
+            if( !( item is IProtocolParameterManager ) ) throw new ArgumentException( "The DataContext of the AddActionDataTemplateSelector must be a KeyCommandViewModel" );
+            IProtocolParameterManager keyCommandViewModel = item as IProtocolParameterManager;
 
             if( keyCommandViewModel is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
             if( keyCommandViewModel is SendKeyCommandParameterManager ) return SendKeyDataTemplate;

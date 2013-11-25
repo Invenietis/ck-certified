@@ -27,7 +27,7 @@ using CK.Plugin;
 using System.Windows.Forms;
 using CK.Context;
 using CK.Core;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {
@@ -45,7 +45,7 @@ namespace BasicCommandHandlers
         public IContext Context { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IProtocolManagerService> ProtocolManagerService { get; set; }
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
@@ -136,7 +136,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new KeyCommandTypeViewModel( 
+                                        new VMProtocolEditorWrapper( 
                                         "sendKey", 
                                         "Touche spéciale (F11, Entrée, Suppr ...)", 
                                         "Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...", 

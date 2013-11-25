@@ -340,9 +340,9 @@
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Services\IProtocolManagerModel\IProtocolManagerModel.csproj">
+    <ProjectReference Include="..\..\Services\ProtocolManagerModel\ProtocolManagerModel.csproj">
       <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
-      <Name>IProtocolManagerModel</Name>
+      <Name>ProtocolManagerModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
       <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>

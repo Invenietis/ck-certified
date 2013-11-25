@@ -153,9 +153,9 @@
       <Name>CommonServices</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Services\IProtocolManagerModel\IProtocolManagerModel.csproj">
+    <ProjectReference Include="..\..\..\Services\ProtocolManagerModel\ProtocolManagerModel.csproj">
       <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
-      <Name>IProtocolManagerModel</Name>
+      <Name>ProtocolManagerModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

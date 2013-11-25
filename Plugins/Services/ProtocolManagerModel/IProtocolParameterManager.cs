@@ -4,13 +4,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace IProtocolManagerModel
+namespace ProtocolManagerModel
 {
     /// <summary>
-    /// A class that implements this interface is capable of handling the string parameter of a KeyCommand : it can be filled from the parameter (which is a string), and can be written as a string.
+    /// A class that implements this interface is capable of handling the string parameter of a Protocol : it can be filled from the parameter (which is a string), and can be written as a string.
     /// Implements INotifyPropertyChanged.
     /// </summary>
-    public interface IKeyCommandParameterManager : INotifyPropertyChanged
+    public interface IProtocolParameterManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Gets a string containing the Parameter's GetCommandString return value and populates the object with it.

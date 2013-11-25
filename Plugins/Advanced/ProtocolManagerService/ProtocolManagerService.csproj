@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Output\Release\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -58,9 +58,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\IProtocolManagerModel\IProtocolManagerModel.csproj">
+    <ProjectReference Include="..\..\Services\ProtocolManagerModel\ProtocolManagerModel.csproj">
       <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
-      <Name>IProtocolManagerModel</Name>
+      <Name>ProtocolManagerModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
       <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>

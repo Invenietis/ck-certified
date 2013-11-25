@@ -8,7 +8,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 using KeyboardEditor.ViewModels;
-using IProtocolManagerModel;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor
 {
@@ -24,7 +24,7 @@ namespace KeyboardEditor
         /// Gets the Keyboardcontext service implementation
         /// Gives access to all the keyboards and their layouts, zones, keys etc..
         /// </summary>
-        IService<IProtocolManagerService> ProtocolManagerService { get; }
+        IService<IProtocolEditorsManager> ProtocolManagerService { get; }
 
         /// <summary>
         /// Gets a service that enables hooking windows' low level keyboard inputs

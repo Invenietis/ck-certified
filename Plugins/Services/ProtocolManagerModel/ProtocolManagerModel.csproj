@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Output\Release\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -54,11 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IKeyCommandParameterManager.cs" />
-    <Compile Include="IProtocolManagerService.cs" />
-    <Compile Include="KeyCommandProviderViewModel.cs" />
-    <Compile Include="KeyCommandTypeViewModel.cs" />
-    <Compile Include="KeyCommandViewModel.cs" />
+    <Compile Include="IProtocolParameterManager.cs" />
+    <Compile Include="IProtocolManager.cs" />
+    <Compile Include="VMProtocolEditorsProvider.cs" />
+    <Compile Include="VMProtocolEditorWrapper.cs" />
+    <Compile Include="VMProtocolEditor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

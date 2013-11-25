@@ -203,7 +203,6 @@ namespace MouseRadar
                 Blur();
 
             //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it) 
-            //_yeld variable can't be tested because it can be true 
             if( ActionType != ActionType.StayOnTheSameLocked && IsActive )
             {
                 Pause();

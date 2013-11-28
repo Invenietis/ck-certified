@@ -88,11 +88,47 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enables simulating a mouse clic (left, right double etc...).
+        /// </summary>
+        internal static string ClicProtocolDescription {
+            get {
+                return ResourceManager.GetString("ClicProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mouse clicks.
+        /// </summary>
+        internal static string ClicProtocolTitle {
+            get {
+                return ResourceManager.GetString("ClicProtocolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double left click.
+        /// </summary>
+        internal static string DoubleLeftClick {
+            get {
+                return ResourceManager.GetString("DoubleLeftClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Left.
         /// </summary>
         internal static string Left {
             get {
                 return ResourceManager.GetString("Left", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left click.
+        /// </summary>
+        internal static string LeftClick {
+            get {
+                return ResourceManager.GetString("LeftClick", resourceCulture);
             }
         }
         
@@ -115,11 +151,38 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Push the left button.
+        /// </summary>
+        internal static string PushLeft {
+            get {
+                return ResourceManager.GetString("PushLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release the left button.
+        /// </summary>
+        internal static string ReleaseLeft {
+            get {
+                return ResourceManager.GetString("ReleaseLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Right.
         /// </summary>
         internal static string Right {
             get {
                 return ResourceManager.GetString("Right", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right click.
+        /// </summary>
+        internal static string RightClick {
+            get {
+                return ResourceManager.GetString("RightClick", resourceCulture);
             }
         }
         

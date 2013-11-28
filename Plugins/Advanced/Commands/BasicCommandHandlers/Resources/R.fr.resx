@@ -126,8 +126,20 @@
   <data name="BottomRight" xml:space="preserve">
     <value>En bas à droite</value>
   </data>
+  <data name="ClicProtocolDescription1" xml:space="preserve">
+    <value>Permet de simuler des clics souris</value>
+  </data>
+  <data name="ClicProtocolTitle" xml:space="preserve">
+    <value>Clics souris</value>
+  </data>
+  <data name="DoubleLeftClick" xml:space="preserve">
+    <value>Double clic gauche</value>
+  </data>
   <data name="Left" xml:space="preserve">
     <value>Gauche</value>
+  </data>
+  <data name="LeftClick" xml:space="preserve">
+    <value>Clic gauche</value>
   </data>
   <data name="MoveMouseProtocolDescription" xml:space="preserve">
     <value>Permet de déplacer la souris dans une direction donnée de manière continue</value>
@@ -135,8 +147,17 @@
   <data name="MoveMouseProtocolTitle" xml:space="preserve">
     <value>Déplacer la souris</value>
   </data>
+  <data name="PushLeft" xml:space="preserve">
+    <value>Appuyer sur le bouton gauche</value>
+  </data>
+  <data name="ReleaseLeft" xml:space="preserve">
+    <value>Relâcher le bouton gauche</value>
+  </data>
   <data name="Right" xml:space="preserve">
     <value>Droite</value>
+  </data>
+  <data name="RightClick" xml:space="preserve">
+    <value>Clic droit</value>
   </data>
   <data name="SendKeyProtocolDescription" xml:space="preserve">
     <value>Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...</value>

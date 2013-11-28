@@ -126,8 +126,20 @@
   <data name="BottomRight" xml:space="preserve">
     <value>Bottom-Right</value>
   </data>
+  <data name="ClicProtocolDescription" xml:space="preserve">
+    <value>Enables simulating a mouse clic (left, right double etc...)</value>
+  </data>
+  <data name="ClicProtocolTitle" xml:space="preserve">
+    <value>Mouse clicks</value>
+  </data>
+  <data name="DoubleLeftClick" xml:space="preserve">
+    <value>Double left click</value>
+  </data>
   <data name="Left" xml:space="preserve">
     <value>Left</value>
+  </data>
+  <data name="LeftClick" xml:space="preserve">
+    <value>Left click</value>
   </data>
   <data name="MoveMouseProtocolDescription" xml:space="preserve">
     <value>Starts moving the mouse pointer towards a direction, clicking again the key will stop the motion</value>
@@ -135,8 +147,17 @@
   <data name="MoveMouseProtocolTitle" xml:space="preserve">
     <value>Move the mouse pointer</value>
   </data>
+  <data name="PushLeft" xml:space="preserve">
+    <value>Push the left button</value>
+  </data>
+  <data name="ReleaseLeft" xml:space="preserve">
+    <value>Release the left button</value>
+  </data>
   <data name="Right" xml:space="preserve">
     <value>Right</value>
+  </data>
+  <data name="RightClick" xml:space="preserve">
+    <value>Right click</value>
   </data>
   <data name="SendKeyProtocolDescription" xml:space="preserve">
     <value>Enables sending a special key : Return, F1 to F12, Suppr etc...</value>

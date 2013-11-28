@@ -15,19 +15,20 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate SendKeyDataTemplate { get; set; }
         public DataTemplate SwitchKeyboardDataTemplate { get; set; }
         public DataTemplate MoveMouseDataTemplate { get; set; }
+        public DataTemplate ClickDataTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
             if( item == null ) return null;
-            if( !( item is IProtocolParameterManager ) ) throw new ArgumentException( "The DataContext of the AddActionDataTemplateSelector must be a KeyCommandViewModel" );
-            IProtocolParameterManager keyCommandViewModel = item as IProtocolParameterManager;
+            if( !( item is IProtocolParameterManager ) ) throw new ArgumentException( "The DataContext of the AddActionDataTemplateSelector must be a IProtocolParameterManager" );
 
-            if( keyCommandViewModel is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
-            if( keyCommandViewModel is SendKeyCommandParameterManager ) return SendKeyDataTemplate;
-            if( keyCommandViewModel is ChangeKeyboardCommandParameterManager ) return SwitchKeyboardDataTemplate;
-            if( keyCommandViewModel is MoveMouseCommandParameterManager ) return MoveMouseDataTemplate;
+            if( item is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
+            if( item is SendKeyCommandParameterManager ) return SendKeyDataTemplate;
+            if( item is ChangeKeyboardCommandParameterManager ) return SwitchKeyboardDataTemplate;
+            if( item is MoveMouseCommandParameterManager ) return MoveMouseDataTemplate;
+            if( item is ClickCommandParameterManager ) return ClickDataTemplate;
 
-            throw new ArgumentException( String.Format( "The Bound object of the AddActionDataTemplateSelector : \"{0}\" is not of a recognized type.", keyCommandViewModel.GetType() ) );
+            throw new ArgumentException( String.Format( "The Bound object of the AddActionDataTemplateSelector : \"{0}\" is not of a recognized type.", item.GetType() ) );
         }
     }
 }

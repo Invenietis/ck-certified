@@ -35,6 +35,13 @@
                 </DockPanel>
             </DataTemplate>
 
+            <DataTemplate x:Key="clickdatatemplate">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" Text="Type de clic : "></TextBlock>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedClick}"></ComboBox>
+                </DockPanel>
+            </DataTemplate>
+
             <DataTemplate x:Key="movemousedatatemplate">
                 <StackPanel>
                     <DockPanel LastChildFill="True">
@@ -56,7 +63,9 @@
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" 
                                               SwitchKeyboardDataTemplate="{StaticResource switchkeyboarddatatemplate}"
-                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"/>
+                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
+                                              ClickDataTemplate="{StaticResource clickdatatemplate}"
+                                              />
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>

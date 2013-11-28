@@ -111,8 +111,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="Clic\ClickCommandParameterManager.cs" />
     <Compile Include="CommandParser.cs" />
-    <Compile Include="ClicCommandHandler.cs" />
+    <Compile Include="Clic\ClickCommandHandler.cs" />
     <Compile Include="CommandViewer.cs" />
     <Compile Include="Resources\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>

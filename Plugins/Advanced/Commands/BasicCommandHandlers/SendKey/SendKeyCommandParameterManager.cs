@@ -1,4 +1,5 @@
-﻿using CK.Plugins.SendInputDriver;
+﻿using BasicCommandHandlers.Resources;
+using CK.Plugins.SendInputDriver;
 using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,8 @@ namespace BasicCommandHandlers
                 OnPropertyChanged( "IsValid" );
             }
         }
+
+        public string Title { get { return R.SendKeyProtocolSubtitle; } }
 
         public void FillFromString( string parameter )
         {

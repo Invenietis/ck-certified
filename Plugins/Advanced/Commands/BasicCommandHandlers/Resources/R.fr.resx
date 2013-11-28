@@ -126,7 +126,10 @@
   <data name="BottomRight" xml:space="preserve">
     <value>En bas à droite</value>
   </data>
-  <data name="ClicProtocolDescription1" xml:space="preserve">
+  <data name="ClickProtocolSubtitle" xml:space="preserve">
+    <value>Type de clic : </value>
+  </data>
+  <data name="ClicProtocolDescription" xml:space="preserve">
     <value>Permet de simuler des clics souris</value>
   </data>
   <data name="ClicProtocolTitle" xml:space="preserve">
@@ -134,6 +137,9 @@
   </data>
   <data name="DoubleLeftClick" xml:space="preserve">
     <value>Double clic gauche</value>
+  </data>
+  <data name="KeyboardProtocolSubtitle" xml:space="preserve">
+    <value>Clavier : </value>
   </data>
   <data name="Left" xml:space="preserve">
     <value>Gauche</value>
@@ -161,6 +167,9 @@
   </data>
   <data name="SendKeyProtocolDescription" xml:space="preserve">
     <value>Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...</value>
+  </data>
+  <data name="SendKeyProtocolSubtitle" xml:space="preserve">
+    <value>Action : </value>
   </data>
   <data name="SendKeyProtocolTitle" xml:space="preserve">
     <value>Touche spéciale (F11, Entrée, Suppr ...)</value>

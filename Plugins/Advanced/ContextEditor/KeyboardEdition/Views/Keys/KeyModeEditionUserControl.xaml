@@ -21,7 +21,7 @@
                 </DockPanel>
             </DataTemplate>
 
-            <DataTemplate x:Key="sendkeydatatemplate">
+            <!--<DataTemplate x:Key="sendkeydatatemplate">
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="Action : "></TextBlock>
                     <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedValue}"></ComboBox>
@@ -39,6 +39,13 @@
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="Type de clic : "></TextBlock>
                     <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedClick}"></ComboBox>
+                </DockPanel>
+            </DataTemplate>-->
+
+            <DataTemplate x:Key="comboboxdatatemplate">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title}"></TextBlock>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedValue}"></ComboBox>
                 </DockPanel>
             </DataTemplate>
 
@@ -61,10 +68,8 @@
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
             <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" 
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
-                                              SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" 
-                                              SwitchKeyboardDataTemplate="{StaticResource switchkeyboarddatatemplate}"
+                                              ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
-                                              ClickDataTemplate="{StaticResource clickdatatemplate}"
                                               />
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">

@@ -126,6 +126,9 @@
   <data name="BottomRight" xml:space="preserve">
     <value>Bottom-Right</value>
   </data>
+  <data name="ClickProtocolSubtitle" xml:space="preserve">
+    <value>Click type : </value>
+  </data>
   <data name="ClicProtocolDescription" xml:space="preserve">
     <value>Enables simulating a mouse clic (left, right double etc...)</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="DoubleLeftClick" xml:space="preserve">
     <value>Double left click</value>
+  </data>
+  <data name="KeyboardProtocolSubtitle" xml:space="preserve">
+    <value>Keyboard : </value>
   </data>
   <data name="Left" xml:space="preserve">
     <value>Left</value>
@@ -161,6 +167,9 @@
   </data>
   <data name="SendKeyProtocolDescription" xml:space="preserve">
     <value>Enables sending a special key : Return, F1 to F12, Suppr etc...</value>
+  </data>
+  <data name="SendKeyProtocolSubtitle" xml:space="preserve">
+    <value>Action : </value>
   </data>
   <data name="SendKeyProtocolTitle" xml:space="preserve">
     <value>Special Key (F11, Return, Suppr ...)</value>

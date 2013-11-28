@@ -88,6 +88,15 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Click type : .
+        /// </summary>
+        internal static string ClickProtocolSubtitle {
+            get {
+                return ResourceManager.GetString("ClickProtocolSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enables simulating a mouse clic (left, right double etc...).
         /// </summary>
         internal static string ClicProtocolDescription {
@@ -111,6 +120,15 @@ namespace BasicCommandHandlers.Resources {
         internal static string DoubleLeftClick {
             get {
                 return ResourceManager.GetString("DoubleLeftClick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard : .
+        /// </summary>
+        internal static string KeyboardProtocolSubtitle {
+            get {
+                return ResourceManager.GetString("KeyboardProtocolSubtitle", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace BasicCommandHandlers.Resources {
         internal static string SendKeyProtocolDescription {
             get {
                 return ResourceManager.GetString("SendKeyProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action : .
+        /// </summary>
+        internal static string SendKeyProtocolSubtitle {
+            get {
+                return ResourceManager.GetString("SendKeyProtocolSubtitle", resourceCulture);
             }
         }
         

@@ -1,4 +1,5 @@
-﻿using CK.Keyboard.Model;
+﻿using BasicCommandHandlers.Resources;
+using CK.Keyboard.Model;
 using CK.Plugins.SendInputDriver;
 using ProtocolManagerModel;
 using System;
@@ -29,7 +30,7 @@ namespace BasicCommandHandlers
         public IEnumerable<string> AvailableValues { get { return _values.Keys; } }
 
         string _selectedKeyboard;
-        public string SelectedKeyboard
+        public string SelectedValue
         {
             get { return _selectedKeyboard; }
             set
@@ -40,14 +41,16 @@ namespace BasicCommandHandlers
             }
         }
 
+        public string Title { get { return R.KeyboardProtocolSubtitle; } }
+
         public void FillFromString( string parameter )
         {
             IKeyboard selectedKeyboard = null;
             if( _values.TryGetValue( parameter, out selectedKeyboard ) )
             {
-                SelectedKeyboard = selectedKeyboard.Name;
+                SelectedValue = selectedKeyboard.Name;
             }
-            else SelectedKeyboard = null;
+            else SelectedValue = null;
         }
 
         private void OnPropertyChanged( string propertyName )
@@ -55,12 +58,12 @@ namespace BasicCommandHandlers
             if( PropertyChanged != null ) PropertyChanged( this, new System.ComponentModel.PropertyChangedEventArgs( propertyName ) );
         }
 
-        public bool IsValid { get { return SelectedKeyboard != null; } }
+        public bool IsValid { get { return SelectedValue != null; } }
 
         public string GetParameterString()
         {
-            if( SelectedKeyboard == null ) return String.Empty;
-            return SelectedKeyboard;
+            if( SelectedValue == null ) return String.Empty;
+            return SelectedValue;
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

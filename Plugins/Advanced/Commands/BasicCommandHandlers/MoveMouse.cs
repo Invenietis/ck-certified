@@ -48,7 +48,7 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> HighlighterService { get; set; }
 
         public override bool Setup( IPluginSetupInfo info )

@@ -12,10 +12,11 @@
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.Accessibility.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.Accessibility.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.Accessibility.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.Accessibility.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.Accessibility.IHighlighterService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">

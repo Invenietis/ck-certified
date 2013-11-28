@@ -59,7 +59,7 @@ namespace KeyScroller
         }
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            Console.Out.WriteLine( "Internalbeat " + DateTime.Now );
+            //Console.Out.WriteLine( "Internalbeat " + DateTime.Now );
             if( _currentElement != null ) FireEndHighlight();
 
             // highlight the next element
@@ -173,7 +173,7 @@ namespace KeyScroller
 
             StartTimer();
 
-            Console.Out.WriteLine( "Registering " + Name );
+            //Console.Out.WriteLine( "Registering " + Name );
             _timer.Tick += OnInternalBeat;
             _configuration.ConfigChanged += OnConfigChanged;
             _isStarted = true;

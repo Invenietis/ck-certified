@@ -57,7 +57,7 @@ namespace ProtocolManagerModel
         /// <summary>
         /// Gets whether the current KeyCommandType Protocol is recognized by a registered command handler
         /// </summary>
-        public bool IsValid { get { return CreateParameterManager == null; } }
+        public bool IsValid { get { return CreateParameterManager != null; } }
 
         /// <summary>
         /// Gets a user-friendly name (displayed to the user : must be multilingual)

@@ -16,7 +16,7 @@ namespace ProtocolManagerService
         const string PluginIdString = "{616A53FE-3AAF-4410-8691-7CE0A97D3266}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Protocol Manager Service";
+        const string PluginPublicName = "Protocol Editors Manager";
 
         VMProtocolEditorsProvider _vmProtocolEditorsProvider;
 

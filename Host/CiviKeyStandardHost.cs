@@ -109,7 +109,7 @@ namespace Host
             _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationGUID ) );
 
             _notificationMngr = new NotificationManager();
-            
+
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
@@ -123,6 +123,8 @@ namespace Host
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
+            _log.Debug( "Context loaded successfully." );
+
             // Initializes Services.
             {
                 ctx.ServiceContainer.Add<IHostInformation>( this );
@@ -140,6 +142,7 @@ namespace Host
 
             Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
 
+            _log.Debug( "Starting Apply..." );
             _firstApplySucceed = Context.PluginRunner.Apply();
 
             ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationPropertyChanged );
@@ -176,6 +179,7 @@ namespace Host
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
+            _log.Debug( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
             //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
 
             //    if( e.ExecutionPlanResult != null )

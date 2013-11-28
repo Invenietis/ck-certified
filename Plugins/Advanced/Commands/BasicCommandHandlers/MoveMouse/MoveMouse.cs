@@ -30,6 +30,7 @@ using CK.Context;
 using CommonServices.Accessibility;
 using System.Windows.Threading;
 using System.Diagnostics;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {
@@ -38,7 +39,8 @@ namespace BasicCommandHandlers
         Version = "1.0.0" )]
     public class MoveMouseCommandHandler : BasicCommandHandler, IMoveMouseCommandHandlerService
     {
-        const string PROTOCOL = "movemouse:";
+        const string PROTOCOL_BASE = "movemouse";
+        const string PROTOCOL = PROTOCOL_BASE + ":";
         const int STEP = 5;
 
         DispatcherTimer _timer;
@@ -49,6 +51,9 @@ namespace BasicCommandHandlers
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> HighlighterService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         public override bool Setup( IPluginSetupInfo info )
         {
@@ -90,7 +95,7 @@ namespace BasicCommandHandlers
         {
             // timer should not be enabled. If it is enabled it could be due to 
             if( _timer.IsEnabled ) _timer.Stop();
-            
+
             // setup speed
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, speed );
 
@@ -139,23 +144,23 @@ namespace BasicCommandHandlers
                 switch( direction )
                 {
                     case "UL":
-                        angle = -((3 * Math.PI) / 4);
+                        angle = -( ( 3 * Math.PI ) / 4 );
                         break;
                     case "BL":
-                        angle = (3 * Math.PI) / 4;
+                        angle = ( 3 * Math.PI ) / 4;
                         break;
                     case "BR":
                         angle = Math.PI / 4;
                         break;
                     case "UR":
-                        angle = -(Math.PI / 4);
+                        angle = -( Math.PI / 4 );
                         break;
                 }
 
                 motion = () =>
                 {
-                    int x = (int)(PointerDriver.Service.CurrentPointerXLocation + (STEP * Math.Cos( angle )));
-                    int y = (int)(PointerDriver.Service.CurrentPointerYLocation + (STEP * Math.Sin( angle )));
+                    int x = (int)( PointerDriver.Service.CurrentPointerXLocation + ( STEP * Math.Cos( angle ) ) );
+                    int y = (int)( PointerDriver.Service.CurrentPointerYLocation + ( STEP * Math.Sin( angle ) ) );
                     PointerDriver.Service.MovePointer( x, y );
                 };
             }
@@ -168,6 +173,16 @@ namespace BasicCommandHandlers
         public void EndMouseMotion()
         {
             _timer.Stop();
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            ProtocolManagerService.Service.Register(
+                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
+                                                 "Déplacer la souris",
+                                                 "Permet de déplacer la souris dans une direction donnée de manière continue",
+                                                 typeof( MoveMouseCommandParameterManager ) ) );
         }
     }
 }

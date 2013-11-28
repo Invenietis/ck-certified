@@ -35,6 +35,19 @@
                 </DockPanel>
             </DataTemplate>
 
+            <DataTemplate x:Key="movemousedatatemplate">
+                <StackPanel>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Left" Text="Direction : "></TextBlock>
+                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedDirection}"></ComboBox>
+                    </DockPanel>
+                    <DockPanel LastChildFill="True" Margin="0 5 0 0">
+                        <TextBlock DockPanel.Dock="Left" Text="Vitesse (en pixels/déplacement) : "></TextBlock>
+                        <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </DockPanel>
+                </StackPanel>
+            </DataTemplate>
+
             <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:NotNullConverter x:Key="notnullconverter"/>
             <ckc:NotConverter x:Key="notconverter"/>
@@ -42,7 +55,8 @@
             <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" 
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               SendKeyDataTemplate="{StaticResource sendkeydatatemplate}" 
-                                              SwitchKeyboardDataTemplate="{StaticResource switchkeyboarddatatemplate}"/>
+                                              SwitchKeyboardDataTemplate="{StaticResource switchkeyboarddatatemplate}"
+                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"/>
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>

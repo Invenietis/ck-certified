@@ -27,6 +27,7 @@ using CK.Keyboard.Model;
 
 namespace CommonServices
 {
+
     /// <summary>
     /// Service which allow you to move the mouse.
     /// </summary>

@@ -136,11 +136,17 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper( 
-                                        "sendKey", 
-                                        "Touche spéciale (F11, Entrée, Suppr ...)", 
-                                        "Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...", 
+                                        new VMProtocolEditorWrapper(
+                                        "sendKey",
+                                        "Touche spéciale (F11, Entrée, Suppr ...)",
+                                        "Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...",
                                         typeof( SendKeyCommandParameterManager ) ) );
+        }
+
+        public override void Stop()
+        {
+            ProtocolManagerService.Service.Unregister( "sendKey" );
+            base.Stop();
         }
     }
 }

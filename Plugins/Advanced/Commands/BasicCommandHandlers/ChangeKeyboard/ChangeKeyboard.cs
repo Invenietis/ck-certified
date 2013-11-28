@@ -79,6 +79,7 @@ namespace BasicCommandHandlers
                                                  {
                                                      return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() );
                                                  } ) ) );
+            
         }
 
         public override void Stop()

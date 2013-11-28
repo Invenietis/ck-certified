@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Bottom" xml:space="preserve">
-    <value>Bottom</value>
+  <data name="SendStringProtocolDescription" xml:space="preserve">
+    <value>Enables creating a key that outputs a letter of a sentence</value>
   </data>
-  <data name="BottomLeft" xml:space="preserve">
-    <value>Bottom-Left</value>
-  </data>
-  <data name="BottomRight" xml:space="preserve">
-    <value>Bottom-Right</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>Left</value>
-  </data>
-  <data name="MoveMouseProtocolDescription" xml:space="preserve">
-    <value>Starts moving the mouse pointer towards a direction, clicking again the key will stop the motion</value>
-  </data>
-  <data name="MoveMouseProtocolTitle" xml:space="preserve">
-    <value>Move the mouse pointer</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>Right</value>
-  </data>
-  <data name="SendKeyProtocolDescription" xml:space="preserve">
-    <value>Enables sending a special key : Return, F1 to F12, Suppr etc...</value>
-  </data>
-  <data name="SendKeyProtocolTitle" xml:space="preserve">
-    <value>Special Key (F11, Return, Suppr ...)</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Up</value>
-  </data>
-  <data name="UpLeft" xml:space="preserve">
-    <value>Up-Left</value>
-  </data>
-  <data name="UpRight" xml:space="preserve">
-    <value>Up-Right</value>
+  <data name="SendStringProtocolTitle" xml:space="preserve">
+    <value>Write a letter or a sentence</value>
   </data>
 </root>

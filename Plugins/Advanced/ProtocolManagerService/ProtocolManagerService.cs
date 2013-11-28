@@ -8,9 +8,9 @@ using System.Text;
 
 namespace ProtocolManagerService
 {
-   [Plugin( ProtocolManagerService.PluginIdString,
-        PublicName = ProtocolManagerService.PluginPublicName,
-        Version = ProtocolManagerService.PluginIdVersion )]
+    [Plugin( ProtocolManagerService.PluginIdString,
+         PublicName = ProtocolManagerService.PluginPublicName,
+         Version = ProtocolManagerService.PluginIdVersion )]
     public class ProtocolManagerService : IPlugin, IProtocolEditorsManager
     {
         const string PluginIdString = "{616A53FE-3AAF-4410-8691-7CE0A97D3266}";
@@ -29,7 +29,7 @@ namespace ProtocolManagerService
         public void Start()
         {
             //This should be registered through the SendStringCommandHandler (which is not in this solution)
-            _vmProtocolEditorsProvider.AvailableProtocolEditors.Add( "sendString", new VMProtocolEditorWrapper( "sendString", "Ecrire une lettre ou une phrase", "Permet d'écrire n'importe quelle chaine de caractère", typeof( SimpleKeyCommandParameterManager ) ) );
+            _vmProtocolEditorsProvider.AvailableProtocolEditors.Add( "sendString", new VMProtocolEditorWrapper( "sendString", R.SendStringProtocolTitle, R.SendStringProtocolDescription, typeof( SimpleKeyCommandParameterManager ) ) );
         }
 
         public void Stop()

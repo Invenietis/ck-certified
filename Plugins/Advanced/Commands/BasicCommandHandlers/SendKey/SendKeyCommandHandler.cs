@@ -28,18 +28,19 @@ using System.Windows.Forms;
 using CK.Context;
 using CK.Core;
 using ProtocolManagerModel;
+using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
-    [Plugin("{3B38A879-4968-4fec-8AE8-81D9EBBB7D69}", Categories = new string[] { "Advanced" },
+    [Plugin( "{3B38A879-4968-4fec-8AE8-81D9EBBB7D69}", Categories = new string[] { "Advanced" },
         PublicName = "Send key command handler", Version = "2.0.0" )]
     public class NewSendKeyCommandHandlerPlugin : BasicCommandHandler, ISendKeyCommandHandlerService
     {
         private const string CMDSendKey = "sendKeyOld";
 
-        public event EventHandler<KeySentEventArgs>  KeySent;
+        public event EventHandler<KeySentEventArgs> KeySent;
 
-        public event EventHandler<KeySendingEventArgs>  KeySending;
+        public event EventHandler<KeySendingEventArgs> KeySending;
 
         [RequiredService]
         public IContext Context { get; set; }
@@ -49,7 +50,7 @@ namespace BasicCommandHandlers
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            CommandParser p = new CommandParser(e.Command);
+            CommandParser p = new CommandParser( e.Command );
             string str;
             if( p.IsIdentifier( out str ) && !e.Canceled && str == CMDSendKey )
             {
@@ -126,7 +127,7 @@ namespace BasicCommandHandlers
                     default:
                         SendKeys.SendWait( key );
                         break;
-                }    
+                }
 
                 if( KeySent != null ) KeySent( this, new KeySentEventArgs( key ) );
             }
@@ -138,8 +139,8 @@ namespace BasicCommandHandlers
             ProtocolManagerService.Service.Register(
                                         new VMProtocolEditorWrapper(
                                         "sendKey",
-                                        "Touche spéciale (F11, Entrée, Suppr ...)",
-                                        "Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...",
+                                        R.SendKeyProtocolTitle,
+                                        R.SendKeyProtocolDescription,
                                         typeof( SendKeyCommandParameterManager ) ) );
         }
 

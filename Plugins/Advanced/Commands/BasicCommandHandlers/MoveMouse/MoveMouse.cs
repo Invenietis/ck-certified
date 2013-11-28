@@ -31,6 +31,7 @@ using CommonServices.Accessibility;
 using System.Windows.Threading;
 using System.Diagnostics;
 using ProtocolManagerModel;
+using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
@@ -180,9 +181,15 @@ namespace BasicCommandHandlers
             base.Start();
             ProtocolManagerService.Service.Register(
                     new VMProtocolEditorWrapper( PROTOCOL_BASE,
-                                                 "Déplacer la souris",
-                                                 "Permet de déplacer la souris dans une direction donnée de manière continue",
+                                                 R.MoveMouseProtocolTitle,
+                                                 R.MoveMouseProtocolDescription,
                                                  typeof( MoveMouseCommandParameterManager ) ) );
+        }
+
+        public override void Stop()
+        {
+            ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
+            base.Stop();
         }
     }
 }

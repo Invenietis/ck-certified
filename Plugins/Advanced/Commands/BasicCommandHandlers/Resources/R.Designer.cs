@@ -97,11 +97,56 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Starts moving the mouse pointer towards a direction, clicking again the key will stop the motion.
+        /// </summary>
+        internal static string MoveMouseProtocolDescription {
+            get {
+                return ResourceManager.GetString("MoveMouseProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move the mouse pointer.
+        /// </summary>
+        internal static string MoveMouseProtocolTitle {
+            get {
+                return ResourceManager.GetString("MoveMouseProtocolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Right.
         /// </summary>
         internal static string Right {
             get {
                 return ResourceManager.GetString("Right", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables sending a special key : Return, F1 to F12, Suppr etc....
+        /// </summary>
+        internal static string SendKeyProtocolDescription {
+            get {
+                return ResourceManager.GetString("SendKeyProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special Key (F11, Return, Suppr ...).
+        /// </summary>
+        internal static string SendKeyProtocolTitle {
+            get {
+                return ResourceManager.GetString("SendKeyProtocolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

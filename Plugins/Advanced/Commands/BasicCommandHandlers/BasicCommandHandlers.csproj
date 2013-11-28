@@ -137,18 +137,6 @@
     <Compile Include="SimpleKeyCommandParameter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\cross.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\logo_16x16.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\warning.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Host.Services\Host.Services.csproj">
       <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
       <Name>Host.Services</Name>

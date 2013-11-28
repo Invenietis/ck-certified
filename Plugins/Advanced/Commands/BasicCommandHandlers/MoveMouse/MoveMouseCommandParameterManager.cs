@@ -26,15 +26,6 @@ namespace BasicCommandHandlers
                 { "UR", R.UpRight }, 
                 { "DR", R.BottomRight }, 
                 { "DL", R.BottomLeft  } 
-
-                //{ R.Up, "U"  }, 
-                //{ R.Right, "R" }, 
-                //{ R.Bottom, "B" }, 
-                //{ R.Left, "L"  }, 
-                //{ R.UpLeft, "UL" },
-                //{ R.UpRight, "UR" }, 
-                //{ R.BottomRight, "DR" }, 
-                //{ R.BottomLeft, "DL" } 
             };
         }
 

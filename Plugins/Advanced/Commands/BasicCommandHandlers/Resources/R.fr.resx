@@ -129,8 +129,20 @@
   <data name="Left" xml:space="preserve">
     <value>Gauche</value>
   </data>
+  <data name="MoveMouseProtocolDescription" xml:space="preserve">
+    <value>Permet de déplacer la souris dans une direction donnée de manière continue</value>
+  </data>
+  <data name="MoveMouseProtocolTitle" xml:space="preserve">
+    <value>Déplacer la souris</value>
+  </data>
   <data name="Right" xml:space="preserve">
     <value>Droite</value>
+  </data>
+  <data name="SendKeyProtocolDescription" xml:space="preserve">
+    <value>Permet de simuler la pression sur une touche spéciale comme Entrée, les touches F1..12, Effacer, Suppr etc...</value>
+  </data>
+  <data name="SendKeyProtocolTitle" xml:space="preserve">
+    <value>Touche spéciale (F11, Entrée, Suppr ...)</value>
   </data>
   <data name="Up" xml:space="preserve">
     <value>Haut</value>

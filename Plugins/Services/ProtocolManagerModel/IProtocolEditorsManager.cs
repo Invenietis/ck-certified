@@ -9,9 +9,9 @@ namespace ProtocolManagerModel
     //TODO : Comments
     public interface IProtocolEditorsManager : IDynamicService
     {
-        void Register( VMProtocolEditorWrapper keyCommandTypeViewModel );
+        void Register( VMProtocolEditorWrapper keyCommandTypeViewModel, Type handlingService );
         void Unregister( string protocol );
 
-        VMProtocolEditorsProvider KeyCommandProviderViewModel { get; }
+        VMProtocolEditorsProvider ProtocolEditorsProviderViewModel { get; }
     }
 }

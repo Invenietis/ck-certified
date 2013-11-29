@@ -8,14 +8,42 @@ using System.Text;
 namespace ProtocolManagerModel
 {
 
-    public class VMProtocolEditorsProvider: INotifyPropertyChanged
+    public class VMProtocolEditorsProvider : INotifyPropertyChanged
     {
-        public Dictionary<string, VMProtocolEditorWrapper> AvailableProtocolEditors { get; private set; }
+        public IEnumerable<VMProtocolEditorWrapper> AvailableProtocolEditors { get { return _availableProtocolEditors.Values; } }
+
+        private Dictionary<string, VMProtocolEditorWrapper> _availableProtocolEditors { get; set; }
+        private Dictionary<string, Type> _availableProtocolHandlers { get; set; }
 
         public VMProtocolEditorsProvider()
         {
-            AvailableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
+            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
+            _availableProtocolHandlers = new Dictionary<string, Type>();
             ProtocolEditor = new VMProtocolEditor();
+        }
+
+        public Type GetHandlingService( string protocol )
+        {
+            Type handlingService = null;
+            _availableProtocolHandlers.TryGetValue( protocol, out handlingService );
+            return handlingService;
+        }
+
+        public void AddEditor( string protocol, VMProtocolEditorWrapper wrapper, Type handlingService )
+        {
+            _availableProtocolEditors.Add( protocol, wrapper );
+            _availableProtocolHandlers.Add( protocol, handlingService );
+            OnPropertyChanged( "AvailableProtocolEditors" );
+        }
+
+        public void RemoveEditor( string protocol )
+        {
+            if( _availableProtocolEditors.ContainsKey( protocol ) )
+            {
+                _availableProtocolEditors.Remove( protocol );
+                _availableProtocolHandlers.Remove( protocol );
+                OnPropertyChanged( "AvailableProtocolEditors" );
+            }
         }
 
         public VMProtocolEditorWrapper SelectedProtocolEditorWrapper
@@ -24,6 +52,8 @@ namespace ProtocolManagerModel
             set
             {
                 ProtocolEditor.Wrapper = value;
+
+                //Creating the ParameterMaanger on the fly
                 if( value != null ) ProtocolEditor.ParameterManager = ProtocolEditor.Wrapper.CreateParameterManager();
 
                 OnPropertyChanged( "ProtocolEditor" );
@@ -92,7 +122,7 @@ namespace ProtocolManagerModel
         {
             //If the protocol is not recognized, we'll add an Invalid KeyCommandType.
             VMProtocolEditorWrapper editorWrapper = new VMProtocolEditorWrapper( protocol, protocol );
-            AvailableProtocolEditors.TryGetValue( protocol, out editorWrapper );
+            _availableProtocolEditors.TryGetValue( protocol, out editorWrapper );
             return editorWrapper;
         }
 

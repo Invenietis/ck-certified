@@ -141,7 +141,8 @@ namespace BasicCommandHandlers
                                         "sendKey",
                                         R.SendKeyProtocolTitle,
                                         R.SendKeyProtocolDescription,
-                                        typeof( SendKeyCommandParameterManager ) ) );
+                                        typeof( SendKeyCommandParameterManager ) ),
+                                        typeof( ISendKeyCommandHandlerService ) );//is it the right service ?
         }
 
         public override void Stop()

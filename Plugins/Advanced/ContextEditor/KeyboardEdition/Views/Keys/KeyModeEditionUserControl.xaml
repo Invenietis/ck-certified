@@ -268,7 +268,7 @@
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
                             <TextBlock Text="Create a new action : " Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
                             <StackPanel DataContext="{Binding ProtocolEditorsProvider}">
-                                <ComboBox ItemsSource="{Binding AvailableProtocolEditors.Values}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
+                                <ComboBox ItemsSource="{Binding AvailableProtocolEditors}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Name}" />

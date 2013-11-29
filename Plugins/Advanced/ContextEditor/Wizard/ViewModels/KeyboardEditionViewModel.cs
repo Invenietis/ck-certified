@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CK.Keyboard.Model;
 using KeyboardEditor.Resources;
 using CK.WPF.ViewModel;
+using CK.Plugin;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -25,7 +26,44 @@ namespace KeyboardEditor.ViewModels
 
         public override bool OnBeforeNext()
         {
+            HashSet<string> protocols = new HashSet<string>();
+
+            //Parse all the keys of the keyboard ot retrieve the different CommandManagers it needs
+            foreach( var zone in EditedContext.KeyboardVM.Model.Zones )
+            {
+                foreach( var key in zone.Keys )
+                {
+                    foreach( var keyMode in key.KeyModes )
+                    {
+                        ParseCommands( protocols, keyMode.OnKeyUpCommands );
+                        ParseCommands( protocols, keyMode.OnKeyDownCommands );
+                        ParseCommands( protocols, keyMode.OnKeyPressedCommands );
+                    }
+                }
+
+            }
+
+            //Updating the keyboard's requirement layer
+            foreach( var protocol in protocols )
+            {
+                Type handlingService = Root.ProtocolManagerService.Service.ProtocolEditorsProviderViewModel.GetHandlingService(protocol);
+                if( handlingService != null )
+                {
+                    Root.EditedContext.KeyboardVM.Model.RequirementLayer.ServiceRequirements.AddOrSet( handlingService.AssemblyQualifiedName, RunningRequirement.OptionalTryStart );
+                }
+            }
+
             return base.OnBeforeNext();
+        }
+
+        private static void ParseCommands( HashSet<string> protocols, IKeyProgram keyProgram )
+        {
+            foreach( var command in keyProgram.Commands )
+            {
+                int index = command.IndexOf( ':' );
+                if( index >= 0 )
+                    protocols.Add( command.Substring( 0, index ) );
+            }
         }
 
         public override bool OnBeforeGoBack()

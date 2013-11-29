@@ -42,6 +42,10 @@
     <Reference Include="CK.Plugin.Model">
       <HintPath>..\..\..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
+    <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\SendInputDriver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

@@ -1,11 +1,11 @@
 ﻿using BasicCommandHandlers;
 using CK.Plugin;
+using CK.Plugins.SendInputDriver;
 using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 namespace ProtocolManagerService
 {
     [Plugin( ProtocolManagerService.PluginIdString,
@@ -29,33 +29,29 @@ namespace ProtocolManagerService
         public void Start()
         {
             //This should be registered through the SendStringCommandHandler (which is not in this solution)
-            _vmProtocolEditorsProvider.AvailableProtocolEditors.Add( "sendString", new VMProtocolEditorWrapper( "sendString", R.SendStringProtocolTitle, R.SendStringProtocolDescription, typeof( SimpleKeyCommandParameterManager ) ) );
+            _vmProtocolEditorsProvider.AddEditor( "sendString", new VMProtocolEditorWrapper( "sendString", R.SendStringProtocolTitle, R.SendStringProtocolDescription, typeof( SimpleKeyCommandParameterManager ) ), typeof( ISendStringService ) );
         }
 
         public void Stop()
         {
-            _vmProtocolEditorsProvider.AvailableProtocolEditors.Clear();
         }
 
         public void Teardown()
         {
         }
 
-        public void Register( VMProtocolEditorWrapper vmProtocolEditorWrapper )
+        public void Register( VMProtocolEditorWrapper vmProtocolEditorWrapper, Type handlingService )
         {
             //TODO : The register should take a DataTemplate as parameter, to add it dynamically to the DataTemplateSelector used to create the keys.
-            _vmProtocolEditorsProvider.AvailableProtocolEditors.Add( vmProtocolEditorWrapper.Protocol, vmProtocolEditorWrapper );
+            _vmProtocolEditorsProvider.AddEditor( vmProtocolEditorWrapper.Protocol, vmProtocolEditorWrapper, handlingService );
         }
 
         public void Unregister( string protocol )
         {
-            if( _vmProtocolEditorsProvider.AvailableProtocolEditors.ContainsKey( protocol ) )
-            {
-                _vmProtocolEditorsProvider.AvailableProtocolEditors.Remove( protocol );
-            }
+            _vmProtocolEditorsProvider.RemoveEditor( protocol );
         }
 
-        public VMProtocolEditorsProvider KeyCommandProviderViewModel
+        public VMProtocolEditorsProvider ProtocolEditorsProviderViewModel
         {
             get { return _vmProtocolEditorsProvider; }
         }

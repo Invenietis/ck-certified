@@ -336,7 +336,7 @@ namespace KeyboardEditor.ViewModels
         VMProtocolEditorsProvider _keyCommandTypeProvider;
         public VMProtocolEditorsProvider ProtocolEditorsProvider
         {
-            get { return Context.ProtocolManagerService.Service.KeyCommandProviderViewModel; }
+            get { return Context.ProtocolManagerService.Service.ProtocolEditorsProviderViewModel; }
             set
             {
                 _keyCommandTypeProvider = value;

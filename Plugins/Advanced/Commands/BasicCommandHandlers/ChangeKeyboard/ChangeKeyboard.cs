@@ -78,8 +78,8 @@ namespace BasicCommandHandlers
                                                  new Func<ChangeKeyboardCommandParameterManager>( () =>
                                                  {
                                                      return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() );
-                                                 } ) ) );
-            
+                                                 } ) ), typeof( IChangeKeyboardCommandHandlerService ) );
+
         }
 
         public override void Stop()

@@ -80,7 +80,8 @@ namespace BasicCommandHandlers
                     new VMProtocolEditorWrapper( PROTOCOL_BASE,
                                                  R.ClicProtocolTitle,
                                                  R.ClicProtocolDescription,
-                                                 typeof( ClickCommandParameterManager ) ) );
+                                                 typeof( ClickCommandParameterManager ) ),
+                                                 typeof( IClicCommandHandlerService ) );
         }
 
         public override void Stop()

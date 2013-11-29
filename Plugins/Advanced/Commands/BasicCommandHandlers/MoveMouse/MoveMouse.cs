@@ -183,7 +183,8 @@ namespace BasicCommandHandlers
                     new VMProtocolEditorWrapper( PROTOCOL_BASE,
                                                  R.MoveMouseProtocolTitle,
                                                  R.MoveMouseProtocolDescription,
-                                                 typeof( MoveMouseCommandParameterManager ) ) );
+                                                 typeof( MoveMouseCommandParameterManager ) ),
+                                                 typeof( IMoveMouseCommandHandlerService ) );
         }
 
         public override void Stop()

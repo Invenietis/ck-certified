@@ -36,14 +36,15 @@
         <Setter Property="Foreground" Value="{StaticResource EditorMainColor}"/>
         <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}"/>
         <Setter Property="Background" Value="White"/>
-        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="2"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Microsoft_Windows_Themes:ButtonChrome x:Name="Chrome" RoundCorners="False" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Microsoft_Windows_Themes:ButtonChrome>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -56,8 +57,9 @@
                 <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="LightGray"></Setter>
-                <Setter Property="Background" Value="Gray"></Setter>
+                <Setter Property="BorderBrush" Value="Gray"></Setter>
+                <Setter Property="Foreground" Value="Gray"></Setter>
+                <Setter Property="Background" Value="White"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

@@ -32,7 +32,7 @@ namespace KeyboardEditor.ViewModels
         {
             _model = model;
             _commands = new ObservableCollection<string>();
-            
+
             _modeName = String.IsNullOrWhiteSpace( _model.Mode.ToString() ) ? R.DefaultMode : _model.Mode.ToString();
             _sectionName = R.ContentSection;
 
@@ -191,6 +191,9 @@ namespace KeyboardEditor.ViewModels
         }
 
         VMCommand _initializeCommand;
+        /// <summary>
+        /// Sent when the user clicks on "Add an action" : creates a new empty ProtocolEditor 
+        /// </summary>
         public VMCommand InitializeCommandCommand
         {
             get
@@ -199,7 +202,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _initializeCommand = new VMCommand( () =>
                     {
-                        ProtocolEditorsProvider.InitializeKeyCommand();
+                        ProtocolEditorsProvider.InitializeProtocolEditor();
                         ShowKeyCommandCreationPanel = true;
                     } );
                 }
@@ -217,9 +220,10 @@ namespace KeyboardEditor.ViewModels
                 {
                     _saveCommand = new VMCommand( () =>
                     {
-                        DoAddKeyCommand( ProtocolEditorsProvider.ProtocolEditor.ToString() );
+                        DoAddKeyCommand( ProtocolEditorsProvider.ProtocolEditor.ToString(), _commandBeingChangedIndex );
                         ShowKeyCommandCreationPanel = false;
-
+                        _commandBeingChanged = String.Empty;
+                        _commandBeingChangedIndex = -1;
                     } );
                 }
 
@@ -227,14 +231,19 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        private void DoAddKeyCommand( string keyCommand )
+        private void DoAddKeyCommand( string keyCommand, int index )
         {
-            Model.OnKeyDownCommands.Commands.Add( keyCommand );
-            ProtocolEditorsProvider.FlushCurrentKeyCommand();
+            if( index == -1 ) index = Model.OnKeyDownCommands.Commands.Count;
+            Model.OnKeyDownCommands.Commands.Insert( index, keyCommand );
+            ProtocolEditorsProvider.FlushCurrentProtocolEditor();
         }
 
         string _commandBeingChanged = String.Empty;
+        int _commandBeingChangedIndex = -1;
         VMCommand<string> _changeCommand;
+        /// <summary>
+        /// Sent when the user clicks on the edit button of a KeyCommand.
+        /// </summary>
         public VMCommand<string> ChangeCommandCommand
         {
             get
@@ -244,6 +253,15 @@ namespace KeyboardEditor.ViewModels
                     _changeCommand = new VMCommand<string>( ( cmdString ) =>
                     {
                         _commandBeingChanged = cmdString;
+                        for( int i = 0; i < Model.OnKeyDownCommands.Commands.Count; i++ )
+                        {
+                            if( Model.OnKeyDownCommands.Commands[i] == cmdString )
+                            {
+                                _commandBeingChangedIndex = i;
+                                break;
+                            }
+                        }
+
                         DoRemoveKeyCommand( cmdString );
                         ProtocolEditorsProvider.CreateKeyCommand( cmdString );
                         ShowKeyCommandCreationPanel = true;
@@ -266,12 +284,13 @@ namespace KeyboardEditor.ViewModels
                     {
                         if( !String.IsNullOrEmpty( _commandBeingChanged ) )
                         {
-                            DoAddKeyCommand( _commandBeingChanged );
+                            DoAddKeyCommand( _commandBeingChanged, _commandBeingChangedIndex );
                             _commandBeingChanged = String.Empty;
+                            _commandBeingChangedIndex = -1;
                         }
                         else
                         {
-                            ProtocolEditorsProvider.FlushCurrentKeyCommand();
+                            ProtocolEditorsProvider.FlushCurrentProtocolEditor();
                         }
                         ShowKeyCommandCreationPanel = false;
                     } );

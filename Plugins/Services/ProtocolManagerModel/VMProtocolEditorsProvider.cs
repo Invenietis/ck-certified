@@ -50,13 +50,13 @@ namespace ProtocolManagerModel
             }
         }
 
-        public void FlushCurrentKeyCommand()
+        public void FlushCurrentProtocolEditor()
         {
             SelectedProtocolEditorWrapper = null;
             ProtocolEditor = null;
         }
 
-        public void InitializeKeyCommand()
+        public void InitializeProtocolEditor()
         {
             ProtocolEditor = new VMProtocolEditor();
         }

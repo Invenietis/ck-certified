@@ -22,12 +22,13 @@
                     <Trigger Property="IsChecked" Value="True">
                         <Setter Property="Foreground" Value="White"/>
                         <Setter Property="Background" Value="{StaticResource EditorLightColor}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}"/>
                     </Trigger>
                 </Style.Triggers>
                 <Setter Property="Background" Value="White"/>
-                <Setter Property="Foreground" Value="{StaticResource EditorMainColor}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}"/>
-                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Foreground" Value="{StaticResource EditorLightColor}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource EditorLightColor}"/>
+                <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="Padding" Value="10"/>
@@ -41,20 +42,20 @@
                                         <VisualState x:Name="Normal" />
                                         <VisualState x:Name="MouseOver">
                                             <Storyboard>
-                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF065AA0"/>
+                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF4D87B0"/>
                                                 <ColorAnimation Duration="0" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="White"/>
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
-                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF4D87B0"/>
+                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF065AA0"/>
                                                 <ColorAnimation Duration="0" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="White"/>
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
                                 <Border x:Name="Background" Background="White" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                                    <Grid Background="{TemplateBinding Background}"  Margin="1">
+                                    <Grid Background="{TemplateBinding Background}">
                                         <Rectangle x:Name="BackgroundGradient" Fill="{TemplateBinding Background}">
                                         </Rectangle>
                                     </Grid>
@@ -251,10 +252,12 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition SharedSizeGroup="ModeColumn" />
                                     </Grid.ColumnDefinitions>
-                                    <ToggleButton Style="{StaticResource ModernUIToggleButtonStyle}" 
+                                    <Grid Margin="2">
+                                        <ToggleButton Style="{StaticResource ModernUIToggleButtonStyle}" 
                                         Grid.Row="0"
                                         IsChecked="{Binding IsChecked}" 
-                                        Content="{Binding ModeName, Mode=OneWay}" />
+                                        Content="{Binding ModeName, Mode=OneWay}" FontWeight="ExtraBold"/>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

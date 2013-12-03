@@ -1,0 +1,54 @@
+﻿<Window x:Class="ScreenScroller.Screen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ScreenScroller"
+        Title="MainWindow" Height="500" Width="800" Top="{Binding Y}" Left="{Binding X}" WindowState="Maximized" WindowStyle="None"  AllowsTransparency="True">
+    <!---->
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                    <Setter Property="Background" Value="Chartreuse"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type local:NodeViewModel}">
+            <ItemsControl ItemsSource="{Binding ChildNodes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <local:TrackUniformGrid />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                        <Setter Property="Background" Value="Chartreuse"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                            </Border.Style>
+                            <Grid>
+                                <TextBlock Text="{Binding Image}"></TextBlock>
+                                <UniformGrid Grid.Row="1">
+                                    <ContentPresenter Content="{Binding}"/>
+                                </UniformGrid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <ContentControl Content="{Binding}"></ContentControl>
+    </Grid>
+</Window>

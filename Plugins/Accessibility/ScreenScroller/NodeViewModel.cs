@@ -12,36 +12,70 @@ namespace ScreenScroller
 {
     public class NodeViewModel : INotifyPropertyChanged
     {
-        private NodeViewModel( NodeViewModel parent, int level, int childrenCount, int maxDepth, int index )
+        bool _isRoot;
+        int _level, _index;
+
+        public bool IsRoot { get { return _isRoot; } }
+        public bool IsStart { get { return Index == 0; } }
+        public bool IsEnd { get { return Index == ChildNodes.Count - 1; } }
+        public bool IsContinuousTrack { get { return ChildNodes.Count == 4; } }
+
+        public int CurrentIndex { get; set; }
+        public int Index { get { return _index; } }
+
+        public int Level { get { return _level; } }
+        public bool CurrentLevelIsBeingScrolled { get { return Root.CurrentNode == Parent; } }
+
+        public int LapCount { get { return _lapCount; } }
+        public bool LapsAreFinished { get { return LapCount >= Root.MaxLapCount; } }
+        public bool ParentLapsAreAboutToFinish { get { return Parent.LapCount >= Root.MaxLapCount - 1; } }
+
+        public IRootNode Root { get; set; }
+        public NodeViewModel Parent { get; set; }
+        public ObservableCollection<NodeViewModel> ChildNodes { get; set; }
+
+        private NodeViewModel( IRootNode root, NodeViewModel parent, int level, int childrenCount, int maxDepth, int index )
         {
-            _level = level;
             ChildNodes = new ObservableCollection<NodeViewModel>();
+            Parent = parent;
+            Root = root;
+            Root.LevelChanged += OnLevelChanged;
+
+            _level = level;
             _index = index;
 
             if( _level < maxDepth )
             {
                 for( int i = 0; i < childrenCount; i++ )
                 {
-                    ChildNodes.Add( new NodeViewModel( this, _level + 1, childrenCount, maxDepth, i ) );
+                    ChildNodes.Add( new NodeViewModel( root, this, _level + 1, childrenCount, maxDepth, i ) );
                 }
             }
-
-            Parent = parent;
         }
 
-        public NodeViewModel( NodeViewModel root, int x, int y, int childrenCount, int maxDepth, bool isRoot )
+        public void Dispose()
+        {
+            Root.LevelChanged -= OnLevelChanged;
+        }
+
+        void OnLevelChanged( object sender, LevelChangedEventArgs e )
+        {
+            OnPropertyChanged( "CurrentLevelIsBeingScrolled" );
+            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
+        }
+
+        internal NodeViewModel( ScreenScrollerPlugin root, int childrenCount, int maxDepth, bool isRoot )
         {
             ChildNodes = new ObservableCollection<NodeViewModel>();
-            Parent = Root = root;
+            Parent = root;
+            Root = root;
             _level = 0;
-            _x = x;
-            _y = y;
 
             if( _level < maxDepth )
             {
                 for( int i = 0; i < childrenCount; i++ )
                 {
-                    ChildNodes.Add( new NodeViewModel( this, _level + 1, childrenCount, maxDepth, i ) );
+                    ChildNodes.Add( new NodeViewModel( root, this, _level + 1, childrenCount, maxDepth, i ) );
                 }
             }
         }
@@ -51,43 +85,80 @@ namespace ScreenScroller
             _isRoot = true;
         }
 
-        internal void MoveNext()
+        int _lapCount;
+        bool _childOrSelfIsActive;
+        bool _hasJustBeenEntered;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>false if the node has made its final lap during the last MoveNext.</returns>
+        internal bool MoveNext()
         {
-            if( _entered )
+            if( LapsAreFinished )
             {
-                _entered = false;
+                _lapCount = 0;
+                CurrentIndex = 0;
+                IsVisible = false;
+                return false;
+            }
+
+            if( _hasJustBeenEntered )
+            {
+                _hasJustBeenEntered = false;
                 IsHighlighted = false;
             }
             else
             {
-                if( CurrentIndex == ChildNodes.Count - 1 ) CurrentIndex = 0;
+                if( CurrentIndex == ChildNodes.Count - 1 ) //If we are at the end of a lap, we set the 
+                {
+                    CurrentIndex = 0;
+                    _lapCount++;
+
+                    ChildNodes.ElementAt( 0 ).LapCompleted();
+                    OnPropertyChanged( "LapsAreFinished" );
+                }
                 else CurrentIndex++;
             }
 
             ChildNodes.ElementAt( CurrentIndex ).IsHighlighted = true;
+
+            return true;
         }
 
-        bool _entered;
+        internal void LapCompleted()
+        {
+            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
+        }
+
         internal void Entered()
         {
-            _entered = true;
+            _hasJustBeenEntered = true;
+            IsVisible = true;
         }
 
-        public int X { get { return _x; } }
-        public int Y { get { return _y; } }
-        public int Index { get { return _index; } }
+        internal void ExitAll()
+        {
+            CurrentIndex = 0;
+            _lapCount = 0;
+            IsVisible = false;
+            foreach( var node in ChildNodes )
+            {
+                node.ExitAll();
+            }
 
-        int _x, _y, _index;
-        int _level;
-        bool _isRoot;
-        Screen _screen;
+            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
+        }
 
-        public ObservableCollection<NodeViewModel> ChildNodes { get; set; }
-        public int Thickness { get { return 4 - Level > 0 ? 4 - Level : 0; } }
-        public int Level { get { return _level; } }
-        public int CurrentIndex { get; set; }
-        public NodeViewModel Root { get; set; }
-        public NodeViewModel Parent { get; set; }
+        public bool IsVisible
+        {
+            get { return _childOrSelfIsActive; }
+            set
+            {
+                _childOrSelfIsActive = value;
+                OnPropertyChanged( "IsVisible" );
+            }
+        }
 
         string _image;
         public string Image
@@ -97,23 +168,31 @@ namespace ScreenScroller
                 if( String.IsNullOrWhiteSpace( _image ) )
                 {
                     double colCount, rowCount;
+
                     colCount = rowCount = Math.Sqrt( ChildNodes.Count );
                     double val = ( Index + 1 ) / rowCount;
                     double truncatedValue = Math.Truncate( val );
                     bool isTruncatedValueEven = ( truncatedValue % 2 ) == 0;
+
                     if( ChildNodes.Count == 0 )
                     {
                         return "x";
                     }
-                    else if( val == 0 )
+                    else if( IsStart )
                     {
                         //We are on the first node
-                        _image = "->";
+                        _image = ">";
                     }
-                    else if( Index + 1 == ChildNodes.Count )
+                    else if( IsEnd )
                     {
-                        //We are at the end of the track
-                        _image = "END";
+                        if( IsContinuousTrack )
+                        {
+                            _image = "^";
+                        }
+                        else
+                        {
+                            _image = "END";
+                        }
                     }
                     else if( val % 1 == 0 ) //if the value has nothing past the decimal point, we are at the end of a row (or at the beginning/end of the track)
                     {
@@ -123,21 +202,33 @@ namespace ScreenScroller
                     else if( isTruncatedValueEven )
                     {
                         //The next element is on the right of this element
-                        _image = "->";
+                        _image = ">";
                     }
                     else
                     {
                         //The next element is on the left of this element
-                        _image = "<-";
+                        _image = "<";
                     }
-
                 }
                 return _image;
             }
         }
 
         bool _isHighlighted;
-        public bool IsHighlighted { get { return _isHighlighted; } set { _isHighlighted = value; OnPropertyChanged( "IsHighlighted" ); } }
+        public bool IsHighlighted
+        {
+            get { return _isHighlighted; }
+            set
+            {
+                _isHighlighted = value;
+                if( value )
+                {
+                    IsVisible = true;
+                }
+                OnPropertyChanged( "CurrentLevelIsBeingScrolled" );
+                OnPropertyChanged( "IsHighlighted" );
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged( string name )

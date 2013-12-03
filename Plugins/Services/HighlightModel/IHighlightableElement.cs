@@ -127,7 +127,7 @@ namespace HighlightModel
 
 
     /// <summary>
-    /// Enum describing the way the scroller is supposed ot move across its <see cref="IHighlitableElement" tree./>
+    /// Enum describing the way the scroller is supposed ot move across its <see cref="IHighlightableElement" /> tree.
     /// </summary>
     public enum ActionType
     {

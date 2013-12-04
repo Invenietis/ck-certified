@@ -16,24 +16,59 @@ namespace ScreenScroller
         int _level, _index;
 
         public bool IsRoot { get { return _isRoot; } }
+        public bool IsLeaf { get { return ChildNodes.Count == 0; } }
+
         public bool IsStart { get { return Index == 0; } }
         public bool IsEnd { get { return Index == ChildNodes.Count - 1; } }
         public bool IsContinuousTrack { get { return ChildNodes.Count == 4; } }
 
+        /// <summary>
+        /// Gets the index of the child currently scrolled on
+        /// </summary>
         public int CurrentIndex { get; set; }
+
+        /// <summary>
+        /// Gets the index of this node among its parent's nodes
+        /// </summary>
         public int Index { get { return _index; } }
 
+        /// <summary>
+        /// Gets the Level of this node
+        /// </summary>
         public int Level { get { return _level; } }
+        /// <summary>
+        /// Gets whether this node or one of its siblings are being scrolled on
+        /// </summary>
         public bool CurrentLevelIsBeingScrolled { get { return Root.CurrentNode == Parent; } }
 
+        /// <summary>
+        /// Gets the number of laps done so far (should return 0 when the node is not the current one)
+        /// </summary>
         public int LapCount { get { return _lapCount; } }
+        /// <summary>
+        /// Gets whether the number of laps of this node exceeds the Root's MaxLapCount. 
+        /// Used to know whether we should go up one level
+        /// </summary>
         public bool LapsAreFinished { get { return LapCount >= Root.MaxLapCount; } }
+        /// <summary>
+        /// Gets whether the lapcount of the parent is near to the Root's MaxLapCount.
+        /// Used to warn the user that the next time we step on the starting cell of the track, we are going up one level
+        /// </summary>
         public bool ParentLapsAreAboutToFinish { get { return Parent.LapCount >= Root.MaxLapCount - 1; } }
 
         public IRootNode Root { get; set; }
         public NodeViewModel Parent { get; set; }
         public ObservableCollection<NodeViewModel> ChildNodes { get; set; }
 
+        /// <summary>
+        /// Private constructor, used internally to create the childnodes of the root nodes.
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="parent"></param>
+        /// <param name="level"></param>
+        /// <param name="childrenCount"></param>
+        /// <param name="maxDepth"></param>
+        /// <param name="index"></param>
         private NodeViewModel( IRootNode root, NodeViewModel parent, int level, int childrenCount, int maxDepth, int index )
         {
             ChildNodes = new ObservableCollection<NodeViewModel>();
@@ -53,17 +88,13 @@ namespace ScreenScroller
             }
         }
 
-        public void Dispose()
-        {
-            Root.LevelChanged -= OnLevelChanged;
-        }
-
-        void OnLevelChanged( object sender, LevelChangedEventArgs e )
-        {
-            OnPropertyChanged( "CurrentLevelIsBeingScrolled" );
-            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
-        }
-
+        /// <summary>
+        /// Ctor of the root nodes (one for each screen)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="childrenCount"></param>
+        /// <param name="maxDepth"></param>
+        /// <param name="isRoot"></param>
         internal NodeViewModel( ScreenScrollerPlugin root, int childrenCount, int maxDepth, bool isRoot )
         {
             ChildNodes = new ObservableCollection<NodeViewModel>();
@@ -80,9 +111,23 @@ namespace ScreenScroller
             }
         }
 
+        /// <summary>
+        /// Cotor used by the absolute root of the tree (the plugin)
+        /// </summary>
         internal NodeViewModel()
         {
             _isRoot = true;
+        }
+
+        public void Dispose()
+        {
+            Root.LevelChanged -= OnLevelChanged;
+        }
+
+        void OnLevelChanged( object sender, LevelChangedEventArgs e )
+        {
+            OnPropertyChanged( "CurrentLevelIsBeingScrolled" );
+            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
         }
 
         int _lapCount;
@@ -129,6 +174,7 @@ namespace ScreenScroller
         internal void LapCompleted()
         {
             OnPropertyChanged( "ParentLapsAreAboutToFinish" );
+            OnPropertyChanged( "Image" );
         }
 
         internal void Entered()
@@ -159,13 +205,23 @@ namespace ScreenScroller
                 OnPropertyChanged( "IsVisible" );
             }
         }
+        
+        ResourceDictionary _resourceDictionary = new ResourceDictionary()
+        {
+            Source = new Uri( "pack://application:,,,/ScreenScroller;component/Paths.xaml", UriKind.Absolute )
+        };
 
-        string _image;
-        public string Image
+        object _image;
+        public object Image
         {
             get
             {
-                if( String.IsNullOrWhiteSpace( _image ) )
+                if( Parent.LapCount == Root.MaxLapCount && CurrentIndex == 0 )
+                {
+                    return _resourceDictionary["OutArrow"];
+                }
+
+                if( _image == null || LapsAreFinished)
                 {
                     double colCount, rowCount;
 
@@ -174,40 +230,44 @@ namespace ScreenScroller
                     double truncatedValue = Math.Truncate( val );
                     bool isTruncatedValueEven = ( truncatedValue % 2 ) == 0;
 
-                    if( ChildNodes.Count == 0 )
+                    if( IsLeaf )
                     {
-                        return "x";
+                        //We are on a leaf, we display a "click" image
+                        _image = _resourceDictionary["ClickPath"];
                     }
                     else if( IsStart )
                     {
                         //We are on the first node
-                        _image = ">";
+                        _image = _resourceDictionary["RightArrow"]; //">";
                     }
                     else if( IsEnd )
                     {
+                        //When working with 4x4 grids, the track is continuous (the end cell is right below the start cell),
+                        //we only need an up arrow to explain the user what's going on next.
                         if( IsContinuousTrack )
                         {
-                            _image = "^";
+                            _image = _resourceDictionary["TopArrow"];//"^";
                         }
-                        else
+                        else //Otherwise, this image will clearly display the fact that we are going back to the start.
                         {
-                            _image = "END";
+                            _image = _resourceDictionary["EndArrow"];
                         }
                     }
-                    else if( val % 1 == 0 ) //if the value has nothing past the decimal point, we are at the end of a row (or at the beginning/end of the track)
+                    else if( val % 1 == 0 )
                     {
-                        //We are on the end of a row
-                        _image = "v";
+                        //if the value has nothing past the decimal point, 
+                        //we are at the end of a row (or at the beginning/end of the track, which are handled above)
+                        _image = _resourceDictionary["DownArrow"];
                     }
                     else if( isTruncatedValueEven )
                     {
-                        //The next element is on the right of this element
-                        _image = ">";
+                        //The next element is on the right of this element, because we are on an even row
+                        _image = _resourceDictionary["RightArrow"];
                     }
                     else
                     {
-                        //The next element is on the left of this element
-                        _image = "<";
+                        //The next element is on the left of this element, because we are on an odd row
+                        _image = _resourceDictionary["LeftArrow"];
                     }
                 }
                 return _image;

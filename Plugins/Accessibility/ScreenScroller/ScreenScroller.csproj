@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRootNode.cs" />
+    <Compile Include="ProportionalDimensionsConverter.cs" />
     <Compile Include="Screen.xaml.cs">
       <DependentUpon>Screen.xaml</DependentUpon>
     </Compile>
@@ -84,6 +85,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Paths.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

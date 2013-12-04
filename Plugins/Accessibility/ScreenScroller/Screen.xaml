@@ -1,9 +1,10 @@
 ﻿<Window x:Class="ScreenScroller.Screen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ScreenScroller"
-        Title="Screen">
-    <!--WindowStyle="None" WindowState="Maximized"  AllowsTransparency="True"-->
+        Title="Screen" WindowStyle="None" AllowsTransparency="True" WindowState="Maximized">
+    <!---->
     <Window.Style>
         <Style TargetType="Window">
             <Setter Property="Background" Value="Transparent" />
@@ -16,79 +17,106 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type local:NodeViewModel}">
-            <ItemsControl ItemsSource="{Binding ChildNodes}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <local:TrackUniformGrid />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border>
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Background" Value="Gray" />
-                                            <Setter Property="Opacity" Value="0.8"></Setter>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Grid>
-                                <TextBlock Text="UP!" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Setter Property="Foreground" Value="White" />
-                                            <Style.Triggers>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsStart}" Value="True"></Condition>
-                                                        <Condition Binding="{Binding CurrentLevelIsBeingScrolled}" Value="True"></Condition>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </MultiDataTrigger>
-                                                <DataTrigger Binding="{Binding ParentLapsAreAboutToFinish}" Value="True">
-                                                    <Setter Property="FontWeight" Value="Bold" />
-                                                    <Setter Property="Foreground" Value="Red" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </Viewbox>
-                                <UniformGrid Grid.Row="1">
-                                    <ContentPresenter Content="{Binding}"/>
-                                </UniformGrid>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ScreenScroller;component/Paths.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
+
     <Grid>
-        <ContentControl Content="{Binding}"></ContentControl>
+        <Grid.Resources>
+            <local:ProportionalDimensionsConverter x:Key="propConverter"/>
+            <DataTemplate DataType="{x:Type local:NodeViewModel}">
+                <ItemsControl ItemsSource="{Binding ChildNodes}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <local:TrackUniformGrid />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Border that wraps a cell. Is collapsed when the cell itself and none of its children are highilighted -->
+    <!-- This last point is VERY important performance-wise -->
+    <Border>
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                        <Setter Property="Background" Value="Black" />
+                        <Setter Property="Opacity" Value="0.8"></Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                        <Setter Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <!-- Image that shows where the cell linked to the upper level is -->
+            <ContentControl HorizontalAlignment="Left" Background="Red" VerticalAlignment="Top" Margin="5">
+                <!-- This image is a square so we bind its width AND height to a multiple of the hosting grid's width -->
+                <ContentControl.Width>
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
+                </ContentControl.Width>
+                <ContentControl.Height>
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
+                </ContentControl.Height>
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Setter Property="Content" Value="{StaticResource OutArrow}" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsStart}" Value="True"></Condition>
+                                    <Condition Binding="{Binding CurrentLevelIsBeingScrolled}" Value="True"></Condition>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible" />
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding ParentLapsAreAboutToFinish}" Value="True">
+                                <Setter Property="Content" Value="{StaticResource OutArrow}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+
+            <!-- The viewbox of a cell (contains the image that show the direction of the next tick) -->
+            <!--<Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">-->
+            <ContentControl Content="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- This image is NOT a square -->
+                <ContentControl.Width>
+                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="2" Mode="OneWay" />
+                </ContentControl.Width>
+                <ContentControl.Height>
+                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="4" Mode="OneWay" />
+                </ContentControl.Height>
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+            <!--</Viewbox>-->
+
+            <!-- Where the childNode is displayed (using the very same template) -->
+            <ContentPresenter Content="{Binding}"/>
+        </Grid>
+    </Border>
+    </DataTemplate>
+    </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    </DataTemplate>
+    </Grid.Resources>
+    <ContentControl Content="{Binding}"></ContentControl>
     </Grid>
 </Window>

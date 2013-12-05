@@ -26,8 +26,7 @@ namespace FileLauncher
         public override void Start()
         {
             base.Start();
-            FileLocator.LoadRegistry();
-            FileLocator.LoadSpecialFolders();
+            FileLocator.Init();
             _win = new Applications() 
             {
                 DataContext = new ApplicationViewModel()
@@ -64,7 +63,7 @@ namespace FileLauncher
                 f.Path = info[Command.Contents.FILE_PATH];
                 f.FolderLocationType = (Environment.SpecialFolder)int.Parse(info[Command.Contents.FILE_SPECIAL_DIRECTORY]);
             }
-            FileLocator.Locate(f);
+            FileLocator.TryLocate(f);
 
             return f;
         }

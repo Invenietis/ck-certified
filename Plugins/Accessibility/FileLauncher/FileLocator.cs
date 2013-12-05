@@ -10,18 +10,18 @@ namespace FileLauncher
     public static class FileLocator
     {
         /// <summary>
-        /// Contains all the WildApp loaded from the registry through the LoadRegistry method
+        /// Contains all the WildFile loaded from the registry through the LoadRegistry method
         /// </summary>
-        public static List<WildApp> RegistryApps { get; private set; }
+        public static List<WildFile> RegistryApps { get; private set; }
 
         public static Dictionary<string, Environment.SpecialFolder> SpecialFolders { get; private set; }
 
         /// <summary>
-        /// Load all the WildApp from the registry into RegistryApps
+        /// Load all the WildFile from the registry into RegistryApps
         /// </summary>
         public static void LoadRegistry()
         {
-            RegistryApps = new List<WildApp>();
+            RegistryApps = new List<WildFile>();
             //From App Paths
             {
                 var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths");
@@ -30,7 +30,7 @@ namespace FileLauncher
                     string path = key.OpenSubKey(s).GetValue("", null) as string;
                     if (path != null && File.Exists(path) && !RegistryApps.Exists(x => x.Path == path))
                     {
-                        RegistryApps.Add(new WildApp(Path.GetFileName(path)){ Path=path });
+                        RegistryApps.Add(GetFileFromPath(path));
                     }
                 }
             }
@@ -46,7 +46,7 @@ namespace FileLauncher
                         {
                             if (File.Exists(f) && !f.Contains("unins") && !RegistryApps.Exists(x => x.Path == f))
                             {
-                                RegistryApps.Add(new WildApp(Path.GetFileName(f)) { Path = f });
+                                RegistryApps.Add(GetFileFromPath(f));
                             }
                         }
                     }
@@ -58,6 +58,9 @@ namespace FileLauncher
             });
         }
 
+        /// <summary>
+        /// Load the special folders path
+        /// </summary>
         public static void LoadSpecialFolders()
         {
             SpecialFolders = new Dictionary<string, Environment.SpecialFolder>();
@@ -71,18 +74,32 @@ namespace FileLauncher
             }
         }
 
-        public static WildFile GetFileFromPath(string path)
+        /// <summary>
+        /// Load resources
+        /// </summary>
+        public static void Init()
+        {
+            LoadSpecialFolders();
+            LoadRegistry();
+        }
+
+        /// <summary>
+        /// Creates a WildFile from the given path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static WildFile GetFileFromPath(string path, bool fromRegistry = false)
         {
             WildFile file = new WildFile(Path.GetFileName(path)) { Path = path };
             file.FolderLocationType = GetSpecialFolder(path);
 
+            file.Lookup = fromRegistry ? FileLookup.Registry : FileLookup.SpecialFolder;
+
             if (file.FolderLocationType != null)
             {
-                file.Lookup = FileLookup.SpecialFolder;
-                string fullpath = Environment.GetFolderPath(file.FolderLocationType.Value);
-                file.Path = path.Substring(fullpath.Length);
+                
             }
-            else
+            else if (!fromRegistry)
             {
                 file.Lookup = FileLookup.Other;
             }
@@ -91,55 +108,78 @@ namespace FileLauncher
         }
 
         /// <summary>
-        /// Found the path of the given WildFile and set it to it
+        /// Try to found the path of the given WildFile.
         /// </summary>
-        /// <param name="file">the file to locate. the founded path will be updated</param>
-        /// <returns>Return the found path</returns>
-        public static string Locate(WildFile file)
+        /// <param name="file">the file to locate. the founded path will be updated into file.Path</param>
+        /// <returns>Returns if the file is found or not</returns>
+        public static bool TryLocate( WildFile file)
         {
             switch(file.Lookup)
             {
-                case FileLookup.Registry: return LocateFromRegistry(file);
-                case FileLookup.SpecialFolder: return LocateFromSpecialDirectory(file);
-                case FileLookup.Other: return LocateFromFileSystem(file);
-                default: return LocateFromFileSystem(file);
+                case FileLookup.Registry: LocateFromRegistry(file);
+                    break;
+                case FileLookup.SpecialFolder: LocateFromSpecialDirectory(file);
+                    break;
+                case FileLookup.Other: LocateFromFileSystem(file);
+                    break;
+                default: LocateFromFileSystem(file);
+                    break;
             }
+            //Last chance
+            if (!file.IsLocated)
+            {
+                string path = TryLocatePath(file.Path);
+                if (path != null) file.Path = path;
+            }
+
+            return file.IsLocated;
         }
 
+        /// <summary>
+        /// Generate the well formated command from the WildFile location information.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns>The formated command</returns>
         public static string GetLocationCommand(WildFile file)
         {
-            string cmd = file.FileName + "," + (int) file.Lookup;
-            if (file.Lookup == FileLookup.SpecialFolder)
+            string cmd = String.Format("{0},{1}", file.FileName, (int) file.Lookup);
+            if (file.FolderLocationType != null) //false if  the path does not contains a special location : file.Lookup = SpecialFolder | Registry
             {
-                cmd += "," + file.Path + "," + (int)file.FolderLocationType;
+                string sPath = Environment.GetFolderPath(file.FolderLocationType.Value);
+                string path = file.Path.Substring(sPath.Length); //Get the path without the special location
+
+                cmd += String.Format(",{0},{1}", path, (int)file.FolderLocationType);
             }
-            if (file.Lookup == FileLookup.Other)
+            else //file.Lookup = Other
             {
-                cmd += "," + file.Path;
+                cmd += String.Format(",{0}", file.Path);
             }
 
             return cmd;
         }
 
-        static string LocateFromRegistry(WildFile file)
+        static void LocateFromRegistry(WildFile file)
         {
             WildFile found = RegistryApps.FirstOrDefault(f => f.FileName == file.FileName);
-            if (found != null) return file.Path = found.Path;
-
-            return null;
+            file.Path = found.Path;
         }
 
-        static string LocateFromSpecialDirectory(WildFile file)
+        static void LocateFromSpecialDirectory(WildFile file)
         {
             file.Path = Environment.GetFolderPath(file.FolderLocationType.Value) + file.Path;
-            return file.Path;
+    
         }
 
-        static string LocateFromFileSystem(WildFile file)
+        static void LocateFromFileSystem(WildFile file)
         {
-            throw new NotImplementedException();
+
         }
 
+        /// <summary>
+        /// Get the SpecialFolder from the given path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>the matched SpecialFolder or null</returns>
         static Environment.SpecialFolder? GetSpecialFolder(string path)
         {
             foreach(string spacialPath in SpecialFolders.Keys)
@@ -149,6 +189,40 @@ namespace FileLauncher
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Try to locate a not found file path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>Null if not found</returns>
+        static string TryLocatePath(string path)
+        {
+            if (path.Length == 0) return null;
+            if(File.Exists(path)) return path;
+
+            var d = Path.GetDirectoryName(path);
+            if (Directory.Exists(d))
+            {
+                var tokens = path.Split('\\');
+
+                //Child inspection :  find a folder that match with a path token
+                foreach(string childDirectory in Directory.GetDirectories(d))
+                {
+                    string filePath = childDirectory + @"\" + Path.GetFileName(path);
+                    if (File.Exists(filePath)) return filePath;
+
+                    for (int i = 1; i < tokens.Length - 1; i++) //Ignore the disc and the filename
+                    {
+                        var child = childDirectory + @"\" + tokens[i];
+                        
+                        if (Directory.Exists(child)) return TryLocatePath(child + @"\" + Path.GetFileName(path));
+                    }
+                }
+            }
+            if (Directory.GetParent(d) == null) return null;
+
+            return TryLocatePath( Directory.GetParent(d).FullName + @"\" + Path.GetFileName(path));
         }
     }
 }

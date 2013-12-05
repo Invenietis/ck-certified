@@ -13,7 +13,7 @@ namespace FileLauncher
         string _appCommand;
         WildFile _selectedApp { get; set; }
 
-        public List<WildApp> Apps { get; set; }
+        public List<WildFile> Apps { get; set; }
 
         public WildFile SelectedApp 
         {
@@ -46,8 +46,8 @@ namespace FileLauncher
         {
             // Configure open file dialog box
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.DefaultExt = ".exe"; // Default file extension
-            dlg.Filter = "Applications (.exe)|*.exe"; // Filter files by extension 
+
+            dlg.Filter = "Tous le fichiers (*.*)|*.*"; // Filter files by extension 
 
             // Show open file dialog box
             Nullable<bool> result = dlg.ShowDialog();

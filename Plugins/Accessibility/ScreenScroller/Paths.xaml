@@ -14,6 +14,15 @@
         <Setter Property="Data" Value="{StaticResource ArrowData}"></Setter>
     </Style>
 
+    <Style x:Key="ScreenScrollerPathStyle" TargetType="{x:Type Path}" BasedOn="{StaticResource PathStyle}">
+        <Setter Property="Stretch" Value="Fill"></Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsHighlighted}" Value="False">
+                <Setter Property="Fill" Value="Black"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="ArrowPathStyle" TargetType="{x:Type Path}" BasedOn="{StaticResource PathStyle}">
         <Setter Property="Data" Value="{StaticResource ArrowData}"></Setter>
     </Style>
@@ -85,7 +94,7 @@
         </Path.RenderTransform>
     </Path>
 
-    <Path x:Key="OutArrow" Data="{StaticResource CircledArrowData}" 
+    <Path x:Shared="False" x:Key="OutArrow" Data="{StaticResource CircledArrowData}" 
           Style="{StaticResource PathStyle}">
         <Path.RenderTransform>
             <TransformGroup>
@@ -96,5 +105,18 @@
             </TransformGroup>
         </Path.RenderTransform>
     </Path>
+
+    <Path x:Shared="False" x:Key="GlowingOutArrow" Data="{StaticResource CircledArrowData}" 
+          Style="{StaticResource PathStyle}">
+        <Path.RenderTransform>
+            <TransformGroup>
+                <TransformGroup.Children>
+                    <RotateTransform Angle="45" />
+                    <ScaleTransform ScaleX="-1" ScaleY="-1" />
+                </TransformGroup.Children>
+            </TransformGroup>
+        </Path.RenderTransform>
+    </Path>
+    
 
 </ResourceDictionary>

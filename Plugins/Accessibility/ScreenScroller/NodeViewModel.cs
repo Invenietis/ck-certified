@@ -26,21 +26,22 @@ namespace ScreenScroller
         /// Gets the index of the child currently scrolled on
         /// </summary>
         public int CurrentIndex { get; set; }
-
         /// <summary>
         /// Gets the index of this node among its parent's nodes
         /// </summary>
         public int Index { get { return _index; } }
-
         /// <summary>
         /// Gets the Level of this node
         /// </summary>
         public int Level { get { return _level; } }
         /// <summary>
-        /// Gets whether this node or one of its siblings are being scrolled on
+        /// Gets whether this node or one of its siblings are being scrolled on (true if this element's parent is the current node)
         /// </summary>
-        public bool CurrentLevelIsBeingScrolled { get { return Root.CurrentNode == Parent; } }
-
+        public bool IsParentTheCurrentNode { get { return Root.CurrentNode == Parent; } }
+        /// <summary>
+        /// Gets whether this Node is the current
+        /// </summary>
+        public bool IsCurrentNode { get { return Root.CurrentNode == this; } }
         /// <summary>
         /// Gets the number of laps done so far (should return 0 when the node is not the current one)
         /// </summary>
@@ -126,8 +127,10 @@ namespace ScreenScroller
 
         void OnLevelChanged( object sender, LevelChangedEventArgs e )
         {
-            OnPropertyChanged( "CurrentLevelIsBeingScrolled" );
+            OnPropertyChanged( "IsParentTheCurrentNode" );
+            OnPropertyChanged( "IsCurrentNode" );
             OnPropertyChanged( "ParentLapsAreAboutToFinish" );
+            OnPropertyChanged( "Image" );
         }
 
         int _lapCount;
@@ -175,6 +178,7 @@ namespace ScreenScroller
         {
             OnPropertyChanged( "ParentLapsAreAboutToFinish" );
             OnPropertyChanged( "Image" );
+            OnPropertyChanged( "IsParentLastTick" );
         }
 
         internal void Entered()
@@ -205,23 +209,29 @@ namespace ScreenScroller
                 OnPropertyChanged( "IsVisible" );
             }
         }
-        
+
         ResourceDictionary _resourceDictionary = new ResourceDictionary()
         {
             Source = new Uri( "pack://application:,,,/ScreenScroller;component/Paths.xaml", UriKind.Absolute )
         };
+
+        /// <summary>
+        /// Gets whether the parent was scrolling on its children and has finished its last lap/
+        /// Returns true if this is the absolute last tick of the aprent before going up
+        /// </summary>
+        public bool IsParentLastTick { get { return CurrentIndex == 0 && Parent.LapCount == Root.MaxLapCount; } }
 
         object _image;
         public object Image
         {
             get
             {
-                if( Parent.LapCount == Root.MaxLapCount && CurrentIndex == 0 )
+                if( IsParentLastTick )
                 {
                     return _resourceDictionary["OutArrow"];
                 }
 
-                if( _image == null || LapsAreFinished)
+                if( _image == null || LapsAreFinished )
                 {
                     double colCount, rowCount;
 
@@ -285,7 +295,7 @@ namespace ScreenScroller
                 {
                     IsVisible = true;
                 }
-                OnPropertyChanged( "CurrentLevelIsBeingScrolled" );
+                OnPropertyChanged( "IsParentTheCurrentNode" );
                 OnPropertyChanged( "IsHighlighted" );
             }
         }

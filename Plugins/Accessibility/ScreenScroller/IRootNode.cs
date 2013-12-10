@@ -9,6 +9,7 @@ namespace ScreenScroller
     {
         NodeViewModel CurrentNode { get; }
         int MaxLapCount { get; }
+        int SquareSize { get; }
 
         event EventHandler<LevelChangedEventArgs> LevelChanged;
     }

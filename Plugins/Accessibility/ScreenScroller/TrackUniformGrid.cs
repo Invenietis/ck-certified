@@ -39,13 +39,11 @@ namespace ScreenScroller
                 child.Arrange( childBounds );
 
                 // only advance to the next grid cell if the child was not collapsed
-                //if( child.Visibility != Visibility.Collapsed )
-                //{
                 bool isAnEvenRowIndex = ( rowIndex % 2 == 0 );
                 if( isAnEvenRowIndex )
                 {
                     childBounds.X -= xStep; //we are going backwards
-                    if( childBounds.X < -0.5 ) //handle -0.00000000001 values. pretty ugly fix, i have to admit
+                    if( childBounds.X < -0.5 ) //handle -0.00000000001 values. pretty ugly fix, i have to admit it
                     {
                         childBounds.Y += childBounds.Height;
                         childBounds.X = 0;//The next row will be a classic one, so we go back to the left side of the grid
@@ -62,7 +60,6 @@ namespace ScreenScroller
                         rowIndex++;
                     }
                 }
-                //}
             }
 
             return arrangeSize;

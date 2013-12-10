@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using HighlightModel;
 using KeyScroller;
 using System.Drawing;
+using CommonServices;
 
 namespace ScreenScroller
 {
@@ -30,11 +31,15 @@ namespace ScreenScroller
 
         public int ClickDepth { get; set; }
         public int MaxLapCount { get; set; }
+        public int SquareSize { get { return (int)Math.Sqrt( GridChildrenCount ); } }//The number of children is supposed to be x², so the result of this prop is an integer)
         public int GridChildrenCount { get; set; }
         public IPluginConfigAccessor Config { get; set; }
 
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IPointerDeviceDriver> PointerDevideDriver { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -48,7 +53,7 @@ namespace ScreenScroller
 
         public void Start()
         {
-            ClickDepth = 5;
+            ClickDepth = 7;
             GridChildrenCount = 4;
             MaxLapCount = 2;
 
@@ -131,36 +136,41 @@ namespace ScreenScroller
             }
             else
             {
-                //if we have just entered the root, we need to un highlight all the screens, except the one that has been entered.
-                if( _hasJustBeenEntered )
-                {
-                    _hasJustBeenEntered = false;
-                    foreach( var node in ChildNodes )
-                    {
-                        if( node.Index != CurrentIndex )
-                            node.IsHighlighted = false;
-                    }
-                }
-
-                //And we move to the next node
-                if( !CurrentNode.MoveNext() ) //if the node was at the end at its laps
-                {
-                    if( CurrentNode.IsRoot )
-                    {
-                        CurrentNode = null;
-                        _entered = false;
-                        scrollingDirective.NextActionType = ActionType.Normal;
-                    }
-                    else
-                    {
-                        //if the Node had finished its last lap during the last MoveNext, we go up one level
-                        CurrentNode = CurrentNode.Parent;
-                        CurrentNode.Entered();
-                        CurrentNode.MoveNext();
-                    }
-                }
+                ProcessTick( scrollingDirective );
             }
             return scrollingDirective;
+        }
+
+        private void ProcessTick( ScrollingDirective scrollingDirective )
+        {
+            //if we have just entered the root, we need to highlight all the screens, except the one that has been entered.
+            if( _hasJustBeenEntered )
+            {
+                _hasJustBeenEntered = false;
+                foreach( var node in ChildNodes )
+                {
+                    if( node.Index != CurrentIndex )
+                        node.IsHighlighted = false;
+                }
+            }
+
+            //And we move to the next node
+            if( !CurrentNode.MoveNext() ) //if the node was at the end of its laps
+            {
+                if( CurrentNode.IsRoot ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
+                {
+                    CurrentNode = null;
+                    _entered = false;
+                    scrollingDirective.NextActionType = ActionType.Normal;
+                }
+                else
+                {
+                    //if the Node had finished its last lap during the last MoveNext, we go up one level
+                    CurrentNode = CurrentNode.Parent;
+                    CurrentNode.Entered();
+                    CurrentNode.MoveNext();
+                }
+            }
         }
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
@@ -199,7 +209,9 @@ namespace ScreenScroller
                 }
                 else
                 {
-                    MessageBox.Show( "Click !" );
+                    NodeViewModel selectedNode = CurrentNode.ChildNodes[CurrentNode.CurrentIndex];
+                    PointerDevideDriver.Service.MovePointer( (int)( selectedNode.OffsetWidth + ( selectedNode.Width / 2 ) ), (int)( selectedNode.OffsetHeight + ( selectedNode.Height / 2 ) ) );
+
                     CurrentNode.ChildNodes.ElementAt( CurrentNode.CurrentIndex ).IsHighlighted = false;
                     CurrentNode = null;
                     _entered = false;

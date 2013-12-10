@@ -80,6 +80,8 @@ namespace ScreenScroller
             _level = level;
             _index = index;
 
+            InitializeCoordinates( index );
+
             if( _level < maxDepth )
             {
                 for( int i = 0; i < childrenCount; i++ )
@@ -88,6 +90,25 @@ namespace ScreenScroller
                 }
             }
         }
+
+        private void InitializeCoordinates( int index )
+        {
+            Row = (int)Math.Truncate( (double)( ( index ) / Root.SquareSize ) );
+
+            while( index >= Root.SquareSize )
+            {
+                index = index - Root.SquareSize;
+            }
+
+            if( Row != 0 && Row % 2 != 0 )
+                Column = Root.SquareSize - index - 1;
+            else //if we are on an odd row number, columns are reversed (see the TrackUniformGrid for more information)
+                Column = index;
+
+        }
+
+        public double OffsetHeight { get { return IsRoot ? Height * Row : ( Height * Row ) + Parent.OffsetHeight; } }
+        public double OffsetWidth { get { return IsRoot ? Width * Column : ( Width * Column ) + Parent.OffsetWidth; } }
 
         /// <summary>
         /// Ctor of the root nodes (one for each screen)
@@ -138,35 +159,41 @@ namespace ScreenScroller
         bool _hasJustBeenEntered;
 
         /// <summary>
-        /// 
+        /// Highlights the next childnode of this node.
+        /// Returns false if the node has made its final lap during the last MoveNext.
         /// </summary>
         /// <returns>false if the node has made its final lap during the last MoveNext.</returns>
         internal bool MoveNext()
         {
-            if( LapsAreFinished )
-            {
-                _lapCount = 0;
-                CurrentIndex = 0;
-                IsVisible = false;
-                return false;
-            }
+            if( ChildNodes.Count == 0 ) return false;
 
-            if( _hasJustBeenEntered )
+            if( ChildNodes.Count > 1 )
             {
-                _hasJustBeenEntered = false;
-                IsHighlighted = false;
-            }
-            else
-            {
-                if( CurrentIndex == ChildNodes.Count - 1 ) //If we are at the end of a lap, we set the 
+                if( LapsAreFinished )
                 {
+                    _lapCount = 0;
                     CurrentIndex = 0;
-                    _lapCount++;
-
-                    ChildNodes.ElementAt( 0 ).LapCompleted();
-                    OnPropertyChanged( "LapsAreFinished" );
+                    IsVisible = false;
+                    return false;
                 }
-                else CurrentIndex++;
+
+                if( _hasJustBeenEntered )
+                {
+                    _hasJustBeenEntered = false;
+                    IsHighlighted = false;
+                }
+                else
+                {
+                    if( CurrentIndex == ChildNodes.Count - 1 )
+                    {
+                        CurrentIndex = 0;
+                        _lapCount++;
+
+                        ChildNodes.ElementAt( 0 ).LapCompleted();
+                        OnPropertyChanged( "LapsAreFinished" );
+                    }
+                    else CurrentIndex++;
+                }
             }
 
             ChildNodes.ElementAt( CurrentIndex ).IsHighlighted = true;
@@ -299,6 +326,15 @@ namespace ScreenScroller
                 OnPropertyChanged( "IsHighlighted" );
             }
         }
+
+        public int Row { get; private set; }
+        public int Column { get; private set; }
+
+        double _width;
+        public double Width { get { return _width; } set { _width = value; OnPropertyChanged( "Width" ); Console.Out.WriteLine( "WIDTH CHANGED : " + value ); } }
+
+        double _height;
+        public double Height { get { return _height; } set { _height = value; OnPropertyChanged( "Height" ); Console.Out.WriteLine( "HEIGHT CHANGED : " + value ); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged( string name )

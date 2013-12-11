@@ -104,7 +104,6 @@ namespace ScreenScroller
                 Column = Root.SquareSize - index - 1;
             else //if we are on an odd row number, columns are reversed (see the TrackUniformGrid for more information)
                 Column = index;
-
         }
 
         public double OffsetHeight { get { return IsRoot ? Height * Row : ( Height * Row ) + Parent.OffsetHeight; } }
@@ -148,9 +147,9 @@ namespace ScreenScroller
 
         void OnLevelChanged( object sender, LevelChangedEventArgs e )
         {
+            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
             OnPropertyChanged( "IsParentTheCurrentNode" );
             OnPropertyChanged( "IsCurrentNode" );
-            OnPropertyChanged( "ParentLapsAreAboutToFinish" );
             OnPropertyChanged( "Image" );
         }
 
@@ -162,7 +161,7 @@ namespace ScreenScroller
         /// Highlights the next childnode of this node.
         /// Returns false if the node has made its final lap during the last MoveNext.
         /// </summary>
-        /// <returns>false if the node has made its final lap during the last MoveNext.</returns>
+        /// <returns>false if the node has made its final lap during the last MoveNext. (its state is then completely flushed)</returns>
         internal bool MoveNext()
         {
             if( ChildNodes.Count == 0 ) return false;
@@ -180,7 +179,7 @@ namespace ScreenScroller
                 if( _hasJustBeenEntered )
                 {
                     _hasJustBeenEntered = false;
-                    IsHighlighted = false;
+                    IsHighlighted = false; //Removing the highlight (the element is still visible, since its children need to be shown)
                 }
                 else
                 {
@@ -204,10 +203,14 @@ namespace ScreenScroller
         internal void LapCompleted()
         {
             OnPropertyChanged( "ParentLapsAreAboutToFinish" );
-            OnPropertyChanged( "Image" );
             OnPropertyChanged( "IsParentLastTick" );
+            OnPropertyChanged( "Image" );
         }
 
+        /// <summary>
+        /// Called when this node is entered : when it becomes the currentnode.
+        /// If one of the children is selected and then the cursor goes up one level, this node keeps its current state (its lap count and whether or not the GoUpOneLevel image is animating)
+        /// </summary>
         internal void Entered()
         {
             _hasJustBeenEntered = true;
@@ -225,6 +228,12 @@ namespace ScreenScroller
             }
 
             OnPropertyChanged( "ParentLapsAreAboutToFinish" );
+            OnPropertyChanged( "IsParentTheCurrentNode" );
+            OnPropertyChanged( "IsParentLastTick" );
+            OnPropertyChanged( "LapsAreFinished" );
+            OnPropertyChanged( "IsHighlighted" );
+            OnPropertyChanged( "IsCurrentNode" );
+            OnPropertyChanged( "Image" );
         }
 
         public bool IsVisible
@@ -239,7 +248,7 @@ namespace ScreenScroller
 
         ResourceDictionary _resourceDictionary = new ResourceDictionary()
         {
-            Source = new Uri( "pack://application:,,,/ScreenScroller;component/Paths.xaml", UriKind.Absolute )
+            Source = new Uri( "pack://application:,,,/ScreenScroller;component/Views/Paths.xaml", UriKind.Absolute )
         };
 
         /// <summary>

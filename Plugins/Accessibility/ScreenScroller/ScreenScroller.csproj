@@ -62,15 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRootNode.cs" />
-    <Compile Include="ProportionalDimensionsConverter.cs" />
-    <Compile Include="Screen.xaml.cs">
+    <Compile Include="Tools\ProportionalDimensionsConverter.cs" />
+    <Compile Include="Views\Screen.xaml.cs">
       <DependentUpon>Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="NodeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenScroller.cs" />
-    <Compile Include="DataPiping.cs" />
-    <Compile Include="TrackUniformGrid.cs" />
+    <Compile Include="Tools\DataPiping.cs" />
+    <Compile Include="Views\TrackUniformGrid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -90,11 +90,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Paths.xaml">
+    <Page Include="Views\Paths.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screen.xaml">
+    <Page Include="Views\Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

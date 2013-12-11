@@ -18,7 +18,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ScreenScroller;component/Paths.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ScreenScroller;component/Views/Paths.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -127,17 +127,10 @@
                                     <ContentControl Content="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <!-- This image is NOT a square -->
                                         <ContentControl.Width>
-                                            <!--<MultiBinding Converter="{StaticResource dormantConverter}">-->
                                             <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="2" Mode="OneWay" />
-                                            <!--<Binding Path="Width" Mode="OneWayToSource"/>-->
-                                            <!--</MultiBinding>-->
-                                            <!--<Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="2" Mode="OneWay" />-->
                                         </ContentControl.Width>
                                         <ContentControl.Height>
-                                            <!--<MultiBinding Converter="{StaticResource dormantConverter}">-->
                                             <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="4" Mode="OneWay" />
-                                            <!--<Binding Path="Height" Mode="OneWayToSource"/>-->
-                                            <!--</MultiBinding>-->
                                         </ContentControl.Height>
                                         <ContentControl.Style>
                                             <Style TargetType="ContentControl">
@@ -152,11 +145,7 @@
                                     </ContentControl>
 
                                     <!-- Where the childNode is displayed (using the very same template) -->
-                                    <Grid>
-                                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Row}"></TextBlock>
-                                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top" Text="{Binding Column}"></TextBlock>
-                                        <ContentPresenter Content="{Binding}"/>
-                                    </Grid>
+                                    <ContentPresenter Content="{Binding}"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>

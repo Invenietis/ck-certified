@@ -157,7 +157,7 @@ namespace ScreenScroller
             //And we move to the next node
             if( !CurrentNode.MoveNext() ) //if the node was at the end of its laps
             {
-                if( CurrentNode.IsRoot ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
+                if( CurrentNode.IsRoot || ( CurrentNode.Parent.IsRoot && CurrentNode.Parent.ChildNodes.Count == 1 ) ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
                 {
                     CurrentNode = null;
                     _entered = false;
@@ -196,7 +196,15 @@ namespace ScreenScroller
 
             if( CurrentNode == null )
             {
-                CurrentNode = this;
+                if( ChildNodes.Count == 1 )
+                {
+                    CurrentNode = ChildNodes.Single();
+                    CurrentNode.Entered();
+                }
+                else
+                {
+                    CurrentNode = this;
+                }
                 _hasJustBeenEntered = true;
                 _entered = true;
             }

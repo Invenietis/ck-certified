@@ -4,17 +4,6 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ScreenScroller"
         Title="Screen" WindowState="Maximized" WindowStyle="None" AllowsTransparency="True">
-    <Window.Style>
-        <Style TargetType="Window">
-            <Setter Property="Background" Value="Transparent" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                    <Setter Property="Background" Value="Black" />
-                    <Setter Property="Opacity" Value="0.8" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Style>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,7 +11,17 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="Transparent" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Opacity" Value="0.3" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Grid>
         <Grid.Resources>
             <local:ProportionalDimensionsConverter x:Key="propConverter"/>
@@ -54,7 +53,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                                                 <Setter Property="Background" Value="Black" />
-                                                <Setter Property="Opacity" Value="0.8"></Setter>
+                                                <Setter Property="Opacity" Value="0.5"></Setter>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsVisible}" Value="True">
                                                 <Setter Property="Visibility" Value="Visible" />
@@ -102,7 +101,6 @@
                                             </ContentControl.Height>
                                             <ContentControl.Style>
                                                 <Style TargetType="ContentControl">
-                                                    <!--<Setter Property="Visibility" Value="Collapsed" />-->
                                                     <Setter Property="Content" Value="{StaticResource OutArrow}" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ParentLapsAreAboutToFinish}" Value="True">
@@ -123,6 +121,7 @@
                                             </ContentControl.Style>
                                         </ContentControl>
                                     </Grid>
+                                    
                                     <!-- The control of a cell (contains the image that show the direction of the next tick) -->
                                     <ContentControl Content="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <!-- This image is NOT a square -->

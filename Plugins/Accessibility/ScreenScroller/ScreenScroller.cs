@@ -53,7 +53,7 @@ namespace ScreenScroller
 
         public void Start()
         {
-            ClickDepth = 7;
+            ClickDepth = 6;
             GridChildrenCount = 4;
             MaxLapCount = 2;
 

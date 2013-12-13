@@ -151,6 +151,15 @@ namespace KeyScroller.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string StateStrategy {
+            get {
+                return ResourceManager.GetString("StateStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fast scrolling (key by key).
         /// </summary>
         public static string TurboScrollingStrategy {

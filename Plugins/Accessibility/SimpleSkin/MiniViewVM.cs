@@ -28,55 +28,7 @@ namespace SimpleSkin
         public MiniViewVM( SimpleSkin parent )
         {
             _isHighlighted = false;
-
             Parent = parent;
-            if( Parent.Highlighter.Status == InternalRunningStatus.Started )
-            {
-                Parent.Highlighter.Service.SelectElement += OnSelectElement;
-                Parent.Highlighter.Service.BeginHighlight += OnBeginHighlight;
-                Parent.Highlighter.Service.EndHighlight += OnEndHighlight;
-            }
-            Parent.Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
-        }
-
-        void OnBeginHighlight( object sender, HighlightEventArgs e )
-        {
-            if( Parent.IsViewHidden && e.Element == this )
-            {
-                IsHighlighted = true;
-            }
-        }
-
-        void OnEndHighlight( object sender, HighlightEventArgs e )
-        {
-            if( Parent.IsViewHidden && e.Element == this )
-            {
-                IsHighlighted = false;
-            }
-        }
-
-        void OnSelectElement( object sender, HighlightEventArgs e )
-        {
-            if( Parent.IsViewHidden && e.Element == this )
-            {
-                Parent.RestoreSkin();
-            }
-        }
-
-        void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                Parent.Highlighter.Service.BeginHighlight += OnBeginHighlight;
-                Parent.Highlighter.Service.EndHighlight += OnEndHighlight;
-                Parent.Highlighter.Service.SelectElement += OnSelectElement;
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                Parent.Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-                Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
-                Parent.Highlighter.Service.SelectElement -= OnSelectElement;
-            }
         }
 
         public ICKReadOnlyList<IHighlightableElement> Children
@@ -97,7 +49,7 @@ namespace SimpleSkin
                     return p.X;
                 }
                 else
-                    return (Int32.Parse( position.ToString() ));
+                    return ( Int32.Parse( position.ToString() ) );
             }
             set { Config.Context["MiniViewPositionX"] = value; }
         }
@@ -110,8 +62,7 @@ namespace SimpleSkin
                 if( position == null )
                     return 0;
                 else
-                    return (Int32.Parse( position.ToString() ));
-
+                    return ( Int32.Parse( position.ToString() ) );
             }
             set { Config.Context["MiniViewPositionY"] = value; }
         }
@@ -141,15 +92,41 @@ namespace SimpleSkin
 
         public void Dispose()
         {
-            Parent.Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
-            if( Parent.Highlighter.Status == InternalRunningStatus.Started )
-            {
-                Parent.Highlighter.Service.SelectElement -= OnSelectElement;
-                Parent.Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-                Parent.Highlighter.Service.EndHighlight -= OnEndHighlight;
-            }
         }
 
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            if( Parent.IsViewHidden )
+            {
+                IsHighlighted = true;
+            }
 
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            if( Parent.IsViewHidden )
+            {
+                IsHighlighted = false;
+            }
+
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            if( Parent.IsViewHidden )
+            {
+                Parent.RestoreSkin();
+            }
+
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
+        }
     }
 }

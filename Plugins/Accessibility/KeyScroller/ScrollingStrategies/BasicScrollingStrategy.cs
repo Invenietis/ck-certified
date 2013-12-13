@@ -12,7 +12,7 @@ using CK.Plugin.Config;
 namespace KeyScroller
 {
     /// <summary>
-    /// Scrolling on each zone, then entinring the zone to scroll on each key
+    /// Scrolling on each zone, then entering the zone to scroll on each key
     /// </summary>
     [StrategyAttribute( BasicScrollingStrategy.StrategyName )]
     internal class BasicScrollingStrategy : ScrollingStrategy
@@ -33,12 +33,12 @@ namespace KeyScroller
         {
             if( _currentElement != null )
             {
-                if( _currentElement.Children.Count > 0 ) _actionType = ActionType.EnterChild;
+                if( _currentElement.Children.Count > 0 ) _lastDirective.NextActionType = ActionType.EnterChild;
                 else
                 {
-                    FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                    _actionType = ActionType.StayOnTheSame;
+                    _lastDirective.NextActionType = ActionType.StayOnTheSameOnce;
                 }
+                FireSelectElement();
             }
         }
     }

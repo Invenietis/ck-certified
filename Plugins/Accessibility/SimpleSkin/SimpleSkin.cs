@@ -44,7 +44,6 @@ using System.Collections.Generic;
 using CK.WPF.ViewModel;
 using System.Threading;
 using CK.Windows.Core;
-using CK.WindowManager.Model;
 using System.IO;
 using Help.Services;
 
@@ -65,10 +64,10 @@ namespace SimpleSkin
 
         public bool IsViewHidden { get { return _viewHidden; } }
         public IPluginConfigAccessor Config { get; set; }
-        IHostManipulator _hostManipulator;
         VMContextCurrentKeyboardSimple _ctxVm;
-        SkinWindow _skinWindow;
+        IHostManipulator _hostManipulator;
         DispatcherTimer _timer;
+        SkinWindow _skinWindow;
         MiniViewVM _miniViewVm;
         MiniView _miniView;
         bool _forceClose;
@@ -77,7 +76,7 @@ namespace SimpleSkin
         bool _autohide;
         int _timeout;
 
-        //Since the IHotsManipulator implementation is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
+        //Since the IHostManipulator implementation is pushed to the servicecontainer after plugins are discovered and loaded, we cant use the RequiredService tag to fetch a ref to the HostManipulator.
         /// <summary>
         /// The HostManipulator, enables minimizing the host.
         /// </summary>
@@ -108,7 +107,6 @@ namespace SimpleSkin
 
         CKNoFocusWindowManager _noFocusWindowManager;
         Dispatcher _skinDispatcher;
-        //_secondThread;
 
         #region IPlugin Implementation
 
@@ -470,50 +468,6 @@ namespace SimpleSkin
 
         #region Hightlight Methods
 
-        void OnSelectElement( object sender, HighlightEventArgs e )
-        {
-
-            if( e.Element is VMKeySimple )
-            {
-                VMKeySimple key = (VMKeySimple)e.Element;
-                if( key.KeyDownCommand.CanExecute( null ) )
-                {
-                    key.KeyDownCommand.Execute( null );
-                    if( key.KeyUpCommand.CanExecute( null ) )
-                    {
-                        key.KeyUpCommand.Execute( null );
-                    }
-                }
-            }
-        }
-
-        void OnBeginHighlight( object sender, HighlightEventArgs e )
-        {
-            VMKeyboardSimple vmkb = e.Element as VMKeyboardSimple;
-            VMZoneSimple vmz = e.Element as VMZoneSimple;
-            if( vmkb != null ) vmkb.IsHighlighting = true;
-            else if( vmz != null ) vmz.IsHighlighting = true;
-            else
-            {
-                VMKeySimple vmk = e.Element as VMKeySimple;
-                if( vmk != null ) vmk.IsHighlighting = true;
-            }
-
-        }
-
-        void OnEndHighlight( object sender, HighlightEventArgs e )
-        {
-            VMKeyboardSimple vmkb = e.Element as VMKeyboardSimple;
-            VMZoneSimple vmz = e.Element as VMZoneSimple;
-            if( vmkb != null ) vmkb.IsHighlighting = false;
-            if( vmz != null ) vmz.IsHighlighting = false;
-            else
-            {
-                VMKeySimple vmk = e.Element as VMKeySimple;
-                if( vmk != null ) vmk.IsHighlighting = false;
-            }
-        }
-
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started )
@@ -547,17 +501,11 @@ namespace SimpleSkin
         private void UnregisterHighlighter()
         {
             Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
-            Highlighter.Service.BeginHighlight -= OnBeginHighlight;
-            Highlighter.Service.EndHighlight -= OnEndHighlight;
-            Highlighter.Service.SelectElement -= OnSelectElement;
         }
 
         private void RegisterHighlighter()
         {
             Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
-            Highlighter.Service.BeginHighlight += OnBeginHighlight;
-            Highlighter.Service.EndHighlight += OnEndHighlight;
-            Highlighter.Service.SelectElement += OnSelectElement;
         }
 
         #endregion

@@ -27,7 +27,6 @@ namespace KeyScroller
         public SplitScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
-
         }
 
         protected override IHighlightableElement GetUpToParent()
@@ -50,7 +49,7 @@ namespace KeyScroller
             if( parent is VMSplitZone )
             {
                 var parentSplitZone = parent as VMSplitZone;
-                if( parentObj is VMZoneSimple && !(parentObj is VMSplitZone) )
+                if( parentObj is VMZoneSimple && !( parentObj is VMSplitZone ) )
                 {
                     if( _currentElementParents.Count >= 1 )
                     {
@@ -83,12 +82,12 @@ namespace KeyScroller
         protected override IHighlightableElement GetEnterChild( ICKReadOnlyList<IHighlightableElement> elements )
         {
             // if the current element does not have any children ... go to the normal next element
-            if( _nextElement == null || (_nextElement != null && _nextElement.Children.Count == 0) ) return GetNextElement( ActionType.Normal );
+            if( _nextElement == null || ( _nextElement != null && _nextElement.Children.Count == 0 ) ) return GetNextElement( ActionType.Normal );
             // otherwise we just push the element as a parent and set the the first child as the current element
             _currentId = 0;
 
             var vmz = _nextElement as VMZoneSimple;
-            if( vmz != null && !(vmz is VMSplitZone) && vmz.Children.Count > ChildrenLimitBeforeSplit )
+            if( vmz != null && !( vmz is VMSplitZone ) && vmz.Children.Count > ChildrenLimitBeforeSplit )
             {
                 _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
                 // push the original zone in the history
@@ -106,9 +105,18 @@ namespace KeyScroller
         protected override IHighlightableElement GetNextElement( ActionType actionType )
         {
             // reset the action type to normal
-            _actionType = ActionType.Normal;
+            if( actionType != ActionType.StayOnTheSameLocked )
+                _lastDirective.NextActionType = ActionType.Normal;
 
-            if( actionType == ActionType.UpToParent )
+            if( actionType == ActionType.AbsoluteRoot )
+            {
+                _nextElement = GetUpToAbsoluteRoot();
+            }
+            else if( actionType == ActionType.RelativeRoot )
+            {
+                _nextElement = GetUpToRelativeRoot();
+            }
+            else if( actionType == ActionType.UpToParent )
             {
                 _nextElement = GetUpToParent();
             }
@@ -119,7 +127,7 @@ namespace KeyScroller
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 
-                if( actionType == ActionType.StayOnTheSame )
+                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
                 {
                     _nextElement = GetStayOnTheSame( elements );
                 }
@@ -146,11 +154,11 @@ namespace KeyScroller
                         else _currentId = 0;
 
                         var nextElementToSplit = elements[_currentId];
-                        if( (_nextElement is VMSplitZone) )
+                        if( ( _nextElement is VMSplitZone ) )
                         {
                             _nextElement = GetUpToParent();
                         }
-                        else if( !(nextElementToSplit is VMZoneSimple) )
+                        else if( !( nextElementToSplit is VMZoneSimple ) )
                         {
                             _nextElement = nextElementToSplit;
                         }

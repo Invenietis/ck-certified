@@ -324,4 +324,13 @@
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
     <value>Uses semantic prediction</value>
   </data>
+  <data name="Radar" xml:space="preserve">
+    <value>Radar</value>
+  </data>
+  <data name="RadarConfiguration" xml:space="preserve">
+    <value>Radar configuration</value>
+  </data>
+  <data name="ScreenScrollerConfiguration" xml:space="preserve">
+    <value>Screen scroler configuration</value>
+  </data>
 </root>

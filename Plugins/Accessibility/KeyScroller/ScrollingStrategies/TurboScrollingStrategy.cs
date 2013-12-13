@@ -37,7 +37,24 @@ namespace KeyScroller
             TurboInterval = new TimeSpan( 0, 0, 0, 0, _configuration.User.GetOrSet( "TurboSpeed", 100 ) );
             _normalSpeedTimer = new DispatcherTimer( DispatcherPriority.Normal );
             _normalSpeedTimer.Interval = new TimeSpan( 0, 0, 0, 0, 5000 );
-            _normalSpeedTimer.Tick += ( o, e ) => SetNormalIntervalTimerInterval();
+            _normalSpeedTimer.Tick += ( o, e ) => SetTurboWithCheck();
+            _timer.Tick += ( o, e ) => { if( IsTurboMode ) SetTurboWithCheck(); };
+        }
+
+        /// <summary>
+        /// Method that sets the turbo if we are not scrolling on the "root" level
+        /// </summary>
+        private void SetTurboWithCheck()
+        {
+            //If we are scrolling on a root element and that the next action is not to enter the children, we explicitely set the interval to the normal one.
+            //Because we don't want to scroll too fast on the elements
+            if( _currentElement == null || ( _currentElement.IsHighlightableTreeRoot && _lastDirective.NextActionType != ActionType.EnterChild ) )
+                _timer.Interval = _normalInterval;
+            else
+            {
+                _timer.Interval = TurboInterval;
+                _normalSpeedTimer.Stop();
+            }
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -51,27 +68,21 @@ namespace KeyScroller
                     else
                     {
                         _normalInterval = newInterval;
-                        _timer.Interval = TurboInterval;
+                        SetTurboWithCheck();
                     }
                 }
                 if( e.Key == "TurboSpeed" )
                 {
                     TurboInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
-                    if( _timer.Interval != _normalInterval ) _timer.Interval = TurboInterval;
+                    if( _timer.Interval != _normalInterval ) SetTurboWithCheck();
                 }
             }
-        }
-
-        void SetNormalIntervalTimerInterval()
-        {
-            _timer.Interval = TurboInterval;
-            _normalSpeedTimer.Stop();
         }
 
         public override void Start()
         {
             base.Start();
-            _timer.Interval = TurboInterval;
+            SetTurboWithCheck();
         }
         public override void Pause( bool forceEndHighlight )
         {
@@ -86,17 +97,28 @@ namespace KeyScroller
         }
         public override void OnExternalEvent()
         {
-            if( _currentElement != null && ( !IsTurboMode || _currentElementParents.Count == 0 ) ) //Minimized
+            if( _currentElement != null && ( !IsTurboMode || _currentElement.IsHighlightableTreeRoot ) )
             {
-                FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.StayOnTheSame;
-                _timer.Interval = TurboInterval;
+                if( _currentElement.IsHighlightableTreeRoot )
+                {
+                    FireSelectElement();
+                    SetTurboWithCheck();
+                }
+                else
+                {
+                    SetTurboWithCheck();
+                    FireSelectElement();
+                }
             }
             else if( IsTurboMode )
             {
-                _normalSpeedTimer.Start();
                 _timer.Interval = _normalInterval;
+                _normalSpeedTimer.Start();
             }
+
+            //State changes of the turbo mode must be taken into account immediately
+            _lastDirective.ActionTime = ActionTime.Immediate;
+            EnsureReactivity();
         }
     }
 }

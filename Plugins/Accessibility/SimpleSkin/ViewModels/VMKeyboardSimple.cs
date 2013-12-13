@@ -304,6 +304,31 @@ namespace SimpleSkin.ViewModels
             }
         }
 
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+
+            if( beginScrollingInfo.PreviousElement != this )
+                IsHighlighting = true;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            if( endScrollingInfo.ElementToBeHighlighted != this )
+                IsHighlighting = false;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            scrollingDirective.NextActionType = ActionType.EnterChild;
+            return scrollingDirective;
+        }
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
+        }
+
         #endregion
 
         #region Threadsafe updates
@@ -347,7 +372,6 @@ namespace SimpleSkin.ViewModels
         }
 
         #endregion
-
 
     }
 }

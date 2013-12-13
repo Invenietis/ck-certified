@@ -1,0 +1,77 @@
+﻿<Window x:Class="TextTemplate.TemplateEditor"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            xmlns:me="clr-namespace:TextTemplate"
+            mc:Ignorable="d"   
+            ShowInTaskbar="False"
+            Width="600"
+            MinWidth="100"
+            MinHeight="150"
+            Topmost="True"
+            ResizeMode="CanResize"
+            Background="White"
+            WindowStyle="ToolWindow"
+            SizeToContent="Height">
+    <Window.Resources>
+        <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
+        <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
+        <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
+        <Style TargetType="TextBox">
+            <Setter Property="TextBox.FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=me:TemplateEditor}}" />
+            <Setter Property="TextBox.FontWeight" Value="Bold" />
+            <Setter Property="TextBox.VerticalAlignment" Value="Center" />
+            <Setter Property="TextBox.Foreground"  Value="{Binding Source={StaticResource ResourceKey=PlaceholderColor}}" />
+
+            <Style.Triggers >
+                <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="true">
+                    <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
+                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Label.FontSize" Value="16" />
+            <Setter Property="Label.Foreground" Value="#333333" />
+            <Setter Property="Label.VerticalAlignment" Value="Center" />
+            <Setter Property="Label.HorizontalAlignment" Value="Left" />
+            <Setter Property="Label.Padding" Value="0" />
+        </Style>     
+        <Style x:Key="ok">
+            <Style.Triggers >
+                <DataTrigger Binding="{Binding Path=ValidateTemplate.IsHighlighted}" Value="true">
+                    <Setter Property="Button.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
+                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="cancel">
+            <Style.Triggers >
+                <DataTrigger Binding="{Binding Path=Cancel.IsHighlighted}" Value="true">
+                    <Setter Property="Button.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
+                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Right"  />
+            <Setter Property="Margin" Value="10 0 10 0"  />
+        </Style>
+    </Window.Resources>
+    
+    <DockPanel VerticalAlignment="Stretch" Margin="0">
+        <Border DockPanel.Dock="Bottom" Background="LightGray" BorderBrush="LightGray" Margin="0"  Panel.ZIndex="10" VerticalAlignment="Top"
+              BorderThickness="0 2 0 0"  >
+            <WrapPanel  HorizontalAlignment="Right"  Margin="10 10 20 10" >
+                <Button Command="{Binding ValidateTemplate}" Margin="10 0 10 0" Style="{StaticResource ResourceKey=ok}">OK</Button>
+                <Button Command="{Binding Cancel}" Style="{StaticResource ResourceKey=cancel}">Cancel</Button>
+            </WrapPanel>
+        </Border>
+        <ScrollViewer VerticalAlignment="Stretch" Background="Transparent"  Panel.ZIndex="0" >
+            <StackPanel Margin="10" x:Name="sheet"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="White">
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

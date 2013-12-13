@@ -48,26 +48,24 @@ namespace CK.Plugins.AutoClick
         /// <summary>
         /// Fired when a ClickType is chosen
         /// </summary>
-        event ClickTypeChosenEventHandler AutoClickClickTypeChosen;
+        event ClickChosenEventHandler ClickChosen;
 
         /// <summary>
         /// Fired when the "NoClick" clickType is selected
         /// </summary>
-        event AutoClickStopEventHandler AutoClickStopEvent;
+        event EventHandler StopEvent;
 
         /// <summary>
         /// Fired when the "NoClick" clickType is no longer selected
         /// </summary>
-        event AutoClickResumeEventHandler AutoClickResumeEvent;
+        event EventHandler ResumeEvent;
 
         #endregion
     }
 
     #region Delegates
 
-    public delegate void ClickTypeChosenEventHandler(object sender, ClickTypeEventArgs e);
-    public delegate void AutoClickStopEventHandler(object sender);
-    public delegate void AutoClickResumeEventHandler(object sender);
+    public delegate void ClickChosenEventHandler(object sender, ClickTypeEventArgs e);
 
     #endregion
 

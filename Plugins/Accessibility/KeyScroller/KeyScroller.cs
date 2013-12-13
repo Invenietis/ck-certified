@@ -11,7 +11,6 @@ using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
-using InputTrigger;
 
 namespace KeyScroller
 {
@@ -75,6 +74,9 @@ namespace KeyScroller
                 case "SimpleScrollingStrategy":
                     if( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new SimpleScrollingStrategy( _timer, _registeredElements, Configuration );
+                //case "StateStrategy":
+                //    if( _strategies.ContainsKey( name ) ) return _strategies[name];
+                //    return new StateStrategy( _timer, _registeredElements, Configuration );
 
                 case "SplitScrollingStrategy":
                     if( _strategies.ContainsKey( name ) ) return _strategies[name];
@@ -159,66 +161,65 @@ namespace KeyScroller
             _scrollingStrategy.Resume();
         }
 
-        public event EventHandler<HighlightEventArgs> BeginHighlight
-        {
-            add
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.BeginHighlight += value;
-                }
-            }
-            remove
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.BeginHighlight -= value;
-                }
-            }
-        }
+        //public event EventHandler<HighlightEventArgs> BeginHighlight
+        //{
+        //    add
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.BeginHighlight += value;
+        //        }
+        //    }
+        //    remove
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.BeginHighlight -= value;
+        //        }
+        //    }
+        //}
 
-        public event EventHandler<HighlightEventArgs> EndHighlight
-        {
-            add
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.EndHighlight += value;
-                }
-            }
-            remove
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.EndHighlight -= value;
-                }
-            }
-        }
+        //public event EventHandler<HighlightEventArgs> EndHighlight
+        //{
+        //    add
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.EndHighlight += value;
+        //        }
+        //    }
+        //    remove
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.EndHighlight -= value;
+        //        }
+        //    }
+        //}
 
-        public event EventHandler<HighlightEventArgs> SelectElement
-        {
-            add
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.SelectElement += value;
-                }
-            }
-            remove
-            {
-                foreach( var kp in _strategies )
-                {
-                    kp.Value.SelectElement -= value;
-                }
-            }
-        }
+        //public event EventHandler<HighlightEventArgs> SelectElement
+        //{
+        //    add
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.SelectElement += value;
+        //        }
+        //    }
+        //    remove
+        //    {
+        //        foreach( var kp in _strategies )
+        //        {
+        //            kp.Value.SelectElement -= value;
+        //        }
+        //    }
+        //}
 
         #endregion
 
         private void OnInputTriggered( ITrigger t )
         {
             _scrollingStrategy.OnExternalEvent();
-            Console.WriteLine( "Triggered : " + t.KeyCode );
         }
     }
 }

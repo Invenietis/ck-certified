@@ -219,8 +219,35 @@ namespace CK.Plugins.AutoClick.ViewModel
         {
             get { return SkippingBehavior.None; }
         }
+
+
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            IsHighlighted = true;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            IsHighlighted = false;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            DoSelect();
+            //TODO : DoClick;
+
+            scrollingDirective.NextActionType = ActionType.AbsoluteRoot;
+            return scrollingDirective;
+        }
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
+        }
     }
 
+    //TODOJL : remove ?
     #region EventHandlers / EventArgs
 
     public delegate void SelectedClickEmbedderEventHandler( object sender, SelectedClickEmbedderVMEventArgs e );

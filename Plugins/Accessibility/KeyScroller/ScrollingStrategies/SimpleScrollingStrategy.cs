@@ -8,6 +8,7 @@ using CK.Core;
 using CommonServices.Accessibility;
 using HighlightModel;
 using CK.Plugin.Config;
+using System.Diagnostics;
 
 namespace KeyScroller
 {
@@ -31,21 +32,38 @@ namespace KeyScroller
         protected override IHighlightableElement GetUpToParent()
         {
             IHighlightableElement nextElement = null;
-            // if there is no parent, go to normal next element
+            // if there is no parent, we are at the root level, we'll start iterating on the current tree's next sibling
             if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
+            //We get the parent and fetch its siblings
             IHighlightableElement parent = _currentElementParents.Pop();
-            ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
-            if( _currentElementParents.Count > 0 ) parentSibblings = _currentElementParents.Peek().Children;
-            else parentSibblings = RegisteredElements;
+            ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
+            if( _currentElementParents.Count > 0 )
+            {
+                parentSiblings = _currentElementParents.Peek().Children;
+            }
+            else
+            {
+                //there, we actually are at the root level
+                Debug.Assert( parent.IsHighlightableTreeRoot );
+                parentSiblings = RegisteredElements;
 
-            int parentId = parentSibblings.IndexOf( parent );
+                //If this tree is the only tree at the root level, we directly start iterating on its children
+                if( parentSiblings.Count == 1 ) return GetNextElement( ActionType.EnterChild );
+            }
 
-            //Range test
-            if( parentId == parentSibblings.Count - 1 ) parentId = 0;
-            else ++parentId;
+            //We get the current element's parent. The idea it to directly enter the next sibling's children to bypass the zones.
+            int parentId = parentSiblings.IndexOf( parent );
 
-            nextElement = parentSibblings[parentId];
+            //When the parent is the last of its level, we go up to the next upper level. 
+            if( parentId == parentSiblings.Count - 1 )
+            {
+                _currentId = parentId = 0;
+                return GetNextElement( ActionType.UpToParent );
+            }
+            else ++parentId; //otherwise we get to the next parent to start iterating on its children
+
+            nextElement = parentSiblings[parentId];
 
             _currentElement = nextElement;
             _currentId = parentId;
@@ -60,7 +78,10 @@ namespace KeyScroller
                 case SkippingBehavior.Skip:
                     return GetNextElement( ActionType.Normal );
                 default:
-                    if( element != null && element.Children.Count > 0 ) return GetNextElement( ActionType.EnterChild );
+                    if( element != null && element.Children.Count > 0 && !element.IsHighlightableTreeRoot )
+                    {
+                        return GetNextElement( ActionType.EnterChild );
+                    }
                     return element;
             }
         }
@@ -69,8 +90,7 @@ namespace KeyScroller
         {
             if( _currentElement != null )
             {
-                FireSelectElement( this, new HighlightEventArgs( _currentElement ) );
-                _actionType = ActionType.StayOnTheSame;
+                FireSelectElement();
             }
         }
     }

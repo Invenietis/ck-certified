@@ -6,6 +6,7 @@ Setup/StandardSetup/CiviKeyPostInstallScript.*
 *user
 Setup/StandardSetup/Civikey*.exe
 Setup/StandardSetup/Resources/CiviKey*.exe
+Setup/StandardSetup/CiviKey*.zip
 Plugins/Advanced/Patchers/KeyboardPatcher/bin/
 Plugins/Advanced/ContextEditor/bin/*
 **/bin/*

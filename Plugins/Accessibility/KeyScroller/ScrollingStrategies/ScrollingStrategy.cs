@@ -11,26 +11,19 @@ using System.Diagnostics;
 
 namespace KeyScroller
 {
-    public enum ActionType
-    {
-        Normal = 0,
-        EnterChild = 1,
-        UpToParent = 2,
-        StayOnTheSame = 3
-    }
-
     public abstract class ScrollingStrategy : IScrollingStrategy
     {
         ICKReadOnlyList<IHighlightableElement> _roElements;
 
         protected List<IHighlightableElement> _elements;
-        protected DispatcherTimer _timer;
         protected IPluginConfigAccessor _configuration;
-
+        protected DispatcherTimer _timer;
         protected int _currentId = -1;
+
         protected Stack<IHighlightableElement> _currentElementParents = null;
+        protected IHighlightableElement _previousElement = null;
         protected IHighlightableElement _currentElement = null;
-        protected ActionType _actionType = ActionType.EnterChild;
+        protected ScrollingDirective _lastDirective;
 
         internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
@@ -45,25 +38,39 @@ namespace KeyScroller
             _configuration = configuration;
         }
 
-        #region IScrollingStrategy Members
-
-        public event EventHandler<HighlightEventArgs> BeginHighlight;
-
-        public event EventHandler<HighlightEventArgs> EndHighlight;
-
-        public event EventHandler<HighlightEventArgs> SelectElement;
-
-        protected void FireSelectElement( object sender, HighlightEventArgs eventArgs )
+        /// <summary>
+        /// Goes up in the tree and returns the root of the first registered tree
+        /// </summary>
+        /// <returns>The root of the first registered tree</returns>
+        protected virtual IHighlightableElement GetUpToAbsoluteRoot()
         {
-            SelectElement( sender, eventArgs );
+            _currentId = -1;
+            _currentElementParents = new Stack<IHighlightableElement>();
+
+            return RegisteredElements.FirstOrDefault();
         }
-        protected virtual void OnInternalBeat( object sender, EventArgs e )
+        
+        /// <summary>
+        /// Goes up in the tree and returns the first child of the relative root of the current element's tree 
+        /// For example : the RelativeRoot of the keyboard is the VMKeyboard itself. We are going to get the keyboard's first child and to start iterating on it directly. 
+        /// </summary>
+        /// <returns>The first child of the current element's relative root</returns>
+        protected virtual IHighlightableElement GetUpToRelativeRoot()
         {
-            if( _currentElement != null ) FireEndHighlight();
+            if( _currentElementParents.Count == 0 ) return _currentElement;
 
-            // highlight the next element
-            _currentElement = GetNextElement( _actionType );
-            FireBeginHighlight();
+            //Getting the children of the root element of the current tree
+            
+            ICKReadOnlyList<IHighlightableElement> rootChildren = null;
+            while( _currentElementParents.Count > 1 )
+            {
+                _currentElementParents.Pop();
+            }
+            rootChildren = _currentElementParents.Peek().Children;
+
+            //Returning the first child.
+            _currentId = -1;
+            return rootChildren.First();
         }
 
         protected virtual IHighlightableElement GetUpToParent()
@@ -72,12 +79,29 @@ namespace KeyScroller
             // if there is no parent, go to normal next element
             if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
-            IHighlightableElement parent = _currentElementParents.Pop();
-            ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
-            if( _currentElementParents.Count > 0 ) parentSibblings = _currentElementParents.Peek().Children;
-            else parentSibblings = RegisteredElements;
+            //IHighlightableElement parent = _currentElementParents.Pop();
+            //ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
+            //if( _currentElementParents.Count > 0 ) parentSiblings = _currentElementParents.Peek().Children;
+            //else parentSiblings = RegisteredElements;
 
-            _currentId = parentSibblings.IndexOf( parent );
+            //We get the parent and fetch its siblings
+            IHighlightableElement parent = _currentElementParents.Pop();
+            ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
+            if( _currentElementParents.Count > 0 )
+            {
+                parentSiblings = _currentElementParents.Peek().Children;
+            }
+            else
+            {
+                //there, we actually are at the root level
+                Debug.Assert( parent.IsHighlightableTreeRoot );
+                parentSiblings = RegisteredElements;
+
+                //If this tree is the only tree at the root level, we directly start iterating on its children
+                if( parentSiblings.Count == 1 ) return GetNextElement( ActionType.EnterChild );
+            }
+
+            _currentId = parentSiblings.IndexOf( parent );
             nextElement = parent;
 
             // if the parent skipping behavior is enter children, we skip it
@@ -92,7 +116,6 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetStayOnTheSame( ICKReadOnlyList<IHighlightableElement> elements )
         {
-            _actionType = ActionType.Normal;
             return elements[_currentId];
         }
 
@@ -123,12 +146,21 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetNextElement( ActionType actionType )
         {
-            // reset the action type to normal
-            _actionType = ActionType.Normal;
+            // reset the action type to normal if we are not on a StayOnTheSameLocked
+            if( actionType != ActionType.StayOnTheSameLocked )
+                _lastDirective.NextActionType = ActionType.Normal;
 
             IHighlightableElement nextElement = null;
 
-            if( actionType == ActionType.UpToParent )
+            if( actionType == ActionType.AbsoluteRoot )
+            {
+                nextElement = GetUpToAbsoluteRoot();
+            }
+            else if( actionType == ActionType.RelativeRoot )
+            {
+                nextElement = GetUpToRelativeRoot();
+            }
+            else if( actionType == ActionType.UpToParent )
             {
                 nextElement = GetUpToParent();
             }
@@ -139,7 +171,7 @@ namespace KeyScroller
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
                 else elements = RegisteredElements;
 
-                if( actionType == ActionType.StayOnTheSame )
+                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
                 {
                     nextElement = GetStayOnTheSame( elements );
                 }
@@ -172,7 +204,6 @@ namespace KeyScroller
 
             StartTimer();
 
-            Console.Out.WriteLine( "Registering " + Name );
             _timer.Tick += OnInternalBeat;
             _configuration.ConfigChanged += OnConfigChanged;
             _isStarted = true;
@@ -182,10 +213,7 @@ namespace KeyScroller
         {
             if( _timer.IsEnabled )
             {
-                if( _currentElement != null )
-                {
-                    FireEndHighlight();
-                }
+                FireEndHighlight( _currentElement, null );
                 _timer.IsEnabled = false;
             }
             _timer.Tick -= OnInternalBeat;
@@ -197,9 +225,9 @@ namespace KeyScroller
         {
             if( _timer.IsEnabled )
             {
-                if( forceEndHighlight && _currentElement != null )
+                if( forceEndHighlight )
                 {
-                    FireEndHighlight();
+                    FireEndHighlight( _currentElement, null );
                 }
                 _timer.Stop();
             }
@@ -231,20 +259,57 @@ namespace KeyScroller
 
         public abstract void OnExternalEvent();
 
-        #endregion
-
-        void FireBeginHighlight()
+        protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            if( BeginHighlight != null ) BeginHighlight( this, new HighlightEventArgs( _currentElement ) );
+            if( _lastDirective == null ) _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.NextTick );
+
+            //Console.Out.WriteLine( "BEAT ! Date : " + DateTime.UtcNow.Second );
+
+            //Saving the currently highlighted element
+            _previousElement = _currentElement;
+
+            //Fetching the next element
+            _currentElement = GetNextElement( _lastDirective.NextActionType );
+
+            //End highlight on the previous element (if different from the current one)
+            if( _previousElement != null )
+                FireEndHighlight( _previousElement, _currentElement );
+
+            //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
+            if( _currentElement != null )
+                FireBeginHighlight();
         }
 
-        void FireEndHighlight()
+        /// <summary>
+        /// Calls the SelectElement method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to SelectElement.
+        /// </summary>
+        protected void FireSelectElement()
         {
-            if( EndHighlight != null ) EndHighlight( this, new HighlightEventArgs( _currentElement ) );
-            _currentElement = null;
+            if( _currentElement != null )
+            {
+                _lastDirective = _currentElement.SelectElement( _lastDirective );
+
+                EnsureReactivity();
+            }
         }
 
-        #region IScrollingStrategy Members
+        /// <summary>
+        /// if the directive is to react instantly, we stop the timer, simulate a tick, and relaunch the timer.
+        /// </summary>
+        internal void EnsureReactivity()
+        {
+            if( _lastDirective != null && _lastDirective.ActionTime == ActionTime.Immediate )
+            {
+                //Setting the ActionTime back to NextTick. Immediate has to be set explicitely at each step;
+                _lastDirective.ActionTime = ActionTime.NextTick;
+
+                _timer.Stop();
+                OnInternalBeat( this, EventArgs.Empty );
+                //Console.Out.WriteLine( "Immediate !" );
+                _timer.Start();
+            }
+        }
 
         public abstract string Name
         {
@@ -256,7 +321,7 @@ namespace KeyScroller
             if( _currentElementParents.Contains( unregisteredElement ) )
             {
                 //The unregistered element is one of the parents of the current element, so we need to stop iterating on this element and start on the next one.
-                if( _currentElement != null ) FireEndHighlight();
+                FireEndHighlight( _currentElement, null );
 
                 //We flush the parent list. When we call the next element, we'll be on the next registered tree
                 _currentElementParents = new Stack<IHighlightableElement>();
@@ -264,6 +329,30 @@ namespace KeyScroller
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Calls the BeginHighlight method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to BeginHighlight.
+        /// </summary>
+        void FireBeginHighlight()
+        {
+            if( _currentElement != null )
+            {
+                _lastDirective = _currentElement.BeginHighlight( new BeginScrollingInfo( _timer.Interval, _previousElement ), _lastDirective );
+                EnsureReactivity();
+            }
+        }
+
+        /// <summary>
+        /// Calls the EndHighlight method of the current IHighlightableElement
+        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to EndHighlight.
+        /// </summary>
+        void FireEndHighlight( IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        {
+            if( previouslyHighlightedElement != null )
+            {
+                _lastDirective = previouslyHighlightedElement.EndHighlight( new EndScrollingInfo( _timer.Interval, previouslyHighlightedElement, elementToBeHighlighted ), _lastDirective );
+                EnsureReactivity();
+            }
+        }
     }
 }

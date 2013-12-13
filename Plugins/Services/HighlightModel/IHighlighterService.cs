@@ -40,20 +40,20 @@ namespace CommonServices.Accessibility
         /// </summary>
         void Resume();
 
-        /// <summary>
-        /// Event fired to trigger the highlightment of a particular element (or tree).
-        /// </summary>
-        event EventHandler<HighlightEventArgs> BeginHighlight;
+        ///// <summary>
+        ///// Event fired to trigger the highlightment of a particular element (or tree).
+        ///// </summary>
+        //event EventHandler<HighlightEventArgs> BeginHighlight;
 
-        /// <summary>
-        /// Event fired to end the highlightment of a particular element (or tree).
-        /// </summary>
-        event EventHandler<HighlightEventArgs> EndHighlight;
+        ///// <summary>
+        ///// Event fired to end the highlightment of a particular element (or tree).
+        ///// </summary>
+        //event EventHandler<HighlightEventArgs> EndHighlight;
 
-        /// <summary>
-        /// Event fired when an element has been spotted by the highlighter to be selected.
-        /// </summary>
-        event EventHandler<HighlightEventArgs> SelectElement;
+        ///// <summary>
+        ///// Event fired when an element has been spotted by the highlighter to be selected.
+        ///// </summary>
+        //event EventHandler<HighlightEventArgs> SelectElement;
     }
 
     public class HighlightEventArgs : EventArgs

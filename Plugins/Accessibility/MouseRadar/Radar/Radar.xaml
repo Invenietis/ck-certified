@@ -1,0 +1,31 @@
+﻿<Window x:Class="MouseRadar.Radar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        mc:Ignorable="d"
+        MaxHeight="{Binding Path=WindowSize}"
+        MaxWidth="{Binding Path=WindowSize}"
+        MinHeight="{Binding Path=WindowSize}"
+        MinWidth="{Binding Path=WindowSize}"
+
+        BorderBrush="Bisque"
+        WindowStartupLocation="Manual"
+        WindowStyle="None" 
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
+        Background="Transparent" 
+        Topmost="True" >
+
+    <Canvas Margin="25, 25" Opacity="{Binding Path=Opacity}">
+       
+        <Ellipse Stroke="{Binding Path=CircleColor}" StrokeThickness="2" Width="{Binding Path=RadarSize}" Height="{Binding Path=RadarSize}">
+        </Ellipse>
+        <Polygon Points="14,0 29,10, 14,20" Stroke="{Binding Path=ArrowColor}" Fill="{Binding Path=ArrowColor}"  StrokeThickness="2" Canvas.Left="{Binding Path=PointerPositionX}" Canvas.Top="{Binding Path=PointerPositionY}">
+            <Polygon.RenderTransform>
+                <RotateTransform CenterX="{Binding Path=RotationOriginX}" CenterY="{Binding Path=RotationOriginY}" Angle="{Binding Path=Angle}" />
+            </Polygon.RenderTransform>
+        </Polygon>
+       
+    </Canvas>
+</Window>

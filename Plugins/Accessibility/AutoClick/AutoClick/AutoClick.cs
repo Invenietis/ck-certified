@@ -66,11 +66,11 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IClickSelector> Selector { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowManager> WindowManager { get; set; }
+        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        //public IService<IWindowManager> WindowManager { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowBinder> WindowBinder { get; set; }
+        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        //public IService<IWindowBinder> WindowBinder { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -130,8 +130,8 @@ namespace CK.Plugins.AutoClick
             _isPaused = true;
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
 
-            int defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 4;
-            int defaultWidth = defaultHeight / 4;
+            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 10;
+            int defaultWidth = defaultHeight / 2;
 
             if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
             {
@@ -165,10 +165,10 @@ namespace CK.Plugins.AutoClick
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
 
-            WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
-            WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
+            //WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+            //WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
 
-            Pause( this );
+            OnPause( this, EventArgs.Empty );
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
@@ -299,37 +299,37 @@ namespace CK.Plugins.AutoClick
         {
             MouseDriver.Service.PointerMove += new PointerDeviceEventHandler( OnPointerMove );
 
-            MouseWatcher.Service.LaunchClick += new EventHandler( OnClickAsked );
-            MouseWatcher.Service.ProgressValueChanged += new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );
-            MouseWatcher.Service.ClickCanceled += new EventHandler( OnClickCancelled );
-            MouseWatcher.Service.HasPaused += new EventHandler( OnHasPaused );
-            MouseWatcher.Service.HasResumed += new EventHandler( OnHasResumed );
-            MouseWatcher.Service.PropertyChanged += new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
-            Selector.Service.AutoClickClickTypeChosen += new ClickTypeChosenEventHandler( SendClick );
-            Selector.Service.AutoClickResumeEvent += new AutoClickResumeEventHandler( Resume );
-            Selector.Service.AutoClickStopEvent += new AutoClickStopEventHandler( Pause );
+            MouseWatcher.Service.LaunchClick += OnClickAsked;
+            MouseWatcher.Service.ProgressValueChanged += OnProgressValueChanged;
+            MouseWatcher.Service.ClickCanceled += OnClickCancelled;
+            MouseWatcher.Service.HasPaused += OnHasPaused;
+            MouseWatcher.Service.HasResumed += OnHasResumed;
+            MouseWatcher.Service.PropertyChanged += OnMouseWatcherPropertyChanged;
+            Selector.Service.ClickChosen += OnClickChosen;
+            Selector.Service.ResumeEvent += OnResume;
+            Selector.Service.StopEvent += OnPause;
 
-            MouseDriver.ServiceStatusChanged += new EventHandler<ServiceStatusChangedEventArgs>( OnMouseDriverServiceStatusChanged );
+            MouseDriver.ServiceStatusChanged += OnMouseDriverServiceStatusChanged;
         }
         private void UnregisterEvents()
         {
             if( MouseDriver.Status != InternalRunningStatus.Stopped && MouseDriver.Status != InternalRunningStatus.Disabled )
-                MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
+                MouseDriver.Service.PointerMove -= OnPointerMove;
 
             if( MouseWatcher.Status != InternalRunningStatus.Stopped && MouseWatcher.Status != InternalRunningStatus.Disabled )
             {
-                MouseWatcher.Service.LaunchClick -= new EventHandler( OnClickAsked );
-                MouseWatcher.Service.ProgressValueChanged -= new AutoClickProgressValueChangedEventHandler( OnProgressValueChanged );
-                MouseWatcher.Service.ClickCanceled -= new EventHandler( OnClickCancelled );
-                MouseWatcher.Service.HasPaused -= new EventHandler( OnHasPaused );
-                MouseWatcher.Service.HasResumed -= new EventHandler( OnHasResumed );
-                MouseWatcher.Service.PropertyChanged -= new PropertyChangedEventHandler( OnMouseWatcherPropertyChanged );
+                MouseWatcher.Service.LaunchClick -= OnClickAsked;
+                MouseWatcher.Service.ProgressValueChanged -= OnProgressValueChanged;
+                MouseWatcher.Service.ClickCanceled -= OnClickCancelled;
+                MouseWatcher.Service.HasPaused -= OnHasPaused;
+                MouseWatcher.Service.HasResumed -= OnHasResumed;
+                MouseWatcher.Service.PropertyChanged -= OnMouseWatcherPropertyChanged;
             }
 
-            Selector.Service.AutoClickClickTypeChosen -= new ClickTypeChosenEventHandler( SendClick );
-            Selector.Service.AutoClickResumeEvent -= new AutoClickResumeEventHandler( Resume );
-            Selector.Service.AutoClickStopEvent -= new AutoClickStopEventHandler( Pause );
-            _editorWindow.IsVisibleChanged -= new System.Windows.DependencyPropertyChangedEventHandler( OnEditorWindowVisibilityChanged );
+            Selector.Service.ClickChosen -= OnClickChosen;
+            Selector.Service.ResumeEvent -= OnResume;
+            Selector.Service.StopEvent -= OnPause;
+            _editorWindow.IsVisibleChanged -= OnEditorWindowVisibilityChanged;
         }
 
         private void ConfigureMouseWatcher()
@@ -368,7 +368,7 @@ namespace CK.Plugins.AutoClick
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SendClick( object sender, ClickTypeEventArgs e )
+        private void OnClickChosen( object sender, ClickTypeEventArgs e )
         {
             foreach( ClickInstruction instr in e.ClickVM )
             {
@@ -404,7 +404,7 @@ namespace CK.Plugins.AutoClick
         /// Method that is called when the AutoClickPlugin can start over its work
         /// </summary>
         /// <param name="sender"></param>
-        public void Resume( object sender )
+        public void OnResume( object sender, EventArgs e )
         {
             MouseWatcher.Service.Resume();
             IsPaused = false;
@@ -414,7 +414,7 @@ namespace CK.Plugins.AutoClick
         /// Method that is called when the AutoClickPlugin must stop
         /// </summary>
         /// <param name="sender"></param>
-        public void Pause( object sender )
+        public void OnPause( object sender, EventArgs e )
         {
             MouseWatcher.Service.Pause();
             IsPaused = true;
@@ -476,7 +476,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _togglePauseCommand == null )
                 {
-                    _togglePauseCommand = new VMCommand( () => { if( IsPaused ) Resume( this ); else Pause( this ); } );
+                    _togglePauseCommand = new VMCommand( () => { if( IsPaused ) OnResume( this, EventArgs.Empty ); else OnPause( this, EventArgs.Empty ); } );
                 }
 
                 return _togglePauseCommand;

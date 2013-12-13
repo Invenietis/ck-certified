@@ -53,9 +53,7 @@ namespace Host.VM
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            //NotifyOfPropertyChange( () => CountDownDuration );
-            //NotifyOfPropertyChange( () => TimeBeforeCountDownStarts );
-            //NotifyOfPropertyChange( () => ShowMouseIndicatorOption );
+            NotifyOfPropertiesChange();
         }
 
         public int RadarSize

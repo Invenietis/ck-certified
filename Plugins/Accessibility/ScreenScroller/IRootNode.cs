@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace ScreenScroller
 {
@@ -10,6 +11,8 @@ namespace ScreenScroller
         NodeViewModel CurrentNode { get; }
         int MaxLapCount { get; }
         int SquareSize { get; }
+
+        ResourceDictionary ImageDictionary { get; }
 
         event EventHandler<LevelChangedEventArgs> LevelChanged;
     }

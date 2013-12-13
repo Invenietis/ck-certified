@@ -22,23 +22,25 @@ namespace ScreenScroller
            Version = ScreenScrollerPlugin.PluginIdVersion )]
     public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IHighlightableElement, IRootNode
     {
-        const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
+        internal const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "0.0.1";
         const string PluginPublicName = "Screen Scroller";
 
         IList<Screen> _screens;
 
+        public string BackgroundColor { get; set; }
         public int ClickDepth { get; set; }
         public int MaxLapCount { get; set; }
-        public int SquareSize { get { return (int)Math.Sqrt( GridChildrenCount ); } }//The number of children is supposed to be x², so the result of this prop is an integer)
-        public int GridChildrenCount { get; set; }
+
+        public int SquareSize { get; set; }
+
         public IPluginConfigAccessor Config { get; set; }
 
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDevideDriver { get; set; }
 
         public bool Setup( IPluginSetupInfo info )
@@ -53,13 +55,22 @@ namespace ScreenScroller
 
         public void Start()
         {
-            ClickDepth = 6;
-            GridChildrenCount = 4;
-            MaxLapCount = 2;
+            ClickDepth = Config.User.GetOrSet<int>( "ClickDepth", 5 );
+            SquareSize = Config.User.GetOrSet<int>( "SquareSize", 2 );
+            MaxLapCount = Config.User.GetOrSet<int>( "MaxLapCount", 2 );
+            BackgroundColor = Config.User.GetOrSet<string>( "BackgroundColor", "Black" );
 
+            InitializeGrid();
+
+            InitializeHighligther();
+            Config.ConfigChanged += OnConfigChanged;
+        }
+
+        private void InitializeGrid()
+        {
             foreach( System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens.Reverse() )
             {
-                NodeViewModel node = new NodeViewModel( this, GridChildrenCount, ClickDepth, false );
+                NodeViewModel node = new NodeViewModel( this, s.Bounds.Top, s.Bounds.Left, SquareSize * SquareSize, ClickDepth, false );
 
                 ChildNodes.Add( node );
                 Screen screen = new Screen();
@@ -70,10 +81,44 @@ namespace ScreenScroller
                 //Every time the framework sets it (when shown, moved, resized..) the binding is flushed. 
                 screen.Left = s.Bounds.Left;
                 screen.Top = s.Bounds.Top;
+                screen.WindowState = WindowState.Maximized;
                 _screens.Add( screen );
             }
+        }
 
-            InitializeHighligther();
+        ResourceDictionary _resourceDictionary = new ResourceDictionary()
+        {
+            Source = new Uri( "pack://application:,,,/ScreenScroller;component/Views/Resources.xaml", UriKind.Absolute )
+        };
+
+        public ResourceDictionary ImageDictionary { get { return _resourceDictionary; } }
+
+        void OnConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            {
+                switch( e.Key )
+                {
+                    case "MaxLapCount":
+                        MaxLapCount = (int)e.Value;
+                        break;
+                    case "ClickDepth":
+                        ClickDepth = (int)e.Value;
+                        break;
+                    case "SquareSize":
+                        SquareSize = (int)e.Value;
+                        break;
+                    case "BackgroundColor":
+                        BackgroundColor = e.Value.ToString();
+                        break;
+                    default:
+                        return;
+                }
+                ExitAll();
+                CurrentNode = null;
+                ChildNodes.Clear();
+                InitializeGrid();
+            }
         }
 
         private void Pause()
@@ -82,6 +127,7 @@ namespace ScreenScroller
 
         public void Stop()
         {
+            Config.ConfigChanged += OnConfigChanged;
             UnInitializeHighlighter();
             foreach( var screen in _screens )
             {

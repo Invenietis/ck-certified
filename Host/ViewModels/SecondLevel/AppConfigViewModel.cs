@@ -48,6 +48,7 @@ namespace Host.VM
         SkinViewModel _sVm;
         AutoClickViewModel _acVm;
         WordPredictionViewModel _wpVm;
+        ScreenScrollerViewModel _ssVm;
         AppAdvancedConfigViewModel _appAdvcVm;
 
         public AppConfigViewModel( AppViewModel app )
@@ -69,8 +70,13 @@ namespace Host.VM
 
             this.AddLink( _appAdvcVm ?? ( _appAdvcVm = new AppAdvancedConfigViewModel( _app ) ) );
             this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
-            this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
-            this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
+
+            //JL : 13/12/2013 : The screenscroller editor presents performance issues when modifying parameters.
+            //For now, I'll let this plugin without configuration, we'll ask the ergotherapist whether the configuration panel is necessary before spending time on it.
+            //this.AddLink( _ssVm ?? ( _ssVm = new ScreenScrollerViewModel( _app ) ) );  
+            
+            this.AddLink( _acVm ?? ( _acVm = new AutoClickViewModel( _app ) ) );
+            this.AddLink( _wpVm ?? ( _wpVm = new WordPredictionViewModel( _app ) ) );
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
@@ -93,8 +99,15 @@ namespace Host.VM
                 this.Items.Add( action );
             }
 
+            {
+                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScreenScrollerEditor ) );
+                action.ImagePath = "Forward.png";
+                action.DisplayName = R.ScreenScrollerConfiguration;
+                this.Items.Add( action );
+            }
+
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
-            
+
             base.OnInitialize();
         }
 
@@ -118,7 +131,14 @@ namespace Host.VM
 
         public void StartRadarEditor()
         {
+
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.PluginRunner.Apply();
+        }
+
+        public void StartScreenScrollerEditor()
+        {
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{652CFF65-5CF7-4FE9-8FF5-45C5E2A942E6}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }

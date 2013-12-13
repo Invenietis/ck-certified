@@ -330,4 +330,7 @@
   <data name="RadarConfiguration" xml:space="preserve">
     <value>Configuration du radar</value>
   </data>
+  <data name="ScreenScrollerConfiguration" xml:space="preserve">
+    <value>Configuration du défilement d'écran</value>
+  </data>
 </root>

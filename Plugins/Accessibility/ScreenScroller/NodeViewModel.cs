@@ -57,7 +57,7 @@ namespace ScreenScroller
         /// </summary>
         public bool ParentLapsAreAboutToFinish { get { return Parent.LapCount >= Root.MaxLapCount - 1; } }
 
-        public IRootNode Root { get; set; }
+        public IRootNode Root { get; protected set; }
         public NodeViewModel Parent { get; set; }
         public ObservableCollection<NodeViewModel> ChildNodes { get; set; }
 
@@ -91,6 +91,32 @@ namespace ScreenScroller
             }
         }
 
+        /// <summary>
+        /// Ctor of the root nodes (one for each screen)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="childrenCount"></param>
+        /// <param name="maxDepth"></param>
+        /// <param name="isRoot"></param>
+        internal NodeViewModel( ScreenScrollerPlugin root, int offsetHeight, int offsetWidth, int childrenCount, int maxDepth, bool isRoot )
+        {
+            ChildNodes = new ObservableCollection<NodeViewModel>();
+            Parent = root;
+            Root = root;
+            _level = 0;
+
+            _extraOffsetHeight = offsetHeight;
+            _extraOffsetWidth = offsetWidth;
+
+            if( _level < maxDepth )
+            {
+                for( int i = 0; i < childrenCount; i++ )
+                {
+                    ChildNodes.Add( new NodeViewModel( root, this, _level + 1, childrenCount, maxDepth, i ) );
+                }
+            }
+        }
+
         private void InitializeCoordinates( int index )
         {
             Row = (int)Math.Truncate( (double)( ( index ) / Root.SquareSize ) );
@@ -106,31 +132,8 @@ namespace ScreenScroller
                 Column = index;
         }
 
-        public double OffsetHeight { get { return IsRoot ? Height * Row : ( Height * Row ) + Parent.OffsetHeight; } }
-        public double OffsetWidth { get { return IsRoot ? Width * Column : ( Width * Column ) + Parent.OffsetWidth; } }
-
-        /// <summary>
-        /// Ctor of the root nodes (one for each screen)
-        /// </summary>
-        /// <param name="root"></param>
-        /// <param name="childrenCount"></param>
-        /// <param name="maxDepth"></param>
-        /// <param name="isRoot"></param>
-        internal NodeViewModel( ScreenScrollerPlugin root, int childrenCount, int maxDepth, bool isRoot )
-        {
-            ChildNodes = new ObservableCollection<NodeViewModel>();
-            Parent = root;
-            Root = root;
-            _level = 0;
-
-            if( _level < maxDepth )
-            {
-                for( int i = 0; i < childrenCount; i++ )
-                {
-                    ChildNodes.Add( new NodeViewModel( root, this, _level + 1, childrenCount, maxDepth, i ) );
-                }
-            }
-        }
+        public double OffsetHeight { get { return ( IsRoot ? Height * Row : ( Height * Row ) + Parent.OffsetHeight ) + _extraOffsetHeight; } }
+        public double OffsetWidth { get { return ( IsRoot ? Width * Column : ( Width * Column ) + Parent.OffsetWidth ) + _extraOffsetWidth; } }
 
         /// <summary>
         /// Cotor used by the absolute root of the tree (the plugin)
@@ -156,6 +159,10 @@ namespace ScreenScroller
         int _lapCount;
         bool _childOrSelfIsActive;
         bool _hasJustBeenEntered;
+
+        //only used by roots. these should'nt be here
+        int _extraOffsetHeight = 0;
+        int _extraOffsetWidth = 0;
 
         /// <summary>
         /// Highlights the next childnode of this node.
@@ -246,10 +253,7 @@ namespace ScreenScroller
             }
         }
 
-        ResourceDictionary _resourceDictionary = new ResourceDictionary()
-        {
-            Source = new Uri( "pack://application:,,,/ScreenScroller;component/Views/Paths.xaml", UriKind.Absolute )
-        };
+
 
         /// <summary>
         /// Gets whether the parent was scrolling on its children and has finished its last lap/
@@ -264,7 +268,7 @@ namespace ScreenScroller
             {
                 if( IsParentLastTick )
                 {
-                    return _resourceDictionary["OutArrow"];
+                    return Root.ImageDictionary["OutArrow"];
                 }
 
                 if( _image == null || LapsAreFinished )
@@ -279,12 +283,12 @@ namespace ScreenScroller
                     if( IsLeaf )
                     {
                         //We are on a leaf, we display a "click" image
-                        _image = _resourceDictionary["ClickPath"];
+                        _image = Root.ImageDictionary["ClickPath"];
                     }
                     else if( IsStart )
                     {
                         //We are on the first node
-                        _image = _resourceDictionary["RightArrow"]; //">";
+                        _image = Root.ImageDictionary["RightArrow"]; //">";
                     }
                     else if( IsEnd )
                     {
@@ -292,28 +296,28 @@ namespace ScreenScroller
                         //we only need an up arrow to explain the user what's going on next.
                         if( IsContinuousTrack )
                         {
-                            _image = _resourceDictionary["TopArrow"];//"^";
+                            _image = Root.ImageDictionary["TopArrow"];//"^";
                         }
                         else //Otherwise, this image will clearly display the fact that we are going back to the start.
                         {
-                            _image = _resourceDictionary["EndArrow"];
+                            _image = Root.ImageDictionary["EndArrow"];
                         }
                     }
                     else if( val % 1 == 0 )
                     {
                         //if the value has nothing past the decimal point, 
                         //we are at the end of a row (or at the beginning/end of the track, which are handled above)
-                        _image = _resourceDictionary["DownArrow"];
+                        _image = Root.ImageDictionary["DownArrow"];
                     }
                     else if( isTruncatedValueEven )
                     {
                         //The next element is on the right of this element, because we are on an even row
-                        _image = _resourceDictionary["RightArrow"];
+                        _image = Root.ImageDictionary["RightArrow"];
                     }
                     else
                     {
                         //The next element is on the left of this element, because we are on an odd row
-                        _image = _resourceDictionary["LeftArrow"];
+                        _image = Root.ImageDictionary["LeftArrow"];
                     }
                 }
                 return _image;

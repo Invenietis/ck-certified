@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ScreenScroller"
-        Title="Screen" WindowState="Maximized" WindowStyle="None" AllowsTransparency="True">
+        Title="Screen" WindowStyle="None" AllowsTransparency="True" 
+        ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ScreenScroller;component/Views/Paths.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ScreenScroller;component/Views/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -16,142 +17,13 @@
             <Setter Property="Background" Value="Transparent" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Background" Value="{Binding Root.BackgroundColor}" />
                     <Setter Property="Opacity" Value="0.3" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </Window.Style>
     <Grid>
-        <Grid.Resources>
-            <local:ProportionalDimensionsConverter x:Key="propConverter"/>
-            <DataTemplate DataType="{x:Type local:NodeViewModel}">
-                <ItemsControl ItemsSource="{Binding ChildNodes}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <local:TrackUniformGrid>
-                                <!-- DataPipes are used to bind in the OneWayToSource mode to read-only Dependency Properties  -->
-                                <local:DataPiping.DataPipes>
-                                    <local:DataPipeCollection>
-                                        <local:DataPipe Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:TrackUniformGrid}}, Path=ActualWidth}"
-                                                         Target="{Binding Path=Width, Mode=OneWayToSource}"/>
-                                        <local:DataPipe Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:TrackUniformGrid}}, Path=ActualHeight}"
-                                                         Target="{Binding Path=Height, Mode=OneWayToSource}"/>
-                                    </local:DataPipeCollection>
-                                </local:DataPiping.DataPipes>
-                            </local:TrackUniformGrid>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <!-- Border that wraps a cell. Is collapsed when the cell itself and none of its children are highilighted. This last point is VERY important performance-wise -->
-                            <Border>
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Background" Value="Transparent" />
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                                <Setter Property="Background" Value="Black" />
-                                                <Setter Property="Opacity" Value="0.5"></Setter>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsVisible}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsCurrentNode}" Value="True">
-                                                <Setter Property="BorderBrush" Value="Black"/>
-                                                <Setter Property="BorderThickness" Value="2"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <Grid>
-                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-                                        <!-- Image that shows where the cell linked to the upper level is -->
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding IsStart}" Value="True"></Condition>
-                                                            <Condition Binding="{Binding IsParentTheCurrentNode}" Value="True"></Condition>
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-                                        <Grid.Width>
-                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="12" Mode="OneWay" />
-                                        </Grid.Width>
-                                        <Grid.Height>
-                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="12" Mode="OneWay" />
-                                        </Grid.Height>
-                                        <!-- An ellipse that enables seeing the arrow when the the corresponding cell is not highlighted -->
-                                        <Rectangle Fill="Black"  Visibility="Visible" Stretch="Fill" />
-                                        <ContentControl x:Name="ToUpperLevelContentControl">
-
-                                            <!-- This image is a square so we bind its width AND height to a multiple of the hosting grid's width -->
-                                            <ContentControl.Width>
-                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
-                                            </ContentControl.Width>
-                                            <ContentControl.Height>
-                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
-                                            </ContentControl.Height>
-                                            <ContentControl.Style>
-                                                <Style TargetType="ContentControl">
-                                                    <Setter Property="Content" Value="{StaticResource OutArrow}" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ParentLapsAreAboutToFinish}" Value="True">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard Name="ToUpperLevelStoryboard">
-                                                                    <Storyboard>
-                                                                        <DoubleAnimation Storyboard.TargetProperty="Width" By="2.5" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever" />
-                                                                        <DoubleAnimation Storyboard.TargetProperty="Height" By="2.5" Duration="0:0:0.2" AutoReverse="True" RepeatBehavior="Forever" />
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <StopStoryboard BeginStoryboardName="ToUpperLevelStoryboard" />
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </ContentControl.Style>
-                                        </ContentControl>
-                                    </Grid>
-                                    
-                                    <!-- The control of a cell (contains the image that show the direction of the next tick) -->
-                                    <ContentControl Content="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <!-- This image is NOT a square -->
-                                        <ContentControl.Width>
-                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="2" Mode="OneWay" />
-                                        </ContentControl.Width>
-                                        <ContentControl.Height>
-                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="4" Mode="OneWay" />
-                                        </ContentControl.Height>
-                                        <ContentControl.Style>
-                                            <Style TargetType="ContentControl">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ContentControl.Style>
-                                    </ContentControl>
-
-                                    <!-- Where the childNode is displayed (using the very same template) -->
-                                    <ContentPresenter Content="{Binding}"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </DataTemplate>
-        </Grid.Resources>
         <ContentControl Content="{Binding}"></ContentControl>
     </Grid>
 </Window>

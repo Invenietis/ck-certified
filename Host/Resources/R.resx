@@ -330,4 +330,7 @@
   <data name="RadarConfiguration" xml:space="preserve">
     <value>Radar configuration</value>
   </data>
+  <data name="ScreenScrollerConfiguration" xml:space="preserve">
+    <value>Screen scroler configuration</value>
+  </data>
 </root>

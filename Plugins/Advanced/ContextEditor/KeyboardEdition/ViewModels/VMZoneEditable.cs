@@ -127,7 +127,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _createKeyCommand == null )
                 {
-                    _createKeyCommand = new VMCommand( () =>
+                    _createKeyCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         IKey key = Model.Keys.Create();
                         key.KeyModes.First().UpLabel = "New key";
@@ -159,7 +159,7 @@ namespace KeyboardEditor.ViewModels
 
         private void DeleteZone()
         {
-            _deleteZoneCommand = new VMCommand( () =>
+            _deleteZoneCommand = new CK.Windows.App.VMCommand( () =>
             {
                 ModalViewModel mvm = new ModalViewModel( R.DeleteZone, R.DeleteZoneConfirmation );
                 mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
@@ -254,7 +254,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _selectZoneCommand == null )
                 {
-                    _selectZoneCommand = new VMCommand( () =>
+                    _selectZoneCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         _ctx.SelectedElement = this;
                     } );
@@ -262,6 +262,36 @@ namespace KeyboardEditor.ViewModels
                 return _selectZoneCommand;
             }
         }
+
+        private int _index;
+        public int Index
+        {
+            get { return Context.Config[_zone].GetOrSet( "Index", _index ); }
+            set { Context.Config[_zone].Set( "Index", value ); }
+        }
+
+        public ICommand UpIndexCommand
+        {
+            get
+            {
+                return new CK.Windows.App.VMCommand( (Action)( () =>
+                {
+                    Context.KeyboardVM.IncreaseZoneIndex( this );
+                } ) );
+            }
+        }
+
+        public ICommand DownIndexCommand
+        {
+            get
+            {
+                return new CK.Windows.App.VMCommand( (Action)( () =>
+                {
+                    Context.KeyboardVM.DecreaseZoneIndex( this );
+                } ) );
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>

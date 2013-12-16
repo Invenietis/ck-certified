@@ -335,6 +335,8 @@
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <ContentControl Focusable="False" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0 0 3 0" Content="{Binding Path=(vm:CustomContent.Content), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
                                 <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"/>
+                                <Button Command="{Binding UpIndexCommand}">UpIndex</Button>
+                                <Button Command="{Binding DownIndexCommand}">DownIndex</Button>
                             </StackPanel>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"/>

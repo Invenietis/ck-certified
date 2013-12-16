@@ -29,6 +29,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
+using System.Windows.Input;
 
 namespace SimpleSkin.ViewModels
 {
@@ -39,10 +40,18 @@ namespace SimpleSkin.ViewModels
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
-        internal VMZoneSimple( VMContextSimple ctx, IZone zone )
+        private int _index;
+        public int Index
+        {
+            get { return Context.Config[_zone].GetOrSet( "Index", _index ); }
+            set { Context.Config[_zone].Set( "Index", value ); }
+        }
+
+        internal VMZoneSimple( VMContextSimple ctx, IZone zone, int index )
             : base( ctx )
         {
             _zone = zone;
+            _index = index;
             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
@@ -50,7 +59,19 @@ namespace SimpleSkin.ViewModels
                 VMKeySimple k = Context.Obtain( key );
                 Keys.Add( k );
             }
+            Context.Config.ConfigChanged += OnConfigChanged;
         }
+
+        void OnConfigChanged( object sender, CK.Plugin.Config.ConfigChangedEventArgs e )
+        {
+            if( e.Obj == _zone && e.Key == "Index" )
+            {
+                _index = (int)e.Value;
+                OnPropertyChanged( "Index" );
+                //TODO : trigger IndexChanged
+            }
+        }
+
 
         internal override void Dispose()
         {

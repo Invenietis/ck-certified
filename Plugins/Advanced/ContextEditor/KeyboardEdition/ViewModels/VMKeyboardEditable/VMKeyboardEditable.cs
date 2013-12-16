@@ -75,6 +75,44 @@ namespace KeyboardEditor.ViewModels
             RefreshModes();
         }
 
+
+        internal void IncreaseZoneIndex( VMZoneEditable zone )
+        {
+            Debug.Assert( Zones.IndexOf( zone ) == zone.Index );
+            if( zone.Index < Zones.Count - 1 )
+            {
+                SwitchZones( zone, Zones.ElementAt( zone.Index + 1 ) );
+            }
+        }
+
+        internal void DecreaseZoneIndex( VMZoneEditable zone )
+        {
+            Debug.Assert( Zones.IndexOf( zone ) == zone.Index );
+            if( zone.Index > 1 )
+            {
+                SwitchZones( zone, Zones.ElementAt( zone.Index - 1 ) );
+            }
+        }
+
+        private void SwitchZones( VMZoneEditable firstZone, VMZoneEditable secondZone )
+        {
+            if( firstZone == null || secondZone == null ) throw new ArgumentNullException( "One of the zones asking to be switched is null" );
+            Debug.Assert( Zones.Contains( firstZone ) && Zones.Contains( secondZone ) );
+
+            Zones.Remove( firstZone );
+            Zones.Insert( firstZone.Index, secondZone );
+
+            Zones.Remove( secondZone );
+            Zones.Insert( secondZone.Index, firstZone );
+
+            int firstZoneIdx = firstZone.Index;
+            firstZone.Index = secondZone.Index;
+            secondZone.Index = firstZoneIdx;
+
+            OnPropertyChanged( "Zones" );
+        }
+
+
         internal override void Dispose()
         {
             _zones.Clear();

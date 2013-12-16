@@ -38,6 +38,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace SimpleSkin.ViewModels
 {
@@ -69,9 +70,15 @@ namespace SimpleSkin.ViewModels
 
             RegisterEvents();
 
-            foreach( IZone zone in _keyboard.Zones )
+            InitializeZoneIndexes();
+
+            var zones = _keyboard.Zones.ToList();
+            zones.Sort( new ZoneComparer( Context.Config ) );
+
+            foreach( IZone zone in zones )
             {
-                Zones.Add( Context.Obtain( zone ) );
+                VMZoneSimple zoneVM = Context.Obtain( zone );
+                Zones.Add( zoneVM );
                 foreach( IKey key in zone.Keys )
                 {
                     _keys.Add( Context.Obtain( key ) );
@@ -82,6 +89,71 @@ namespace SimpleSkin.ViewModels
             SafeUpdateH();
             SafeUpdateInsideBorderColor();
             UpdateBackgroundPath();
+        }
+
+        /// <summary>
+        /// This method is designed to make sure all zones have a correct Index.
+        /// This should be called before creating the ViewModels, in order to get them in the right order. (otherwise vmzones' order will not be synchronized with their Index property)
+        /// </summary>
+        private void InitializeZoneIndexes()
+        {
+            Queue<IZone> indexesToProcess = new Queue<IZone>();
+           
+            int lastIndex = 0;
+            int neededCapacity = 0;
+
+            foreach( var zone in _keyboard.Zones )
+            {
+                int index = Context.Config[zone].GetOrSet<int>( "Index", -1 );
+                if( index > neededCapacity ) neededCapacity = index;
+            }
+
+            int[] existingIndexes = new int[neededCapacity + 1];
+
+            foreach( var zone in _keyboard.Zones )
+            {
+                int idx = Context.Config[zone].GetOrSet<int>( "Index", -1 );
+                if( idx == -1 )
+                {
+                    indexesToProcess.Enqueue( zone );
+                }
+                else
+                {
+                    existingIndexes[idx]++;
+
+                    if( idx > lastIndex )
+                    {
+                        lastIndex = idx;
+                    }
+                }
+            }
+
+            bool existingIndexesAreFull = false;
+            while( indexesToProcess.Count > 0 )
+            {
+                bool inserted = false;
+                if( !existingIndexesAreFull )
+                {
+                    for( int i = 0; i < existingIndexes.Length; i++ )
+                    {
+                        if( existingIndexes[i] == 0 )
+                        {
+                            Context.Config[indexesToProcess.Dequeue()].Set( "Index", i );
+                            existingIndexes[i]++;
+                            inserted = true;
+                            break;
+                        }
+                    }
+                }
+
+                if( !inserted )
+                {
+                    existingIndexesAreFull = true;
+                    Context.Config[indexesToProcess.Dequeue()].Set( "Index", lastIndex );
+                    lastIndex++;
+                }
+
+            }
         }
 
         internal override void Dispose()
@@ -325,5 +397,18 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
+    }
+
+    public class ZoneComparer : IComparer<IZone>
+    {
+        IPluginConfigAccessor _config;
+        public ZoneComparer( IPluginConfigAccessor config )
+        {
+            _config = config;
+        }
+        public int Compare( IZone x, IZone y )
+        {
+            return _config[x].GetOrSet<int>( "Index", -1 ).CompareTo( _config[y].GetOrSet<int>( "Index", -1 ) );
+        }
     }
 }

@@ -87,7 +87,9 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void EditCurrentKeyboard()
         {
-            Next = new KeyboardProfileViewModel( Root, WizardManager, _keyboardCtx.CurrentKeyboard );
+            var keyboard = _keyboardCtx.CurrentKeyboard;
+            
+            Next = new KeyboardProfileViewModel( Root, WizardManager, keyboard );
             WizardManager.GoFurther();
         }
 

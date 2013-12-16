@@ -4,6 +4,7 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
     xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+    xmlns:ckcontrols="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
@@ -13,17 +14,17 @@
     xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
     xmlns:local="clr-namespace:KeyboardEditor.s"
     mc:Ignorable="d">
-    
+
     <ctrls:StringIsNullOrWhiteSpaceToBoolean x:Key="stringnulltobool"/>
     <ctrls:NotNullConverter x:Key="notnull"/>
     <ctrls:NotConverter x:Key="notconverter"/>
     <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <vm:ImageConverter x:Key="imageconverter"/>
-    
+
     <SolidColorBrush Color="#FF065AA0" x:Key="EditorMainColor"/>
     <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
-    
+
     <Style TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="Calibri"></Setter>
     </Style>
@@ -261,7 +262,6 @@
                     <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
                     <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
                 </MultiDataTrigger.Conditions>
-                <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
                 <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
             </MultiDataTrigger>
         </DataTemplate.Triggers>
@@ -306,6 +306,15 @@
     <Style TargetType="{x:Type Control}" x:Key="TreeViewItemFocusVisual">
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
+    
+    <!-- Index changing arrows style -->
+    <Style x:Key="IndexArrowStyle" TargetType="Button" BasedOn="{StaticResource ModernUIButtonStyle}">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
 
     <!-- HeaderedSelectableTVI -->
     <Style TargetType="TreeViewItem" x:Key="HeaderedSelectableTVI">
@@ -335,8 +344,42 @@
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <ContentControl Focusable="False" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0 0 3 0" Content="{Binding Path=(vm:CustomContent.Content), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
                                 <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"/>
-                                <Button Command="{Binding UpIndexCommand}">UpIndex</Button>
-                                <Button Command="{Binding DownIndexCommand}">DownIndex</Button>
+                                
+                                <!-- Panel that show the arrows needed to change the index of an element -->
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Resources>
+                                        <vm:HasOrderToBooleanConverter x:Key="hasordertobooleanconverter"/>
+                                    </ContentControl.Resources>
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <TextBlock Text=""/>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Converter={StaticResource hasordertobooleanconverter}}" Value="True">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Button Command="{Binding DownIndexCommand}" Margin="2 0 0 0" Style="{StaticResource IndexArrowStyle}">
+                                                                        <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/Top.png" />
+                                                                    </Button>
+                                                                    <Button Command="{Binding UpIndexCommand}" Style="{StaticResource IndexArrowStyle}">
+                                                                        <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/bottom.png" />
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                             </StackPanel>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"/>

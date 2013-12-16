@@ -128,13 +128,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyboardEdition\AddActionDataTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\AddActionDataTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\HasOrderToBooleanConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ImageConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
-    <Compile Include="KeyboardEdition\BreadcrumbTemplateSelector.cs" />
-    <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\BreadcrumbTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\KeyboardEditionTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeBase.cs" />
@@ -424,6 +425,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\bottom.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

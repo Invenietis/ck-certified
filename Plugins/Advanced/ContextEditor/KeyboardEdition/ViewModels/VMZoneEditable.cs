@@ -34,7 +34,7 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMZoneEditable : VMContextElementEditable
+    public class VMZoneEditable : VMContextElementEditable, IHasOrder
     {
         IZone _zone;
         CKObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
@@ -396,5 +396,11 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
+    }
+
+    public interface IHasOrder
+    {
+        ICommand UpIndexCommand { get; }
+        ICommand DownIndexCommand { get; }
     }
 }

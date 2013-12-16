@@ -12,10 +12,7 @@ namespace KeyboardEditor.ViewModels
     public class AddActionDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate SendStringDataTemplate { get; set; }
-        //public DataTemplate SendKeyDataTemplate { get; set; }
-        //public DataTemplate SwitchKeyboardDataTemplate { get; set; }
         public DataTemplate MoveMouseDataTemplate { get; set; }
-        //public DataTemplate ClickDataTemplate { get; set; }
         public DataTemplate ComboBoxDataTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )

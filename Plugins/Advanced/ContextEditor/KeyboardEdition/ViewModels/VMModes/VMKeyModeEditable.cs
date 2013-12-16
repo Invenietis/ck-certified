@@ -460,6 +460,7 @@ namespace KeyboardEditor.ViewModels
                     {
                         var fd = new OpenFileDialog();
                         fd.DefaultExt = ".png";
+                        fd.Filter = "Image (*.png, *.jpg, *.bmp)|*.png;*.jpg;*.bmp|Tous les fichiers (*.*)|*.*";
                         if( fd.ShowDialog() == true )
                         {
                             if( !String.IsNullOrWhiteSpace( fd.FileName ) && File.Exists( fd.FileName ) && EnsureIsImage( Path.GetExtension( fd.FileName ) ) )

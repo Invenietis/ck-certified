@@ -35,6 +35,10 @@ using KeyboardEditor.Tools;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using ProtocolManagerModel;
+using System.IO;
+using System.Reflection;
+using System.Linq;
+using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -84,14 +88,58 @@ namespace KeyboardEditor.ViewModels
             _ctx = root.Context;
             _config = config;
             _root = root;
-
+            
             SkinConfiguration = skinConfiguration;
+
+            DefaultImages = new Dictionary<string, string>();
+            GetDefaultImages();
+
             KeyboardVM = CreateKeyboard( keyboardToEdit );
 
             _dic.Add( keyboardToEdit, _currentKeyboard );
             _keyboards.Add( _currentKeyboard );
 
             RegisterEvents();
+        }
+
+        internal void AddDefaultImage( string key, string value )
+        {
+            DefaultImages.Add( key, value );
+            OnPropertyChanged( "DefaultImages" );
+        }
+
+        private void GetDefaultImages()
+        {
+            string pathRoot = "pack://application:,,,/SimpleSkin;component/Images";
+            string arrowRoot = pathRoot + "/arrows";
+            string clickRoot = pathRoot + "/clics";
+            DefaultImages.Add( Images.Enter, pathRoot + "/enter.png" );
+            DefaultImages.Add( Images.Exit, pathRoot + "/exit.png" );
+            DefaultImages.Add( Images.Eye, pathRoot + "/eye.png" );
+            DefaultImages.Add( Images.Help, pathRoot + "/help.png" );
+            DefaultImages.Add( Images.Keyboard, pathRoot + "/kb.png" );
+            DefaultImages.Add( Images.Caps, pathRoot + "/maj.png" );
+            DefaultImages.Add( Images.Menu, pathRoot + "/menu.png" );
+            DefaultImages.Add( Images.MouseKeyboard, pathRoot + "/mousekb.png" );
+            DefaultImages.Add( Images.Directions, pathRoot + "/move.png" );
+            DefaultImages.Add( Images.Padlock, pathRoot + "/padlock.png" );
+            DefaultImages.Add( Images.Suppr, pathRoot + "/retarr.png" );
+            DefaultImages.Add( Images.Tab, pathRoot + "/tab.png" );
+            DefaultImages.Add( Images.WindowsLogo, pathRoot + "/windows.png" );
+
+            DefaultImages.Add( Images.BoldDownArrow, arrowRoot + "/bottom.png" );
+            DefaultImages.Add( Images.BoldDownLeftArrow, arrowRoot + "/left-bottom.png" );
+            DefaultImages.Add( Images.BoldLeftArrow, arrowRoot + "/left.png" );
+            DefaultImages.Add( Images.BoldDownRightArrow, arrowRoot + "/right-bottom.png" );
+            DefaultImages.Add( Images.BoldRightArrow, arrowRoot + "/right.png" );
+            DefaultImages.Add( Images.BoldTopLeftArrow, arrowRoot + "/top-left.png" );
+            DefaultImages.Add( Images.BoldTopRightArrow, arrowRoot + "/top-right.png" );
+            DefaultImages.Add( Images.BoldUpArrow, arrowRoot + "/top.png" );
+
+            DefaultImages.Add( Images.DoubleLeftClick, clickRoot + "/doubleleftclick.png" );
+            DefaultImages.Add( Images.DragDrop, clickRoot + "/dragdrop.png" );
+            DefaultImages.Add( Images.LeftClick, clickRoot + "/leftclick.png" );
+            DefaultImages.Add( Images.RightClick, clickRoot + "/rightclick.png" );
         }
 
         #region Properties
@@ -101,6 +149,8 @@ namespace KeyboardEditor.ViewModels
         public IPluginConfigAccessor Config { get { return _config; } }
         public IPluginConfigAccessor SkinConfiguration { get; set; }
         public IContext Context { get { return _ctx; } }
+
+        public Dictionary<string, string> DefaultImages { get; private set; }
 
         internal IService<IProtocolEditorsManager> ProtocolManagerService { get { return _root.ProtocolManagerService; } }
 
@@ -159,7 +209,7 @@ namespace KeyboardEditor.ViewModels
                     _selectedElement = value;
                     _selectedElement.IsSelected = true;
                     OnPropertyChanged( "SelectedElement" );
-                    Console.Out.WriteLine( "select elemnt CHANGED ! ------------------------" );
+                    //Console.Out.WriteLine( "select elemnt CHANGED ! ------------------------" );
                 }
             }
         }

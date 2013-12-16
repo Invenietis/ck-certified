@@ -51,7 +51,35 @@ namespace KeyboardEditor.ViewModels
                 _commands.Add( cmd );
             }
 
+            InitializeCurrentImage();
+
             RegisterEvents();
+        }
+
+        private void InitializeCurrentImage()
+        {
+            object o = Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"];
+            if( o != null )
+            {
+                string value = o.ToString();
+                if( o is Image )
+                {
+                    value = ( (Image)o ).Source.ToString();
+                }
+
+                if( value.StartsWith( "pack://" ) )
+                {
+                    if( Context.DefaultImages.Values.Contains( value ) )
+                    {
+                        _selectedImage = Context.DefaultImages.Where( kvp => kvp.Value == value ).Single();
+                    }
+                    else
+                    {
+                        Context.AddDefaultImage( value, value );
+                        _selectedImage = new KeyValuePair<string, string>( value, value );
+                    }
+                }
+            }
         }
 
         #region Properties
@@ -379,6 +407,7 @@ namespace KeyboardEditor.ViewModels
             OnPropertyChanged( "IsSelected" );
             OnPropertyChanged( "ModeName" );
             OnPropertyChanged( "Name" );
+            OnPropertyChanged( "SelectedImage" );
         }
 
         internal override void Dispose()
@@ -435,14 +464,7 @@ namespace KeyboardEditor.ViewModels
                         {
                             if( !String.IsNullOrWhiteSpace( fd.FileName ) && File.Exists( fd.FileName ) && EnsureIsImage( Path.GetExtension( fd.FileName ) ) )
                             {
-                                using( Stream str = fd.OpenFile() )
-                                {
-                                    byte[] bytes = new byte[str.Length];
-                                    str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
-                                    string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
-
-                                    Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"] = encodedImage;
-                                }
+                                SelectedImage = new KeyValuePair<string, string>( fd.FileName, fd.FileName );
                             }
                         }
                     } );
@@ -451,12 +473,52 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        private void ProcessImageStream( Stream str )
+        {
+            byte[] bytes = new byte[str.Length];
+            str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
+            string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
+
+            Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"] = encodedImage;
+        }
+
         private bool EnsureIsImage( string extension )
         {
             return String.Compare( extension, ".jpeg", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".jpg", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".png", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".bmp", StringComparison.CurrentCultureIgnoreCase ) == 0;
+        }
+
+        KeyValuePair<string, string> _selectedImage;
+        public KeyValuePair<string, string> SelectedImage
+        {
+            get { return _selectedImage; }
+            set
+            {
+                if( _selectedImage.Value != value.Value )
+                {
+                    _selectedImage = value;
+                    if( !Context.DefaultImages.Values.Contains( value.Value ) )
+                        Context.AddDefaultImage( value.Key, value.Value );
+
+                    if( File.Exists( _selectedImage.Value ) )
+                    {
+                        //The value is the path to a file
+                        using( FileStream fs = File.OpenRead( _selectedImage.Value ) )
+                        {
+                            ProcessImageStream( fs );
+                        }
+                    }
+                    else
+                    {
+                        //The value is the "pack" path to an internal image
+                        Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"] = value.Value;
+                    }
+
+                    OnPropertyChanged( "SelectedImage" );
+                }
+            }
         }
 
         #endregion

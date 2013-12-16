@@ -138,15 +138,16 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _selectKeyMode == null )
                 {
-                    _selectKeyMode = new VMCommand( () => 
+                    _selectKeyMode = new VMCommand( () =>
                     {
                         KeyModeVM.IsSelected = true;
-                    });
+                    } );
                 }
                 return _selectKeyMode;
             }
         }
 
         #endregion
+
     }
 }

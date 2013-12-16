@@ -38,6 +38,7 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using CK.Plugin.Config;
 using CK.Windows;
+using CommonServices;
 
 namespace CK.Plugins.AutoClick
 {
@@ -75,7 +76,7 @@ namespace CK.Plugins.AutoClick
 
         public bool Setup( IPluginSetupInfo info )
         {
-            ClicksVM = new ClicksVM();
+            ClicksVM = new ClicksVM(){ Holder = this };
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             return true;
         }

@@ -31,6 +31,7 @@ using System.Diagnostics;
 using CK.Plugins.AutoClick.Model;
 using HighlightModel;
 using CK.Core;
+using CommonServices;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
@@ -56,6 +57,9 @@ namespace CK.Plugins.AutoClick.ViewModel
         #endregion
 
         #region Constructor
+
+        //TODO : remove when the clickselector is transformed into a clickselectorprovider
+        public ClickSelector Holder { get; set; }
 
         public ClicksVM()
         {
@@ -144,6 +148,11 @@ namespace CK.Plugins.AutoClick.ViewModel
             OnPropertyChanged( "NextClick" );
         }
 
+        public void Click()
+        {
+            Holder.AskClickType();
+        }
+
         #endregion
 
         #region VMBase Methods
@@ -202,6 +211,8 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         #endregion
 
+        #region IHighlitableElement
+
         public Core.ICKReadOnlyList<IHighlightableElement> Children
         {
             get { return ReadOnlyClicksVM; }
@@ -251,5 +262,7 @@ namespace CK.Plugins.AutoClick.ViewModel
         {
             get { return false; }
         }
+
+        #endregion
     }
 }

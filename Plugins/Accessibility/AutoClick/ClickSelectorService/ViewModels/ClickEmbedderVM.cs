@@ -236,7 +236,9 @@ namespace CK.Plugins.AutoClick.ViewModel
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
             DoSelect();
-            //TODO : DoClick;
+
+            //TODO : remove when this is transformed into a clicktype provider
+            _holder.Click();
 
             scrollingDirective.NextActionType = ActionType.AbsoluteRoot;
             return scrollingDirective;
@@ -247,7 +249,6 @@ namespace CK.Plugins.AutoClick.ViewModel
         }
     }
 
-    //TODOJL : remove ?
     #region EventHandlers / EventArgs
 
     public delegate void SelectedClickEmbedderEventHandler( object sender, SelectedClickEmbedderVMEventArgs e );

@@ -116,7 +116,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _clearOutputConsoleCommand == null )
                 {
-                    _clearOutputConsoleCommand = new VMCommand( () =>
+                    _clearOutputConsoleCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         Clear();
                     } );

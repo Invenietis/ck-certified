@@ -57,7 +57,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _toggleMaximizedCommand == null )
                 {
-                    _toggleMaximizedCommand = new VMCommand( () =>
+                    _toggleMaximizedCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         if( _consoleWindowIsClosed )
                         {

@@ -40,10 +40,7 @@ using CommonServices.Accessibility;
 using System.Diagnostics;
 using CK.Plugins.SendInputDriver;
 using HighlightModel;
-using System.Collections.Generic;
 using CK.WPF.ViewModel;
-using System.Threading;
-using CK.Windows.Core;
 
 namespace SimpleSkin
 {

@@ -218,17 +218,17 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        VMCommand _initializeCommand;
+        ICommand _initializeCommand;
         /// <summary>
         /// Sent when the user clicks on "Add an action" : creates a new empty ProtocolEditor 
         /// </summary>
-        public VMCommand InitializeCommandCommand
+        public ICommand InitializeCommandCommand
         {
             get
             {
                 if( _initializeCommand == null )
                 {
-                    _initializeCommand = new VMCommand( () =>
+                    _initializeCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         ProtocolEditorsProvider.InitializeProtocolEditor();
                         ShowKeyCommandCreationPanel = true;
@@ -239,14 +239,14 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        VMCommand _saveCommand;
-        public VMCommand SaveCommandCommand
+        ICommand _saveCommand;
+        public ICommand SaveCommandCommand
         {
             get
             {
                 if( _saveCommand == null )
                 {
-                    _saveCommand = new VMCommand( () =>
+                    _saveCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         DoAddKeyCommand( ProtocolEditorsProvider.ProtocolEditor.ToString(), _commandBeingChangedIndex );
                         ShowKeyCommandCreationPanel = false;
@@ -301,14 +301,14 @@ namespace KeyboardEditor.ViewModels
         }
 
 
-        VMCommand _cancelCommand;
-        public VMCommand CancelChangesCommand
+        ICommand _cancelCommand;
+        public ICommand CancelChangesCommand
         {
             get
             {
                 if( _cancelCommand == null )
                 {
-                    _cancelCommand = new VMCommand( () =>
+                    _cancelCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         if( !String.IsNullOrEmpty( _commandBeingChanged ) )
                         {
@@ -372,17 +372,17 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        VMCommand _deleteKeyModeCommand;
+        ICommand _deleteKeyModeCommand;
         /// <summary>
         /// Gets a Command that deletes the <see cref="IKeyMode"/> corresponding to the current <see cref="IKeyboardMode"/>, for the underlying <see cref="IKey"/>
         /// </summary>
-        public VMCommand DeleteKeyModeCommand
+        public ICommand DeleteKeyModeCommand
         {
             get
             {
                 if( _deleteKeyModeCommand == null )
                 {
-                    _deleteKeyModeCommand = new VMCommand( () =>
+                    _deleteKeyModeCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         Context.KeyboardVM.CurrentMode = Context.KeyboardContext.EmptyMode;
                         VMKeyEditable parent = ActualParent; //Keeping a ref to the parent, since the model will be detached from its parent when destroyed
@@ -443,7 +443,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _removeImageCommand == null )
                 {
-                    _removeImageCommand = new VMCommand( () => Context.SkinConfiguration[Model.Key.CurrentLayout.Current].Remove( "Image" ) );
+                    _removeImageCommand = new CK.Windows.App.VMCommand( () => Context.SkinConfiguration[Model.Key.CurrentLayout.Current].Remove( "Image" ) );
                 }
                 return _removeImageCommand;
             }

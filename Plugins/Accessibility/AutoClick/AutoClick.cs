@@ -74,7 +74,7 @@ namespace CK.Plugins.AutoClick
         {
             get
             {
-                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
+                return _showHelpCommand ?? ( _showHelpCommand = new CK.Windows.App.VMCommand( () =>
                 {
                     if( HelpService.Status == InternalRunningStatus.Started )
                     {
@@ -91,7 +91,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _toggleEditorVisibilityCommand == null )
                 {
-                    _toggleEditorVisibilityCommand = new VMCommand( () =>
+                    _toggleEditorVisibilityCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         //Ugly fix, waiting for me to really understand how Show/Close/Visiblity work
                         double editorWindowWidth = _editorWindow.ActualWidth == 0 ? _editorWindow.Width : _editorWindow.ActualWidth;
@@ -121,7 +121,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _togglePauseCommand == null )
                 {
-                    _togglePauseCommand = new VMCommand( () => { if( IsPaused ) Resume( this ); else Pause( this ); } );
+                    _togglePauseCommand = new CK.Windows.App.VMCommand( () => { if( IsPaused ) Resume( this ); else Pause( this ); } );
                 }
 
                 return _togglePauseCommand;

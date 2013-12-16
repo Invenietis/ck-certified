@@ -760,9 +760,9 @@ namespace KeyboardEditor.ViewModels
 
         void SetCommands()
         {
-            _keyDownCmd = new VMCommand( () => { if( !_key.IsDown )_key.Push(); } );
-            _keyUpCmd = new VMCommand( () => { if( _key.IsDown ) _key.Release(); } );
-            _keyPressedCmd = new VMCommand( () => { if( _key.IsDown )_key.Release( true ); } );
+            _keyDownCmd = new CK.Windows.App.VMCommand( () => { if( !_key.IsDown )_key.Push(); } );
+            _keyUpCmd = new CK.Windows.App.VMCommand( () => { if( _key.IsDown ) _key.Release(); } );
+            _keyPressedCmd = new CK.Windows.App.VMCommand( () => { if( _key.IsDown )_key.Release( true ); } );
         }
 
         CK.Windows.App.VMCommand _deleteKeyCommand;

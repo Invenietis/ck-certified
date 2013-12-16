@@ -27,6 +27,27 @@ using System.Diagnostics;
 
 namespace CK.WPF.ViewModel
 {
+    public class VMCommand : ICommand
+    {
+        Action _del;
+
+        public VMCommand( Action del )
+        {
+            _del = del;
+        }
+
+        public bool CanExecute( object parameter )
+        {
+            return true;
+        }
+
+        public event EventHandler CanExecuteChanged;
+
+        public void Execute( object parameter )
+        {
+            _del();
+        }
+    }
 
     /// <summary>
     /// A command whose sole purpose is to 

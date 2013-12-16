@@ -78,7 +78,7 @@ namespace CK.Plugins.ObjectExplorer
             {
                 if( _forceGCCommand == null )
                 {
-                    _forceGCCommand = new VMCommand( () =>
+                    _forceGCCommand = new CK.Windows.App.VMCommand( () =>
                         {
                             GC.Collect();
                             GC.WaitForPendingFinalizers();

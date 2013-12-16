@@ -48,7 +48,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _incrementTimeBeforeCountDownStartsCommand == null )
                 {
-                    _incrementTimeBeforeCountDownStartsCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", 100 ) );
+                    _incrementTimeBeforeCountDownStartsCommand = new CK.Windows.App.VMCommand( () => _holder.ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", 100 ) );
                 }
                 return _incrementTimeBeforeCountDownStartsCommand;
             }
@@ -61,7 +61,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _decrementTimeBeforeCountDownStartsCommand == null )
                 {
-                    _decrementTimeBeforeCountDownStartsCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", -100 ) );
+                    _decrementTimeBeforeCountDownStartsCommand = new CK.Windows.App.VMCommand( () => _holder.ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", -100 ) );
                 }
                 return _decrementTimeBeforeCountDownStartsCommand;
             }
@@ -74,7 +74,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _incrementCountDownDurationCommand == null )
                 {
-                    _incrementCountDownDurationCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "CountDownDuration", 100 ) );
+                    _incrementCountDownDurationCommand = new CK.Windows.App.VMCommand( () => _holder.ModifyCountDownConfiguration( "CountDownDuration", 100 ) );
                 }
                 return _incrementCountDownDurationCommand;
             }
@@ -87,7 +87,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _decrementCountDownDurationCommand == null )
                 {
-                    _decrementCountDownDurationCommand = new VMCommand( () => _holder.ModifyCountDownConfiguration( "CountDownDuration", -100 ) );
+                    _decrementCountDownDurationCommand = new CK.Windows.App.VMCommand( () => _holder.ModifyCountDownConfiguration( "CountDownDuration", -100 ) );
                 }
                 return _decrementCountDownDurationCommand;
             }

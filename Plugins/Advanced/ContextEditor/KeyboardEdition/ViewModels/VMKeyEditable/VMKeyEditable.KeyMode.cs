@@ -131,14 +131,14 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        VMCommand _selectKeyMode;
-        public VMCommand SelectKeyModeCommand
+        ICommand _selectKeyMode;
+        public ICommand SelectKeyModeCommand
         {
             get
             {
                 if( _selectKeyMode == null )
                 {
-                    _selectKeyMode = new VMCommand( () =>
+                    _selectKeyMode = new CK.Windows.App.VMCommand( () => 
                     {
                         KeyModeVM.IsSelected = true;
                     } );

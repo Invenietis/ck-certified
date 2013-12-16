@@ -91,14 +91,14 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        VMCommand _selectLayoutKeyMode;
-        public VMCommand SelectLayoutKeyModeCommand
+        CK.Windows.App.VMCommand _selectLayoutKeyMode;
+        public CK.Windows.App.VMCommand SelectLayoutKeyModeCommand
         {
             get
             {
                 if( _selectLayoutKeyMode == null )
                 {
-                    _selectLayoutKeyMode = new VMCommand( () =>
+                    _selectLayoutKeyMode = new CK.Windows.App.VMCommand( () =>
                     {
                          LayoutKeyModeVM.IsSelected = true;
                     });

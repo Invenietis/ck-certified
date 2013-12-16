@@ -105,8 +105,8 @@ namespace CK.Plugins.AutoClick.ViewModel
             {
                 Add( click );
             }
-            
-            _changeSelectionCmd = new VMCommand( DoSelect );
+
+            _changeSelectionCmd = new CK.Windows.App.VMCommand( DoSelect );
         }
 
         #endregion

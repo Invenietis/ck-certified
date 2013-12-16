@@ -68,7 +68,6 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         public ClicksVM( IList<ClickEmbedderVM> clickEmbeddersVM )
         {
-
             foreach( ClickEmbedderVM clickEmbedderVM in clickEmbeddersVM )
             {
                 Add( clickEmbedderVM );

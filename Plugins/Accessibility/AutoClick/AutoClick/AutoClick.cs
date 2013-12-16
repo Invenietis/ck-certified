@@ -66,11 +66,11 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IClickSelector> Selector { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        //public IService<IWindowManager> WindowManager { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        //public IService<IWindowBinder> WindowBinder { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -165,8 +165,8 @@ namespace CK.Plugins.AutoClick
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
 
-            //WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
-            //WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
+            WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+            WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
 
             OnPause( this, EventArgs.Empty );
         }

@@ -520,11 +520,29 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Screen scrolling.
+        /// </summary>
+        public static string ScreenScrolling {
+            get {
+                return ResourceManager.GetString("ScreenScrolling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit scrolling configuration.
         /// </summary>
         public static string ScrollConfig {
             get {
                 return ResourceManager.GetString("ScrollConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General Scrolling.
+        /// </summary>
+        public static string Scrolling {
+            get {
+                return ResourceManager.GetString("Scrolling", resourceCulture);
             }
         }
         

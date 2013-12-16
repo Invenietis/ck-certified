@@ -88,7 +88,7 @@ namespace KeyboardEditor.ViewModels
         internal void DecreaseZoneIndex( VMZoneEditable zone )
         {
             Debug.Assert( Zones.IndexOf( zone ) == zone.Index );
-            if( zone.Index > 1 )
+            if( zone.Index > 0 )
             {
                 SwitchZones( zone, Zones.ElementAt( zone.Index - 1 ) );
             }
@@ -134,6 +134,24 @@ namespace KeyboardEditor.ViewModels
             Context.Config.ConfigChanged += OnConfigChanged;
             Model.AvailableModeChanged += OnModeChanged;
             Model.CurrentModeChanged += OnModeChanged;
+            Model.Zones.ZoneMoved += OnZoneMoved;
+        }
+
+        void OnZoneMoved( object sender, ZoneEventArgs e )
+        {
+            VMZoneEditable zoneVM = Zones.Where( z => z.Model == e.Zone ).Single();
+            zoneVM.IndexChanged();
+
+            ObservableCollection<VMZoneEditable> temp = new ObservableCollection<VMZoneEditable>();
+            
+            foreach( var item in Zones.OrderBy<VMZoneEditable, int>( z => z.Index ).ToList() )
+            {
+                temp.Add( item );
+            }
+            Zones.Clear();
+            Zones = temp;  
+
+            OnPropertyChanged( "Zones" );
         }
 
         private void UnregisterEvents()
@@ -223,13 +241,12 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Gets the viewmodels for each <see cref="IZone"/> of the linked <see cref="IKeyboard"/>
         /// </summary>
-        public ObservableCollection<VMZoneEditable> Zones { get { return _zones; } }
+        public ObservableCollection<VMZoneEditable> Zones { get { return _zones; } private set { _zones = value; } }
 
         /// <summary>
         /// Gets the viewmodels for each  <see cref="IKey"/> of the linked <see cref="IKeyboard"/>
         /// </summary>
         public ObservableCollection<VMKeyEditable> Keys { get { return _keys; } }
-
 
         #region Modes
 

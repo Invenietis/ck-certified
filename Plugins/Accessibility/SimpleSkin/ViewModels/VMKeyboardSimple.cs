@@ -50,7 +50,7 @@ namespace SimpleSkin.ViewModels
         ObservableCollection<VMKeySimple> _keys;
         IKeyboard _keyboard;
 
-        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
+        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } private set { _zones = value; } }
         public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
 
         /// <summary>
@@ -70,12 +70,7 @@ namespace SimpleSkin.ViewModels
 
             RegisterEvents();
 
-            InitializeZoneIndexes();
-
-            var zones = _keyboard.Zones.ToList();
-            zones.Sort( new ZoneComparer( Context.Config ) );
-
-            foreach( IZone zone in zones )
+            foreach( IZone zone in _keyboard.Zones.ToList() )
             {
                 VMZoneSimple zoneVM = Context.Obtain( zone );
                 Zones.Add( zoneVM );
@@ -85,75 +80,11 @@ namespace SimpleSkin.ViewModels
                 }
             }
 
+
             SafeUpdateW();
             SafeUpdateH();
             SafeUpdateInsideBorderColor();
             UpdateBackgroundPath();
-        }
-
-        /// <summary>
-        /// This method is designed to make sure all zones have a correct Index.
-        /// This should be called before creating the ViewModels, in order to get them in the right order. (otherwise vmzones' order will not be synchronized with their Index property)
-        /// </summary>
-        private void InitializeZoneIndexes()
-        {
-            Queue<IZone> indexesToProcess = new Queue<IZone>();
-           
-            int lastIndex = 0;
-            int neededCapacity = 0;
-
-            foreach( var zone in _keyboard.Zones )
-            {
-                int index = Context.Config[zone].GetOrSet<int>( "Index", -1 );
-                if( index > neededCapacity ) neededCapacity = index;
-            }
-
-            int[] existingIndexes = new int[neededCapacity + 1];
-
-            foreach( var zone in _keyboard.Zones )
-            {
-                int idx = Context.Config[zone].GetOrSet<int>( "Index", -1 );
-                if( idx == -1 )
-                {
-                    indexesToProcess.Enqueue( zone );
-                }
-                else
-                {
-                    existingIndexes[idx]++;
-
-                    if( idx > lastIndex )
-                    {
-                        lastIndex = idx;
-                    }
-                }
-            }
-
-            bool existingIndexesAreFull = false;
-            while( indexesToProcess.Count > 0 )
-            {
-                bool inserted = false;
-                if( !existingIndexesAreFull )
-                {
-                    for( int i = 0; i < existingIndexes.Length; i++ )
-                    {
-                        if( existingIndexes[i] == 0 )
-                        {
-                            Context.Config[indexesToProcess.Dequeue()].Set( "Index", i );
-                            existingIndexes[i]++;
-                            inserted = true;
-                            break;
-                        }
-                    }
-                }
-
-                if( !inserted )
-                {
-                    existingIndexesAreFull = true;
-                    Context.Config[indexesToProcess.Dequeue()].Set( "Index", lastIndex );
-                    lastIndex++;
-                }
-
-            }
         }
 
         internal override void Dispose()
@@ -201,6 +132,22 @@ namespace SimpleSkin.ViewModels
            {
                Zones.Add( Context.Obtain( e.Zone ) );
            } ) );
+        }
+
+        void OnZoneMoved( object sender, ZoneEventArgs e )
+        {
+            VMZoneSimple zoneVM = Zones.Where( z => z.Name == e.Zone.Name ).Single();
+
+            ObservableCollection<VMZoneSimple> temp = new ObservableCollection<VMZoneSimple>();
+
+            foreach( var item in Zones.OrderBy<VMZoneSimple, int>( z => z.Index ).ToList() )
+            {
+                temp.Add( item );
+            }
+            Zones.Clear();
+            Zones = temp;
+
+            OnPropertyChanged( "Zones" );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
@@ -255,22 +202,25 @@ namespace SimpleSkin.ViewModels
 
         private void RegisterEvents()
         {
-            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _keyboard.KeyCreated += OnKeyCreated;
+            _keyboard.KeyDestroyed += OnKeyDestroyed;
+            _keyboard.Zones.ZoneMoved += OnZoneMoved;
+            _keyboard.Zones.ZoneCreated += OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged += OnLayoutSizeChanged;
+            Context.Config.ConfigChanged += OnConfigChanged;
         }
+
 
         private void UnregisterEvents()
         {
-            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _keyboard.KeyCreated -= OnKeyCreated;
+            _keyboard.KeyDestroyed -= OnKeyDestroyed;
+            _keyboard.Zones.ZoneMoved -= OnZoneMoved;
+            _keyboard.Zones.ZoneCreated -= OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged -= OnLayoutSizeChanged;
+            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         #endregion
@@ -397,18 +347,5 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
-    }
-
-    public class ZoneComparer : IComparer<IZone>
-    {
-        IPluginConfigAccessor _config;
-        public ZoneComparer( IPluginConfigAccessor config )
-        {
-            _config = config;
-        }
-        public int Compare( IZone x, IZone y )
-        {
-            return _config[x].GetOrSet<int>( "Index", -1 ).CompareTo( _config[y].GetOrSet<int>( "Index", -1 ) );
-        }
     }
 }

@@ -178,6 +178,8 @@ namespace KeyboardEditor.ViewModels
                 Context.SelectedElement = Parent;
                 Model.Destroy();
 
+                #region key saving commented
+
                 ////
                 ////Putting the keys of the zone into the default zone, with visible = false
                 ////
@@ -213,7 +215,7 @@ namespace KeyboardEditor.ViewModels
                 //    Console.Out.WriteLine( "Touches dans previous zone VM après transfert : " + Keys.Count );
                 //}
 
-
+                #endregion
 
             } );
         }
@@ -263,11 +265,15 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        private int _index;
         public int Index
         {
-            get { return Context.Config[_zone].GetOrSet( "Index", _index ); }
-            set { Context.Config[_zone].Set( "Index", value ); }
+            get { return Model.Index; }
+            set { Model.Index = value; }
+        }
+
+        internal void IndexChanged()
+        {
+            //OnPropertyChanged( "Index" );
         }
 
         public ICommand UpIndexCommand

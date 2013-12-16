@@ -43,8 +43,7 @@ namespace SimpleSkin.ViewModels
         private int _index;
         public int Index
         {
-            get { return Context.Config[_zone].GetOrSet( "Index", _index ); }
-            set { Context.Config[_zone].Set( "Index", value ); }
+            get { return _zone.Index; }
         }
 
         internal VMZoneSimple( VMContextSimple ctx, IZone zone, int index )

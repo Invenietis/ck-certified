@@ -171,6 +171,7 @@ namespace ScreenScroller
         /// <returns>false if the node has made its final lap during the last MoveNext. (its state is then completely flushed)</returns>
         internal bool MoveNext()
         {
+            OnPropertyChanged( "IsCurrentNode" );
             if( ChildNodes.Count == 0 ) return false;
 
             if( ChildNodes.Count > 1 )
@@ -222,6 +223,7 @@ namespace ScreenScroller
         {
             _hasJustBeenEntered = true;
             IsVisible = true;
+            OnPropertyChanged( "IsCurrentNode" );
         }
 
         internal void ExitAll()
@@ -335,6 +337,7 @@ namespace ScreenScroller
                 {
                     IsVisible = true;
                 }
+
                 OnPropertyChanged( "IsParentTheCurrentNode" );
                 OnPropertyChanged( "IsHighlighted" );
             }
@@ -344,10 +347,10 @@ namespace ScreenScroller
         public int Column { get; private set; }
 
         double _width;
-        public double Width { get { return _width; } set { _width = value; OnPropertyChanged( "Width" ); Console.Out.WriteLine( "WIDTH CHANGED : " + value ); } }
+        public double Width { get { return _width; } set { _width = value; OnPropertyChanged( "Width" ); } }
 
         double _height;
-        public double Height { get { return _height; } set { _height = value; OnPropertyChanged( "Height" ); Console.Out.WriteLine( "HEIGHT CHANGED : " + value ); } }
+        public double Height { get { return _height; } set { _height = value; OnPropertyChanged( "Height" ); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged( string name )

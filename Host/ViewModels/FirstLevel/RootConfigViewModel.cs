@@ -67,7 +67,7 @@ namespace Host
                 ContextModel ctxModel = new ContextModel( _app );
 
                 _keyboards = this.AddCurrentItem( R.Keyboard, null, ctxModel, ctx => ctx.Current, ctx => ctx.Keyboards, false, "" );
-                _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";{ DisplayName = R.Scrolling };
+                _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";
             }
 
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };

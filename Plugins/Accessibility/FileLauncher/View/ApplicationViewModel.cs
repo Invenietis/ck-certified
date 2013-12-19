@@ -56,7 +56,7 @@ namespace FileLauncher
             if (result == true)
             {
                 // Open document 
-                SelectedApp = FileLocator.GetFileFromPath(dlg.FileName);
+                SelectedApp = new WildFile(dlg.FileName, false);
             }
         }
 

@@ -34,7 +34,6 @@ namespace FileLauncher
                     Apps = FileLocator.RegistryApps
                 } 
             };
-            Console.WriteLine("Oh lowl " + Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
             
             _win.Show();
         }
@@ -43,14 +42,15 @@ namespace FileLauncher
         {
             Command cmd = new Command(e.Command);
             if (cmd.Name != CMD) return;
-            var f = LoadFile(cmd.Content);
-            if (f != null) Launch(f);
+            LoadFile( cmd.Content, (f) => {
+                if( f != null ) Launch( f );
+            } );
         }
 
-        public WildFile LoadFile(string token)
+        public void LoadFile(string token, Action<WildFile> loaded)
         {
             var info = token.Split(',');
-            if(info.Length < 2 ) return null;
+            if(info.Length < 2 ) return;
 
             WildFile f = new WildFile(info[Command.Contents.FILE_NAME]);
             f.Lookup = (FileLookup)int.Parse(info[Command.Contents.FILE_LOOKUP]);
@@ -63,21 +63,19 @@ namespace FileLauncher
                 f.Path = info[Command.Contents.FILE_PATH];
                 f.FolderLocationType = (Environment.SpecialFolder)int.Parse(info[Command.Contents.FILE_SPECIAL_DIRECTORY]);
             }
-            FileLocator.TryLocate(f);
-
-            return f;
+            FileLocator.TryLocate( f, loaded );
         }
 
         public void Launch(WildFile f)
         {
+            if (!f.IsLocated) return;
             try
             {
                 Process.Start(f.Path);
             }
-            catch (Win32Exception e) { } //Exception can be thrown just by clic on the cancel button of an install shield
+            catch (Win32Exception e) { } //Exception can be thrown just by clicking on the cancel button of an install wizard
         }
     }
-
 
     public class Command
     {

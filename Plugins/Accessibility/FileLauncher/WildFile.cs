@@ -9,7 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 namespace FileLauncher
 {
-    [Flags]
     public enum FileLookup
     {
         Registry = 2,
@@ -50,6 +49,20 @@ namespace FileLauncher
         {
             FileName = name;
             _path = "";
+        }
+
+        public WildFile( string path, bool fromRegistry )
+            : this( System.IO.Path.GetFileName( path ) )
+        {
+            Path = path;
+            FolderLocationType = FileLocator.GetSpecialFolder( path );
+
+            Lookup = fromRegistry ? FileLookup.Registry : FileLookup.SpecialFolder;
+
+            if( FolderLocationType == null && !fromRegistry )
+            {
+                Lookup = FileLookup.Other;
+            }
         }
     }
 

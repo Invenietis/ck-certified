@@ -6,8 +6,8 @@ using System.Text;
 using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Core;
-using CK.WPF.ViewModel;
 using Help.Services;
+using CK.WPF.ViewModel;
 
 namespace Help.Update.ManualUpdate
 {
@@ -32,7 +32,7 @@ namespace Help.Update.ManualUpdate
                 State = PluginUpdateState.Installing;
                 InstallAction( DownloadResult );
             },
-            () =>
+            ( o ) =>
             {
                 return State == PluginUpdateState.WaitingForInstall;
             } );

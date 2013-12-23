@@ -30,10 +30,20 @@ namespace CK.WPF.ViewModel
     public class VMCommand : ICommand
     {
         Action _del;
+        readonly Predicate<object> _canExecute = null;
 
         public VMCommand( Action del )
         {
             _del = del;
+        }
+
+        public VMCommand( Action execute, Predicate<object> canExecute )
+        {
+            if( execute == null )
+                throw new ArgumentNullException( "execute" );
+
+            _del = execute;
+            _canExecute = canExecute;
         }
 
         public bool CanExecute( object parameter )

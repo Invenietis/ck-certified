@@ -430,7 +430,7 @@ namespace CK.Plugins.AutoClick
         {
             get
             {
-                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
+                return _showHelpCommand ?? (_showHelpCommand = new CK.Windows.App.VMCommand( () =>
                 {
                     if( HelpService.Status == InternalRunningStatus.Started )
                     {
@@ -447,7 +447,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _toggleEditorVisibilityCommand == null )
                 {
-                    _toggleEditorVisibilityCommand = new VMCommand( () =>
+                    _toggleEditorVisibilityCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         //Ugly fix, waiting for me to really understand how Show/Close/Visiblity work
                         double editorWindowWidth = _editorWindow.ActualWidth == 0 ? _editorWindow.Width : _editorWindow.ActualWidth;
@@ -477,7 +477,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _togglePauseCommand == null )
                 {
-                    _togglePauseCommand = new VMCommand( () => { if( IsPaused ) OnResume( this, EventArgs.Empty ); else OnPause( this, EventArgs.Empty ); } );
+                    _togglePauseCommand = new CK.Windows.App.VMCommand( () => { if( IsPaused ) OnResume( this, EventArgs.Empty ); else OnPause( this, EventArgs.Empty ); } );
                 }
 
                 return _togglePauseCommand;
@@ -491,7 +491,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _incrementTimeBeforeCountDownStartsCommand == null )
                 {
-                    _incrementTimeBeforeCountDownStartsCommand = new VMCommand( () => ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", 100 ) );
+                    _incrementTimeBeforeCountDownStartsCommand = new CK.Windows.App.VMCommand( () => ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", 100 ) );
                 }
                 return _incrementTimeBeforeCountDownStartsCommand;
             }
@@ -504,7 +504,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _decrementTimeBeforeCountDownStartsCommand == null )
                 {
-                    _decrementTimeBeforeCountDownStartsCommand = new VMCommand( () => ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", -100 ) );
+                    _decrementTimeBeforeCountDownStartsCommand = new CK.Windows.App.VMCommand( () => ModifyCountDownConfiguration( "TimeBeforeCountDownStarts", -100 ) );
                 }
                 return _decrementTimeBeforeCountDownStartsCommand;
             }
@@ -517,7 +517,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _incrementCountDownDurationCommand == null )
                 {
-                    _incrementCountDownDurationCommand = new VMCommand( () => ModifyCountDownConfiguration( "CountDownDuration", 100 ) );
+                    _incrementCountDownDurationCommand = new CK.Windows.App.VMCommand( () => ModifyCountDownConfiguration( "CountDownDuration", 100 ) );
                 }
                 return _incrementCountDownDurationCommand;
             }
@@ -530,7 +530,7 @@ namespace CK.Plugins.AutoClick
             {
                 if( _decrementCountDownDurationCommand == null )
                 {
-                    _decrementCountDownDurationCommand = new VMCommand( () => ModifyCountDownConfiguration( "CountDownDuration", -100 ) );
+                    _decrementCountDownDurationCommand = new CK.Windows.App.VMCommand( () => ModifyCountDownConfiguration( "CountDownDuration", -100 ) );
                 }
                 return _decrementCountDownDurationCommand;
             }

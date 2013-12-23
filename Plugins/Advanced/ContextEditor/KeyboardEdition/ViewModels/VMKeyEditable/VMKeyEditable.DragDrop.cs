@@ -106,7 +106,6 @@ namespace KeyboardEditor.ViewModels
             {
                 return new VMCommand<MouseEventArgs>( ( args ) =>
                 {
-                    //Console.Out.WriteLine("ButtonDown from control");
                     _isDown = true;
 
                     _startPoint = new Point( _context.PointerDeviceDriver.Service.CurrentPointerXLocation, _context.PointerDeviceDriver.Service.CurrentPointerYLocation );

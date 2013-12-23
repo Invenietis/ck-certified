@@ -31,6 +31,7 @@ using CK.WPF.ViewModel;
 using CK.Plugin;
 using CK.Plugins.ObjectExplorer.UI.UserControls;
 using System.ComponentModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 {
@@ -115,7 +116,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _clearOutputConsoleCommand == null )
                 {
-                    _clearOutputConsoleCommand = new VMCommand( () =>
+                    _clearOutputConsoleCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         Clear();
                     } );

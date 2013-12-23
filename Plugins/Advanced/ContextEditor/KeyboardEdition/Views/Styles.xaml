@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary 
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"         
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
     xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+    xmlns:ckcontrols="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
@@ -12,14 +14,65 @@
     xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
     xmlns:local="clr-namespace:KeyboardEditor.s"
     mc:Ignorable="d">
-    
+
     <ctrls:StringIsNullOrWhiteSpaceToBoolean x:Key="stringnulltobool"/>
     <ctrls:NotNullConverter x:Key="notnull"/>
     <ctrls:NotConverter x:Key="notconverter"/>
     <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <vm:ImageConverter x:Key="imageconverter"/>
-    
+
+    <SolidColorBrush Color="#FF065AA0" x:Key="EditorMainColor"/>
+    <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
+
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="Calibri"></Setter>
+    </Style>
+
+    <Style x:Key="SectionSeperatorStyle" TargetType="{x:Type Separator}">
+        <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="ModernUIButtonStyle">
+        <Setter Property="Foreground" Value="{StaticResource EditorMainColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource EditorLightColor}"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="Gray"></Setter>
+                <Setter Property="Foreground" Value="Gray"></Setter>
+                <Setter Property="Background" Value="White"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="SectionHeaderStyle">
+        <Setter Property="Margin" Value="5 5 5 2"></Setter>
+        <Setter Property="FontSize" Value="10"></Setter>
+        <Setter Property="FontFamily" Value="Malgun Gothic"></Setter>
+        <Setter Property="Foreground" Value="#FF065AA0"></Setter>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
+    </Style>
+
     <Style TargetType="Border" x:Key="Rounded">
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="BorderBrush" Value="Gray"></Setter>
@@ -209,7 +262,6 @@
                     <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
                     <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
                 </MultiDataTrigger.Conditions>
-                <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
                 <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
             </MultiDataTrigger>
         </DataTemplate.Triggers>
@@ -254,6 +306,15 @@
     <Style TargetType="{x:Type Control}" x:Key="TreeViewItemFocusVisual">
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
+    
+    <!-- Index changing arrows style -->
+    <Style x:Key="IndexArrowStyle" TargetType="Button" BasedOn="{StaticResource ModernUIButtonStyle}">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
 
     <!-- HeaderedSelectableTVI -->
     <Style TargetType="TreeViewItem" x:Key="HeaderedSelectableTVI">
@@ -283,6 +344,42 @@
                             <StackPanel Orientation="Horizontal" Margin="3">
                                 <ContentControl Focusable="False" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0 0 3 0" Content="{Binding Path=(vm:CustomContent.Content), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
                                 <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"/>
+                                
+                                <!-- Panel that show the arrows needed to change the index of an element -->
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Resources>
+                                        <vm:HasOrderToBooleanConverter x:Key="hasordertobooleanconverter"/>
+                                    </ContentControl.Resources>
+                                    <ContentControl.Style>
+                                        <Style TargetType="ContentControl">
+                                            <Setter Property="ContentTemplate">
+                                                <Setter.Value>
+                                                    <DataTemplate>
+                                                        <TextBlock Text=""/>
+                                                    </DataTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Converter={StaticResource hasordertobooleanconverter}}" Value="True">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Button Command="{Binding DownIndexCommand}" Margin="2 0 0 0" Style="{StaticResource IndexArrowStyle}">
+                                                                        <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/Top.png" />
+                                                                    </Button>
+                                                                    <Button Command="{Binding UpIndexCommand}" Style="{StaticResource IndexArrowStyle}">
+                                                                        <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/bottom.png" />
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ContentControl.Style>
+                                </ContentControl>
                             </StackPanel>
                         </Border>
                         <ItemsPresenter x:Name="ItemsHost" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1"/>
@@ -320,7 +417,7 @@
 
     <ControlTemplate TargetType="{x:Type vm:ActionControl}" x:Key="SimpleActionControlTemplate">
         <DockPanel LastChildFill="True" Margin="2">
-            <Button x:Name="button" ToolTip="{TemplateBinding Text}" Height="24" Width="24" Margin="2"
+            <Button x:Name="button" ToolTip="{TemplateBinding Text}" Height="24" Width="24"
                     DockPanel.Dock="Right" HorizontalAlignment="Right" 
                     VerticalAlignment="Center" Command="{TemplateBinding Action}">
                 <Image Source="{TemplateBinding ImageSource, Converter={StaticResource imageconverter}}" Stretch="Fill" />

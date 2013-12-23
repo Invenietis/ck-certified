@@ -120,6 +120,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
+  <data name="ContentSection" xml:space="preserve">
+    <value>Contenu</value>
+  </data>
   <data name="DefaultMode" xml:space="preserve">
     <value>Mode par défaut</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="DeleteZoneConfirmation" xml:space="preserve">
     <value>Vous êtes sur le point de supprimer une zone. Voulez-vous que les touches contenues dans cette zone soient stockées dans la zone par défaut ? Dans le cas contraire, elles seront détruites.</value>
+  </data>
+  <data name="DesignSection" xml:space="preserve">
+    <value>Aspect</value>
   </data>
   <data name="EndingStepDesc" xml:space="preserve">
     <value>Vos modifications ont bien été sauvegardées, vous pouvez maintenant quitter l'assistant ou bien retourner à la page d'accueil pour faire d'autres modifications.</value>

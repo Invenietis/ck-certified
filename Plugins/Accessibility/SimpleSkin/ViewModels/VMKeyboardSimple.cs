@@ -38,6 +38,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Linq.Expressions;
 using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace SimpleSkin.ViewModels
 {
@@ -49,12 +50,12 @@ namespace SimpleSkin.ViewModels
         ObservableCollection<VMKeySimple> _keys;
         IKeyboard _keyboard;
 
+        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } private set { _zones = value; } }
         public IKeyboard Keyboard
         {
             get { return _keyboard; }
         }
 
-        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
         public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
 
         /// <summary>
@@ -74,14 +75,16 @@ namespace SimpleSkin.ViewModels
 
             RegisterEvents();
 
-            foreach( IZone zone in _keyboard.Zones )
+            foreach( IZone zone in _keyboard.Zones.ToList() )
             {
-                Zones.Add( Context.Obtain( zone ) );
+                VMZoneSimple zoneVM = Context.Obtain( zone );
+                Zones.Add( zoneVM );
                 foreach( IKey key in zone.Keys )
                 {
                     _keys.Add( Context.Obtain( key ) );
                 }
             }
+
 
             SafeUpdateW();
             SafeUpdateH();
@@ -136,6 +139,22 @@ namespace SimpleSkin.ViewModels
            } ) );
         }
 
+        void OnZoneMoved( object sender, ZoneEventArgs e )
+        {
+            VMZoneSimple zoneVM = Zones.Where( z => z.Name == e.Zone.Name ).Single();
+
+            ObservableCollection<VMZoneSimple> temp = new ObservableCollection<VMZoneSimple>();
+
+            foreach( var item in Zones.OrderBy<VMZoneSimple, int>( z => z.Index ).ToList() )
+            {
+                temp.Add( item );
+            }
+            Zones.Clear();
+            Zones = temp;
+
+            OnPropertyChanged( "Zones" );
+        }
+
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
 
@@ -188,22 +207,25 @@ namespace SimpleSkin.ViewModels
 
         private void RegisterEvents()
         {
-            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _keyboard.KeyCreated += OnKeyCreated;
+            _keyboard.KeyDestroyed += OnKeyDestroyed;
+            _keyboard.Zones.ZoneMoved += OnZoneMoved;
+            _keyboard.Zones.ZoneCreated += OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged += OnLayoutSizeChanged;
+            Context.Config.ConfigChanged += OnConfigChanged;
         }
+
 
         private void UnregisterEvents()
         {
-            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _keyboard.KeyCreated -= OnKeyCreated;
+            _keyboard.KeyDestroyed -= OnKeyDestroyed;
+            _keyboard.Zones.ZoneMoved -= OnZoneMoved;
+            _keyboard.Zones.ZoneCreated -= OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged -= OnLayoutSizeChanged;
+            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         #endregion

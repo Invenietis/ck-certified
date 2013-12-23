@@ -8,6 +8,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 using KeyboardEditor.ViewModels;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor
 {
@@ -18,6 +19,12 @@ namespace KeyboardEditor
         /// Gives access to all the keyboards and their layouts, zones, keys etc..
         /// </summary>
         IService<IKeyboardContext> KeyboardContext { get; }
+
+        /// <summary>
+        /// Gets the Keyboardcontext service implementation
+        /// Gives access to all the keyboards and their layouts, zones, keys etc..
+        /// </summary>
+        IService<IProtocolEditorsManager> ProtocolManagerService { get; }
 
         /// <summary>
         /// Gets a service that enables hooking windows' low level keyboard inputs

@@ -30,6 +30,8 @@ using CK.Core;
 using CK.Context;
 using System.Windows.Threading;
 using System.Diagnostics;
+using ProtocolManagerModel;
+using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
@@ -38,7 +40,8 @@ namespace BasicCommandHandlers
         Version = "1.0.0" )]
     public class MoveMouseCommandHandler : BasicCommandHandler, IMoveMouseCommandHandlerService
     {
-        const string PROTOCOL = "movemouse:";
+        const string PROTOCOL_BASE = "movemouse";
+        const string PROTOCOL = PROTOCOL_BASE + ":";
         const int STEP = 5;
 
         DispatcherTimer _timer;
@@ -49,6 +52,9 @@ namespace BasicCommandHandlers
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> HighlighterService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         public override bool Setup( IPluginSetupInfo info )
         {
@@ -154,8 +160,8 @@ namespace BasicCommandHandlers
 
                 motion = () =>
                 {
-                    int x = ( PointerDriver.Service.CurrentPointerXLocation + (int)( STEP * Math.Cos( angle ) ) );
-                    int y = ( PointerDriver.Service.CurrentPointerYLocation + (int)( STEP * Math.Sin( angle ) ) );
+                    int x = (int)( PointerDriver.Service.CurrentPointerXLocation + ( STEP * Math.Cos( angle ) ) );
+                    int y = (int)( PointerDriver.Service.CurrentPointerYLocation + ( STEP * Math.Sin( angle ) ) );
                     PointerDriver.Service.MovePointer( x, y );
                 };
             }
@@ -168,6 +174,23 @@ namespace BasicCommandHandlers
         public void EndMouseMotion()
         {
             _timer.Stop();
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            ProtocolManagerService.Service.Register(
+                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
+                                                 R.MoveMouseProtocolTitle,
+                                                 R.MoveMouseProtocolDescription,
+                                                 typeof( MoveMouseCommandParameterManager ) ),
+                                                 typeof( IMoveMouseCommandHandlerService ) );
+        }
+
+        public override void Stop()
+        {
+            ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
+            base.Stop();
         }
     }
 }

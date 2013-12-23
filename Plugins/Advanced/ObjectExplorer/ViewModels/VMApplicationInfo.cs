@@ -28,6 +28,7 @@ using System.IO;
 using System.Diagnostics;
 using CK.Context;
 using System.Windows;
+using CK.Windows.App;
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMApplicationInfo : VMISelectableElement, IDisposable
@@ -83,7 +84,7 @@ namespace CK.Plugins.ObjectExplorer
             {
                 if( _forceGCCommand == null )
                 {
-                    _forceGCCommand = new VMCommand( () =>
+                    _forceGCCommand = new CK.Windows.App.VMCommand( () =>
                         {
                             GC.Collect();
                             GC.WaitForPendingFinalizers();

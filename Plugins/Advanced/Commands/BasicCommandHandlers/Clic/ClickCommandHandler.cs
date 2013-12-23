@@ -27,6 +27,8 @@ using CommonServices;
 using CK.Plugin;
 using CK.Core;
 using CK.Context;
+using ProtocolManagerModel;
+using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
@@ -35,7 +37,11 @@ namespace BasicCommandHandlers
         Version = "1.0.0" )]
     public class ClicCommandHandler : BasicCommandHandler, IClicCommandHandlerService
     {
-        const string PROTOCOL = "clics:";
+        const string PROTOCOL_BASE = "clics";
+        const string PROTOCOL = PROTOCOL_BASE + ":";
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
@@ -58,7 +64,6 @@ namespace BasicCommandHandlers
                         DoubleClic();
                         return;
                     case "leftpush":
-                        
                         LeftPush();
                         return;
                     case "leftrelease":
@@ -66,6 +71,23 @@ namespace BasicCommandHandlers
                         return;
                 }
             }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            ProtocolManagerService.Service.Register(
+                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
+                                                 R.ClicProtocolTitle,
+                                                 R.ClicProtocolDescription,
+                                                 typeof( ClickCommandParameterManager ) ),
+                                                 typeof( IClicCommandHandlerService ) );
+        }
+
+        public override void Stop()
+        {
+            ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
+            base.Stop();
         }
 
         #region IClicCommandHandlerService Members

@@ -272,7 +272,9 @@ namespace SimpleSkin.ViewModels
 
         private VMZoneSimple CreateZone( IZone z )
         {
-            return new VMZoneSimple( this, z );
+            //we give a Zone a default Index of -1, it means that it has no Index yet.
+            //This index will be used by the editor and the keyscroller
+            return new VMZoneSimple( this, z, Config[z].GetOrSet<int>( "Index", -1 ) );
         }
 
         private VMKeySimple CreateKey( IKey k )

@@ -40,6 +40,7 @@ using CK.Windows.Helpers;
 using CommonServices.Accessibility;
 using CK.Windows.Core;
 using CK.WindowManager.Model;
+using CK.Windows.App;
 using System.IO;
 using Help.Services;
 

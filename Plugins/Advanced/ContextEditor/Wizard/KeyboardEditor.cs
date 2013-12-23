@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -16,13 +11,12 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Storage;
 using CK.Windows.App;
-using CK.Windows.Config;
 using CommonServices;
 using Help.Services;
 using KeyboardEditor.Resources;
-using KeyboardEditor.s;
 using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor
 {
@@ -53,6 +47,9 @@ namespace KeyboardEditor
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         public VMContextEditable EditedContext { get; set; }
         internal AppViewModel AppViewModel { get { return _appViewModel; } }

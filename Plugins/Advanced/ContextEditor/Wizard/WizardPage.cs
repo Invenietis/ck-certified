@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Windows;
 using KeyboardEditor.ViewModels;
+using CK.Windows.App;
 
 namespace KeyboardEditor
 {

@@ -12,12 +12,16 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate KeyEditionTemplate { get; set; }
         public DataTemplate ZoneEditionTemplate { get; set; }
         public DataTemplate KeyboardEditionTemplate { get; set; }
+        public DataTemplate KeyModeEditionTemplate { get; set; }
+        public DataTemplate LayoutKeyModeEditionTemplate { get; set; }
 
         public override DataTemplate SelectTemplate( object item,
           DependencyObject container )
         {
-            if( item as VMKeyEditable != null ) return KeyEditionTemplate;
-            else if( item as VMZoneEditable != null ) return ZoneEditionTemplate;
+            if( item is VMKeyEditable ) return KeyEditionTemplate;
+            else if( item is VMZoneEditable ) return ZoneEditionTemplate;
+            else if( item is VMKeyModeEditable ) return KeyModeEditionTemplate;
+            else if( item is VMLayoutKeyModeEditable ) return LayoutKeyModeEditionTemplate;
             else return KeyboardEditionTemplate;
         }
     }

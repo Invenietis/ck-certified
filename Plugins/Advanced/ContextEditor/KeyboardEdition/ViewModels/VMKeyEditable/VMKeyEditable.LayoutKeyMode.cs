@@ -39,6 +39,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
+using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -87,6 +88,22 @@ namespace KeyboardEditor.ViewModels
             { 
                 _zIndex = value; 
                 OnPropertyChanged( "ZIndex" ); 
+            }
+        }
+
+        CK.Windows.App.VMCommand _selectLayoutKeyMode;
+        public CK.Windows.App.VMCommand SelectLayoutKeyModeCommand
+        {
+            get
+            {
+                if( _selectLayoutKeyMode == null )
+                {
+                    _selectLayoutKeyMode = new CK.Windows.App.VMCommand( () =>
+                    {
+                         LayoutKeyModeVM.IsSelected = true;
+                    });
+                }
+                return _selectLayoutKeyMode;
             }
         }
     }

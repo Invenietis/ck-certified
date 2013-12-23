@@ -40,6 +40,7 @@ using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
 using System.Collections.ObjectModel;
+using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -51,7 +52,7 @@ namespace KeyboardEditor.ViewModels
         }
 
         internal void RefreshKeyboardModelViewModels()
-        {   
+        {
             _currentLayoutKeyModeModeVM = new VMKeyboardMode( _context, Model.CurrentLayout.Current.Mode );
             _currentKeyModeModeVM = new VMKeyboardMode( _context, Model.Current.Mode );
 
@@ -61,6 +62,7 @@ namespace KeyboardEditor.ViewModels
             foreach( var keyMode in KeyModes )
             {
                 keyMode.TriggerPropertyChanged( "IsSelected" );
+                keyMode.TriggerModeChanged();
             }
 
             foreach( var layoutKeyMode in LayoutKeyModes )
@@ -103,7 +105,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _createKeyModeCommand = new VMCommand<string>( ( type ) =>
                     {
-                        
+
                         if( type == "KeyMode" )
                         {
                             Model.KeyModes.Create( Model.Keyboard.CurrentMode );
@@ -121,6 +123,7 @@ namespace KeyboardEditor.ViewModels
                             mode.Visible = true;
                         }
 
+                        Context.KeyboardVM.RefreshCurrentKeyMode();
                         RefreshKeyboardModelViewModels();
                     } );
                 }
@@ -128,6 +131,23 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        ICommand _selectKeyMode;
+        public ICommand SelectKeyModeCommand
+        {
+            get
+            {
+                if( _selectKeyMode == null )
+                {
+                    _selectKeyMode = new CK.Windows.App.VMCommand( () => 
+                    {
+                        KeyModeVM.IsSelected = true;
+                    } );
+                }
+                return _selectKeyMode;
+            }
+        }
+
         #endregion
+
     }
 }

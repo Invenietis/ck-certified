@@ -152,13 +152,16 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public override bool IsSelected
         {
-            get { return _isSelected; }
+            get { return _isSelected || LayoutKeyModeVM.IsSelected || KeyModeVM.IsSelected; }
             set
             {
                 if( _isSelected != value )
                 {
                     _isSelected = value;
-                    Context.SelectedElement = this;
+
+                    //When selecting the layoutkeymode or the keymode via the KeyEditionTemplate, the key (this element) is selected in the treeview. The two way binding triggers this set.
+                    //We need to avoid setting the current element in this case.
+                    if( Context.SelectedElement != KeyModeVM && Context.SelectedElement != LayoutKeyModeVM ) Context.SelectedElement = this;
                     if( value ) ZIndex = 100;
                     else ZIndex = 1;
 

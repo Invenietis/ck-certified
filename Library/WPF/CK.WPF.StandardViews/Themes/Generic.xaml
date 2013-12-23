@@ -9,48 +9,36 @@
     <Style TargetType="{x:Type local:StdKeyboardView}">
         <Setter Property="Width" Value="500" />
         <Setter Property="Height" Value="350" />
-        <Setter Property="OutsideBorderThickness" Value="1,1,1,1"/>
-        <Setter Property="InsideBorderColor" Value="WhiteSmoke"/>
-        <Setter Property="InsideBorderThickness" Value="1"/>
+        <Setter Property="OutsideBorderThickness" Value="1"/>
+        <Setter Property="OutsideBorderColor" Value="Gray"/>
+        <Setter Property="InsideBorderThickness" Value="0"/>
         <Setter Property="Opacity" Value="1"/>
-        <Setter Property="OutsideBorderColor">
-            <Setter.Value>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Color="#FFBBBBBB" Offset="0"/>
-                        <GradientStop Color="#FF999999" Offset="1"/>
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
         <!-- OutsideBorderColor -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StdKeyboardView}">
-                    <Grid Focusable="False">
-                        <Grid Focusable="False" Opacity="{TemplateBinding Opacity}">
-                            <Border x:Name="OutsideBorder" BorderThickness="{TemplateBinding OutsideBorderThickness}" 
+                    <Grid Focusable="False" Opacity="{TemplateBinding Opacity}">
+                        <Border x:Name="OutsideBorder" BorderThickness="{TemplateBinding OutsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding OutsideBorderColor}">
-                                <Border x:Name="InsideBorder" BorderThickness="{TemplateBinding InsideBorderThickness}" 
+                            <Border x:Name="InsideBorder" BorderThickness="{TemplateBinding InsideBorderThickness}" 
                                 BorderBrush="{TemplateBinding InsideBorderColor}"
                                 Background="{TemplateBinding Background}">
-                                </Border>
                             </Border>
-                            <ItemsControl Focusable="False" ItemsSource="{TemplateBinding Keys}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Canvas />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemContainerStyle>
-                                    <Style>
-                                        <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
-                                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
-                                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                                    </Style>
-                                </ItemsControl.ItemContainerStyle>
-                            </ItemsControl>
-                        </Grid>
+                        </Border>
+                        <ItemsControl Focusable="False" ItemsSource="{TemplateBinding Keys}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemContainerStyle>
+                                <Style>
+                                    <Setter Property="Canvas.ZIndex" Value="{Binding ZIndex}"/>
+                                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                        </ItemsControl>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -106,7 +94,7 @@
                                FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"
                                TextTrimming="CharacterEllipsis" >
                         </TextBlock>
-                        
+
                         <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>
                     </Grid>
                     <ControlTemplate.Triggers>

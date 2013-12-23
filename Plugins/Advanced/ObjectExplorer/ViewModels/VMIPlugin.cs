@@ -32,6 +32,7 @@ using CK.Plugin.Hosting;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -232,13 +233,13 @@ namespace CK.Plugins.ObjectExplorer
 
         #region Commands
 
-        public VMCommand StartCommand { get; private set; }
+        public CK.Windows.App.VMCommand StartCommand { get; private set; }
 
-        public VMCommand StopCommand { get; private set; }
+        public CK.Windows.App.VMCommand StopCommand { get; private set; }
 
-        public VMCommand ApplyCommand { get; private set; }
+        public CK.Windows.App.VMCommand ApplyCommand { get; private set; }
 
-        public VMCommand ResetUserAction { get; private set; }
+        public CK.Windows.App.VMCommand ResetUserAction { get; private set; }
 
         #endregion
 
@@ -319,12 +320,12 @@ namespace CK.Plugins.ObjectExplorer
 
         void CreateCommands()
         {
-            ResetUserAction = new VMCommand( () => VMIContext.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( _pluginInfo.PluginId, Plugin.Config.ConfigUserAction.None ) );
+            ResetUserAction = new CK.Windows.App.VMCommand( () => VMIContext.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( _pluginInfo.PluginId, Plugin.Config.ConfigUserAction.None ) );
 
-            ApplyCommand = new VMCommand( () => _pluginRunner.Apply() );
+            ApplyCommand = new CK.Windows.App.VMCommand( () => _pluginRunner.Apply() );
 
-            StartCommand = new VMCommand( Start, CanStart );
-            StopCommand = new VMCommand( Stop, CanStop );
+            StartCommand = new CK.Windows.App.VMCommand( Start, CanStart );
+            StopCommand = new CK.Windows.App.VMCommand( Stop, CanStop );
         }
 
         #region User Configuration Changes

@@ -6,6 +6,7 @@ using System.Text;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
 using KeyboardEditor.ViewModels;
+using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -48,17 +49,17 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public bool IsHolderCurrent { get { return _holder.KeyboardVM.CurrentMode.ContainsAll( Mode ) && Mode.ContainsAll( _holder.KeyboardVM.CurrentMode ); } }
 
-        VMCommand _applyToCurrentModeCommand;
+        CK.Windows.App.VMCommand _applyToCurrentModeCommand;
         /// <summary>
         /// Gets a command that sets the embedded <see cref="IKeyboardMode"/> as the holder's current one.
         /// </summary>
-        public VMCommand ApplyToCurrentModeCommand
+        public CK.Windows.App.VMCommand ApplyToCurrentModeCommand
         {
             get
             {
                 if( _applyToCurrentModeCommand == null )
                 {
-                    _applyToCurrentModeCommand = new VMCommand( () =>
+                    _applyToCurrentModeCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         if( !IsHolderCurrent )
                         {
@@ -69,5 +70,7 @@ namespace KeyboardEditor.ViewModels
                 return _applyToCurrentModeCommand;
             }
         }
+
+        public string ModeName { get { return Mode.ToString(); } }
     }
 }

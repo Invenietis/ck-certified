@@ -9,32 +9,31 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
         </ResourceDictionary>
-       
     </UserControl.Resources>
-    
-    <ItemsControl ItemsSource="{Binding Buttons}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Button Style="{StaticResource NoFocusSelectableButtonStyle}" 
+    <ScrollViewer  VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding Buttons}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Style="{StaticResource NoFocusSelectableButtonStyle}" 
                         HorizontalAlignment="Center" 
                         Margin="10" Width="400" Height="80" 
                         Command="{Binding DataContext.ButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
-                    <DockPanel LastChildFill="False">
-                        <StackPanel Width="300" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0">
-                            <TextBlock Text="{Binding Label}" Style="{StaticResource WizardTitleTextBlockStyle}" />
-                            <TextBlock Text="{Binding Description}" Style="{StaticResource WizardDescTextBlockStyle}" />
-                        </StackPanel>
-                        <Image DockPanel.Dock="Right" Source="{Binding ImagePath}" Margin="10 0" Height="80" />
-                    </DockPanel>
-                </Button>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+                        <DockPanel LastChildFill="False">
+                            <StackPanel Width="300" DockPanel.Dock="Left" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0">
+                                <TextBlock Text="{Binding Label}" Style="{StaticResource WizardTitleTextBlockStyle}" />
+                                <TextBlock Text="{Binding Description}" Style="{StaticResource WizardDescTextBlockStyle}" />
+                            </StackPanel>
+                            <Image DockPanel.Dock="Right" Source="{Binding ImagePath}" Margin="10 0" Height="80" />
+                        </DockPanel>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
 </UserControl>

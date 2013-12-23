@@ -40,6 +40,7 @@ using System.Windows;
 using CommonServices;
 using System.Windows.Controls;
 using Help.Services;
+using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer
 {
@@ -244,24 +245,24 @@ namespace CK.Plugins.ObjectExplorer
 
         private void InitializeCommands()
         {
-            StopObjectExplorer = new VMCommand(
+            StopObjectExplorer = new CK.Windows.App.VMCommand(
                 () =>
                 {
                     // TODO
                 } );
 
-            ShowLastReport = new VMCommand(
+            ShowLastReport = new CK.Windows.App.VMCommand(
                 () =>
                 {
                     // TODO
                 } );
 
-            Rediscover = new VMCommand(
+            Rediscover = new CK.Windows.App.VMCommand(
                 () =>
                 {
                     // TODO
                 } );
-            ShowHelp = new VMCommand(
+            ShowHelp = new CK.Windows.App.VMCommand(
                 () =>
                 {
                     HelpService.ShowHelpFor( ObjectExplorer.PluginId );

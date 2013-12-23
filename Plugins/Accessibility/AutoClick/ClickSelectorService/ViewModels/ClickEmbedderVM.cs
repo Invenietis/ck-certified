@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using CK.WPF.ViewModel;
 using HighlightModel;
+using CK.Windows.App;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
@@ -117,7 +118,7 @@ namespace CK.Plugins.AutoClick.ViewModel
                 Add( click );
             }
 
-            _changeSelectionCmd = new VMCommand( DoSelect );
+            _changeSelectionCmd = new CK.Windows.App.VMCommand( DoSelect );
         }
 
         #endregion

@@ -4,6 +4,7 @@
 
     <local:ProportionalDimensionsConverter x:Key="propConverter"/>
 
+    <!-- Paths of the different scrolled screen images -->
     <Geometry x:Key="ArrowData">F1M369.238,198.705L361.086,184.581 352.93,170.46 344.776,184.581 336.623,198.705 346.61,198.705 346.61,234.46 359.251,234.46 359.251,198.705 369.238,198.705z</Geometry>
     <Geometry x:Key="RepeatData">F1M-29.0929,625.816C-37.132,625.816,-44.4301,629.021,-49.8,634.209L-56.5798,628.568 -57.585,650.034 -36.6541,645.148 -43.8969,639.121C-39.9601,635.589 -34.7856,633.411 -29.0929,633.411 -16.8286,633.411 -6.85077,643.388 -6.85077,655.654 -6.85077,667.917 -16.8286,677.896 -29.0929,677.896 -41.356,677.896 -51.3338,667.917 -51.3338,655.654 -51.3338,655.452 -51.309,655.256 -51.3032,655.055L-58.9054,656.633C-58.3858,672.632 -45.2166,685.49 -29.0929,685.49 -12.641,685.49 0.742961,672.105 0.742961,655.654 0.742961,639.201 -12.641,625.816 -29.0929,625.816z</Geometry>
     <Geometry x:Key="UTurnData">F1M476.992,336.992C476.752,335.393 476.339,333.403 475.591,331.255 475.029,329.646 474.28,327.946 473.251,326.271 471.716,323.767 469.522,321.298 466.49,319.493 463.467,317.679 459.662,316.603 455.249,316.613 452.634,316.613 450.235,316.979 448.081,317.667 446.199,318.265 444.507,319.109 443.031,320.119 440.442,321.887 438.537,324.133 437.164,326.409 435.102,329.836 434.16,333.331 433.67,335.999 433.19,338.669 433.184,340.532 433.184,340.722L433.184,355.752 423.21,355.752 437.566,380.612 451.921,355.752 441.95,355.752 441.95,340.739C441.95,340.739 441.95,340.678 441.956,340.551 441.974,340.081 442.052,338.764 442.382,337.123 442.626,335.891 443.011,334.477 443.58,333.104 444.009,332.074 444.539,331.069 445.179,330.156 446.146,328.792 447.326,327.648 448.882,326.805 450.448,325.969 452.438,325.385 455.249,325.377 457.053,325.379 458.524,325.629 459.756,326.021 460.832,326.364 461.733,326.819 462.524,327.358 463.904,328.303 464.975,329.53 465.834,330.947 467.12,333.059 467.85,335.587 468.201,337.556 468.378,338.538 468.466,339.379 468.51,339.949 468.531,340.23 468.541,340.449 468.546,340.584L468.549,340.721 468.549,340.722 468.549,380.612 477.317,380.612 477.317,340.722C477.317,340.557,477.309,339.122,476.992,336.992z</Geometry>
@@ -120,7 +121,8 @@
             </TransformGroup>
         </Path.RenderTransform>
     </Path>
-
+    <!-- ENDOF : Paths of the different scrolled screen images -->
+    
     <Style x:Key="ToUpperLevelGridStyle" TargetType="Grid">
         <Setter Property="Visibility" Value="Collapsed" />
         <Style.Triggers>
@@ -182,6 +184,67 @@
 
     <DataTemplate DataType="{x:Type local:NodeViewModel}">
         <ItemsControl ItemsSource="{Binding ChildNodes}">
+            <ItemsControl.Style>
+                <Style TargetType="ItemsControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCurrentNode}" Value="True">
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <!-- Border that wraps a cell. Is collapsed when the cell itself and none of its children are highilighted. This last point is VERY important performance-wise -->
+                                        <Border Style="{StaticResource CellBorderStyle}">
+                                            <Grid>
+                                                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToUpperLevelGridStyle}">
+                                                    <!-- Image that shows where the cell linked to the upper level is -->
+                                                    <Grid.Width>
+                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="12" Mode="OneWay" />
+                                                    </Grid.Width>
+                                                    <Grid.Height>
+                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="12" Mode="OneWay" />
+                                                    </Grid.Height>
+                                                    <!-- A rectangle that enables seeing the arrow when the the corresponding cell is not highlighted -->
+                                                    <Rectangle Fill="Black"  Visibility="Visible" Stretch="Fill" />
+                                                    <ContentControl x:Name="ToUpperLevelContentControl" Style="{StaticResource ToUpperLevelContentControlStyle}">
+
+                                                        <!-- This image is a square so we bind its width AND height to a multiple of the hosting grid's width -->
+                                                        <ContentControl.Width>
+                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
+                                                        </ContentControl.Width>
+                                                        <ContentControl.Height>
+                                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
+                                                        </ContentControl.Height>
+                                                    </ContentControl>
+                                                </Grid>
+
+                                                <!-- The control of a cell (contains the image that show the direction of the next tick) -->
+                                                <ContentControl Content="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CellContentControlStyle}">
+                                                    <!-- This image is NOT a square -->
+                                                    <ContentControl.Width>
+                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="2" Mode="OneWay" />
+                                                    </ContentControl.Width>
+                                                    <ContentControl.Height>
+                                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="4" Mode="OneWay" />
+                                                    </ContentControl.Height>
+                                                </ContentControl>
+
+                                                <!-- Where the childNode is displayed (using the very same template) -->
+                                                <ContentPresenter Content="{Binding}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                    <Setter Property="ItemTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <ContentPresenter Content="{Binding}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ItemsControl.Style>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <local:TrackUniformGrid>
@@ -197,50 +260,6 @@
                     </local:TrackUniformGrid>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <!-- Border that wraps a cell. Is collapsed when the cell itself and none of its children are highilighted. This last point is VERY important performance-wise -->
-                    <Border Style="{StaticResource CellBorderStyle}">
-                        <Grid>
-                            <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ToUpperLevelGridStyle}">
-                                <!-- Image that shows where the cell linked to the upper level is -->
-                                <Grid.Width>
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="12" Mode="OneWay" />
-                                </Grid.Width>
-                                <Grid.Height>
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="12" Mode="OneWay" />
-                                </Grid.Height>
-                                <!-- A rectangle that enables seeing the arrow when the the corresponding cell is not highlighted -->
-                                <Rectangle Fill="Black"  Visibility="Visible" Stretch="Fill" />
-                                <ContentControl x:Name="ToUpperLevelContentControl" Style="{StaticResource ToUpperLevelContentControlStyle}">
-                                    
-                                    <!-- This image is a square so we bind its width AND height to a multiple of the hosting grid's width -->
-                                    <ContentControl.Width>
-                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
-                                    </ContentControl.Width>
-                                    <ContentControl.Height>
-                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="16" Mode="OneWay" />
-                                    </ContentControl.Height>
-                                </ContentControl>
-                            </Grid>
-
-                            <!-- The control of a cell (contains the image that show the direction of the next tick) -->
-                            <ContentControl Content="{Binding Image}" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CellContentControlStyle}">
-                                <!-- This image is NOT a square -->
-                                <ContentControl.Width>
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="2" Mode="OneWay" />
-                                </ContentControl.Width>
-                                <ContentControl.Height>
-                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=local:TrackUniformGrid}"  Converter="{StaticResource propConverter}" ConverterParameter="4" Mode="OneWay" />
-                                </ContentControl.Height>
-                            </ContentControl>
-
-                            <!-- Where the childNode is displayed (using the very same template) -->
-                            <ContentPresenter Content="{Binding}"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
         </ItemsControl>
     </DataTemplate>
 

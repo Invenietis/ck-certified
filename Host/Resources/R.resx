@@ -333,4 +333,10 @@
   <data name="ScreenScrollerConfiguration" xml:space="preserve">
     <value>Screen scroler configuration</value>
   </data>
+  <data name="ScreenScrolling" xml:space="preserve">
+    <value>Screen scrolling</value>
+  </data>
+  <data name="Scrolling" xml:space="preserve">
+    <value>General Scrolling</value>
+  </data>
 </root>

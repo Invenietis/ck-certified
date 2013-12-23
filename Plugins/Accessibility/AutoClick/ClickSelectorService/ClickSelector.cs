@@ -39,6 +39,7 @@ using HighlightModel;
 using CK.Plugin.Config;
 using CK.Windows;
 using CommonServices;
+using CK.WindowManager.Model;
 
 namespace CK.Plugins.AutoClick
 {
@@ -56,11 +57,11 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        //public IService<IWindowManager> WindowManager { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        //public IService<IWindowBinder> WindowBinder { get; set; }
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
 
         private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         private ClickSelectorWindow _clickSelectorWindow;
@@ -110,7 +111,7 @@ namespace CK.Plugins.AutoClick
             if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) ) Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
             CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
 
-            //WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
+            WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )

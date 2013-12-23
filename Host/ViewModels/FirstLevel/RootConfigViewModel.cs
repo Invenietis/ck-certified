@@ -44,6 +44,7 @@ namespace Host
         Guid _autoclicId;
         Guid _skinId;
         Guid _basicScrollId;
+        Guid _screenScrollerId;
         ConfigItemCurrent<KeyboardModel> _keyboards;
 
         public RootConfigViewModel( AppViewModel app )
@@ -54,6 +55,7 @@ namespace Host
             _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
             _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
             _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+            _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
         }
 
         protected override void OnInitialize()
@@ -65,42 +67,46 @@ namespace Host
                 ContextModel ctxModel = new ContextModel( _app );
 
                 _keyboards = this.AddCurrentItem( R.Keyboard, null, ctxModel, ctx => ctx.Current, ctx => ctx.Keyboards, false, "" );
-                _keyboards.ImagePath = "/Views/Images/Keyboard.png";//"pack://application:,,,/CK-Certified;component/Views/Images/Keyboard.png"
+                _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";
             }
 
-            var g = this.AddGroup();
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
             var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId,
-                                                new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ),
-                                                new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ),
-                                                new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" ) ) { DisplayName = "Défilement clavier" };
+                new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), //ClicCommandHandler
+                new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), //MoveMouseCommadnHandler
+                new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" )  //ModeCommandHandler
+                ) { DisplayName = R.Scrolling };
+
+
+            var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId,
+                _basicScrollId ) //The ScreenScroller needs the Scrolling plugin
+                { DisplayName = R.ScreenScrolling };
 
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
-                new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), // SybilleWordPredictorService
-                new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), // WordPredictedService
+                new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), //SybilleWordPredictorService
+                new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), //WordPredictedService
                 new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ), //WordPredictorFeature
                 new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ), //SimplePredictedWordSender
                 new Guid( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}" ), //TextualContextArea
                 new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ), //TextualContextService
                 new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ), //TextualContextCommandHandler
-                new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" ) //PredictionTextAreaBus
-                )
-            {
-                DisplayName = R.WordPredictionSectionName
-            };
+                new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" )  //PredictionTextAreaBus
+                ) { DisplayName = R.WordPredictionSectionName };
 
             var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" ) )
-            { 
-                DisplayName = R.Radar  
+            {
+                DisplayName = R.Radar
             };
 
+            var g = this.AddGroup();
             g.Items.Add( skinStarter );
             g.Items.Add( autoClicStarter );
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
             g.Items.Add( mouseRadar );
+            g.Items.Add( screenScrollerStarter );
 
             this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
 
@@ -111,7 +117,7 @@ namespace Host
 
         public void OnPluginRunnerDirtyChanged( object sender, EventArgs e )
         {
-            if( _app.PluginRunner.IsDirty && !_app.PluginRunner.Disabled)
+            if( _app.PluginRunner.IsDirty && !_app.PluginRunner.Disabled )
                 _app.PluginRunner.Apply();
         }
 

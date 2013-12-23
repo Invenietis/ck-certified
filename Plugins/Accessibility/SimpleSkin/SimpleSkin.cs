@@ -117,6 +117,7 @@ namespace SimpleSkin
 
         public void Start()
         {
+            
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 _noFocusWindowManager = new CKNoFocusWindowManager();
@@ -150,8 +151,6 @@ namespace SimpleSkin
                 {
                     CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement );
                 } ), null );
-
-                //SendStringService.Service.SendKeyboardKey( NativeMethods.KeyboardKeys.S );
 
                 InitializeHighligther();
                 UpdateAutoHideConfig();

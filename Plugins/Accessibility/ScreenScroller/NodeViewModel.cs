@@ -255,8 +255,6 @@ namespace ScreenScroller
             }
         }
 
-
-
         /// <summary>
         /// Gets whether the parent was scrolling on its children and has finished its last lap/
         /// Returns true if this is the absolute last tick of the aprent before going up

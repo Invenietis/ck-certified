@@ -106,7 +106,7 @@ namespace Host
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
             g.Items.Add( mouseRadar );
-            //g.Items.Add( screenScrollerStarter );
+            g.Items.Add( screenScrollerStarter );
 
             this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
 

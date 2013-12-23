@@ -167,6 +167,7 @@
     <Style x:Key="CellBorderStyle" TargetType="Border">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Visibility" Value="Collapsed" />
+        <Setter Property="BorderBrush" Value="Transparent"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                 <Setter Property="Background" Value="Black" />
@@ -186,8 +187,8 @@
         <ItemsControl ItemsSource="{Binding ChildNodes}">
             <ItemsControl.Style>
                 <Style TargetType="ItemsControl">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsCurrentNode}" Value="True">
+                    <!--<Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCurrentNode}" Value="True">-->
                             <Setter Property="ItemTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
@@ -234,15 +235,15 @@
                                     </DataTemplate>
                                 </Setter.Value>
                             </Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                    <Setter Property="ItemTemplate">
+                        <!--</DataTrigger>
+                    </Style.Triggers>-->
+                    <!--<Setter Property="ItemTemplate">
                         <Setter.Value>
                             <DataTemplate>
                                 <ContentPresenter Content="{Binding}"/>
                             </DataTemplate>
                         </Setter.Value>
-                    </Setter>
+                    </Setter>-->
                 </Style>
             </ItemsControl.Style>
             <ItemsControl.ItemsPanel>

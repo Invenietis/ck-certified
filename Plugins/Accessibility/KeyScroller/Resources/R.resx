@@ -120,7 +120,7 @@
   <data name="ActionStrategy" xml:space="preserve">
     <value>Action</value>
   </data>
-  <data name="BasicScrollingStrategy" xml:space="preserve">
+  <data name="ZoneScrollingStrategy" xml:space="preserve">
     <value>Scrolling by zone</value>
   </data>
   <data name="LeftClick" xml:space="preserve">
@@ -144,13 +144,13 @@
   <data name="ScrollEditor" xml:space="preserve">
     <value>Scroll editor</value>
   </data>
-  <data name="SimpleScrollingStrategy" xml:space="preserve">
+  <data name="OneByOneScrollingStrategy" xml:space="preserve">
     <value>Scrolling key by key</value>
   </data>
   <data name="TurboScrollingStrategy" xml:space="preserve">
     <value>Fast scrolling (key by key)</value>
   </data>
-  <data name="SplitScrollingStrategy" xml:space="preserve">
+  <data name="HalfZoneScrollingStrategy" xml:space="preserve">
     <value>Scrolling by half-zone</value>
   </data>
 </root>

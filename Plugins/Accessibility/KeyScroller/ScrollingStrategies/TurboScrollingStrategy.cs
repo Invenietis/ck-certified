@@ -10,8 +10,13 @@ using HighlightModel;
 
 namespace KeyScroller
 {
+    /// <summary>
+    /// Scrolling very fast on each key one after the other, without taking zones into account. Once a select element is triggered, the scrolling goes slowlier. 
+    /// The second select element triggers the scrolled element.
+    /// If the second select element is not triggered after a certain amount of time, the scrolling starts going fast again.
+    /// </summary>
     [StrategyAttribute( TurboScrollingStrategy.StrategyName )]
-    public class TurboScrollingStrategy : SimpleScrollingStrategy
+    public class TurboScrollingStrategy : OneByOneScrollingStrategy
     {
         const string StrategyName = "TurboScrollingStrategy";
         TimeSpan _normalInterval;

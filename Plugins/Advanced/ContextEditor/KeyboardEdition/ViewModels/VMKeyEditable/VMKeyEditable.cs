@@ -264,7 +264,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         private void GetImageSourceCache()
         {
-            object o = _context.SkinConfiguration[_key.CurrentLayout.Current]["Image"];
+            object o = _context.SkinConfiguration[_key.Current]["Image"];
             if( o != null )
             {
                 _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
@@ -515,19 +515,41 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            if( _key.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                if( String.IsNullOrWhiteSpace( e.Key ) )
+                {
+                    OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "ImageSource" );
+                    OnPropertyChanged( "ShowLabel" );
+                    OnPropertyChanged( "ShowImage" );
+                }
+                else
+                {
+                    switch( e.Key )
+                    {
+                        case "Image":
+                            GetImageSourceCache();
+                            OnPropertyChanged( "Image" );
+                            OnPropertyChanged( "ImageSource" );
+                            break;
+                        case "DisplayType":
+                            OnPropertyChanged( "ShowImage" );
+                            OnPropertyChanged( "ShowLabel" );
+                            LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
+                            break;
+                    }
+                }
+            }
 
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 //Console.Out.WriteLine( e.Key );
                 if( String.IsNullOrWhiteSpace( e.Key ) )
                 {
-                    OnPropertyChanged( "Image" );
-                    OnPropertyChanged( "ImageSource" );
                     OnPropertyChanged( "Opacity" );
                     OnPropertyChanged( "FontSize" );
                     OnPropertyChanged( "FontStyle" );
-                    OnPropertyChanged( "ShowLabel" );
-                    OnPropertyChanged( "ShowImage" );
                     OnPropertyChanged( "FontWeight" );
                     OnPropertyChanged( "Background" );
                     OnPropertyChanged( "LetterColor" );
@@ -543,11 +565,6 @@ namespace KeyboardEditor.ViewModels
                         case "Opacity":
                             OnPropertyChanged( "Opacity" );
                             break;
-                        case "Image":
-                            GetImageSourceCache();
-                            OnPropertyChanged( "Image" );
-                            OnPropertyChanged( "ImageSource" );
-                            break;
                         case "Visible":
                             OnPropertyChanged( "Visible" );
                             LayoutKeyModeVM.TriggerPropertyChanged( "Visible" );
@@ -557,11 +574,6 @@ namespace KeyboardEditor.ViewModels
                             break;
                         case "FontStyle":
                             OnPropertyChanged( "FontStyle" );
-                            break;
-                        case "DisplayType":
-                            OnPropertyChanged( "ShowImage" );
-                            OnPropertyChanged( "ShowLabel" );
-                            LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
                             break;
                         case "FontWeight":
                             OnPropertyChanged( "FontWeight" );

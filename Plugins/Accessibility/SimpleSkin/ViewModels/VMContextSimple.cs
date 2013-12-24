@@ -115,7 +115,7 @@ namespace SimpleSkin.ViewModels
 
         public VMKeyboardSimple KeyboardVM
         {
-            get { return _keyboard ?? (_keyboard = Obtain( KeyboardSelector() )); }
+            get { return _keyboard ?? ( _keyboard = Obtain( KeyboardSelector() ) ); }
         }
 
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
@@ -203,8 +203,6 @@ namespace SimpleSkin.ViewModels
             _dic.Clear();
         }
 
-        #region OnXXXXXXXXX
-
         internal void OnModelDestroy( object m )
         {
             VMContextElement vm;
@@ -263,8 +261,6 @@ namespace SimpleSkin.ViewModels
             _ctx.ConfigManager.UserConfiguration.PropertyChanged -= OnUserConfigurationChanged;
         }
 
-        #endregion
-
         private VMKeyboardSimple CreateKeyboard( IKeyboard kb )
         {
             return new VMKeyboardSimple( this, kb );
@@ -279,8 +275,43 @@ namespace SimpleSkin.ViewModels
 
         private VMKeySimple CreateKey( IKey k )
         {
+            EnsureVersion( k );
             return new VMKeySimple( this, k );
         }
 
+        private void EnsureVersion( IKey k )
+        {
+            if( Config[k] != null )
+            {
+                object o = Config[k.CurrentLayout.LayoutKeyModes.FindBest( k.Context.EmptyMode )]["[PluginDataVersion]"];
+                if( o != null )
+                {
+                    Version v;
+                    if( Version.TryParse( o.ToString(), out v ) && ( v <= new Version( "1.5.0" ) ) )
+                    {
+                        foreach( var layoutKeyMode in k.CurrentLayout.LayoutKeyModes )
+                        {
+                            MigrateProperty( layoutKeyMode, "Image" );
+                            MigrateProperty( layoutKeyMode, "DisplayType" );
+                        }
+                    }
+                }
+            }
+        }
+
+        private void MigrateProperty( ILayoutKeyMode lkm, string propertyName )
+        {
+            object obj = Config[lkm][propertyName];
+            Config[lkm].Remove( propertyName );
+            if( obj != null )
+            {
+                IKeyboardMode mode = lkm.Mode;
+                IKeyMode bestMatch = lkm.Key.KeyModes.FindBest( mode );
+                if( bestMatch.Mode.ContainsAll( mode ) && mode.ContainsAll( bestMatch.Mode ) )
+                {
+                    Config[bestMatch].Set( propertyName, obj );
+                }
+            }
+        }
     }
 }

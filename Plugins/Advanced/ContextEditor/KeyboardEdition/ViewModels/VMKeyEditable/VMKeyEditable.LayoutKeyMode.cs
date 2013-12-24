@@ -52,21 +52,21 @@ namespace KeyboardEditor.ViewModels
 
         public bool ShowLabel
         {
-            get { return LayoutKeyMode.GetPropertyValue<string>( Context.SkinConfiguration, "DisplayType", Context.SkinConfiguration[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ) == "Label"; }
-            set 
-            { 
-                if(value) Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Label";
-                else Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Image"; 
+            get { return Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", Context.SkinConfiguration[_key.Current]["Image"] != null ? "Image" : "Label" ) == "Label"; }
+            set
+            {
+                if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
+                else Context.SkinConfiguration[_key.Current]["DisplayType"] = "Image";
             }
         }
 
         public bool ShowImage
         {
-            get { return LayoutKeyMode.GetPropertyValue<string>( Context.SkinConfiguration, "DisplayType", Context.SkinConfiguration[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ) == "Image"; }
-            set 
-            { 
-                if(value) Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Image";
-                else Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Label"; 
+            get { return Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", Context.SkinConfiguration[_key.Current]["Image"] != null ? "Image" : "Label" ) == "Image"; }
+            set
+            {
+                if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Image";
+                else Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
             }
         }
 
@@ -81,13 +81,13 @@ namespace KeyboardEditor.ViewModels
         }
 
         double _zIndex = 50;
-        public double ZIndex 
-        { 
-            get { return _zIndex; } 
-            set 
-            { 
-                _zIndex = value; 
-                OnPropertyChanged( "ZIndex" ); 
+        public double ZIndex
+        {
+            get { return _zIndex; }
+            set
+            {
+                _zIndex = value;
+                OnPropertyChanged( "ZIndex" );
             }
         }
 
@@ -100,8 +100,8 @@ namespace KeyboardEditor.ViewModels
                 {
                     _selectLayoutKeyMode = new CK.Windows.App.VMCommand( () =>
                     {
-                         LayoutKeyModeVM.IsSelected = true;
-                    });
+                        LayoutKeyModeVM.IsSelected = true;
+                    } );
                 }
                 return _selectLayoutKeyMode;
             }

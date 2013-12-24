@@ -83,7 +83,7 @@ namespace ProtocolManagerModel
         public void FlushCurrentProtocolEditor()
         {
             SelectedProtocolEditorWrapper = null;
-            ProtocolEditor = null;
+            InitializeProtocolEditor();
         }
 
         public void InitializeProtocolEditor()

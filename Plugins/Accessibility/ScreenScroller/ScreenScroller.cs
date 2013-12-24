@@ -274,6 +274,7 @@ namespace ScreenScroller
                 }
             }
 
+            scrollingDirective.ActionTime = ActionTime.Immediate;
             return scrollingDirective;
         }
 
@@ -316,10 +317,6 @@ namespace ScreenScroller
         {
             Highlighter.Service.RegisterTree( this );
         }
-
-        #endregion
-
-        #region IHighlightableElement Members
 
         public ICKReadOnlyList<IHighlightableElement> Children
         {

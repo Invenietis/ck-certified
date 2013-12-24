@@ -94,8 +94,6 @@
                 <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
             </StackPanel>
 
-            
-
             <DockPanel Height="70" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 10 0 0">
                 <!--Back button-->
                 <Button x:Uid="wizard-manager-template-back-button" Margin="20 0 0 20"

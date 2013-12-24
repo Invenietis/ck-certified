@@ -7,21 +7,22 @@
              xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
              xmlns:ckc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+             xmlns:editor="clr-namespace:KeyboardEditor"
+             xmlns:r="clr-namespace:KeyboardEditor.Resources"
              mc:Ignorable="d">
     <UserControl.Resources>
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
+            <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <DataTemplate x:Key="sendstringdatatemplate">
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="String to send : "></TextBlock>
                     <TextBox DockPanel.Dock="Right" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </DockPanel>
             </DataTemplate>
-
-
             <DataTemplate x:Key="comboboxdatatemplate">
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="{Binding Title}"></TextBlock>
@@ -42,7 +43,89 @@
                 </StackPanel>
             </DataTemplate>
 
-            <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
+            <DataTemplate x:Key="filelauncherdatatempalte">
+                
+                <StackPanel HorizontalAlignment="Stretch" >
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton GroupName="FileType" x:Name="appcheckbox" IsChecked="{Binding ShowApp, Mode=TwoWay }" Margin="5">
+                            <TextBlock x:Uid="keyboard-editor-file-select-app" Text="{x:Static r:R.FileLauncherInstalledApps}" />
+                        </RadioButton>
+                        <RadioButton  x:Name="browsecheckbox" Margin="5" GroupName="FileType">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Style.Triggers >
+                                        <DataTrigger Binding="{Binding ShowApp}" Value="True">
+                                            <Setter Property="IsChecked" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ShowApp}" Value="False">
+                                            <Setter Property="IsChecked" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RadioButton.Style>
+                            <TextBlock x:Uid="keyboard-editor-file-select-browse" Text="{x:Static r:R.FileLauncherBrowse}"/>
+                        </RadioButton>
+                    </StackPanel>
+                    <WrapPanel Margin="0 10 0 0" HorizontalAlignment="Stretch" Visibility="{Binding Path=ShowApp, Converter={StaticResource booltovisibilityconverter}}">
+                        <ComboBox ItemsSource="{Binding Apps}" HorizontalAlignment="Right" AlternationCount="2" Height="50" SelectedItem="{Binding SelectedApp, Mode=TwoWay}" Width="380">
+                            <ComboBox.Resources>
+                                <Style TargetType="ComboBoxItem">
+                                    <Style.Triggers>
+                                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                            <Setter Property="Background" Value="White"/>
+                                        </Trigger>
+                                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                            <Setter Property="Background" Value="#EEEEEE"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ComboBox.Resources>
+                            
+                            <ComboBox.ItemTemplate >
+                                <DataTemplate >
+                                    <VirtualizingStackPanel Orientation="Horizontal"  Margin="5 5 0 5" HorizontalAlignment="Stretch">
+                                        <Image Width="32" Height="32" Source="{Binding Icon}" Margin="0 0 10 0"/>
+                                        <StackPanel HorizontalAlignment="Stretch" Width="308">
+                                            <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
+                                            <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding Path}" FontSize="12" Foreground="#444444"  TextAlignment="Left"  HorizontalAlignment="Stretch"></TextBlock>
+                                        </StackPanel>
+                                    </VirtualizingStackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </WrapPanel>
+                    <WrapPanel Margin="0 10 0 0" HorizontalAlignment="Stretch">
+                        <WrapPanel.Style>
+                            <Style TargetType="WrapPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowApp}" Value="False">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ShowApp}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </WrapPanel.Style>
+                        <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3">
+                            <StackPanel Orientation="Horizontal"  Margin="8" HorizontalAlignment="Stretch">
+
+                                <Image Width="32" Height="32" Source="{Binding SelectedFile.Icon}" Margin="0 0 10 0"/>
+                                <StackPanel HorizontalAlignment="Stretch" Width="278">
+                                    <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding SelectedFile.FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
+                                    <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding SelectedFile.Path}" FontSize="12" Foreground="#444444"  TextAlignment="Left"  HorizontalAlignment="Stretch"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Button  HorizontalAlignment="Right" Command="{Binding OpenFileDialog}" Margin="10 0 0 0">
+                            <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/browse.png" />
+                        </Button>
+                    </WrapPanel>                   
+                </StackPanel>
+            </DataTemplate>
+            
+          
             <ckc:NotNullConverter x:Key="notnullconverter"/>
             <ckc:NotConverter x:Key="notconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
@@ -50,6 +133,7 @@
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
+                                              FileLauncherDataTempalte="{StaticResource filelauncherdatatempalte}"
                                               />
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">

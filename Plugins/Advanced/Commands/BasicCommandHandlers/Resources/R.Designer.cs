@@ -124,6 +124,42 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A file from your computer.
+        /// </summary>
+        internal static string FileLauncherBrowse {
+            get {
+                return ResourceManager.GetString("FileLauncherBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a file or launch an application from your computer.
+        /// </summary>
+        internal static string FileLauncherDescription {
+            get {
+                return ResourceManager.GetString("FileLauncherDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An installed application.
+        /// </summary>
+        internal static string FileLauncherInstalledApps {
+            get {
+                return ResourceManager.GetString("FileLauncherInstalledApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open....
+        /// </summary>
+        internal static string FileLauncherTitle {
+            get {
+                return ResourceManager.GetString("FileLauncherTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboard : .
         /// </summary>
         internal static string KeyboardProtocolSubtitle {
@@ -228,15 +264,6 @@ namespace BasicCommandHandlers.Resources {
         internal static string SendKeyProtocolTitle {
             get {
                 return ResourceManager.GetString("SendKeyProtocolTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

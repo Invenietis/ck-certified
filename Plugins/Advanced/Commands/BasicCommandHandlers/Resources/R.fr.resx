@@ -183,4 +183,16 @@
   <data name="UpRight" xml:space="preserve">
     <value>En haut à droite</value>
   </data>
+  <data name="FileLauncherBrowse" xml:space="preserve">
+    <value>Un fichier depuis votre ordinateur</value>
+  </data>
+  <data name="FileLauncherDescription" xml:space="preserve">
+    <value>Ouvrir un fichier ou lancer une application depuis l'ordinateur</value>
+  </data>
+  <data name="FileLauncherInstalledApps" xml:space="preserve">
+    <value>Une application installée</value>
+  </data>
+  <data name="FileLauncherTitle" xml:space="preserve">
+    <value>Ouvrir...</value>
+  </data>
 </root>

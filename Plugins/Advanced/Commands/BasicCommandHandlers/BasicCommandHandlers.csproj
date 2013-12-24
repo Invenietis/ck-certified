@@ -74,6 +74,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -111,10 +112,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="PathTrimmingTextBlock.cs" />
     <Compile Include="Clic\ClickCommandParameterManager.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="Clic\ClickCommandHandler.cs" />
     <Compile Include="CommandViewer.cs" />
+    <Compile Include="FileLauncher\FileLauncherCommandHandler.cs" />
+    <Compile Include="FileLauncher\FileLauncherCommandParameterManager.cs" />
     <Compile Include="Resources\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -152,6 +156,10 @@
       <Name>CK.Keyboard.Model</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
+      <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
+      <Name>CK.WPF.ViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>
       <Name>CommonServices</Name>
@@ -183,6 +191,7 @@
       <LastGenOutput>R.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,8 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <StackPanel>
+        <StackPanel >
             <TextBox Width="350" Text="{Binding AppCommand}"/>
+            <TextBlock Text="Applications installées" />
+            
             <ComboBox ItemsSource="{Binding Apps}"  AlternationCount="2" Width="350" Height="50" SelectedItem="{Binding SelectedApp}">
                 <ComboBox.Resources>
                     <Style TargetType="ComboBoxItem">
@@ -34,6 +36,10 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <Separator>
+
+            </Separator>
+            <TextBlock Text="Choisir un fichier sur l'ordinateur" />
             <Button  Content="Browse" Command="{Binding OpenFileDialog}"/>
         </StackPanel>
     </Grid>

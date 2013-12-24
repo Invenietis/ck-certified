@@ -75,10 +75,8 @@ namespace BasicCommandHandlers
                     new VMProtocolEditorWrapper( PROTOCOL_BASE,
                                                  "Changer de clavier",
                                                  "Permet de changer de clavier",
-                                                 new Func<ChangeKeyboardCommandParameterManager>( () =>
-                                                 {
-                                                     return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() );
-                                                 } ) ), typeof( IChangeKeyboardCommandHandlerService ) );
+                                                 () => { return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() ); } ), 
+                                                 typeof( IChangeKeyboardCommandHandlerService ) );
 
         }
 

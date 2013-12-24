@@ -82,6 +82,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -95,6 +97,7 @@
   <ItemGroup>
     <Compile Include="Accessibility\IKeyboardDriver.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
+    <Compile Include="Advanced\Commands\IFileLauncherCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IHelpCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IChangeKeyboardCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IClicCommandHandlerService.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Advanced\ITriggerService.cs" />
     <Compile Include="Advanced\ILogService.cs" />
     <Compile Include="Advanced\IUpdateChecker.cs" />
+    <Compile Include="Advanced\IFileLauncherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accessibility\ICommonTimer.cs">
       <SubType>Code</SubType>

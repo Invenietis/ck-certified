@@ -14,6 +14,7 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate SendStringDataTemplate { get; set; }
         public DataTemplate MoveMouseDataTemplate { get; set; }
         public DataTemplate ComboBoxDataTemplate { get; set; }
+        public DataTemplate FileLauncherDataTempalte { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
@@ -26,7 +27,8 @@ namespace KeyboardEditor.ViewModels
 
             if( item is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
             if( item is MoveMouseCommandParameterManager ) return MoveMouseDataTemplate;
-
+            if( item is FileLauncherCommandParameterManager ) return FileLauncherDataTempalte;
+        
             throw new ArgumentException( String.Format( "The Bound object of the AddActionDataTemplateSelector : \"{0}\" is not of a recognized type.", item.GetType() ) );
         }
     }

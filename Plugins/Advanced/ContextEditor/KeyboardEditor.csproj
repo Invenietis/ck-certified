@@ -160,6 +160,7 @@
     <Compile Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml.cs">
       <DependentUpon>KeyboardEditionUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="KeyboardEdition\Views\Zone\PathTrimmingTextBlock.cs" />
     <Compile Include="KeyboardEdition\Views\Zone\ZoneEditionUserControl.xaml.cs">
       <DependentUpon>ZoneEditionUserControl.xaml</DependentUpon>
     </Compile>
@@ -375,11 +376,11 @@
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

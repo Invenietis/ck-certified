@@ -7,16 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using CommonServices;
+
 namespace FileLauncher
 {
-    public enum FileLookup
-    {
-        Registry = 2,
-        SpecialFolder = 4,
-        Other = 8
-    }
-
-    public class WildFile
+    public class WildFile : IWildFile
     {
         string _path;
         public FileLookup Lookup { get; internal set; }
@@ -64,6 +59,21 @@ namespace FileLauncher
                 Lookup = FileLookup.Other;
             }
         }
+
+        #region IComparable Members
+
+        public int CompareTo( object obj )
+        {
+            if(obj is IWildFile)
+            {
+                IWildFile wf = obj as IWildFile;
+                if( wf.FileName == this.FileName && wf.Lookup == this.Lookup ) return 0;
+            }
+            
+            return -1;
+        }
+
+        #endregion
     }
 
     public class WildApp : WildFile

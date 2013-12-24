@@ -174,9 +174,6 @@
   <data name="SendKeyProtocolTitle" xml:space="preserve">
     <value>Special Key (F11, Return, Suppr ...)</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="Up" xml:space="preserve">
     <value>Up</value>
   </data>
@@ -185,5 +182,17 @@
   </data>
   <data name="UpRight" xml:space="preserve">
     <value>Up-Right</value>
+  </data>
+  <data name="FileLauncherBrowse" xml:space="preserve">
+    <value>A file from your computer</value>
+  </data>
+  <data name="FileLauncherDescription" xml:space="preserve">
+    <value>Open a file or launch an application from your computer</value>
+  </data>
+  <data name="FileLauncherInstalledApps" xml:space="preserve">
+    <value>An installed application</value>
+  </data>
+  <data name="FileLauncherTitle" xml:space="preserve">
+    <value>Open...</value>
   </data>
 </root>

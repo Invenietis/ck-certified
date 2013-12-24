@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CommonServices;
 
 namespace FileLauncher
 {
-    public static class FileLocator
+    public class FileLocator : IFileLocator
     {
         //An iterator
         static int it;
@@ -19,16 +20,21 @@ namespace FileLauncher
         /// <summary>
         /// Contains all the WildFile loaded from the registry through the LoadRegistry method
         /// </summary>
-        public static List<WildFile> RegistryApps { get; private set; }
+        public List<IWildFile> RegistryApps { get; private set; }
 
         public static Dictionary<string, Environment.SpecialFolder> SpecialFolders { get; private set; }
+
+        public FileLocator()
+        {
+            Init();
+        }
 
         /// <summary>
         /// Load all the WildFile from the registry into RegistryApps
         /// </summary>
-        public static void LoadRegistry()
+        public void LoadRegistry()
         {
-            RegistryApps = new List<WildFile>();
+            RegistryApps = new List<IWildFile>();
             //From App Paths
             {
                 var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths");
@@ -84,7 +90,7 @@ namespace FileLauncher
         /// <summary>
         /// Load resources
         /// </summary>
-        public static void Init()
+        public void Init()
         {
             LoadSpecialFolders();
             LoadRegistry();
@@ -95,36 +101,39 @@ namespace FileLauncher
         /// </summary>
         /// <param name="file">the file to locate. the founded path will be updated into file.Path</param>
         /// <returns>Returns if the file is found or not</returns>
-        public static void TryLocate( WildFile file, Action<WildFile> callback)
+        public void TryLocate( IWildFile file, Action<IWildFile> callback )
         {
+            WildFile wFile = file as WildFile;
             switch(file.Lookup)
             {
-                case FileLookup.Registry: 
-                    LocateFromRegistry(file);
-                    if (!file.IsLocated) //True if found in the registry
-                        LocateFromSpecialDirectory(file);
+                case FileLookup.Registry:
+                    LocateFromRegistry( wFile );
+                    if( !wFile.IsLocated ) //True if found in the registry
+                        LocateFromSpecialDirectory( wFile );
                     break;
-                case FileLookup.SpecialFolder: 
-                    LocateFromSpecialDirectory(file);
+                case FileLookup.SpecialFolder:
+                    LocateFromSpecialDirectory( wFile );
                     break;
-                case FileLookup.Other:  
-                    LocateFromSpecialDirectory( file );
+                case FileLookup.Other:
+                    LocateFromSpecialDirectory( wFile );
                     break;
             }
 
             //Last chance
-            if (!file.IsLocated)
+            if( !wFile.IsLocated )
             {
                 Task.Factory.StartNew( () => {
-                    string path = TryLocatePath( file.Path );
-                    if( path != null ) file.Path = path;
+                    string path = TryLocatePath( wFile.Path );
+                    
+                    //
+                    if( path != null ) wFile.Path = path;
 
-                    callback(file);
+                    callback( wFile );
                 } );
             }
             else
             {
-                callback( file );
+                callback( wFile );
             }
         }
 
@@ -133,7 +142,7 @@ namespace FileLauncher
         /// </summary>
         /// <param name="file"></param>
         /// <returns>The formated command</returns>
-        public static string GetLocationCommand(WildFile file)
+        public string GetLocationCommand( IWildFile file )
         {
             string cmd = String.Format("{0},{1}", file.FileName, (int) file.Lookup);
             if (file.FolderLocationType != null) //false if  the path does not contains a special location : file.Lookup = SpecialFolder | Registry
@@ -151,13 +160,13 @@ namespace FileLauncher
             return cmd;
         }
 
-        static void LocateFromRegistry(WildFile file)
+        void LocateFromRegistry(WildFile file)
         {
-            WildFile found = RegistryApps.FirstOrDefault(f => f.FileName == file.FileName);
+            IWildFile found = RegistryApps.FirstOrDefault(f => f.FileName == file.FileName);
             file.Path = found.Path;
         }
 
-        static void LocateFromSpecialDirectory(WildFile file)
+        void LocateFromSpecialDirectory(WildFile file)
         {
             if (file.FolderLocationType == null) return;
 
@@ -190,7 +199,7 @@ namespace FileLauncher
         /// <param name="folders">The folder names that may contains the file</param>
         /// <param name="exclude">Path to ignore</param>
         /// <returns></returns>
-        static string TryLocatePath( string path, string[] folders = null, List<string> exclude = null )
+        string TryLocatePath( string path, string[] folders = null, List<string> exclude = null )
         {
             if( exclude == null )
             {
@@ -232,6 +241,18 @@ namespace FileLauncher
             if (Directory.GetParent(currDirectory) == null) return null;
             
             return TryLocatePath( Directory.GetParent( currDirectory ).FullName + @"\" + Path.GetFileName( path ), folders, exclude );
+        }
+
+
+ 
+        public IWildFile CreateWildFile( string path, bool fromRegistry )
+        {
+            return new WildFile(path, fromRegistry);
+        }
+
+        public IWildFile CreateWildFile( string filename )
+        {
+            return new WildFile( filename );
         }
     }
 }

@@ -10,46 +10,26 @@ using System.Text;
 
 namespace FileLauncher
 {
-    [Plugin(FileLauncher.PluginIdString,
+    [Plugin(Launcher.PluginIdString,
            PublicName = PluginPublicName,
-           Version = FileLauncher.PluginIdVersion,
+           Version = Launcher.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" })]
-    public class FileLauncher : BasicCommandHandler
+    public class Launcher : BasicCommandHandler , IFileLauncherService
     {
         const string PluginIdString = "{02D08D49-171F-454A-A84C-89DD7F959958}";
         Guid PluginGuid = new Guid(PluginIdString);
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "File Launcher";
-        const string CMD = "launch";
-        Applications _win;
 
         public override void Start()
         {
+            FileLocator = new FileLocator();
             base.Start();
-            FileLocator.Init();
-            _win = new Applications() 
-            {
-                DataContext = new ApplicationViewModel()
-                {
-                    Apps = FileLocator.RegistryApps
-                } 
-            };
-            
-            _win.Show();
         }
 
-        protected override void OnCommandSent(object sender, CommandSentEventArgs e)
+        public void LoadFromCommand( string command, Action<IWildFile> loaded )
         {
-            Command cmd = new Command(e.Command);
-            if (cmd.Name != CMD) return;
-            LoadFile( cmd.Content, (f) => {
-                if( f != null ) Launch( f );
-            } );
-        }
-
-        public void LoadFile(string token, Action<WildFile> loaded)
-        {
-            var info = token.Split(',');
+            var info = command.Split(',');
             if(info.Length < 2 ) return;
 
             WildFile f = new WildFile(info[Command.Contents.FILE_NAME]);
@@ -61,12 +41,12 @@ namespace FileLauncher
             else if (f.Lookup == FileLookup.SpecialFolder && info.Length > 3)
             {
                 f.Path = info[Command.Contents.FILE_PATH];
-                f.FolderLocationType = (Environment.SpecialFolder)int.Parse(info[Command.Contents.FILE_SPECIAL_DIRECTORY]);
+                f.FolderLocationType = (Environment.SpecialFolder) int.Parse(info[Command.Contents.FILE_SPECIAL_DIRECTORY]);
             }
             FileLocator.TryLocate( f, loaded );
         }
 
-        public void Launch(WildFile f)
+        public void Launch(IWildFile f)
         {
             if (!f.IsLocated) return;
             try
@@ -75,6 +55,12 @@ namespace FileLauncher
             }
             catch (Win32Exception e) { } //Exception can be thrown just by clicking on the cancel button of an install wizard
         }
+
+        #region IFileLauncherService Members
+
+        public IFileLocator FileLocator { get; private set; }
+
+        #endregion
     }
 
     public class Command

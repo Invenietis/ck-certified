@@ -21,7 +21,7 @@ namespace FileLauncher
             set 
             { 
                 _selectedApp = value; NotifyPropertyChanged("SelectedApp");
-                _appCommand = FileLocator.GetLocationCommand(_selectedApp);
+               // _appCommand = FileLocator.GetLocationCommand(_selectedApp);
 
                 NotifyPropertyChanged("AppCommand"); 
             } 

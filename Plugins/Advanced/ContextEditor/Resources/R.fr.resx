@@ -159,6 +159,15 @@
   <data name="EndingStepTitle" xml:space="preserve">
     <value>Modifications sauvegardées</value>
   </data>
+  <data name="FileLauncher" xml:space="preserve">
+    <value>Ouvrir...</value>
+  </data>
+  <data name="FileLauncherBrowse" xml:space="preserve">
+    <value>Un fichier depuis l'ordinateur</value>
+  </data>
+  <data name="FileLauncherInstalledApps" xml:space="preserve">
+    <value>Une application installée</value>
+  </data>
   <data name="HomeDestroyKeyboardDesc" xml:space="preserve">
     <value>Suppimez l'un de vos claviers.</value>
   </data>

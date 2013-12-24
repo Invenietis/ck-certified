@@ -164,9 +164,11 @@ namespace TextTemplate
 
         public Command(string cmd)
         {
-            int pos = cmd.IndexOf(SeparationToken);
-            Name = cmd.Substring(0, pos);
-            Content = cmd.Substring(pos + SeparationToken.Length);
+            int pos = cmd.IndexOf( SeparationToken );
+            if( pos < 0 ) return;
+
+            Name = cmd.Substring( 0, pos );
+            Content = cmd.Substring( pos + SeparationToken.Length );
         }
     }
 }

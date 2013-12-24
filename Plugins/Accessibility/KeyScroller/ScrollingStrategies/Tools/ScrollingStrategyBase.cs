@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace KeyScroller
 {
-    public abstract class ScrollingStrategy : IScrollingStrategy
+    public abstract class ScrollingStrategyBase : IScrollingStrategy
     {
         ICKReadOnlyList<IHighlightableElement> _roElements;
 
@@ -30,7 +30,7 @@ namespace KeyScroller
             get { return _roElements ?? ( _roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
         }
 
-        public ScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ScrollingStrategyBase( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
         {
             _elements = elements;
             _timer = timer;
@@ -49,7 +49,7 @@ namespace KeyScroller
 
             return RegisteredElements.FirstOrDefault();
         }
-        
+
         /// <summary>
         /// Goes up in the tree and returns the first child of the relative root of the current element's tree 
         /// For example : the RelativeRoot of the keyboard is the VMKeyboard itself. We are going to get the keyboard's first child and to start iterating on it directly. 
@@ -60,7 +60,7 @@ namespace KeyScroller
             if( _currentElementParents.Count == 0 ) return _currentElement;
 
             //Getting the children of the root element of the current tree
-            
+
             ICKReadOnlyList<IHighlightableElement> rootChildren = null;
             while( _currentElementParents.Count > 1 )
             {
@@ -79,11 +79,6 @@ namespace KeyScroller
             // if there is no parent, go to normal next element
             if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
 
-            //IHighlightableElement parent = _currentElementParents.Pop();
-            //ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
-            //if( _currentElementParents.Count > 0 ) parentSiblings = _currentElementParents.Peek().Children;
-            //else parentSiblings = RegisteredElements;
-
             //We get the parent and fetch its siblings
             IHighlightableElement parent = _currentElementParents.Pop();
             ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
@@ -98,7 +93,11 @@ namespace KeyScroller
                 parentSiblings = RegisteredElements;
 
                 //If this tree is the only tree at the root level, we directly start iterating on its children
-                if( parentSiblings.Count == 1 ) return GetNextElement( ActionType.EnterChild );
+                if( parentSiblings.Count == 1 )
+                {
+                    _currentId = 0;
+                    return GetNextElement( ActionType.EnterChild );
+                }
             }
 
             _currentId = parentSiblings.IndexOf( parent );
@@ -169,7 +168,18 @@ namespace KeyScroller
                 ICKReadOnlyList<IHighlightableElement> elements = null;
                 // get the sibling of the current element
                 if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
-                else elements = RegisteredElements;
+                else
+                {
+                    //We are on the root level
+                    elements = RegisteredElements;
+
+                    if( actionType != ActionType.EnterChild && elements.Count == 1 )//We are on the root level, and there is only one element, so we directly enter it.
+                    {
+                        _currentId = 0;
+                        nextElement = GetEnterChild( elements );
+                        return GetSkipBehavior( nextElement );
+                    }
+                }
 
                 if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
                 {

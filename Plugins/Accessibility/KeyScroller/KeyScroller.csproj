@@ -98,13 +98,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyScroller.cs" />
-    <Compile Include="ScrollingStrategies\BasicScrollingStrategy.cs" />
+    <Compile Include="ScrollingStrategies\ZoneScrollingStrategy.cs" />
     <Compile Include="Editor\BasicScrollEditor.cs" />
     <Compile Include="Editor\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\EditorViewModel.cs" />
-    <Compile Include="ScrollingStrategies\IScrollingStrategy.cs" />
+    <Compile Include="ScrollingStrategies\Tools\IScrollingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
@@ -116,10 +116,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScrollingStrategies\ScrollingStrategy.cs" />
-    <Compile Include="ScrollingStrategies\SimpleScrollingStrategy.cs" />
-    <Compile Include="ScrollingStrategies\SplitScrollingStrategy.cs" />
-    <Compile Include="ScrollingStrategies\StrategyAttribute.cs" />
+    <Compile Include="ScrollingStrategies\Tools\ScrollingStrategyBase.cs" />
+    <Compile Include="ScrollingStrategies\OneByOneScrollingStrategy.cs" />
+    <Compile Include="ScrollingStrategies\ZoneSplittingScrollingStrategy.cs" />
+    <Compile Include="ScrollingStrategies\Tools\StrategyAttribute.cs" />
     <Compile Include="ScrollingStrategies\TurboScrollingStrategy.cs" />
   </ItemGroup>
   <ItemGroup>

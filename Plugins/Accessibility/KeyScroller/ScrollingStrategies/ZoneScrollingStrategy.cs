@@ -14,17 +14,17 @@ namespace KeyScroller
     /// <summary>
     /// Scrolling on each zone, then entering the zone to scroll on each key
     /// </summary>
-    [StrategyAttribute( BasicScrollingStrategy.StrategyName )]
-    internal class BasicScrollingStrategy : ScrollingStrategy
+    [StrategyAttribute( ZoneScrollingStrategy.StrategyName )]
+    internal class ZoneScrollingStrategy : ScrollingStrategyBase
     {
-        const string StrategyName = "BasicScrollingStrategy";
+        const string StrategyName = "ZoneScrollingStrategy";
 
         public override string Name
         {
             get { return StrategyName; }
         }
 
-        public BasicScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ZoneScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

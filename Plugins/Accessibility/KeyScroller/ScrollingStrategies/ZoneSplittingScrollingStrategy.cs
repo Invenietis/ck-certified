@@ -11,10 +11,10 @@ using SimpleSkin.ViewModels;
 
 namespace KeyScroller
 {
-    [Strategy( SplitScrollingStrategy.StrategyName )]
-    internal class SplitScrollingStrategy : BasicScrollingStrategy
+    [Strategy( HalfZoneScrollingStrategy.StrategyName )]
+    internal class HalfZoneScrollingStrategy : ZoneScrollingStrategy
     {
-        const string StrategyName = "SplitScrollingStrategy";
+        const string StrategyName = "HalfZoneScrollingStrategy";
         const int ChildrenLimitBeforeSplit = 6;
 
         public override string Name
@@ -24,7 +24,7 @@ namespace KeyScroller
 
         IHighlightableElement _nextElement = null;
 
-        public SplitScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public HalfZoneScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

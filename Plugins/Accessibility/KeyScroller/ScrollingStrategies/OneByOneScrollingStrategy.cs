@@ -15,11 +15,11 @@ namespace KeyScroller
     /// <summary>
     /// Scrolling on each key one after the other, without taking zones into account
     /// </summary>
-    [StrategyAttribute( SimpleScrollingStrategy.StrategyName )]
-    public class SimpleScrollingStrategy : ScrollingStrategy
+    [StrategyAttribute( OneByOneScrollingStrategy.StrategyName )]
+    public class OneByOneScrollingStrategy : ScrollingStrategyBase
     {
-        const string StrategyName = "SimpleScrollingStrategy";
-        public SimpleScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        const string StrategyName = "OneByOneScrollingStrategy";
+        public OneByOneScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

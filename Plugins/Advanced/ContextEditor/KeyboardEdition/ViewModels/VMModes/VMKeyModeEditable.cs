@@ -58,7 +58,7 @@ namespace KeyboardEditor.ViewModels
 
         private void InitializeCurrentImage()
         {
-            object o = Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"];
+            object o = Context.SkinConfiguration[Model.Key.Current]["Image"];
             if( o != null )
             {
                 string value = o.ToString();
@@ -443,7 +443,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _removeImageCommand == null )
                 {
-                    _removeImageCommand = new CK.Windows.App.VMCommand( () => Context.SkinConfiguration[Model.Key.CurrentLayout.Current].Remove( "Image" ) );
+                    _removeImageCommand = new CK.Windows.App.VMCommand( () => Context.SkinConfiguration[Model.Key.Current].Remove( "Image" ) );
                 }
                 return _removeImageCommand;
             }
@@ -480,7 +480,7 @@ namespace KeyboardEditor.ViewModels
             str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
             string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
 
-            Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"] = encodedImage;
+            Context.SkinConfiguration[Model.Key.Current]["Image"] = encodedImage;
         }
 
         private bool EnsureIsImage( string extension )
@@ -514,7 +514,7 @@ namespace KeyboardEditor.ViewModels
                     else
                     {
                         //The value is the "pack" path to an internal image
-                        Context.SkinConfiguration[Model.Key.CurrentLayout.Current]["Image"] = value.Value;
+                        Context.SkinConfiguration[Model.Key.Current]["Image"] = value.Value;
                     }
 
                     OnPropertyChanged( "SelectedImage" );

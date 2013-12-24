@@ -107,6 +107,11 @@ namespace SimpleSkin.ViewModels
         {
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
+                LayoutPropertyChangedTriggers( e.Key );
+            }
+
+            if( _key.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
                 PropertyChangedTriggers( e.Key );
             }
         }
@@ -115,10 +120,6 @@ namespace SimpleSkin.ViewModels
         {
             SetActionOnPropertyChanged( "Current", () =>
             {
-                //SafeUpdateX();
-                //SafeUpdateY();
-                //SafeUpdateX();
-
                 SafeUpdateUpLabel();
                 SafeUpdateDownLabel();
                 SafeUpdateIsEnabled();
@@ -135,7 +136,7 @@ namespace SimpleSkin.ViewModels
             SetActionOnPropertyChanged( "Enabled", () => { SafeUpdateIsEnabled(); OnPropertyChanged( "Enabled" ); } );
             SetActionOnPropertyChanged( "UpLabel", () => { SafeUpdateUpLabel(); OnPropertyChanged( "UpLabel" ); } );
             SetActionOnPropertyChanged( "DownLabel", () => { SafeUpdateDownLabel(); OnPropertyChanged( "DownLabel" ); } );
-            SetActionOnPropertyChanged( "CurrentLayout", () => { PropertyChangedTriggers(); } );
+            SetActionOnPropertyChanged( "CurrentLayout", () => { LayoutPropertyChangedTriggers(); } );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
@@ -152,6 +153,22 @@ namespace SimpleSkin.ViewModels
         }
 
         private void PropertyChangedTriggers( string propertyName = "" )
+        {
+            switch( propertyName )
+            {
+                case "Image":
+                    SafeUpdateImage();
+                    OnPropertyChanged( "Image" );
+                    break;
+                case "DisplayType":
+                    SafeUpdateShowLabel();
+                    SafeUpdateShowImage();
+                    OnPropertyChanged( "ShowLabel" );
+                    OnPropertyChanged( "ShowImage" );
+                    break;
+            }
+        }
+        private void LayoutPropertyChangedTriggers( string propertyName = "" )
         {
             if( String.IsNullOrWhiteSpace( propertyName ) )
             {
@@ -201,10 +218,6 @@ namespace SimpleSkin.ViewModels
                         SafeUpdateOpacity();
                         OnPropertyChanged( "Opacity" );
                         break;
-                    case "Image":
-                        SafeUpdateImage();
-                        OnPropertyChanged( "Image" );
-                        break;
                     case "Visible":
                         SafeUpdateVisible();
                         OnPropertyChanged( "Visible" );
@@ -216,12 +229,6 @@ namespace SimpleSkin.ViewModels
                     case "FontStyle":
                         SafeUpdateFontStyle();
                         OnPropertyChanged( "FontStyle" );
-                        break;
-                    case "DisplayType":
-                        SafeUpdateShowLabel();
-                        SafeUpdateShowImage();
-                        OnPropertyChanged( "ShowLabel" );
-                        OnPropertyChanged( "ShowImage" );
                         break;
                     case "FontWeight":
                         SafeUpdateFontWeight();
@@ -354,7 +361,7 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateImage()
         {
-            object o = Context.Config[LayoutKeyMode].GetOrSet<object>( "Image", null );
+            object o = Context.Config[_key.Current].GetOrSet<object>( "Image", null );
 
             if( o != null )
             {
@@ -372,6 +379,7 @@ namespace SimpleSkin.ViewModels
                 ThreadSafeSet<string>( source, ( v ) =>
                 {
                     _image = WPFImageProcessingHelper.ProcessImage( v );
+                    OnPropertyChanged( "Image" );
                 } );
             }
             else _image = null;
@@ -419,12 +427,12 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateShowLabel()
         {
-            ThreadSafeSet<string>( LayoutKeyMode.GetPropertyValue<string>( Context.Config, "DisplayType", Context.Config[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = ( v == "Label" ) );
+            ThreadSafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = ( v == "Label" ) );
         }
 
         private void SafeUpdateShowImage()
         {
-            ThreadSafeSet<string>( LayoutKeyMode.GetPropertyValue<string>( Context.Config, "DisplayType", Context.Config[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = ( v == "Image" ) );
+            ThreadSafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = ( v == "Image" ) );
         }
 
         private void SafeUpdateOpacity()
@@ -711,7 +719,6 @@ namespace SimpleSkin.ViewModels
                 _del();
             }
         }
-
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {

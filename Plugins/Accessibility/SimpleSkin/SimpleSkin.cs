@@ -55,7 +55,7 @@ namespace SimpleSkin
     {
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
         Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.5.0";
+        const string PluginIdVersion = "1.6.0";
         const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
@@ -114,7 +114,6 @@ namespace SimpleSkin
 
         public void Start()
         {
-            
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
                 _noFocusWindowManager = new CKNoFocusWindowManager();

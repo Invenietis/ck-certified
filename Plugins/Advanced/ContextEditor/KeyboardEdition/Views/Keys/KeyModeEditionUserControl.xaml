@@ -46,11 +46,11 @@
             <DataTemplate x:Key="filelauncherdatatempalte">
                 
                 <StackPanel HorizontalAlignment="Stretch" >
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                         <RadioButton GroupName="FileType" x:Name="appcheckbox" IsChecked="{Binding ShowApp, Mode=TwoWay }" Margin="5">
                             <TextBlock x:Uid="keyboard-editor-file-select-app" Text="{x:Static r:R.FileLauncherInstalledApps}" />
                         </RadioButton>
-                        <RadioButton  x:Name="browsecheckbox" Margin="5" GroupName="FileType">
+                        <RadioButton  x:Name="browsecheckbox" Margin="5" GroupName="FileType" HorizontalAlignment="Right">
                             <RadioButton.Style>
                                 <Style TargetType="RadioButton">
                                     <Style.Triggers >

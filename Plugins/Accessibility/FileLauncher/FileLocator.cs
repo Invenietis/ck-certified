@@ -17,9 +17,6 @@ namespace FileLauncher
         static readonly int INTERATION_LIMIT = 500;
         static Stopwatch _watch;
 
-        /// <summary>
-        /// Contains all the WildFile loaded from the registry through the LoadRegistry method
-        /// </summary>
         public List<IWildFile> RegistryApps { get; private set; }
 
         public static Dictionary<string, Environment.SpecialFolder> SpecialFolders { get; private set; }
@@ -96,11 +93,6 @@ namespace FileLauncher
             LoadRegistry();
         }
 
-        /// <summary>
-        /// Try to found the path of the given WildFile.
-        /// </summary>
-        /// <param name="file">the file to locate. the founded path will be updated into file.Path</param>
-        /// <returns>Returns if the file is found or not</returns>
         public void TryLocate( IWildFile file, Action<IWildFile> callback )
         {
             WildFile wFile = file as WildFile;
@@ -137,11 +129,6 @@ namespace FileLauncher
             }
         }
 
-        /// <summary>
-        /// Generate the well formated command from the WildFile location information.
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns>The formated command</returns>
         public string GetLocationCommand( IWildFile file )
         {
             string cmd = String.Format("{0},{1}", file.FileName, (int) file.Lookup);
@@ -162,8 +149,8 @@ namespace FileLauncher
 
         void LocateFromRegistry(WildFile file)
         {
-            IWildFile found = RegistryApps.FirstOrDefault(f => f.FileName == file.FileName);
-            file.Path = found.Path;
+            IWildFile found = RegistryApps.FirstOrDefault(f => f.CompareTo(file) == 0);
+            if(found != null ) file.Path = found.Path;
         }
 
         void LocateFromSpecialDirectory(WildFile file)
@@ -193,11 +180,11 @@ namespace FileLauncher
         /// Try to locate a not found file path : 
         /// First, we look into the current directory and test if the file exist in a direct sub directory.
         /// Then if the file can't be found, we search a folder in sub directories listed in folders.
-        /// If there is no match, we get the parent folder. if there is a match, we get in the sub directory.
+        /// If there is no match, we get the parent folder. if there is a match, we get in the sub directory and so on.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="folders">The folder names that may contains the file</param>
-        /// <param name="exclude">Path to ignore</param>
+        /// <param name="path">The unresolved path</param>
+        /// <param name="folders">The folder names that may contains the file (used for recursivity)</param>
+        /// <param name="exclude">Path to ignore (used for recursivity)</param>
         /// <returns></returns>
         string TryLocatePath( string path, string[] folders = null, List<string> exclude = null )
         {
@@ -238,21 +225,15 @@ namespace FileLauncher
                 }
             }
 
+            //True if there is a parent
             if (Directory.GetParent(currDirectory) == null) return null;
             
             return TryLocatePath( Directory.GetParent( currDirectory ).FullName + @"\" + Path.GetFileName( path ), folders, exclude );
         }
-
-
  
         public IWildFile CreateWildFile( string path, bool fromRegistry )
         {
             return new WildFile(path, fromRegistry);
-        }
-
-        public IWildFile CreateWildFile( string filename )
-        {
-            return new WildFile( filename );
         }
     }
 }

@@ -351,14 +351,23 @@ namespace KeyboardEditor.ViewModels
                 || Model.OnKeyUpCommands.Commands.Contains( cmdString )
                 || Model.OnKeyPressedCommands.Commands.Contains( cmdString ) );
 
+            //In order to keep things a little simpler in the editor, we are only bound to the KeyDownCommand events (add, delete etc..)
+            //So if the key that we are modifying is not part of the KeyDownCommand list, we don't know it.
+            //As the delete event doesn't give us the actual string of the removed command, we cannot remove it from the observable collection on our level.
+            //The editor's simplification must not impact the model, so until we remove this simplification in the editor, we are going to synchronize the collection by hand, which is pretty ugly.
+
             if( Model.OnKeyDownCommands.Commands.Contains( cmdString ) )
                 Model.OnKeyDownCommands.Commands.Remove( cmdString );
             else if( Model.OnKeyUpCommands.Commands.Contains( cmdString ) )
-                Model.OnKeyDownCommands.Commands.Remove( cmdString );
-            else if( Model.OnKeyPressedCommands.Commands.Remove( cmdString ) )
-                Model.OnKeyDownCommands.Commands.Remove( cmdString );
-            else
-                throw new ArgumentException( "Trying to remove a command that cannot be found in the key commands. Key : " + Model.UpLabel + ", command : " + cmdString );
+            {
+                Model.OnKeyUpCommands.Commands.Remove( cmdString );
+                _commands.Remove( cmdString ); //see comment above
+            }
+            else if( Model.OnKeyPressedCommands.Commands.Contains( cmdString ) )
+            {
+                Model.OnKeyPressedCommands.Commands.Remove( cmdString );
+                _commands.Remove( cmdString ); //see comment above
+            }
         }
 
         VMProtocolEditorsProvider _keyCommandTypeProvider;

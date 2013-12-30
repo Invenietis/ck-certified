@@ -29,6 +29,8 @@ using CK.Core;
 using CK.Context;
 using CommonServices.Accessibility;
 using Help.Services;
+using ProtocolManagerModel;
+using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
@@ -37,14 +39,15 @@ namespace BasicCommandHandlers
         Version = "1.0.0" )]
     public class HelpCommandHandler : BasicCommandHandler, IHelpCommandHandlerService
     {
-        const string PROTOCOL = "help:";
+        const string PROTOCOL_BASE = "help";
+        const string PROTOCOL = PROTOCOL_BASE + ":";
         IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", new Version( "1.5.0" ) );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHelpViewerService> HelpService { get; set; }
 
-        //[DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        //public IService<ISkinService> SkinService { get; set; }
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
@@ -54,6 +57,18 @@ namespace BasicCommandHandlers
 
                 if( parameter == "show" ) ShowHelp();
             }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            ProtocolManagerService.Service.Register(
+                                        new VMProtocolEditorWrapper(
+                                        "help",
+                                        R.HelpProtocolTitle,
+                                        R.HelpProtocolDescription,
+                                        typeof( HelpCommandParameterManager ) ),
+                                        typeof( IHelpCommandHandlerService ) );
         }
 
         public void ShowHelp()

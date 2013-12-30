@@ -114,23 +114,26 @@
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
     <Compile Include="PathTrimmingTextBlock.cs" />
     <Compile Include="Clic\ClickCommandParameterManager.cs" />
-    <Compile Include="CommandParser.cs" />
+    <Compile Include="DynCommand\DynCommandParameterManager.cs" />
+    <Compile Include="Tools\CommandParser.cs" />
     <Compile Include="Clic\ClickCommandHandler.cs" />
-    <Compile Include="CommandViewer.cs" />
+    <Compile Include="Tools\CommandViewer.cs" />
     <Compile Include="FileLauncher\FileLauncherCommandHandler.cs" />
     <Compile Include="FileLauncher\FileLauncherCommandParameterManager.cs" />
+    <Compile Include="Help\HelpCommandParameterManager.cs" />
+    <Compile Include="Mode\ModeCommandParameterManager.cs" />
     <Compile Include="Resources\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="HelpCommandHandler.cs" />
+    <Compile Include="Help\HelpCommandHandler.cs" />
     <Compile Include="MoveMouse\MoveMouseCommandParameterManager.cs" />
     <Compile Include="MoveMouse\MoveMouse.cs" />
-    <Compile Include="Keybd.cs" />
+    <Compile Include="Tools\Keybd.cs" />
     <Compile Include="MonitorOnceCommandHandler.cs" />
-    <Compile Include="DynCommandHandler.cs" />
-    <Compile Include="ModeCommandHandler.cs" />
+    <Compile Include="DynCommand\DynCommandHandler.cs" />
+    <Compile Include="Mode\ModeCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\R.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -139,7 +142,7 @@
     </Compile>
     <Compile Include="SendKey\SendKeyCommandHandler.cs" />
     <Compile Include="SendKey\SendKeyCommandParameterManager.cs" />
-    <Compile Include="SimpleKeyCommandParameter.cs" />
+    <Compile Include="SendString\SimpleKeyCommandParameter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Host.Services\Host.Services.csproj">

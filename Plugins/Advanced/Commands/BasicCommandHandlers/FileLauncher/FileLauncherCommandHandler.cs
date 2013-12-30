@@ -15,14 +15,14 @@ namespace BasicCommandHandlers
     [Plugin( FileLauncherCommandHandler.PluginIdString,
            PublicName = PluginPublicName,
            Version = FileLauncherCommandHandler.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" })]
+           Categories = new string[] { "Visual", "Accessibility" } )]
     public class FileLauncherCommandHandler : BasicCommandHandler, IFileLauncherCommandHandlerService
     {
         const string PluginIdString = "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}";
-        Guid PluginGuid = new Guid(PluginIdString);
+        Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "File Launcher Command Handler";
- 
+
         const string PROTOCOL_BASE = "launch";
         const string PROTOCOL = PROTOCOL_BASE + ":";
 
@@ -40,8 +40,8 @@ namespace BasicCommandHandlers
                                         PROTOCOL_BASE,
                                         R.FileLauncherTitle,
                                         R.FileLauncherDescription,
-                                        () => { return new FileLauncherCommandParameterManager( FileLauncher.Service); } ),
-                                        typeof( IFileLauncherCommandHandlerService ) ); //is it the right service ?
+                                        () => { return new FileLauncherCommandParameterManager( FileLauncher.Service ); } ),
+                                        typeof( IFileLauncherCommandHandlerService ) );
         }
 
         public override void Stop()
@@ -49,9 +49,9 @@ namespace BasicCommandHandlers
             ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
             base.Stop();
         }
-        protected override void OnCommandSent(object sender, CommandSentEventArgs e)
+        protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            Command cmd = new Command(e.Command);
+            Command cmd = new Command( e.Command );
             if( cmd.Name != PROTOCOL_BASE ) return;
 
             LaunchFile( cmd.Content );
@@ -85,13 +85,13 @@ namespace BasicCommandHandlers
         public string Name { get; private set; }
         public string Content { get; private set; }
 
-        public Command(string cmd)
+        public Command( string cmd )
         {
-            int pos = cmd.IndexOf(SeparationToken);
-            if (pos < 0) return;
+            int pos = cmd.IndexOf( SeparationToken );
+            if( pos < 0 ) return;
 
-            Name = cmd.Substring(0, pos);
-            Content = cmd.Substring(pos + SeparationToken.Length);
+            Name = cmd.Substring( 0, pos );
+            Content = cmd.Substring( pos + SeparationToken.Length );
         }
     }
 }

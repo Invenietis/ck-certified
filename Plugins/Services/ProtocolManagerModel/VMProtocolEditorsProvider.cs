@@ -122,8 +122,11 @@ namespace ProtocolManagerModel
         {
             //If the protocol is not recognized, we'll add an Invalid KeyCommandType.
             VMProtocolEditorWrapper editorWrapper = new VMProtocolEditorWrapper( protocol, protocol );
-            _availableProtocolEditors.TryGetValue( protocol, out editorWrapper );
-            return editorWrapper;
+            if( _availableProtocolEditors.TryGetValue( protocol, out editorWrapper ) )
+            {
+                return editorWrapper;
+            }
+            return new VMProtocolEditorWrapper( protocol, protocol ); 
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

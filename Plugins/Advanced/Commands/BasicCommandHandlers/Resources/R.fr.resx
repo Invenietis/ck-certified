@@ -183,6 +183,18 @@
   <data name="UpRight" xml:space="preserve">
     <value>En haut à droite</value>
   </data>
+  <data name="AddMode" xml:space="preserve">
+    <value>Remplacer le mode courant par un autre</value>
+  </data>
+  <data name="DynCommandProtocolDescription" xml:space="preserve">
+    <value>Actions diverses (fermer CiviKey, minimiser le clavier...)</value>
+  </data>
+  <data name="DynCommandProtocolTitle" xml:space="preserve">
+    <value>Divers</value>
+  </data>
+  <data name="HelpProtocolDescription" xml:space="preserve">
+    <value>Permet d'afficher l'aide du clavier</value>
+  </data>
   <data name="FileLauncherBrowse" xml:space="preserve">
     <value>Un fichier depuis votre ordinateur</value>
   </data>
@@ -194,5 +206,23 @@
   </data>
   <data name="FileLauncherTitle" xml:space="preserve">
     <value>Ouvrir...</value>
+  </data>
+  <data name="HelpProtocolTitle" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="ModeProtocolActionsSubtitle" xml:space="preserve">
+    <value>Action : </value>
+  </data>
+  <data name="ModeProtocolModesSubtitle" xml:space="preserve">
+    <value>Appliquée sur : </value>
+  </data>
+  <data name="RemoveMode" xml:space="preserve">
+    <value>Désenclencher un mode</value>
+  </data>
+  <data name="SetMode" xml:space="preserve">
+    <value>Enclencher un mode (l'ajoute au mode courant)</value>
+  </data>
+  <data name="ToggleMode" xml:space="preserve">
+    <value>Faire basculer l'enclenchement d'un mode (interrupteur)</value>
   </data>
 </root>

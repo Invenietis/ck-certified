@@ -25,7 +25,7 @@
             </DataTemplate>
             <DataTemplate x:Key="comboboxdatatemplate">
                 <DockPanel LastChildFill="True">
-                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title}"></TextBlock>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title, Mode=OneTime}"></TextBlock>
                     <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedValue}"></ComboBox>
                 </DockPanel>
             </DataTemplate>
@@ -42,7 +42,6 @@
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
-
             <DataTemplate x:Key="filelauncherdatatempalte">
                 
                 <StackPanel HorizontalAlignment="Stretch" >
@@ -124,7 +123,19 @@
                     </WrapPanel>                   
                 </StackPanel>
             </DataTemplate>
-            
+
+            <DataTemplate x:Key="modedatatemplate">
+                <StackPanel>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding ActionsTitle, Mode=OneTime}"></TextBlock>
+                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableActions}" SelectedValue="{Binding SelectedAction}"></ComboBox>
+                    </DockPanel>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding ModesTitle, Mode=OneTime}"></TextBlock>
+                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableModes}" SelectedValue="{Binding SelectedMode}"></ComboBox>
+                    </DockPanel>
+                </StackPanel>
+            </DataTemplate>
           
             <ckc:NotNullConverter x:Key="notnullconverter"/>
             <ckc:NotConverter x:Key="notconverter"/>
@@ -134,6 +145,7 @@
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
                                               FileLauncherDataTempalte="{StaticResource filelauncherdatatempalte}"
+                                              ModeDataTemplate="{StaticResource modedatatemplate}"
                                               />
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">

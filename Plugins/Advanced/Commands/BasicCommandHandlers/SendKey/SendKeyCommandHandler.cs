@@ -37,6 +37,7 @@ namespace BasicCommandHandlers
     public class NewSendKeyCommandHandlerPlugin : BasicCommandHandler, ISendKeyCommandHandlerService
     {
         private const string CMDSendKey = "sendKeyOld";
+        private const string PROTOCOL = "sendkeyold";
 
         public event EventHandler<KeySentEventArgs> KeySent;
 
@@ -50,12 +51,18 @@ namespace BasicCommandHandlers
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            CommandParser p = new CommandParser( e.Command );
-            string str;
-            if( p.IsIdentifier( out str ) && !e.Canceled && str == CMDSendKey )
+            if( !e.Canceled && e.Command.StartsWith( PROTOCOL ) )
             {
-                if( str == CMDSendKey ) SendKey( p.StringValue );
+                string parameter = e.Command.Substring( e.Command.IndexOf( ':' ) + 1 );
+                SendKey( parameter );
             }
+
+            //CommandParser p = new CommandParser( e.Command );
+            //string str;
+            //if( p.IsIdentifier( out str ) && !e.Canceled && str == CMDSendKey )
+            //{
+            //    if( str == CMDSendKey ) SendKey( p.StringValue );
+            //}
         }
 
         /// <summary>

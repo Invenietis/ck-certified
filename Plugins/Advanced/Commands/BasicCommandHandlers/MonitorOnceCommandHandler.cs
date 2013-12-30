@@ -34,13 +34,13 @@ using CK.Plugins.SendInputDriver;
 namespace BasicCommandHandlers
 {
     [Plugin( "{E9EAB9C1-8F46-4DE1-AAED-0F6371C49F50}", Categories = new string[] { "Advanced" },
-        PublicName = "Monitor command handler", Version = "1.0.0" )]
+        PublicName = "MonitorOnce command handler", Version = "1.6.0" )]
     public class MonitorOnceCommandHandler : BasicCommandHandler, IMonitorOnceCommandHandlerService
     {
         Dictionary<string, string> _clickActions;
 
-        private const string CMD = "MonitorOnce";
-        private const string SendKeyEventName = "SendKey";
+        private const string SENDKEY = "sendkey";
+        private const string PROTOCOL = "monitoronce";
 
         public MonitorOnceCommandHandler()
         {
@@ -58,42 +58,23 @@ namespace BasicCommandHandlers
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            if( !e.Canceled )
+            if( !e.Canceled && e.Command.StartsWith( PROTOCOL ) )
             {
-                CommandParser p = new CommandParser( e.Command );
-                if( p.MatchIdentifier( CMD ) )
-                {
-                    string eventKey;
-                    string eventName;
+                string parameter = e.Command.Substring( e.Command.IndexOf( ":" ) + 1 );
+                //ex : monitoronce:sendkey,autoclose-shift,mode:remove,shift
+                //     protocol:whatcommandtomonitor,thekeyofthecommandtoexecutewhenmonitoredmethodistriggered,thecommandtoexecutewhenmonitoredmethodistriggered
 
-                    if( p.MatchIsolatedChar( '.' ) )
-                    {
-                        if( p.IsIdentifier( out eventName ) )
-                        {
-                            if( p.Match( CommandParser.Token.OpenPar ) )
-                            {
-                                if( p.IsString( out eventKey ) )
-                                {
-                                    if( p.Match( CommandParser.Token.ClosePar ) )
-                                    {
-                                        if( p.MatchIsolatedChar( ':' ) )
-                                        {
-                                            Parse( eventKey, eventName, e.Command.Split( ':' )[1] );
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                string[] splittedParamter = parameter.Split( ',' );
+
+                Parse( splittedParamter[0], splittedParamter[1], String.Format( "{0},{1}", splittedParamter[2], splittedParamter[3] ) );
             }
         }
 
-        void Parse( string key, string eventName, string actionContent )
+        void Parse( string eventName, string key, string actionContent )
         {
             switch( eventName )
             {
-                case SendKeyEventName:
+                case SENDKEY:
                     RegisterOnSendKey( key, actionContent );
                     break;
             }
@@ -115,7 +96,7 @@ namespace BasicCommandHandlers
                 _clickActions.Remove( key );
                 if( _clickActions.Count == 0 )
                 {
-                    SendStringCommandHandler.StringSent += new EventHandler<StringSentEventArgs>( OnStringSent );
+                    SendStringCommandHandler.StringSent -= new EventHandler<StringSentEventArgs>( OnStringSent );
                     SendKeyCommandHandler.KeySent -= new EventHandler<KeySentEventArgs>( OnKeySent );
                 }
             }

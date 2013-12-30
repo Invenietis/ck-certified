@@ -195,4 +195,40 @@
   <data name="FileLauncherTitle" xml:space="preserve">
     <value>Open...</value>
   </data>
+  <data name="AddMode" xml:space="preserve">
+    <value>Activate a mode</value>
+  </data>
+  <data name="DynCommandProtocolDescription" xml:space="preserve">
+    <value>Enables triggering other actions (close CiviKey, minimize the keyboard...)</value>
+  </data>
+  <data name="DynCommandProtocolTitle" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
+  <data name="HelpProtocolDescription" xml:space="preserve">
+    <value>Enables showing the keyboard's help panel</value>
+  </data>
+  <data name="HelpProtocolTitle" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ModeProtocolActionsSubtitle" xml:space="preserve">
+    <value>Action : </value>
+  </data>
+  <data name="ModeProtocolDescription" xml:space="preserve">
+    <value>Enables interacting with modes : removing, adding or setting one</value>
+  </data>
+  <data name="ModeProtocolModesSubtitle" xml:space="preserve">
+    <value>Applied to : </value>
+  </data>
+  <data name="ModeProtocolTitle" xml:space="preserve">
+    <value>Modes (ctrl, shift, alt...)</value>
+  </data>
+  <data name="RemoveMode" xml:space="preserve">
+    <value>Desactivate a mode</value>
+  </data>
+  <data name="SetMode" xml:space="preserve">
+    <value>Set a mode as the current (and only) one</value>
+  </data>
+  <data name="ToggleMode" xml:space="preserve">
+    <value>Toggle a mode</value>
+  </data>
 </root>

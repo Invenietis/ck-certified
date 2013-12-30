@@ -142,6 +142,7 @@
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Versionning\150To160.cs" />
     <Compile Include="ViewModels\VMContextElementSimple.cs" />
     <Compile Include="ViewModels\VMContextSimple.cs" />
     <Compile Include="ViewModels\VMKeyboardSimple.cs" />

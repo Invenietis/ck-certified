@@ -102,11 +102,11 @@ namespace CK.Keyboard
             _index = i;
         }
 
-		internal void DestroyConfig()
-		{
+        internal void DestroyConfig()
+        {
             foreach( KeyMode k in KeyModes ) k.DestroyConfig();
-			Context.ConfigContainer.Destroy( this );
-		}
+            Context.ConfigContainer.Destroy( this );
+        }
 
         public event EventHandler<KeyPropertyChangedEventArgs> KeyPropertyChanged;
         public event EventHandler<KeyPropertyChangedEventArgs> KeyOtherPropertyChanged;
@@ -148,15 +148,15 @@ namespace CK.Keyboard
         {
             //if( _repeatCount >= 0 )
             //{
-                //This case can happen without any "bugs" as running on a slow computer or clicking with both the mouse and the trackpad can 
-                //send a push/push -> release/release sequence.
-                //Throwing an exception here is not the right answer.
-                //The repeatcount seems therefor rather useless.
-                //throw new InvalidOperationException( R.KeyPushWhenDown );
+            //This case can happen without any "bugs" as running on a slow computer or clicking with both the mouse and the trackpad can 
+            //send a push/push -> release/release sequence.
+            //Throwing an exception here is not the right answer.
+            //The repeatcount seems therefor rather useless.
+            //throw new InvalidOperationException( R.KeyPushWhenDown );
             //}
             //Debug.Assert( _repeatCount == -1, "Since Push has not been called yet, repeatCount must be -1." );
             _repeatCount = 0;
-            KeyInteractionEventArgs e = new KeyInteractionEventArgs( this, Current.OnKeyDownCommands, KeyInteractionEventType.Down  );
+            KeyInteractionEventArgs e = new KeyInteractionEventArgs( this, Current.OnKeyDownCommands, KeyInteractionEventType.Down );
             EventHandler<KeyInteractionEventArgs> keyDown = KeyDown;
             if( keyDown != null ) keyDown( this, e );
             Keyboard.OnKeyDown( e );
@@ -193,11 +193,11 @@ namespace CK.Keyboard
         {
             //if( _repeatCount < 0 )
             //{
-                //This case can happen without any "bugs" as running on a slow computer or clicking with both the mouse and the trackpad can 
-                //send a push/push -> release/release sequence.
-                //Throwing an exception here is not the right answer.
-                //The repeatcount seems therefor rather useless.
-                //throw new InvalidOperationException( R.KeyReleaseWhenUp );
+            //This case can happen without any "bugs" as running on a slow computer or clicking with both the mouse and the trackpad can 
+            //send a push/push -> release/release sequence.
+            //Throwing an exception here is not the right answer.
+            //The repeatcount seems therefor rather useless.
+            //throw new InvalidOperationException( R.KeyReleaseWhenUp );
             //}
             if( doPress ) OnKeyPressed();
             _repeatCount = -1;
@@ -238,12 +238,14 @@ namespace CK.Keyboard
                     if( k == null )
                     {
                         k = FindOrCreate( keyMode );
-                        sr.ReadInlineObjectStructured( k ); 
+                        sr.ReadInlineObjectStructured( k );
                     }
                     else r.Skip();
                 }
             }
             r.Read();
+
+            CK.Keyboard.Versionning.V150To160.Key150To160( this );
         }
 
         void IStructuredSerializable.WriteContent( IStructuredWriter sw )
@@ -256,6 +258,6 @@ namespace CK.Keyboard
             }
             w.WriteFullEndElement();
         }
-    
+
     }
 }

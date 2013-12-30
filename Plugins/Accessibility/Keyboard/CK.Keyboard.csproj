@@ -109,6 +109,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
+    <Compile Include="Versionning\150To160.cs" />
     <Compile Include="Zone.cs" />
     <Compile Include="Zone.Keys.cs" />
     <Compile Include="ZoneCollection.cs" />

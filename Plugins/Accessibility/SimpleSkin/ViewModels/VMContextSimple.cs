@@ -31,6 +31,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Windows.Threading;
+using SimpleSkin.ViewModels.Versionning;
 
 namespace SimpleSkin.ViewModels
 {
@@ -275,43 +276,8 @@ namespace SimpleSkin.ViewModels
 
         private VMKeySimple CreateKey( IKey k )
         {
-            EnsureVersion( k );
+            V150To160.EnsureKeyVersion( Config, k );
             return new VMKeySimple( this, k );
-        }
-
-        private void EnsureVersion( IKey k )
-        {
-            if( Config[k] != null )
-            {
-                object o = Config[k.CurrentLayout.LayoutKeyModes.FindBest( k.Context.EmptyMode )]["[PluginDataVersion]"];
-                if( o != null )
-                {
-                    Version v;
-                    if( Version.TryParse( o.ToString(), out v ) && ( v <= new Version( "1.5.0" ) ) )
-                    {
-                        foreach( var layoutKeyMode in k.CurrentLayout.LayoutKeyModes )
-                        {
-                            MigrateProperty( layoutKeyMode, "Image" );
-                            MigrateProperty( layoutKeyMode, "DisplayType" );
-                        }
-                    }
-                }
-            }
-        }
-
-        private void MigrateProperty( ILayoutKeyMode lkm, string propertyName )
-        {
-            object obj = Config[lkm][propertyName];
-            Config[lkm].Remove( propertyName );
-            if( obj != null )
-            {
-                IKeyboardMode mode = lkm.Mode;
-                IKeyMode bestMatch = lkm.Key.KeyModes.FindBest( mode );
-                if( bestMatch.Mode.ContainsAll( mode ) && mode.ContainsAll( bestMatch.Mode ) )
-                {
-                    Config[bestMatch].Set( propertyName, obj );
-                }
-            }
         }
     }
 }

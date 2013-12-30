@@ -133,28 +133,11 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A file from your computer.
+        ///   Looks up a localized string similar to Enables triggering other actions (close CiviKey, minimize the keyboard...).
         /// </summary>
-        internal static string FileLauncherBrowse {
+        internal static string DynCommandProtocolDescription {
             get {
-                return ResourceManager.GetString("FileLauncherBrowse", resourceCulture);
-            }
-        }
-        
-         ///   Looks up a localized string similar to Enables triggering other actions (close CiviKey, minimize the keyboard...).
-         internal static string DynCommandProtocolDescription {
-            get {
- 		return ResourceManager.GetString("DynCommandProtocolDescription", resourceCulture);
-            }
-        }
-
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open a file or launch an application from your computer.
-        /// </summary>
-        internal static string FileLauncherDescription {
-            get {
-                return ResourceManager.GetString("FileLauncherDescription", resourceCulture);
+                return ResourceManager.GetString("DynCommandProtocolDescription", resourceCulture);
             }
         }
         
@@ -166,7 +149,25 @@ namespace BasicCommandHandlers.Resources {
                 return ResourceManager.GetString("DynCommandProtocolTitle", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file from your computer.
+        /// </summary>
+        internal static string FileLauncherBrowse {
+            get {
+                return ResourceManager.GetString("FileLauncherBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a file or launch an application from your computer.
+        /// </summary>
+        internal static string FileLauncherDescription {
+            get {
+                return ResourceManager.GetString("FileLauncherDescription", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to An installed application.
         /// </summary>
@@ -175,7 +176,15 @@ namespace BasicCommandHandlers.Resources {
                 return ResourceManager.GetString("FileLauncherInstalledApps", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open....
+        /// </summary>
+        internal static string FileLauncherTitle {
+            get {
+                return ResourceManager.GetString("FileLauncherTitle", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Enables showing the keyboard&apos;s help panel.
@@ -183,15 +192,6 @@ namespace BasicCommandHandlers.Resources {
         internal static string HelpProtocolDescription {
             get {
                 return ResourceManager.GetString("HelpProtocolDescription", resourceCulture);
-            }
-        }
-        
-         /// <summary>
-        ///   Looks up a localized string similar to Open....
-        /// </summary>
-        internal static string FileLauncherTitle {
-            get {
-                return ResourceManager.GetString("FileLauncherTitle", resourceCulture);
             }
         }
         
@@ -264,6 +264,24 @@ namespace BasicCommandHandlers.Resources {
         internal static string ModeProtocolTitle {
             get {
                 return ResourceManager.GetString("ModeProtocolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables triggering an action right after another (change the mode after the next click on a key).
+        /// </summary>
+        internal static string MonitorOnceProtocolDescription {
+            get {
+                return ResourceManager.GetString("MonitorOnceProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chain actions.
+        /// </summary>
+        internal static string MonitorOnceProtocolTitle {
+            get {
+                return ResourceManager.GetString("MonitorOnceProtocolTitle", resourceCulture);
             }
         }
         
@@ -369,14 +387,13 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Toggle a mode.
         /// </summary>
-        internal static string ToggleMode
-        {
-            get
-            {
-                return ResourceManager.GetString( "ToggleMode", resourceCulture );
+        internal static string ToggleMode {
+            get {
+                return ResourceManager.GetString("ToggleMode", resourceCulture);
             }
         }
-
+        
+        /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
         internal static string Up {

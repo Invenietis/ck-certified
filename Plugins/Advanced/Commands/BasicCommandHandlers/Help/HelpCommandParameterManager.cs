@@ -10,6 +10,7 @@ namespace BasicCommandHandlers
 {
     public class HelpCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         public HelpCommandParameterManager()
         {
             //TODO : use resx

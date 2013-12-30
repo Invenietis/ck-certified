@@ -11,7 +11,7 @@
              xmlns:r="clr-namespace:KeyboardEditor.Resources"
              mc:Ignorable="d">
     <UserControl.Resources>
-        
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
@@ -42,8 +42,8 @@
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
+
             <DataTemplate x:Key="filelauncherdatatempalte">
-                
                 <StackPanel HorizontalAlignment="Stretch" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                         <RadioButton GroupName="FileType" x:Name="appcheckbox" IsChecked="{Binding ShowApp, Mode=TwoWay }" Margin="5">
@@ -79,7 +79,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </ComboBox.Resources>
-                            
+
                             <ComboBox.ItemTemplate >
                                 <DataTemplate >
                                     <VirtualizingStackPanel Orientation="Horizontal"  Margin="5 5 0 5" HorizontalAlignment="Stretch">
@@ -108,7 +108,6 @@
                         </WrapPanel.Style>
                         <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3">
                             <StackPanel Orientation="Horizontal"  Margin="8" HorizontalAlignment="Stretch">
-
                                 <Image Width="32" Height="32" Source="{Binding SelectedFile.Icon}" Margin="0 0 10 0"/>
                                 <StackPanel HorizontalAlignment="Stretch" Width="278">
                                     <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding SelectedFile.FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
@@ -116,11 +115,10 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
-                        
                         <Button  HorizontalAlignment="Right" Command="{Binding OpenFileDialog}" Margin="10 0 0 0">
                             <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/browse.png" />
                         </Button>
-                    </WrapPanel>                   
+                    </WrapPanel>
                 </StackPanel>
             </DataTemplate>
 
@@ -130,23 +128,63 @@
                         <TextBlock DockPanel.Dock="Left" Text="{Binding ActionsTitle, Mode=OneTime}"></TextBlock>
                         <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableActions}" SelectedValue="{Binding SelectedAction}"></ComboBox>
                     </DockPanel>
-                    <DockPanel LastChildFill="True">
+                    <DockPanel LastChildFill="True" Margin="0 5 0 0">
                         <TextBlock DockPanel.Dock="Left" Text="{Binding ModesTitle, Mode=OneTime}"></TextBlock>
                         <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableModes}" SelectedValue="{Binding SelectedMode}"></ComboBox>
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
-          
-            <ckc:NotNullConverter x:Key="notnullconverter"/>
-            <ckc:NotConverter x:Key="notconverter"/>
-            <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
+            <DataTemplate x:Key="monitoronceerror">
+                <TextBlock FontWeight="Bold" Text="You cannot chain chaining actions."></TextBlock>
+            </DataTemplate>
+
+            <!--This data template selector is mandatory since we need to use it inside one of the DataTemplates that it provides-->
+            <vm:AddActionDataTemplateSelector x:Key="inneraddactiondatatemplateselector" 
+                                              SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
+                                              ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
+                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
+                                              FileLauncherDataTempalte="{StaticResource filelauncherdatatempalte}"
+                                              ModeDataTemplate="{StaticResource modedatatemplate}"
+                                              MonitorOnceDataTemplate="{StaticResource monitoronceerror}"/>
+
+            <DataTemplate x:Key="monitoroncedatatemplate">
+                <StackPanel>
+                    <DockPanel LastChildFill="True" Margin="0 0 0 5">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding ActionsTitle, Mode=OneTime}"></TextBlock>
+                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableActions}" SelectedValue="{Binding SelectedAction}"></ComboBox>
+                    </DockPanel>
+                    <DockPanel LastChildFill="True" Margin="0 0 0 5">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding NameTitle, Mode=OneTime}"></TextBlock>
+                        <TextBox DockPanel.Dock="Right" Text="{Binding Name}"></TextBox>
+                    </DockPanel>
+                    <StackPanel DataContext="{Binding}">
+                        <TextBlock Text="Create a new action : " Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
+                        <StackPanel>
+                            <ComboBox ItemsSource="{Binding AvailableProtocolEditors}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ContentControl Margin="0 5 0 0" ContentTemplateSelector="{StaticResource inneraddactiondatatemplateselector}" Content="{Binding ProtocolEditor.ParameterManager}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+
             <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" 
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
                                               FileLauncherDataTempalte="{StaticResource filelauncherdatatempalte}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
-                                              />
+                                              MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}"/>
+
+            <ckc:NotNullConverter x:Key="notnullconverter"/>
+            <ckc:NotConverter x:Key="notconverter"/>
+            <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
+
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>

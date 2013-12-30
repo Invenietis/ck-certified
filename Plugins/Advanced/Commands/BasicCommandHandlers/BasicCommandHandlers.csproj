@@ -112,6 +112,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="MonitorOnce\MonitorOnceCommandParameterManager.cs" />
     <Compile Include="PathTrimmingTextBlock.cs" />
     <Compile Include="Clic\ClickCommandParameterManager.cs" />
     <Compile Include="DynCommand\DynCommandParameterManager.cs" />
@@ -131,7 +132,7 @@
     <Compile Include="MoveMouse\MoveMouseCommandParameterManager.cs" />
     <Compile Include="MoveMouse\MoveMouse.cs" />
     <Compile Include="Tools\Keybd.cs" />
-    <Compile Include="MonitorOnceCommandHandler.cs" />
+    <Compile Include="MonitorOnce\MonitorOnceCommandHandler.cs" />
     <Compile Include="DynCommand\DynCommandHandler.cs" />
     <Compile Include="Mode\ModeCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -182,6 +183,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="MonitorOnce\packages.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

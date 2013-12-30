@@ -17,6 +17,7 @@ namespace BasicCommandHandlers
     /// </summary>
     public class ChangeKeyboardCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         public ChangeKeyboardCommandParameterManager( ICollection<IKeyboard> keyboards )
         {
             _values = new Dictionary<string, IKeyboard>();

@@ -14,6 +14,7 @@ namespace BasicCommandHandlers
     /// </summary>
     public class MoveMouseCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         public MoveMouseCommandParameterManager()
         {
             _values = new Dictionary<string, string>() 

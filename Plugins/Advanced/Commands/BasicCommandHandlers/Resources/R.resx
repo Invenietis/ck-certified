@@ -231,4 +231,10 @@
   <data name="ToggleMode" xml:space="preserve">
     <value>Toggle a mode</value>
   </data>
+  <data name="MonitorOnceProtocolDescription" xml:space="preserve">
+    <value>Enables triggering an action right after another (change the mode after the next click on a key)</value>
+  </data>
+  <data name="MonitorOnceProtocolTitle" xml:space="preserve">
+    <value>Chain actions</value>
+  </data>
 </root>

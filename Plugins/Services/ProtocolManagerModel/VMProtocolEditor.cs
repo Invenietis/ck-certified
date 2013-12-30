@@ -68,7 +68,8 @@ namespace ProtocolManagerModel
 
         public override string ToString()
         {
-            return String.Format( "{0}:{1}", Wrapper.Protocol, ParameterManager.GetParameterString() );
+            if( Wrapper != null && ParameterManager != null ) return String.Format( "{0}:{1}", Wrapper.Protocol, ParameterManager.GetParameterString() );
+            return String.Empty;
         }
 
         private void OnPropertyChanged( string propertyName )

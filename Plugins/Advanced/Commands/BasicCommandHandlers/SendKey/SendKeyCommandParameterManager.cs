@@ -69,6 +69,7 @@ namespace BasicCommandHandlers
             _values.Add( "Stopper son", CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys.VolumeMute );
         }
 
+        public IProtocolEditorRoot Root { get; set; }
         Dictionary<string, CK.Plugins.SendInputDriver.NativeMethods.KeyboardKeys> _values;
         public IEnumerable<string> AvailableValues { get { return _values.Keys; } }
 

@@ -16,6 +16,7 @@ namespace BasicCommandHandlers
     /// </summary>
     public class DynCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         public DynCommandParameterManager()
         {
             _values = new Dictionary<string, string>();

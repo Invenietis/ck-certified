@@ -29,5 +29,7 @@ namespace ProtocolManagerModel
         /// Gets whether the parameter is valid (ie: can be safely saved as is)
         /// </summary>
         bool IsValid { get; }
+
+        IProtocolEditorRoot Root { get; set; }
     }
 }

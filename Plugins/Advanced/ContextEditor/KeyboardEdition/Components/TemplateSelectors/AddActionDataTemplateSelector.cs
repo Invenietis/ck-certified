@@ -16,7 +16,8 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate ComboBoxDataTemplate { get; set; }
         public DataTemplate FileLauncherDataTempalte { get; set; }
         public DataTemplate ModeDataTemplate { get; set; }
-        public DataTemplate DefaultTemplate { get; set; }
+        public DataTemplate DefaultDataTemplate { get; set; }
+        public DataTemplate MonitorOnceDataTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
@@ -35,8 +36,9 @@ namespace KeyboardEditor.ViewModels
         
             if( item is ModeCommandParameterManager ) return ModeDataTemplate;
 
-            //throw new ArgumentException( String.Format( "The Bound object of the AddActionDataTemplateSelector : \"{0}\" is not of a recognized type.", item.GetType() ) );
-            return DefaultTemplate;
+            if( item is MonitorOnceCommandParameterManager ) return MonitorOnceDataTemplate;
+
+            return DefaultDataTemplate;
         }
     }
 }

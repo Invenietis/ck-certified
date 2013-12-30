@@ -46,5 +46,8 @@ namespace BasicCommandHandlers
             if( PropertyChanged != null ) PropertyChanged( this, new System.ComponentModel.PropertyChangedEventArgs( propertyName ) );
         }
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+
+        public IProtocolEditorRoot Root { get; set; }
     }
 }

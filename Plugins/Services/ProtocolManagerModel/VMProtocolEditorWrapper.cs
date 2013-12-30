@@ -40,7 +40,6 @@ namespace ProtocolManagerModel
         /// /// <param name="handlingService">The Type of the service that is going to handle the protocol. Wiil be used to add a the commandhandler to the requirement layer of the keyboard.</param>
         public VMProtocolEditorWrapper( string protocol, string name, string description, Func<IProtocolParameterManager> keyCommandParameterManagerFunc )
         {
-
             Protocol = protocol;
             Name = name;
             Description = description;

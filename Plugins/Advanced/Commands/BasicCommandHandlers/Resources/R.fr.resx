@@ -225,4 +225,10 @@
   <data name="ToggleMode" xml:space="preserve">
     <value>Faire basculer l'enclenchement d'un mode (interrupteur)</value>
   </data>
+  <data name="MonitorOnceProtocolDescription" xml:space="preserve">
+    <value>Permet d'envoyer une commande juste après une autre (changer de mode après le clic sur une touche)</value>
+  </data>
+  <data name="MonitorOnceProtocolTitle" xml:space="preserve">
+    <value>Enchaîner deux commandes</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@ namespace BasicCommandHandlers
 {
     public class FileLauncherCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         VMCommand _openFileDialog;
         string[] trustedCompanies = {"Adobe", "Microsoft", "Google", "Mozilla", "Apple"};
         IWildFile _selectedApp { get; set; }

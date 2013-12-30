@@ -16,6 +16,7 @@ namespace BasicCommandHandlers
     /// </summary>
     public class ModeCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         IKeyboardContext _ctx;
         public ModeCommandParameterManager( IKeyboardContext ctx )
         {

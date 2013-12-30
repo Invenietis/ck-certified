@@ -14,6 +14,7 @@ namespace BasicCommandHandlers
     /// </summary>
     public class ClickCommandParameterManager : IProtocolParameterManager
     {
+        public IProtocolEditorRoot Root { get; set; }
         public ClickCommandParameterManager()
         {
             _values = new Dictionary<string, string>() 

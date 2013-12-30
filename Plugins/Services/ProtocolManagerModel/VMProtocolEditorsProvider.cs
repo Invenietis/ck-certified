@@ -7,13 +7,17 @@ using System.Text;
 
 namespace ProtocolManagerModel
 {
+    public interface IProtocolEditorRoot
+    {
+        IEnumerable<VMProtocolEditorWrapper> AvailableProtocolEditors { get; }
+    }
 
-    public class VMProtocolEditorsProvider : INotifyPropertyChanged
+    public class VMProtocolEditorsProvider : INotifyPropertyChanged, IProtocolEditorRoot
     {
         public IEnumerable<VMProtocolEditorWrapper> AvailableProtocolEditors { get { return _availableProtocolEditors.Values; } }
 
-        private Dictionary<string, VMProtocolEditorWrapper> _availableProtocolEditors { get; set; }
-        private Dictionary<string, Type> _availableProtocolHandlers { get; set; }
+        protected Dictionary<string, VMProtocolEditorWrapper> _availableProtocolEditors { get; set; }
+        protected Dictionary<string, Type> _availableProtocolHandlers { get; set; }
 
         public VMProtocolEditorsProvider()
         {
@@ -22,6 +26,11 @@ namespace ProtocolManagerModel
             ProtocolEditor = new VMProtocolEditor();
         }
 
+        /// <summary>
+        /// Used by the keyboard editor to get the service linked to a protocol. Enables adding the service into the keyboard's requirement layer.
+        /// </summary>
+        /// <param name="protocol">A protocol</param>
+        /// <returns>The type of the service that handles the protocol set as parameter</returns>
         public Type GetHandlingService( string protocol )
         {
             Type handlingService = null;
@@ -53,8 +62,10 @@ namespace ProtocolManagerModel
             {
                 ProtocolEditor.Wrapper = value;
 
-                //Creating the ParameterMaanger on the fly
+                //Creating the ParameterManager on the fly
                 if( value != null ) ProtocolEditor.ParameterManager = ProtocolEditor.Wrapper.CreateParameterManager();
+
+                ProtocolEditor.ParameterManager.Root = this;
 
                 OnPropertyChanged( "ProtocolEditor" );
                 OnPropertyChanged( "SelectedProtocolEditorWrapper" );
@@ -66,7 +77,7 @@ namespace ProtocolManagerModel
             if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
         }
 
-        VMProtocolEditor _vmProtocolEditor;
+        protected VMProtocolEditor _vmProtocolEditor;
         /// <summary>
         /// The KeyCommand currently displayed and used in the editor.
         /// </summary>
@@ -75,9 +86,16 @@ namespace ProtocolManagerModel
             get { return _vmProtocolEditor; }
             set
             {
+                if( _vmProtocolEditor != null ) _vmProtocolEditor.PropertyChanged += new PropertyChangedEventHandler( OnChildPropertyChanged );
                 _vmProtocolEditor = value;
+                if( _vmProtocolEditor != null ) _vmProtocolEditor.PropertyChanged += new PropertyChangedEventHandler( OnChildPropertyChanged );
+
                 OnPropertyChanged( "ProtocolEditor" );
             }
+        }
+
+        protected virtual void OnChildPropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
         }
 
         public void FlushCurrentProtocolEditor()
@@ -107,6 +125,7 @@ namespace ProtocolManagerModel
                 ProtocolEditor.ParameterManager = SelectedProtocolEditorWrapper.CreateParameterManager();
                 if( ProtocolEditor.ParameterManager == null ) throw new ArgumentNullException( String.Format( "Null value retrieved while trying to retrieve the IKeyCommandParameterManager for the KeyCommandTypeViewModel handling the protocol '{0}'", protocol ) );
 
+                ProtocolEditor.ParameterManager.Root = this;
                 ProtocolEditor.ParameterManager.FillFromString( parameter );
             }
             OnPropertyChanged( "ProtocolEditor" );
@@ -126,7 +145,7 @@ namespace ProtocolManagerModel
             {
                 return editorWrapper;
             }
-            return new VMProtocolEditorWrapper( protocol, protocol ); 
+            return new VMProtocolEditorWrapper( protocol, protocol );
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

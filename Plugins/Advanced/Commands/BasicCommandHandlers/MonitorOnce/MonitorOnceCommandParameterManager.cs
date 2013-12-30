@@ -15,9 +15,8 @@ namespace BasicCommandHandlers
     {
         public MonitorOnceCommandParameterManager()
         {
-            //TODO : use resx
             _actions = new Dictionary<string, string>();
-            _actions.Add( "Lancement d'une touche", "sendkey" );
+            _actions.Add( R.KeySent, "sendkey" );
 
             _saveCommand = new VMCommand( () =>
             {
@@ -64,11 +63,10 @@ namespace BasicCommandHandlers
             }
         }
 
-        //TODO : use resx
-        public string ActionsTitle { get { return "Action to listen to : "; } }
+        public string ActionsTitle { get { return R.ActionToListenTo; } }
 
-        //TODO : use resx -- TODO : CHECK : this step doesn't seem necessary
-        public string NameTitle { get { return "Give a name to this action : "; } }
+        //TODO : CHECK : this step doesn't seem necessary
+        public string NameTitle { get { return R.GiveName; } }
         public string Name { get; set; }
 
         private void Initialize()
@@ -83,7 +81,7 @@ namespace BasicCommandHandlers
             OnPropertyChanged( "AvailableProtocolEditors" );
         }
 
-        public string Title { get { return R.SendKeyProtocolSubtitle; } }
+        public string InnerActionTitle { get { return R.MonitorOnceInnerActionTitle; } }
 
         public void FillFromString( string parameter )
         {
@@ -96,7 +94,7 @@ namespace BasicCommandHandlers
             string innerCommand = parameter.Substring( splittedParameter[0].Length + splittedParameter[1].Length + 2 );
             string innerCommandProtocol = innerCommand.Substring( innerCommand.IndexOf( ':' ) + 1 );
 
-            CreateKeyCommand( innerCommand );
+            CreateKeyCommand( innerCommand, Root.EditedKeyMode );
 
         }
 

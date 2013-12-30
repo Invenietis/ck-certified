@@ -16,13 +16,19 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
             <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
+            <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
+            <ckc:NotNullConverter x:Key="notnullconverter"/>
+            <ckc:NotConverter x:Key="notconverter"/>
+
             <DataTemplate x:Key="sendstringdatatemplate">
                 <DockPanel LastChildFill="True">
-                    <TextBlock DockPanel.Dock="Left" Text="String to send : "></TextBlock>
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.StringToSend}"></TextBlock>
                     <TextBox DockPanel.Dock="Right" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </DockPanel>
             </DataTemplate>
+
             <DataTemplate x:Key="comboboxdatatemplate">
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="{Binding Title, Mode=OneTime}"></TextBlock>
@@ -33,17 +39,17 @@
             <DataTemplate x:Key="movemousedatatemplate">
                 <StackPanel>
                     <DockPanel LastChildFill="True">
-                        <TextBlock DockPanel.Dock="Left" Text="Direction : "></TextBlock>
+                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.Direction}"></TextBlock>
                         <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedDirection}"></ComboBox>
                     </DockPanel>
                     <DockPanel LastChildFill="True" Margin="0 5 0 0">
-                        <TextBlock DockPanel.Dock="Left" Text="Vitesse (en pixels/déplacement) : "></TextBlock>
+                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.MouseMoveSpeed}"></TextBlock>
                         <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
 
-            <DataTemplate x:Key="filelauncherdatatempalte">
+            <DataTemplate x:Key="filelauncherdatatemplate">
                 <StackPanel HorizontalAlignment="Stretch" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                         <RadioButton GroupName="FileType" x:Name="appcheckbox" IsChecked="{Binding ShowApp, Mode=TwoWay }" Margin="5">
@@ -135,7 +141,7 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="monitoronceerror">
-                <TextBlock FontWeight="Bold" Text="You cannot chain chaining actions."></TextBlock>
+                <TextBlock FontWeight="Bold" Text="{x:Static r:R.NoChaining}"></TextBlock>
             </DataTemplate>
 
             <!--This data template selector is mandatory since we need to use it inside one of the DataTemplates that it provides-->
@@ -143,7 +149,7 @@
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
-                                              FileLauncherDataTempalte="{StaticResource filelauncherdatatempalte}"
+                                              FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
                                               MonitorOnceDataTemplate="{StaticResource monitoronceerror}"/>
 
@@ -158,7 +164,7 @@
                         <TextBox DockPanel.Dock="Right" Text="{Binding Name}"></TextBox>
                     </DockPanel>
                     <StackPanel DataContext="{Binding}">
-                        <TextBlock Text="Create a new action : " Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
+                        <TextBlock Text="{Binding InnerActionTitle, Mode=OneTime}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
                         <StackPanel>
                             <ComboBox ItemsSource="{Binding AvailableProtocolEditors}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
                                 <ComboBox.ItemTemplate>
@@ -177,13 +183,9 @@
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
-                                              FileLauncherDataTempalte="{StaticResource filelauncherdatatempalte}"
+                                              FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
                                               MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}"/>
-
-            <ckc:NotNullConverter x:Key="notnullconverter"/>
-            <ckc:NotConverter x:Key="notconverter"/>
-            <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
 
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
@@ -271,7 +273,6 @@
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"></ColumnDefinition>
-                                            <!--<ColumnDefinition Width="36"></ColumnDefinition>-->
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"></RowDefinition>
@@ -397,7 +398,7 @@
                             <Button Content="Add an action" HorizontalAlignment="Right" Style="{StaticResource ModernUIButtonStyle}" Command="{Binding InitializeCommandCommand}" ></Button>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
-                            <TextBlock Text="Create a new action : " Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
+                            <TextBlock Text="{x:Static r:R.NewCommand}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
                             <StackPanel DataContext="{Binding ProtocolEditorsProvider}">
                                 <ComboBox ItemsSource="{Binding AvailableProtocolEditors}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
                                     <ComboBox.ItemTemplate>

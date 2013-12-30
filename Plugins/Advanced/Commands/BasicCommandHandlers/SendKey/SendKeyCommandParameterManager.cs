@@ -8,12 +8,6 @@ using CK.InputDriver;
 
 namespace BasicCommandHandlers
 {
-    /// <summary>
-    /// Most simple implementation of the IKeyCommandParameter interface.
-    /// The parameter is set as string value.
-    /// Getting the Command string returns the value.
-    /// This implementation is all the sendString command needs.
-    /// </summary>
     public class SendKeyCommandParameterManager : IProtocolParameterManager
     {
         public SendKeyCommandParameterManager()
@@ -105,7 +99,7 @@ namespace BasicCommandHandlers
             get
             {
                 Native.KeyboardKeys enumValue = Native.KeyboardKeys.A;
-                return SelectedValue != null && _values.TryGetValue(SelectedValue, out enumValue);
+                return SelectedValue != null && _values.TryGetValue( SelectedValue, out enumValue );
             }
         }
 

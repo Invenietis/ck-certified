@@ -21,10 +21,10 @@ namespace BasicCommandHandlers
         {
             _values = new Dictionary<string, string>();
 
-            _values.Add( "Hide the keyboard", "hideskin" );
-            _values.Add( "Close CiviKey", "shutdown" );
-            _values.Add( "minimize the keyboard", "togglehostminimized" );
-            _values.Add( "push the 'Windows' key", "windowskey" );
+            _values.Add( R.DynCommandHide, "hideskin" );
+            _values.Add( R.DynCommandClose, "shutdown" );
+            _values.Add( R.DynCommandMinimize, "togglehostminimized" );
+            _values.Add( R.DynCommandWindowsKey, "windowskey" );
         }
 
         Dictionary<string, string> _values;

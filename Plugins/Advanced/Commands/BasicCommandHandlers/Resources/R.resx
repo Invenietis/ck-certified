@@ -237,4 +237,31 @@
   <data name="MonitorOnceProtocolTitle" xml:space="preserve">
     <value>Chain actions</value>
   </data>
+  <data name="MonitorOnceInnerActionTitle" xml:space="preserve">
+    <value>Define the command sent when the action above is triggered</value>
+  </data>
+  <data name="ActionToListenTo" xml:space="preserve">
+    <value>Action to listen to : </value>
+  </data>
+  <data name="GiveName" xml:space="preserve">
+    <value>Give a name to this action :</value>
+  </data>
+  <data name="KeySent" xml:space="preserve">
+    <value>A "classic" key has been pressed (a, z, b, t etc...)</value>
+  </data>
+  <data name="ShowHelpAction" xml:space="preserve">
+    <value>Show the keyboard's help panel</value>
+  </data>
+  <data name="DynCommandClose" xml:space="preserve">
+    <value>Close CiviKey</value>
+  </data>
+  <data name="DynCommandHide" xml:space="preserve">
+    <value>Hide CiviKey's configuration panel</value>
+  </data>
+  <data name="DynCommandMinimize" xml:space="preserve">
+    <value>Minimize the keyboard</value>
+  </data>
+  <data name="DynCommandWindowsKey" xml:space="preserve">
+    <value>Push the 'Windows' key</value>
+  </data>
 </root>

@@ -231,4 +231,31 @@
   <data name="MonitorOnceProtocolTitle" xml:space="preserve">
     <value>Enchaîner deux commandes</value>
   </data>
+  <data name="MonitorOnceInnerActionTitle" xml:space="preserve">
+    <value>Décrivez la commande envoyée lorsque la condition ci-dessus sera remplie</value>
+  </data>
+  <data name="ActionToListenTo" xml:space="preserve">
+    <value>Évènement déclencheur : </value>
+  </data>
+  <data name="GiveName" xml:space="preserve">
+    <value>Nom de l'action : </value>
+  </data>
+  <data name="KeySent" xml:space="preserve">
+    <value>Lancement d'une touche "simple" (a, z, e, b, etc...)</value>
+  </data>
+  <data name="ShowHelpAction" xml:space="preserve">
+    <value>Afficher l'aide du clavier</value>
+  </data>
+  <data name="DynCommandClose" xml:space="preserve">
+    <value>Fermer CiviKey</value>
+  </data>
+  <data name="DynCommandHide" xml:space="preserve">
+    <value>Cacher le panneau de configuration de CiviKey</value>
+  </data>
+  <data name="DynCommandMinimize" xml:space="preserve">
+    <value>Minimiser le clavier</value>
+  </data>
+  <data name="DynCommandWindowsKey" xml:space="preserve">
+    <value>Presser le bouton "Windows"</value>
+  </data>
 </root>

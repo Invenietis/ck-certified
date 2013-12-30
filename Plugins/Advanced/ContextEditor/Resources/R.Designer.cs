@@ -151,6 +151,15 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direction : .
+        /// </summary>
+        public static string Direction {
+            get {
+                return ResourceManager.GetString("Direction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard..
         /// </summary>
         public static string EndingStepDesc {
@@ -415,11 +424,38 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length of each move (pixels) .
+        /// </summary>
+        public static string MouseMoveSpeed {
+            get {
+                return ResourceManager.GetString("MouseMoveSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new command : .
+        /// </summary>
+        public static string NewCommand {
+            get {
+                return ResourceManager.GetString("NewCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot chain chaining actions..
+        /// </summary>
+        public static string NoChaining {
+            get {
+                return ResourceManager.GetString("NoChaining", resourceCulture);
             }
         }
         
@@ -575,6 +611,15 @@ namespace KeyboardEditor.Resources {
         public static string StartOver {
             get {
                 return ResourceManager.GetString("StartOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to String to send : .
+        /// </summary>
+        public static string StringToSend {
+            get {
+                return ResourceManager.GetString("StringToSend", resourceCulture);
             }
         }
         

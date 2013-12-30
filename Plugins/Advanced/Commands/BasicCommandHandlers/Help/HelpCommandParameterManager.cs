@@ -13,10 +13,8 @@ namespace BasicCommandHandlers
         public IProtocolEditorRoot Root { get; set; }
         public HelpCommandParameterManager()
         {
-            //TODO : use resx
             _values = new Dictionary<string, string>();
-
-            _values.Add( "Afficher l'aide du clavier", "show" );
+            _values.Add( R.ShowHelpAction, "show" );
         }
 
         Dictionary<string, string> _values;

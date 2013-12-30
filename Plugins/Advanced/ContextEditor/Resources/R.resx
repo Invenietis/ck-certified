@@ -147,6 +147,9 @@
   <data name="DesignSection" xml:space="preserve">
     <value>Design</value>
   </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction : </value>
+  </data>
   <data name="EndingStepDesc" xml:space="preserve">
     <value>Your modifications have been correctly saved, you can now exit the wizard or restart the wizard to modify another keyboard.</value>
   </data>
@@ -237,8 +240,17 @@ Are you sure you want to go back ?</value>
   <data name="KeyboardProfileTitle" xml:space="preserve">
     <value>Keyboard's name edition</value>
   </data>
+  <data name="MouseMoveSpeed" xml:space="preserve">
+    <value>Length of each move (pixels) </value>
+  </data>
+  <data name="NewCommand" xml:space="preserve">
+    <value>Create a new command : </value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="NoChaining" xml:space="preserve">
+    <value>You cannot chain chaining actions.</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Exit</value>
@@ -292,6 +304,9 @@ Are you sure that you want to erase this existing keyboard ?</value>
   </data>
   <data name="StartOver" xml:space="preserve">
     <value>Start over</value>
+  </data>
+  <data name="StringToSend" xml:space="preserve">
+    <value>String to send : </value>
   </data>
   <data name="WindowTitle" xml:space="preserve">
     <value>Keyboard creation wizard</value>

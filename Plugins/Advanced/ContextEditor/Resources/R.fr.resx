@@ -147,6 +147,9 @@
   <data name="DesignSection" xml:space="preserve">
     <value>Aspect</value>
   </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction : </value>
+  </data>
   <data name="EndingStepDesc" xml:space="preserve">
     <value>Vos modifications ont bien été sauvegardées, vous pouvez maintenant quitter l'assistant ou bien retourner à la page d'accueil pour faire d'autres modifications.</value>
   </data>
@@ -236,8 +239,17 @@ Etes-vos sûr de vouloir continuer ?</value>
   <data name="KeyboardProfileTitle" xml:space="preserve">
     <value>Modification du nom du clavier</value>
   </data>
+  <data name="MouseMoveSpeed" xml:space="preserve">
+    <value>Vitesse (en pixels/déplacement) :</value>
+  </data>
+  <data name="NewCommand" xml:space="preserve">
+    <value>Créer une nouvelle commande : </value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>Non</value>
+  </data>
+  <data name="NoChaining" xml:space="preserve">
+    <value>Il est impossible d'enchaîner plusieurs actions.</value>
   </data>
   <data name="Quit" xml:space="preserve">
     <value>Quitter</value>
@@ -290,6 +302,9 @@ Etes-vous sur de vouloir faire cela ?</value>
   </data>
   <data name="StartOver" xml:space="preserve">
     <value>Recommencer</value>
+  </data>
+  <data name="StringToSend" xml:space="preserve">
+    <value>Chaîne de caractères à envoyer : </value>
   </data>
   <data name="WindowTitle" xml:space="preserve">
     <value>Assistant de création de claviers</value>

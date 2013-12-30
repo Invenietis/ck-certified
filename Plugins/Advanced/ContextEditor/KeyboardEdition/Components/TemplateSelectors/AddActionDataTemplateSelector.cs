@@ -14,7 +14,7 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate SendStringDataTemplate { get; set; }
         public DataTemplate MoveMouseDataTemplate { get; set; }
         public DataTemplate ComboBoxDataTemplate { get; set; }
-        public DataTemplate FileLauncherDataTempalte { get; set; }
+        public DataTemplate FileLauncherDataTemplate { get; set; }
         public DataTemplate ModeDataTemplate { get; set; }
         public DataTemplate DefaultDataTemplate { get; set; }
         public DataTemplate MonitorOnceDataTemplate { get; set; }
@@ -32,7 +32,7 @@ namespace KeyboardEditor.ViewModels
 
             if( item is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
             if( item is MoveMouseCommandParameterManager ) return MoveMouseDataTemplate;
-            if( item is FileLauncherCommandParameterManager ) return FileLauncherDataTempalte;
+            if( item is FileLauncherCommandParameterManager ) return FileLauncherDataTemplate;
         
             if( item is ModeCommandParameterManager ) return ModeDataTemplate;
 

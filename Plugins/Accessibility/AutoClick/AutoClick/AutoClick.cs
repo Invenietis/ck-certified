@@ -43,6 +43,7 @@ using CK.WindowManager.Model;
 using CK.Windows.App;
 using System.IO;
 using Help.Services;
+using CK.InputDriver;
 
 namespace CK.Plugins.AutoClick
 {
@@ -378,22 +379,22 @@ namespace CK.Plugins.AutoClick
                     case ClickInstruction.None:
                         break;
                     case ClickInstruction.RightButtonDown:
-                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionRightDown();
+                        MouseProcessor.CurrentPositionRightDown();
                         break;
                     case ClickInstruction.RightButtonUp:
-                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionRightUp();
+                        MouseProcessor.CurrentPositionRightUp();
                         break;
                     case ClickInstruction.LeftButtonDown:
-                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftDown();
+                        MouseProcessor.CurrentPositionLeftDown();
                         break;
                     case ClickInstruction.LeftButtonUp:
-                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionLeftUp();
+                        MouseProcessor.CurrentPositionLeftUp();
                         break;
                     case ClickInstruction.WheelDown:
-                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionMiddleDown();
+                        MouseProcessor.CurrentPositionMiddleDown();
                         break;
                     case ClickInstruction.WheelUp:
-                        CK.Plugins.SendInputDriver.MouseProcessor.CurrentPositionMiddleUp();
+                        MouseProcessor.CurrentPositionMiddleUp();
                         break;
                     default:
                         break;

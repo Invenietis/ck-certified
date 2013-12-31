@@ -46,6 +46,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
+    <Reference Include="CK.InputDriver, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\CK.InputDriver.0.1.0-develop\lib\net40\CK.InputDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\CK.Interop.2.8.14\lib\net40\CK.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Plugin.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\CK.Plugin.Config.2.10.1-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
@@ -76,10 +84,6 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\ThirdParty\SendInputDriver.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -180,6 +184,10 @@
     <ProjectReference Include="..\..\..\Services\ProtocolManagerModel\ProtocolManagerModel.csproj">
       <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
       <Name>ProtocolManagerModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SendInputDriver\SendInputDriver.csproj">
+      <Project>{8fcfd0c1-e52b-49ab-bd58-eb134bc69601}</Project>
+      <Name>SendInputDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

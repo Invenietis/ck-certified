@@ -9,6 +9,7 @@ using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
 using CK.Core;
+using CK.InputDriver;
 
 namespace CK.WordPredictor
 {
@@ -147,13 +148,13 @@ namespace CK.WordPredictor
         {
             if( !PredictionTextAreaService.Service.IsDriven )
             {
-                if( e.Key == NativeMethods.KeyboardKeys.Space && _rawContext != null && _rawContext.Length > 0 )
+                if( e.Key == Native.KeyboardKeys.Space && _rawContext != null && _rawContext.Length > 0 )
                 {
                     var raw = _rawContext.Substring( 0, _rawContext.Length - 1 );
                     _caretIndex = raw.Length;
                     SetRawText( raw );
                 }
-                else if( e.Key == NativeMethods.KeyboardKeys.Enter )
+                else if( e.Key == Native.KeyboardKeys.Enter )
                 {
                     ClearContext();
                 }

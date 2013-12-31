@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CK.Plugin;
-using CK.Plugins.SendInputDriver;
 using CK.WordPredictor;
 using CK.WordPredictor.Engines;
 using CK.WordPredictor.Model;

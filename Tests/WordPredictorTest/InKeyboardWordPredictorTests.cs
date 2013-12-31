@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CK.Plugin;
 using CommonServices;
-using CK.Plugins.SendInputDriver;
 
 namespace WordPredictorTest
 {

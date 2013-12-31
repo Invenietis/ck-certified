@@ -45,10 +45,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK-Plugin.2.10.1-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
-    <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ThirdParty\SendInputDriver.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO">
@@ -88,6 +84,10 @@
     <ProjectReference Include="..\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
       <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
       <Name>BasicCommandHandlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SendInputDriver\SendInputDriver.csproj">
+      <Project>{8fcfd0c1-e52b-49ab-bd58-eb134bc69601}</Project>
+      <Name>SendInputDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

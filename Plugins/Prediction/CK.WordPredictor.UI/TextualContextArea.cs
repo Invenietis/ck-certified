@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using CK.Keyboard.Model;
 using CK.Plugin;
-using CK.Plugins.SendInputDriver;
 using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;

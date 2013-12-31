@@ -98,10 +98,6 @@
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ThirdParty\SendInputDriver.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
@@ -179,6 +175,10 @@
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Advanced\SendInputDriver\SendInputDriver.csproj">
+      <Project>{8fcfd0c1-e52b-49ab-bd58-eb134bc69601}</Project>
+      <Name>SendInputDriver</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>

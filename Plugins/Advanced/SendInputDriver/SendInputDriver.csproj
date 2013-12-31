@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA87C034-0B0A-487B-B5D2-A69744B7B288}</ProjectGuid>
+    <ProjectGuid>{8FCFD0C1-E52B-49AB-BD58-EB134BC69601}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CK.WordPredictor</RootNamespace>
-    <AssemblyName>CK.WordPredictor</AssemblyName>
+    <RootNamespace>SendInputDriver</RootNamespace>
+    <AssemblyName>SendInputDriver</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,31 +27,23 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Output\Release\Plugins\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SendInputDriver.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Context, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Context.2.10.1-develop\lib\net40\CK.Context.dll</HintPath>
-    </Reference>
     <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.InputDriver, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="CK.InputDriver">
       <HintPath>..\..\..\packages\CK.InputDriver.0.1.0-develop\lib\net40\CK.InputDriver.dll</HintPath>
     </Reference>
     <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Interop.2.8.14\lib\net40\CK.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Plugin.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Plugin.Config.2.10.1-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
     <Reference Include="CK.Plugin.Config.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -65,67 +57,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Reflection.2.8.14\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.10.2-develop\lib\net40\CK.SharedDic.dll</HintPath>
-    </Reference>
-    <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WordPredictor, Version=1.0.3063.25415, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Engines\Sybille\Data\WordPredictor.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultKeyboardContextPredictionFactory.cs" />
-    <Compile Include="Engines\IWordPredictorEngine.cs" />
-    <Compile Include="Engines\IWordPredictorEngineFactory.cs" />
-    <Compile Include="FastObservableCollection.cs" />
-    <Compile Include="TextualContext\PredictionTextAreaBus.cs" />
-    <Compile Include="TextualContext\TextualContextService.cs" />
-    <Compile Include="TextualContext\TextualContextCommandHandler.cs" />
-    <Compile Include="TextualContext\Token.cs" />
-    <Compile Include="TextualContext\TokenCollection.cs" />
-    <Compile Include="WordPredicted\SimplePredictedWordSender.cs" />
-    <Compile Include="WordPrediction\WordPredictedCollection.cs" />
-    <Compile Include="Extensions\ObjectPluginConfigExtension.cs" />
+    <Compile Include="ISendStringService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WordPrediction\WeightlessWordPredicted.cs" />
-    <Compile Include="WordPredicted\WordPredictedService.cs" />
-    <Compile Include="WordPredictorFeature.cs" />
-    <Compile Include="WordPrediction\WordPredictorServiceBase.cs" />
+    <Compile Include="SendStringPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Library\CK.WordPredictor.Model\CK.WordPredictor.Model.csproj">
-      <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
-      <Name>CK.WordPredictor.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
-      <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
-      <Name>CK.Keyboard.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Advanced\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
-      <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
-      <Name>BasicCommandHandlers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Advanced\SendInputDriver\SendInputDriver.csproj">
-      <Project>{8fcfd0c1-e52b-49ab-bd58-eb134bc69601}</Project>
-      <Name>SendInputDriver</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
@@ -135,7 +80,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

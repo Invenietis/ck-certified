@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using ProtocolManagerModel;
-using CommonServices;
 using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers

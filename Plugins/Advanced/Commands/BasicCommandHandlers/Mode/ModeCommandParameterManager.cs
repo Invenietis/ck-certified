@@ -17,11 +17,8 @@ namespace BasicCommandHandlers
     public class ModeCommandParameterManager : IProtocolParameterManager
     {
         public IProtocolEditorRoot Root { get; set; }
-        IKeyboardContext _ctx;
-        public ModeCommandParameterManager( IKeyboardContext ctx )
+        public ModeCommandParameterManager()
         {
-            _ctx = ctx;
-
             _actions = new Dictionary<string, string>();
 
             _actions.Add( R.RemoveMode, "remove" );
@@ -33,7 +30,7 @@ namespace BasicCommandHandlers
         Dictionary<string, string> _actions;
         public IEnumerable<string> AvailableActions { get { return _actions.Keys; } }
 
-        public IEnumerable<string> AvailableModes { get { return _ctx.CurrentKeyboard.AvailableMode.AtomicModes.Select( m => m.ToString() ); } }
+        public IEnumerable<string> AvailableModes { get { return Root.EditedKeyMode.Keyboard.AvailableMode.AtomicModes.Select( m => m.ToString() ); } }
 
         string _selectedAction;
         public string SelectedAction

@@ -7,20 +7,25 @@ using System.Text;
 using CK.WPF.ViewModel;
 using CommonServices;
 using ProtocolManagerModel;
+using CK.Plugin.Config;
 
 namespace BasicCommandHandlers
 {
     public class FileLauncherCommandParameterManager : IProtocolParameterManager
     {
         public IProtocolEditorRoot Root { get; set; }
+
+        string[] trustedCompanies = { "Adobe", "Microsoft", "Google", "Mozilla", "Apple" };
         VMCommand _openFileDialog;
-        string[] trustedCompanies = {"Adobe", "Microsoft", "Google", "Mozilla", "Apple"};
-        IWildFile _selectedApp { get; set; }
         IFileLauncherService _fileLauncher;
+        IPluginConfigAccessor _skinConfigAccessor;
+
+        IWildFile _selectedApp { get; set; }
         public List<IWildFile> Apps { get; set; }
+
         bool _showApp;
 
-        public bool ShowApp 
+        public bool ShowApp
         {
             get { return _showApp; }
             set
@@ -31,11 +36,14 @@ namespace BasicCommandHandlers
             }
         }
 
-        public FileLauncherCommandParameterManager(IFileLauncherService fileLauncher)
+        public FileLauncherCommandParameterManager( IFileLauncherService fileLauncher, IPluginConfigAccessor skinConfigAccessor )
         {
             _fileLauncher = fileLauncher;
+            _skinConfigAccessor = skinConfigAccessor;
             Apps = _fileLauncher.FileLocator.RegistryApps;
-            Apps.Sort( ( a, b ) => {
+
+            Apps.Sort( ( a, b ) =>
+            {
                 var vA = FileVersionInfo.GetVersionInfo( a.Path );
                 var vB = FileVersionInfo.GetVersionInfo( b.Path );
                 if( vA == null || vA.ProductName == null ) return 1;
@@ -54,13 +62,13 @@ namespace BasicCommandHandlers
 
         public IWildFile SelectedApp
         {
-            get 
+            get
             {
                 if( _selectedApp != null )
                 {
                     return _selectedApp.Lookup == FileLookup.Registry ? _selectedApp : null;
                 }
-                return _selectedApp; 
+                return _selectedApp;
             }
             set
             {
@@ -71,7 +79,7 @@ namespace BasicCommandHandlers
         public IWildFile SelectedFile
         {
             get { return _selectedApp; }
-            set 
+            set
             {
                 SetSelectedFile( value );
             }
@@ -80,11 +88,14 @@ namespace BasicCommandHandlers
         private void SetSelectedFile( IWildFile value )
         {
             _selectedApp = value;
+            //JL : EditedKeyMode is null, it has to be set in when selecting a key
+            _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedApp.Icon );
+            _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
             NotifyPropertyChanged( "SelectedApp" );
             NotifyPropertyChanged( "SelectedFile" );
             NotifyPropertyChanged( "IsValid" );
         }
-    
+
 
         public VMCommand OpenFileDialog
         {
@@ -123,13 +134,14 @@ namespace BasicCommandHandlers
 
         public void FillFromString( string parameter )
         {
-            _fileLauncher.LoadFromCommand( parameter, (file) => {
+            _fileLauncher.LoadFromCommand( parameter, ( file ) =>
+            {
                 SelectedApp = file;
                 if( file.Lookup != FileLookup.Registry ) ShowApp = false;
                 else
                 {
                     ShowApp = true;
-                    SelectedApp = Apps.FirstOrDefault( f => f.CompareTo(file) == 0 );
+                    SelectedApp = Apps.FirstOrDefault( f => f.CompareTo( file ) == 0 );
                     if( _selectedApp == null ) SelectedApp = file;
                 }
             } );

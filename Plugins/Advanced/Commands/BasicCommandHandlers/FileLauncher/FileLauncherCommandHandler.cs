@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using CK.Plugin.Config;
 
 namespace BasicCommandHandlers
 {
@@ -31,6 +32,9 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IFileLauncherService> FileLauncher { get; set; }
 
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        public IPluginConfigAccessor SkinConfiguration { get; set; }
+
         public override void Start()
         {
             base.Start();
@@ -39,7 +43,7 @@ namespace BasicCommandHandlers
                                         PROTOCOL_BASE,
                                         R.FileLauncherTitle,
                                         R.FileLauncherDescription,
-                                        () => { return new FileLauncherCommandParameterManager( FileLauncher.Service ); } ),
+                                        () => { return new FileLauncherCommandParameterManager( FileLauncher.Service, SkinConfiguration ); } ),
                                         typeof( IFileLauncherCommandHandlerService ) );
         }
 

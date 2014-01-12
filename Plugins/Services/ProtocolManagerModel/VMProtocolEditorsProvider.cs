@@ -1,4 +1,5 @@
-﻿using CK.Plugin;
+﻿using CK.Keyboard.Model;
+using CK.Plugin;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ namespace ProtocolManagerModel
     public interface IProtocolEditorRoot
     {
         IEnumerable<VMProtocolEditorWrapper> AvailableProtocolEditors { get; }
+        IKeyMode EditedKeyMode { get; }
     }
 
     public class VMProtocolEditorsProvider : INotifyPropertyChanged, IProtocolEditorRoot
@@ -55,6 +57,9 @@ namespace ProtocolManagerModel
             }
         }
 
+
+
+        public IKeyMode EditedKeyMode { get; private set; }
         public VMProtocolEditorWrapper SelectedProtocolEditorWrapper
         {
             get { return ProtocolEditor.Wrapper; }
@@ -101,16 +106,18 @@ namespace ProtocolManagerModel
         public void FlushCurrentProtocolEditor()
         {
             SelectedProtocolEditorWrapper = null;
-            InitializeProtocolEditor();
+            InitializeProtocolEditor( null );
         }
 
-        public void InitializeProtocolEditor()
+        public void InitializeProtocolEditor( IKeyMode editedKeyMode )
         {
+            EditedKeyMode = editedKeyMode;
             ProtocolEditor = new VMProtocolEditor();
         }
 
-        public void CreateKeyCommand( string keyCommand )
+        public void CreateKeyCommand( string keyCommand, IKeyMode editedKeyMode )
         {
+            EditedKeyMode = editedKeyMode;
             ProtocolEditor = new VMProtocolEditor();
 
             //not using the Split method in order to let a parameter use the ':' char

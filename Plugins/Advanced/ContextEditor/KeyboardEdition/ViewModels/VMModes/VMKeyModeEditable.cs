@@ -230,7 +230,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _initializeCommand = new CK.Windows.App.VMCommand( () =>
                     {
-                        ProtocolEditorsProvider.InitializeProtocolEditor();
+                        ProtocolEditorsProvider.InitializeProtocolEditor(Model);
                         ShowKeyCommandCreationPanel = true;
                     } );
                 }
@@ -291,7 +291,7 @@ namespace KeyboardEditor.ViewModels
                         }
 
                         DoRemoveKeyCommand( cmdString );
-                        ProtocolEditorsProvider.CreateKeyCommand( cmdString );
+                        ProtocolEditorsProvider.CreateKeyCommand( cmdString, Model );
                         ShowKeyCommandCreationPanel = true;
                     } );
                 }

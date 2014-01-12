@@ -55,7 +55,7 @@ namespace BasicCommandHandlers
                                         "mode",
                                         R.ModeProtocolTitle,
                                         R.ModeProtocolDescription,
-                                        () => { return new ModeCommandParameterManager( KeyboardContext ); } ),
+                                        typeof( ModeCommandParameterManager ) ),
                                         typeof( IModeCommandHandlerService ) );
         }
 

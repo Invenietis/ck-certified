@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\CommonServices\Advanced\IUpdateChecker.cs) is part of CiviKey. 
 *  
@@ -22,11 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugin;
-using CK.Core;
 using CK.Context.SemVer;
 
 namespace CommonServices

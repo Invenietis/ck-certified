@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\Converters\SimpleStringFormatConverter.cs) is part of CiviKey. 
 *  
@@ -22,11 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
-using System.Windows.Documents;
 
 namespace CK.Plugins.ObjectExplorer
 {

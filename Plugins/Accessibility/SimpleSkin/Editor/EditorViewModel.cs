@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\Editor\EditorViewModel.cs) is part of CiviKey. 
 *  
@@ -24,11 +24,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Caliburn.Micro;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
-using System.Collections.ObjectModel;
 using CK.WPF.ViewModel;
 using CK.Core;
 using CK.Plugin;

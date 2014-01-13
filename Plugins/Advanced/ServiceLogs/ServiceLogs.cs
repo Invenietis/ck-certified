@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ServiceLogs\ServiceLogs.cs) is part of CiviKey. 
 *  
@@ -22,15 +22,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugin;
 using CK.Context;
 using Host.Services;
-using CK.Plugin.Hosting;
 using CK.Core;
-using System.Collections;
 using System.IO;
 using System.Diagnostics;
 using CommonServices;

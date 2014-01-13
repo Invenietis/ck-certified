@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\ModeCommandHandler.cs) is part of CiviKey. 
 *  
@@ -25,7 +25,6 @@ using System;
 using CommonServices;
 using CK.Plugin;
 using CK.Keyboard.Model;
-using CK.Core;
 using System.Diagnostics;
 using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;

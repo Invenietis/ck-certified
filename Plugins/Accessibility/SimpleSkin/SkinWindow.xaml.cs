@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\SkinWindow.xaml.cs) is part of CiviKey. 
 *  
@@ -21,14 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Windows;
 using CK.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using SimpleSkin.Helpers;
-using System.Windows.Input;
-using CK.WindowManager.Model;
 
 namespace SimpleSkin
 {

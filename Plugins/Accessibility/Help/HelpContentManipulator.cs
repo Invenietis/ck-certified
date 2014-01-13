@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using CK.Context;
 using CK.Core;
-using CK.Plugin;
 using Ionic.Zip;
 
 namespace Help

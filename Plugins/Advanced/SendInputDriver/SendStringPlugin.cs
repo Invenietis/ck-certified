@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using CK.Plugin;
 using CK.InputDriver;
 

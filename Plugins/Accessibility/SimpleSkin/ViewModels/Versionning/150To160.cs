@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\ViewModels\VMContextSimple.cs) is part of CiviKey. 
 *  
@@ -21,16 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
-using CK.Core;
-using CK.Context;
 using System;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels.Versionning
 {

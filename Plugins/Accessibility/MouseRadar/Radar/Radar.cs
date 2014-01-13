@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Threading;
 using CommonServices;
-using System.Drawing.Drawing2D;
 using HighlightModel;
 using System.Diagnostics;
 namespace MouseRadar

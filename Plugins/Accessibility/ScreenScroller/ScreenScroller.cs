@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Core;
 using CommonServices.Accessibility;
-using System.Windows.Controls;
 using HighlightModel;
-using KeyScroller;
-using System.Drawing;
 using CommonServices;
 
 namespace ScreenScroller

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows.Threading;
-using KeyScroller;
 using CK.Core;
-using CommonServices.Accessibility;
 using HighlightModel;
 using CK.Plugin.Config;
 using System.Diagnostics;

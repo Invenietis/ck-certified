@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\INotifierContext.cs) is part of CiviKey. 
 *  
@@ -22,9 +22,6 @@
 #endregion
 
 using System;
-using CK.Plugin;
-using System.Windows;
-using CK.Core;
 using System.Windows.Controls.Primitives;
 
 namespace Host.Services

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\Behaviors\SelectionBehavior.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Interactivity;
 using CK.Plugins.AutoClick.Views;
 

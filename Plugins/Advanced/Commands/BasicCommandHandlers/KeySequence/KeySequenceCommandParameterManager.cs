@@ -3,9 +3,7 @@ using CK.InputDriver.Replay;
 using CK.WPF.ViewModel;
 using ProtocolManagerModel;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Windows.Input;
 

@@ -1,12 +1,10 @@
 ﻿using BasicCommandHandlers.Resources;
-using CK.Plugins.SendInputDriver;
 using CK.WPF.ViewModel;
 using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace BasicCommandHandlers

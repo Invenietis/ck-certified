@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\UserControls\LogConsoleWindow.xaml.cs) is part of CiviKey. 
 *  
@@ -22,10 +22,6 @@
 #endregion
 
 using System.Windows;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System;
-using System.Windows.Interop;
 
 namespace CK.Plugins.ObjectExplorer.UI.UserControls
 {

@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using CK.Context;
 using CK.Core;
 using CK.Plugin;
-using CK.Plugin.Config;
 using Help.Services;
 using Host.Services;
-using Ionic.Zip;
 
 namespace Help
 {

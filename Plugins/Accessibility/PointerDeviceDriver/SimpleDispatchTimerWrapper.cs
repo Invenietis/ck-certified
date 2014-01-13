@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\PointerDeviceDriver\SimpleDispatchTimerWrapper.cs) is part of CiviKey. 
 *  
@@ -22,10 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Timers;
 using System.Windows.Threading;
 
 namespace PointerDeviceDriver

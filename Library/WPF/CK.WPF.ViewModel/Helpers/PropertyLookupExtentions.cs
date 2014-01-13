@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\Helpers\PropertyLookupExtentions.cs) is part of CiviKey. 
 *  
@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using CK.Keyboard.Model;
 using System.Collections.Generic;
 using CK.Plugin.Config;

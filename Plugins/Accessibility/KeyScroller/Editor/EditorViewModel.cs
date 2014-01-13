@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Caliburn.Micro;
 using CK.Context;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Core;
 using CommonServices;
-using System.Windows.Input;
-using CK.WPF.ViewModel;
-using System.Diagnostics;
 using KeyScroller.Resources;
-using System.Globalization;
 
 namespace KeyScroller.Editor
 {

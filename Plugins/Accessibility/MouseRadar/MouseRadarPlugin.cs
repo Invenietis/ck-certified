@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
 using CK.Core;
-using KeyScroller;
 using System.Diagnostics;
 
 namespace MouseRadar

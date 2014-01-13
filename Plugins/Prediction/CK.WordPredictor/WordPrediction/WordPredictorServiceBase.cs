@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,7 +8,6 @@ using CK.Plugin;
 using CK.WordPredictor.Model;
 using CK.Core;
 using System.Linq;
-using System.Threading;
 
 
 namespace CK.WordPredictor

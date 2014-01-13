@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Caliburn.Micro;
 using CK.Context;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Core;
 using System.Windows.Media;
-using CommonServices;
-using KeyScroller;
 using MouseRadar.Resources;
 
 namespace MouseRadar.Editor

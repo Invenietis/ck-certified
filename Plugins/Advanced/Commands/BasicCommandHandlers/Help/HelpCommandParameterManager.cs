@@ -1,10 +1,8 @@
 ﻿using BasicCommandHandlers.Resources;
-using CK.Plugins.SendInputDriver;
 using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BasicCommandHandlers
 {

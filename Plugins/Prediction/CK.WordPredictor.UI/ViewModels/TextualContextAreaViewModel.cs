@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI.ViewModels

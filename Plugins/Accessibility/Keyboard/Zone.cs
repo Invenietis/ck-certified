@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\Zone.cs) is part of CiviKey. 
 *  
@@ -25,12 +25,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
-using CK.Core;
 using CK.Keyboard.Model;
-using CK.Context;
 using CK.Storage;
-using CK.Plugin.Config;
-using System.ComponentModel.Design;
 
 namespace CK.Keyboard
 {

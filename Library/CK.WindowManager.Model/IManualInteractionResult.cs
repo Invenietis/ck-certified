@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace CK.WindowManager.Model
+﻿namespace CK.WindowManager.Model
 {
     /// <summary>
     /// Defines what can be bone after a manual interaction on the WindowManager.

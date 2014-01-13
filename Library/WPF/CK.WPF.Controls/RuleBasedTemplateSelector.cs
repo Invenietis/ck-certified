@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.Controls\RuleBasedTemplateSelector.cs) is part of CiviKey. 
 *  
@@ -23,17 +23,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Markup;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Design.Serialization;
-using System.Security;
-using System.Globalization;
-using Common.Logging;
 
 namespace CK.WPF.Controls
 {

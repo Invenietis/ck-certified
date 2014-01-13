@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\Properties\AssemblyInfo.cs) is part of CiviKey. 
 *  
@@ -22,7 +22,6 @@
 #endregion
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Resources;
 

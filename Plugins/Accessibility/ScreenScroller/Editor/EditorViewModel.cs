@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugin;
 using CK.Core;
-using System.Windows.Media;
-using CommonServices;
-using KeyScroller;
 using System.ComponentModel;
-using ScreenScroller;
 using CK.Plugin.Config;
 using CK.Context;
 using ScreenScroller.Resources;

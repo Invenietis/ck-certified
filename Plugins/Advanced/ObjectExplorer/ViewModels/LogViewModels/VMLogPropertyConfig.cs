@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\LogViewModels\VMLogPropertyConfig.cs) is part of CiviKey. 
 *  
@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Reflection;
 using CK.Plugin;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels

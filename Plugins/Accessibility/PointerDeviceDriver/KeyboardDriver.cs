@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\PointerDeviceDriver\MouseDriver.cs) is part of CiviKey. 
 *  
@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CommonServices;
 using CK.Plugin;
-using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Threading;
 

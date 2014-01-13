@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\EditableSkin\ViewModels\VMZoneEditable.cs) is part of CiviKey. 
 *  
@@ -21,12 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
 using CK.Core;
 using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System;
 using System.Windows.Input;
 using CK.Windows.App;
@@ -280,10 +277,7 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                return new CK.Windows.App.VMCommand( (Action)( () =>
-                {
-                    Context.KeyboardVM.IncreaseZoneIndex( this );
-                } ) );
+                return new CK.Windows.App.VMCommand( (Action)( () => Context.KeyboardVM.IncreaseZoneIndex( this )) );
             }
         }
 
@@ -291,10 +285,7 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                return new CK.Windows.App.VMCommand( (Action)( () =>
-                {
-                    Context.KeyboardVM.DecreaseZoneIndex( this );
-                } ) );
+                return new CK.Windows.App.VMCommand( (Action)( () => Context.KeyboardVM.DecreaseZoneIndex( this )) );
             }
         }
 

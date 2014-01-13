@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\Keyboard\CK.Keyboard.Model\IKeyboardContextMode.cs) is part of CiviKey. 
 *  
@@ -21,8 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using CK.Core;
 using System.Collections.Generic;
 
 namespace CK.Keyboard.Model

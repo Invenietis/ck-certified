@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
-using CK.Core;
 using CK.Keyboard.Model;
-using CK.Storage;
 using CK.Windows.App;
 using CK.WPF.Controls;
 using KeyboardEditor.Resources;

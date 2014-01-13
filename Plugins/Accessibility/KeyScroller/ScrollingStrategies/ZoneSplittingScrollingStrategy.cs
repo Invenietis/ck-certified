@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
-using CommonServices.Accessibility;
 using HighlightModel;
 using SimpleSkin.ViewModels;
 

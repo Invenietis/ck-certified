@@ -1,6 +1,4 @@
-﻿using System;
-using CommonServices.Accessibility;
-using HighlightModel;
+﻿using HighlightModel;
 
 namespace KeyScroller
 {

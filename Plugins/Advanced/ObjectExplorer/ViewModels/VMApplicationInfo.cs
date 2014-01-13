@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMApplicationInfo.cs) is part of CiviKey. 
 *  
@@ -27,8 +27,7 @@ using CK.WPF.ViewModel;
 using System.IO;
 using System.Diagnostics;
 using CK.Context;
-using System.Windows;
-using CK.Windows.App;
+
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMApplicationInfo : VMISelectableElement, IDisposable

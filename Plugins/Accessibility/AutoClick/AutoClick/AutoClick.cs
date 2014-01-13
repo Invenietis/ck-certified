@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\AutoClick.cs) is part of CiviKey. 
 *  
@@ -33,14 +33,9 @@ using System.Windows;
 using CK.Plugin.Config;
 using CK.Core;
 using System.ComponentModel;
-using System.Windows.Forms;
 using CK.Windows;
-using System.Runtime.InteropServices;
 using CK.Windows.Helpers;
-using CommonServices.Accessibility;
-using CK.Windows.Core;
 using CK.WindowManager.Model;
-using CK.Windows.App;
 using System.IO;
 using Help.Services;
 using CK.InputDriver;

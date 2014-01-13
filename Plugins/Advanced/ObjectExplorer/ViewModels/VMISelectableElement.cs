@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMISelectableElement.cs) is part of CiviKey. 
 *  
@@ -21,13 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using CK.WPF.ViewModel;
-using System.Windows;
 
 namespace CK.Plugins.ObjectExplorer
 {

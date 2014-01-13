@@ -4,17 +4,12 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
-using KeyboardEditor.ViewModels;
 using Microsoft.Win32;
-using CK.Windows.App;
 using ProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels

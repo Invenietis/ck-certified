@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\IHostManipulator.cs) is part of CiviKey. 
 *  
@@ -22,9 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Core;
 using Help.Services;
 

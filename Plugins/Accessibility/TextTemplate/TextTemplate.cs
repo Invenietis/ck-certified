@@ -1,15 +1,11 @@
-﻿using BasicCommandHandlers;
-using CK.Core;
+﻿using CK.Core;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Input;
 
 namespace TextTemplate
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.Controls\Core\UIElementAdorner.cs) is part of CiviKey. 
 *  
@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Collections;
 using System.Windows.Media;
 using System.Windows.Documents;

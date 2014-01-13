@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CK.Keyboard.Model;
-using CK.Storage;
 using CK.Windows.App;
 using KeyboardEditor.Resources;
 

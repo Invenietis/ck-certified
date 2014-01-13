@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\DynCommandHandler.cs) is part of CiviKey. 
 *  
@@ -21,12 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
 using CommonServices;
 using CK.Plugin;
-using CK.Core;
-using CK.Context;
 using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
 using CK.InputDriver;

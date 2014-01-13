@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Windows.Interop;
-using KeyboardEditor.s;
-using KeyboardEditor.Tools;
-
-namespace KeyboardEditor
+﻿namespace KeyboardEditor
 {
     public partial class KeyboardEditor
     {

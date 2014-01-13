@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.StandardViews\Properties\AssemblyInfo.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,6 @@
 #endregion
 
 using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Markup;

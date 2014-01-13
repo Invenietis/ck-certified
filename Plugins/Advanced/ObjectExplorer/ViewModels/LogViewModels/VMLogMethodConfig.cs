@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\LogViewModels\VMLogMethodConfig.cs) is part of CiviKey. 
 *  
@@ -22,10 +22,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Reflection;
 using CK.Core;
-using System;
-using CK.Plugin.Hosting;
 using CK.Plugin;
 using CK.Plugin.Config;
 

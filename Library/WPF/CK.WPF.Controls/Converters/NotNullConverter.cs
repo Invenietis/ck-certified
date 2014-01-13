@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.Controls\Converters\NotNullConverter.cs) is part of CiviKey. 
 *  
@@ -22,11 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
-using System.Windows;
 
 namespace CK.WPF.Controls
 { 

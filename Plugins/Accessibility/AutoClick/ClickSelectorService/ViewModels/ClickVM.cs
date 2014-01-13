@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\ViewModels\ClickVM.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugins.AutoClick.Model;
 using System.Collections.ObjectModel;
 

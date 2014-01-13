@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\Keyboard\CK.Keyboard.Model\IKeyProgram.cs) is part of CiviKey. 
 *  
@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CK.Keyboard.Model
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\AttachedProperties\TypeAheadBehaviour.cs) is part of CiviKey. 
 *  
@@ -21,11 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
 

@@ -1,11 +1,6 @@
 ﻿using CK.Keyboard.Model;
 using CK.Windows.App;
-using KeyboardEditor.Resources;
-using KeyboardEditor.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace KeyboardEditor.ViewModels
 {

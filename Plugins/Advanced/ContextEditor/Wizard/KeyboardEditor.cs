@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using CK.Context;

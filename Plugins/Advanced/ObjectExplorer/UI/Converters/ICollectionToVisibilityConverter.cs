@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\Converters\ICollectionToVisibilityConverter.cs) is part of CiviKey. 
 *  
@@ -22,13 +22,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
 using System.Collections;
 using System.Windows;
-using CK.Plugin;
 
 namespace CK.Plugins.ObjectExplorer
 {

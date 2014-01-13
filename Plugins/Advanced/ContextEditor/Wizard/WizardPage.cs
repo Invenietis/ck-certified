@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Caliburn.Micro;
-using CK.Windows;
-using KeyboardEditor.ViewModels;
-using CK.Windows.App;
 
 namespace KeyboardEditor
 {

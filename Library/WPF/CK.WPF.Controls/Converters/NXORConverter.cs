@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\Converters\NXORConverter.cs) is part of CiviKey. 
 *  
@@ -24,7 +24,6 @@
 using System;
 using System.Windows.Data;
 using System.Globalization;
-using System.Diagnostics;
 
 namespace CK.WPF.Controls
 {

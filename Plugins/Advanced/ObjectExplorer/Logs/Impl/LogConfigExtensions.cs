@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\Logs\Impl\LogConfigExtensions.cs) is part of CiviKey. 
 *  
@@ -21,13 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Plugin;
-using System.Reflection;
-using CK.Core;
 
 namespace CK.Plugins.ObjectExplorer
 {

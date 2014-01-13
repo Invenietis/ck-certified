@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.WPF.ViewModel;
+﻿using System.Collections.Generic;
 using HighlightModel;
 
 namespace SimpleSkin.ViewModels

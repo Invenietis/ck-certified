@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\Converters\PathToImageConverter.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
-using CK.Plugins.AutoClick.Model;
-using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace CK.Plugins.AutoClick.Converters

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Windows.Threading;
-using CK.Core;
 using CK.Plugin.Config;
-using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace KeyScroller

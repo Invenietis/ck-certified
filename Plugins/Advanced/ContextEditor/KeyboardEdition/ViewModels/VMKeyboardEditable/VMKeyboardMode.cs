@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using CK.Keyboard.Model;
+﻿using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
-using KeyboardEditor.ViewModels;
-using CK.Windows.App;
 
 namespace KeyboardEditor.ViewModels
 {

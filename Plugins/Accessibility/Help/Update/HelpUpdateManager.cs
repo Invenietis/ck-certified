@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using CK.Context;
@@ -16,7 +15,6 @@ using Common.Logging;
 using Help.Services;
 using Help.Update.ManualUpdate;
 using Host.Services;
-using Ionic.Zip;
 
 namespace Help.Update
 {

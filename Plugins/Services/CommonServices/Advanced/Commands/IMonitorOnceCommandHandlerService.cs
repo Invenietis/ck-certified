@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\CommonServices\Advanced\Commands\IMonitorOnceCommandHandlerService.cs) is part of CiviKey. 
 *  
@@ -21,12 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugin;
-using CK.Keyboard.Model;
 
 namespace CommonServices
 {

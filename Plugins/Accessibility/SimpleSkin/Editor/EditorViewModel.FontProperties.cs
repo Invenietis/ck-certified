@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\Editor\EditorViewModel.FontProperties.cs) is part of CiviKey. 
 *  
@@ -21,14 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Caliburn.Micro;
-using CK.Keyboard.Model;
-using CK.Plugin.Config;
-using SimpleSkin;
 using CK.WPF.ViewModel;
 using System.Windows;
 using System.Windows.Media;

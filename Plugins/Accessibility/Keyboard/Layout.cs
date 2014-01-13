@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\Layout.cs) is part of CiviKey. 
 *  
@@ -29,8 +29,6 @@ using System.Xml;
 using CK.Core;
 using CK.Plugin;
 using CK.Keyboard.Model;
-using CK.Context;
-using CK.Plugin.Config;
 using CK.Storage;
 using System.Globalization;
 

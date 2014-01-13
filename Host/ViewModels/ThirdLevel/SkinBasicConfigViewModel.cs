@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host\ViewModels\SkinViewModel.cs) is part of CiviKey. 
 *  
@@ -21,16 +21,13 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Core;
 //using CK.WPF.Controls;
 using Host.Resources;
 using System;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
-using System.Windows.Input;
 using CK.Windows.Config;
-using CK.Windows;
 
 namespace Host.VM
 {

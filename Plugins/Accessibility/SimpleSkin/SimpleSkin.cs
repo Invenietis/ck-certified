@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\SimpleSkin.cs) is part of CiviKey. 
 *  
@@ -30,7 +30,6 @@ using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CommonServices;
 using Host.Services;
 using SimpleSkin.ViewModels;
 using CK.Windows;
@@ -39,8 +38,6 @@ using System.Linq;
 using CommonServices.Accessibility;
 using System.Diagnostics;
 using CK.Plugins.SendInputDriver;
-using HighlightModel;
-using CK.WPF.ViewModel;
 using System.IO;
 using Help.Services;
 

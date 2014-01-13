@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host\CiviKeyStandardHost.cs) is part of CiviKey. 
 *  
@@ -36,10 +36,8 @@ using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
 using System.ComponentModel;
-using CK.Plugin.Config;
 using Common.Logging;
 using CK.Context.SemVer;
-using Help.Services;
 
 namespace Host
 {

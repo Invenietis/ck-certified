@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.WordPredictor.Model;
 using CK.Plugin;
 using CommonServices;
-using System.Text.RegularExpressions;
-using BasicCommandHandlers;
-using CK.Plugin.Config;
 
 namespace CK.WordPredictor
 {

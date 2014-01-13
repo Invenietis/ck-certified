@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.Controls\Core\Primitives\HsvColor.cs) is part of CiviKey. 
 *  
@@ -20,8 +20,6 @@
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
-
-using System;
 
 namespace Microsoft.Windows.Controls.Primitives
 {

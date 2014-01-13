@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\Keyboard\CK.Keyboard.Model\Events\LayoutKeyPropertyChangedEventArgs.cs) is part of CiviKey. 
 *  
@@ -20,10 +20,6 @@
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
-
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CK.Keyboard.Model
 {

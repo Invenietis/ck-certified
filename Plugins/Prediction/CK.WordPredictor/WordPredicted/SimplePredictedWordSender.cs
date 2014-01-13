@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
-using CommonServices;
 
 namespace CK.WordPredictor
 {

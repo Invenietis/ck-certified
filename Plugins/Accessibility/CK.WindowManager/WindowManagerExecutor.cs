@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Threading;
+﻿using System.Linq;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Core;
 using System.Windows;
-using CK.Windows;
 
 namespace CK.WindowManager
 {

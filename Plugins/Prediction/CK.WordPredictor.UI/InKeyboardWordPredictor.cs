@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;

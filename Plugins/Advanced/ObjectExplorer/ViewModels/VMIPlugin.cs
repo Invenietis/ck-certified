@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMIPlugin.cs) is part of CiviKey. 
 *  
@@ -23,16 +23,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using CK.Core;
 using CK.Plugin;
 using CK.WPF.ViewModel;
 using CK.Plugin.Config;
 using CK.Plugin.Hosting;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
-using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer
 {

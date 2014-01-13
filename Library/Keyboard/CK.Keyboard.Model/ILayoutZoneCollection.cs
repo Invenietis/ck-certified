@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\Keyboard\CK.Keyboard.Model\ILayoutZoneCollection.cs) is part of CiviKey. 
 *  
@@ -21,9 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using CK.Core;
 
 namespace CK.Keyboard.Model

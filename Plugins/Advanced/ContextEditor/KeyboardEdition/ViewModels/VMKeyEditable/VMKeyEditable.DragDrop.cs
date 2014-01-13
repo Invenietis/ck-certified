@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\EditableSkin\ViewModels\VMKeyEditable.cs) is part of CiviKey. 
 *  
@@ -22,21 +22,9 @@
 #endregion
 
 using System;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using CK.WPF.ViewModel;
-using CK.Keyboard.Model;
-using System.Windows.Controls;
 using System.Windows;
-using CK.Plugin.Config;
-using CK.Core;
-using Microsoft.Win32;
 using System.Windows.Input;
-using System.IO;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
 

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Core;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using CK.Plugin;
 
 namespace CK.WordPredictor.Model

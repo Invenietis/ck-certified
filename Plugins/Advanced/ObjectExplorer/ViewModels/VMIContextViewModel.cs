@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMIContextViewModel.cs) is part of CiviKey. 
 *  
@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
 using CK.Plugin;
 using CK.Plugins.ObjectExplorer.ViewModels.LogViewModels;
@@ -36,11 +35,8 @@ using CK.Core;
 using Host.Services;
 using CK.Plugin.Config;
 using Caliburn.Micro;
-using System.Windows;
 using CommonServices;
-using System.Windows.Controls;
 using Help.Services;
-using CK.Windows.App;
 
 namespace CK.Plugins.ObjectExplorer
 {

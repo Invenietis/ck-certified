@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host\ViewModels\AutoClickViewModel.cs) is part of CiviKey. 
 *  
@@ -21,17 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 //using CK.WPF.Controls;
 using CK.Plugin.Config;
-using CK.Core;
-using CK.Reflection;
-using Host.Resources;
-using System.ComponentModel;
-using CK.Plugin;
 using CK.Windows.Config;
 
 namespace Host.VM

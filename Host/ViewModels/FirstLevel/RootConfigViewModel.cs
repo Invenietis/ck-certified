@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host\ViewModels\RootConfigViewModel.cs) is part of CiviKey. 
 *  
@@ -22,14 +22,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Plugin.Config;
-using CK.Core;
-using CK.Reflection;
 using Host.Resources;
-using CK.Keyboard.Model;
 using CK.Windows.Config;
 using Host.VM;
 using Host.ViewModels;

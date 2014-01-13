@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\ISelectableElement.cs) is part of CiviKey. 
 *  
@@ -20,9 +20,6 @@
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
-
-using System;
-using System.Windows.Input;
 
 namespace CK.Plugins.ObjectExplorer
 {

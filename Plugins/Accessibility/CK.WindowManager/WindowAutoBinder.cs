@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
-using System.Diagnostics;
 using System.Timers;
 
 namespace CK.WindowManager

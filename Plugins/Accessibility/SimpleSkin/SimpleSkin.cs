@@ -557,7 +557,6 @@ namespace SimpleSkin
 
         #endregion
 
-
         #region IHaveDefaultHelp Members
 
         public Stream GetDefaultHelp()

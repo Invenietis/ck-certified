@@ -31,25 +31,28 @@ using Host.ViewModels;
 namespace Host
 {
     //First level of the civikey host
-    public class RootConfigViewModel : CK.Windows.Config.ConfigPage
+    public class RootConfigViewModel : ConfigPage
     {
-        AppViewModel _app;
-        AppConfigViewModel _appConfigVm;
-        Guid _autoclicId;
-        Guid _skinId;
-        Guid _basicScrollId;
-        Guid _screenScrollerId;
-        ConfigItemCurrent<KeyboardModel> _keyboards;
+        readonly AppViewModel _app;
+        readonly Guid _autoclicId;
+        readonly Guid _skinId;
+        readonly Guid _basicScrollId;
+        readonly Guid _screenScrollerId;
+        readonly Guid _radarId;
 
+        AppConfigViewModel _appConfigVm;
+        ConfigItemCurrent<KeyboardModel> _keyboards;
+        
         public RootConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
         {
-            DisplayName = Resources.R.Home;
+            DisplayName = R.Home;
             _app = app;
-            _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
-            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
-            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
             _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
+            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+            _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
+            _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
+            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
         }
 
         protected override void OnInitialize()
@@ -58,20 +61,16 @@ namespace Host
 
             if( _app.KeyboardContext != null )
             {
-                ContextModel ctxModel = new ContextModel( _app );
+                var ctxModel = new ContextModel( _app );
 
-                _keyboards = this.AddCurrentItem( R.Keyboard, null, ctxModel, ctx => ctx.Current, ctx => ctx.Keyboards, false, "" );
+                _keyboards = this.AddCurrentItem( R.Keyboard, null, ctxModel, ctx => ctx.Current, ctx => ctx.Keyboards, false, String.Empty );
                 _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";
             }
 
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
-            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId,
-                new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), //ClicCommandHandler
-                new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), //MoveMouseCommadnHandler
-                new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" )  //ModeCommandHandler
-                ) { DisplayName = R.Scrolling };
-
+            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId ) { DisplayName = R.Scrolling };
+            var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId ) { DisplayName = R.Radar };
 
             var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId,
                 _basicScrollId ) //The ScreenScroller needs the Scrolling plugin
@@ -89,11 +88,6 @@ namespace Host
                 new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" )  //PredictionTextAreaBus
                 ) { DisplayName = R.WordPredictionSectionName };
 
-            var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" ) )
-            {
-                DisplayName = R.Radar
-            };
-
             var g = this.AddGroup();
             g.Items.Add( skinStarter );
             g.Items.Add( autoClicStarter );
@@ -106,8 +100,6 @@ namespace Host
 
             base.OnInitialize();
         }
-
-        public CivikeyStandardHost CivikeyHost { get; private set; }
 
         public void OnPluginRunnerDirtyChanged( object sender, EventArgs e )
         {

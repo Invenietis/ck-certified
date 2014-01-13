@@ -8,8 +8,8 @@ namespace CK.WindowManager.Model
 {
     public sealed class WindowElement : IWindowElement
     {
-        CKWindow _w;
-        string _name;
+        readonly CKWindow _w;
+        readonly string _name;
 
         public event EventHandler LocationChanged;
 
@@ -110,36 +110,39 @@ namespace CK.WindowManager.Model
 
         void IWindowElement.Move( double top, double left )
         {
-            DispatchWhenRequired( new Action( () =>
+            DispatchWhenRequired( () =>
             {
                 using( new DisableElementEvents( () => _w.LocationChanged -= OnWindowLocationChanged, () => _w.LocationChanged += OnWindowLocationChanged ) )
                 {
                     if( top != _w.Top ) _w.Top = top;
                     if( left != _w.Left ) _w.Left = left;
                 }
-            } ) );
+            } );
         }
 
         void IWindowElement.Resize( double width, double height )
         {
-            DispatchWhenRequired( new Action( () =>
+            DispatchWhenRequired( () =>
             {
                 using( new DisableElementEvents( () => _w.SizeChanged -= OnWindowSizeChanged, () => _w.SizeChanged += OnWindowSizeChanged ) )
                 {
                     _w.Width = width < 0 ? 0 : width;
                     _w.Height = height < 0 ? 0 : height;
                 }
-            } ) );
+            } );
         }
 
         public void Hide()
         {
-            DispatchWhenRequired( new Action( () => _w.Hide() ) );
+            DispatchWhenRequired( () =>
+            {
+                _w.Hide();
+            } );
         }
 
         public void Restore()
         {
-            DispatchWhenRequired( new Action( () => _w.Show() ) );
+            DispatchWhenRequired( () => _w.Show() );
         }
 
         private T DispatchWhenRequired<T>( Func<T> f )
@@ -179,8 +182,8 @@ namespace CK.WindowManager.Model
         public void ToggleHostMinimized( IHostManipulator manipulator )
         {
             IntPtr ptr = IntPtr.Zero;
-            Dispatcher.Invoke( (Action)(() => ptr = _w.Hwnd), null );
-            Application.Current.Dispatcher.BeginInvoke( (Action)(() => manipulator.ToggleMinimize( ptr )), null );
+            Dispatcher.Invoke( (Action)( () => ptr = _w.Hwnd ), null );
+            Application.Current.Dispatcher.BeginInvoke( (Action)( () => manipulator.ToggleMinimize( ptr ) ), null );
         }
     }
 }

@@ -260,8 +260,7 @@ namespace Host
         /// <param name="lastFocusedWindowsHandle"></param>
         public void ToggleMinimize( IntPtr lastFocusedWindowsHandle )
         {
-            IntPtr hostWindowHandle = IntPtr.Zero;
-            hostWindowHandle = new WindowInteropHelper( (Window)this.GetView( null ) ).Handle;
+            IntPtr hostWindowHandle = new WindowInteropHelper( (Window)GetView( null ) ).Handle;
 
             if( !IsMinimized && hostWindowHandle != lastFocusedWindowsHandle )
             {

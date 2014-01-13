@@ -73,18 +73,19 @@ namespace BasicCommandHandlers
 
         public override bool Setup( IPluginSetupInfo info )
         {
-            _actions = new Dictionary<string, Action>();
-            _actions.Add( "hideskin", () => HideSkin() );
-            _actions.Add( "shutdown", () => Context.RaiseExitApplication( true ) );
-            _actions.Add( "togglehostminimized", () => ToggleHostMinimized() );
-            _actions.Add(
-                "windowskey",
-                () =>
+            _actions = new Dictionary<string, Action>
+            {
+                {"hideskin", HideSkin},
+                {"shutdown", () => Context.RaiseExitApplication(true)},
+                {"togglehostminimized", ToggleHostMinimized},
                 {
-                    Keybd.Event( VKeyCode.VK_WIN, (byte)0, Keybd.KEYEVENTF.KEYDOWN, UIntPtr.Zero );
-                    Keybd.Event( VKeyCode.VK_WIN, (byte)0, Keybd.KEYEVENTF.KEYUP, UIntPtr.Zero );
+                    "windowskey", () =>
+                    {
+                        Keybd.Event(VKeyCode.VK_WIN, (byte) 0, Keybd.KEYEVENTF.KEYDOWN, UIntPtr.Zero);
+                        Keybd.Event(VKeyCode.VK_WIN, (byte) 0, Keybd.KEYEVENTF.KEYUP, UIntPtr.Zero);
+                    }
                 }
-            );
+            };
 
             //These actions don't seem to be used anymore
             //_actions.Add( "ContextMenu",

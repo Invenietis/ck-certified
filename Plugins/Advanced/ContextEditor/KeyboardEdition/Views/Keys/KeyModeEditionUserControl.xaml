@@ -22,29 +22,49 @@
             <ckc:NotNullConverter x:Key="notnullconverter"/>
             <ckc:NotConverter x:Key="notconverter"/>
 
+            <DataTemplate x:Key="keysequencedatatemplate">
+                <StackPanel>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding NameTitle, Mode=OneTime}"></TextBlock>
+                        <TextBox DockPanel.Dock="Right" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </DockPanel>
+
+                    <DockPanel LastChildFill="True">
+                        <Button DockPanel.Dock="Left" Margin="5" Content="{Binding StartRecordingTitle, Mode=OneTime}" Command="{Binding StartRecordingCommand}" IsEnabled="{Binding IsRecording, Converter={StaticResource notconverter}}" />
+                        <Button DockPanel.Dock="Right" Margin="5" Content="{Binding StopRecordingTitle, Mode=OneTime}" Command="{Binding StopRecordingCommand}" IsEnabled="{Binding IsRecording}" />
+
+                        <StackPanel Margin="10 5" DockPanel.Dock="Right" Visibility="{Binding IsRecording, Converter={StaticResource booltovisibilityconverter}}">
+                            <TextBlock HorizontalAlignment="Center" Margin="0 0 5 0" DockPanel.Dock="Left" Text="{Binding IsRecordingText, Mode=OneTime}" />
+                            <ProgressBar IsIndeterminate="True"/>
+                        </StackPanel>
+                    </DockPanel>
+
+                </StackPanel>
+            </DataTemplate>
+
             <DataTemplate x:Key="sendstringdatatemplate">
                 <DockPanel LastChildFill="True">
-                    <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.StringToSend}"></TextBlock>
-                    <TextBox DockPanel.Dock="Right" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.StringToSend}" />
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
                 </DockPanel>
             </DataTemplate>
 
             <DataTemplate x:Key="comboboxdatatemplate">
                 <DockPanel LastChildFill="True">
-                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title, Mode=OneTime}"></TextBlock>
-                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedValue}"></ComboBox>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title, Mode=OneTime}" />
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedValue}" />
                 </DockPanel>
             </DataTemplate>
 
             <DataTemplate x:Key="movemousedatatemplate">
                 <StackPanel>
                     <DockPanel LastChildFill="True">
-                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.Direction}"></TextBlock>
-                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedDirection}"></ComboBox>
+                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.Direction}" />
+                        <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableValues}" SelectedValue="{Binding SelectedDirection}" />
                     </DockPanel>
                     <DockPanel LastChildFill="True" Margin="0 5 0 0">
-                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.MouseMoveSpeed}"></TextBlock>
-                        <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.MouseMoveSpeed}" />
+                        <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged}" />
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
@@ -151,7 +171,8 @@
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
                                               FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
-                                              MonitorOnceDataTemplate="{StaticResource monitoronceerror}"/>
+                                              MonitorOnceDataTemplate="{StaticResource monitoronceerror}"
+                                              KeySequenceDataTemplate ="{StaticResource keysequencedatatemplate}"/>
 
             <DataTemplate x:Key="monitoroncedatatemplate">
                 <StackPanel>
@@ -185,7 +206,8 @@
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
                                               FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
-                                              MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}"/>
+                                              MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}"
+                                              KeySequenceDataTemplate ="{StaticResource keysequencedatatemplate}"/>
 
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
@@ -372,19 +394,26 @@
                 </StackPanel>
             </Border>
 
-            <Border DockPanel.Dock="Left" Padding="0" Margin="5">
+            <Border DockPanel.Dock="Left" Padding="0" Margin="5" MaxWidth="500">
 
                 <!-- Commands -->
                 <StackPanel DockPanel.Dock="Top" DataContext="{Binding}">
                     <TextBlock x:Uid="keyboard-editor-key-mode-key-program" Text="KEY PROGRAM : " Style="{StaticResource SectionHeaderStyle}" />
                     <Separator Style="{StaticResource SectionSeperatorStyle}"/>
+
                     <StackPanel Margin="5">
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}, ConverterParameter=Invert}">
+
+                            <!-- Commands ItemsControl -->
                             <ItemsControl ItemsSource="{Binding Commands}" Margin="0 0 0 5">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel LastChildFill="False" Margin="0 2">
-                                            <TextBlock Text="{Binding}" DockPanel.Dock="Left" TextTrimming="CharacterEllipsis" Margin="0 0 2 0"/>
+                                            <TextBlock Text="{Binding}" DockPanel.Dock="Left" TextTrimming="CharacterEllipsis" Margin="0 0 2 0" MaxWidth="400">
+                                                <TextBlock.ToolTip>
+                                                    <ToolTip Content="{Binding}"></ToolTip>
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
                                             <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveCommandCommand}" CommandParameter="{Binding}">
                                                 <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"></Image>
                                             </Button>
@@ -395,6 +424,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+
                             <Button Content="Add an action" HorizontalAlignment="Right" Style="{StaticResource ModernUIButtonStyle}" Command="{Binding InitializeCommandCommand}" ></Button>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
@@ -415,6 +445,7 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
+
                 </StackPanel>
             </Border>
         </DockPanel>

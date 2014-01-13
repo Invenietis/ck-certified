@@ -22,7 +22,7 @@ namespace BasicCommandHandlers.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class R {
+    internal class R {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace BasicCommandHandlers.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BasicCommandHandlers.Resources.R", typeof(R).Assembly);
@@ -51,7 +51,7 @@ namespace BasicCommandHandlers.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Action to listen to : .
         /// </summary>
-        public static string ActionToListenTo {
+        internal static string ActionToListenTo {
             get {
                 return ResourceManager.GetString("ActionToListenTo", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Activate a mode.
         /// </summary>
-        public static string AddMode {
+        internal static string AddMode {
             get {
                 return ResourceManager.GetString("AddMode", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Bottom.
         /// </summary>
-        public static string Bottom {
+        internal static string Bottom {
             get {
                 return ResourceManager.GetString("Bottom", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Bottom-Left.
         /// </summary>
-        public static string BottomLeft {
+        internal static string BottomLeft {
             get {
                 return ResourceManager.GetString("BottomLeft", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Bottom-Right.
         /// </summary>
-        public static string BottomRight {
+        internal static string BottomRight {
             get {
                 return ResourceManager.GetString("BottomRight", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Click type : .
         /// </summary>
-        public static string ClickProtocolSubtitle {
+        internal static string ClickProtocolSubtitle {
             get {
                 return ResourceManager.GetString("ClickProtocolSubtitle", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enables simulating a mouse clic (left, right double etc...).
         /// </summary>
-        public static string ClicProtocolDescription {
+        internal static string ClicProtocolDescription {
             get {
                 return ResourceManager.GetString("ClicProtocolDescription", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Mouse clicks.
         /// </summary>
-        public static string ClicProtocolTitle {
+        internal static string ClicProtocolTitle {
             get {
                 return ResourceManager.GetString("ClicProtocolTitle", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Double left click.
         /// </summary>
-        public static string DoubleLeftClick {
+        internal static string DoubleLeftClick {
             get {
                 return ResourceManager.GetString("DoubleLeftClick", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Close CiviKey.
         /// </summary>
-        public static string DynCommandClose {
+        internal static string DynCommandClose {
             get {
                 return ResourceManager.GetString("DynCommandClose", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Hide CiviKey&apos;s configuration panel.
         /// </summary>
-        public static string DynCommandHide {
+        internal static string DynCommandHide {
             get {
                 return ResourceManager.GetString("DynCommandHide", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Minimize the keyboard.
         /// </summary>
-        public static string DynCommandMinimize {
+        internal static string DynCommandMinimize {
             get {
                 return ResourceManager.GetString("DynCommandMinimize", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enables triggering other actions (close CiviKey, minimize the keyboard...).
         /// </summary>
-        public static string DynCommandProtocolDescription {
+        internal static string DynCommandProtocolDescription {
             get {
                 return ResourceManager.GetString("DynCommandProtocolDescription", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Miscellaneous.
         /// </summary>
-        public static string DynCommandProtocolTitle {
+        internal static string DynCommandProtocolTitle {
             get {
                 return ResourceManager.GetString("DynCommandProtocolTitle", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Push the &apos;Windows&apos; key.
         /// </summary>
-        public static string DynCommandWindowsKey {
+        internal static string DynCommandWindowsKey {
             get {
                 return ResourceManager.GetString("DynCommandWindowsKey", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to A file from your computer.
         /// </summary>
-        public static string FileLauncherBrowse {
+        internal static string FileLauncherBrowse {
             get {
                 return ResourceManager.GetString("FileLauncherBrowse", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Open a file or launch an application from your computer.
         /// </summary>
-        public static string FileLauncherDescription {
+        internal static string FileLauncherDescription {
             get {
                 return ResourceManager.GetString("FileLauncherDescription", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An installed application.
         /// </summary>
-        public static string FileLauncherInstalledApps {
+        internal static string FileLauncherInstalledApps {
             get {
                 return ResourceManager.GetString("FileLauncherInstalledApps", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Open....
         /// </summary>
-        public static string FileLauncherTitle {
+        internal static string FileLauncherTitle {
             get {
                 return ResourceManager.GetString("FileLauncherTitle", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Give a name to this action :.
         /// </summary>
-        public static string GiveName {
+        internal static string GiveName {
             get {
                 return ResourceManager.GetString("GiveName", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enables showing the keyboard&apos;s help panel.
         /// </summary>
-        public static string HelpProtocolDescription {
+        internal static string HelpProtocolDescription {
             get {
                 return ResourceManager.GetString("HelpProtocolDescription", resourceCulture);
             }
@@ -252,16 +252,25 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
-        public static string HelpProtocolTitle {
+        internal static string HelpProtocolTitle {
             get {
                 return ResourceManager.GetString("HelpProtocolTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording....
+        /// </summary>
+        internal static string IsRecordingText {
+            get {
+                return ResourceManager.GetString("IsRecordingText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboard : .
         /// </summary>
-        public static string KeyboardProtocolSubtitle {
+        internal static string KeyboardProtocolSubtitle {
             get {
                 return ResourceManager.GetString("KeyboardProtocolSubtitle", resourceCulture);
             }
@@ -270,16 +279,43 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to A &quot;classic&quot; key has been pressed (a, z, b, t etc...).
         /// </summary>
-        public static string KeySent {
+        internal static string KeySent {
             get {
                 return ResourceManager.GetString("KeySent", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name of the sequence : .
+        /// </summary>
+        internal static string KeySequenceNameTitle {
+            get {
+                return ResourceManager.GetString("KeySequenceNameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enables recording a key combination.
+        /// </summary>
+        internal static string KeySequenceProtocolDescription {
+            get {
+                return ResourceManager.GetString("KeySequenceProtocolDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key sequences.
+        /// </summary>
+        internal static string KeySequenceProtocolTitle {
+            get {
+                return ResourceManager.GetString("KeySequenceProtocolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Left.
         /// </summary>
-        public static string Left {
+        internal static string Left {
             get {
                 return ResourceManager.GetString("Left", resourceCulture);
             }
@@ -288,7 +324,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Left click.
         /// </summary>
-        public static string LeftClick {
+        internal static string LeftClick {
             get {
                 return ResourceManager.GetString("LeftClick", resourceCulture);
             }
@@ -297,7 +333,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Action : .
         /// </summary>
-        public static string ModeProtocolActionsSubtitle {
+        internal static string ModeProtocolActionsSubtitle {
             get {
                 return ResourceManager.GetString("ModeProtocolActionsSubtitle", resourceCulture);
             }
@@ -306,7 +342,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enables interacting with modes : removing, adding or setting one.
         /// </summary>
-        public static string ModeProtocolDescription {
+        internal static string ModeProtocolDescription {
             get {
                 return ResourceManager.GetString("ModeProtocolDescription", resourceCulture);
             }
@@ -315,7 +351,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Applied to : .
         /// </summary>
-        public static string ModeProtocolModesSubtitle {
+        internal static string ModeProtocolModesSubtitle {
             get {
                 return ResourceManager.GetString("ModeProtocolModesSubtitle", resourceCulture);
             }
@@ -324,7 +360,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Modes (ctrl, shift, alt...).
         /// </summary>
-        public static string ModeProtocolTitle {
+        internal static string ModeProtocolTitle {
             get {
                 return ResourceManager.GetString("ModeProtocolTitle", resourceCulture);
             }
@@ -333,7 +369,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Define the command sent when the action above is triggered.
         /// </summary>
-        public static string MonitorOnceInnerActionTitle {
+        internal static string MonitorOnceInnerActionTitle {
             get {
                 return ResourceManager.GetString("MonitorOnceInnerActionTitle", resourceCulture);
             }
@@ -342,7 +378,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enables triggering an action right after another (change the mode after the next click on a key).
         /// </summary>
-        public static string MonitorOnceProtocolDescription {
+        internal static string MonitorOnceProtocolDescription {
             get {
                 return ResourceManager.GetString("MonitorOnceProtocolDescription", resourceCulture);
             }
@@ -351,7 +387,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Chain actions.
         /// </summary>
-        public static string MonitorOnceProtocolTitle {
+        internal static string MonitorOnceProtocolTitle {
             get {
                 return ResourceManager.GetString("MonitorOnceProtocolTitle", resourceCulture);
             }
@@ -360,7 +396,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Starts moving the mouse pointer towards a direction, clicking again the key will stop the motion.
         /// </summary>
-        public static string MoveMouseProtocolDescription {
+        internal static string MoveMouseProtocolDescription {
             get {
                 return ResourceManager.GetString("MoveMouseProtocolDescription", resourceCulture);
             }
@@ -369,7 +405,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Move the mouse pointer.
         /// </summary>
-        public static string MoveMouseProtocolTitle {
+        internal static string MoveMouseProtocolTitle {
             get {
                 return ResourceManager.GetString("MoveMouseProtocolTitle", resourceCulture);
             }
@@ -378,7 +414,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Push the left button.
         /// </summary>
-        public static string PushLeft {
+        internal static string PushLeft {
             get {
                 return ResourceManager.GetString("PushLeft", resourceCulture);
             }
@@ -387,7 +423,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Release the left button.
         /// </summary>
-        public static string ReleaseLeft {
+        internal static string ReleaseLeft {
             get {
                 return ResourceManager.GetString("ReleaseLeft", resourceCulture);
             }
@@ -396,7 +432,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Desactivate a mode.
         /// </summary>
-        public static string RemoveMode {
+        internal static string RemoveMode {
             get {
                 return ResourceManager.GetString("RemoveMode", resourceCulture);
             }
@@ -405,7 +441,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Right.
         /// </summary>
-        public static string Right {
+        internal static string Right {
             get {
                 return ResourceManager.GetString("Right", resourceCulture);
             }
@@ -414,7 +450,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Right click.
         /// </summary>
-        public static string RightClick {
+        internal static string RightClick {
             get {
                 return ResourceManager.GetString("RightClick", resourceCulture);
             }
@@ -423,7 +459,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enables sending a special key : Return, F1 to F12, Suppr etc....
         /// </summary>
-        public static string SendKeyProtocolDescription {
+        internal static string SendKeyProtocolDescription {
             get {
                 return ResourceManager.GetString("SendKeyProtocolDescription", resourceCulture);
             }
@@ -432,7 +468,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Action : .
         /// </summary>
-        public static string SendKeyProtocolSubtitle {
+        internal static string SendKeyProtocolSubtitle {
             get {
                 return ResourceManager.GetString("SendKeyProtocolSubtitle", resourceCulture);
             }
@@ -441,7 +477,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Special Key (F11, Return, Suppr ...).
         /// </summary>
-        public static string SendKeyProtocolTitle {
+        internal static string SendKeyProtocolTitle {
             get {
                 return ResourceManager.GetString("SendKeyProtocolTitle", resourceCulture);
             }
@@ -450,7 +486,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Set a mode as the current (and only) one.
         /// </summary>
-        public static string SetMode {
+        internal static string SetMode {
             get {
                 return ResourceManager.GetString("SetMode", resourceCulture);
             }
@@ -459,16 +495,34 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Show the keyboard&apos;s help panel.
         /// </summary>
-        public static string ShowHelpAction {
+        internal static string ShowHelpAction {
             get {
                 return ResourceManager.GetString("ShowHelpAction", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start recording.
+        /// </summary>
+        internal static string StartRecordingTitle {
+            get {
+                return ResourceManager.GetString("StartRecordingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop recording.
+        /// </summary>
+        internal static string StopRecordingTitle {
+            get {
+                return ResourceManager.GetString("StopRecordingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toggle a mode.
         /// </summary>
-        public static string ToggleMode {
+        internal static string ToggleMode {
             get {
                 return ResourceManager.GetString("ToggleMode", resourceCulture);
             }
@@ -477,7 +531,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
-        public static string Up {
+        internal static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
             }
@@ -486,7 +540,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Up-Left.
         /// </summary>
-        public static string UpLeft {
+        internal static string UpLeft {
             get {
                 return ResourceManager.GetString("UpLeft", resourceCulture);
             }
@@ -495,7 +549,7 @@ namespace BasicCommandHandlers.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Up-Right.
         /// </summary>
-        public static string UpRight {
+        internal static string UpRight {
             get {
                 return ResourceManager.GetString("UpRight", resourceCulture);
             }

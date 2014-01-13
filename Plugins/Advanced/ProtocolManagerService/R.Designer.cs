@@ -22,7 +22,7 @@ namespace ProtocolManagerService {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class R {
+    public class R {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ProtocolManagerService {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProtocolManagerService.R", typeof(R).Assembly);
@@ -51,7 +51,7 @@ namespace ProtocolManagerService {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace ProtocolManagerService {
         /// <summary>
         ///   Looks up a localized string similar to Enables creating a key that outputs a letter of a sentence.
         /// </summary>
-        internal static string SendStringProtocolDescription {
+        public static string SendStringProtocolDescription {
             get {
                 return ResourceManager.GetString("SendStringProtocolDescription", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace ProtocolManagerService {
         /// <summary>
         ///   Looks up a localized string similar to Write a letter or a sentence.
         /// </summary>
-        internal static string SendStringProtocolTitle {
+        public static string SendStringProtocolTitle {
             get {
                 return ResourceManager.GetString("SendStringProtocolTitle", resourceCulture);
             }

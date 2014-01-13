@@ -156,7 +156,6 @@
     <Compile Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml.cs">
       <DependentUpon>KeyboardEditionUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="KeyboardEdition\Views\Zone\PathTrimmingTextBlock.cs" />
     <Compile Include="KeyboardEdition\Views\Zone\ZoneEditionUserControl.xaml.cs">
       <DependentUpon>ZoneEditionUserControl.xaml</DependentUpon>
     </Compile>

@@ -15,7 +15,6 @@ namespace FileLauncher
         //An iterator
         static int it;
         static readonly int INTERATION_LIMIT = 500;
-        static Stopwatch _watch;
 
         public List<IWildFile> RegistryApps { get; private set; }
 

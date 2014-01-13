@@ -116,8 +116,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="KeySequence\KeySequenceCommandHandler.cs" />
+    <Compile Include="KeySequence\KeySequenceCommandParameterManager.cs" />
     <Compile Include="MonitorOnce\MonitorOnceCommandParameterManager.cs" />
-    <Compile Include="PathTrimmingTextBlock.cs" />
     <Compile Include="Clic\ClickCommandParameterManager.cs" />
     <Compile Include="DynCommand\DynCommandParameterManager.cs" />
     <Compile Include="Tools\CommandParser.cs" />

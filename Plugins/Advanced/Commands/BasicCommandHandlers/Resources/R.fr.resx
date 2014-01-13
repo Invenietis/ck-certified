@@ -258,4 +258,22 @@
   <data name="DynCommandWindowsKey" xml:space="preserve">
     <value>Presser le bouton "Windows"</value>
   </data>
+  <data name="IsRecordingText" xml:space="preserve">
+    <value>En écoute...</value>
+  </data>
+  <data name="KeySequenceNameTitle" xml:space="preserve">
+    <value>Nom de la sequence : </value>
+  </data>
+  <data name="KeySequenceProtocolDescription" xml:space="preserve">
+    <value>Permet d'enregistrer une combinaison de touches</value>
+  </data>
+  <data name="KeySequenceProtocolTitle" xml:space="preserve">
+    <value>Séquence de touches</value>
+  </data>
+  <data name="StartRecordingTitle" xml:space="preserve">
+    <value>Lancer l'écoute</value>
+  </data>
+  <data name="StopRecordingTitle" xml:space="preserve">
+    <value>Arreter l'écoute</value>
+  </data>
 </root>

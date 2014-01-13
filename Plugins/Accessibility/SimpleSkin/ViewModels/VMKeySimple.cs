@@ -22,11 +22,12 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
-using System.Windows.Controls;
 using System.Windows;
 using CK.Plugin.Config;
 using HighlightModel;
@@ -35,6 +36,10 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using System.IO;
 using CK.Storage;
+using Color = System.Windows.Media.Color;
+using FontStyle = System.Windows.FontStyle;
+using Image = System.Windows.Controls.Image;
+using System.Windows.Interop;
 
 namespace SimpleSkin.ViewModels
 {
@@ -132,7 +137,7 @@ namespace SimpleSkin.ViewModels
             SetActionOnPropertyChanged( "Enabled", () => { SafeUpdateIsEnabled(); OnPropertyChanged( "Enabled" ); } );
             SetActionOnPropertyChanged( "UpLabel", () => { SafeUpdateUpLabel(); OnPropertyChanged( "UpLabel" ); } );
             SetActionOnPropertyChanged( "DownLabel", () => { SafeUpdateDownLabel(); OnPropertyChanged( "DownLabel" ); } );
-            SetActionOnPropertyChanged( "CurrentLayout", () => { LayoutPropertyChangedTriggers(); } );
+            SetActionOnPropertyChanged( "CurrentLayout", () => LayoutPropertyChangedTriggers() );
 
             _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
             _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
@@ -357,22 +362,27 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateImage()
         {
-            object o = Context.Config[_key.Current].GetOrSet<object>( "Image", null );
+            var o = Context.Config[_key.Current].GetOrSet<object>( "Image", null );
 
             if( o != null )
             {
-                string source = String.Empty;
+                object source = String.Empty;
 
-                if( o.GetType() == typeof( Image ) ) //If there is an image in the config, the SkinThread needs to deserialize the image, in order to be its owner.
+                if( o is Image ) //If there is an image in the config, the SkinThread needs to deserialize the image, in order to be its owner.
                 {
                     source = ( (Image)o ).Source.ToString();
+                }
+                else if( o is InteropBitmap )
+                {
+                    ( (ImageSource)o ).Freeze();
+                    source = o;
                 }
                 else //otherwise, the config only holds a string. ProcessImage will therefor work properly.
                 {
                     source = o.ToString();
                 }
 
-                ThreadSafeSet<string>( source, ( v ) =>
+                ThreadSafeSet( source, v =>
                 {
                     _image = WPFImageProcessingHelper.ProcessImage( v );
                     OnPropertyChanged( "Image" );

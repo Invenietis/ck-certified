@@ -21,6 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using System.Windows;
 using CK.Windows;
 using System.Windows.Media;
@@ -36,6 +37,16 @@ namespace SimpleSkin
         public SkinWindow()
         {
             InitializeComponent();
+        }
+
+        internal event EventHandler<EventArgs> HidingAsked;
+        public override void Hide()
+        {
+            if( HidingAsked != null )
+            {
+                HidingAsked( this, EventArgs.Empty );
+                base.Hide();
+            }
         }
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )

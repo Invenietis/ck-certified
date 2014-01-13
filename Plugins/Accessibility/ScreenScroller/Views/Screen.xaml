@@ -1,10 +1,8 @@
 ﻿<Window x:Class="ScreenScroller.Screen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:ScreenScroller"
-        Title="Screen" WindowStyle="None" AllowsTransparency="True" 
-        ShowInTaskbar="False">
+        Title="Screen" WindowStyle="None" AllowsTransparency="True" Topmost="True"
+        ShowInTaskbar="False" Background="Transparent">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,18 +10,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Window.Style>
-        <Style TargetType="Window">
-            <Setter Property="Background" Value="Transparent" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                    <Setter Property="Background" Value="{Binding Root.BackgroundColor}" />
-                    <Setter Property="Opacity" Value="0.3" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Style>
-    <Grid>
+    <DockPanel>
+        <Border Opacity="0.3" Width="200" Height="100" 
+                DockPanel.Dock="Top" HorizontalAlignment="Right" 
+                BorderBrush="Black" BorderThickness="1" Background="Black" 
+                Visibility="{Binding IsHighlighted, Converter={StaticResource booleantovisibilityconverter}}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Text="Défiler sur cet écran" />
+        </Border>
         <ContentControl Content="{Binding}"></ContentControl>
-    </Grid>
+    </DockPanel>
 </Window>

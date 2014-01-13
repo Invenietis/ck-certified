@@ -24,7 +24,7 @@ namespace CK.WindowManager
         /// <summary>
         /// The HostManipulator, enables minimizing the host.
         /// </summary>
-        public IHostManipulator HostManipulator { get { return _hostManipulator ?? (_hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>()); } }
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
 
         public IReadOnlyList<IWindowElement> WindowElements
         {
@@ -158,10 +158,11 @@ namespace CK.WindowManager
 
         public void ToggleHostMinimized()
         {
-            if( _lastFocused != null )
-            {
-                _lastFocused.ToggleHostMinimized( HostManipulator );
-            }
+            IWindowElement element = _lastFocused;
+            if( element == null && _dic.Count > 0 ) element = _dic.Keys.FirstOrDefault();
+
+            if( element != null )
+                element.ToggleHostMinimized( HostManipulator );
         }
 
         public IWindowElement GetByName( string name )

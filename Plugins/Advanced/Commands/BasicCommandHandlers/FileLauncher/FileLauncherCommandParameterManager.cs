@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Media.Animation;
 using CK.WPF.ViewModel;
 using CommonServices;
 using ProtocolManagerModel;
@@ -14,16 +15,16 @@ namespace BasicCommandHandlers
     {
         public IProtocolEditorRoot Root { get; set; }
 
-        string[] trustedCompanies = { "Adobe", "Microsoft", "Google", "Mozilla", "Apple" };
-        VMCommand _openFileDialog;
-        IFileLauncherService _fileLauncher;
-        IPluginConfigAccessor _skinConfigAccessor;
+        readonly string[] _trustedCompanies = { "Adobe", "Microsoft", "Google", "Mozilla", "Apple" };
+        readonly IFileLauncherService _fileLauncher;
+        readonly IPluginConfigAccessor _skinConfigAccessor;
 
-        IWildFile _selectedApp { get; set; }
+        VMCommand _openFileDialog;
+        IWildFile _selectedWildFile;
+
         public List<IWildFile> Apps { get; set; }
 
         bool _showApp;
-
         public bool ShowApp
         {
             get { return _showApp; }
@@ -34,6 +35,32 @@ namespace BasicCommandHandlers
                 NotifyPropertyChanged( "IsValid" );
             }
         }
+
+        //private bool _isCurrentImageFromIcon;
+        //bool _useFileIcon;
+        //public bool UseFileIcon
+        //{
+        //    get { return _useFileIcon; }
+        //    set
+        //    {
+        //        if( _useFileIcon != value )
+        //        {
+        //            _useFileIcon = value;
+        //            NotifyPropertyChanged( "UseFileIcon" );
+        //            if( value && _selectedWildFile != null )
+        //            {
+        //                //Set the icon
+        //                _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedWildFile.Icon );
+        //                _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
+        //                _isCurrentImageFromIcon = true;
+        //            }
+        //            else
+        //            {
+        //                //Remove the icon
+        //            }
+        //        }
+        //    }
+        //}
 
         public FileLauncherCommandParameterManager( IFileLauncherService fileLauncher, IPluginConfigAccessor skinConfigAccessor )
         {
@@ -48,7 +75,7 @@ namespace BasicCommandHandlers
                 if( vA == null || vA.ProductName == null ) return 1;
                 if( vB == null || vB.ProductName == null ) return -1;
 
-                foreach( string company in trustedCompanies )
+                foreach( string company in _trustedCompanies )
                 {
                     if( vA.ProductName.Contains( company ) ) return -1;
                     if( vB.ProductName.Contains( company ) ) return 1;
@@ -63,11 +90,11 @@ namespace BasicCommandHandlers
         {
             get
             {
-                if( _selectedApp != null )
+                if( _selectedWildFile != null )
                 {
-                    return _selectedApp.Lookup == FileLookup.Registry ? _selectedApp : null;
+                    return _selectedWildFile.Lookup == FileLookup.Registry ? _selectedWildFile : null;
                 }
-                return _selectedApp;
+                return _selectedWildFile;
             }
             set
             {
@@ -77,7 +104,7 @@ namespace BasicCommandHandlers
 
         public IWildFile SelectedFile
         {
-            get { return _selectedApp; }
+            get { return _selectedWildFile; }
             set
             {
                 SetSelectedFile( value );
@@ -86,10 +113,13 @@ namespace BasicCommandHandlers
 
         private void SetSelectedFile( IWildFile value )
         {
-            _selectedApp = value;
-            //JL : EditedKeyMode is null, it has to be set in when selecting a key
-            _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedApp.Icon );
+            _selectedWildFile = value;
+            //if( UseFileIcon )
+            //{
+            _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedWildFile.Icon );
             _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
+            //}
+
             NotifyPropertyChanged( "SelectedApp" );
             NotifyPropertyChanged( "SelectedFile" );
             NotifyPropertyChanged( "IsValid" );
@@ -108,9 +138,7 @@ namespace BasicCommandHandlers
         void OpenDialog()
         {
             // Configure open file dialog box
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            dlg.Filter = "Tous le fichiers (*.*)|*.*"; // Filter files by extension 
+            var dlg = new Microsoft.Win32.OpenFileDialog { Filter = "Tous le fichiers (*.*)|*.*" };
 
             // Show open file dialog box
             Nullable<bool> result = dlg.ShowDialog();
@@ -141,7 +169,7 @@ namespace BasicCommandHandlers
                 {
                     ShowApp = true;
                     SelectedApp = Apps.FirstOrDefault( f => f.CompareTo( file ) == 0 );
-                    if( _selectedApp == null ) SelectedApp = file;
+                    if( _selectedWildFile == null ) SelectedApp = file;
                 }
             } );
             return;
@@ -149,7 +177,7 @@ namespace BasicCommandHandlers
 
         public string GetParameterString()
         {
-            return _fileLauncher.FileLocator.GetLocationCommand( _selectedApp );
+            return _fileLauncher.FileLocator.GetLocationCommand( _selectedWildFile );
         }
 
         public bool IsValid

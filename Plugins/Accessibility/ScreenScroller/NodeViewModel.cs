@@ -90,9 +90,11 @@ namespace ScreenScroller
         /// Ctor of the root nodes (one for each screen)
         /// </summary>
         /// <param name="root"></param>
+        /// <param name="offsetWidth"></param>
         /// <param name="childrenCount"></param>
         /// <param name="maxDepth"></param>
         /// <param name="isRoot"></param>
+        /// <param name="offsetHeight"></param>
         internal NodeViewModel( ScreenScrollerPlugin root, int offsetHeight, int offsetWidth, int childrenCount, int maxDepth, bool isRoot )
         {
             ChildNodes = new ObservableCollection<NodeViewModel>();

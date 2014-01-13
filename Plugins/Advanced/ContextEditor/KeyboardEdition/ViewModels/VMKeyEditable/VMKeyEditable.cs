@@ -261,7 +261,11 @@ namespace KeyboardEditor.ViewModels
             object o = _context.SkinConfiguration[_key.Current]["Image"];
             if( o != null )
             {
-                _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
+                var source = o as ImageSource;
+                if (source != null)
+                    _imageSource = source;
+                else 
+                    _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
             }
             else _imageSource = null;
         }

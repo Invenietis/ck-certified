@@ -17,7 +17,7 @@ namespace ScreenScroller
     public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IHighlightableElement, IRootNode
     {
         internal const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
-        Guid PluginGuid = new Guid( PluginIdString );
+        readonly Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "0.0.1";
         const string PluginPublicName = "Screen Scroller";
 
@@ -64,10 +64,10 @@ namespace ScreenScroller
         {
             foreach( System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens.Reverse() )
             {
-                NodeViewModel node = new NodeViewModel( this, s.Bounds.Top, s.Bounds.Left, SquareSize * SquareSize, ClickDepth, false );
+                var node = new NodeViewModel( this, s.Bounds.Top, s.Bounds.Left, SquareSize * SquareSize, ClickDepth, false );
 
                 ChildNodes.Add( node );
-                Screen screen = new Screen();
+                var screen = new Screen();
                 screen.DataContext = node;
                 screen.Show();
 
@@ -80,7 +80,7 @@ namespace ScreenScroller
             }
         }
 
-        ResourceDictionary _resourceDictionary = new ResourceDictionary()
+        readonly ResourceDictionary _resourceDictionary = new ResourceDictionary()
         {
             Source = new Uri( "pack://application:,,,/ScreenScroller;component/Views/Resources.xaml", UriKind.Absolute )
         };
@@ -113,10 +113,6 @@ namespace ScreenScroller
                 ChildNodes.Clear();
                 InitializeGrid();
             }
-        }
-
-        private void Pause()
-        {
         }
 
         public void Stop()

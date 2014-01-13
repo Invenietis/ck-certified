@@ -1,6 +1,7 @@
 ﻿using System;
 using CK.Plugin;
 using CK.WindowManager.Model;
+using CK.Windows;
 
 namespace SimpleSkin
 {
@@ -28,8 +29,11 @@ namespace SimpleSkin
                     e.Window.Hidden -= OnWindowHidden;
                 };
                 _subscriber.Subscribe( "Skin", _skinWindow );
+                _skinWindow.HidingAsked += OnWindowHidden;
 
             } ) );
+
+
         }
 
         void OnWindowHidden( object sender, EventArgs e )
@@ -39,9 +43,12 @@ namespace SimpleSkin
 
         partial void OnSuccessfulStop()
         {
+            _skinDispatcher.BeginInvoke( new Action( () =>
+            {
+                _skinWindow.HidingAsked -= OnWindowHidden;
+            } ) );
             _subscriber.Unsubscribe();
         }
-
 
         /// <summary>
         /// Hides the skin and shows the keyboard's MiniView
@@ -52,7 +59,7 @@ namespace SimpleSkin
             {
                 _viewHidden = true;
 
-                _skinDispatcher.BeginInvoke( (Action)(() =>
+                _skinDispatcher.BeginInvoke( (Action)( () =>
                 {
                     ShowMiniView();
                     if( Highlighter.Status == InternalRunningStatus.Started )
@@ -61,7 +68,7 @@ namespace SimpleSkin
                         Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
                     }
                     if( _timer != null ) _timer.Stop();
-                }), null );
+                } ), null );
             }
         }
 

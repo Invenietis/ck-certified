@@ -66,7 +66,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     if( Context.DefaultImages.Values.Contains( value ) )
                     {
-                        _selectedImage = Context.DefaultImages.Where( kvp => kvp.Value == value ).Single();
+                        _selectedImage = Context.DefaultImages.Single( kvp => kvp.Value == value );
                     }
                     else
                     {
@@ -225,7 +225,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _initializeCommand = new CK.Windows.App.VMCommand( () =>
                     {
-                        ProtocolEditorsProvider.InitializeProtocolEditor(Model);
+                        ProtocolEditorsProvider.InitializeProtocolEditor( Model );
                         ShowKeyCommandCreationPanel = true;
                     } );
                 }

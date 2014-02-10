@@ -47,12 +47,11 @@ namespace Host
     /// </summary>
     public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
     {
-        static ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
-        Guid _guid;
+        static readonly ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
         SemanticVersion20 _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
-        CKAppParameters applicationParameters;
+        readonly CKAppParameters applicationParameters;
 
         /// <summary>
         /// The SubAppName is the name of the package (Standard, Steria etc...)
@@ -102,7 +101,7 @@ namespace Host
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
 
-            RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
+            var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SendInput
 
@@ -139,8 +138,8 @@ namespace Host
             _log.Debug( "Starting Apply..." );
             _firstApplySucceed = Context.PluginRunner.Apply();
 
-            ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationPropertyChanged );
-            ctx.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationPropertyChanged );
+            ctx.ConfigManager.SystemConfiguration.PropertyChanged += OnSystemConfigurationPropertyChanged;
+            ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationPropertyChanged;
 
 
             return ctx;

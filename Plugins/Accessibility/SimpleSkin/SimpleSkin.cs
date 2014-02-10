@@ -44,17 +44,17 @@ using Help.Services;
 namespace SimpleSkin
 {
 
-    [Plugin( SimpleSkin.PluginIdString,
+    [Plugin( PluginIdString,
         PublicName = PluginPublicName,
-        Version = SimpleSkin.PluginIdVersion,
-        Categories = new string[] { "Visual", "Accessibility" } )]
+        Version = PluginIdVersion,
+        Categories = new[] { "Visual", "Accessibility" } )]
     public partial class SimpleSkin : IPlugin, IHaveDefaultHelp
     {
-        const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.6.0";
-        const string PluginPublicName = "SimpleSkin";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
+        readonly Guid PluginGuid = new Guid( PluginIdString );
+        const string PluginPublicName = "SimpleSkin";
+        const string PluginIdVersion = "1.6.0";
 
         public bool IsViewHidden { get { return _viewHidden; } }
         public IPluginConfigAccessor Config { get; set; }
@@ -122,12 +122,9 @@ namespace SimpleSkin
                     _skinDispatcher );
 
                 _isStarted = true;
-                _skinWindow = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( (Func<SkinWindow>)( () =>
-                {
-                    return new SkinWindow() { DataContext = _ctxVm };
-                } ) );
+                _skinWindow = _noFocusWindowManager.CreateNoFocusWindow( () => new SkinWindow() { DataContext = _ctxVm } );
 
-                WINDOWPLACEMENT defaultPlacement = new WINDOWPLACEMENT();
+                var defaultPlacement = new WINDOWPLACEMENT();
 
                 _skinDispatcher.Invoke( (System.Action)( () =>
                 {
@@ -137,13 +134,10 @@ namespace SimpleSkin
                 } ), null );
 
                 //Sets on the Config must always be done on the main UI thread
-                WINDOWPLACEMENT actualPlacement = (WINDOWPLACEMENT)Config.User.GetOrSet<WINDOWPLACEMENT>( PlacementString, defaultPlacement );
+                WINDOWPLACEMENT actualPlacement = Config.User.GetOrSet( PlacementString, defaultPlacement );
 
                 //Placing the skin at the same location as the last launch.
-                _skinDispatcher.Invoke( (System.Action)( () =>
-                {
-                    CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement );
-                } ), null );
+                _skinDispatcher.Invoke( (Action)( () => CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement ) ), null );
 
                 InitializeHighligther();
                 UpdateAutoHideConfig();
@@ -539,11 +533,11 @@ namespace SimpleSkin
                 _miniViewVm = new MiniViewVM( this );
 
                 _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
-                _miniView.Closing += new CancelEventHandler( OnWindowClosing );
+                _miniView.Closing += OnWindowClosing;
                 _miniView.Show();
 
-                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth / 2 ), _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
-                !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _miniViewVm.X + (int)_miniView.ActualWidth ), _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
+                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth / 2, _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
+                !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth, _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
                 {
                     _miniView.Left = 0;
                     _miniView.Top = 0;

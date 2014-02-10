@@ -68,7 +68,7 @@ namespace CK.Plugins.AutoClick
 
         public bool Setup( IPluginSetupInfo info )
         {
-            ClicksVM = new ClicksVM(){ Holder = this };
+            ClicksVM = new ClicksVM() { Holder = this };
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             return true;
         }
@@ -210,6 +210,9 @@ namespace CK.Plugins.AutoClick
             {
                 _isHighlighted = value;
                 OnPropertyChanged( "IsHighlighted" );
+
+                if( ClicksVM == null ) return; //May occur when the scroller triggers the EnnHighlight after the plugin has been stopped
+
                 foreach( var click in ClicksVM )
                 {
                     click.IsHighlighted = value;

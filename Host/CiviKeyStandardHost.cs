@@ -109,10 +109,9 @@ namespace Host
             hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
             hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
-            // Because the ServiceRequirements are buggy
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
-
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler
 
             ctx.PluginRunner.Add( hostRequirements );
 

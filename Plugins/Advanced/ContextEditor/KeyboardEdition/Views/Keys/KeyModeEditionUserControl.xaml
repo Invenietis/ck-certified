@@ -17,9 +17,9 @@
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
+            <!--<ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
-            <ckc:NotNullConverter x:Key="notnullconverter"/>
+            <ckc:NotNullConverter x:Key="notnullconverter"/>-->
             <ckc:NotConverter x:Key="notconverter"/>
 
             <DataTemplate x:Key="keysequencedatatemplate">
@@ -119,19 +119,20 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </WrapPanel>
-                    <WrapPanel Margin="0 10 0 0" HorizontalAlignment="Stretch">
-                        <WrapPanel.Style>
-                            <Style TargetType="WrapPanel">
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0" HorizontalAlignment="Stretch">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ShowApp}" Value="False">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding ShowApp}" Value="True">
+                                    <!--<DataTrigger Binding="{Binding ShowApp}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
+                                    </DataTrigger>-->
                                 </Style.Triggers>
+                                <Setter Property="Visibility" Value="Collapsed"/>
                             </Style>
-                        </WrapPanel.Style>
+                        </StackPanel.Style>
                         <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3">
                             <StackPanel Orientation="Horizontal"  Margin="8" HorizontalAlignment="Stretch">
                                 <Image Width="32" Height="32" Source="{Binding SelectedFile.Icon}" Margin="0 0 10 0"/>
@@ -144,7 +145,7 @@
                         <Button  HorizontalAlignment="Right" Command="{Binding OpenFileDialog}" Margin="10 0 0 0">
                             <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/browse.png" />
                         </Button>
-                    </WrapPanel>
+                    </StackPanel>
                 </StackPanel>
             </DataTemplate>
 

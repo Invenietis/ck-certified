@@ -33,22 +33,24 @@ namespace Host
     //First level of the civikey host
     public class RootConfigViewModel : ConfigPage
     {
-        readonly AppViewModel _app;
-        readonly Guid _autoclicId;
-        readonly Guid _skinId;
-        readonly Guid _basicScrollId;
         readonly Guid _screenScrollerId;
+        readonly Guid _clickSelectorId;
+        readonly Guid _basicScrollId;
+        readonly Guid _autoclicId;
         readonly Guid _radarId;
+        readonly Guid _skinId;
 
+        readonly AppViewModel _app;
         AppConfigViewModel _appConfigVm;
         ConfigItemCurrent<KeyboardModel> _keyboards;
-        
+
         public RootConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
         {
             DisplayName = R.Home;
             _app = app;
             _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
+            _clickSelectorId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
             _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
             _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
             _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
@@ -68,7 +70,7 @@ namespace Host
             }
 
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
-            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ) { DisplayName = R.AutoClickSectionName };
+            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) { DisplayName = R.AutoClickSectionName };
             var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId ) { DisplayName = R.Scrolling };
             var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId ) { DisplayName = R.Radar };
 

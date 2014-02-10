@@ -35,13 +35,12 @@ namespace CK.Plugins.AutoClick.ViewModel
 {
     public class ClicksVM : ObservableCollection<ClickEmbedderVM>, INotifyPropertyChanged, IHighlightableElement
     {
-
         #region Properties
 
         private ClickEmbedderVM _selectedClickEmbedderVM;
         public ClickVM NextClick { get { return _selectedClickEmbedderVM.NextClick; } }
 
-        private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
+        private readonly CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         public ICKReadOnlyList<ClickEmbedderVM> ReadOnlyClicksVM { get { return _clicksVmReadOnlyAdapter.ToReadOnlyList(); } }
 
         internal ClickVM GetNextClick( bool doIncrement )
@@ -64,7 +63,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             InitializeDefaultClicks();
         }
 
-        public ClicksVM( IList<ClickEmbedderVM> clickEmbeddersVM )
+        public ClicksVM( IEnumerable<ClickEmbedderVM> clickEmbeddersVM )
         {
             foreach( ClickEmbedderVM clickEmbedderVM in clickEmbeddersVM )
             {

@@ -164,9 +164,8 @@ namespace Host
         /// <returns></returns>
         public bool IsOverlayed()
         {
-            Window view = GetView( null ) as Window;
-            bool result = CK.Windows.Helpers.WindowHelper.IsOverLayed( view );
-            return result;
+            var view = GetView( null ) as Window;
+            return CK.Windows.Helpers.WindowHelper.IsOverLayed( view ); ;
         }
 
         void OnBeforeExitApplication( object sender, CK.Context.ApplicationExitingEventArgs e )
@@ -174,13 +173,13 @@ namespace Host
             if( !_closing )
             {
                 _closing = true;
-                Window thisView = GetView( null ) as Window;
-                Window bestParent = App.Current.GetTopWindow();
+                var thisView = GetView( null ) as Window;
+                var bestParent = App.Current.GetTopWindow();
 
-                ModalViewModel mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
+                var mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
                 mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
                 mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-                CustomMsgBox customMessageBox = new CustomMsgBox( ref mvm );
+                var customMessageBox = new CustomMsgBox( ref mvm );
                 customMessageBox.ShowDialog();
 
                 e.Cancel = mvm.ModalResult != ModalResult.Yes;

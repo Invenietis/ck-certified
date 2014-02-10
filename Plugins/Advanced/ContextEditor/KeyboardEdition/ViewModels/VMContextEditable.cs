@@ -47,6 +47,7 @@ namespace KeyboardEditor.ViewModels
 
     public enum ModeTypes
     {
+        None = 0,//When displaying the panel to choose between Mode and Layout
         Mode = 1,
         Layout = 2
     }

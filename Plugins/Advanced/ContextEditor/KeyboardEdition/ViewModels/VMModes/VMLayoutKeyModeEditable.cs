@@ -114,8 +114,11 @@ namespace KeyboardEditor.ViewModels
             {
                 if( value )
                 {
-                    if( Context.SelectedElement != this ) Context.SelectedElement = this;
-                    Context.CurrentlyDisplayedModeType = ModeTypes.Layout;
+                    if( Context.SelectedElement != this )
+                    {
+                        Context.SelectedElement = this;
+                        Context.CurrentlyDisplayedModeType = ModeTypes.Layout;
+                    }
                 }
 
                 //Context.KeyboardVM.CurrentMode = _model.Mode;

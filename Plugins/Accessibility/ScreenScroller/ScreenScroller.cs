@@ -300,12 +300,12 @@ namespace ScreenScroller
 
         private void UnregisterHighlighter()
         {
-            Highlighter.Service.UnregisterTree( this );
+            Highlighter.Service.UnregisterTree( "ScreenScroller", this );
         }
 
         private void RegisterHighlighter()
         {
-            Highlighter.Service.RegisterTree( this );
+            Highlighter.Service.RegisterTree( "ScreenScroller", this );
         }
 
         public ICKReadOnlyList<IHighlightableElement> Children

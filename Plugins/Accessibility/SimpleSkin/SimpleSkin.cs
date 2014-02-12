@@ -310,7 +310,7 @@ namespace SimpleSkin
         {
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
             }
 
             UnInitializeHighlighter();
@@ -370,7 +370,7 @@ namespace SimpleSkin
 
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+                Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
             }
 
             if( e.Current != null && _skinWindow != null )
@@ -486,12 +486,12 @@ namespace SimpleSkin
 
         private void UnregisterHighlighter()
         {
-            Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+            Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
         }
 
         private void RegisterHighlighter()
         {
-            Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
+            Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
         }
 
         #endregion
@@ -520,8 +520,8 @@ namespace SimpleSkin
 
                 if( Highlighter.Status == InternalRunningStatus.Started )
                 {
-                    Highlighter.Service.RegisterTree( _ctxVm.KeyboardVM );
-                    Highlighter.Service.UnregisterTree( _miniViewVm );
+                    Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
+                    Highlighter.Service.UnregisterTree( "MinimizeKeyboard", _miniViewVm );
                 }
             }
         }

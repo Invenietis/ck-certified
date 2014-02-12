@@ -13,10 +13,11 @@ namespace KeyScroller
     {
         ICKReadOnlyList<IHighlightableElement> _roElements;
 
-        protected List<IHighlightableElement> _elements;
+        protected Dictionary<string, IHighlightableElement> _elements;
         protected IPluginConfigAccessor _configuration;
         protected DispatcherTimer _timer;
         protected int _currentId = -1;
+        protected int _repeatCount = 1;
 
         protected Stack<IHighlightableElement> _currentElementParents = null;
         protected IHighlightableElement _previousElement = null;
@@ -25,10 +26,10 @@ namespace KeyScroller
 
         internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
-            get { return _roElements ?? ( _roElements = new CKReadOnlyListOnIList<IHighlightableElement>( _elements ) ); }
+            get { return _roElements ?? ( _roElements = _elements.Values.ToReadOnlyList() ); }
         }
 
-        public ScrollingStrategyBase( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ScrollingStrategyBase(DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration)
         {
             _elements = elements;
             _timer = timer;
@@ -133,7 +134,7 @@ namespace KeyScroller
         {
             // if the current element does not have any children ... go to the normal next element
             if( elements[_currentId].Children.Count == 0 ) return GetNextElement( ActionType.Normal );
-            // otherwise we just push the element as a parent and set the the first child as the current element
+            // otherwise we just push the element as a parent and set the first child as the current element
             _currentElementParents.Push( elements[_currentId] );
             int tmpId = _currentId;
             _currentId = 0;
@@ -141,11 +142,38 @@ namespace KeyScroller
             return elements[tmpId].Children[0];
         }
 
+        protected virtual IHighlightableElement GetGoToFirstSibling( ICKReadOnlyList<IHighlightableElement> elements )
+        {
+            _currentId = 0;
+            return elements[_currentId];
+        }
+
+        protected virtual IHighlightableElement GetGoToLastSibling( ICKReadOnlyList<IHighlightableElement> elements )
+        {
+            _currentId = elements.Count - 1;
+            return elements[_currentId];
+        }
+
         protected virtual IHighlightableElement GetNextElement( ActionType actionType )
         {
             // reset the action type to normal if we are not on a StayOnTheSameLocked
             if( actionType != ActionType.StayOnTheSameLocked )
                 _lastDirective.NextActionType = ActionType.Normal;
+
+            //We retrieve parents that implement IHighlightableElementController
+            var contrillingParents = _currentElementParents.Where((i) => { return i is IHighlightableElementController; });
+
+            foreach (IHighlightableElementController parent in contrillingParents)
+            {
+                //we offer the possibility to change action
+                actionType = parent.PreviewChildAction( _currentElement, actionType);
+            }
+
+            foreach( IHighlightableElementController parent in contrillingParents )
+            {
+                //inform that there is a new ActionType
+                parent.OnChildAction( actionType );
+            }
 
             IHighlightableElement nextElement = null;
 
@@ -171,22 +199,30 @@ namespace KeyScroller
                     //We are on the root level
                     elements = RegisteredElements;
 
-                    if( actionType != ActionType.EnterChild && elements.Count == 1 )//We are on the root level, and there is only one element, so we directly enter it.
-                    {
-                        _currentId = 0;
-                        nextElement = GetEnterChild( elements );
-                        return GetSkipBehavior( nextElement );
-                    }
+                    // ToDoJL
+                    //if( actionType != ActionType.EnterChild && elements.Count == 1 )//We are on the root level, and there is only one element, so we directly enter it.
+                    //{
+                    //    _currentId = 0;
+                    //    nextElement = GetEnterChild( elements );
+                    //    return GetSkipBehavior( nextElement );
+                    //}
                 }
 
                 if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
                 {
                     nextElement = GetStayOnTheSame( elements );
                 }
+                else if( actionType == ActionType.GoToFirstSibling )
+                {
+                    nextElement = GetGoToFirstSibling( elements );
+                }
+                else if( actionType == ActionType.GoToLastSibling )
+                {
+                    nextElement = GetGoToLastSibling( elements );
+                }
                 else if( _currentId < 0 || actionType != ActionType.EnterChild )
                 {
                     // if it's the first iteration, or if we just have to go to the next sibbling
-
                     if( _currentId < elements.Count - 1 ) _currentId++;
                     // if we are at the end of this elements set and if there is a parent in the stack, move to parent
                     else if( _currentElementParents.Count > 0 ) return GetNextElement( ActionType.UpToParent );

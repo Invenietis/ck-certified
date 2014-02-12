@@ -64,8 +64,8 @@ namespace SimpleSkin
                     ShowMiniView();
                     if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        Highlighter.Service.RegisterTree( _miniViewVm );
-                        Highlighter.Service.UnregisterTree( _ctxVm.KeyboardVM );
+                        Highlighter.Service.RegisterTree( "MinimizeKeyboard", _miniViewVm );
+                        Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
                     }
                     if( _timer != null ) _timer.Stop();
                 } ), null );

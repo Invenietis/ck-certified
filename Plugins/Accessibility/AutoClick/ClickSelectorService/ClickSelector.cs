@@ -190,7 +190,7 @@ namespace CK.Plugins.AutoClick
         {
             if( Highlighter.Status.IsStartingOrStarted )
             {
-                Highlighter.Service.RegisterTree( this );
+                Highlighter.Service.RegisterTree( "ClickSelector", this );
             }
         }
 
@@ -198,7 +198,7 @@ namespace CK.Plugins.AutoClick
         {
             if( Highlighter.Status.IsStartingOrStarted )
             {
-                Highlighter.Service.UnregisterTree( this );
+                Highlighter.Service.UnregisterTree( "ClickSelector", this );
             }
         }
 

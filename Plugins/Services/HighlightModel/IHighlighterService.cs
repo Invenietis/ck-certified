@@ -10,21 +10,24 @@ namespace CommonServices.Accessibility
     public interface IHighlighterService : IDynamicService
     {
         /// <summary>
-        /// Gets if the highlighter is running or not (maybe stopped, or just paused)
+        /// Gets if the highlighter is running or not (maybe stopped, or just paused).
         /// </summary>
         bool IsHighlighting { get; }
 
         /// <summary>
-        /// Register a highlightable tree in the service in order to be available for the highlighting
+        /// Register a highlightable tree in the service in order to be available for the highlighting.
         /// </summary>
+        /// <param name="elementID"></param>
         /// <param name="root"></param>
-        void RegisterTree( IHighlightableElement root );
+        void RegisterTree( string elementID, IHighlightableElement root );
 
         /// <summary>
         /// Remove an tree that have been registered before. It can be a subtree of any highlightable element.
         /// </summary>
+        /// <remarks>The elementID and the element must match the association made ​​in the collection</remarks>
+        /// <param name="elementID"></param>
         /// <param name="element"></param>
-        void UnregisterTree( IHighlightableElement element );
+        void UnregisterTree( string elementID, IHighlightableElement element );
 
         /// <summary>
         /// Pause the highlighter scroller. Call Resume to resume the execution where it was paused.

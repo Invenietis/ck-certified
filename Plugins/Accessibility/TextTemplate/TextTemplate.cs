@@ -50,7 +50,7 @@ namespace TextTemplate
             base.Start();
             Skip = SkippingBehavior.Skip;
             if( Highlighter.Status.IsStartingOrStarted )
-                Highlighter.Service.RegisterTree( this );
+                Highlighter.Service.RegisterTree( "TextTemplate", this );
 
         }
 

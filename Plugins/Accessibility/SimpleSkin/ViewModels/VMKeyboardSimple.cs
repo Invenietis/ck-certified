@@ -32,7 +32,7 @@ using System.Collections.ObjectModel;
 
 namespace SimpleSkin.ViewModels
 {
-    public class VMKeyboardSimple : VMContextElement, IHighlightableElement
+    public class VMKeyboardSimple : VMContextElement, IHighlightableElement, IHighlightableElementRoot
     {
         #region Properties & variables
 
@@ -385,5 +385,19 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
+
+        #region IHighlightableElementRoot Members
+
+        public void RegisterTreeAt( int index, IHighlightableElement child )
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnregisterTree( IHighlightableElement element )
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

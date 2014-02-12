@@ -28,24 +28,38 @@ using System.Linq;
 
 namespace SimpleSkin.ViewModels
 {
-    public class VMZoneSimple : VMContextElement, IHighlightableElement
+    public class VMZoneSimple : VMContextElement, IHighlightableElement, IHighlightableElementController
     {
         public CKObservableSortedArrayKeyList<VMKeySimple, int> Keys { get { return _keys; } }
         protected CKObservableSortedArrayKeyList<VMKeySimple, int> _keys;
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
+        private int _loopCount;
+        private int _initialLoopCount;
         private int _index;
+
+        public int LoopCount
+        {
+            get { return _loopCount; }
+        }
+
+        public int InitialLoopCount
+        {
+            get { return _initialLoopCount;  }
+        }
+
         public int Index
         {
             get { return _zone.Index; }
         }
 
-        internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone, int index )
+        internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone, int index, int repeatCount = 1 )
             : base( ctx )
         {
             _zone = zone;
             _index = index;
+            _loopCount = _initialLoopCount = repeatCount;
             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
@@ -171,5 +185,38 @@ namespace SimpleSkin.ViewModels
         {
             get { return false; }
         }
+
+        public ActionType PreviewChildAction(IHighlightableElement element, ActionType action)
+        {
+            if (_initialLoopCount != 1 && _keys[_keys.Count - 1] == element)
+            {
+                if( _loopCount == 1 )
+                {
+                    _loopCount = _initialLoopCount;
+                    return ActionType.UpToParent;
+                }
+                else
+                {
+                    _loopCount--;
+                    return ActionType.GoToFirstSibling;
+                }
+            }
+            return action;
+        }
+
+        public void OnChildAction( ActionType action )
+        {
+            if( action == ActionType.RelativeRoot || action == ActionType.AbsoluteRoot )  _loopCount = _initialLoopCount;
+        }
+
+        #region IHighlightableElementUnregisterSensitive Members
+
+        public void OnUnregisterTree()
+        {
+            //Reset the loopCount if we unregistered the element during a loop
+            _loopCount = _initialLoopCount;
+        }
+
+        #endregion
     }
 }

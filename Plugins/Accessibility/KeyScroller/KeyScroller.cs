@@ -25,7 +25,7 @@ namespace KeyScroller
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "KeyScroller";
 
-        List<IHighlightableElement> _registeredElements;
+        Dictionary<string, IHighlightableElement> _registeredElements;
         IScrollingStrategy _scrollingStrategy;
         DispatcherTimer _timer;
         Dictionary<string, IScrollingStrategy> _strategies;
@@ -48,7 +48,7 @@ namespace KeyScroller
             int timerSpeed = Configuration.User.GetOrSet( "Speed", 1000 );
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, timerSpeed );
 
-            _registeredElements = new List<IHighlightableElement>();
+            _registeredElements = new Dictionary<string, IHighlightableElement>();
             _strategies = new Dictionary<string, IScrollingStrategy>();
 
             foreach( string name in AvailableStrategies )
@@ -124,18 +124,32 @@ namespace KeyScroller
 
         public bool IsHighlighting { get { return _timer.IsEnabled; } }
 
-        public void RegisterTree( IHighlightableElement element )
+        public void RegisterTree( string elementID, IHighlightableElement element )
         {
-            if( !_registeredElements.Contains( element ) )
+            if( !_registeredElements.ContainsKey( elementID ) )
             {
-                _registeredElements.Add( element );
+                _registeredElements.Add( elementID, element );
                 if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
             }
         }
 
-        public void UnregisterTree( IHighlightableElement element )
+        public void UnregisterTree( string elementID, IHighlightableElement element )
         {
-            _registeredElements.Remove( element );
+            IHighlightableElement value;
+            if( _registeredElements.TryGetValue( elementID, out value ) && value == element )
+            {
+                _registeredElements.Remove( elementID );
+
+                var iheus = element as IHighlightableElementController;
+                if( iheus != null ) iheus.OnUnregisterTree();
+
+                //Warn the element if it was to remove and if it need to do something
+                var highlightableElementControllers = element.Children.Where( ( i ) => { return i is IHighlightableElementController; } );
+                foreach( IHighlightableElementController i in highlightableElementControllers )
+                {
+                    i.OnUnregisterTree();
+                }
+            }
 
             if( _registeredElements.Count == 0 )
             {

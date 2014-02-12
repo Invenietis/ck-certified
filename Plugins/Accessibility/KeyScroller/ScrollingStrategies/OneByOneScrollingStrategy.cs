@@ -14,7 +14,7 @@ namespace KeyScroller
     public class OneByOneScrollingStrategy : ScrollingStrategyBase
     {
         const string StrategyName = "OneByOneScrollingStrategy";
-        public OneByOneScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public OneByOneScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

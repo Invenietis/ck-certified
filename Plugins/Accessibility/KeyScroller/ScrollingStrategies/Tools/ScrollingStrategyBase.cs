@@ -26,7 +26,9 @@ namespace KeyScroller
 
         internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
         {
-            get { return _roElements ?? ( _roElements = _elements.Values.ToReadOnlyList() ); }
+            // ToDOJL
+            //get { return _roElements ?? ( _roElements = _elements.Values.ToReadOnlyList() ); }
+            get { return _roElements = _elements.Values.ToReadOnlyList(); }
         }
 
         public ScrollingStrategyBase(DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration)

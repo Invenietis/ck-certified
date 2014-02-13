@@ -7,7 +7,10 @@ using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.WindowManager.Model;
+using CommonServices.Accessibility;
+using HighlightModel;
 using SimpleSkin.ViewModels;
+using System.Linq;
 
 namespace SimpleSkin
 {
@@ -22,6 +25,9 @@ namespace SimpleSkin
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IHighlighterService> HighlighterService { get; set; }
 
         [RequiredService]
         public IContext Context { get; set; }
@@ -51,10 +57,12 @@ namespace SimpleSkin
 
         CKNoFocusWindowManager _noFocusWindowManager;
         IDictionary<string,SkinInfo> _skins;
+        IDictionary<IKeyboard,IHighlightableElement> _highlightableElementRegistered;
 
         public bool Setup( IPluginSetupInfo info )
         {
             _skins = new Dictionary<string, SkinInfo>();
+            _highlightableElementRegistered = new Dictionary<IKeyboard, IHighlightableElement>();
             return true;
         }
 
@@ -76,12 +84,24 @@ namespace SimpleSkin
                     
                     SubscribeToWindowManager( skinInfo );
                     skinInfo.Dispatcher.BeginInvoke( new Action( () => skinInfo.Skin.Show() ) );
+
+                    // ToDoF change static implementation
+                    if( activeKeyboard.Name == "Prediction" )
+                    {
+                        VMKeyboardSimple vmk = vm.Keyboards.Where( VMK => { return VMK.Keyboard.Name == "Prediction"; } ).FirstOrDefault();
+                        VMZoneSimple vmz = vmk.Zones.Where( VMZ => { return VMZ.Name == "Prediction"; } ).FirstOrDefault();
+                        HighlighterService.Service.RegisterInRegisteredElementAt( "Keyboard", "Azerty", ChildPosition.Pre, vmz );
+                        _highlightableElementRegistered.Add( vmk.Keyboard, vmz );
+                    }
                 }
             }
         }
 
         public void Stop()
         {
+            // ToDoF change static implementation
+            HighlighterService.Service.UnregisterInRegisteredElement( "Keyboard", "Azerty", ChildPosition.Pre, _highlightableElementRegistered.Values.FirstOrDefault() );
+
             foreach( var skin in _skins.Values )
             {
                 skin.Subscriber.Unsubscribe();

@@ -124,31 +124,28 @@ namespace KeyScroller
 
         public bool IsHighlighting { get { return _timer.IsEnabled; } }
 
-        public void RegisterTree( string elementID, IHighlightableElement element )
+        public void RegisterTree( string nameSpace, IHighlightableElement element )
         {
-            if( !_registeredElements.ContainsKey( elementID ) )
+            if( !_registeredElements.ContainsKey( nameSpace ) )
             {
-                _registeredElements.Add( elementID, element );
+                _registeredElements.Add( nameSpace, element );
                 if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
             }
         }
 
-        public void UnregisterTree( string elementID, IHighlightableElement element )
+        public void UnregisterTree( string nameSpace, IHighlightableElement element )
         {
             IHighlightableElement value;
-            if( _registeredElements.TryGetValue( elementID, out value ) && value == element )
+            if( _registeredElements.TryGetValue( nameSpace, out value ) && value == element )
             {
-                _registeredElements.Remove( elementID );
+                _registeredElements.Remove( nameSpace );
 
-                var iheus = element as IHighlightableElementController;
-                if( iheus != null ) iheus.OnUnregisterTree();
-
-                //Warn the element if it was to remove and if it need to do something
-                var highlightableElementControllers = element.Children.Where( ( i ) => { return i is IHighlightableElementController; } );
-                foreach( IHighlightableElementController i in highlightableElementControllers )
+                BrowseTree( element, e =>
                 {
-                    i.OnUnregisterTree();
-                }
+                    var iheus = e as IHighlightableElementController;
+                    if( iheus != null ) iheus.OnUnregisterTree();
+                    return false;
+                } );
             }
 
             if( _registeredElements.Count == 0 )
@@ -157,6 +154,53 @@ namespace KeyScroller
             }
 
             _scrollingStrategy.ElementUnregistered( element );
+        }
+
+        public bool RegisterInRegisteredElementAt( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element )
+        {
+            IHighlightableElement registeredElement;
+            if( _registeredElements.TryGetValue( nameSpace, out registeredElement ) )
+            {
+                return BrowseTree( registeredElement, e =>
+                {
+                    IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
+                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName ) 
+                        return extensibleElement.RegisterElementAt( position, element );
+                    else return false;
+                } );
+            }
+            return false;
+        }
+
+        public bool UnregisterInRegisteredElement( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element )
+        {
+            IHighlightableElement registeredElement;
+            if( _registeredElements.TryGetValue( nameSpace, out registeredElement ) )
+            {
+                return BrowseTree( registeredElement, e =>
+                {
+                    IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
+                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
+                    else return false;
+                } );
+            }
+            return false;
+        }
+
+        // if the Func return true, we leave BrowseTree
+        bool BrowseTree( IHighlightableElement element, Func<IHighlightableElement,bool> doing )
+        {
+            if( doing( element ) ) return true;
+
+            foreach( var child in element.Children )
+            {
+                if( child.Children != null && child.Children.Count > 0 )
+                {
+                    if( BrowseTree( child, doing ) ) return true;
+                }
+                if( doing( child ) ) return true;
+            }
+            return false;
         }
 
         public void Pause( bool forceEndHighlight = false )

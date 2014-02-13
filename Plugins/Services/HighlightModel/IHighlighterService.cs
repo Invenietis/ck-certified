@@ -29,6 +29,9 @@ namespace CommonServices.Accessibility
         /// <param name="element"></param>
         void UnregisterTree( string elementID, IHighlightableElement element );
 
+        bool RegisterInRegisteredElementAt( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element );
+        bool UnregisterInRegisteredElement( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element );
+
         /// <summary>
         /// Pause the highlighter scroller. Call Resume to resume the execution where it was paused.
         /// </summary>

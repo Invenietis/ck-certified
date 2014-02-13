@@ -170,7 +170,7 @@ namespace KeyScroller
                 //we offer the possibility to change action
                 actionType = parent.PreviewChildAction( _currentElement, actionType);
             }
-
+            
             foreach( IHighlightableElementController parent in contrillingParents )
             {
                 //inform that there is a new ActionType

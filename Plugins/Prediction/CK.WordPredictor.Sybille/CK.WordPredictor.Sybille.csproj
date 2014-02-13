@@ -112,6 +112,10 @@
       <Project>{771ca644-f99f-4aaf-8554-f9ddc49cb01b}</Project>
       <Name>CK.WordPredictor.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>
       <Name>CK.WordPredictor</Name>

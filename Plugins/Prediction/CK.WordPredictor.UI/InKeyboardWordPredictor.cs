@@ -33,7 +33,7 @@ namespace CK.WordPredictor.UI
         {
             if( Context != null )
             {
-                Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
+                //Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
                 EnsurePredictionKeyboard();
 
                 Context.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
@@ -69,6 +69,7 @@ namespace CK.WordPredictor.UI
             }
         }
 
+        //Create a Prédiction Keyboard in a new windows
         private void EnsurePredictionKeyboard()
         {
             if( PredictionKeyboard == null )
@@ -81,6 +82,7 @@ namespace CK.WordPredictor.UI
             PredictionKeyboard.CurrentLayout.H = 50;
             Feature.AutonomousKeyboardPredictionFactory.RemovePredictionZone( PredictionKeyboard );
             Feature.AutonomousKeyboardPredictionFactory.CreatePredictionZone( PredictionKeyboard, Feature.MaxSuggestedWords );
+            
         }
 
         public void Stop()

@@ -33,19 +33,13 @@ using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {
-    public class VMKeyboardSimple : VMContextElement, IExtensibleHighlightableElement
+    public class VMKeyboardSimple : VMContextElement, IHighlightableElement
     {
         #region Properties & variables
 
         ObservableCollection<VMZoneSimple> _zones;
         ObservableCollection<VMKeySimple> _keys;
         IKeyboard _keyboard;
-
-        string _name;
-
-        List<IHighlightableElement> _preChildren;
-        List<IHighlightableElement> _postChildren;
-
 
         public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } private set { _zones = value; } }
         public IKeyboard Keyboard
@@ -67,10 +61,6 @@ namespace SimpleSkin.ViewModels
         {
             _zones = new ObservableCollection<VMZoneSimple>();
             _keys = new ObservableCollection<VMKeySimple>();
-            _preChildren = new List<IHighlightableElement>();
-            _postChildren = new List<IHighlightableElement>();
-
-            _name = kb.Name;
 
             _keyboard = kb;
 
@@ -291,7 +281,7 @@ namespace SimpleSkin.ViewModels
             {
                 if( Zones.Count > 0 )
                 {
-                    return new CKReadOnlyListOnIList<IHighlightableElement>( _preChildren.Union( Zones.Cast<IHighlightableElement>() ).Union( _postChildren ).ToList() );
+                    return new CKReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
                 }
                 return CKReadOnlyListEmpty<IHighlightableElement>.Empty;
             }
@@ -396,63 +386,5 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
-        #region IExtensibleHighlightableElement Members
-
-        /// <summary>
-        /// Adds an element at the beginning or the end of the child list.
-        /// An element can be added only once for a given position.
-        /// </summary>
-        /// <remarks>For ChildPosition.Pre, the element is added to the position 0 of the list, for ChildPosition.Post is added at the end</remarks>
-        /// <param name="position"></param>
-        /// <param name="child"></param>
-        /// <returns>Returns true if the element could be added and did not exist yet. Otherwise false</returns>
-        public bool RegisterElementAt( ChildPosition position, IHighlightableElement child )
-        {
-            if( child == null ) throw new ArgumentNullException( "child" );
-
-            if( position == ChildPosition.Pre )
-            {
-                if( _preChildren.Contains( child ) ) return false;
-                _preChildren.Insert( 0, child );
-                return true;
-            }
-            else if( position == ChildPosition.Post )
-            {
-                if( _postChildren.Contains( child ) ) return false;
-                _postChildren.Add( child );
-                return true;
-            }
-            return false;
-        }
-
-        public bool UnregisterElement( ChildPosition positionToRemove, IHighlightableElement element )
-        {
-            if( positionToRemove == ChildPosition.Pre )
-            {
-                return _preChildren.Remove( element );
-            }
-            else if( positionToRemove == ChildPosition.Post )
-            {
-                return _postChildren.Remove( element );
-            }
-            return false;
-        }
-
-        public string Name 
-        {
-            get { return _name; }
-        }
-
-        public IReadOnlyList<IHighlightableElement> PreChildren
-        {
-            get { return _preChildren.ToReadOnlyList(); }
-        }
-
-        public IReadOnlyList<IHighlightableElement> PostChildren
-        {
-            get { return _postChildren.ToReadOnlyList(); }
-        }
-
-        #endregion
     }
 }

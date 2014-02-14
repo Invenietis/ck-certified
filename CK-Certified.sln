@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{0C102B01-5ABA-4CC9-B531-78ECC48390F3}"
 EndProject
@@ -124,6 +124,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtocolManagerModel", "Plugins\Services\ProtocolManagerModel\ProtocolManagerModel.csproj", "{F33B4C9F-D4EB-41EC-A0B7-A919612B6A03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendInputDriver", "Plugins\Advanced\SendInputDriver\SendInputDriver.csproj", "{8FCFD0C1-E52B-49AB-BD58-EB134BC69601}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyScrollerTests", "Tests\KeyScrollerTests\KeyScrollerTests.csproj", "{C0848978-D8D3-4B11-B8AC-B5EF737B454F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -577,6 +579,16 @@ Global
 		{8FCFD0C1-E52B-49AB-BD58-EB134BC69601}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8FCFD0C1-E52B-49AB-BD58-EB134BC69601}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8FCFD0C1-E52B-49AB-BD58-EB134BC69601}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -633,5 +645,6 @@ Global
 		{BA87C034-0B0A-487B-B5D2-A69744B7B288} = {1E0AA38B-1E88-4CBD-A175-B1D89771F622}
 		{98E92129-086C-4C31-935C-D33B2234534D} = {1D94D6F0-A890-469B-831D-89100DD419B4}
 		{E227757A-98A8-4D48-847B-7686FC24C869} = {1D94D6F0-A890-469B-831D-89100DD419B4}
+		{C0848978-D8D3-4B11-B8AC-B5EF737B454F} = {1D94D6F0-A890-469B-831D-89100DD419B4}
 	EndGlobalSection
 EndGlobal

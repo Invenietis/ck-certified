@@ -143,14 +143,20 @@ namespace KeyScroller
             IHighlightableElement value;
             if( _registeredElements.TryGetValue( nameSpace, out value ) && value == element )
             {
-                _registeredElements.Remove( nameSpace );
+                var ehep = element as ExtensibleHighlightableElementProxy;
+                if( ehep != null && ehep != value ) value = ehep.HighlightableElement;
 
-                BrowseTree( element, e =>
-                {
-                    var iheus = e as IHighlightableElementController;
-                    if( iheus != null ) iheus.OnUnregisterTree();
-                    return false;
-                } );
+                if( value == element )
+                { 
+                    _registeredElements.Remove( nameSpace );
+
+                    BrowseTree( element, e =>
+                    {
+                        var iheus = e as IHighlightableElementController;
+                        if( iheus != null ) iheus.OnUnregisterTree();
+                        return false;
+                    } );
+                }
             }
 
             if( _registeredElements.Count == 0 )

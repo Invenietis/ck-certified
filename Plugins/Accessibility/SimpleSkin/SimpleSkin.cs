@@ -40,6 +40,7 @@ using System.Diagnostics;
 using CK.Plugins.SendInputDriver;
 using System.IO;
 using Help.Services;
+using HighlightModel;
 
 namespace SimpleSkin
 {
@@ -495,7 +496,7 @@ namespace SimpleSkin
         {
             // ToDoF
             //Highlighter.Service.RegisterTree( "Prediction", _ctxVm.Keyboards[3] );
-            Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
+            Highlighter.Service.RegisterTree( "Keyboard", new ExtensibleHighlightableElementProxy(_ctxVm.KeyboardVM.Keyboard.Name, _ctxVm.KeyboardVM ) );
         }
 
         #endregion

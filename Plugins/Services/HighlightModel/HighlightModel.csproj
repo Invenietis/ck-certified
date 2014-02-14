@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChildPosition.cs" />
+    <Compile Include="ExtensiblehighlightableElementProxy.cs" />
     <Compile Include="IHighlightableElement.cs" />
     <Compile Include="IHighlightableElementController.cs" />
     <Compile Include="IExtensionHighlightableElement.cs" />

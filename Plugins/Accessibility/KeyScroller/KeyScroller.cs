@@ -33,6 +33,11 @@ namespace KeyScroller
 
         public IPluginConfigAccessor Configuration { get; set; }
 
+        public IReadOnlyList<IHighlightableElement> RegisteredElements
+        {
+            get { return _registeredElements.Values.ToReadOnlyList(); }
+        }
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> InputTrigger { get; set; }
 

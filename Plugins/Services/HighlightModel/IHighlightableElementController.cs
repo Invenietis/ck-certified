@@ -21,6 +21,9 @@ namespace HighlightModel
         /// <param name="action"></param>
         void OnChildAction( ActionType action );
 
+        /// <summary>
+        /// Inform that the element was unregistered in the tree.
+        /// </summary>
         void OnUnregisterTree();
     }
 }

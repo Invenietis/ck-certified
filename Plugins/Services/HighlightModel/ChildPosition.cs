@@ -7,7 +7,19 @@ namespace HighlightModel
 {
     public enum ChildPosition
     {
+        /// <summary>
+        /// Pre|Peri|Post positions
+        /// </summary>
         Pre = 0,
-        Post = 1,
+
+        /// <summary>
+        /// Pre|Peri|Post positions
+        /// </summary>
+        Peri = 1,
+
+        /// <summary>
+        /// Pre|Peri|Post positions
+        /// </summary>
+        Post = 2,
     }
 }

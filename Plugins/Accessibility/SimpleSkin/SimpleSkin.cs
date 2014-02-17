@@ -123,29 +123,29 @@ namespace SimpleSkin
                     _skinDispatcher );
 
                 _isStarted = true;
-                _skinWindow = _noFocusWindowManager.CreateNoFocusWindow( () => new SkinWindow() { DataContext = _ctxVm } );
+                //_skinWindow = _noFocusWindowManager.CreateNoFocusWindow( () => new SkinWindow() { DataContext = _ctxVm } );
 
-                var defaultPlacement = new WINDOWPLACEMENT();
+                //var defaultPlacement = new WINDOWPLACEMENT();
 
-                _skinDispatcher.Invoke( (System.Action)( () =>
-                {
-                    InitializeWindowLayout();
-                    _skinWindow.Show();
-                    defaultPlacement = CKWindowTools.GetPlacement( _skinWindow.Hwnd );
-                } ), null );
+                //_skinDispatcher.Invoke( (System.Action)( () =>
+                //{
+                //    InitializeWindowLayout();
+                //    _skinWindow.Show();
+                //    defaultPlacement = CKWindowTools.GetPlacement( _skinWindow.Hwnd );
+                //} ), null );
 
                 //Sets on the Config must always be done on the main UI thread
-                WINDOWPLACEMENT actualPlacement = Config.User.GetOrSet( PlacementString, defaultPlacement );
+                //WINDOWPLACEMENT actualPlacement = Config.User.GetOrSet( PlacementString, defaultPlacement );
 
                 //Placing the skin at the same location as the last launch.
-                _skinDispatcher.Invoke( (Action)( () => CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement ) ), null );
+                //_skinDispatcher.Invoke( (Action)( () => CKWindowTools.SetPlacement( _skinWindow.Hwnd, actualPlacement ) ), null );
 
-                InitializeHighligther();
-                UpdateAutoHideConfig();
+                //InitializeHighligther();
+                //UpdateAutoHideConfig();
 
-                RegisterEvents();
+                //RegisterEvents();
 
-                OnSuccessfulStart();
+                //OnSuccessfulStart();
             }
             else
             {
@@ -489,14 +489,14 @@ namespace SimpleSkin
         {
             // ToDoF
             //Highlighter.Service.UnregisterTree( "Prediction", _ctxVm.Keyboards[3] );
-            Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
+            //Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
         }
 
         private void RegisterHighlighter()
         {
             // ToDoF
             //Highlighter.Service.RegisterTree( "Prediction", _ctxVm.Keyboards[3] );
-            Highlighter.Service.RegisterTree( "Keyboard", new ExtensibleHighlightableElementProxy(_ctxVm.KeyboardVM.Keyboard.Name, _ctxVm.KeyboardVM ) );
+            //Highlighter.Service.RegisterTree( "Keyboard", new ExtensibleHighlightableElementProxy( _ctxVm.KeyboardVM.Keyboard.Name, _ctxVm.KeyboardVM ) );
         }
 
         #endregion

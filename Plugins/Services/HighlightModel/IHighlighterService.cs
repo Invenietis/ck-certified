@@ -32,22 +32,22 @@ namespace CommonServices.Accessibility
         /// <summary>
         /// Adds an element at the beginning or end of an existing element that implements <see cref="IExtensibleHighlightableElement"/>.
         /// </summary>
-        /// <param name="nameSpace">It is the elementID in which we will search  the <see cref="IExtensibleHighlightableElement"/> to add the element</param>
+        /// <param name="targetModuleName">It is the elementID in which we will search  the <see cref="IExtensibleHighlightableElement"/> to add the element</param>
         /// <param name="extensibleElementName">It is the name of <see cref="IExtensibleHighlightableElement"/> in which we want to add the element</param>
         /// <param name="position">Pre or Post position of the element</param>
         /// <param name="element"></param>
-        /// <returns>Return true, if the nameSpace contains the wanted <see cref="IExtensibleHighlightableElement"/> and if the <see cref="IExtensibleHighlightableElement"/> doesn't already contain the added element. Otherwise return false</returns>
-        bool RegisterInRegisteredElementAt( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element );
+        /// <returns>Return true, if the targetModuleName contains the wanted <see cref="IExtensibleHighlightableElement"/> and if the <see cref="IExtensibleHighlightableElement"/> doesn't already contain the added element. Otherwise return false</returns>
+        bool RegisterInRegisteredElementAt( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element );
 
         /// <summary>
         /// Removes an element at the beginning or end of an existing element that implements <see cref="IExtensibleHighlightableElement"/>.
         /// </summary>
-        /// <param name="nameSpace">It is the elementID in which we will search  the <see cref="IExtensibleHighlightableElement"/> to remove the element</param>
+        /// <param name="targetModuleName">It is the elementID in which we will search  the <see cref="IExtensibleHighlightableElement"/> to remove the element</param>
         /// <param name="extensibleElementName">It is the name of <see cref="IExtensibleHighlightableElement"/> in which we want to remove the element</param>
         /// <param name="position">Pre or Post position of the element</param>
         /// <param name="element"></param>
-        /// <returns>Return true, if the nameSpace contains the wanted <see cref="IExtensibleHighlightableElement"/> and if the <see cref="IExtensibleHighlightableElement"/> contains the removed element. Otherwise return false</returns>
-        bool UnregisterInRegisteredElement( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element );
+        /// <returns>Return true, if the targetModuleName contains the wanted <see cref="IExtensibleHighlightableElement"/> and if the <see cref="IExtensibleHighlightableElement"/> contains the removed element. Otherwise return false</returns>
+        bool UnregisterInRegisteredElement( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element );
 
         /// <summary>
         /// Pause the highlighter scroller. Call Resume to resume the execution where it was paused.

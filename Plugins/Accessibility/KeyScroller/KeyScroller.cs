@@ -129,26 +129,26 @@ namespace KeyScroller
 
         public bool IsHighlighting { get { return _timer.IsEnabled; } }
 
-        public void RegisterTree( string nameSpace, IHighlightableElement element )
+        public void RegisterTree( string targetModuleName, IHighlightableElement element )
         {
-            if( !_registeredElements.ContainsKey( nameSpace ) )
+            if( !_registeredElements.ContainsKey( targetModuleName ) )
             {
-                _registeredElements.Add( nameSpace, element );
+                _registeredElements.Add( targetModuleName, element );
                 if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
             }
         }
 
-        public void UnregisterTree( string nameSpace, IHighlightableElement element )
+        public void UnregisterTree( string targetModuleName, IHighlightableElement element )
         {
             IHighlightableElement value;
-            if( _registeredElements.TryGetValue( nameSpace, out value ) && value == element )
+            if( _registeredElements.TryGetValue( targetModuleName, out value ) && value == element )
             {
                 var ehep = element as ExtensibleHighlightableElementProxy;
                 if( ehep != null && ehep != value ) value = ehep.HighlightableElement;
 
                 if( value == element )
                 { 
-                    _registeredElements.Remove( nameSpace );
+                    _registeredElements.Remove( targetModuleName );
 
                     BrowseTree( element, e =>
                     {
@@ -167,10 +167,10 @@ namespace KeyScroller
             _scrollingStrategy.ElementUnregistered( element );
         }
 
-        public bool RegisterInRegisteredElementAt( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element )
+        public bool RegisterInRegisteredElementAt( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element )
         {
             IHighlightableElement registeredElement;
-            if( _registeredElements.TryGetValue( nameSpace, out registeredElement ) )
+            if( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
             {
                 return BrowseTree( registeredElement, e =>
                 {
@@ -183,10 +183,10 @@ namespace KeyScroller
             return false;
         }
 
-        public bool UnregisterInRegisteredElement( string nameSpace, string extensibleElementName, ChildPosition position, IHighlightableElement element )
+        public bool UnregisterInRegisteredElement( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element )
         {
             IHighlightableElement registeredElement;
-            if( _registeredElements.TryGetValue( nameSpace, out registeredElement ) )
+            if( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
             {
                 return BrowseTree( registeredElement, e =>
                 {

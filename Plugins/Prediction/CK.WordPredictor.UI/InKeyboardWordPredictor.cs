@@ -69,7 +69,7 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        //Create a Prédiction Keyboard in a new windows
+        //Create a Prédiction Keyboard in a new window
         private void EnsurePredictionKeyboard()
         {
             if( PredictionKeyboard == null )

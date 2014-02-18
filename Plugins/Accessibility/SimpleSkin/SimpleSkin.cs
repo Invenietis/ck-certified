@@ -487,15 +487,11 @@ namespace SimpleSkin
 
         private void UnregisterHighlighter()
         {
-            // ToDoF
-            //Highlighter.Service.UnregisterTree( "Prediction", _ctxVm.Keyboards[3] );
             //Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
         }
 
         private void RegisterHighlighter()
         {
-            // ToDoF
-            //Highlighter.Service.RegisterTree( "Prediction", _ctxVm.Keyboards[3] );
             //Highlighter.Service.RegisterTree( "Keyboard", new ExtensibleHighlightableElementProxy( _ctxVm.KeyboardVM.Keyboard.Name, _ctxVm.KeyboardVM ) );
         }
 

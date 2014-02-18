@@ -32,8 +32,6 @@ namespace SimpleSkin
                 _skinWindow.HidingAsked += OnWindowHidden;
 
             } ) );
-
-
         }
 
         void OnWindowHidden( object sender, EventArgs e )

@@ -61,7 +61,7 @@ namespace FileLauncher
             }
 
             RegistryApps.Sort((a, b) => {
-                return a.FileName.CompareTo(b.FileName);
+                return a.LastAccessTime.CompareTo(b.LastAccessTime) * -1;
             });
         }
 

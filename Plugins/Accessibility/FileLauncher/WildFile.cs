@@ -14,6 +14,8 @@ namespace FileLauncher
         public FileLookup Lookup { get; internal set; }
         public Environment.SpecialFolder? FolderLocationType { get; internal set; }
         public string FileName { get; private set; }
+        public DateTime LastAccessTime { get; private set; }
+
         public string Path 
         {
             get { return _path; } 
@@ -21,13 +23,15 @@ namespace FileLauncher
             {
                 _path = value;
                 if (!File.Exists(_path)) return;
-
+                
                 Bitmap bmp = System.Drawing.Icon.ExtractAssociatedIcon(_path).ToBitmap();
                 Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                    bmp.GetHbitmap(),
                    IntPtr.Zero,
                    System.Windows.Int32Rect.Empty,
                    BitmapSizeOptions.FromWidthAndHeight(bmp.Size.Width, bmp.Size.Height));
+
+                LastAccessTime = File.GetLastAccessTime( _path );
             }
         }
 

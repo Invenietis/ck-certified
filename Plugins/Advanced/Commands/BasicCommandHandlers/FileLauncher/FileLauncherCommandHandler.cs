@@ -55,7 +55,6 @@ namespace BasicCommandHandlers
             LaunchFile( cmd.Content );
         }
 
-
         #region IFileLauncherCommandHandlerService Members
 
         public void LaunchFile( string command )

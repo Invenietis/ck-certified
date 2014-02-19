@@ -22,7 +22,7 @@ namespace FileLauncher
             internal set
             {
                 _path = value;
-                if (!File.Exists(_path)) return;
+                if( !File.Exists( _path )) return;
                 
                 Bitmap bmp = System.Drawing.Icon.ExtractAssociatedIcon(_path).ToBitmap();
                 Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
@@ -35,10 +35,10 @@ namespace FileLauncher
             }
         }
 
-        public ImageSource Icon { get; private set; }
+        public ImageSource Icon { get; set; }
         public bool IsLocated 
         { 
-            get { return File.Exists(Path); }
+            get { return Lookup == FileLookup.Url && Uri.IsWellFormedUriString(Path, UriKind.Absolute) || File.Exists(Path); }
         }
 
         public WildFile(string name)
@@ -57,7 +57,14 @@ namespace FileLauncher
 
             if( FolderLocationType == null && !fromRegistry )
             {
-                Lookup = FileLookup.Other;
+                if(Uri.IsWellFormedUriString(Path, UriKind.Absolute))
+                {
+                    Lookup = FileLookup.Url;
+                }
+                else
+                {
+                    Lookup = FileLookup.Other;
+                }
             }
         }
 

@@ -22,11 +22,36 @@ namespace BasicCommandHandlers
     {
         bool _isSelected;
         VMCommand _openFileDialog;
+        string _appPath;
 
         public FileLauncherCommandParameterManager Manager { get; set; }
-        public FileLauncherType Type { get; set; }
-        public string Content { get; set; }
-        public List<IWildFile> Apps { get; set; }
+        public FileLauncherType Type { get; private set; }
+        public string Content { get; private set; }
+        public string AppPath 
+        {
+            get { return _appPath; }
+            set 
+            { 
+                _appPath = value;
+                if( string.IsNullOrEmpty( _appPath ) ) Manager.SelectedFile = null;
+                
+                NotifyPropertyChanged( "AppPath" );
+                Manager.SetUrlApp(_appPath);
+            } 
+        }
+
+        public FileLauncherTypeSelection( FileLauncherCommandParameterManager manager, FileLauncherType type, string content )
+        {
+            Manager = manager;
+            Type = type;
+            Content = content;
+            _appPath = "";
+        }
+
+        public List<IWildFile> Apps 
+        {
+            get { return Manager._fileLauncher.FileLocator.RegistryApps; } 
+        }
 
         public bool IsSelected 
         {
@@ -34,11 +59,24 @@ namespace BasicCommandHandlers
             set
             {
                 _isSelected = value;
-                if( value ) Manager.SelectedFileLauncherType = this;
+                if( value )
+                {
+                    Manager.SelectedFileLauncherType = this;
+                    if( Type == FileLauncherType.Url ) Manager.SetUrlApp(AppPath);
+                }
+                else
+                {
+                    if( Type == FileLauncherType.Url ) Manager.SelectedFile = null;
+                }
+                
+                
                 NotifyPropertyChanged( "IsSelected" );
             }
         }
+        public void FLush()
+        {
 
+        }
         public VMCommand OpenFileDialog
         {
             get
@@ -126,11 +164,13 @@ namespace BasicCommandHandlers
         {
             _fileLauncher = fileLauncher;
             _skinConfigAccessor = skinConfigAccessor;
+            
             TypeSelections = new List<FileLauncherTypeSelection>();
-            SelectedFileLauncherType = new FileLauncherTypeSelection { Type = FileLauncherType.Registry, Apps = _fileLauncher.FileLocator.RegistryApps, Manager = this};
+            SelectedFileLauncherType = new FileLauncherTypeSelection( this, FileLauncherType.Url, "URL" );
+            SelectedFileLauncherType.IsSelected = true;
             TypeSelections.Add( SelectedFileLauncherType );
-            TypeSelections.Add( new FileLauncherTypeSelection { Type = FileLauncherType.Registry, Apps = _fileLauncher.FileLocator.RegistryApps, Manager = this } );
-            TypeSelections.Add( new FileLauncherTypeSelection { Type = FileLauncherType.Browse, Apps = _fileLauncher.FileLocator.RegistryApps, Manager = this } );
+            TypeSelections.Add( new FileLauncherTypeSelection (this, FileLauncherType.Registry, "Application installée"));
+            TypeSelections.Add( new FileLauncherTypeSelection( this, FileLauncherType.Browse, "Choisir un fichier" ) );
         }
 
         public IWildFile SelectedApp
@@ -158,14 +198,29 @@ namespace BasicCommandHandlers
             }
         }
 
-        private void SetSelectedFile( IWildFile value )
+        internal void SetUrlApp(string url)
+        {
+            url = url.Trim().ToLowerInvariant();
+            if( !(url.StartsWith( "http://" ) 
+                || url.StartsWith( "https://" ) 
+                || url.StartsWith( "file://" ) 
+                || url.StartsWith( "ftp://" )) )
+            {
+                url = "http://" + url;
+            }
+
+            SetSelectedFile(_fileLauncher.FileLocator.CreateWildFile(url, false), false);
+        }
+
+        private void SetSelectedFile( IWildFile value, bool useImg = true )
         {
             _selectedWildFile = value;
-            //if( UseFileIcon )
-            //{
-            _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedWildFile.Icon );
-            _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
-            //}
+
+            if( useImg && value != null)
+            {
+                _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedWildFile.Icon );
+                _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
+            }
 
             NotifyPropertyChanged( "SelectedApp" );
             NotifyPropertyChanged( "SelectedFile" );
@@ -177,7 +232,7 @@ namespace BasicCommandHandlers
             SetSelectedFile( _fileLauncher.FileLocator.CreateWildFile( path, false ) );
         }
 
-        void NotifyPropertyChanged( string peropertyName )
+        internal void NotifyPropertyChanged( string peropertyName )
         {
             if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( peropertyName ) );
         }
@@ -189,6 +244,8 @@ namespace BasicCommandHandlers
             _fileLauncher.LoadFromCommand( parameter, ( file ) =>
             {
                 SelectedApp = file;
+                TypeSelections.FirstOrDefault( x => x.IsSelected == true ).IsSelected = false;
+
                 if( file.Lookup == FileLookup.Registry )
                 {
                     SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Registry);
@@ -198,11 +255,13 @@ namespace BasicCommandHandlers
                 else if(file.Lookup == FileLookup.Url)
                 {
                     SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Url );
+                    SelectedFileLauncherType.AppPath = file.Path;
                 }
                 else
                 {
                     SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Browse );
                 }
+                SelectedFileLauncherType.IsSelected = true;
             } );
             return;
         }
@@ -217,7 +276,8 @@ namespace BasicCommandHandlers
             get 
             { 
                 return SelectedFileLauncherType.Type == FileLauncherType.Registry && SelectedApp != null
-                    || SelectedFileLauncherType.Type == FileLauncherType.Browse &&  SelectedFile != null;
+                    || SelectedFileLauncherType.Type == FileLauncherType.Browse &&  SelectedFile != null
+                    || SelectedFileLauncherType.Type == FileLauncherType.Url && SelectedFile != null && !string.IsNullOrEmpty( SelectedFileLauncherType.AppPath );
             }
         }
 

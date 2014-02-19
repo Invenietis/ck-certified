@@ -31,7 +31,7 @@ namespace FileLauncher
 
             WildFile f = new WildFile( info[Command.Contents.FILE_NAME] );
             f.Lookup = (FileLookup)int.Parse( info[Command.Contents.FILE_LOOKUP] );
-            if( f.Lookup == FileLookup.Other && info.Length > 2 )
+            if( (f.Lookup == FileLookup.Other || f.Lookup == FileLookup.Url) && info.Length > 2 )
             {
                 f.Path = info[Command.Contents.FILE_PATH];
             }
@@ -40,6 +40,7 @@ namespace FileLauncher
                 f.Path = info[Command.Contents.FILE_PATH];
                 f.FolderLocationType = (Environment.SpecialFolder)int.Parse( info[Command.Contents.FILE_SPECIAL_DIRECTORY] );
             }
+
             FileLocator.TryLocate( f, loaded );
         }
 

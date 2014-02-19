@@ -67,10 +67,17 @@
                     </ComboBox>
                 </WrapPanel>
             </DataTemplate>
+            <DataTemplate x:Key="filelauncherurltemplate">
+                <WrapPanel HorizontalAlignment="Stretch" >
+                    <Label>Url : </Label>
+                    <TextBox Text="{Binding AppPath}" Width="200" HorizontalAlignment="Stretch"/>
+                </WrapPanel>
+            </DataTemplate>
             <ckc:NotConverter x:Key="notconverter"/>
             <vm:FileLauncherTypeSelector x:Key="filelaunchertemplateselector" 
                                          BrowseTemplate="{StaticResource filelauncherbrowsetemplate}"
                                          RegistryTemplate="{StaticResource filelauncherregistrytemplate}"
+                                         UrlTemplate="{StaticResource filelauncherurltemplate}"
                                          />
             
             <DataTemplate x:Key="keysequencedatatemplate">
@@ -121,7 +128,7 @@
             </DataTemplate>
 
             <DataTemplate x:Key="filelauncherdatatemplate">
-                <StackPanel>
+                <StackPanel HorizontalAlignment="Stretch" >
                     <ItemsControl ItemsSource="{Binding TypeSelections}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -130,11 +137,11 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="bch:FileLauncherTypeSelection">
-                                <RadioButton GroupName="TypeSelection" IsChecked="{Binding IsSelected}" Content="{Binding Content}"></RadioButton>
+                                <RadioButton Margin="10" GroupName="TypeSelection" IsChecked="{Binding IsSelected}" Content="{Binding Content}"></RadioButton>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <ContentControl ContentTemplateSelector="{StaticResource filelaunchertemplateselector}" Content="{Binding SelectedFileLauncherType}">
+                    <ContentControl HorizontalAlignment="Stretch" ContentTemplateSelector="{StaticResource filelaunchertemplateselector}" Content="{Binding SelectedFileLauncherType}">
                     </ContentControl>
                 </StackPanel>
             </DataTemplate>

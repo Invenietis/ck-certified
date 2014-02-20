@@ -141,10 +141,10 @@ namespace KeyScroller
         public void UnregisterTree( string targetModuleName, IHighlightableElement element )
         {
             IHighlightableElement value;
-            if( _registeredElements.TryGetValue( targetModuleName, out value ) && value == element )
+            if( _registeredElements.TryGetValue( targetModuleName, out value ) )
             {
-                var ehep = element as ExtensibleHighlightableElementProxy;
-                if( ehep != null && ehep != value ) value = ehep.HighlightableElement;
+                var ehep = value as ExtensibleHighlightableElementProxy;
+                if( ehep != null && ehep != element ) value = ehep.HighlightableElement;
 
                 if( value == element )
                 { 

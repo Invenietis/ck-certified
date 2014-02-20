@@ -132,7 +132,7 @@
     </Compile>
     <Compile Include="MiniViewVM.cs" />
     <Compile Include="KeyboardDisplayer.cs" />
-    <Compile Include="SimpleSkin.cs" />
+    <Compile Include="MainKeyboardManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSkin.IWindowElement.cs" />
     <Compile Include="SkinWindow.xaml.cs">

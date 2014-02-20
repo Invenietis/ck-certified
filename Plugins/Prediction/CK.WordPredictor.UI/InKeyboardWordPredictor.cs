@@ -107,8 +107,8 @@ namespace CK.WordPredictor.UI
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            Feature.PredictionContextFactory.RemovePredictionZone( e.Previous );
-            Feature.PredictionContextFactory.CreatePredictionZone( e.Current, Feature.MaxSuggestedWords );
+            //Feature.PredictionContextFactory.RemovePredictionZone( e.Previous );
+            //Feature.PredictionContextFactory.CreatePredictionZone( e.Current, Feature.MaxSuggestedWords );
         }
 
         void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

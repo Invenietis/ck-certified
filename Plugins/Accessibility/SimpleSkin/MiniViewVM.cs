@@ -10,7 +10,7 @@ namespace SimpleSkin
 
     public class MiniViewVM : VMBase, IHighlightableElement, IDisposable
     {
-        public SimpleSkin Parent { get; set; }
+        public MainKeyboardManager Parent { get; set; }
         IPluginConfigAccessor Config { get { return Parent.Config; } }
 
         bool _isHighlighted;
@@ -20,7 +20,7 @@ namespace SimpleSkin
             set { _isHighlighted = value; OnPropertyChanged( "IsHighlighted" ); }
         }
 
-        public MiniViewVM( SimpleSkin parent )
+        public MiniViewVM( MainKeyboardManager parent )
         {
             _isHighlighted = false;
             Parent = parent;

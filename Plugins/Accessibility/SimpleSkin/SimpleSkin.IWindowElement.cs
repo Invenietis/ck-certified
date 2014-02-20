@@ -5,7 +5,7 @@ using CK.Windows;
 
 namespace SimpleSkin
 {
-    public partial class SimpleSkin
+    public partial class MainKeyboardManager
     {
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowManager> WindowManager { get; set; }
@@ -28,8 +28,8 @@ namespace SimpleSkin
                 {
                     e.Window.Hidden -= OnWindowHidden;
                 };
-                _subscriber.Subscribe( "Skin", _skinWindow );
-                _skinWindow.HidingAsked += OnWindowHidden;
+                //_subscriber.Subscribe( "Skin", _skinWindow );
+                //_skinWindow.HidingAsked += OnWindowHidden;
 
             } ) );
         }
@@ -41,10 +41,10 @@ namespace SimpleSkin
 
         partial void OnSuccessfulStop()
         {
-            _skinDispatcher.BeginInvoke( new Action( () =>
-            {
-                _skinWindow.HidingAsked -= OnWindowHidden;
-            } ) );
+            //_skinDispatcher.BeginInvoke( new Action( () =>
+            //{
+            //    _skinWindow.HidingAsked -= OnWindowHidden;
+            //} ) );
             _subscriber.Unsubscribe();
         }
 

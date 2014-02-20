@@ -202,12 +202,12 @@ namespace KeyScroller
                     elements = RegisteredElements;
 
                     // ToDoJL
-                    //if( actionType != ActionType.EnterChild && elements.Count == 1 )//We are on the root level, and there is only one element, so we directly enter it.
-                    //{
-                    //    _currentId = 0;
-                    //    nextElement = GetEnterChild( elements );
-                    //    return GetSkipBehavior( nextElement );
-                    //}
+                    if( actionType != ActionType.EnterChild && elements.Count == 1 )//We are on the root level, and there is only one element, so we directly enter it.
+                    {
+                        _currentId = 0;
+                        nextElement = GetEnterChild( elements );
+                        return GetSkipBehavior( nextElement );
+                    }
                 }
 
                 if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
@@ -239,6 +239,8 @@ namespace KeyScroller
                 }
             }
 
+            if( RegisteredElements.All( e => e.Skip == SkippingBehavior.Skip ) ) return nextElement;
+ 
             return GetSkipBehavior( nextElement );
         }
 

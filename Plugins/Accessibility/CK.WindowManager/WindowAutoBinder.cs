@@ -5,6 +5,7 @@ using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
 using System.Timers;
+using System;
 
 namespace CK.WindowManager
 {
@@ -57,6 +58,9 @@ namespace CK.WindowManager
                     }
                 }
             }
+            Console.WriteLine( "OnWindowMoved ! {0} {1}*{2}", e.Window.Name, e.Window.Top, e.Window.Left );
+
+
         }
 
         void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
@@ -121,11 +125,52 @@ namespace CK.WindowManager
                     _window = null;
                 }
             }
+
+            //if(_activeOnesBind)
+            //{
+            //    if( _bindResult != null )
+            //    {
+            //        _bindResult.Seal();
+            //    }
+            //    _activeOnesBind = false;
+            //}
         }
+
+        //private bool _activeOnesBind = false;
+        private Timer _activationTimer;
 
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
-            if( _bindResult != null ) _bindResult.Seal();
+            //if( _bindResult != null )
+            //{
+            //    _activeOnesBind = true;
+            //}
+            if( _bindResult != null && _activationTimer == null )
+            {
+                Console.WriteLine( "OnPointerButtonUp !" );
+                _activationTimer = new Timer( 50 );
+                _activationTimer.AutoReset = false;
+                _activationTimer.Elapsed += t_Elapsed;
+                _activationTimer.Start();
+            }
+        }
+
+        void t_Elapsed( object sender, ElapsedEventArgs e )
+        {
+            try
+            {
+                if( _bindResult != null )
+                {
+                    Console.WriteLine( "Elapsed OnPointerButtonUp Seal !" );
+                    _bindResult.Seal();
+                }
+            }
+            finally
+            {
+                _activationTimer.Stop();
+                _activationTimer.Dispose();
+                _activationTimer = null;
+            }
         }
 
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
@@ -148,14 +193,14 @@ namespace CK.WindowManager
 
         public void Start()
         {
+            PointerDeviceDriver.PointerButtonDown += OnPointerButtonDown;
+            PointerDeviceDriver.PointerMove += OnPointerMove;
+            PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
+
             WindowBinder.BeforeBinding += OnBeforeBinding;
             WindowBinder.AfterBinding += OnAfterBinding;
 
             WindowManager.WindowMoved += OnWindowMoved;
-
-            PointerDeviceDriver.PointerButtonDown += OnPointerButtonDown;
-            PointerDeviceDriver.PointerMove += OnPointerMove;
-            PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
 
         }
 

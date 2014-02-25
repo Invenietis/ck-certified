@@ -47,6 +47,7 @@ namespace CK.WindowManager
             {
                 WindowElementData cloneData = (WindowElementData)data.Clone();
 
+                //Console.WriteLine( "WINDOW MANAGER Move ! {0} {1}*{2}", window.Name, top, left );
                 window.Move( top, left );
 
                 return new MoveResult( this, data, cloneData );
@@ -90,6 +91,12 @@ namespace CK.WindowManager
             }
         }
 
+        /// <summary>
+        /// This function is called by a function that  bypass the window system event.
+        /// Warning : do not call a function that is called when a WindowMoved event that leading to a call MoveResult.Broadcast
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
         {
             IWindowElement windowElementFromSender = sender as IWindowElement;
@@ -98,6 +105,7 @@ namespace CK.WindowManager
                 WindowElementData data = null;
                 if( _dic.TryGetValue( windowElementFromSender, out data ) )
                 {
+                    //Console.WriteLine( "OnWindowLocationChanged ! {0} {1}*{2}", data.Window.Name, data.Window.Top, data.Window.Left );
                     double deltaTop = data.Window.Top - data.Top;
                     double deltaLeft = data.Window.Left - data.Left;
 
@@ -228,6 +236,9 @@ namespace CK.WindowManager
 
         public event EventHandler<WindowElementEventArgs> WindowRestored;
 
+        /// <summary>
+        /// Warning : create the reentrancy call if the same functio is call with WindowElement.LocationChanged event and WindowMoved event
+        /// </summary>
         public event EventHandler<WindowElementLocationEventArgs> WindowMoved;
 
         public event EventHandler<WindowElementResizeEventArgs> WindowResized;
@@ -289,12 +300,16 @@ namespace CK.WindowManager
                 data.Left = data.Window.Left;
             }
 
+            /// <summary>
+            /// Propagate the homemade LocationChanged event.
+            /// This function can create reentrancy problems because we bypass the Windows system event.
+            /// </summary>
             public void Broadcast()
             {
                 // Restores values...
                 _data.Top = _clonedData.Top;
                 _data.Left = _clonedData.Left;
-                // Broadcast
+                // Broadcast, with a homemade LocationChanged event
                 _m.OnWindowLocationChanged( _data.Window, EventArgs.Empty );
             }
             public void Silent()

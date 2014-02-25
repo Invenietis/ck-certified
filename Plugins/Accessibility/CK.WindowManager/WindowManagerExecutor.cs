@@ -3,6 +3,7 @@ using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Core;
 using System.Windows;
+using System;
 
 namespace CK.WindowManager
 {
@@ -30,10 +31,12 @@ namespace CK.WindowManager
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
-            if( binding != null )
+            if( binding != null && binding.AllDescendants().Count() != 0 )
             {
+                //Console.WriteLine( "MOVE FROM ! {0} {1}*{2}", triggerHolder.Name, triggerHolder.Top, triggerHolder.Left );
                 foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
                 {
+                    //Console.WriteLine( "MOVE WINDOW ! {0}", window.Name );
                     WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
                 }
             }
@@ -132,10 +135,12 @@ namespace CK.WindowManager
                 Rect r = e.Binding.GetWindowArea();
                 if( r != Rect.Empty )
                 {
-                    WindowManager.Move( e.Binding.Origin, r.Top, r.Left ).Broadcast();
-                    WindowManager.Resize( e.Binding.Origin, r.Width, r.Height ).Broadcast();
+                    //Console.WriteLine( "OnBeforeBinding ! Origin : {0}", e.Binding.Origin.Name );
+                    var move = WindowManager.Move( e.Binding.Origin, r.Top, r.Left );
+                    var resize = WindowManager.Resize( e.Binding.Origin, r.Width, r.Height );
+                    move.Broadcast();
+                    resize.Broadcast();
                 }
-                else e.Canceled = true;
             }
         }
 

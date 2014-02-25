@@ -58,9 +58,7 @@ namespace CK.WindowManager
                     }
                 }
             }
-            Console.WriteLine( "OnWindowMoved ! {0} {1}*{2}", e.Window.Name, e.Window.Top, e.Window.Left );
-
-
+            //Console.WriteLine( "OnWindowMoved ! {0} {1}*{2}", e.Window.Name, e.Window.Top, e.Window.Left );
         }
 
         void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
@@ -125,29 +123,17 @@ namespace CK.WindowManager
                     _window = null;
                 }
             }
-
-            //if(_activeOnesBind)
-            //{
-            //    if( _bindResult != null )
-            //    {
-            //        _bindResult.Seal();
-            //    }
-            //    _activeOnesBind = false;
-            //}
         }
 
-        //private bool _activeOnesBind = false;
         private Timer _activationTimer;
 
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
-            //if( _bindResult != null )
-            //{
-            //    _activeOnesBind = true;
-            //}
+            //Allows the bypass the fact that Windows puts a window to the initial position
+            //if the windows was moved during the PointerKeyUp treatment event
             if( _bindResult != null && _activationTimer == null )
             {
-                Console.WriteLine( "OnPointerButtonUp !" );
+                //Console.WriteLine( "OnPointerButtonUp !" );
                 _activationTimer = new Timer( 50 );
                 _activationTimer.AutoReset = false;
                 _activationTimer.Elapsed += t_Elapsed;
@@ -161,7 +147,7 @@ namespace CK.WindowManager
             {
                 if( _bindResult != null )
                 {
-                    Console.WriteLine( "Elapsed OnPointerButtonUp Seal !" );
+                    //Console.WriteLine( "Elapsed OnPointerButtonUp Seal !" );
                     _bindResult.Seal();
                 }
             }

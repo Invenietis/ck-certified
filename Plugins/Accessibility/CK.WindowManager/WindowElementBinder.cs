@@ -4,6 +4,7 @@ using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Core;
 using System.Diagnostics;
+using System.Threading;
 
 namespace CK.WindowManager
 {
@@ -161,6 +162,8 @@ namespace CK.WindowManager
             if( master == null ) throw new ArgumentNullException( "master" );
             if( slave == null ) throw new ArgumentNullException( "slave" );
 
+            //Console.WriteLine( "BIND thread id: {0} TimeSpan : {1}", Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
+            
             // Spatial binding point of view
             using( _logger.OpenGroup( LogLevel.Info, "Attaching {0} on {1} at {2}", master.Name, slave.Name, position.ToString() ) )
             {
@@ -183,6 +186,7 @@ namespace CK.WindowManager
                         Binding = binding,
                         BindingType = BindingEventType.Attach
                     };
+
 
                     if( BeforeBinding != null )
                         BeforeBinding( this, evt );
@@ -407,7 +411,11 @@ namespace CK.WindowManager
 
             public void Seal()
             {
+                //Console.WriteLine( "BEFORE BIND ! Origin : {0} Target : {1} ;;; BEFORE BIND thread id: {2} TimeSpan : {3}", _simpleBinding.Origin.Name, _simpleBinding.Target.Name, Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
+                
                 _binder.Bind( _simpleBinding.Target, _simpleBinding.Origin, _simpleBinding.Position );
+
+                //Console.WriteLine( "AFTER BIND ! Origin : {0} Target : {1} ;;; AFTER BIND thread id: {2} TimeSpan : {3}", _simpleBinding.Origin.Name, _simpleBinding.Target.Name, Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
             }
         }
 

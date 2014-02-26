@@ -37,6 +37,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Context, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Context.2.10.1-develop\lib\net40\CK.Context.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
@@ -143,6 +147,22 @@
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Accessibility\KeyScroller\KeyScroller.csproj">
+      <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
+      <Name>KeyScroller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Accessibility\SimpleSkin\SimpleSkin.csproj">
+      <Project>{6ffe0480-6c42-413b-b59d-78793ac651c7}</Project>
+      <Name>SimpleSkin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\CK.WordPredictor\CK.WordPredictor.csproj">
       <Project>{ba87c034-0b0a-487b-b5d2-a69744b7b288}</Project>

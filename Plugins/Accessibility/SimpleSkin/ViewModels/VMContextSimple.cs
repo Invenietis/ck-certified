@@ -51,17 +51,10 @@ namespace SimpleSkin.ViewModels
     public class VMContextActiveKeyboard : VMContextSimpleBase
     {
         string _activeKeyboardName;
-        bool _dockSensitive;
 
-        public bool DockSensitive
-        {
-            get { return _dockSensitive; }
-        }
-
-        public VMContextActiveKeyboard( string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher, bool dockSensitive = false )
+        public VMContextActiveKeyboard( string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
             : base( ctx, kbctx, config, skinDispatcher )
         {
-            _dockSensitive = config.User.GetOrSet( "DockSensitive", dockSensitive );
             _activeKeyboardName = activeKeyboardName;
             kbctx.Keyboards.KeyboardActivated += OnKeyboardActivated;
             kbctx.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;

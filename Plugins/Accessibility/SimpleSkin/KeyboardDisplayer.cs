@@ -139,6 +139,7 @@ namespace SimpleSkin
                 
                 RegisterEvents();
                 InitializeHighligther();
+                RegisterPrediction();
             }
         }
 
@@ -161,9 +162,7 @@ namespace SimpleSkin
         //TODOF i think, we can factorize this
         public void Stop()
         {
-            // ToDoF change static implementation
-            //HighlighterService.Service.UnregisterInRegisteredElement( "Keyboard", "Azerty", ChildPosition.Pre, _highlightableElementRegistered.Values.FirstOrDefault() );
-
+            UnregisterPrediction();
             UnregisterEvents();
             if( HighlighterService.Status == InternalRunningStatus.Started )
             {
@@ -329,6 +328,7 @@ namespace SimpleSkin
             {
                 ForEachSkin( RegisterHighlighter );
             }
+
         }
 
         private void UninitializeHighlighter()
@@ -354,6 +354,43 @@ namespace SimpleSkin
             {
                 HighlighterService.Service.RegisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name,
                     new ExtensibleHighlightableElementProxy( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM ) );
+            }
+        }
+
+        string _includedKeyboardName = string.Empty;
+
+        //if the target keyboard isn't active and isn't registered, the prediction is registered in root
+        private void RegisterPrediction()
+        {
+            if( _skins.ContainsKey( "Prediction" ) )
+            {
+                if( KeyboardContext.Status == InternalRunningStatus.Started )
+                {
+                    //if the current isn't regitered
+                    if( HighlighterService.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                    {
+                        _includedKeyboardName = KeyboardContext.Service.CurrentKeyboard.Name;
+                        return;
+                    }
+                }
+                HighlighterService.Service.RegisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
+            }
+        }
+
+        private void UnregisterPrediction()
+        {
+            if( _skins.ContainsKey( "Prediction" ) )
+            {
+                if( KeyboardContext.Status == InternalRunningStatus.Started )
+                {
+                    if( !string.IsNullOrEmpty( _includedKeyboardName ) && HighlighterService.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                    {
+                        _includedKeyboardName = string.Empty;
+                        return;
+                    }
+                }
+                HighlighterService.Service.UnregisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
+                _includedKeyboardName = string.Empty;
             }
         }
 
@@ -441,80 +478,7 @@ namespace SimpleSkin
 
         void Service_AfterBinding( object sender, WindowBindedEventArgs e )
         {
-            SkinInfo skin;
-            if(e.BindingType == BindingEventType.Attach )
-            {
-                if( !_registeredElementInfo.ContainsKey( e.Binding.Origin.Name ) )
-                {
-                    //TODOF change static implementation
-                    if( e.Binding.Origin.Name == "Prediction" )
-                    {
-                        if( _skins.TryGetValue( e.Binding.Origin.Name, out skin ) )
-                        {
-                            UnregisterHighlighter( skin );
-                            RegisterInRegisteredElement( new RegisteredElementInfo( e.Binding.Target.Name, e.Binding.Target.Name, ChildPosition.Pre, skin ) );
-                        }
-                    }
-
-                    if( _skins.TryGetValue( e.Binding.Origin.Name, out skin ) )
-                    {
-                        if( skin.ViewModel.DockSensitive )
-                        {
-                            UnregisterHighlighter( skin );
-                            RegisterInRegisteredElement( new RegisteredElementInfo( e.Binding.Target.Name, e.Binding.Target.Name, ChildPosition.Pre, skin ) );
-                        }
-                    }
-                }
-            }
-            else if( e.BindingType == BindingEventType.Detach )
-            {
-                RegisteredElementInfo element;
-                if( _registeredElementInfo.TryGetValue( e.Binding.Origin.Name, out element ) )
-                {
-                    if( e.Binding.Origin.Name == "Prediction" )
-                    {
-                        if( _skins.TryGetValue( e.Binding.Origin.Name, out skin ) )
-                        {
-                            UnregisterInRegisteredElement( element );
-                            RegisterHighlighter( skin );
-                        }
-                    }
-
-                    if( _skins.TryGetValue( e.Binding.Origin.Name, out skin ) )
-                    {
-                        if( skin.ViewModel.DockSensitive )
-                        {
-                            UnregisterInRegisteredElement( element );
-                            RegisterHighlighter( skin );
-                        }
-                    }
-                }
-            }
-
-            //TODOF change static implementation
-            if( e.Binding.Target.Name == "Prediction" )
-            {
-                if( e.BindingType == BindingEventType.Attach )
-                {
-                    if( _skins.TryGetValue( e.Binding.Target.Name, out skin ) )
-                    {
-                        UnregisterHighlighter( skin );
-                        RegisterInRegisteredElement( new RegisteredElementInfo( e.Binding.Origin.Name, e.Binding.Origin.Name, ChildPosition.Pre, skin ) );
-                    }
-                }
-                else if( e.BindingType == BindingEventType.Detach )
-                {
-                    RegisteredElementInfo element;
-                    if( _registeredElementInfo.TryGetValue( e.Binding.Target.Name, out element ) )
-                    {
-                        if( _skins.TryGetValue( e.Binding.Target.Name, out skin ) )
-                        {
-                            UnregisterInRegisteredElement( element );
-                            RegisterHighlighter( skin );
-                        }
-                    }
-                }
-            }
+           
         }
 
         void WindowBinder_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
@@ -536,11 +500,15 @@ namespace SimpleSkin
             //factorize
             SkinInfo skin = _skins[e.Keyboard.Name];
             UninitializeActiveWindows( skin );
+            UnregisterPrediction();
+            RegisterPrediction();
         }
 
         void Keyboards_KeyboardActivated( object sender, KeyboardEventArgs e )
         {
             InitializeActiveWindows( e.Keyboard );
+            UnregisterPrediction();
+            RegisterPrediction();
         }
 
         void Keyboards_KeyboardRenamed( object sender, KeyboardRenamedEventArgs e )

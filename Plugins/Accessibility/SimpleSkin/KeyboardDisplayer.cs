@@ -311,6 +311,8 @@ namespace SimpleSkin
                     if( !_registeredElementInfo.ContainsKey( s.ViewModel.KeyboardVM.Keyboard.Name ) ) RegisterHighlighter( s );
                 } );
                 foreach( var element in _registeredElementInfo.Values ) HighlighterService.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
+                UnregisterPrediction();
+                RegisterPrediction();
             }
             else if( e.Current == InternalRunningStatus.Stopping )
             {
@@ -318,6 +320,7 @@ namespace SimpleSkin
                 {
                     if( !_registeredElementInfo.ContainsKey( s.ViewModel.KeyboardVM.Keyboard.Name ) ) UnregisterHighlighter( s );
                 } );
+                UnregisterPrediction();
             }
         }
 

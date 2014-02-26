@@ -82,7 +82,6 @@ namespace CK.WordPredictor
             //the engine load can be fail
             _asyncEngineContinuation = EngineFactory.CreateAsync( Feature.Service.Engine ).ContinueWith( task =>
             {
-                Debug.Assert( task.Result != null || (task.Result == null && Feature.Status < InternalRunningStatus.Starting) );
                 if( _engine == null ) _engine = task.Result;
             }, TaskContinuationOptions.NotOnCanceled );
         }

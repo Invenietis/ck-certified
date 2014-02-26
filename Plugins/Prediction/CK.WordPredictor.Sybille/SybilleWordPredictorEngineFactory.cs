@@ -63,7 +63,9 @@ namespace CK.WordPredictor.Engines
             {
                 if( cancellationSource.IsCancellationRequested )
                     return null;
+
                 SybilleWordPredictorEngine engine = DoCreate( predictorName, p, userPath, _predictorFeature );
+
                 if( engine.ConstructionSuccess ) return engine;
                 return null;
             }, cancellationSource.Token );

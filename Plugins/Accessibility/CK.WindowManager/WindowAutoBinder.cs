@@ -6,6 +6,7 @@ using CK.WindowManager.Model;
 using CommonServices;
 using System.Timers;
 using System;
+using System.Diagnostics;
 
 namespace CK.WindowManager
 {
@@ -24,8 +25,11 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ICommonTimer> CommonTimer { get; set; }
 
+        const int XY_VARIATION_ACCEPTED = 5;
+
         Timer _timer = null;
         IWindowElement _window = null;
+        Point _buttonDownPoint; //warning lifecycle, value type
 
         public double AttractionRadius = 50;
 
@@ -66,8 +70,8 @@ namespace CK.WindowManager
             if( CommonTimer.Status.IsStartingOrStarted )
             {
                 // Gets the window over the click
-                Point p =  new Point( e.X, e.Y );
-                _window = WindowManager.WindowElements.FirstOrDefault( w => WindowManager.GetClientArea( w ).Contains( p ) );
+                _buttonDownPoint =  new Point( e.X, e.Y );
+                _window = WindowManager.WindowElements.FirstOrDefault( w => WindowManager.GetClientArea( w ).Contains( _buttonDownPoint ) );
                 if( _window != null )
                 {
                     _timer.Interval = CommonTimer.Service.Interval * 2;
@@ -118,15 +122,20 @@ namespace CK.WindowManager
             {
                 if( _timer.Enabled )
                 {
-                    _timer.Elapsed -= OnTimerElapsed;
-                    _timer.Stop();
-                    _window = null;
+                    if( (e.X < _buttonDownPoint.X + XY_VARIATION_ACCEPTED && e.X > _buttonDownPoint.X - XY_VARIATION_ACCEPTED)
+                        && (e.Y < _buttonDownPoint.Y + XY_VARIATION_ACCEPTED && e.Y > _buttonDownPoint.Y - XY_VARIATION_ACCEPTED) )
+                    {
+                        _timer.Elapsed -= OnTimerElapsed;
+                        _timer.Stop();
+                        _window = null;
+                    }
                 }
             }
         }
 
         private Timer _activationTimer;
 
+        //TODO test if the pointer is in the window
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
             //Allows the bypass the fact that Windows puts a window to the initial position
@@ -138,6 +147,17 @@ namespace CK.WindowManager
                 _activationTimer.AutoReset = false;
                 _activationTimer.Elapsed += t_Elapsed;
                 _activationTimer.Start();
+            }
+
+            //stop the UnBind action when the button is up
+            if( CommonTimer.Status.IsStartingOrStarted )
+            {
+                if( _timer.Enabled )
+                {
+                    _timer.Elapsed -= OnTimerElapsed;
+                    _timer.Stop();
+                    _window = null;
+                }
             }
         }
 

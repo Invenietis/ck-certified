@@ -48,6 +48,7 @@ namespace CK.WindowManager.Model
                     Window.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromRgb( 152, 120, 152 ) );
                     Window.ResizeMode = ResizeMode.NoResize;
                     Window.WindowStyle = WindowStyle.None;
+                    Window.ShowInTaskbar = false;
                     Window.Show();
                     Window.Left = r.Left;
                     Window.Top = r.Top;

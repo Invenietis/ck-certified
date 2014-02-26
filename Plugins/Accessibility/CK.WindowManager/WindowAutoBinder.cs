@@ -36,6 +36,8 @@ namespace CK.WindowManager
         HitTester _tester;
         IBindResult _bindResult;
 
+        bool _resizeMoveLock; //avoids bind during a resize
+
         public WindowAutoBinder()
         {
             _tester = new HitTester();
@@ -43,25 +45,30 @@ namespace CK.WindowManager
 
         void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
-            if( _tester.CanTest )
+            //avoids bind during a resize
+            if( !_resizeMoveLock )
             {
-                ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
-                IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
+                if( _tester.CanTest )
+                {
+                    ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+                    IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
 
-                IBinding result = _tester.Test( binding, rect, AttractionRadius );
-                if( result != null )
-                {
-                    _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
-                }
-                else
-                {
-                    if( _tester.LastResult != null )
+                    IBinding result = _tester.Test( binding, rect, AttractionRadius );
+                    if( result != null )
                     {
-                        WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
-                        _bindResult = null;
+                        _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
+                    }
+                    else
+                    {
+                        if( _tester.LastResult != null )
+                        {
+                            WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
+                            _bindResult = null;
+                        }
                     }
                 }
             }
+            _resizeMoveLock = false;
             //Console.WriteLine( "OnWindowMoved ! {0} {1}*{2}", e.Window.Name, e.Window.Top, e.Window.Left );
         }
 
@@ -207,7 +214,13 @@ namespace CK.WindowManager
             WindowBinder.AfterBinding += OnAfterBinding;
 
             WindowManager.WindowMoved += OnWindowMoved;
+            WindowManager.WindowResized += OnWindowResized;
+        }
 
+        //avoids bind during a resize
+        void OnWindowResized( object sender, WindowElementResizeEventArgs e )
+        {
+            _resizeMoveLock = true;
         }
 
 
@@ -221,6 +234,7 @@ namespace CK.WindowManager
             WindowBinder.BeforeBinding -= OnBeforeBinding;
 
             WindowManager.WindowMoved -= OnWindowMoved;
+            WindowManager.WindowResized -= OnWindowResized;
         }
 
         public void Teardown()

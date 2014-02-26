@@ -333,12 +333,16 @@ namespace CK.WindowManager
                 data.Height = data.Window.Height;
             }
 
+            // <summary>
+            /// Propagate the homemade WindowsSizeChanged event.
+            /// This function can create reentrancy problems because we bypass the Windows system event.
+            /// </summary>
             public void Broadcast()
             {
                 // Restores values...
                 _data.Width = _clonedData.Width;
                 _data.Height = _clonedData.Height;
-                // Broadcast
+                // Broadcast, with a homemade WindowsSizeChanged event
                 _m.OnWindowSizeChanged( _data.Window, EventArgs.Empty );
             }
 

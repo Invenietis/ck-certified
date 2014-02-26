@@ -362,35 +362,41 @@ namespace SimpleSkin
         //if the target keyboard isn't active and isn't registered, the prediction is registered in root
         private void RegisterPrediction()
         {
-            if( _skins.ContainsKey( "Prediction" ) )
+            if( HighlighterService.Status == InternalRunningStatus.Started )
             {
-                if( KeyboardContext.Status == InternalRunningStatus.Started )
+                if( _skins.ContainsKey( "Prediction" ) )
                 {
-                    //if the current isn't regitered
-                    if( HighlighterService.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                    if( KeyboardContext.Status == InternalRunningStatus.Started )
                     {
-                        _includedKeyboardName = KeyboardContext.Service.CurrentKeyboard.Name;
-                        return;
+                        //if the current isn't regitered
+                        if( HighlighterService.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                        {
+                            _includedKeyboardName = KeyboardContext.Service.CurrentKeyboard.Name;
+                            return;
+                        }
                     }
+                    HighlighterService.Service.RegisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
                 }
-                HighlighterService.Service.RegisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
             }
         }
 
         private void UnregisterPrediction()
         {
-            if( _skins.ContainsKey( "Prediction" ) )
+            if( HighlighterService.Status == InternalRunningStatus.Started )
             {
-                if( KeyboardContext.Status == InternalRunningStatus.Started )
+                if( _skins.ContainsKey( "Prediction" ) )
                 {
-                    if( !string.IsNullOrEmpty( _includedKeyboardName ) && HighlighterService.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                    if( KeyboardContext.Status == InternalRunningStatus.Started )
                     {
-                        _includedKeyboardName = string.Empty;
-                        return;
+                        if( !string.IsNullOrEmpty( _includedKeyboardName ) && HighlighterService.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                        {
+                            _includedKeyboardName = string.Empty;
+                            return;
+                        }
                     }
+                    HighlighterService.Service.UnregisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
+                    _includedKeyboardName = string.Empty;
                 }
-                HighlighterService.Service.UnregisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
-                _includedKeyboardName = string.Empty;
             }
         }
 

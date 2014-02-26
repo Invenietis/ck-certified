@@ -8,6 +8,7 @@ using CK.Plugin;
 using CK.WordPredictor.Model;
 using CK.Core;
 using System.Linq;
+using System.Diagnostics;
 
 
 namespace CK.WordPredictor
@@ -25,7 +26,7 @@ namespace CK.WordPredictor
         public ITextualContextService TextualContextService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IWordPredictorFeature Feature { get; set; }
+        public IService<IWordPredictorFeature> Feature { get; set; }
 
         public IWordPredictedCollection Words
         {
@@ -53,19 +54,19 @@ namespace CK.WordPredictor
 
         public virtual void Start()
         {
-            List<IWordPredicted> internalList = new List<IWordPredicted>( Feature.MaxSuggestedWords );
+            List<IWordPredicted> internalList = new List<IWordPredicted>( Feature.Service.MaxSuggestedWords );
             _predictedList = new FastObservableCollection<IWordPredicted>( internalList );
             _wordPredictedCollection = new WordPredictedCollection( _predictedList );
 
             LoadEngine();
             TextualContextService.TextualContextChanged += OnTextualContextServiceChanged;
-            Feature.PropertyChanged += OnFeaturePropertyChanged;
+            Feature.Service.PropertyChanged += OnFeaturePropertyChanged;
         }
 
         public virtual void Stop()
         {
             TextualContextService.TextualContextChanged -= OnTextualContextServiceChanged;
-            Feature.PropertyChanged -= OnFeaturePropertyChanged;
+            Feature.Service.PropertyChanged -= OnFeaturePropertyChanged;
 
             EngineFactory.Release( _engine );
             _engine = null;
@@ -78,10 +79,12 @@ namespace CK.WordPredictor
 
         private void LoadEngine()
         {
-            _asyncEngineContinuation = EngineFactory.CreateAsync( Feature.Engine ).ContinueWith( task =>
+            //the engine load can be fail
+            _asyncEngineContinuation = EngineFactory.CreateAsync( Feature.Service.Engine ).ContinueWith( task =>
             {
+                Debug.Assert( task.Result != null || (task.Result == null && Feature.Status < InternalRunningStatus.Starting) );
                 if( _engine == null ) _engine = task.Result;
-            } );
+            }, TaskContinuationOptions.NotOnCanceled );
         }
 
         protected virtual void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
@@ -107,7 +110,7 @@ namespace CK.WordPredictor
                 string rawContext = TextualContextService.GetTextualContext();
                 PredictionLogger.Instance.Trace( "RawContext: {0}.", rawContext );
 
-                var originTask = _engine.PredictAsync( rawContext, Feature.MaxSuggestedWords );
+                var originTask = _engine.PredictAsync( rawContext, Feature.Service.MaxSuggestedWords );
                 originTask.ContinueWith( task =>
                 {
                     PredictionLogger.Instance.Trace( "{0} items currently.", _predictedList.Count );

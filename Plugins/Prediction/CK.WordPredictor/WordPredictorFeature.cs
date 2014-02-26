@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
@@ -31,7 +32,10 @@ namespace CK.WordPredictor
 
         public bool FilterAlreadyShownWords
         {
-            get { return Config.User.TryGet( "FilterAlreadyShownWords", true ); }
+            get
+            {
+                return Config.User.TryGet( "FilterAlreadyShownWords", true ); 
+            }
         }
 
         public int MaxSuggestedWords

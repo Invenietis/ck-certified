@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CK.Core;
+using CK.Plugin;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
 
@@ -12,26 +13,52 @@ namespace CK.WordPredictor.Engines
     public class SybilleWordPredictorEngine : IWordPredictorEngine, IDisposable
     {
         Sybille.WordPredictor _sybille;
-        IWordPredictorFeature _wordPredictionFeature;
+        IService<IWordPredictorFeature> _wordPredictionFeature;
+
+        bool _constructionSuccess;
+
+        public bool ConstructionSuccess
+        {
+            get { return _constructionSuccess;  }
+        }
 
         const int MaxPredictRetryCount = 2;
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
+        public SybilleWordPredictorEngine( IService<IWordPredictorFeature> wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
         {
             _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+            _sybille.FilterAlreadyShownWords = wordPredictionFeature.Service.FilterAlreadyShownWords;
 
             _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+            _wordPredictionFeature.Service.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
         }
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+        public SybilleWordPredictorEngine( IService<IWordPredictorFeature> wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
         {
-            _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+            //Sybille can throw an exception "Loading error"
+            try
+            {
+                _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );            
+            }
+            catch( Exception e )
+            {
+                _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas ); 
+            }
 
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+            //the plugin can be stopped before the construction have finished 
+            if( wordPredictionFeature.Status < InternalRunningStatus.Starting )
+            {
+                _constructionSuccess = false;
+            }
+            else
+            {
+                _wordPredictionFeature = wordPredictionFeature;
+                _wordPredictionFeature.Service.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+
+                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
+
+                _constructionSuccess = true;
+            }
         }
 
 
@@ -39,7 +66,7 @@ namespace CK.WordPredictor.Engines
         {
             if( e.PropertyName == "FilterAlreadyShownWords" )
             {
-                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.FilterAlreadyShownWords;
+                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
             }
         }
 

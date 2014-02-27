@@ -16,6 +16,7 @@ using System.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
 using Host.Services;
+using System.Windows.Media;
 
 namespace SimpleSkin
 {
@@ -27,6 +28,8 @@ namespace SimpleSkin
         const string PluginIdString = "{D173E013-2491-4491-BF3E-CA2F8552B5EB}";
         const string PluginIdVersion = "0.9.0";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+
+        const string PredictionKeyboardName = "Prediction";
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -367,18 +370,21 @@ namespace SimpleSkin
         {
             if( HighlighterService.Status == InternalRunningStatus.Started )
             {
-                if( _skins.ContainsKey( "Prediction" ) )
+                if( _skins.ContainsKey( PredictionKeyboardName ) )
                 {
                     if( KeyboardContext.Status == InternalRunningStatus.Started )
                     {
                         //if the current isn't regitered
                         if( HighlighterService.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
                         {
+                            Object o = Config[KeyboardContext.Service.CurrentKeyboard.CurrentLayout]["HighlightBackground"];
+                            if( o != null ) Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = o;
                             _includedKeyboardName = KeyboardContext.Service.CurrentKeyboard.Name;
                             return;
                         }
                     }
-                    HighlighterService.Service.RegisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
+                    Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = ColorConverter.ConvertFromString( "#FFBDCFF4" );
+                    HighlighterService.Service.RegisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
                 }
             }
         }
@@ -387,17 +393,17 @@ namespace SimpleSkin
         {
             if( HighlighterService.Status == InternalRunningStatus.Started )
             {
-                if( _skins.ContainsKey( "Prediction" ) )
+                if( _skins.ContainsKey( PredictionKeyboardName ) )
                 {
                     if( KeyboardContext.Status == InternalRunningStatus.Started )
                     {
-                        if( !string.IsNullOrEmpty( _includedKeyboardName ) && HighlighterService.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                        if( !string.IsNullOrEmpty( _includedKeyboardName ) && HighlighterService.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins[PredictionKeyboardName].ViewModel.KeyboardVM ) )
                         {
                             _includedKeyboardName = string.Empty;
                             return;
                         }
                     }
-                    HighlighterService.Service.UnregisterTree( "Prediction", _skins["Prediction"].ViewModel.KeyboardVM );
+                    HighlighterService.Service.UnregisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
                     _includedKeyboardName = string.Empty;
                 }
             }

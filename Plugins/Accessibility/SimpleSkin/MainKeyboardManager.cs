@@ -422,15 +422,15 @@ namespace SimpleSkin
         void OnMouseLeaveWindow( object sender, System.Windows.Input.MouseEventArgs e )
         {
             int timeout = _timeout == 0 ? 6000 : _timeout;
-            if( _autohide )
-            {
-                if( _timer == null )
-                    _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, ( o, args ) => HideSkin(), _skinWindow.Dispatcher );
-                else
-                    _timer.Interval = TimeSpan.FromMilliseconds( timeout );
+            //if( _autohide )
+            //{
+            //    if( _timer == null )
+            //        _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, ( o, args ) => HideSkin(), _skinWindow.Dispatcher );
+            //    else
+            //        _timer.Interval = TimeSpan.FromMilliseconds( timeout );
 
-                _timer.Start();
-            }
+            //    _timer.Start();
+            //}
         }
 
         void OnMouseEnterWindow( object sender, System.Windows.Input.MouseEventArgs e )
@@ -532,28 +532,28 @@ namespace SimpleSkin
             }
         }
 
-        void ShowMiniView()
-        {
-            if( _miniView == null )
-            {
-                _miniViewVm = new MiniViewVM( this );
+        //void ShowMiniView()
+        //{
+        //    if( _miniView == null )
+        //    {
+        //        _miniViewVm = new MiniViewVM( this );
 
-                _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
-                _miniView.Closing += OnWindowClosing;
-                _miniView.Show();
+        //        _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
+        //        _miniView.Closing += OnWindowClosing;
+        //        _miniView.Show();
 
-                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth / 2, _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
-                !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth, _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
-                {
-                    _miniView.Left = 0;
-                    _miniView.Top = 0;
-                }
-            }
-            else
-            {
-                _miniView.Show();
-            }
-        }
+        //        if( !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth / 2, _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
+        //        !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth, _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
+        //        {
+        //            _miniView.Left = 0;
+        //            _miniView.Top = 0;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        _miniView.Show();
+        //    }
+        //}
 
         #endregion
 

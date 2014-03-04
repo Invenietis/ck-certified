@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Host.Services;
 using System.Windows.Media;
+using CK.Windows.Helpers;
 
 namespace SimpleSkin
 {
@@ -24,9 +25,9 @@ namespace SimpleSkin
        Categories = new string[] { "Visual", "Accessibility" } )]
     public class KeyboardDisplayer : IPlugin
     {
-        const string PluginPublicName = "MultiSkin";
+        const string PluginPublicName = "KeyboardDisplayer";
         const string PluginIdString = "{D173E013-2491-4491-BF3E-CA2F8552B5EB}";
-        const string PluginIdVersion = "0.9.0";
+        const string PluginIdVersion = "1.0.0";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         const string PredictionKeyboardName = "Prediction";
@@ -42,7 +43,7 @@ namespace SimpleSkin
 
         [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
         public IPluginConfigAccessor Config { get; set; }
-        
+
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowManager> WindowManager { get; set; }
 
@@ -61,7 +62,7 @@ namespace SimpleSkin
                 Dispatcher = d;
                 Subscriber = sub;
             }
-            
+
             public readonly WindowManagerSubscriber Subscriber;
 
             public readonly SkinWindow Skin;
@@ -69,6 +70,8 @@ namespace SimpleSkin
             public readonly VMContextActiveKeyboard ViewModel;
 
             public readonly Dispatcher Dispatcher;
+
+            public string NameKeyboard { get { return ViewModel.KeyboardVM.Keyboard.Name; } }
         }
 
         class RegisteredElementInfo
@@ -94,6 +97,10 @@ namespace SimpleSkin
         IDictionary<string,RegisteredElementInfo> _registeredElementInfo;
 
         bool _forceClose;
+        bool _viewHidden;
+        MiniViewVM _miniViewVm;
+        MiniView _miniView;
+        public bool IsViewHidden { get { return _viewHidden; } }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -139,7 +146,7 @@ namespace SimpleSkin
                         }
                     }), null );
                 }
-                
+
                 RegisterEvents();
                 InitializeHighligther();
                 RegisterPrediction();
@@ -149,6 +156,7 @@ namespace SimpleSkin
         //Set Placement and Show Window
         private void InitializeWindowPlacementAndShow( SkinInfo skinInfo )
         {
+            RegisterSkinEvents( skinInfo );
             var defaultPlacement = new WINDOWPLACEMENT();
 
             skinInfo.Dispatcher.Invoke( (System.Action)(() =>
@@ -351,6 +359,7 @@ namespace SimpleSkin
             if( HighlighterService.Status > InternalRunningStatus.Stopped )
             {
                 HighlighterService.Service.UnregisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM );
+                if( _miniView != null ) HighlighterService.Service.UnregisterTree( "Minimize" + skinInfo.NameKeyboard, _miniViewVm );
             }
         }
 
@@ -439,13 +448,6 @@ namespace SimpleSkin
             KeyboardContext.Service.Keyboards.KeyboardCreated += Keyboards_KeyboardCreated;
             KeyboardContext.Service.Keyboards.KeyboardRenamed += Keyboards_KeyboardRenamed;
 
-            WindowBinder.ServiceStatusChanged += WindowBinder_ServiceStatusChanged;
-
-            if( WindowBinder.Status == InternalRunningStatus.Started )
-            {
-                WindowBinder.Service.AfterBinding += Service_AfterBinding;
-            }
-
             //Config.ConfigChanged += new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             ForEachSkin( RegisterSkinEvents );
 
@@ -455,13 +457,13 @@ namespace SimpleSkin
                 //KeyboardContext.Service.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
             }
         }
-        
+
         private void RegisterSkinEvents( SkinInfo skinInfo )
         {
+            //temporary 03/03/2014
+            skinInfo.Skin.HidingAsked += skin_HidingAsked;
+
             //skinInfo.Skin.Closing += new CancelEventHandler( OnWindowClosing );
-            //skinInfo.Skin.MouseLeave += new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-            //skinInfo.Skin.MouseEnter += new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-            //skinInfo.Skin.SizeChanged += new SizeChangedEventHandler( OnWindowResized );
         }
 
         private void UnregisterEvents()
@@ -472,47 +474,24 @@ namespace SimpleSkin
             KeyboardContext.Service.Keyboards.KeyboardCreated -= Keyboards_KeyboardCreated;
             KeyboardContext.Service.Keyboards.KeyboardRenamed -= Keyboards_KeyboardRenamed;
 
-            if( WindowBinder.Status == InternalRunningStatus.Started )
-            {
-                WindowBinder.Service.AfterBinding -= Service_AfterBinding;
-            }
-
             //Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             //KeyboardContext.Service.CurrentKeyboardChanging -= new EventHandler<CurrentKeyboardChangingEventArgs>( OnCurrentKeyboardChanging );
             //KeyboardContext.Service.CurrentKeyboardChanged -= new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-            ForEachSkin( UnregisterSkinEvents ); 
+            ForEachSkin( UnregisterSkinEvents );
         }
 
         private void UnregisterSkinEvents( SkinInfo skinInfo )
         {
+            //temporary 03/03/2014
+            skinInfo.Skin.HidingAsked -= skin_HidingAsked;
+
             //skinInfo.Skin.Closing -= new CancelEventHandler( OnWindowClosing );
-            //skinInfo.Skin.MouseLeave -= new System.Windows.Input.MouseEventHandler( OnMouseLeaveWindow );
-            //skinInfo.Skin.MouseEnter -= new System.Windows.Input.MouseEventHandler( OnMouseEnterWindow );
-            //skinInfo.Skin.SizeChanged -= new SizeChangedEventHandler( OnWindowResized );
-        }
-
-        void Service_AfterBinding( object sender, WindowBindedEventArgs e )
-        {
-           
-        }
-
-        void WindowBinder_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                WindowBinder.Service.AfterBinding += Service_AfterBinding;
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                WindowBinder.Service.AfterBinding -= Service_AfterBinding;
-            }
         }
 
         void Keyboards_KeyboardDeactivated( object sender, KeyboardEventArgs e )
         {
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
-            //factorize
             SkinInfo skin = _skins[e.Keyboard.Name];
             UninitializeActiveWindows( skin );
             UnregisterPrediction();
@@ -582,7 +561,6 @@ namespace SimpleSkin
 
             //Set placement and show window
             InitializeWindowPlacementAndShow( skinInfo );
-            RegisterSkinEvents( skinInfo );
 
             if( HighlighterService.Status == InternalRunningStatus.Started ) RegisterHighlighter( skinInfo );
         }
@@ -599,6 +577,13 @@ namespace SimpleSkin
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
             skin.Dispatcher.Invoke( (Action)(() =>
             {
+                //temporary 03/03/2014
+                if( _skins.Count == 1 && _miniView.Visibility != Visibility.Hidden )
+                {
+                    HighlighterService.Service.UnregisterTree( "MinimizeView", _miniViewVm );
+                    _miniView.Hide();
+                    _viewHidden = false;
+                }
                 placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
                 skin.Skin.Close();
             }) );
@@ -609,7 +594,10 @@ namespace SimpleSkin
             {
                 UnregisterHighlighter( skin );
                 RegisteredElementInfo element;
-                if( _registeredElementInfo.TryGetValue( skin.ViewModel.KeyboardVM.Keyboard.Name, out element ) ) UnregisterInRegisteredElement( element );
+                if( _registeredElementInfo.TryGetValue( skin.ViewModel.KeyboardVM.Keyboard.Name, out element ) )
+                {
+                    UnregisterInRegisteredElement( element );
+                }
                 else
                 {
                     element = _registeredElementInfo.Values.Where( r => r.TargetModuleName == skin.ViewModel.KeyboardVM.Keyboard.Name ).FirstOrDefault();
@@ -622,6 +610,102 @@ namespace SimpleSkin
             _skins.Remove( skin.ViewModel.KeyboardVM.Keyboard.Name );
         }
 
+        #region temporary 03/03/2014
+
+        void skin_HidingAsked( object sender, EventArgs e )
+        {
+            foreach( var skin in _skins.Values )
+            {
+                if( skin.NameKeyboard != PredictionKeyboardName ) HideSkin( skin );
+            }
+        }
+
+        /// <summary>
+        /// Hides the skin and shows the keyboard's MiniView
+        /// </summary>
+        void HideSkin( SkinInfo skinInfo )
+        {
+            if( !_viewHidden )
+            {
+                _viewHidden = true;
+
+                skinInfo.Dispatcher.BeginInvoke( (Action)(() =>
+                {
+                    ShowMiniView( skinInfo );
+                    if( HighlighterService.Status == InternalRunningStatus.Started )
+                    {
+                        HighlighterService.Service.RegisterTree( "MinimizeView", _miniViewVm );
+                        UnregisterHighlighter( skinInfo );
+                    }
+                }), null );
+            }
+        }
+
+        void ShowMiniView( SkinInfo skinInfo )
+        {
+            if( _miniView == null )
+            {
+                _miniViewVm = new MiniViewVM( this );
+
+                _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
+                _miniView.Closing += OnWindowClosing;
+                _miniView.Show();
+
+                if( !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth / 2, _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
+                !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth, _miniViewVm.Y + (int)_miniView.ActualHeight ) ) )
+                {
+                    _miniView.Left = 0;
+                    _miniView.Top = 0;
+                }
+            }
+            else
+            {
+                _miniView.Show();
+            }
+        }
+
+        /// <summary>
+        /// Hides the keyboard's MiniView and shows the keyboard
+        /// </summary>
+        public void RestoreSkin()
+        {
+            foreach( var skin in _skins.Values )
+            {
+                skin.Dispatcher.BeginInvoke( (Action)(() =>
+                {
+                    if( _miniView.Visibility != Visibility.Hidden )
+                    {
+                        HighlighterService.Service.UnregisterTree( "MinimizeView", _miniViewVm );
+                        _miniView.Hide();
+                    }
+                    skin.Skin.Show();
+                }), null );
+
+                if( HighlighterService.Status == InternalRunningStatus.Started )
+                {
+                    RegisterHighlighter( skin );
+                }
+            }
+            UnregisterPrediction();
+            RegisterPrediction();
+            _viewHidden = false;
+        }
+
+        #endregion temporary
+
+        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            if( !_forceClose && !e.Cancel )
+            {
+                e.Cancel = true;
+                if( Notification != null )
+                {
+                    Notification.ShowNotification( new Guid( PluginIdString ), "Unable to close skin window",
+                        "The skin window cannot be closed like this, if you want to close the window deactive the keyboard.", 5000, NotificationTypes.Warning );
+                }
+            }
+        }
+        
         //void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
         //{
         //    Debug.Assert( _skins.ContainsKey( e.Current.Name ) );
@@ -715,70 +799,6 @@ namespace SimpleSkin
         //    if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
         //    {
         //        if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
-        //    }
-        //}
-
-        //void OnMouseLeaveWindow( object sender, System.Windows.Input.MouseEventArgs e )
-        //{
-        //    int timeout = _timeout == 0 ? 6000 : _timeout;
-        //    if( _autohide )
-        //    {
-        //        if( _timer == null )
-        //            _timer = new DispatcherTimer( TimeSpan.FromMilliseconds( timeout ), DispatcherPriority.Normal, ( o, args ) => HideSkin(), _skinWindow.Dispatcher );
-        //        else
-        //            _timer.Interval = TimeSpan.FromMilliseconds( timeout );
-
-        //        _timer.Start();
-        //    }
-        //}
-
-        //void OnMouseEnterWindow( object sender, System.Windows.Input.MouseEventArgs e )
-        //{
-        //    if( _timer != null ) _timer.Stop();
-        //}
-
-        //void OnWindowResized( object sender, SizeChangedEventArgs e )
-        //{
-        //    if( _timer != null ) _timer.Stop();
-        //}
-
-        //void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
-        //{
-        //    if( !_forceClose && !e.Cancel )
-        //    {
-        //        e.Cancel = true;
-        //        if( Notification != null )
-        //        {
-        //            Notification.ShowNotification( new Guid( PluginIdString ), "Unable to close skin window",
-        //                "The skin window cannot be closed like this, if you want to close the window deactive the keyboard.", 5000, NotificationTypes.Warning );
-        //        }
-        //    }
-        //}
-
-        //void OnWindowHidden( object sender, EventArgs e )
-        //{
-        //    HideSkin();
-        //}
-
-        ///// <summary>
-        ///// Hides the skin and shows the keyboard's MiniView
-        ///// </summary>
-        //public void HideSkin()
-        //{
-        //    if( !_viewHidden )
-        //    {
-        //        _viewHidden = true;
-
-        //        _skinDispatcher.BeginInvoke( (Action)(() =>
-        //        {
-        //            ShowMiniView();
-        //            if( Highlighter.Status == InternalRunningStatus.Started )
-        //            {
-        //                Highlighter.Service.RegisterTree( "MinimizeKeyboard", _miniViewVm );
-        //                Highlighter.Service.UnregisterTree( "Keyboard", _ctxVm.KeyboardVM );
-        //            }
-        //            if( _timer != null ) _timer.Stop();
-        //        }), null );
         //    }
         //}
 

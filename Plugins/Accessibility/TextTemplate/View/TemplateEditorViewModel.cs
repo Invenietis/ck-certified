@@ -19,11 +19,11 @@ namespace TextTemplate
 
         public Template Template { get; set; }
 
-        public Color HighlightColor { get { return Color.FromRgb(200, 12, 89); }  }
+        public Color HighlightColor { get { return Color.FromRgb(255, 255, 255); }  }
 
-        public Color HighlightBackgroundColor { get { return Color.FromArgb(128, 12, 200, 89); } }
+        public Color HighlightBackgroundColor { get { return Color.FromRgb(132, 200, 105); } }
 
-        public Color PlaceholderColor { get { return Color.FromArgb(255, 12, 89, 200); } }
+        public Color PlaceholderColor { get { return Color.FromRgb( 132, 200, 105 ); } }
 
         public int FontSize { get { return 16; } }
 
@@ -116,6 +116,7 @@ namespace TextTemplate
         public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
         {
             IsHighlighted = true;
+
             return scrollingDirective;
         }
 

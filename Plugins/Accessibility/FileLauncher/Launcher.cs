@@ -11,17 +11,16 @@ namespace FileLauncher
            PublicName = PluginPublicName,
            Version = Launcher.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class Launcher : BasicCommandHandler, IFileLauncherService
+    public class Launcher : IPlugin, IFileLauncherService
     {
         const string PluginIdString = "{02D08D49-171F-454A-A84C-89DD7F959958}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "File Launcher";
 
-        public override void Start()
+        public void Start()
         {
             FileLocator = new FileLocator();
-            base.Start();
         }
 
         public void LoadFromCommand( string command, Action<IWildFile> loaded )
@@ -57,6 +56,23 @@ namespace FileLauncher
         #region IFileLauncherService Members
 
         public IFileLocator FileLocator { get; private set; }
+
+        #endregion
+
+        #region IPlugin Members
+
+        public bool Setup( IPluginSetupInfo info )
+        {
+            return true;
+        }
+
+        public void Stop()
+        {
+        }
+
+        public void Teardown()
+        {
+        }
 
         #endregion
     }

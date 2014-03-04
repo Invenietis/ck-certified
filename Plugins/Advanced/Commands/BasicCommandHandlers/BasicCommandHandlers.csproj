@@ -118,6 +118,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="TextTemplate\TextTemplateCommandHandler.cs" />
+    <Compile Include="TextTemplate\TextTemplateCommandParameterManager.cs" />
     <Compile Include="KeySequence\KeySequenceCommandHandler.cs" />
     <Compile Include="KeySequence\KeySequenceCommandParameterManager.cs" />
     <Compile Include="MonitorOnce\MonitorOnceCommandParameterManager.cs" />

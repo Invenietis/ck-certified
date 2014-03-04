@@ -276,4 +276,13 @@
   <data name="StopRecordingTitle" xml:space="preserve">
     <value>Arreter l'écoute</value>
   </data>
+  <data name="TextTemplateAdd" xml:space="preserve">
+    <value>Ajouter un champ de saisie</value>
+  </data>
+  <data name="TextTemplateDescription" xml:space="preserve">
+    <value>Editer un modèle.</value>
+  </data>
+  <data name="TextTemplateTitle" xml:space="preserve">
+    <value>Editer un modèle</value>
+  </data>
 </root>

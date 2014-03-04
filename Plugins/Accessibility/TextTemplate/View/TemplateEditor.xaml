@@ -16,20 +16,33 @@
             WindowStyle="ToolWindow"
             SizeToContent="Height">
     <Window.Resources>
+        <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
+        <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
+        <SolidColorBrush Color="#4f4f4f" x:Key="GrayColor"/>
+        <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
+        
         <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
         <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
         <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
-        <Style TargetType="TextBox">
+
+        <Style TargetType="me:ClickSelectTextBox">
             <Setter Property="TextBox.FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=me:TemplateEditor}}" />
             <Setter Property="TextBox.FontWeight" Value="Bold" />
-            <Setter Property="TextBox.VerticalAlignment" Value="Center" />
+            <Setter Property="TextBox.VerticalContentAlignment" Value="Center" />
             <Setter Property="TextBox.Foreground"  Value="{Binding Source={StaticResource ResourceKey=PlaceholderColor}}" />
-
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="SelectionBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
             <Style.Triggers >
                 <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="true">
                     <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
                     <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
                 </DataTrigger>
+                <Trigger Property="TextBox.IsFocused" Value="True" >
+                    <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
+                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                    <Setter Property="TextBox.BorderThickness" Value="0" />
+                </Trigger>
             </Style.Triggers>
         </Style>
         <Style TargetType="Label">
@@ -38,16 +51,53 @@
             <Setter Property="Label.VerticalAlignment" Value="Center" />
             <Setter Property="Label.HorizontalAlignment" Value="Left" />
             <Setter Property="Label.Padding" Value="0" />
-        </Style>     
-        <Style x:Key="ok">
-            <Style.Triggers >
+        </Style>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource DefaultColor}" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+            <Setter Property="HorizontalAlignment" Value="Right"  />
+            <Setter Property="Margin" Value="10 0 10 0" />
+            <Setter Property="BorderBrush" Value="#295884" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="12 6 12 6" />
+                
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                
+                <Trigger Property="Button.IsFocused" Value="True" >
+                    <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
+                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FFF"></Setter>
+                    <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="Gray"></Setter>
+                    <Setter Property="Background" Value="#81b9ee"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style  x:Key="ok" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+            <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=ValidateTemplate.IsHighlighted}" Value="true">
                     <Setter Property="Button.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
-                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                    <Setter Property="Button.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="cancel">
+        <Style x:Key="cancel" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
             <Style.Triggers >
                 <DataTrigger Binding="{Binding Path=Cancel.IsHighlighted}" Value="true">
                     <Setter Property="Button.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
@@ -55,18 +105,14 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="Button">
-            <Setter Property="HorizontalAlignment" Value="Right"  />
-            <Setter Property="Margin" Value="10 0 10 0"  />
-        </Style>
+        
     </Window.Resources>
     
     <DockPanel VerticalAlignment="Stretch" Margin="0">
-        <Border DockPanel.Dock="Bottom" Background="LightGray" BorderBrush="LightGray" Margin="0"  Panel.ZIndex="10" VerticalAlignment="Top"
-              BorderThickness="0 2 0 0"  >
+        <Border DockPanel.Dock="Bottom" Background="{StaticResource GrayColor}" Margin="0"  Panel.ZIndex="10" VerticalAlignment="Top" >
             <WrapPanel  HorizontalAlignment="Right"  Margin="10 10 20 10" >
-                <Button Command="{Binding ValidateTemplate}" Margin="10 0 10 0" Style="{StaticResource ResourceKey=ok}">OK</Button>
-                <Button Command="{Binding Cancel}" Style="{StaticResource ResourceKey=cancel}">Cancel</Button>
+                <Button x:Name="cancel" Command="{Binding Cancel}" Margin="10 0 10 0" Style="{StaticResource ResourceKey=cancel}">Cancel</Button>
+                <Button x:Name="ok" Command="{Binding ValidateTemplate}"  Style="{StaticResource ResourceKey=ok}">OK</Button>
             </WrapPanel>
         </Border>
         <ScrollViewer VerticalAlignment="Stretch" Background="Transparent"  Panel.ZIndex="0" >

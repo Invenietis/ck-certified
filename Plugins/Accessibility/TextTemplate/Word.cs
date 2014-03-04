@@ -13,6 +13,7 @@ namespace TextTemplate
         protected string _text;
         protected bool _isHighlighted;
         protected TextTemplate _textTemplate;
+        bool _selected;
 
         public bool IsEditable { get; private set; }
 
@@ -83,6 +84,7 @@ namespace TextTemplate
 
         public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
         {
+            _selected = false;
             IsHighlighted = true;
             if(_textTemplate != null) _textTemplate.FocusOnElement(this);
             return scrollingDirective;
@@ -91,14 +93,15 @@ namespace TextTemplate
         public ScrollingDirective EndHighlight(EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective)
         {
             IsHighlighted = false;
-
+            if( !_selected ) _textTemplate.RemoveFocus( this );
             return scrollingDirective;
         }
 
         public ScrollingDirective SelectElement(ScrollingDirective scrollingDirective)
         {
+            _selected = true;
             scrollingDirective.NextActionType = HighlightModel.ActionType.AbsoluteRoot;
-            
+            _textTemplate.FocusOnElement( this );
             return scrollingDirective;
         }
 
@@ -113,7 +116,7 @@ namespace TextTemplate
     {
         public NewLine() : base()
         {
-            _text = Environment.NewLine;
+            _text = "\n";
         }
     }
 

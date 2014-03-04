@@ -13,8 +13,11 @@ namespace TextTemplate
         Categories = new string[] { "Accessibility" },
         Version = "1.0.0",
         PublicName = "Text Template" )]
-    public class TextTemplate : BasicCommandHandler, IHighlightableElement
+    public class TextTemplate : IPlugin, IHighlightableElement, ITextTemplateService
     {
+        public static readonly string PlaceholderOpenTag = "{{";
+        public static readonly string PlaceholderCloseTag = "}}";
+
         const string CMD = "placeholder";
         TemplateEditor _editor;
         TemplateEditorViewModel _viewModel;
@@ -27,7 +30,7 @@ namespace TextTemplate
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ISendStringService> SendService { get; set; }
 
-        public override bool Setup( IPluginSetupInfo info )
+        public bool Setup( IPluginSetupInfo info )
         {
             _viewModel = new TemplateEditorViewModel();
             _viewModel.TemplateValidated += ( o, e ) =>
@@ -42,28 +45,28 @@ namespace TextTemplate
             {
                 _editor.Close();
             };
-            return base.Setup( info );
+
+            return true;
         }
 
-        public override void Start()
+        public void Start()
         {
-            base.Start();
-            Skip = SkippingBehavior.Skip;
-            if( Highlighter.Status.IsStartingOrStarted )
-                Highlighter.Service.RegisterTree( this );
-
-        }
-
-        protected override void OnCommandSent( object sender, CommandSentEventArgs e )
-        {
-            Command cmd = new Command( e.Command );
-            if( !e.Canceled && cmd.Name == CMD )
+            Highlighter.ServiceStatusChanged += ( o, e ) =>
             {
-                LaunchEditor( cmd.Content );
-            }
+                if( e.Current == InternalRunningStatus.Started )
+                {
+                    Highlighter.Service.RegisterTree( this );
+                }
+                else if( e.Current == InternalRunningStatus.Stopping )
+                {
+                    Highlighter.Service.UnregisterTree( this );
+                }
+            };
+
+            Skip = SkippingBehavior.Skip;
         }
 
-        public void LaunchEditor( string template )
+        public void OpenEditor( string template )
         {
             _viewModel.Template = Template.Load( template, this );
             if( _editor != null ) _editor.Close();
@@ -73,11 +76,12 @@ namespace TextTemplate
                 .Distinct()
                 .ToList();
 
+            //Cancel button
+            list.Add( _viewModel.Cancel );
+
             //Ok Button
             list.Add( _viewModel.ValidateTemplate );
 
-            //Cancel button
-            list.Add( _viewModel.Cancel );
             _children = new CKReadOnlyListOnIList<IHighlightableElement>( list );
             Skip = SkippingBehavior.None;
             _editor.Show();
@@ -131,13 +135,28 @@ namespace TextTemplate
             if( _editor != null ) _editor.FocusOnElement( text );
         }
 
+        public void RemoveFocus( IText text )
+        {
+            if( _editor != null ) _editor.RemoveFocus( text );
+        }
+
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            foreach(var child in Children )
+            {
+                IHighlightable highlightable = (IHighlightable)child;
+                if( child != null ) highlightable.IsHighlighted = true;
+            }
             return scrollingDirective;
         }
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            foreach( var child in Children )
+            {
+                IHighlightable highlightable = (IHighlightable)child;
+                if( child != null ) highlightable.IsHighlighted = false;
+            }
             return scrollingDirective;
         }
 
@@ -150,6 +169,35 @@ namespace TextTemplate
         {
             get { return true; }
         }
+
+        #region IPlugin Members
+
+
+        public void Stop()
+        {
+            if( Highlighter.Status.IsStartingOrStarted )
+                Highlighter.Service.UnregisterTree( this );
+        }
+
+        public void Teardown()
+        {            
+        }
+
+        #endregion
+
+        #region ITextTemplateService Members
+
+        public string OpentTag
+        {
+            get { return TextTemplate.PlaceholderOpenTag; }
+        }
+
+        public string CloseTag
+        {
+            get { return TextTemplate.PlaceholderCloseTag; }
+        }
+
+        #endregion
     }
 
     public class Command

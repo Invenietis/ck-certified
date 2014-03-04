@@ -10,14 +10,13 @@
              xmlns:editor="clr-namespace:KeyboardEditor"
              xmlns:r="clr-namespace:KeyboardEditor.Resources"
              xmlns:bch="clr-namespace:BasicCommandHandlers"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d">
     <UserControl.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
             <!--<ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
             <ckc:NotNullConverter x:Key="notnullconverter"/>-->
@@ -79,7 +78,6 @@
                                          RegistryTemplate="{StaticResource filelauncherregistrytemplate}"
                                          UrlTemplate="{StaticResource filelauncherurltemplate}"
                                          />
-            
             <DataTemplate x:Key="keysequencedatatemplate">
                 <StackPanel>
                     <DockPanel LastChildFill="True">
@@ -126,7 +124,19 @@
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
-
+            <DataTemplate x:Key="texttemplatedatatemplate">
+                <StackPanel HorizontalAlignment="Stretch" >
+                    <TextBox MinLines="5" Text="{Binding Template}" AcceptsReturn="True"  >
+                        <i:Interaction.Behaviors>
+                            <vm:CaretIndexBehavior CaretPosition="{Binding TemplateCaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <DockPanel  HorizontalAlignment="Stretch" Margin="0 10 0 0 ">
+                        <TextBox Text="{Binding Placeholder}" Width="200" DockPanel.Dock="Left"/>
+                        <Button Focusable="False" DockPanel.Dock="Right" Command="{Binding InsertPlaceholder}" Content="{x:Static r:R.TextTemplateAdd}" HorizontalAlignment="Right" />
+                    </DockPanel>
+                </StackPanel>
+            </DataTemplate>
             <DataTemplate x:Key="filelauncherdatatemplate">
                 <StackPanel HorizontalAlignment="Stretch" >
                     <ItemsControl ItemsSource="{Binding TypeSelections}">
@@ -168,6 +178,7 @@
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
                                               FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
+                                              TextTemplateDataTemplate="{StaticResource texttemplatedatatemplate}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
                                               MonitorOnceDataTemplate="{StaticResource monitoronceerror}"
                                               KeySequenceDataTemplate ="{StaticResource keysequencedatatemplate}"/>
@@ -203,10 +214,10 @@
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
                                               MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
                                               FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
+                                              TextTemplateDataTemplate="{StaticResource texttemplatedatatemplate}"
                                               ModeDataTemplate="{StaticResource modedatatemplate}"
                                               MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}"
                                               KeySequenceDataTemplate ="{StaticResource keysequencedatatemplate}"/>
-
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
@@ -223,7 +234,6 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Vertical">
@@ -264,7 +274,6 @@
                 <TextBlock x:Uid="keyboard-editor-key-mode-current-mode" TextWrapping="Wrap" VerticalAlignment="Center" Text="Current mode : " />
                 <ContentControl Margin="2 0" FontWeight="Bold" Content="{Binding ModeName}" DataContext="{Binding}" />
             </StackPanel>
-
         </DockPanel>
         <DockPanel LastChildFill="True">
             <StackPanel Margin="0 0 5 0">
@@ -289,7 +298,6 @@
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
                                     <TextBox Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=textcheckbox, Converter={StaticResource booltovisibilityconverter}}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
-
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"></ColumnDefinition>

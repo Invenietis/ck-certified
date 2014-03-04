@@ -202,7 +202,7 @@ namespace KeyScroller
                     elements = RegisteredElements;
 
                     // ToDoJL
-                    if( actionType != ActionType.EnterChild && elements.Count == 1 )//We are on the root level, and there is only one element, so we directly enter it.
+                    if( actionType != ActionType.EnterChild && elements.Count == 1 && elements[0].Children.Count > 0 )//We are on the root level, and there is only one element, so we directly enter it.
                     {
                         _currentId = 0;
                         nextElement = GetEnterChild( elements );

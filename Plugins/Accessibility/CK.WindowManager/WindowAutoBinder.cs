@@ -31,7 +31,7 @@ namespace CK.WindowManager
         IWindowElement _window = null;
         Point _buttonDownPoint; //warning lifecycle, value type
 
-        public double AttractionRadius = 50;
+        public double AttractionRadius = 65;
 
         HitTester _tester;
         IBindResult _bindResult;
@@ -180,6 +180,7 @@ namespace CK.WindowManager
             }
             finally
             {
+                _bindResult = null;
                 _activationTimer.Stop();
                 _activationTimer.Dispose();
                 _activationTimer = null;

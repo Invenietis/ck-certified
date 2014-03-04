@@ -163,15 +163,15 @@ namespace KeyScroller
                 _lastDirective.NextActionType = ActionType.Normal;
 
             //We retrieve parents that implement IHighlightableElementController
-            var contrillingParents = _currentElementParents.Where((i) => { return i is IHighlightableElementController; });
+            var controllingParents = _currentElementParents.Where((i) => { return i is IHighlightableElementController; });
 
-            foreach (IHighlightableElementController parent in contrillingParents)
+            foreach (IHighlightableElementController parent in controllingParents)
             {
                 //we offer the possibility to change action
                 actionType = parent.PreviewChildAction( _currentElement, actionType);
             }
             
-            foreach( IHighlightableElementController parent in contrillingParents )
+            foreach( IHighlightableElementController parent in controllingParents )
             {
                 //inform that there is a new ActionType
                 parent.OnChildAction( actionType );

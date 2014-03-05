@@ -122,3 +122,23 @@ begin
 	end;
 	result := true;
 end;
+
+var
+  ApplicationWasUninstalled: Boolean;
+
+procedure InitializeUninstallProgressForm();
+begin
+  if(MsgBox('Voulez vous supprimer votre configuration ?', mbConfirmation, MB_YESNO) = IDYES)
+   then begin
+      ApplicationWasUninstalled := true;
+   end;
+end;
+
+procedure DeinitializeUninstall();
+begin
+  if(ApplicationWasUninstalled)
+   then begin
+      DelTree(ExpandConstant('{userappdata}\Civikey'), True, True, True);
+      DelTree(ExpandConstant('{sd}\ProgramData\Civikey'), True, True, True);
+   end;
+end;

@@ -7,6 +7,7 @@ using CommonServices;
 using System.Timers;
 using System;
 using System.Diagnostics;
+using SimpleSkin;
 
 namespace CK.WindowManager
 {
@@ -97,22 +98,22 @@ namespace CK.WindowManager
                 if( spatial.Top != null )
                 {
                     WindowBinder.PreviewUnbind( _window, spatial.Top.Window );
-                    WindowBinder.Unbind( _window, spatial.Top.Window );
+                    WindowBinder.Unbind( _window, spatial.Top.Window, false );
                 }
                 if( spatial.Left != null )
                 {
                     WindowBinder.PreviewUnbind( _window, spatial.Left.Window );
-                    WindowBinder.Unbind( _window, spatial.Left.Window );
+                    WindowBinder.Unbind( _window, spatial.Left.Window, false );
                 }
                 if( spatial.Right != null )
                 {
                     WindowBinder.PreviewUnbind( _window, spatial.Right.Window );
-                    WindowBinder.Unbind( _window, spatial.Right.Window );
+                    WindowBinder.Unbind( _window, spatial.Right.Window, false );
                 }
                 if( spatial.Bottom != null )
                 {
                     WindowBinder.PreviewUnbind( _window, spatial.Bottom.Window );
-                    WindowBinder.Unbind( _window, spatial.Bottom.Window );
+                    WindowBinder.Unbind( _window, spatial.Bottom.Window, false );
                 }
 
                 WindowManager.Move( _window, _window.Top + 20, _window.Left + 20 ).Silent();

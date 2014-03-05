@@ -5,6 +5,10 @@ using CK.WindowManager.Model;
 using CK.Core;
 using System.Diagnostics;
 using System.Threading;
+using CK.Storage;
+using System.Xml;
+using CK.Plugin.Config;
+using System.Linq;
 
 namespace CK.WindowManager
 {
@@ -13,9 +17,12 @@ namespace CK.WindowManager
     {
         IDictionary<IWindowElement,List<IBinding>> _bindings;
         DefaultActivityLogger _logger;
+        SerializableBindings _persistantBindings;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IWindowManager WindowManager { get; set; }
+        public IService<IWindowManager> WindowManager { get; set; }
+
+        public IPluginConfigAccessor Config { get; set; }
 
         IDictionary<IWindowElement, SpatialBinding> _spatialBindings = new Dictionary<IWindowElement, SpatialBinding>();
 
@@ -23,6 +30,7 @@ namespace CK.WindowManager
         {
             _bindings = new Dictionary<IWindowElement, List<IBinding>>();
             _logger = new DefaultActivityLogger();
+            _persistantBindings = new SerializableBindings();
             //_logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
 
@@ -157,7 +165,7 @@ namespace CK.WindowManager
             return new UnbindResult( this, binding );
         }
 
-        public void Bind( IWindowElement master, IWindowElement slave, BindingPosition position )
+        public void Bind( IWindowElement master, IWindowElement slave, BindingPosition position, bool saveBinding = false )
         {
             if( master == null ) throw new ArgumentNullException( "master" );
             if( slave == null ) throw new ArgumentNullException( "slave" );
@@ -232,6 +240,9 @@ namespace CK.WindowManager
                             slaveSpatialBinding.Left = spatialBinding;
                         }
 
+                        if( saveBinding )
+                            _persistantBindings.Add( binding );
+
                         var evtAfter = new WindowBindedEventArgs
                         {
                             Binding = binding,
@@ -246,7 +257,7 @@ namespace CK.WindowManager
             }
         }
 
-        public void Unbind( IWindowElement me, IWindowElement other )
+        public void Unbind( IWindowElement me, IWindowElement other, bool saveBinding = true )
         {
             if( me == null ) throw new ArgumentNullException( "me" );
             if( other == null ) throw new ArgumentNullException( "other" );
@@ -269,25 +280,29 @@ namespace CK.WindowManager
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.Window == other )
                     {
                         spatialBinding.Bottom = null;
-                        Unbind( other, me );
+                        Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.Window == other )
                     {
                         spatialBinding.Left = null;
-                        Unbind( other, me );
+                        Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.Window == other )
                     {
                         spatialBinding.Top = null;
-                        Unbind( other, me );
+                        Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.Window == other )
                     {
                         spatialBinding.Right = null;
-                        Unbind( other, me );
+                        Unbind( other, me, saveBinding );
                     }
+
                     if( spatialBinding.IsAlone )
                         _spatialBindings.Remove( me );
+
+                    if( !saveBinding )
+                        _persistantBindings.Remove( binding );
                 }
 
                 var evtAfter = new WindowBindedEventArgs { Binding = binding, BindingType = BindingEventType.Detach };
@@ -344,6 +359,104 @@ namespace CK.WindowManager
             }
         }
 
+        class SerializableBindings : IStructuredSerializable
+        {
+            public class SerializableBinding : IStructuredSerializable
+            {
+                public string Target { get; set; }
+                public string Origin { get; set; }
+                public BindingPosition Position { get; set; }
+
+                internal SerializableBinding( string target, string origin, BindingPosition position )
+                {
+                    Target = target;
+                    Origin = origin;
+                    Position = position;
+                }
+
+                #region IStructuredSerializable Members
+
+                public void ReadContent( IStructuredReader sr )
+                {
+                    XmlReader r = sr.Xml;
+                    r.Read();
+                    r.ReadStartElement( "Bind" );
+                    Target = r.GetAttribute( "Master" );
+                    Origin = r.GetAttribute( "Origin" );
+                    Position = r.GetAttributeEnum( "Position", BindingPosition.None );
+                    r.Read();
+                }
+
+                public void WriteContent( IStructuredWriter sw )
+                {
+                    XmlWriter w = sw.Xml;
+                    w.WriteAttributeString( "Master", Target );
+                    w.WriteAttributeString( "Slave", Origin );
+                    w.WriteAttributeString( "Position", Position.ToString() );
+                }
+
+                #endregion
+            }
+
+            public List<SerializableBinding> Bindings { get; set; }
+
+            public SerializableBindings()
+            {
+                Bindings = new List<SerializableBinding>();
+            }
+
+            public void Add( string target, string origin, BindingPosition position )
+            {
+                Bindings.Add( new SerializableBinding( target, origin, position ) );
+            }
+
+            public void Add( CK.WindowManager.WindowElementBinder.SimpleBinding binding )
+            {
+                Bindings.Add( new SerializableBinding( binding.Target.Name, binding.Origin.Name, binding.Position ) );
+            }
+
+            public void Remove( CK.WindowManager.WindowElementBinder.SimpleBinding binding )
+            {
+                //TODO performance
+                var serBind = Bindings.Where( sb => (sb.Origin == binding.Origin.Name && sb.Target == binding.Target.Name)
+                                      || (sb.Target == binding.Origin.Name && sb.Origin == binding.Target.Name) ).FirstOrDefault();
+                if( serBind != null ) Bindings.Remove( serBind );
+            }
+
+            #region IStructuredSerializable Members
+
+            public void ReadContent( IStructuredReader sr )
+            {
+                XmlReader r = sr.Xml;
+                r.Read();
+                r.ReadStartElement( "Bindings" );
+                if( r.IsStartElement( "Bind" ) )
+                {
+                    while( r.IsStartElement( "Bind" ) )
+                    {
+                        Bindings.Add( new SerializableBinding( r.GetAttribute( 0 ), r.GetAttribute( 1 ), r.GetAttributeEnum<BindingPosition>( "Position", BindingPosition.None ) ) );
+                        r.Read();
+                    }
+                }
+
+                r.ReadEndElement();
+            }
+
+            public void WriteContent( IStructuredWriter sw )
+            {
+                XmlWriter w = sw.Xml;
+
+                w.WriteStartElement( "Bindings" );
+
+                foreach( var b in Bindings )
+                    sw.WriteInlineObjectStructuredElement( "Bind", b );
+
+                w.WriteFullEndElement();
+            }
+
+            #endregion
+        }
+
         #endregion
 
         #region Events
@@ -365,7 +478,26 @@ namespace CK.WindowManager
 
         public void Start()
         {
-            WindowManager.Unregistered += WindowManager_Unregistered;
+            _persistantBindings = Config.User.GetOrSet( "SerializableBindings", _persistantBindings );
+            WindowManager.Service.Unregistered += WindowManager_Unregistered;
+            WindowManager.Service.Registered += OnRegistered;
+        }
+
+        void OnRegistered( object sender, WindowElementEventArgs e )
+        {
+            foreach( var sb in _persistantBindings.Bindings.Where( sb => sb.Origin == e.Window.Name || sb.Target == e.Window.Name ) )
+            {
+                if( sb.Origin == e.Window.Name )
+                {
+                    IWindowElement element = WindowManager.Service.GetByName( sb.Target );
+                    if( element != null ) Bind( element, e.Window, sb.Position, false );
+                }
+                else if( sb.Target == e.Window.Name )
+                {
+                    IWindowElement element = WindowManager.Service.GetByName( sb.Origin );
+                    if( element != null ) Bind( e.Window, element, sb.Position, false );
+                }
+            }
         }
 
         void WindowManager_Unregistered( object sender, WindowElementEventArgs e )
@@ -379,7 +511,8 @@ namespace CK.WindowManager
 
         public void Stop()
         {
-            WindowManager.Unregistered -= WindowManager_Unregistered;
+            WindowManager.Service.Unregistered -= WindowManager_Unregistered;
+            Config.User.Set( "SerializableBindings", _persistantBindings );
         }
 
         public void Teardown()
@@ -413,7 +546,7 @@ namespace CK.WindowManager
             {
                 //Console.WriteLine( "BEFORE BIND ! Origin : {0} Target : {1} ;;; BEFORE BIND thread id: {2} TimeSpan : {3}", _simpleBinding.Origin.Name, _simpleBinding.Target.Name, Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
                 
-                _binder.Bind( _simpleBinding.Target, _simpleBinding.Origin, _simpleBinding.Position );
+                _binder.Bind( _simpleBinding.Target, _simpleBinding.Origin, _simpleBinding.Position, true );
 
                 //Console.WriteLine( "AFTER BIND ! Origin : {0} Target : {1} ;;; AFTER BIND thread id: {2} TimeSpan : {3}", _simpleBinding.Origin.Name, _simpleBinding.Target.Name, Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
             }
@@ -431,7 +564,7 @@ namespace CK.WindowManager
 
             public void Seal()
             {
-                _binder.Unbind( _simpleBinding.Target, _simpleBinding.Origin );
+                _binder.Unbind( _simpleBinding.Target, _simpleBinding.Origin, false );
             }
         }
 
@@ -445,4 +578,5 @@ namespace CK.WindowManager
             return BindingPosition.Left;
         }
     }
+
 }

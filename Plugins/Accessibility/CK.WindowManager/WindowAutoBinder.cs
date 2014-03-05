@@ -7,7 +7,6 @@ using CommonServices;
 using System.Timers;
 using System;
 using System.Diagnostics;
-using SimpleSkin;
 
 namespace CK.WindowManager
 {

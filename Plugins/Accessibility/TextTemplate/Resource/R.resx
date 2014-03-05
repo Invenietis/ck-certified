@@ -121,12 +121,12 @@
     <value>Cancel</value>
   </data>
   <data name="TextTemplateDesc" xml:space="preserve">
-    <value>Text template editor</value>
+    <value>Complete the text then clic on the "Write" button.</value>
   </data>
   <data name="TextTemplateTitle" xml:space="preserve">
     <value>Text template</value>
   </data>
   <data name="Validate" xml:space="preserve">
-    <value>Validate</value>
+    <value>Write</value>
   </data>
 </root>

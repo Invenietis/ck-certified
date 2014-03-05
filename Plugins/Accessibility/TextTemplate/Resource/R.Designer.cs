@@ -70,7 +70,7 @@ namespace TextTemplate.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Text template editor.
+        ///   Looks up a localized string similar to Complete the text then clic on the &quot;Write&quot; button..
         /// </summary>
         public static string TextTemplateDesc {
             get {
@@ -88,7 +88,7 @@ namespace TextTemplate.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validate.
+        ///   Looks up a localized string similar to Write.
         /// </summary>
         public static string Validate {
             get {

@@ -4,6 +4,7 @@ using System;
 using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
 using CK.Plugin.Config;
+using CK.Plugins.SendInputDriver;
 
 namespace BasicCommandHandlers
 {
@@ -27,6 +28,9 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITextTemplateService> TextTemplate { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<ISendStringService> SendString { get; set; }
+
         [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
         public IPluginConfigAccessor SkinConfiguration { get; set; }
 
@@ -38,7 +42,7 @@ namespace BasicCommandHandlers
                                         PROTOCOL_BASE,
                                         R.TextTemplateTitle,
                                         R.TextTemplateDescription,
-                                        () => { return new TextTemplateCommandParameterManager( TextTemplate.Service ); } ),
+                                        () => { return new TextTemplateCommandParameterManager( TextTemplate.Service, SendString.Service ); } ),
                                         typeof( ITextTemplateCommandHandlerService ) );
         }
 

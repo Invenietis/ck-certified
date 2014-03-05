@@ -126,13 +126,14 @@
             </DataTemplate>
             <DataTemplate x:Key="texttemplatedatatemplate">
                 <StackPanel HorizontalAlignment="Stretch" >
-                    <TextBox MinLines="5" Text="{Binding Template}" AcceptsReturn="True"  >
+                    <TextBox ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" Focusable="True" MinLines="5" Text="{Binding Template, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"  AcceptsTab="True" >
                         <i:Interaction.Behaviors>
                             <vm:CaretIndexBehavior CaretPosition="{Binding TemplateCaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                            <vm:FocusBehavior IsKeyboardFocused="{Binding IsFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
                     <DockPanel  HorizontalAlignment="Stretch" Margin="0 10 0 0 ">
-                        <TextBox Text="{Binding Placeholder}" Width="200" DockPanel.Dock="Left"/>
+                        <TextBox Text="{Binding Placeholder, UpdateSourceTrigger=PropertyChanged}" Width="200" DockPanel.Dock="Left"  />
                         <Button Focusable="False" DockPanel.Dock="Right" Command="{Binding InsertPlaceholder}" Content="{x:Static r:R.TextTemplateAdd}" HorizontalAlignment="Right" />
                     </DockPanel>
                 </StackPanel>

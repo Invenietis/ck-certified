@@ -121,7 +121,7 @@
     <value>Annuler</value>
   </data>
   <data name="TextTemplateDesc" xml:space="preserve">
-    <value>Editer le modèle</value>
+    <value>Completez le texte ci-dessous et cliquez sur le bouton "Ecrire" pour envoyer le texte.</value>
   </data>
   <data name="TextTemplateTitle" xml:space="preserve">
     <value>Editeur de modèle</value>

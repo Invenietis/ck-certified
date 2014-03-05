@@ -9,6 +9,7 @@ using CommonServices;
 using ProtocolManagerModel;
 using CK.Plugin.Config;
 using System.Windows.Input;
+using CK.Plugins.SendInputDriver;
 
 namespace BasicCommandHandlers
 {
@@ -17,20 +18,23 @@ namespace BasicCommandHandlers
         string _template;
         string _placeholder;
         int _caretIndex;
+        bool _isFocused;
+
         VMCommand _insertPlacholder;
         ITextTemplateService _textTemplate;
 
-        public TextTemplateCommandParameterManager(ITextTemplateService textTemplate)
+        public TextTemplateCommandParameterManager(ITextTemplateService textTemplate, ISendStringService sendString)
         {
             _textTemplate = textTemplate;
             _placeholder = "";
 
             _insertPlacholder = new VMCommand( () => {
                 if( string.IsNullOrEmpty( _placeholder ) ) return;
+                if( !IsFocused ) return;
 
-                _template = _template.Insert( TemplateCaretIndex, _textTemplate.OpentTag + _placeholder + _textTemplate.CloseTag );
+                sendString.SendString( _textTemplate.OpentTag + _placeholder + _textTemplate.CloseTag );
+                
                 NotifyPropertyChanged( "Template" );
-                NotifyPropertyChanged( "TemplateCaretIndex" );
                 NotifyPropertyChanged( "IsValid" );
             } );
         }
@@ -45,6 +49,15 @@ namespace BasicCommandHandlers
             }
         }
 
+        public bool IsFocused
+        {
+            get { return _isFocused; }
+            set
+            {
+                _isFocused = value;
+                NotifyPropertyChanged( "IsFocused" );
+            }
+        }
         public string Placeholder
         {
             get { return _placeholder; }
@@ -62,6 +75,7 @@ namespace BasicCommandHandlers
             {
                 _template = value;
                 NotifyPropertyChanged( "Template" );
+                NotifyPropertyChanged( "TemplateCaretIndex" );
                 NotifyPropertyChanged( "IsValid" );
             }
         }

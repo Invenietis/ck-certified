@@ -5,9 +5,29 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace TextTemplate
 {
+    public class ContentControlDuFutur : ContentControl
+    {
+        IText _text;
+        Dictionary<IText, TextBox> _bindings;
+
+        public ContentControlDuFutur(IText text,  Dictionary<IText, TextBox> bindings)
+        {
+            _text = text;
+            _bindings = bindings;
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            var tb = (ClickSelectTextBox) Template.FindName( "textbox", this );
+            _bindings[_text] = tb;
+        }
+    }
+
     /// <summary>
     /// Interaction logic for Template.xaml
     /// </summary>
@@ -46,45 +66,17 @@ namespace TextTemplate
             foreach(IText text in _model.Template.TextFragments)
             {
                 Label block;
-                ClickSelectTextBox editable;
-                Grid grid;
-                Line line;
+                ContentControlDuFutur cc;
 
                 if (text.IsEditable)
                 {
-                    grid = new Grid();
-                    grid.ClipToBounds = false;
-                    line = new Line();
-
-                    editable = new ClickSelectTextBox(text.Text);
-                    line.Stroke = (SolidColorBrush)FindResource( "GrayColor" );
-                    line.StrokeThickness = 1.5;
-
-                    grid.Children.Add( editable );
-                    grid.Children.Add( line );
-
-                    editable.DataContext = text;
-                    editable.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-                    var b =  new Binding("Text");
-
-                    b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                    b.Source = text;
-                    editable.SetBinding(TextBox.TextProperty, b);
-
-                    line.StrokeDashArray.Add( 0 );
-                    line.StrokeDashArray.Add( 2.0 );
-                    line.StrokeDashArray.Add( 0 );
-                    line.Height = 1;
-                    line.Width = editable.Width;
-                    line.X1 = 0;
-                    line.X2 = 1000;
-                    line.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-                    var b2 =new Binding("ActualWidth");
-                    b2.Source = line;
-                    line.SetBinding( Line.X2Property,  b2);
-
-                    _bindings[text] = editable;
-                    wp.Children.Add( grid );
+                    cc = new ContentControlDuFutur( text, _bindings ) 
+                    { 
+                        DataContext = text,
+                        Style = (Style) FindResource( "textcontrol" )
+                    };
+     
+                    wp.Children.Add( cc );
                 }
                 else
                 {
@@ -112,10 +104,15 @@ namespace TextTemplate
             _bindings[text].Focus();
         }
 
+        /// <summary>
+        /// Give the focus to the parent
+        /// </summary>
+        /// <param name="text"></param>
         public void RemoveFocus( IText text )
         {
             if( !_bindings.ContainsKey( text ) ) return;
             TextBox textBox = _bindings[text];
+            text.IsSelected = false;
 
             FrameworkElement parent = (FrameworkElement) textBox.Parent;
             while( parent != null && parent is IInputElement && !((IInputElement)parent).Focusable )

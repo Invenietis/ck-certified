@@ -18,6 +18,11 @@ namespace TextTemplate
         public IReadOnlyList<IText> TextFragments { get; private set; }
 
         /// <summary>
+        /// A public name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Return a new Template from the given string
         /// </summary>
         /// <param name="tmpl"></param>

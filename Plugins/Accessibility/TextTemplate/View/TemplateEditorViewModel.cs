@@ -7,8 +7,10 @@ using System.Windows.Media;
 
 namespace TextTemplate
 {
-    public class TemplateEditorViewModel
+    public class TemplateEditorViewModel : INotifyPropertyChanged
     {
+        bool _isWindowHighlighted;
+
         HighlightableCommand _ValidateTemplate;
 
         HighlightableCommand _cancel;
@@ -18,6 +20,16 @@ namespace TextTemplate
         public event EventHandler Canceled;
 
         public Template Template { get; set; }
+
+        public bool IsWindowHighlighted 
+        {
+            get { return _isWindowHighlighted; }
+            set
+            {
+                _isWindowHighlighted = value;
+                NotifyPropertyChanged( "IsWindowHighlighted" );
+            }
+        }
 
         public Color HighlightColor { get { return Color.FromRgb(255, 255, 255); }  }
 
@@ -47,6 +59,11 @@ namespace TextTemplate
             }
         }
 
+        internal void NotifyPropertyChanged( string peropertyName )
+        {
+            if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( peropertyName ) );
+        }
+
         void FireTemplateValidated()
         {
             if (TemplateValidated != null) TemplateValidated(this, new EventArgs());
@@ -56,12 +73,18 @@ namespace TextTemplate
         {
             if (Canceled != null) Canceled(this, new EventArgs());
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
     }
 
     public class HighlightableCommand : VMCommand, IHighlightableElement, IHighlightable, INotifyPropertyChanged
     {
         bool _isHighlighted;
-
+    
         public HighlightableCommand(Action action) : base(action)
         {
 
@@ -136,5 +159,12 @@ namespace TextTemplate
         {
             get { return false; }
         }
+
+        public bool IsSelected
+        {
+            get { return IsHighlighted; }
+            set { }
+        }
+
     }
 }

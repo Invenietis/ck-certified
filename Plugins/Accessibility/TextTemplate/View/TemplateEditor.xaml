@@ -5,6 +5,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:sys="clr-namespace:System;assembly=mscorlib"
             xmlns:me="clr-namespace:TextTemplate"
+            xmlns:r="clr-namespace:TextTemplate.Resource"
             mc:Ignorable="d"   
             ShowInTaskbar="False"
             Width="600"
@@ -24,7 +25,19 @@
         <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
         <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
         <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
-
+        
+        <Style TargetType="me:ContentControlDuFutur" x:Key="textcontrol" >
+            <Setter Property="Template">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <Grid ClipToBounds="False">
+                            <me:ClickSelectTextBox Text="{Binding Text}" Placeholder="{Binding Text, Mode=OneTime}" Name="textbox" />
+                            <Line StrokeDashArray="0.0 2.0 0.0" StrokeThickness="2" Stroke="{StaticResource GrayColor}" Height="1" X1="0" X2="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}" VerticalAlignment="Bottom" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>  
         <Style TargetType="me:ClickSelectTextBox">
             <Setter Property="TextBox.FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=me:TemplateEditor}}" />
             <Setter Property="TextBox.FontWeight" Value="Bold" />
@@ -33,8 +46,12 @@
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="SelectionBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
+           
             <Style.Triggers >
                 <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="true">
+                    <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsSelected}" Value="true">
                     <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
                     <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
                 </DataTrigger>
@@ -109,15 +126,41 @@
     </Window.Resources>
     
     <DockPanel VerticalAlignment="Stretch" Margin="0">
-        <Border DockPanel.Dock="Bottom" Background="{StaticResource GrayColor}" Margin="0"  Panel.ZIndex="10" VerticalAlignment="Top" >
+        <Border DockPanel.Dock="Top"  Margin="0"  Panel.ZIndex="10" VerticalAlignment="Top" >
+            <Border.Style>
+                <Style>
+                    <Setter Property="Border.Background" Value="{StaticResource ResourceKey=GrayColor}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsWindowHighlighted}" Value="true">
+                            <Setter Property="Border.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel>
+                <TextBlock Text="{x:Static r:R.TextTemplateDesc}" Foreground="White" FontSize="20" Margin="10 10 20 10" />
+            </StackPanel>
+        </Border>
+        <Border DockPanel.Dock="Bottom" Margin="0"  Panel.ZIndex="10" VerticalAlignment="Top" >
+            <Border.Style>
+                <Style>
+                    <Setter Property="Border.Background" Value="{StaticResource ResourceKey=GrayColor}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsWindowHighlighted}" Value="true">
+                            <Setter Property="Border.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <WrapPanel  HorizontalAlignment="Right"  Margin="10 10 20 10" >
-                <Button x:Name="cancel" Command="{Binding Cancel}" Margin="10 0 10 0" Style="{StaticResource ResourceKey=cancel}">Cancel</Button>
-                <Button x:Name="ok" Command="{Binding ValidateTemplate}"  Style="{StaticResource ResourceKey=ok}">OK</Button>
+                <Button x:Name="cancel" Command="{Binding Cancel}" Margin="10 0 10 0" Style="{StaticResource ResourceKey=cancel}" Content="{x:Static r:R.Cancel}"  />
+                <Button x:Name="ok" Command="{Binding ValidateTemplate}"  Style="{StaticResource ResourceKey=ok}" Content="{x:Static r:R.Validate}" />
             </WrapPanel>
         </Border>
         <ScrollViewer VerticalAlignment="Stretch" Background="Transparent"  Panel.ZIndex="0" >
             <StackPanel Margin="10" x:Name="sheet"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="White">
             </StackPanel>
         </ScrollViewer>
+        
     </DockPanel>
 </Window>

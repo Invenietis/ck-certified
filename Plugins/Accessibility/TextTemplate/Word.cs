@@ -13,7 +13,7 @@ namespace TextTemplate
         protected string _text;
         protected bool _isHighlighted;
         protected TextTemplate _textTemplate;
-        bool _selected;
+        protected bool _selected;
 
         public bool IsEditable { get; private set; }
 
@@ -75,6 +75,16 @@ namespace TextTemplate
             }
         }
 
+        public bool IsSelected
+        {
+            get { return _selected; }
+            set
+            {
+                _selected = value;
+                NotifyPropertyChanged( "IsSelected" );
+            }
+        }
+
         void NotifyPropertyChanged(string property)
         {
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
@@ -86,6 +96,7 @@ namespace TextTemplate
         {
             _selected = false;
             IsHighlighted = true;
+
             if(_textTemplate != null) _textTemplate.FocusOnElement(this);
             return scrollingDirective;
         }
@@ -93,7 +104,8 @@ namespace TextTemplate
         public ScrollingDirective EndHighlight(EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective)
         {
             IsHighlighted = false;
-            if( !_selected ) _textTemplate.RemoveFocus( this );
+
+            if( !_selected ) _textTemplate.RemoveFocus( this ); //Keep the focus if the text is selected
             return scrollingDirective;
         }
 

@@ -16,6 +16,7 @@ namespace TextTemplate
             get { return (string)GetValue( PlaceholderProperty ); }
             set { SetValue( PlaceholderProperty, value ); }
         }
+
         public static readonly DependencyProperty PlaceholderProperty =
         DependencyProperty.Register( "Placeholder", typeof( string ), typeof( ClickSelectTextBox ) );
 

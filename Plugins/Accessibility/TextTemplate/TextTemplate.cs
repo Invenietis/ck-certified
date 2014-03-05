@@ -142,6 +142,7 @@ namespace TextTemplate
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             _viewModel.IsWindowHighlighted = true;
+            _editor.Activate();
             return scrollingDirective;
         }
 

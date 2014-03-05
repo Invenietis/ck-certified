@@ -24,6 +24,8 @@ namespace TextTemplate
         {
             base.OnApplyTemplate();
             var tb = (ClickSelectTextBox) Template.FindName( "textbox", this );
+            tb.GotFocus += ( o, e ) => { _text.IsSelected = true; };
+            tb.LostFocus += ( o, e ) => { _text.IsSelected = false; };
             _bindings[_text] = tb;
         }
     }

@@ -25,19 +25,6 @@
         <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
         <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
         <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
-        
-        <Style TargetType="me:ContentControlDuFutur" x:Key="textcontrol" >
-            <Setter Property="Template">
-                <Setter.Value >
-                    <ControlTemplate>
-                        <Grid ClipToBounds="False">
-                            <me:ClickSelectTextBox Text="{Binding Text}" Placeholder="{Binding Text, Mode=OneTime}" Name="textbox" />
-                            <Line StrokeDashArray="0.0 2.0 0.0" StrokeThickness="2" Stroke="{StaticResource GrayColor}" Height="1" X1="0" X2="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}" VerticalAlignment="Bottom" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>  
         <Style TargetType="me:ClickSelectTextBox">
             <Setter Property="TextBox.FontSize" Value="{Binding DataContext.FontSize, RelativeSource={RelativeSource AncestorType=me:TemplateEditor}}" />
             <Setter Property="TextBox.FontWeight" Value="Bold" />
@@ -46,7 +33,7 @@
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="SelectionBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
-           
+
             <Style.Triggers >
                 <DataTrigger Binding="{Binding Path=IsHighlighted}" Value="true">
                     <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
@@ -62,6 +49,19 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="me:ContentControlDuFutur" x:Key="textcontrol" >
+            <Setter Property="Template">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <Grid ClipToBounds="False">
+                            <me:ClickSelectTextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding Text, Mode=OneTime}" Name="textbox" />
+                            <Line StrokeDashArray="0.0 2.0 0.0" StrokeThickness="2" Stroke="{StaticResource GrayColor}" Height="1" X1="0" X2="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}" VerticalAlignment="Bottom" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>  
+        
         <Style TargetType="Label">
             <Setter Property="Label.FontSize" Value="16" />
             <Setter Property="Label.Foreground" Value="#333333" />

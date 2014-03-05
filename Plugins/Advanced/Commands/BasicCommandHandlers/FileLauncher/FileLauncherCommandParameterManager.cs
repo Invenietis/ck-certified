@@ -11,27 +11,125 @@ using CK.Plugin.Config;
 
 namespace BasicCommandHandlers
 {
+    public enum FileLauncherType
+    {
+        Url,
+        Registry,
+        Browse
+    }
+
+    public class FileLauncherTypeSelection : INotifyPropertyChanged
+    {
+        bool _isSelected;
+        VMCommand _openFileDialog;
+        string _appPath;
+
+        public FileLauncherCommandParameterManager Manager { get; set; }
+        public FileLauncherType Type { get; private set; }
+        public string Content { get; private set; }
+        public string AppPath 
+        {
+            get { return _appPath; }
+            set 
+            { 
+                _appPath = value;
+                if( string.IsNullOrEmpty( _appPath ) ) Manager.SelectedFile = null;
+                
+                NotifyPropertyChanged( "AppPath" );
+                Manager.SetUrlApp(_appPath);
+            } 
+        }
+
+        public FileLauncherTypeSelection( FileLauncherCommandParameterManager manager, FileLauncherType type, string content )
+        {
+            Manager = manager;
+            Type = type;
+            Content = content;
+            _appPath = "";
+        }
+
+        public List<IWildFile> Apps 
+        {
+            get { return Manager._fileLauncher.FileLocator.RegistryApps; } 
+        }
+
+        public bool IsSelected 
+        {
+            get { return _isSelected; } 
+            set
+            {
+                _isSelected = value;
+                if( value )
+                {
+                    Manager.SelectedFileLauncherType = this;
+                    if( Type == FileLauncherType.Url ) Manager.SetUrlApp(AppPath);
+                }
+                else
+                {
+                    if( Type == FileLauncherType.Url ) Manager.SelectedFile = null;
+                }
+                
+                
+                NotifyPropertyChanged( "IsSelected" );
+            }
+        }
+        public void FLush()
+        {
+
+        }
+        public VMCommand OpenFileDialog
+        {
+            get
+            {
+                if( _openFileDialog == null ) _openFileDialog = new VMCommand( (Action)OpenDialog );
+                return _openFileDialog;
+            }
+        }
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+        void NotifyPropertyChanged( string peropertyName )
+        {
+            if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( peropertyName ) );
+        }
+
+        void OpenDialog()
+        {
+            // Configure open file dialog box
+            var dlg = new Microsoft.Win32.OpenFileDialog { Filter = "Tous le fichiers (*.*)|*.*" };
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results 
+            if( result == true )
+            {
+                // Open document 
+                Manager.SetSelectedFile(dlg.FileName);
+            }
+        }
+    }
+
     public class FileLauncherCommandParameterManager : IProtocolParameterManager
     {
         public IProtocolEditorRoot Root { get; set; }
 
         readonly string[] _trustedCompanies = { "Adobe", "Microsoft", "Google", "Mozilla", "Apple" };
-        readonly IFileLauncherService _fileLauncher;
+        internal readonly IFileLauncherService _fileLauncher;
         readonly IPluginConfigAccessor _skinConfigAccessor;
-
-        VMCommand _openFileDialog;
+        FileLauncherTypeSelection _selectedFileLauncherType;
+        
         IWildFile _selectedWildFile;
-
-        public List<IWildFile> Apps { get; set; }
-
-        bool _showApp;
-        public bool ShowApp
+        public List<FileLauncherTypeSelection> TypeSelections { get; set; }
+        public FileLauncherTypeSelection SelectedFileLauncherType 
         {
-            get { return _showApp; }
+            get { return _selectedFileLauncherType; }
             set
             {
-                _showApp = value;
-                NotifyPropertyChanged( "ShowApp" );
+                _selectedFileLauncherType = value;
+                NotifyPropertyChanged( "SelectedFileLauncherType" );
                 NotifyPropertyChanged( "IsValid" );
             }
         }
@@ -66,24 +164,13 @@ namespace BasicCommandHandlers
         {
             _fileLauncher = fileLauncher;
             _skinConfigAccessor = skinConfigAccessor;
-            Apps = _fileLauncher.FileLocator.RegistryApps;
-
-            Apps.Sort( ( a, b ) =>
-            {
-                var vA = FileVersionInfo.GetVersionInfo( a.Path );
-                var vB = FileVersionInfo.GetVersionInfo( b.Path );
-                if( vA == null || vA.ProductName == null ) return 1;
-                if( vB == null || vB.ProductName == null ) return -1;
-
-                foreach( string company in _trustedCompanies )
-                {
-                    if( vA.ProductName.Contains( company ) ) return -1;
-                    if( vB.ProductName.Contains( company ) ) return 1;
-                }
-                return 0;
-            } );
-
-            ShowApp = true;
+            
+            TypeSelections = new List<FileLauncherTypeSelection>();
+            SelectedFileLauncherType = new FileLauncherTypeSelection( this, FileLauncherType.Url, "URL" );
+            SelectedFileLauncherType.IsSelected = true;
+            TypeSelections.Add( SelectedFileLauncherType );
+            TypeSelections.Add( new FileLauncherTypeSelection (this, FileLauncherType.Registry, "Application installée"));
+            TypeSelections.Add( new FileLauncherTypeSelection( this, FileLauncherType.Browse, "Choisir un fichier" ) );
         }
 
         public IWildFile SelectedApp
@@ -111,48 +198,41 @@ namespace BasicCommandHandlers
             }
         }
 
-        private void SetSelectedFile( IWildFile value )
+        internal void SetUrlApp(string url)
+        {
+            url = url.Trim().ToLowerInvariant();
+            if( !(url.StartsWith( "http://" ) 
+                || url.StartsWith( "https://" ) 
+                || url.StartsWith( "file://" ) 
+                || url.StartsWith( "ftp://" )) )
+            {
+                url = "http://" + url;
+            }
+
+            SetSelectedFile(_fileLauncher.FileLocator.CreateWildFile(url, false), false);
+        }
+
+        private void SetSelectedFile( IWildFile value, bool useImg = true )
         {
             _selectedWildFile = value;
-            //if( UseFileIcon )
-            //{
-            _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedWildFile.Icon );
-            _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
-            //}
+
+            if( useImg && value != null)
+            {
+                _skinConfigAccessor[Root.EditedKeyMode].Set( "Image", _selectedWildFile.Icon );
+                _skinConfigAccessor[Root.EditedKeyMode].Set( "DisplayType", "Image" );
+            }
 
             NotifyPropertyChanged( "SelectedApp" );
             NotifyPropertyChanged( "SelectedFile" );
             NotifyPropertyChanged( "IsValid" );
         }
 
-
-        public VMCommand OpenFileDialog
+        internal void SetSelectedFile( string path )
         {
-            get
-            {
-                if( _openFileDialog == null ) _openFileDialog = new VMCommand( (Action)OpenDialog );
-                return _openFileDialog;
-            }
+            SetSelectedFile( _fileLauncher.FileLocator.CreateWildFile( path, false ) );
         }
 
-        void OpenDialog()
-        {
-            // Configure open file dialog box
-            var dlg = new Microsoft.Win32.OpenFileDialog { Filter = "Tous le fichiers (*.*)|*.*" };
-
-            // Show open file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process open file dialog box results 
-            if( result == true )
-            {
-                // Open document 
-                SelectedApp = _fileLauncher.FileLocator.CreateWildFile( dlg.FileName, false );
-            }
-        }
-
-
-        void NotifyPropertyChanged( string peropertyName )
+        internal void NotifyPropertyChanged( string peropertyName )
         {
             if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( peropertyName ) );
         }
@@ -164,13 +244,24 @@ namespace BasicCommandHandlers
             _fileLauncher.LoadFromCommand( parameter, ( file ) =>
             {
                 SelectedApp = file;
-                if( file.Lookup != FileLookup.Registry ) ShowApp = false;
-                else
+                TypeSelections.FirstOrDefault( x => x.IsSelected == true ).IsSelected = false;
+
+                if( file.Lookup == FileLookup.Registry )
                 {
-                    ShowApp = true;
-                    SelectedApp = Apps.FirstOrDefault( f => f.CompareTo( file ) == 0 );
+                    SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Registry);
+                    SelectedApp = _fileLauncher.FileLocator.RegistryApps.FirstOrDefault( f => f.CompareTo( file ) == 0 );
                     if( _selectedWildFile == null ) SelectedApp = file;
                 }
+                else if(file.Lookup == FileLookup.Url)
+                {
+                    SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Url );
+                    SelectedFileLauncherType.AppPath = file.Path;
+                }
+                else
+                {
+                    SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Browse );
+                }
+                SelectedFileLauncherType.IsSelected = true;
             } );
             return;
         }
@@ -179,10 +270,15 @@ namespace BasicCommandHandlers
         {
             return _fileLauncher.FileLocator.GetLocationCommand( _selectedWildFile );
         }
-
+        
         public bool IsValid
         {
-            get { return ShowApp && SelectedApp != null || !ShowApp && SelectedFile != null; }
+            get 
+            { 
+                return SelectedFileLauncherType.Type == FileLauncherType.Registry && SelectedApp != null
+                    || SelectedFileLauncherType.Type == FileLauncherType.Browse &&  SelectedFile != null
+                    || SelectedFileLauncherType.Type == FileLauncherType.Url && SelectedFile != null && !string.IsNullOrEmpty( SelectedFileLauncherType.AppPath );
+            }
         }
 
         #endregion

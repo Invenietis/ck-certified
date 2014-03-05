@@ -7,8 +7,10 @@ using System.Windows.Media;
 
 namespace TextTemplate
 {
-    public class TemplateEditorViewModel
+    public class TemplateEditorViewModel : INotifyPropertyChanged
     {
+        bool _isWindowHighlighted;
+
         HighlightableCommand _ValidateTemplate;
 
         HighlightableCommand _cancel;
@@ -19,11 +21,21 @@ namespace TextTemplate
 
         public Template Template { get; set; }
 
-        public Color HighlightColor { get { return Color.FromRgb(200, 12, 89); }  }
+        public bool IsWindowHighlighted 
+        {
+            get { return _isWindowHighlighted; }
+            set
+            {
+                _isWindowHighlighted = value;
+                NotifyPropertyChanged( "IsWindowHighlighted" );
+            }
+        }
 
-        public Color HighlightBackgroundColor { get { return Color.FromArgb(128, 12, 200, 89); } }
+        public Color HighlightColor { get { return Color.FromRgb(255, 255, 255); }  }
 
-        public Color PlaceholderColor { get { return Color.FromArgb(255, 12, 89, 200); } }
+        public Color HighlightBackgroundColor { get { return Color.FromRgb(132, 200, 105); } }
+
+        public Color PlaceholderColor { get { return Color.FromRgb( 132, 200, 105 ); } }
 
         public int FontSize { get { return 16; } }
 
@@ -47,6 +59,11 @@ namespace TextTemplate
             }
         }
 
+        internal void NotifyPropertyChanged( string peropertyName )
+        {
+            if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( peropertyName ) );
+        }
+
         void FireTemplateValidated()
         {
             if (TemplateValidated != null) TemplateValidated(this, new EventArgs());
@@ -56,12 +73,18 @@ namespace TextTemplate
         {
             if (Canceled != null) Canceled(this, new EventArgs());
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
     }
 
     public class HighlightableCommand : VMCommand, IHighlightableElement, IHighlightable, INotifyPropertyChanged
     {
         bool _isHighlighted;
-
+    
         public HighlightableCommand(Action action) : base(action)
         {
 
@@ -116,6 +139,7 @@ namespace TextTemplate
         public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
         {
             IsHighlighted = true;
+
             return scrollingDirective;
         }
 
@@ -135,5 +159,12 @@ namespace TextTemplate
         {
             get { return false; }
         }
+
+        public bool IsSelected
+        {
+            get { return IsHighlighted; }
+            set { }
+        }
+
     }
 }

@@ -36,9 +36,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Separator>
-
-            </Separator>
+            <Separator></Separator>
             <TextBlock Text="Choisir un fichier sur l'ordinateur" />
             <Button  Content="Browse" Command="{Binding OpenFileDialog}"/>
         </StackPanel>

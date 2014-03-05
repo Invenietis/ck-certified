@@ -3,14 +3,37 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace TextTemplate
 {
+    public class ContentControlDuFutur : ContentControl
+    {
+        IText _text;
+        Dictionary<IText, TextBox> _bindings;
+
+        public ContentControlDuFutur(IText text,  Dictionary<IText, TextBox> bindings)
+        {
+            _text = text;
+            _bindings = bindings;
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            var tb = (ClickSelectTextBox) Template.FindName( "textbox", this );
+            _bindings[_text] = tb;
+        }
+    }
+
     /// <summary>
     /// Interaction logic for Template.xaml
     /// </summary>
     public partial class TemplateEditor : Window
     {
+        static readonly int LineHeight = 25;
         Dictionary<IText, TextBox> _bindings;
         TemplateEditorViewModel _model;
 
@@ -37,38 +60,29 @@ namespace TextTemplate
             };
 
             WrapPanel wp = new WrapPanel();
+            wp.Height = LineHeight;
             _bindings = new Dictionary<IText, TextBox>();
 
             foreach(IText text in _model.Template.TextFragments)
             {
                 Label block;
-                TextBox editable;
+                ContentControlDuFutur cc;
 
                 if (text.IsEditable)
                 {
-                    editable = new TextBox();
-                    editable.DataContext = text;
-                    editable.Text = text.Placeholder;
-
-                    var b =  new Binding("Text");
-                    b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-                    b.Source = text;
-                    editable.SetBinding(TextBox.TextProperty, b);
-                    editable.GotFocus += (o, e) =>
-                    {
-                        editable.SelectAll();
+                    cc = new ContentControlDuFutur( text, _bindings ) 
+                    { 
+                        DataContext = text,
+                        Style = (Style) FindResource( "textcontrol" )
                     };
-                    editable.MouseUp += (o, e) =>
-                    {
-                        editable.SelectAll();
-                    };
-                    _bindings[text] = editable;
-                    wp.Children.Add(editable);
+     
+                    wp.Children.Add( cc );
                 }
                 else
                 {
                     if (text is NewLine)
                     {
+                        if( wp.Children.Count == 0 ) wp.Height = LineHeight;
                         sp.Children.Add(wp);
                         wp = new WrapPanel();
                     }
@@ -88,6 +102,26 @@ namespace TextTemplate
         {
             if (!_bindings.ContainsKey(text)) return;
             _bindings[text].Focus();
+        }
+
+        /// <summary>
+        /// Give the focus to the parent
+        /// </summary>
+        /// <param name="text"></param>
+        public void RemoveFocus( IText text )
+        {
+            if( !_bindings.ContainsKey( text ) ) return;
+            TextBox textBox = _bindings[text];
+            text.IsSelected = false;
+
+            FrameworkElement parent = (FrameworkElement) textBox.Parent;
+            while( parent != null && parent is IInputElement && !((IInputElement)parent).Focusable )
+            {
+                parent = (FrameworkElement)parent.Parent;
+            }
+
+            DependencyObject scope = FocusManager.GetFocusScope( textBox );
+            FocusManager.SetFocusedElement( scope, parent as IInputElement );
         }
     }
 }

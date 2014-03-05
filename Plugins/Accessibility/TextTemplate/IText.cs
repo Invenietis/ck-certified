@@ -26,5 +26,10 @@ namespace TextTemplate
         /// Wheter the IText is highlight or not
         /// </summary>
         bool IsHighlighted { get; set; }
+
+        /// <summary>
+        /// Weather if the text is selected or not
+        /// </summary>
+        bool IsSelected { get; set; }
     }
 }

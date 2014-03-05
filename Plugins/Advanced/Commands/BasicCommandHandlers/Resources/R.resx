@@ -282,4 +282,13 @@
   <data name="StopRecordingTitle" xml:space="preserve">
     <value>Stop recording</value>
   </data>
+  <data name="TextTemplateAdd" xml:space="preserve">
+    <value>Add a placeholder</value>
+  </data>
+  <data name="TextTemplateDescription" xml:space="preserve">
+    <value>Edit a template</value>
+  </data>
+  <data name="TextTemplateTitle" xml:space="preserve">
+    <value>Edit a template</value>
+  </data>
 </root>

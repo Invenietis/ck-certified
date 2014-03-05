@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonServices;
+using System.Net.Http;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace FileLauncher
 {
@@ -61,7 +64,7 @@ namespace FileLauncher
             }
 
             RegistryApps.Sort((a, b) => {
-                return a.FileName.CompareTo(b.FileName);
+                return a.LastAccessTime.CompareTo(b.LastAccessTime) * -1;
             });
         }
 
@@ -106,6 +109,9 @@ namespace FileLauncher
                 case FileLookup.Other:
                     LocateFromSpecialDirectory( wFile );
                     break;
+                case FileLookup.Url:
+                    LocateWebsite( wFile );
+                    break;
             }
 
             //Last chance
@@ -124,6 +130,27 @@ namespace FileLauncher
             {
                 callback( wFile );
             }
+        }
+
+        private void LocateWebsite( WildFile wFile )
+        {
+            if( !wFile.IsLocated ) return;
+
+            //HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri( wFile.Path + "/favicon.ico" );
+            //try
+            //{
+            //    using( Stream s = client.GetStreamAsync( wFile.Path + "/favico.ico" ).Result )
+            //    {
+            //        Bitmap bmp = new Bitmap( Image.FromStream( s ) );
+            //        wFile.Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            //           bmp.GetHbitmap(),
+            //           IntPtr.Zero,
+            //           System.Windows.Int32Rect.Empty,
+            //           BitmapSizeOptions.FromWidthAndHeight( bmp.Size.Width, bmp.Size.Height ) );
+            //    }
+            //}
+            //catch(Exception e){}
         }
 
         public string GetLocationCommand( IWildFile file )
@@ -223,7 +250,7 @@ namespace FileLauncher
             }
 
             //True if there is a parent
-            if (Directory.GetParent(currDirectory) == null) return null;
+            if (string.IsNullOrEmpty(currDirectory) || Directory.GetParent(currDirectory) == null) return null;
             
             return TryLocatePath( Directory.GetParent( currDirectory ).FullName + @"\" + Path.GetFileName( path ), folders, exclude );
         }

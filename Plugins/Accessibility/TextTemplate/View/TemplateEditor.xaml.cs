@@ -24,8 +24,10 @@ namespace TextTemplate
         {
             base.OnApplyTemplate();
             var tb = (ClickSelectTextBox) Template.FindName( "textbox", this );
+            
             tb.GotFocus += ( o, e ) => { _text.IsSelected = true; };
             tb.LostFocus += ( o, e ) => { _text.IsSelected = false; };
+
             _bindings[_text] = tb;
         }
     }
@@ -50,6 +52,8 @@ namespace TextTemplate
                 if (e.ChangedButton == MouseButton.Left)
                     this.DragMove();
             };
+            _model.Cancel.PropertyChanged += ( o, e ) => { if(_model.Cancel.IsHighlighted) ((Button)FindName( "cancel" )).Focus(); };
+            _model.ValidateTemplate.PropertyChanged += ( o, e ) => { if( _model.ValidateTemplate.IsHighlighted ) ((Button)FindName( "ok" )).Focus(); };
         }
 
         void RenderTemplate()
@@ -62,7 +66,6 @@ namespace TextTemplate
             };
 
             WrapPanel wp = new WrapPanel();
-            wp.Height = LineHeight;
             _bindings = new Dictionary<IText, TextBox>();
 
             foreach(IText text in _model.Template.TextFragments)
@@ -84,7 +87,7 @@ namespace TextTemplate
                 {
                     if (text is NewLine)
                     {
-                        if( wp.Children.Count == 0 ) wp.Height = LineHeight;
+                        if( wp.Children.Count == 0 ) wp.MinHeight = LineHeight;
                         sp.Children.Add(wp);
                         wp = new WrapPanel();
                     }

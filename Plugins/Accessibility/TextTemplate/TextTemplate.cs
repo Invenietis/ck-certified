@@ -73,6 +73,7 @@ namespace TextTemplate
             _editor = new TemplateEditor( _viewModel );
             var list = _viewModel.Template.TextFragments.Where( t => t.IsEditable == true )
                 .Cast<IHighlightableElement>()
+                .Distinct()
                 .ToList();
 
             //Cancel button
@@ -142,7 +143,7 @@ namespace TextTemplate
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             _viewModel.IsWindowHighlighted = true;
-            _editor.Activate();
+            
             return scrollingDirective;
         }
 
@@ -154,6 +155,7 @@ namespace TextTemplate
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
+            _editor.Activate();
             return scrollingDirective;
         }
 

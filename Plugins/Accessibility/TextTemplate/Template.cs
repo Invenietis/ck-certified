@@ -47,11 +47,12 @@ namespace TextTemplate
                 }
 
                 //Editable text
-                text = textFragments.FirstOrDefault(x => x.IsEditable == true && x.Placeholder == m.Value  );    //Search if there is an IText placeholder equals to the matched value
+                text = textFragments.FirstOrDefault( x => x.IsEditable == true && x.Placeholder == m.Value );    //Search if the placeholder already exists 
                 if(text == null) text = new Word(true, m.Groups["token"].Value, tt); //if not, create a new one
                 text.Placeholder = m.Value;
                 textFragments.Add(text);
 
+                //escape curly braces to avoid conflicts during the string.Format
                 template._stringToFormat += staticText.Replace("{", "{{").Replace("}", "}}") + "{" + (textFragments.IndexOf( text )) + "}";
 
                 prevIndex = m.Index + m.Length;
@@ -62,6 +63,7 @@ namespace TextTemplate
             {
                 staticText = tmpl.Substring(prevIndex);
                 ParseStaticText( staticText, textFragments, tt );
+                //escape curly braces to avoid conflicts during the string.Format
                 template._stringToFormat += staticText.Replace( "{", "{{" ).Replace( "}", "}}" );
             }
             template.TextFragments = new CKReadOnlyListOnIList<IText>(textFragments);
@@ -75,6 +77,12 @@ namespace TextTemplate
             return idx == -1 ? str.IndexOf( "\n" ) : idx;
         }
 
+        /// <summary>
+        /// Parse the given static text and split it on spaces and new lines
+        /// </summary>
+        /// <param name="staticText"></param>
+        /// <param name="textFragments"></param>
+        /// <param name="tt"></param>
         static void ParseStaticText( string staticText, List<IText> textFragments, TextTemplate tt )
         {
             int space = staticText.IndexOf( ' ' );
@@ -93,7 +101,13 @@ namespace TextTemplate
                 SplitNewlines( textFragments, staticText, tt );
             }
         }
-
+        
+        /// <summary>
+        /// Parse the given static text and split it on new lines
+        /// </summary>
+        /// <param name="textFragments"></param>
+        /// <param name="staticText"></param>
+        /// <param name="tt"></param>
         static void SplitNewlines(List<IText> textFragments, string staticText, TextTemplate tt)
         {
             IText text;

@@ -88,11 +88,6 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                
-                <Trigger Property="Button.IsFocused" Value="True" >
-                    <Setter Property="TextBox.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />
-                    <Setter Property="TextBox.Background" Value="{Binding Source={StaticResource ResourceKey=HighlightBackgroundColor}}" />
-                </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
                 </Trigger>
@@ -157,7 +152,7 @@
                 <Button x:Name="ok" Command="{Binding ValidateTemplate}"  Style="{StaticResource ResourceKey=ok}" Content="{x:Static r:R.Validate}" />
             </WrapPanel>
         </Border>
-        <ScrollViewer VerticalAlignment="Stretch" Background="Transparent"  Panel.ZIndex="0" >
+        <ScrollViewer VerticalAlignment="Stretch" Background="Transparent" VerticalScrollBarVisibility="Auto" Panel.ZIndex="0" >
             <StackPanel Margin="10" x:Name="sheet"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="White">
             </StackPanel>
         </ScrollViewer>

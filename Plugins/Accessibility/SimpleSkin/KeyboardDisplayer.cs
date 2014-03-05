@@ -129,10 +129,10 @@ namespace SimpleSkin
                         SkinInfo skinInfo = new SkinInfo( skin, vm, _noFocusWindowManager.NoFocusWindowThreadDispatcher, subscriber );
                         _skins.Add( activeKeyboard.Name, skinInfo );
 
-                        SubscribeToWindowManager( skinInfo );
-
                         //Set placement and show window
                         InitializeWindowPlacementAndShow( skinInfo );
+                        
+                        SubscribeToWindowManager( skinInfo );
                     }
                 }
                 else
@@ -557,10 +557,10 @@ namespace SimpleSkin
             SkinInfo skinInfo = new SkinInfo( skin, vm, _noFocusWindowManager.NoFocusWindowThreadDispatcher, subscriber );
             _skins.Add( keyboard.Name, skinInfo );
 
-            SubscribeToWindowManager( skinInfo );
-
             //Set placement and show window
             InitializeWindowPlacementAndShow( skinInfo );
+
+            SubscribeToWindowManager( skinInfo );
 
             if( HighlighterService.Status == InternalRunningStatus.Started ) RegisterHighlighter( skinInfo );
         }
@@ -578,7 +578,7 @@ namespace SimpleSkin
             skin.Dispatcher.Invoke( (Action)(() =>
             {
                 //temporary 03/03/2014
-                if( _skins.Count == 1 && _miniView.Visibility != Visibility.Hidden )
+                if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
                 {
                     HighlighterService.Service.UnregisterTree( "MinimizeView", _miniViewVm );
                     _miniView.Hide();

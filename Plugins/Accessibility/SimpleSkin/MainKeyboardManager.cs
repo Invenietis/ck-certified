@@ -54,7 +54,7 @@ namespace SimpleSkin
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
         readonly Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginPublicName = "SimpleSkin";
+        const string PluginPublicName = "MainKeyboardManager";
         const string PluginIdVersion = "1.6.0";
 
         public bool IsViewHidden { get { return _viewHidden; } }

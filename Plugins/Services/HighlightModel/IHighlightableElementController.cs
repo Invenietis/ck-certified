@@ -16,7 +16,7 @@ namespace HighlightModel
         ActionType PreviewChildAction(IHighlightableElement element, ActionType action);
 
         /// <summary>
-        /// Inform that a parent has override a <see cref="ActionType"/>
+        /// Inform that a parent has overridden an <see cref="ActionType"/>
         /// </summary>
         /// <param name="action"></param>
         void OnChildAction( ActionType action );

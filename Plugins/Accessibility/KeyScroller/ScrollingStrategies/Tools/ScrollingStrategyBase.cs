@@ -311,8 +311,6 @@ namespace KeyScroller
         {
             if( _lastDirective == null ) _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.NextTick );
 
-            //Console.Out.WriteLine( "BEAT ! Date : " + DateTime.UtcNow.Second );
-
             //Saving the currently highlighted element
             _previousElement = _currentElement;
 

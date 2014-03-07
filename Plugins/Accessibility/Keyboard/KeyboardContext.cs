@@ -78,7 +78,14 @@ namespace CK.Keyboard
         IKeyboard IKeyboardContext.CurrentKeyboard
         {
             get { return _keyboards.Current; }
-            set { _keyboards.Current = (Keyboard)value; }
+            set 
+            {
+                Console.WriteLine( "Current Keyboard : " + _keyboards.Current.Name ); 
+                
+                _keyboards.Current = (Keyboard)value;
+
+                Console.WriteLine( "Current Keyboard : " + _keyboards.Current.Name ); 
+            }
         }
 
         internal Keyboard CurrentKeyboard

@@ -10,7 +10,7 @@ using CK.WordPredictor.UI.ViewModels;
 namespace CK.WordPredictor.UI
 {
 
-    [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" }, Version="1.0" )]
     public class TextualContextArea : IPlugin
     {
         internal const string WindowName = "TextualContextArea";

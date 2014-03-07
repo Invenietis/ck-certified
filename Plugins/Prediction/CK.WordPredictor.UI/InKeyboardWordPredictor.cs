@@ -8,7 +8,7 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version="1.0" )]
     public class InKeyboardWordPredictor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -106,7 +106,10 @@ namespace CK.WordPredictor.UI
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             Feature.PredictionContextFactory.RemovePredictionZone( e.Previous );
-            Feature.PredictionContextFactory.CreatePredictionZone( e.Current, Feature.MaxSuggestedWords );
+            if( e.Current != null )
+            {
+                Feature.PredictionContextFactory.CreatePredictionZone( e.Current, Feature.MaxSuggestedWords );
+            }
         }
 
         void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

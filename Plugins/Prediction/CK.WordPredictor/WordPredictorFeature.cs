@@ -6,7 +6,7 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{4DC42B82-4B29-4896-A548-3086AA9421D7}", PublicName = "WordPredictor Feature", Categories = new string[] { "Advanced", "Prediction" } )]
+    [Plugin( "{4DC42B82-4B29-4896-A548-3086AA9421D7}", PublicName = "WordPredictor Feature", Categories = new string[] { "Advanced", "Prediction" }, Version="1.0")]
     public class WordPredictorFeature : IPlugin, IWordPredictorFeature
     {
         private IKeyboardContextPredictionFactory _predictionContextFactory;

@@ -52,7 +52,7 @@ namespace Help
 
         string GetBaseHelpDirectoryForPlugin( IVersionedUniqueId pluginName, string culture = null )
         {
-            string path = Path.Combine( HelpBaseDirectory, pluginName.UniqueId.ToString( "B" ), pluginName.Version.ToString() );
+            string path = Path.Combine( HelpBaseDirectory, pluginName.UniqueId.ToString( "B" ), pluginName.Version == null ? "" : pluginName.Version.ToString() );
             if( !string.IsNullOrEmpty( culture ) )
             {
                 path = Path.Combine( path, culture );

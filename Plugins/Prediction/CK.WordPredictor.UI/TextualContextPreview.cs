@@ -6,7 +6,7 @@ using CK.WordPredictor.UI.ViewModels;
 namespace CK.WordPredictor.UI
 {
 
-    [Plugin( "{E9D02BE8-B1CA-4057-8E74-2A89C411565C}", PublicName = "TextualContext - Echo", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( "{E9D02BE8-B1CA-4057-8E74-2A89C411565C}", PublicName = "TextualContext - Echo", Categories = new string[] { "Prediction", "Visual" }, Version="1.0" )]
     public class TextualContextPreview : IPlugin
     {
         const string WindowName = "TextualContextPreview";

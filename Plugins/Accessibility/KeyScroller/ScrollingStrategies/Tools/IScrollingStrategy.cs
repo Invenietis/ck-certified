@@ -54,7 +54,8 @@ namespace KeyScroller
         void OnExternalEvent();
 
         /// <summary>
-        /// A JLK Made method
+        /// Warns the strategy that an element has been unregistered.
+        /// Typically used to check whether the current element belongs to the unregistered element's tree, in order to call endhighlight on it.
         /// </summary>
         void ElementUnregistered( IHighlightableElement element );
     }

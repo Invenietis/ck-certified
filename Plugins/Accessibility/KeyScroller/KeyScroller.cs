@@ -152,7 +152,6 @@ namespace KeyScroller
                 if ( foundElement == element )
                 {
                     //Actually removing the module from the registered elements.
-                    //We should figure out whether we are currently scrolling on the element or one of its children in order to have the scrolling come back to the next available element ?
                     _registeredElements.Remove( targetModuleName );
 
                     BrowseTree( element, e =>
@@ -167,6 +166,7 @@ namespace KeyScroller
                         _scrollingStrategy.Stop();
                     }
 
+                    //Warning the strategy that an element has been unregistered
                     _scrollingStrategy.ElementUnregistered( element );
                 }
             }

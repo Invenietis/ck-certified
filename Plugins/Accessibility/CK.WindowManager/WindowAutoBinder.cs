@@ -7,6 +7,7 @@ using CommonServices;
 using System.Timers;
 using System;
 using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace CK.WindowManager
 {
@@ -96,23 +97,23 @@ namespace CK.WindowManager
                 var spatial = WindowBinder.GetBinding( _window );
                 if( spatial.Top != null )
                 {
-                    WindowBinder.PreviewUnbind( _window, spatial.Top.Window );
-                    WindowBinder.Unbind( _window, spatial.Top.Window, false );
+                    WindowBinder.PreviewUnbind( _window, spatial.Top.SpatialBinding.Window );
+                    WindowBinder.Unbind( _window, spatial.Top.SpatialBinding.Window, false );
                 }
                 if( spatial.Left != null )
                 {
-                    WindowBinder.PreviewUnbind( _window, spatial.Left.Window );
-                    WindowBinder.Unbind( _window, spatial.Left.Window, false );
+                    WindowBinder.PreviewUnbind( _window, spatial.Left.SpatialBinding.Window );
+                    WindowBinder.Unbind( _window, spatial.Left.SpatialBinding.Window, false );
                 }
                 if( spatial.Right != null )
                 {
-                    WindowBinder.PreviewUnbind( _window, spatial.Right.Window );
-                    WindowBinder.Unbind( _window, spatial.Right.Window, false );
+                    WindowBinder.PreviewUnbind( _window, spatial.Right.SpatialBinding.Window );
+                    WindowBinder.Unbind( _window, spatial.Right.SpatialBinding.Window, false );
                 }
                 if( spatial.Bottom != null )
                 {
-                    WindowBinder.PreviewUnbind( _window, spatial.Bottom.Window );
-                    WindowBinder.Unbind( _window, spatial.Bottom.Window, false );
+                    WindowBinder.PreviewUnbind( _window, spatial.Bottom.SpatialBinding.Window );
+                    WindowBinder.Unbind( _window, spatial.Bottom.SpatialBinding.Window, false );
                 }
 
                 WindowManager.Move( _window, _window.Top + 20, _window.Left + 20 ).Silent();
@@ -140,7 +141,7 @@ namespace CK.WindowManager
             }
         }
 
-        private Timer _activationTimer;
+        private DispatcherTimer _activationTimer;
 
         //TODO test if the pointer is in the window
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
@@ -150,9 +151,9 @@ namespace CK.WindowManager
             if( _bindResult != null && _activationTimer == null )
             {
                 //Console.WriteLine( "OnPointerButtonUp !" );
-                _activationTimer = new Timer( 50 );
-                _activationTimer.AutoReset = false;
-                _activationTimer.Elapsed += t_Elapsed;
+                _activationTimer = new DispatcherTimer();
+                _activationTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                _activationTimer.Tick += _activationTimer_Tick;
                 _activationTimer.Start();
             }
 
@@ -168,7 +169,7 @@ namespace CK.WindowManager
             }
         }
 
-        void t_Elapsed( object sender, ElapsedEventArgs e )
+        void _activationTimer_Tick( object sender, EventArgs e )
         {
             try
             {
@@ -182,11 +183,9 @@ namespace CK.WindowManager
             {
                 _bindResult = null;
                 _activationTimer.Stop();
-                _activationTimer.Dispose();
                 _activationTimer = null;
             }
         }
-
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
             _tester.Block();

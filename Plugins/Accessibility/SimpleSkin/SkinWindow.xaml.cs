@@ -34,7 +34,8 @@ namespace SimpleSkin
     /// </summary>
     public partial class SkinWindow : CKNoFocusWindow
     {
-        public SkinWindow()
+        public SkinWindow( NoFocusManager noFocusManager )
+            : base( noFocusManager )
         {
             InitializeComponent();
         }

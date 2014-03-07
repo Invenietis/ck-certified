@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Host.Services;
 
 namespace CK.WindowManager.Model
@@ -74,6 +75,8 @@ namespace CK.WindowManager.Model
         void Restore();
 
         void ToggleHostMinimized( IHostManipulator manipulator );
+
+        Window Window { get; }
     }
 
 }

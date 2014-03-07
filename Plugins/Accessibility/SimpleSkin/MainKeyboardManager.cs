@@ -100,9 +100,6 @@ namespace SimpleSkin
             get { return PluginId; }
         }
 
-        CKNoFocusWindowManager _noFocusWindowManager;
-        Dispatcher _skinDispatcher;
-
         #region IPlugin Implementation
 
         public bool Setup( IPluginSetupInfo info )
@@ -114,8 +111,6 @@ namespace SimpleSkin
         {
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                _noFocusWindowManager = new CKNoFocusWindowManager();
-                _skinDispatcher = _noFocusWindowManager.NoFocusWindowThreadDispatcher;
                 //_ctxVm = new VMContextCurrentKeyboardSimple(
                 //    Context,
                 //    KeyboardContext.Service.Keyboards.Context,
@@ -190,15 +185,6 @@ namespace SimpleSkin
 
                 //Config.User.Set( PlacementString, placement );
 
-                if( _miniView != null )
-                {
-                    _skinDispatcher.BeginInvoke( (Action)( () =>
-                    {
-                        _miniView.Close();
-                        _miniView = null;
-                    } ), null );
-                    _viewHidden = false;
-                }
 
                 if( _miniViewVm != null )
                     _miniViewVm.Dispose();
@@ -212,12 +198,6 @@ namespace SimpleSkin
 
         public void Teardown()
         {
-            if( _noFocusWindowManager != null )
-            {
-                //TODO : remove when the NoFocusWindowManager is exported to a service.
-                //Then register the Shutdown call to the ApplicationExiting event.
-                _noFocusWindowManager.Shutdown();
-            }
         }
 
         #region ToolMethods
@@ -319,53 +299,53 @@ namespace SimpleSkin
             //UnInitializeHighlighter();
 
 
-            //Saving the state of the window before doing anything (if the current keyboard is not null)
-            if( e.Current != null && _skinWindow != null )
-            {
-                WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            ////Saving the state of the window before doing anything (if the current keyboard is not null)
+            //if( e.Current != null && _skinWindow != null )
+            //{
+            //    WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
 
-                //Invoke instead of beginInvoke because we need to save this configuration BEFORE the keyboard is changed.
-                _skinDispatcher.Invoke( (Action)( () => placement = CKWindowTools.GetPlacement( _skinWindow.Hwnd ) ), null );
-                Config.User.Set( PlacementString, placement );
-            }
+            //    //Invoke instead of beginInvoke because we need to save this configuration BEFORE the keyboard is changed.
+            //    _skinDispatcher.Invoke( (Action)( () => placement = CKWindowTools.GetPlacement( _skinWindow.Hwnd ) ), null );
+            //    Config.User.Set( PlacementString, placement );
+            //}
 
-            if( e.Next == null )
-            {
-                _skinDispatcher.BeginInvoke( (Action)( () =>
-                {
-                    if( _miniView != null && _miniView.IsVisible )
-                    {
-                        Debug.Assert( !_viewHidden, "The miniview is visible yet _viewHidden is false" );
-                        _miniView.Hide();
-                    }
+            //if( e.Next == null )
+            //{
+            //    _skinDispatcher.BeginInvoke( (Action)( () =>
+            //    {
+            //        if( _miniView != null && _miniView.IsVisible )
+            //        {
+            //            Debug.Assert( !_viewHidden, "The miniview is visible yet _viewHidden is false" );
+            //            _miniView.Hide();
+            //        }
 
-                    if( _skinWindow != null && _skinWindow.IsVisible )
-                    {
-                        _skinWindow.Hide();
-                    }
-                } ), null );
-            }
-            else
-            {
-                //if the previous keyboard was null
-                if( e.Current == null )
-                {
-                    _skinDispatcher.BeginInvoke( (Action)( () =>
-                    {
-                        //if the view was not hidden before setting the keyboard to null
-                        if( _skinWindow != null && !_viewHidden )
-                        {
-                            Debug.Assert( !_skinWindow.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the skin view was already visible" );
-                            _skinWindow.Show();
-                        }
-                        else if( _miniView != null )
-                        {
-                            Debug.Assert( !_miniView.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the miniview was already visible" );
-                            _miniView.Show();
-                        }
-                    } ), null );
-                }
-            }
+            //        if( _skinWindow != null && _skinWindow.IsVisible )
+            //        {
+            //            _skinWindow.Hide();
+            //        }
+            //    } ), null );
+            //}
+            //else
+            //{
+            //    //if the previous keyboard was null
+            //    if( e.Current == null )
+            //    {
+            //        _skinDispatcher.BeginInvoke( (Action)( () =>
+            //        {
+            //            //if the view was not hidden before setting the keyboard to null
+            //            if( _skinWindow != null && !_viewHidden )
+            //            {
+            //                Debug.Assert( !_skinWindow.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the skin view was already visible" );
+            //                _skinWindow.Show();
+            //            }
+            //            else if( _miniView != null )
+            //            {
+            //                Debug.Assert( !_miniView.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the miniview was already visible" );
+            //                _miniView.Show();
+            //            }
+            //        } ), null );
+            //    }
+            //}
         }
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
@@ -377,38 +357,38 @@ namespace SimpleSkin
             //    Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
             //}
 
-            if( e.Current != null ) e.Current.IsActive = true;
+            //if( e.Current != null ) e.Current.IsActive = true;
 
-            if( e.Current != null && _skinWindow != null )
-            {
-                if( Config.User[PlacementString] != null )
-                {
-                    WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];
-                    if( _viewHidden ) placement.showCmd = 0;
-                    else placement.showCmd = 8; //Show without taking focus
+            //if( e.Current != null && _skinWindow != null )
+            //{
+            //    if( Config.User[PlacementString] != null )
+            //    {
+            //        WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];
+            //        if( _viewHidden ) placement.showCmd = 0;
+            //        else placement.showCmd = 8; //Show without taking focus
 
-                    _skinDispatcher.BeginInvoke( (Action)( () => CKWindowTools.SetPlacement( _skinWindow.Hwnd, placement ) ), null );
-                }
-                else
-                {
-                    int w;
-                    int h;
-                    var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
-                    if( viewPortSize != null )
-                    {
-                        Size size = (Size)viewPortSize;
-                        w = (int)size.Width;
-                        h = (int)size.Height;
-                    }
-                    else
-                    {
-                        w = _ctxVm.KeyboardVM.W;
-                        h = _ctxVm.KeyboardVM.H;
-                    }
+            //        _skinDispatcher.BeginInvoke( (Action)( () => CKWindowTools.SetPlacement( _skinWindow.Hwnd, placement ) ), null );
+            //    }
+            //    else
+            //    {
+            //        int w;
+            //        int h;
+            //        var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
+            //        if( viewPortSize != null )
+            //        {
+            //            Size size = (Size)viewPortSize;
+            //            w = (int)size.Width;
+            //            h = (int)size.Height;
+            //        }
+            //        else
+            //        {
+            //            w = _ctxVm.KeyboardVM.W;
+            //            h = _ctxVm.KeyboardVM.H;
+            //        }
 
-                    _skinDispatcher.BeginInvoke( (Action)( () => SetDefaultWindowPosition( w, h ) ), null );
-                }
-            }
+            //        _skinDispatcher.BeginInvoke( (Action)( () => SetDefaultWindowPosition( w, h ) ), null );
+            //    }
+            //}
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -514,22 +494,22 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            if( _viewHidden )
-            {
-                _viewHidden = false;
+            //if( _viewHidden )
+            //{
+            //    _viewHidden = false;
 
-                _skinDispatcher.BeginInvoke( (Action)( () =>
-                {
-                    _miniView.Hide();
-                    _skinWindow.Show();
-                } ), null );
+            //    _skinDispatcher.BeginInvoke( (Action)( () =>
+            //    {
+            //        _miniView.Hide();
+            //        _skinWindow.Show();
+            //    } ), null );
 
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
-                    Highlighter.Service.UnregisterTree( "MinimizeKeyboard", _miniViewVm );
-                }
-            }
+            //    if( Highlighter.Status == InternalRunningStatus.Started )
+            //    {
+            //        Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
+            //        Highlighter.Service.UnregisterTree( "MinimizeKeyboard", _miniViewVm );
+            //    }
+            //}
         }
 
         //void ShowMiniView()

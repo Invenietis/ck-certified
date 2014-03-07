@@ -33,6 +33,15 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
             if( binding != null && binding.AllDescendants().Count() != 0 )
             {
+                if( binding.Left != null )
+                    binding.Left.UndindButton.Move( binding.Left.UndindButton.Top + e.DeltaTop, binding.Left.UndindButton.Left + e.DeltaLeft );
+                if( binding.Right != null )
+                    binding.Right.UndindButton.Move(  binding.Right.UndindButton.Top + e.DeltaTop, binding.Right.UndindButton.Left + e.DeltaLeft );
+                if( binding.Bottom != null )
+                    binding.Bottom.UndindButton.Move(  binding.Bottom.UndindButton.Top + e.DeltaTop, binding.Bottom.UndindButton.Left + e.DeltaLeft );
+                if( binding.Top != null )
+                    binding.Top.UndindButton.Move(  binding.Top.UndindButton.Top + e.DeltaTop, binding.Top.UndindButton.Left + e.DeltaLeft );
+
                 //Console.WriteLine( "MOVE FROM ! {0} {1}*{2}", triggerHolder.Name, triggerHolder.Top, triggerHolder.Left );
                 foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
                 {
@@ -51,14 +60,14 @@ namespace CK.WindowManager
             {
                 if( e.DeltaHeight != 0 )
                 {
-                    ResizeVerticaly( e, binding.Left, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
-                    ResizeVerticaly( e, binding.Right, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
+                    if( binding.Top != null ) ResizeVerticaly( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
+                    if( binding.Top != null ) ResizeVerticaly( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
                     SpecialMoveBottom( e, binding );
                 }
                 if( e.DeltaWidth != 0 )
                 {
-                    ResizeHorizontaly( e, binding.Top, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
-                    ResizeHorizontaly( e, binding.Bottom, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
+                    if( binding.Top != null ) ResizeHorizontaly( e, binding.Top.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
+                    if( binding.Bottom != null ) ResizeHorizontaly( e, binding.Bottom.SpatialBinding, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
                     SpecialMoveRight( e, binding );
                 }
             }

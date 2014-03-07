@@ -18,7 +18,7 @@ namespace SimpleSkin
         partial void OnSuccessfulStart()
         {
             _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
-            _skinDispatcher.BeginInvoke( new Action( () =>
+            NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( new Action( () =>
             {
                 //_subscriber.WindowRegistered = ( e ) =>
                 //{

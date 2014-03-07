@@ -118,7 +118,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CKNoFocusWindowManager.cs" />
     <Compile Include="Editor\EditorViewModel.BackgroundProperties.cs" />
     <Compile Include="Editor\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>

@@ -24,6 +24,9 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IWindowManager> WindowManager { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         public IPluginConfigAccessor Config { get; set; }
 
         IDictionary<IWindowElement, SpatialBinding> _spatialBindings = new Dictionary<IWindowElement, SpatialBinding>();
@@ -256,8 +259,10 @@ namespace CK.WindowManager
                                     DataContext = vm
                                 }, "unbindButton" );
 
-                            button.Window.Owner = spatialBinding.Window.Window;
-                            spatialBinding.Window.Window.Owner = slaveSpatialBinding.Window.Window; 
+                            if( TopMostService.Status == InternalRunningStatus.Started )
+                            {
+                                TopMostService.Service.RegisterTopMostElement( "30", button.Window );
+                            }
 
                             if( position == BindingPosition.Top )
                             {
@@ -349,24 +354,40 @@ namespace CK.WindowManager
 
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.SpatialBinding.Window == other )
                     {
+                        if( TopMostService.Status == InternalRunningStatus.Started )
+                        {
+                            TopMostService.Service.UnregisterTopMostElement( spatialBinding.Bottom.UndindButton.Window );
+                        }
                         spatialBinding.Bottom.UndindButton.Hide();
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.SpatialBinding.Window == other )
                     {
+                        if( TopMostService.Status == InternalRunningStatus.Started )
+                        {
+                            TopMostService.Service.UnregisterTopMostElement( spatialBinding.Left.UndindButton.Window );
+                        }
                         spatialBinding.Left.UndindButton.Hide();
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.SpatialBinding.Window == other )
                     {
+                        if( TopMostService.Status == InternalRunningStatus.Started )
+                        {
+                            TopMostService.Service.UnregisterTopMostElement( spatialBinding.Top.UndindButton.Window );
+                        }
                         spatialBinding.Top.UndindButton.Hide();
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.SpatialBinding.Window == other )
                     {
+                        if( TopMostService.Status == InternalRunningStatus.Started )
+                        {
+                            TopMostService.Service.UnregisterTopMostElement( spatialBinding.Right.UndindButton.Window );
+                        }
                         spatialBinding.Right.UndindButton.Hide();
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );

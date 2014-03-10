@@ -60,8 +60,8 @@ namespace CK.WindowManager
             {
                 if( e.DeltaHeight != 0 )
                 {
-                    if( binding.Top != null ) ResizeVerticaly( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
-                    if( binding.Top != null ) ResizeVerticaly( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
+                    if( binding.Left != null ) ResizeVerticaly( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
+                    if( binding.Right != null ) ResizeVerticaly( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
                     SpecialMoveBottom( e, binding );
                 }
                 if( e.DeltaWidth != 0 )

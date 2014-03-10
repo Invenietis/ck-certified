@@ -50,6 +50,9 @@ namespace SimpleSkin
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowBinder> WindowBinder { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         [RequiredService]
         public INotificationService Notification { get; set; }
 
@@ -129,8 +132,9 @@ namespace SimpleSkin
 
                         //Set placement and show window
                         InitializeWindowPlacementAndShow( skinInfo );
-                        
+
                         SubscribeToWindowManager( skinInfo );
+                        RegisterToTopMostService( skinInfo );
                     }
                 }
                 else
@@ -250,6 +254,28 @@ namespace SimpleSkin
             {
                 skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
             } ) );
+        }
+
+        void RegisterToTopMostService( SkinInfo skinInfo )
+        {
+            if( TopMostService.Status == InternalRunningStatus.Started )
+            {
+                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    TopMostService.Service.RegisterTopMostElement( "10", skinInfo.Skin );
+                } ) );
+            }
+        }
+
+        void UnregisterToTopMostService( SkinInfo skinInfo )
+        {
+            if( TopMostService.Status == InternalRunningStatus.Started )
+            {
+                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
+                } ) );
+            }
         }
 
         string PlacementString( SkinInfo skinInfo )
@@ -553,6 +579,7 @@ namespace SimpleSkin
             InitializeWindowPlacementAndShow( skinInfo );
 
             SubscribeToWindowManager( skinInfo );
+            RegisterToTopMostService( skinInfo );
 
             if( HighlighterService.Status == InternalRunningStatus.Started ) RegisterHighlighter( skinInfo );
         }

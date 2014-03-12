@@ -123,6 +123,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Wizard\ExportKeyboard.cs" />
     <Compile Include="KeyboardEdition\Components\TemplateSelectors\AddActionDataTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\HasOrderToBooleanConverter.cs" />
@@ -184,18 +185,23 @@
     <Compile Include="Wizard\BackupFeature\IKeyboardBackupAware.cs" />
     <Compile Include="Wizard\BackupFeature\KeyboardBackup.cs" />
     <Compile Include="Wizard\CustomWindowManager.cs" />
+    <Compile Include="Wizard\ImportKeyboard.cs" />
     <Compile Include="Wizard\KeyboardEditorBootstrapper.cs" />
     <Compile Include="Wizard\IKeyboardEditorRoot.cs" />
     <Compile Include="Wizard\KeyboardEditor.cs" />
     <Compile Include="Wizard\ViewModels\AppViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ContextListViewModel.cs" />
     <Compile Include="Wizard\ViewModels\DeletionKeyboardListViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\CheckBoxExportKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\CheckBoxImportKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\ContextViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\KeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\SimpleKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\WizardButtonViewModel.cs" />
     <Compile Include="Wizard\ViewModels\EndingStepViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ExportKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\HomeViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ImportKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\KeyboardEditionViewModel.cs" />
     <Compile Include="Wizard\ViewModels\KeyboardListViewModel.cs" />
     <Compile Include="Wizard\ViewModels\KeyboardProfileViewModel.cs" />
@@ -214,8 +220,14 @@
     <Compile Include="Wizard\Views\EndingStepView.xaml.cs">
       <DependentUpon>EndingStepView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wizard\Views\ExportKeyboardView.xaml.cs">
+      <DependentUpon>ExportKeyboardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wizard\Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\ImportKeyboardView.xaml.cs">
+      <DependentUpon>ImportKeyboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wizard\Views\KeyboardEditionView.xaml.cs">
       <DependentUpon>KeyboardEditionView.xaml</DependentUpon>
@@ -279,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Wizard\Views\ExportKeyboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Wizard\Views\Images.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -294,6 +310,10 @@
     <Page Include="Wizard\Views\HomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\ImportKeyboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Wizard\Views\KeyboardEditionView.xaml">
       <Generator>MSBuild:Compile</Generator>

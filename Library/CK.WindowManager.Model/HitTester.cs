@@ -36,14 +36,24 @@ namespace CK.WindowManager.Model
             if( _lock == true ) throw new ApplicationException( "You must check the state before perform a hit test" );
 
             Rect rect = setToChallenge[binding.Window];
-            Rect enlargedArea = Rect.Inflate( rect, radius, radius );
+            Rect enlargedAreaTopBottom = Rect.Inflate( rect, 0, radius );
+            Rect enlargedAreaRightLeft = Rect.Inflate( rect, radius, 0 );
 
             IWindowElement matchedWindow = null;
-            Rect intersectArea = GetIntersectionArea( binding, setToChallenge,  rect, ref enlargedArea, out matchedWindow );
+
+            Rect intersectArea = GetIntersectionArea( binding, setToChallenge, rect, ref enlargedAreaRightLeft, out matchedWindow );
             if( intersectArea != Rect.Empty )
             {
                 Debug.Assert( matchedWindow != null );
-                _lastResult = new HitTestResult( matchedWindow, binding.Window, enlargedArea, intersectArea );
+                _lastResult = new HitTestResult( matchedWindow, binding.Window, enlargedAreaRightLeft, intersectArea );
+                return _lastResult;
+            }
+
+            intersectArea = GetIntersectionArea( binding, setToChallenge,  rect, ref enlargedAreaTopBottom, out matchedWindow );
+            if( intersectArea != Rect.Empty )
+            {
+                Debug.Assert( matchedWindow != null );
+                _lastResult = new HitTestResult( matchedWindow, binding.Window, enlargedAreaTopBottom, intersectArea );
                 return _lastResult;
             }
             return null;
@@ -53,6 +63,7 @@ namespace CK.WindowManager.Model
         {
             ICollection<IWindowElement> boundWindows = binding.AllDescendants().Select( x => x.Window ).ToArray();
             otherWindow = null;
+            Rect rectWindow = setToChallenge[binding.Window];
             foreach( var item in setToChallenge )
             {
                 otherWindow = item.Key;
@@ -60,7 +71,7 @@ namespace CK.WindowManager.Model
                 if( otherWindow != binding.Window && !boundWindows.Contains( otherWindow ) )
                 {
                     rect = setToChallenge[otherWindow];
-                    if( rect.IntersectsWith( enlargedRectangle ) ) return Rect.Intersect( enlargedRectangle, rect );
+                    if( !rectWindow.IntersectsWith( rect ) && rect.IntersectsWith( enlargedRectangle ) ) return Rect.Intersect( enlargedRectangle, rect );
                 }
             }
             return Rect.Empty;

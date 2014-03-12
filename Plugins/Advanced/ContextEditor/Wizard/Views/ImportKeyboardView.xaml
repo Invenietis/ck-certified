@@ -14,18 +14,17 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    
-    <Grid>
-        <StackPanel>
-            <ItemsControl ItemsSource="{Binding CheckBoxs}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"></StackPanel>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </StackPanel>
-        <!--<TextBox Text="{Binding FilePath}"></TextBox>-->
+
+    <StackPanel>
+        <ItemsControl ItemsSource="{Binding CheckBoxs}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
         <Button Command="{Binding OpenCommand}" Content="Browse" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88"></Button>
-    </Grid>
+        <Button Command="{Binding ImportCommand}" Content="Import" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Width="88"></Button>
+        <TextBox Text="{Binding FilePath}"></TextBox>
+    </StackPanel>
 </Window>

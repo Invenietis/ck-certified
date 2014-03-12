@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -8,25 +9,33 @@ using CK.WPF.ViewModel;
 
 namespace KeyboardEditor.Wizard.ViewModels
 {
-    public class ImportKeyboardViewModel
+    public class ImportKeyboardViewModel : VMBase
     {
         string _filePath;
         ImportKeyboard _owner;
         IKeyboardCollection _keyboards;
-        List<CheckBoxImportKeyboardViewModel> _checkBoxs;
+        ObservableCollection<CheckBoxImportKeyboardViewModel> _checkBoxs;
 
         public ImportKeyboardViewModel( ImportKeyboard owner, IKeyboardCollection keyboards )
         {
-            _checkBoxs = new List<CheckBoxImportKeyboardViewModel>();
+            _checkBoxs = new ObservableCollection<CheckBoxImportKeyboardViewModel>();
             _owner = owner;
             _keyboards = keyboards;
             OpenCommand = new VMCommand( ShowOpenFileWindow );
+            ImportCommand = new VMCommand( Importkeyboards );
         }
 
         public string FilePath
         {
             get { return _filePath; }
-            set { if( value != _filePath ) _filePath = value; }
+            set 
+            { 
+                if( value != _filePath )
+                {
+                    _filePath = value;
+                    OnPropertyChanged();
+                } 
+            }
         }
 
         public ICommand OpenCommand
@@ -35,7 +44,13 @@ namespace KeyboardEditor.Wizard.ViewModels
             internal set;
         }
 
-        public List<CheckBoxImportKeyboardViewModel> CheckBoxs
+        public ICommand ImportCommand
+        {
+            get;
+            internal set;
+        }
+
+        public ObservableCollection<CheckBoxImportKeyboardViewModel> CheckBoxs
         {
             get { return _checkBoxs; }
         }
@@ -56,7 +71,7 @@ namespace KeyboardEditor.Wizard.ViewModels
             if( result == true )
             {
                 // Open document
-                _filePath = dlg.FileName;
+                FilePath = dlg.FileName;
                 CheckAlreadyExistKeyboards();
             }
         }
@@ -73,8 +88,29 @@ namespace KeyboardEditor.Wizard.ViewModels
         {
             foreach( var k in keyboardNames )
             {
-                _checkBoxs.Add( new CheckBoxImportKeyboardViewModel( k, _keyboards.Contains( k ) ) );
+                CheckBoxs.Add( new CheckBoxImportKeyboardViewModel( k, _keyboards.FirstOrDefault( kb => kb.Name == k ) != null ) );
             }
+        }
+
+        void Importkeyboards()
+        {
+            string whiteList = GenerateWhiteList();
+            //if empty dialog box
+            _owner.ImportKeyboards( _filePath, GenerateWhiteList() );
+        }
+
+        string GenerateWhiteList()
+        {
+            string whiteList = string.Empty;
+            foreach( var cb in _checkBoxs )
+            {
+                if( cb.IsSelected )
+                {
+                    if( string.IsNullOrEmpty( whiteList ) ) whiteList += cb.KeyboardName;
+                    else whiteList += "|" + cb.KeyboardName;
+                }
+            }
+            return whiteList;
         }
     }
 }

@@ -69,21 +69,21 @@ namespace KeyboardEditor.Wizard
                 using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                 {
                     XmlReader r = reader.Xml;
-                    r.Read();
-                    r.Read();
+                    //r.Read();
                     while( r.IsStartElement( "Keyboard" ) )
                     {
                         keyboardNames.Add( r.GetAttribute( "Name" ) );
+                        r.ReadToNextSibling( "Keyboard" );
                     }
                 }
             }
             return keyboardNames;
         }
 
-        void ImportKeyboards( string filePath, string blackListFilter )
+        public void ImportKeyboards( string filePath, string whiteListFilter = "")
         {
             Debug.Assert( filePath != null );
-            HashSet<string> filter = new HashSet<string>(blackListFilter.Split('|'));
+            HashSet<string> filter = new HashSet<string>( whiteListFilter.Split( '|' ) );
 
             if( !String.IsNullOrWhiteSpace( filePath ) )
             {
@@ -92,15 +92,15 @@ namespace KeyboardEditor.Wizard
                     using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
                         XmlReader r = reader.Xml;
-                        r.Read();
                         while( r.IsStartElement( "Keyboard" ) )
                         {
                             string n = r.GetAttribute( "Name" );
-                            if( !filter.Contains( n ) )
+                            if( string.IsNullOrWhiteSpace( whiteListFilter ) || filter.Contains( n ) )
                             {
                                 IKeyboard kb = KeyboardContext.Service.Keyboards.Create( n );
                                 reader.ReadInlineObjectStructured( kb );
                             }
+                            r.ReadToNextSibling( "Keyboard" );
                         }
                     }
                 }

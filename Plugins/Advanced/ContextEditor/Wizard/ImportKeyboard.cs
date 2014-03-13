@@ -34,7 +34,6 @@ namespace KeyboardEditor.Wizard
         public IContext Context { get; set; }
 
         ISharedDictionary _sharedDictionary;
-        private ISharedDictionary SharedDictionary { get { return _sharedDictionary ?? (_sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>()); } }
 
         ImportKeyboardViewModel _vm;
         ImportKeyboardView _view;
@@ -49,6 +48,8 @@ namespace KeyboardEditor.Wizard
 
         public void Start()
         {
+            _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>();
+
             _vm = new ImportKeyboardViewModel( this, KeyboardContext.Service.Keyboards );
             _view = new ImportKeyboardView()
             {
@@ -132,12 +133,19 @@ namespace KeyboardEditor.Wizard
                             string n = r.GetAttribute( "Name" );
                             if( string.IsNullOrWhiteSpace( whiteListFilter ) || filter.Contains( n ) )
                             {
-                                if( KeyboardContext.Service.Keyboards.FirstOrDefault( kb => kb.Name == n ) != null)
+                                if( KeyboardContext.Service.Keyboards.FirstOrDefault( kb => kb.Name == n ) != null )
                                 {
                                     KeyboardContext.Service.Keyboards[n].Destroy();
                                 }
-                                IKeyboard keyboard = KeyboardContext.Service.Keyboards.Create( n );
-                                reader.ReadInlineObjectStructured( keyboard );
+                                //IKeyboard keyboard = KeyboardContext.Service.Keyboards.Create( n );
+                                //reader.ReadInlineObjectStructured( keyboard );
+
+                                IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( n );
+                                if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+
+                                _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
+                                //Erasing all properties of the keyboard. We re-apply the backedup ones.
+                                serializableKeyboard.ReadContent( reader );
                             }
                             r.ReadToNextSibling( "Keyboard" );
                         }

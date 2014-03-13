@@ -76,6 +76,8 @@ namespace KeyboardEditor
             //_interopHelper = new WindowInteropHelper( _mainWindow );
             //RegisterHotKeys();
 
+            _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>();
+
             _mainWindow.Closing += OnWindowClosing;
         }
 
@@ -178,7 +180,6 @@ namespace KeyboardEditor
         public KeyboardBackup KeyboardBackup { get; set; }
 
         ISharedDictionary _sharedDictionary;
-        private ISharedDictionary SharedDictionary { get { return _sharedDictionary ?? ( _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>() ); } }
 
         /// <summary>
         /// Backs up a keyboard.
@@ -198,7 +199,7 @@ namespace KeyboardEditor
                 {
                     using( IStructuredWriter writer = SimpleStructuredWriter.CreateWriter( str, Context.ServiceContainer ) )
                     {
-                        SharedDictionary.RegisterWriter( writer );
+                        _sharedDictionary.RegisterWriter( writer );
                         writer.Xml.WriteStartElement( "Keyboard" );
                         serializableModel.WriteContent( writer );
                         writer.Xml.WriteEndElement();

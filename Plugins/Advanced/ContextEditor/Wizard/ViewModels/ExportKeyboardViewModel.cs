@@ -8,20 +8,36 @@ using CK.WPF.ViewModel;
 
 namespace KeyboardEditor.Wizard.ViewModels
 {
-    public class ExportKeyboardViewModel
+    public class ExportKeyboardViewModel : VMBase
     {
-        IKeyboardCollection _keyboards;
+        readonly IKeyboardCollection _keyboards;
+        readonly ExportKeyboard _owner;
+
         List<CheckBoxExportKeyboardViewModel> _checkBoxs;
         string _fileName;
-        ExportKeyboard _owner;
+        bool _canExecute;
 
         public ExportKeyboardViewModel( ExportKeyboard owner, IKeyboardCollection keyboards )
         {
             _checkBoxs = new List<CheckBoxExportKeyboardViewModel>();
             _owner = owner;
             _keyboards = keyboards;
+            _canExecute = true;
             CreateCheckBox();
-            SaveCommand = new VMCommand( ShowSaveWindow );
+            SaveCommand = new VMCommand( ShowSaveWindow, o => CanExecute );
+        }
+
+        public bool CanExecute
+        {
+            get { return _canExecute; }
+            set
+            {
+                if( value != _canExecute )
+                {
+                    _canExecute = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public List<CheckBoxExportKeyboardViewModel> CheckBoxs
@@ -46,9 +62,9 @@ namespace KeyboardEditor.Wizard.ViewModels
         void ShowSaveWindow()
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Keyboard"; // Default file name
-            dlg.DefaultExt = ".kbd"; // Default file extension
-            dlg.Filter = "CiviKey keyboard (.kbd)|*.kbd"; // Filter files by extension
+            dlg.FileName = "Keyboards"; // Default file name
+            dlg.DefaultExt = ".xml"; // Default file extension
+            dlg.Filter = "CiviKey keyboard (.xml)|*.xml"; // Filter files by extension
 
             // Show save file dialog box
             Nullable<bool> result = dlg.ShowDialog();
@@ -62,6 +78,8 @@ namespace KeyboardEditor.Wizard.ViewModels
 
         void SaveInXml( string fileName )
         {
+            CanExecute = false;
+
             List<IKeyboard> keyboardsToSerialize = new List<IKeyboard>();
             // Save document
             foreach( var cb in _checkBoxs )
@@ -72,6 +90,8 @@ namespace KeyboardEditor.Wizard.ViewModels
                 }
             }
             _owner.ExportKeyboards( fileName, keyboardsToSerialize );
+
+            CanExecute = true;
         }
     }
 }

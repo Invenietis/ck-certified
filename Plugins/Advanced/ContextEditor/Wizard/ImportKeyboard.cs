@@ -97,8 +97,12 @@ namespace KeyboardEditor.Wizard
                             string n = r.GetAttribute( "Name" );
                             if( string.IsNullOrWhiteSpace( whiteListFilter ) || filter.Contains( n ) )
                             {
-                                IKeyboard kb = KeyboardContext.Service.Keyboards.Create( n );
-                                reader.ReadInlineObjectStructured( kb );
+                                if( KeyboardContext.Service.Keyboards.FirstOrDefault( kb => kb.Name == n ) != null)
+                                {
+                                    KeyboardContext.Service.Keyboards[n].Destroy();
+                                }
+                                IKeyboard keyboard = KeyboardContext.Service.Keyboards.Create( n );
+                                reader.ReadInlineObjectStructured( keyboard );
                             }
                             r.ReadToNextSibling( "Keyboard" );
                         }

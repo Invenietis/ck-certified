@@ -357,7 +357,7 @@ namespace SimpleSkin
             //    Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
             //}
 
-            //if( e.Current != null ) e.Current.IsActive = true;
+            if( e.Current != null ) e.Current.IsActive = true;
 
             //if( e.Current != null && _skinWindow != null )
             //{

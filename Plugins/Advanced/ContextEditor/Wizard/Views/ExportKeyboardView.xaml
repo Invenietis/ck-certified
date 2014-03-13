@@ -4,25 +4,91 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:KeyboardEditor.Wizard.ViewModels"
+             xmlns:core="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Width="250" Height="300">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:CheckBoxExportKeyboardViewModel}">
-            <StackPanel>
-                <CheckBox IsChecked="{Binding IsSelected}"/>
-                <TextBlock Text="{Binding Keyboard.Name}" Margin="2 0 0 0"/>
-            </StackPanel>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
+            <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
+            <SolidColorBrush Color="#4f4f4f" x:Key="GrayColor"/>
+            <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
+            <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
+            <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
+            <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{StaticResource DefaultColor}" />
+                <Setter Property="Foreground" Value="#FFFFFF" />
+                <Setter Property="HorizontalAlignment" Value="Right"  />
+                <Setter Property="Margin" Value="10 0 10 0" />
+                <Setter Property="BorderBrush" Value="#295884" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="12 6 12 6" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#FFF"></Setter>
+                        <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="BorderBrush" Value="Gray"></Setter>
+                        <Setter Property="Background" Value="#81b9ee"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <DataTemplate DataType="{x:Type vm:CheckBoxExportKeyboardViewModel}">
+                <Button Margin="3 3 3 0" Command="{Binding CheckCommand}" Style="{StaticResource CK.Config.Link}">
+                    <DockPanel>
+                        <CheckBox DockPanel.Dock="Right" IsChecked="{Binding IsSelected}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Keyboard.Name}" Margin="2 0 0 0"/>
+                    </DockPanel>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel>
-        <ItemsControl ItemsSource="{Binding CheckBoxs}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"></StackPanel>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
-        <Button Command="{Binding SaveCommand}" Content="Save"></Button>
-    </StackPanel>
+    <Grid>
+        <Grid.Resources>
+            <core:BooleanToVisibilityConverter x:Key="converter"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="1. Selectionner les claviers à exporter"></TextBlock>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding CheckBoxs}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical">
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+        <DockPanel Grid.Row="2">
+            <TextBlock DockPanel.Dock="Top" Text="2. Sauvegarder les claviers dans un fichier"></TextBlock>
+            <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Width="60" Command="{Binding SaveCommand}" Content="Save"></Button>
+            <ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>
+        </DockPanel>
+    </Grid>
 </Window>

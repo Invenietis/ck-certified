@@ -35,6 +35,7 @@ namespace KeyboardEditor
 
         ExportKeyboardViewModel _vm;
         ExportKeyboardView _view;
+        bool _isClosing;
 
         #region IPlugin Members
 
@@ -50,12 +51,40 @@ namespace KeyboardEditor
             {
                 DataContext = _vm
             };
+
+            _view.Closing += OnClosing;
+
             _view.Show();
+        }
+
+        void OnClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            if( !_isClosing )
+            {
+                _isClosing = true;
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginIdString ), ConfigUserAction.Stopped );
+                Context.PluginRunner.Apply();
+                return;
+            }
+            else
+            {
+                _isClosing = false;
+                _vm = null;
+            }
         }
 
         public void Stop()
         {
-            _view.Hide();
+            if( !_isClosing )
+            {
+                _isClosing = true;
+                _view.Close();
+            }
+            else
+            {
+                _isClosing = false;
+                _vm = null;
+            }
         }
 
         public void Teardown()

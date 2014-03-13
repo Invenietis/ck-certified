@@ -6,7 +6,7 @@
              xmlns:vm="clr-namespace:KeyboardEditor.Wizard.ViewModels"
              xmlns:core="clr-namespace:CK.Windows;assembly=CK.Windows.Core" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Width="250" Height="300">
+             d:DesignHeight="300" d:DesignWidth="300" Width="450" Height="550" Padding="5 5 5 5" Title="Importer des claviers">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,6 +20,19 @@
             <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
             <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
             <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
+            
+            <Style x:Key="description" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 0 5 0"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+
+            <Style x:Key="step" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 12 5 0"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
 
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource DefaultColor}" />
@@ -70,17 +83,21 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="18"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="53"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
-            <TextBlock DockPanel.Dock="Top" Text="1. Selectionner un fichier"></TextBlock>
+            <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Selectionner un fichier"/>
+            <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
             <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
             <TextBox ToolTip="{Binding FilePath}" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
         </DockPanel>
-        <TextBlock Grid.Row="1" Text="2. Selectionner les claviers à importer"></TextBlock>
+        <StackPanel Grid.Row="1">
+            <TextBlock Style="{StaticResource step}" Text="2. Selectionner les claviers à importer"/>
+            <TextBlock Style="{StaticResource description}" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+        </StackPanel>
         <ScrollViewer  Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding CheckBoxs}">
                 <ItemsControl.ItemsPanel>
@@ -92,7 +109,8 @@
             </ItemsControl>
         </ScrollViewer>
         <DockPanel Grid.Row="3">
-            <TextBlock DockPanel.Dock="Top" Text="3. Importer les claviers"></TextBlock>
+            <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Importer les claviers"/>
+            <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
             <Button IsEnabled="{Binding CanExecuteImport}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
             <ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>
         </DockPanel>

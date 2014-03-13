@@ -17,9 +17,15 @@ using KeyboardEditor.Wizard.Views;
 
 namespace KeyboardEditor.Wizard
 {
-    [Plugin( "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}", PublicName = "Keyboard import", Version = "1.0.0" )]
+    [Plugin( ImportKeyboard.PluginGuidString, PublicName = ImportKeyboard.PluginPublicName, Version = ImportKeyboard.PluginIdVersion )]
     public class ImportKeyboard : IPlugin
     {
+
+        const string PluginGuidString = "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}";
+        Guid PluginGuid = new Guid( PluginGuidString );
+        const string PluginIdVersion = "1.0.0";
+        const string PluginPublicName = "Keyboard import";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -32,6 +38,7 @@ namespace KeyboardEditor.Wizard
 
         ImportKeyboardViewModel _vm;
         ImportKeyboardView _view;
+        bool _isClosing;
 
         #region IPlugin Members
 
@@ -47,12 +54,40 @@ namespace KeyboardEditor.Wizard
             {
                 DataContext = _vm
             };
+
+            _view.Closing += OnClosing;
+
             _view.Show();
+        }
+
+        void OnClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            if( !_isClosing )
+            {
+                _isClosing = true;
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginGuidString ), ConfigUserAction.Stopped );
+                Context.PluginRunner.Apply();
+                return;
+            }
+            else
+            {
+                _isClosing = false;
+                _vm = null;
+            }
         }
 
         public void Stop()
         {
-            _view.Hide();
+            if( !_isClosing )
+            {
+                _isClosing = true;
+                _view.Close();
+            }
+            else
+            {
+                _isClosing = false;
+                _vm = null;
+            }
         }
 
         public void Teardown()

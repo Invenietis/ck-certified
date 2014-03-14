@@ -69,6 +69,9 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowBinder> WindowBinder { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         public IPluginConfigAccessor Config { get; set; }
 
         private MouseDecoratorWindow _mouseIndicatorWindow;
@@ -163,6 +166,7 @@ namespace CK.Plugins.AutoClick
             }
 
             WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+            TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
             WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
 
             OnPause( this, EventArgs.Empty );

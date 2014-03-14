@@ -50,6 +50,9 @@ namespace SimpleSkin
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowBinder> WindowBinder { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         [RequiredService]
         public INotificationService Notification { get; set; }
 
@@ -92,7 +95,6 @@ namespace SimpleSkin
 
         #region IPlugin Members
 
-        CKNoFocusWindowManager _noFocusWindowManager;
         IDictionary<string, SkinInfo> _skins;
         IDictionary<string, RegisteredElementInfo> _registeredElementInfo;
 
@@ -113,26 +115,26 @@ namespace SimpleSkin
         {
             if ( KeyboardContext.Status == InternalRunningStatus.Started )
             {
-                _noFocusWindowManager = new CKNoFocusWindowManager();
                 if ( KeyboardContext.Service.Keyboards.Actives.Count > 0 )
                 {
                     foreach ( var activeKeyboard in KeyboardContext.Service.Keyboards.Actives )
                     {
                         var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
-                        var vm = new VMContextActiveKeyboard( activeKeyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, _noFocusWindowManager.NoFocusWindowThreadDispatcher );
+                        var vm = new VMContextActiveKeyboard( activeKeyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, NoFocusManager.Default.NoFocusDispatcher );
 
-                        var skin = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( () => new SkinWindow
+                        var skin = NoFocusManager.Default.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
                         {
                             DataContext = vm
                         } );
 
-                        SkinInfo skinInfo = new SkinInfo( skin, vm, _noFocusWindowManager.NoFocusWindowThreadDispatcher, subscriber );
+                        SkinInfo skinInfo = new SkinInfo( skin, vm, NoFocusManager.Default.NoFocusDispatcher, subscriber );
                         _skins.Add( activeKeyboard.Name, skinInfo );
 
                         //Set placement and show window
                         InitializeWindowPlacementAndShow( skinInfo );
 
                         SubscribeToWindowManager( skinInfo );
+                        RegisterToTopMostService( skinInfo );
                     }
                 }
                 else
@@ -214,12 +216,6 @@ namespace SimpleSkin
 
         public void Teardown()
         {
-            if ( _noFocusWindowManager != null )
-            {
-                //TODO : remove when the NoFocusWindowManager is exported to a service.
-                //Then register the Shutdown call to the ApplicationExiting event.
-                _noFocusWindowManager.Shutdown();
-            }
         }
 
         //partial void OnSuccessfulStart()
@@ -258,6 +254,28 @@ namespace SimpleSkin
             {
                 skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
             } ) );
+        }
+
+        void RegisterToTopMostService( SkinInfo skinInfo )
+        {
+            if( TopMostService.Status == InternalRunningStatus.Started )
+            {
+                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    TopMostService.Service.RegisterTopMostElement( "10", skinInfo.Skin );
+                } ) );
+            }
+        }
+
+        void UnregisterToTopMostService( SkinInfo skinInfo )
+        {
+            if( TopMostService.Status == InternalRunningStatus.Started )
+            {
+                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
+                } ) );
+            }
         }
 
         string PlacementString( SkinInfo skinInfo )
@@ -547,20 +565,21 @@ namespace SimpleSkin
         void InitializeActiveWindows( IKeyboard keyboard )
         {
             var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
-            var vm = new VMContextActiveKeyboard( keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, _noFocusWindowManager.NoFocusWindowThreadDispatcher );
+            var vm = new VMContextActiveKeyboard( keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, NoFocusManager.Default.NoFocusDispatcher );
 
-            var skin = _noFocusWindowManager.CreateNoFocusWindow<SkinWindow>( () => new SkinWindow
+            var skin = NoFocusManager.Default.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
             {
                 DataContext = vm
             } );
 
-            SkinInfo skinInfo = new SkinInfo( skin, vm, _noFocusWindowManager.NoFocusWindowThreadDispatcher, subscriber );
+            SkinInfo skinInfo = new SkinInfo( skin, vm, NoFocusManager.Default.NoFocusDispatcher, subscriber );
             _skins.Add( keyboard.Name, skinInfo );
 
             //Set placement and show window
             InitializeWindowPlacementAndShow( skinInfo );
 
             SubscribeToWindowManager( skinInfo );
+            RegisterToTopMostService( skinInfo );
 
             if ( HighlighterService.Status == InternalRunningStatus.Started ) RegisterHighlighter( skinInfo );
         }

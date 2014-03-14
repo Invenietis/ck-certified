@@ -54,6 +54,9 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowBinder> WindowBinder { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         private ClickSelectorWindow _clickSelectorWindow;
 
@@ -103,6 +106,7 @@ namespace CK.Plugins.AutoClick
             CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
 
             WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
+            TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )

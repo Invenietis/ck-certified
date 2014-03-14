@@ -99,7 +99,7 @@ namespace CK.WindowManager.Model
 
         protected void UnregisterWindowManager()
         {
-            if( _window != null && _window != null )
+            if( _window != null )
             {
                 WindowManager.Service.UnregisterWindow( _name );
 

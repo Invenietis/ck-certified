@@ -133,7 +133,6 @@
     <Compile Include="KeyboardDisplayer.cs" />
     <Compile Include="MainKeyboardManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleSkin.IWindowElement.cs" />
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
     </Compile>

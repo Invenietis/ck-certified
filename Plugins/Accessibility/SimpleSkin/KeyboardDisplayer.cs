@@ -75,6 +75,8 @@ namespace SimpleSkin
             public readonly Dispatcher Dispatcher;
 
             public string NameKeyboard { get { return ViewModel.KeyboardVM.Keyboard.Name; } }
+
+            public bool IsClosing;
         }
 
         class RegisteredElementInfo
@@ -151,6 +153,8 @@ namespace SimpleSkin
 
                 RegisterEvents();
                 InitializeHighligther();
+                //temporary
+                UnregisterPrediction();
                 RegisterPrediction();
             }
         }
@@ -218,34 +222,6 @@ namespace SimpleSkin
         {
         }
 
-        //partial void OnSuccessfulStart()
-        //{
-        //    _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
-        //    _skinDispatcher.BeginInvoke( new Action( () =>
-        //    {
-        //        _subscriber.WindowRegistered = ( e ) =>
-        //        {
-        //            e.Window.Hidden += OnWindowHidden;
-        //        };
-        //        _subscriber.WindowUnregistered = ( e ) =>
-        //        {
-        //            e.Window.Hidden -= OnWindowHidden;
-        //        };
-        //        _subscriber.Subscribe( "Skin", _skinWindow );
-        //        _skinWindow.HidingAsked += OnWindowHidden;
-
-        //    } ) );
-        //}
-
-        //partial void OnSuccessfulStop()
-        //{
-        //    _skinDispatcher.BeginInvoke( new Action( () =>
-        //    {
-        //        _skinWindow.HidingAsked -= OnWindowHidden;
-        //    } ) );
-        //    _subscriber.Unsubscribe();
-        //}
-
         #endregion
 
         void SubscribeToWindowManager( SkinInfo skinInfo )
@@ -255,6 +231,8 @@ namespace SimpleSkin
                 skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
             } ) );
         }
+
+        #region TopMostService
 
         void RegisterToTopMostService( SkinInfo skinInfo )
         {
@@ -277,6 +255,8 @@ namespace SimpleSkin
                 } ) );
             }
         }
+
+        #endregion TopMostService
 
         string PlacementString( SkinInfo skinInfo )
         {
@@ -461,7 +441,7 @@ namespace SimpleSkin
         private void RegisterEvents()
         {
             KeyboardContext.Service.Keyboards.KeyboardActivated += OnKeyboardActivated;
-            KeyboardContext.Service.Keyboards.KeyboardDeactivated += Keyboards_KeyboardDeactivated;
+            KeyboardContext.Service.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;
             KeyboardContext.Service.Keyboards.KeyboardDestroyed += OnKeyboardDestroyed;
             KeyboardContext.Service.Keyboards.KeyboardCreated += OnKeyboardCreated;
             KeyboardContext.Service.Keyboards.KeyboardRenamed += OnKeyboardRenamed;
@@ -479,15 +459,15 @@ namespace SimpleSkin
         private void RegisterSkinEvents( SkinInfo skinInfo )
         {
             //temporary 03/03/2014
-            skinInfo.Skin.HidingAsked += skin_HidingAsked;
+            skinInfo.Skin.HidingAsked += OnHidingAsked;
 
-            //skinInfo.Skin.Closing += new CancelEventHandler( OnWindowClosing );
+            skinInfo.Skin.Closing += new CancelEventHandler( OnWindowClosing );
         }
 
         private void UnregisterEvents()
         {
             KeyboardContext.Service.Keyboards.KeyboardActivated -= OnKeyboardActivated;
-            KeyboardContext.Service.Keyboards.KeyboardDeactivated -= Keyboards_KeyboardDeactivated;
+            KeyboardContext.Service.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
             KeyboardContext.Service.Keyboards.KeyboardDestroyed -= OnKeyboardDestroyed;
             KeyboardContext.Service.Keyboards.KeyboardCreated -= OnKeyboardCreated;
             KeyboardContext.Service.Keyboards.KeyboardRenamed -= OnKeyboardRenamed;
@@ -501,17 +481,18 @@ namespace SimpleSkin
         private void UnregisterSkinEvents( SkinInfo skinInfo )
         {
             //temporary 03/03/2014
-            skinInfo.Skin.HidingAsked -= skin_HidingAsked;
+            skinInfo.Skin.HidingAsked -= OnHidingAsked;
 
-            //skinInfo.Skin.Closing -= new CancelEventHandler( OnWindowClosing );
+            skinInfo.Skin.Closing -= new CancelEventHandler( OnWindowClosing );
         }
 
-        void Keyboards_KeyboardDeactivated( object sender, KeyboardEventArgs e )
+        void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
         {
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
             SkinInfo skin = _skins[e.Keyboard.Name];
             UninitializeActiveWindows( skin );
+            //temporary
             UnregisterPrediction();
             RegisterPrediction();
         }
@@ -604,7 +585,12 @@ namespace SimpleSkin
                     _viewHidden = false;
                 }
                 placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
-                skin.Skin.Close();
+
+                if( !skin.IsClosing )
+                {
+                    skin.IsClosing = true;
+                    skin.Skin.Close();
+                }
             } ) );
 
             Config.User.Set( PlacementString( skin ), placement );
@@ -631,12 +617,14 @@ namespace SimpleSkin
 
         #region temporary 03/03/2014
 
-        void skin_HidingAsked( object sender, EventArgs e )
+        void OnHidingAsked( object sender, EventArgs e )
         {
             foreach ( var skin in _skins.Values )
             {
-                if ( skin.NameKeyboard != PredictionKeyboardName ) HideSkin( skin );
+                HideSkin( skin );
             }
+            //temporary
+            UnregisterPrediction();
         }
 
         /// <summary>
@@ -688,23 +676,26 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            foreach ( var skin in _skins.Values )
-            {
-                skin.Dispatcher.BeginInvoke( (Action)( () =>
+            _miniView.Dispatcher.Invoke( (Action)(() =>
                 {
-                    if ( _miniView.Visibility != Visibility.Hidden )
+                    if( _miniView.Visibility != Visibility.Hidden )
                     {
                         HighlighterService.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                         _miniView.Hide();
                     }
-                    skin.Skin.Show();
+                } ) );
+
+            foreach ( var skin in _skins.Values )
+            {
+                skin.Dispatcher.Invoke( (Action)( () =>
+                {
+                    //skin.Skin.Show();
+                    skin.Skin.WindowState = WindowState.Normal;
                 } ), null );
 
-                if ( HighlighterService.Status == InternalRunningStatus.Started )
-                {
-                    RegisterHighlighter( skin );
-                }
+                RegisterHighlighter( skin );
             }
+            //temporary
             UnregisterPrediction();
             RegisterPrediction();
             _viewHidden = false;
@@ -714,15 +705,20 @@ namespace SimpleSkin
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
-            if ( !_forceClose && !e.Cancel )
+            SkinWindow sw = sender as SkinWindow;
+
+            Debug.Assert( sw != null );
+            Debug.Assert( _skins.Values.FirstOrDefault( si => si.Skin == sw ) != null );
+
+            SkinInfo skinInfo = _skins.Values.First( si => si.Skin == sw );
+            if( !skinInfo.IsClosing )
             {
-                e.Cancel = true;
-                if ( Notification != null )
-                {
-                    Notification.ShowNotification( new Guid( PluginIdString ), "Unable to close skin window",
-                        "The skin window cannot be closed like this, if you want to close the window deactive the keyboard.", 5000, NotificationTypes.Warning );
-                }
+                skinInfo.IsClosing = true;
             }
+            skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
+            //temporary
+            UnregisterPrediction();
+            RegisterPrediction();
         }
 
         //void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )

@@ -5,6 +5,9 @@ using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
 using System.Timers;
+using System;
+using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace CK.WindowManager
 {
@@ -23,13 +26,18 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ICommonTimer> CommonTimer { get; set; }
 
+        const int XY_VARIATION_ACCEPTED = 5;
+
         Timer _timer = null;
         IWindowElement _window = null;
+        Point _buttonDownPoint; //warning lifecycle, value type
 
-        public double AttractionRadius = 50;
+        public double AttractionRadius = 65;
 
         HitTester _tester;
         IBindResult _bindResult;
+
+        bool _resizeMoveLock; //avoids bind during a resize
 
         public WindowAutoBinder()
         {
@@ -38,96 +46,66 @@ namespace CK.WindowManager
 
         void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
-            if( _tester.CanTest )
+            //avoids bind during a resize
+            if( !_resizeMoveLock )
             {
-                ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
-                IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
+                if( _tester.CanTest )
+                {
+                    ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+                    IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
 
-                IBinding result = _tester.Test( binding, rect, AttractionRadius );
-                if( result != null )
-                {
-                    _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
-                }
-                else
-                {
-                    if( _tester.LastResult != null )
+                    IBinding result = _tester.Test( binding, rect, AttractionRadius );
+                    if( result != null )
                     {
-                        WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
-                        _bindResult = null;
+                        _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
+                    }
+                    else
+                    {
+                        if( _tester.LastResult != null )
+                        {
+                            WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
+                            _bindResult = null;
+                        }
                     }
                 }
             }
+            _resizeMoveLock = false;
+            //Console.WriteLine( "OnWindowMoved ! {0} {1}*{2}", e.Window.Name, e.Window.Top, e.Window.Left );
         }
 
-        void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
-        {
-            if( CommonTimer.Status.IsStartingOrStarted )
-            {
-                // Gets the window over the click
-                Point p =  new Point( e.X, e.Y );
-                _window = WindowManager.WindowElements.FirstOrDefault( w => WindowManager.GetClientArea( w ).Contains( p ) );
-                if( _window != null )
-                {
-                    _timer.Interval = CommonTimer.Service.Interval * 2;
-                    _timer.AutoReset = true;
-                    _timer.Start();
-                    _timer.Elapsed += OnTimerElapsed;
-                }
-            }
-        }
+        private DispatcherTimer _activationTimer;
 
-        void OnTimerElapsed( object sender, ElapsedEventArgs e )
-        {
-            if( _window != null )
-            {
-                var spatial = WindowBinder.GetBinding( _window );
-                if( spatial.Top != null )
-                {
-                    WindowBinder.PreviewUnbind( _window, spatial.Top.Window );
-                    WindowBinder.Unbind( _window, spatial.Top.Window );
-                }
-                if( spatial.Left != null )
-                {
-                    WindowBinder.PreviewUnbind( _window, spatial.Left.Window );
-                    WindowBinder.Unbind( _window, spatial.Left.Window );
-                }
-                if( spatial.Right != null )
-                {
-                    WindowBinder.PreviewUnbind( _window, spatial.Right.Window );
-                    WindowBinder.Unbind( _window, spatial.Right.Window );
-                }
-                if( spatial.Bottom != null )
-                {
-                    WindowBinder.PreviewUnbind( _window, spatial.Bottom.Window );
-                    WindowBinder.Unbind( _window, spatial.Bottom.Window );
-                }
-
-                WindowManager.Move( _window, _window.Top + 20, _window.Left + 20 ).Silent();
-
-                _timer.Elapsed -= OnTimerElapsed;
-                _timer.Stop();
-                _window = null;
-            }
-        }
-
-        void OnPointerMove( object sender, PointerDeviceEventArgs e )
-        {
-            if( CommonTimer.Status.IsStartingOrStarted )
-            {
-                if( _timer.Enabled )
-                {
-                    _timer.Elapsed -= OnTimerElapsed;
-                    _timer.Stop();
-                    _window = null;
-                }
-            }
-        }
-
+        //TODO test if the pointer is in the window
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
-            if( _bindResult != null ) _bindResult.Seal();
+            //Allows the bypass the fact that Windows puts a window to the initial position
+            //if the windows was moved during the PointerKeyUp treatment event
+            if( _bindResult != null && _activationTimer == null )
+            {
+                _activationTimer = new DispatcherTimer();
+                _activationTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                _activationTimer.Tick += _activationTimer_Tick;
+                _activationTimer.Start();
+            }
         }
 
+        void _activationTimer_Tick( object sender, EventArgs e )
+        {
+            try
+            {
+                if( _bindResult != null )
+                {
+                    //Console.WriteLine( "Elapsed OnPointerButtonUp Seal !" );
+                    _bindResult.Seal();
+                }
+            }
+            finally
+            {
+                _bindResult = null;
+                _activationTimer.Stop();
+                _activationTimer = null;
+            }
+        }
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
             _tester.Block();
@@ -148,28 +126,31 @@ namespace CK.WindowManager
 
         public void Start()
         {
+            PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
+
             WindowBinder.BeforeBinding += OnBeforeBinding;
             WindowBinder.AfterBinding += OnAfterBinding;
 
             WindowManager.WindowMoved += OnWindowMoved;
+            WindowManager.WindowResized += OnWindowResized;
+        }
 
-            PointerDeviceDriver.PointerButtonDown += OnPointerButtonDown;
-            PointerDeviceDriver.PointerMove += OnPointerMove;
-            PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
-
+        //avoids bind during a resize
+        void OnWindowResized( object sender, WindowElementResizeEventArgs e )
+        {
+            _resizeMoveLock = true;
         }
 
 
         public void Stop()
         {
-            PointerDeviceDriver.PointerButtonDown -= OnPointerButtonDown;
-            PointerDeviceDriver.PointerMove -= OnPointerMove;
             PointerDeviceDriver.PointerButtonUp -= OnPointerButtonUp;
 
             WindowBinder.AfterBinding -= OnAfterBinding;
             WindowBinder.BeforeBinding -= OnBeforeBinding;
 
             WindowManager.WindowMoved -= OnWindowMoved;
+            WindowManager.WindowResized -= OnWindowResized;
         }
 
         public void Teardown()

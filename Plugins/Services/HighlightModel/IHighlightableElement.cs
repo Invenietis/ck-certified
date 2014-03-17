@@ -49,6 +49,7 @@ namespace HighlightModel
         /// <param name="endScrollingInfo">Gets information about the scroller configuration & state</param>
         /// <returns>Directives used to choose the next element (return null if you don't want to change the default behavior)</returns>
         ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective );
+
         /// <summary>
         /// Called by the <see cref="KeyScroller"/> when the element was being scrolled on when the triggering input was pressed
         /// </summary>
@@ -149,13 +150,22 @@ namespace HighlightModel
         /// </summary>
         StayOnTheSameLocked = 4,
         /// <summary>
+        /// Go up to the first sibling
+        /// </summary>
+        GoToFirstSibling = 5,
+        /// <summary>
+        /// Go up to the last sibling
+        /// </summary>
+        GoToLastSibling = 6,
+        /// <summary>
         /// Go up to the root of the tree containing the element, and start iterating on its first child
         /// </summary>
-        RelativeRoot = 5,
+        RelativeRoot = 7,
         /// <summary>
         /// Go up to the very root of the keyscroller (to the parent of the RelativeRoot), and start iterating on its first child
         /// </summary>
-        AbsoluteRoot = 6,
+        AbsoluteRoot = 8,
+
     }
 
 }

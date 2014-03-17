@@ -118,6 +118,10 @@
       <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
       <Name>CK.Keyboard.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Accessibility\Keyboard\CK.Keyboard.csproj">
+      <Project>{99bb5255-dea7-4548-a402-9db077d195b7}</Project>
+      <Name>CK.Keyboard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Advanced\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
       <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
       <Name>BasicCommandHandlers</Name>

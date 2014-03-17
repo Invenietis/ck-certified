@@ -52,7 +52,8 @@ namespace CK.WindowManager.Model
         /// <param name="target">This is the target window.</param>
         /// <param name="origin">This is the current window dragged by the user for example.</param>
         /// <param name="position">The position of the current relative to the target element. See <see cref="BindingPosition"/> remarks.</param>
-        void Bind( IWindowElement target, IWindowElement origin, BindingPosition position );
+        /// <param name="saveBinding">if true, the binding will be saved for the next launch</param>
+        void Bind( IWindowElement target, IWindowElement origin, BindingPosition position, bool saveBinding = false );
 
         /// <summary>
         /// Unbinds the both <see cref="IWindowElement"/> provided.
@@ -62,7 +63,8 @@ namespace CK.WindowManager.Model
         /// </remarks>
         /// <param name="target">This is the target window.</param>
         /// <param name="origin">This is the current window dragged by the user for example.</param>
-        void Unbind( IWindowElement target, IWindowElement origin );
+        /// <param name="saveBinding">If false, the binding will be not saved</param>
+        void Unbind( IWindowElement target, IWindowElement origin, bool saveBinding = true );
 
         /// <summary>
         /// Raised whan a preview of a binding occurs.

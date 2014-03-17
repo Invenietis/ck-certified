@@ -18,7 +18,7 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public ZoneScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ZoneScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

@@ -77,7 +77,7 @@ namespace CK.WindowManager.Model
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is hidden.
         /// </summary>
-        event EventHandler<WindowElementEventArgs> WindowHidden;
+        event EventHandler<WindowElementEventArgs> WindowMinimized;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is restored.

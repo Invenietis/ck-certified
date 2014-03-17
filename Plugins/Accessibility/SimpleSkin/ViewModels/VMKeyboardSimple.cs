@@ -29,6 +29,7 @@ using HighlightModel;
 using CK.Core;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace SimpleSkin.ViewModels
 {

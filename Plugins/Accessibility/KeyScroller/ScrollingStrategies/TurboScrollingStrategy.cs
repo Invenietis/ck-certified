@@ -32,7 +32,7 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public TurboScrollingStrategy( DispatcherTimer timer, List<IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public TurboScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
             _normalInterval = _timer.Interval;

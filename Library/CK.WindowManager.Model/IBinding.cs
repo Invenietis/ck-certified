@@ -53,24 +53,36 @@ namespace CK.WindowManager.Model
         IWindowElement Window { get; }
 
         /// <summary>
-        /// Gets the left binding of the reference window
+        /// Gets the left binding of the reference window and the unbind button
         /// </summary>
-        ISpatialBinding Left { get; }
+        ISpatialBindingWithButtonElement Left { get; }
 
         /// <summary>
-        /// Gets the right binding of the reference window
+        /// Gets the right binding of the reference window and the unbind button
         /// </summary>
-        ISpatialBinding Right { get; }
+        ISpatialBindingWithButtonElement Right { get; }
 
         /// <summary>
-        /// Gets the bottom binding of the reference window
+        /// Gets the bottom binding of the reference window and the unbind button
         /// </summary>
-        ISpatialBinding Bottom { get; }
+        ISpatialBindingWithButtonElement Bottom { get; }
 
         /// <summary>
-        /// Gets the top binding of the reference window
+        /// Gets the top binding of the reference window and the unbind button
         /// </summary>
-        ISpatialBinding Top { get; }
+        ISpatialBindingWithButtonElement Top { get; }
     }
 
+    public interface ISpatialBindingWithButtonElement
+    {
+        /// <summary>
+        /// Gets the ISpatialBinding
+        /// </summary>
+        ISpatialBinding SpatialBinding { get; }
+
+        /// <summary>
+        /// Gets the associate UnbindButton
+        /// </summary>
+        IWindowElement UndindButton { get; }
+    }
 }

@@ -61,9 +61,7 @@ namespace BasicCommandHandlers
             {
                 foreach( var we in WindowManager.Service.WindowElements ) we.Window.Dispatcher.Invoke( (Action)( () =>
                     {
-                        //TODOJL : Comment
-                        // the window is minimized to simulate the natural functioning of Windows. (The minimize sends windows in X-32000 Y-32000)
-                        we.Window.WindowState = System.Windows.WindowState.Minimized;
+                        we.Minimize();
                     } ) );
             }
         }

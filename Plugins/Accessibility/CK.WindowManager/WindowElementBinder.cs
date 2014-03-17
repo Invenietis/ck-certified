@@ -358,7 +358,7 @@ namespace CK.WindowManager
                         {
                             TopMostService.Service.UnregisterTopMostElement( spatialBinding.Bottom.UndindButton.Window );
                         }
-                        spatialBinding.Bottom.UndindButton.Hide();
+                        spatialBinding.Bottom.UndindButton.Window.Hide();
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
@@ -368,7 +368,7 @@ namespace CK.WindowManager
                         {
                             TopMostService.Service.UnregisterTopMostElement( spatialBinding.Left.UndindButton.Window );
                         }
-                        spatialBinding.Left.UndindButton.Hide();
+                        spatialBinding.Left.UndindButton.Window.Hide();
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
@@ -378,7 +378,7 @@ namespace CK.WindowManager
                         {
                             TopMostService.Service.UnregisterTopMostElement( spatialBinding.Top.UndindButton.Window );
                         }
-                        spatialBinding.Top.UndindButton.Hide();
+                        spatialBinding.Top.UndindButton.Window.Hide();
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
@@ -388,7 +388,7 @@ namespace CK.WindowManager
                         {
                             TopMostService.Service.UnregisterTopMostElement( spatialBinding.Right.UndindButton.Window );
                         }
-                        spatialBinding.Right.UndindButton.Hide();
+                        spatialBinding.Right.UndindButton.Window.Hide();
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );
                     }

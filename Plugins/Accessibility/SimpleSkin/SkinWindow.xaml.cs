@@ -40,16 +40,6 @@ namespace SimpleSkin
             InitializeComponent();
         }
 
-        internal event EventHandler<EventArgs> HidingAsked;
-        public override void Hide()
-        {
-            if( HidingAsked != null )
-            {
-                HidingAsked( this, EventArgs.Empty );
-                base.Hide();
-            }
-        }
-
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
             if( DraggableVisualAttachedProperty.GetDraggableVisual( visualElement ) ) return true;

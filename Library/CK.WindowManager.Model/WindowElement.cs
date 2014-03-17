@@ -15,7 +15,7 @@ namespace CK.WindowManager.Model
 
         public event EventHandler SizeChanged;
 
-        public event EventHandler Hidden;
+        public event EventHandler Minimized;
 
         public event EventHandler Restored;
 
@@ -45,7 +45,7 @@ namespace CK.WindowManager.Model
         {
             if( _w.WindowState == WindowState.Minimized )
             {
-                if( Hidden != null ) Hidden( this, EventArgs.Empty );
+                if( Minimized != null ) Minimized( this, EventArgs.Empty );
             }
             if( _w.WindowState == WindowState.Normal )
             {
@@ -132,17 +132,14 @@ namespace CK.WindowManager.Model
             } );
         }
 
-        public void Hide()
+        public void Minimize()
         {
-            DispatchWhenRequired( () =>
-            {
-                _w.Hide();
-            } );
+            DispatchWhenRequired( () => _w.WindowState = WindowState.Minimized );
         }
 
         public void Restore()
         {
-            DispatchWhenRequired( () => _w.Show() );
+            DispatchWhenRequired( () => _w.WindowState = WindowState.Normal );
         }
 
         private T DispatchWhenRequired<T>( Func<T> f )

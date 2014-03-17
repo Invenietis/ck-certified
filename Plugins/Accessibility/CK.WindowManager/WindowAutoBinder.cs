@@ -30,7 +30,6 @@ namespace CK.WindowManager
 
         Timer _timer = null;
         IWindowElement _window = null;
-        Point _buttonDownPoint; //warning lifecycle, value type
 
         public double AttractionRadius = 65;
 
@@ -38,6 +37,7 @@ namespace CK.WindowManager
         IBindResult _bindResult;
 
         bool _resizeMoveLock; //avoids bind during a resize
+        bool _pointerDownLock; //avoids bind during window.Move()
 
         public WindowAutoBinder()
         {
@@ -47,7 +47,7 @@ namespace CK.WindowManager
         void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
             //avoids bind during a resize
-            if( !_resizeMoveLock )
+            if( !_resizeMoveLock && !_pointerDownLock )
             {
                 if( _tester.CanTest )
                 {
@@ -87,6 +87,8 @@ namespace CK.WindowManager
                 _activationTimer.Tick += _activationTimer_Tick;
                 _activationTimer.Start();
             }
+
+            _pointerDownLock = true;
         }
 
         void _activationTimer_Tick( object sender, EventArgs e )
@@ -106,6 +108,7 @@ namespace CK.WindowManager
                 _activationTimer = null;
             }
         }
+
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
             _tester.Block();
@@ -115,18 +118,26 @@ namespace CK.WindowManager
         {
             _tester.Release();
         }
+        
+        //avoids bind during a resize
+        void OnWindowResized( object sender, WindowElementResizeEventArgs e )
+        {
+            _resizeMoveLock = true;
+        }
 
         #region IPlugin Members
 
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new Timer();
+            _pointerDownLock = true;
             return true;
         }
 
         public void Start()
         {
             PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
+            PointerDeviceDriver.PointerButtonDown += OnPointerButtonDown;
 
             WindowBinder.BeforeBinding += OnBeforeBinding;
             WindowBinder.AfterBinding += OnAfterBinding;
@@ -135,12 +146,11 @@ namespace CK.WindowManager
             WindowManager.WindowResized += OnWindowResized;
         }
 
-        //avoids bind during a resize
-        void OnWindowResized( object sender, WindowElementResizeEventArgs e )
+        //avoids bind during window.Move()
+        void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
         {
-            _resizeMoveLock = true;
+            _pointerDownLock = false;
         }
-
 
         public void Stop()
         {

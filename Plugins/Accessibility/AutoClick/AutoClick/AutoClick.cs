@@ -39,6 +39,7 @@ using CK.WindowManager.Model;
 using System.IO;
 using Help.Services;
 using CK.InputDriver;
+using CK.InputDriver.Hook;
 
 namespace CK.Plugins.AutoClick
 {
@@ -298,8 +299,10 @@ namespace CK.Plugins.AutoClick
 
         private void RegisterEvents()
         {
-            MouseDriver.Service.PointerMove += new PointerDeviceEventHandler( OnPointerMove );
-
+            MouseHook hook = new MouseHook();
+            hook.OnHookProc += OnMouseHookProc();
+            MouseDriver.Service.PointerMove += OnPointerMove;
+            
             MouseWatcher.Service.LaunchClick += OnClickAsked;
             MouseWatcher.Service.ProgressValueChanged += OnProgressValueChanged;
             MouseWatcher.Service.ClickCanceled += OnClickCancelled;

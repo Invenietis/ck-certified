@@ -139,7 +139,7 @@
     </Compile>
     <Compile Include="Help\HelpCommandHandler.cs" />
     <Compile Include="MoveMouse\MoveMouseCommandParameterManager.cs" />
-    <Compile Include="MoveMouse\MoveMouse.cs" />
+    <Compile Include="MoveMouse\MoveMouseCommandHandler.cs" />
     <Compile Include="Tools\Keybd.cs" />
     <Compile Include="MonitorOnce\MonitorOnceCommandHandler.cs" />
     <Compile Include="DynCommand\DynCommandHandler.cs" />

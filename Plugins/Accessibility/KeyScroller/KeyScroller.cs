@@ -129,14 +129,27 @@ namespace KeyScroller
 
         #region Service implementation
 
+        /// <summary>
+        /// This function forces the highlight of the given element.
+        /// </summary>
+        /// <param name="element">The element highlight.</param>
+        /// <remarks> 
+        /// This function is useful only when there is no alternative to.
+        /// </remarks>
+        public void HighlightImmediately( IHighlightableElement element )
+        {
+            _scrollingStrategy.GoToElement( element );
+        }
+
         public bool IsHighlighting { get { return _timer.IsEnabled; } }
 
-        public void RegisterTree( string targetModuleName, IHighlightableElement element )
+        public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
         {
             if ( !_registeredElements.ContainsKey( targetModuleName ) )
             {
                 _registeredElements.Add( targetModuleName, element );
                 if ( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
+                if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
             }
         }
 

@@ -740,6 +740,10 @@ namespace SimpleSkin.ViewModels
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
+            scrollingDirective.NextActionType = ActionType.RelativeRoot;
+            //allows the repeat of the same key
+            scrollingDirective.ActionTime = ActionTime.Delayed;
+
             if( KeyDownCommand.CanExecute( null ) )
             {
                 KeyDownCommand.Execute( null );
@@ -748,8 +752,6 @@ namespace SimpleSkin.ViewModels
                     KeyUpCommand.Execute( null );
                 }
             }
-
-            scrollingDirective.NextActionType = ActionType.RelativeRoot;
             return scrollingDirective;
         }
 

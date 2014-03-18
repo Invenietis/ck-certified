@@ -120,7 +120,11 @@ namespace HighlightModel
         /// <summary>
         /// The KeyScroller immediately hightlights the next element, without waiting for the next tick.
         /// </summary>
-        Immediate = 1
+        Immediate = 1,
+        /// <summary>
+        /// The KeyScroller wait one tick before execute the action.
+        /// </summary>
+        Delayed = 2,
     }
 
 

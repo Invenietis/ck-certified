@@ -53,6 +53,11 @@ namespace TextTemplate
 
         public void Start()
         {
+            if( Highlighter.Status == InternalRunningStatus.Started )
+            {
+                Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, this );
+            }
+
             Highlighter.ServiceStatusChanged += ( o, e ) =>
             {
                 if( e.Current == InternalRunningStatus.Started )
@@ -91,6 +96,8 @@ namespace TextTemplate
             {
                 Skip = SkippingBehavior.Skip;
             };
+
+            Highlighter.Service.HighlightImmediately( this );
         }
 
         public void SendFormatedTemplate()

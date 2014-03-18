@@ -207,7 +207,11 @@ namespace SimpleSkin
                 skin.Dispatcher.Invoke( (Action)(() =>
                 {
                     placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
-                    skin.Skin.Close();
+                    if( !skin.IsClosing )
+                    {
+                        skin.IsClosing = true;
+                        skin.Skin.Close();
+                    }
                 }) );
 
                 Config.User.Set( PlacementString( skin ), placement );
@@ -723,8 +727,8 @@ namespace SimpleSkin
             if( !skinInfo.IsClosing )
             {
                 skinInfo.IsClosing = true;
+                skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
             }
-            skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
             //temporary
             UnregisterPrediction();
             RegisterPrediction();

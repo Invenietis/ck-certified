@@ -299,8 +299,6 @@ namespace CK.Plugins.AutoClick
 
         private void RegisterEvents()
         {
-            MouseHook hook = new MouseHook();
-            hook.OnHookProc += OnMouseHookProc();
             MouseDriver.Service.PointerMove += OnPointerMove;
             
             MouseWatcher.Service.LaunchClick += OnClickAsked;
@@ -315,6 +313,7 @@ namespace CK.Plugins.AutoClick
 
             MouseDriver.ServiceStatusChanged += OnMouseDriverServiceStatusChanged;
         }
+
         private void UnregisterEvents()
         {
             if( MouseDriver.Status != InternalRunningStatus.Stopped && MouseDriver.Status != InternalRunningStatus.Disabled )

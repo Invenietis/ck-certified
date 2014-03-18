@@ -93,10 +93,10 @@ namespace KeyScroller
                 Debug.Assert( parent.IsHighlightableTreeRoot );
                 parentSiblings = RegisteredElements;
 
-                //If this tree is the only tree at the root level, we directly start iterating on its children
-                if ( parentSiblings.Count == 1 )
+                //If this tree is the only tree at the root level not skip, we directly start iterating on its children
+                if ( parentSiblings.Count( he => he.Skip != SkippingBehavior.Skip ) == 1 )
                 {
-                    _currentId = 0;
+                    _currentId = parentSiblings.IndexOf( he => he.Skip != SkippingBehavior.Skip );
                     return GetNextElement( ActionType.EnterChild );
                 }
             }
@@ -202,11 +202,16 @@ namespace KeyScroller
                     elements = RegisteredElements;
 
                     // ToDoJL
-                    if ( actionType != ActionType.EnterChild && elements.Count == 1 && elements[0].Children.Count > 0 )//We are on the root level, and there is only one element, so we directly enter it.
+                    //We are on the root level, and there is only one element or just one element is not skip, so we directly enter it.
+                    if ( actionType != ActionType.EnterChild && elements.Count( he => he.Skip != SkippingBehavior.Skip ) == 1 )
                     {
-                        _currentId = 0;
-                        nextElement = GetEnterChild( elements );
-                        return GetSkipBehavior( nextElement );
+                        int index = elements.IndexOf( he => he.Skip != SkippingBehavior.Skip && he.Children.Count > 0 );
+                        if( index != -1 )
+                        {
+                            _currentId = index;
+                            nextElement = GetEnterChild( elements );
+                            return GetSkipBehavior( nextElement );
+                        }
                     }
                 }
 

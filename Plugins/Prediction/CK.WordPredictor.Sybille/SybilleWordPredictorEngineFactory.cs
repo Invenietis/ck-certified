@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using CK.Plugin;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.Engines
@@ -10,14 +13,14 @@ namespace CK.WordPredictor.Engines
         Func<string> _userPath;
         Func<string> _pluginResourceDirectory;
         const string _sybileDataPath = "Data";
-        IWordPredictorFeature _predictorFeature;
+        IService<IWordPredictorFeature> _predictorFeature;
 
-        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, IWordPredictorFeature predictorFeature )
+        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, IService<IWordPredictorFeature> predictorFeature )
             : this( pluginResourceDirectory, pluginResourceDirectory, predictorFeature )
         {
         }
 
-        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, Func<string> userPath, IWordPredictorFeature predictorFeature )
+        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, Func<string> userPath, IService<IWordPredictorFeature> predictorFeature )
         {
             if( pluginResourceDirectory == null ) throw new ArgumentNullException( "pluginResourceDirectory" );
             if( userPath == null ) throw new ArgumentNullException( "userPath" );
@@ -35,17 +38,42 @@ namespace CK.WordPredictor.Engines
             return DoCreate( predictorName, p, userPath, _predictorFeature );
         }
 
+        Task<IWordPredictorEngine> _currentlyRunningTask;
+        CancellationTokenSource cancellationSource = null;
+
         public Task<IWordPredictorEngine> CreateAsync( string predictorName )
         {
+            //if the last is still running 
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status <= TaskStatus.Running )
+            {
+                Debug.Assert( cancellationSource != null );
+                cancellationSource.Cancel();
+                //_currentlyRunningTask.Wait( cancellationSource.Token );
+                cancellationSource.Dispose();
+                cancellationSource = new CancellationTokenSource();
+            }
+
+            if( cancellationSource == null )
+                cancellationSource = new CancellationTokenSource();
+
             string p = _pluginResourceDirectory();
             string userPath = _userPath();
-            return Task.Factory.StartNew<IWordPredictorEngine>( () =>
+
+            _currentlyRunningTask = Task.Factory.StartNew<IWordPredictorEngine>( () =>
             {
-                return DoCreate( predictorName, p, userPath, _predictorFeature );
-            } );
+                if( cancellationSource.IsCancellationRequested )
+                    return null;
+
+                SybilleWordPredictorEngine engine = DoCreate( predictorName, p, userPath, _predictorFeature );
+
+                if( engine.ConstructionSuccess ) return engine;
+                return null;
+            }, cancellationSource.Token );
+
+            return _currentlyRunningTask;
         }
 
-        private static IWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath, string userPath, IWordPredictorFeature predictorFeature )
+        private static SybilleWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath, string userPath, IService<IWordPredictorFeature> predictorFeature )
         {
             string userTextsFilePath = EnsureFileCreation( userPath, "UserTexts_fr.txt" );
             string userPredictorSibFilePath = EnsureFileCopy( Path.Combine( pluginResourcePath, _sybileDataPath ), userPath, "UserPredictor_fr.sib" );

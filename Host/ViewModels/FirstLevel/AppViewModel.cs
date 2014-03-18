@@ -37,6 +37,7 @@ using CK.Windows.App;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using Help.Services;
+using CK.Windows;
 
 namespace Host
 {
@@ -150,6 +151,8 @@ namespace Host
             CivikeyHost.SaveContext();
             CivikeyHost.SaveUserConfig();
             CivikeyHost.SaveSystemConfig();
+
+            NoFocusManager.Default.Shutdown();
 
             if( hostShouldExit )
             {

@@ -3,6 +3,8 @@ using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Core;
 using System.Windows;
+using System;
+using CommonServices;
 
 namespace CK.WindowManager
 {
@@ -11,12 +13,16 @@ namespace CK.WindowManager
     {
         PreviewBindingInfo _placeholder;
         DefaultActivityLogger _logger;
+        Action _resized; //warning cyclelife : it's use for OnPointerButtonUp
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowManager WindowManager { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowBinder WindowBinder { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        public IPointerDeviceDriver PointerDeviceDriver { get; set; }
 
         public WindowManagerExecutor()
         {
@@ -30,11 +36,19 @@ namespace CK.WindowManager
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attach to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
-            if( binding != null )
+
+            if( binding != null && binding.AllDescendants().Count() != 0 )
             {
-                foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
+                HidingButton( binding );
+
+                PlacingWindow( binding, binding.Window );
+
+                if( _resized == null )
                 {
-                    WindowManager.Move( window, window.Top + e.DeltaTop, window.Left + e.DeltaLeft );
+                    _resized = () =>
+                    {
+                        PlacingButton( binding );
+                    };
                 }
             }
         }
@@ -46,19 +60,108 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
             if( binding != null )
             {
+                if( e.DeltaHeight != 0 || e.DeltaWidth != 0 )
+                {
+                    HidingButton( binding );
+                }
+
                 if( e.DeltaHeight != 0 )
                 {
-                    ResizeVerticaly( e, binding.Left, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
-                    ResizeVerticaly( e, binding.Right, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
+                    if( binding.Left != null ) ResizeVerticaly( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
+                    if( binding.Right != null ) ResizeVerticaly( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
                     SpecialMoveBottom( e, binding );
                 }
                 if( e.DeltaWidth != 0 )
                 {
-                    ResizeHorizontaly( e, binding.Top, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
-                    ResizeHorizontaly( e, binding.Bottom, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
+                    if( binding.Top != null ) ResizeHorizontaly( e, binding.Top.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
+                    if( binding.Bottom != null ) ResizeHorizontaly( e, binding.Bottom.SpatialBinding, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
                     SpecialMoveRight( e, binding );
                 }
+
+                if( e.DeltaHeight != 0 || e.DeltaWidth != 0 )
+                {
+                    if( _resized == null )
+                    {
+                        _resized = () =>
+                        {
+                            PlacingButton( binding );
+                        };
+                    }
+                }
             }
+        }
+
+        void PlacingWindow(ISpatialBinding binding, IWindowElement master )
+        {
+            IWindowElement window = null;
+            if( binding.Top != null && binding.Top.SpatialBinding.Window != master )
+            {
+                window = binding.Top.SpatialBinding.Window;
+                WindowManager.Move( window, master.Top - window.Height, master.Left);
+                PlacingWindow( binding.Top.SpatialBinding, binding.Window );
+            }
+            if( binding.Bottom != null && binding.Bottom.SpatialBinding.Window != master )
+            {
+                window = binding.Bottom.SpatialBinding.Window;
+                WindowManager.Move( window, master.Top + master.Height, master.Left );
+                PlacingWindow( binding.Bottom.SpatialBinding, binding.Window );
+            }
+            if( binding.Left != null && binding.Left.SpatialBinding.Window != master )
+            {
+                window = binding.Left.SpatialBinding.Window;
+                WindowManager.Move( window, master.Top, master.Left - window.Width );
+                PlacingWindow( binding.Left.SpatialBinding, binding.Window );
+            }
+            if( binding.Right != null && binding.Right.SpatialBinding.Window != master )
+            {
+                window = binding.Right.SpatialBinding.Window;
+                WindowManager.Move( window, master.Top, master.Left - master.Width );
+                PlacingWindow( binding.Right.SpatialBinding, binding.Window );
+            }
+        }
+
+        void PlacingButton( ISpatialBinding binding )
+        {
+            if( binding.Left != null )
+            {
+                binding.Left.UndindButton.Window.Dispatcher.Invoke( (Action)( () =>
+                {
+                    binding.Left.UndindButton.Move( binding.Window.Top + binding.Window.Height / 2 - binding.Left.UndindButton.Window.Width / 2, binding.Window.Left - binding.Left.UndindButton.Window.Height / 2 );
+                    binding.Left.UndindButton.Window.Show();
+                } ) );
+            }
+            if( binding.Right != null )
+            {
+                binding.Right.UndindButton.Window.Dispatcher.Invoke( (Action)(() =>
+                {
+                    binding.Right.UndindButton.Move( binding.Window.Top + binding.Window.Height / 2, binding.Window.Left + binding.Window.Width - binding.Right.UndindButton.Window.Width / 2 );
+                    binding.Right.UndindButton.Window.Show(); 
+                }) );          
+            }
+            if( binding.Bottom != null )
+            {
+                binding.Bottom.UndindButton.Window.Dispatcher.Invoke( (Action)(() =>
+                {
+                    binding.Bottom.UndindButton.Move( binding.Window.Top + binding.Window.Height - binding.Bottom.UndindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Bottom.UndindButton.Window.Width / 2 );
+                    binding.Bottom.UndindButton.Window.Show();
+                }) ); 
+            }
+            if( binding.Top != null )
+            {
+                binding.Top.UndindButton.Window.Dispatcher.Invoke( (Action)(() =>
+                {
+                    binding.Top.UndindButton.Move( binding.Window.Top - binding.Top.UndindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Top.UndindButton.Window.Width / 2 );
+                    binding.Top.UndindButton.Window.Show();
+                }) ); 
+            }
+        }
+
+        void HidingButton( ISpatialBinding binding )
+        {
+            if( binding.Left != null && binding.Left.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Left.UndindButton.Window.Hide();
+            if( binding.Right != null && binding.Right.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Right.UndindButton.Window.Hide();
+            if( binding.Bottom != null && binding.Bottom.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Bottom.UndindButton.Window.Hide();
+            if( binding.Top != null && binding.Top.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Top.UndindButton.Window.Hide();
         }
 
         void ResizeHorizontaly( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
@@ -115,7 +218,6 @@ namespace CK.WindowManager
             }
         }
 
-
         void OnPreviewBinding( object sender, WindowBindedEventArgs e )
         {
             if( e.BindingType == BindingEventType.Attach )
@@ -132,10 +234,12 @@ namespace CK.WindowManager
                 Rect r = e.Binding.GetWindowArea();
                 if( r != Rect.Empty )
                 {
-                    WindowManager.Move( e.Binding.Origin, r.Top, r.Left ).Broadcast();
-                    WindowManager.Resize( e.Binding.Origin, r.Width, r.Height ).Broadcast();
+                    //Console.WriteLine( "OnBeforeBinding ! Origin : {0}", e.Binding.Origin.Name );
+                    var move = WindowManager.Move( e.Binding.Origin, r.Top, r.Left );
+                    var resize = WindowManager.Resize( e.Binding.Origin, r.Width, r.Height );
+                    move.Broadcast();
+                    resize.Broadcast();
                 }
-                else e.Canceled = true;
             }
         }
 
@@ -155,13 +259,13 @@ namespace CK.WindowManager
             }
         }
 
-        void OnWindowHidden( object sender, WindowElementEventArgs e )
+        void OnWindowMinimized( object sender, WindowElementEventArgs e )
         {
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
                 foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
-                    window.Hide();
+                    window.Minimize();
             }
         }
 
@@ -174,9 +278,11 @@ namespace CK.WindowManager
 
         public void Start()
         {
+            PointerDeviceDriver.PointerButtonUp += OnPointerButtonUp;
+
             WindowManager.WindowResized += OnWindowManagerWindowResized;
             WindowManager.WindowMoved += OnWindowManagerWindowMoved;
-            WindowManager.WindowHidden += OnWindowHidden;
+            WindowManager.WindowMinimized += OnWindowMinimized;
             WindowManager.WindowRestored += OnWindowRestored;
 
             WindowBinder.PreviewBinding += OnPreviewBinding;
@@ -184,11 +290,20 @@ namespace CK.WindowManager
             WindowBinder.AfterBinding += OnAfterBinding;
         }
 
+        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
+        {
+            if( _resized != null )
+            {
+                _resized();
+                _resized = null;
+            }
+        }
+
         public void Stop()
         {
             WindowManager.WindowResized -= OnWindowManagerWindowResized;
             WindowManager.WindowMoved -= OnWindowManagerWindowMoved;
-            WindowManager.WindowHidden -= OnWindowHidden;
+            WindowManager.WindowMinimized -= OnWindowMinimized;
             WindowManager.WindowRestored -= OnWindowRestored;
 
             WindowBinder.PreviewBinding -= OnPreviewBinding;

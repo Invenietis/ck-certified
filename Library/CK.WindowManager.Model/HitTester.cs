@@ -53,14 +53,15 @@ namespace CK.WindowManager.Model
         {
             ICollection<IWindowElement> boundWindows = binding.AllDescendants().Select( x => x.Window ).ToArray();
             otherWindow = null;
+            Rect rectWindow = setToChallenge[binding.Window];
             foreach( var item in setToChallenge )
             {
                 otherWindow = item.Key;
                 // If in all registered windows a window intersect with the one that moved
                 if( otherWindow != binding.Window && !boundWindows.Contains( otherWindow ) )
                 {
-                    rect = setToChallenge[otherWindow];
-                    if( rect.IntersectsWith( enlargedRectangle ) ) return Rect.Intersect( enlargedRectangle, rect );
+                    rect = setToChallenge[otherWindow]; 
+                    if( !rectWindow.IntersectsWith( rect ) && rect.IntersectsWith( enlargedRectangle ) ) return Rect.Intersect( enlargedRectangle, rect );
                 }
             }
             return Rect.Empty;

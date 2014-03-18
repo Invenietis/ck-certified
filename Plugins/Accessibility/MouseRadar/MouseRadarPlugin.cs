@@ -86,7 +86,7 @@ namespace MouseRadar
 
             ActionType = HighlightModel.ActionType.StayOnTheSameLocked;
 
-            Highlighter.Service.RegisterTree( this );
+            Highlighter.Service.RegisterTree( "MouseRadarPlugin", this );
 
             _radar.Show();
             _radar.Initialize();
@@ -102,7 +102,7 @@ namespace MouseRadar
         {
             _radar.Dispose();
             if( Highlighter.Status.IsStartingOrStarted )
-                Highlighter.Service.UnregisterTree( this );
+                Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
         }
 
         public void Teardown()

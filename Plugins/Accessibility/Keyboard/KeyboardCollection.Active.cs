@@ -52,13 +52,9 @@ namespace CK.Keyboard
             }
             if( newState == false )
             {
-                // Do not deactivate current keyboard.
-                if( _current != keyboard )
-                {
-                    isActive = false;
-                    if( KeyboardDeactivated != null )
-                        KeyboardDeactivated( this, new KeyboardEventArgs( keyboard ) );
-                }
+                isActive = false;
+                if( KeyboardDeactivated != null )
+                    KeyboardDeactivated( this, new KeyboardEventArgs( keyboard ) );
             }
         }
     }

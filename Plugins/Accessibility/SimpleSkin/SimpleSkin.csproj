@@ -118,7 +118,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CKNoFocusWindowManager.cs" />
     <Compile Include="Editor\EditorViewModel.BackgroundProperties.cs" />
     <Compile Include="Editor\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
@@ -131,10 +130,9 @@
       <DependentUpon>MiniView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MiniViewVM.cs" />
-    <Compile Include="MultiSkin.cs" />
-    <Compile Include="SimpleSkin.cs" />
+    <Compile Include="KeyboardDisplayer.cs" />
+    <Compile Include="MainKeyboardManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleSkin.IWindowElement.cs" />
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
     </Compile>

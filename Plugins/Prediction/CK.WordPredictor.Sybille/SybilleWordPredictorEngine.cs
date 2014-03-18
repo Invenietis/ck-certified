@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CK.Core;
+using CK.Plugin;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
 
@@ -11,27 +12,109 @@ namespace CK.WordPredictor.Engines
 {
     public class SybilleWordPredictorEngine : IWordPredictorEngine, IDisposable
     {
+        const int NB_RETRY = 5;
+
         Sybille.WordPredictor _sybille;
-        IWordPredictorFeature _wordPredictionFeature;
+        IService<IWordPredictorFeature> _wordPredictionFeature;
+
+        bool _constructionSuccess;
+        int _currentRetryCount;
+
+        public bool ConstructionSuccess
+        {
+            get { return _constructionSuccess; }
+        }
 
         const int MaxPredictRetryCount = 2;
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
+        public SybilleWordPredictorEngine( IService<IWordPredictorFeature> wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
         {
-            _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+            _currentRetryCount = NB_RETRY;
 
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+            try
+            {
+                //Sybille can throw an exception "Loading error"
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
+
+                //the plugin can be stopped before the construction have finished 
+                if( wordPredictionFeature.Status < InternalRunningStatus.Starting )
+                {
+                    _constructionSuccess = false;
+                }
+                else
+                {
+                    _sybille.FilterAlreadyShownWords = wordPredictionFeature.Service.FilterAlreadyShownWords;
+
+                    _wordPredictionFeature = wordPredictionFeature;
+                    _wordPredictionFeature.Service.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+                    _constructionSuccess = true;
+                }
+            }
+            catch( Exception e ) //Cannot instanciate the engine
+            {
+                _constructionSuccess = false;
+            }
         }
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+        public SybilleWordPredictorEngine( IService<IWordPredictorFeature> wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
         {
-            _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+            _currentRetryCount = NB_RETRY;
 
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+            try
+            {
+                //Sybille can throw an exception "Loading error"
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
+
+
+                //the plugin can be stopped before the construction have finished 
+                if( wordPredictionFeature.Status < InternalRunningStatus.Starting )
+                {
+                    _constructionSuccess = false;
+                }
+                else
+                {
+                    _wordPredictionFeature = wordPredictionFeature;
+                    _wordPredictionFeature.Service.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+
+                    _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
+
+                    _constructionSuccess = true;
+                }
+            }
+            catch( Exception e ) //Cannot instanciate the engine
+            {
+                _constructionSuccess = false;
+            }
+        }
+
+        private void LoadSybilleWordPredictor( string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+        {
+            //TODO log the loading error
+            if( _currentRetryCount == 0 ) return;
+            try
+            {
+                _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
+            }
+            catch( Exception e )
+            {
+                _currentRetryCount--;
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
+            }
+        }
+
+        private void LoadSybilleWordPredictor( string languageFileName, string userLanguageFileName, string userTextsFileName )
+        {
+            //TODO log the loading error
+            if( _currentRetryCount == 0 ) return;
+            try
+            {
+                _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
+            }
+            catch( Exception e )
+            {
+                _currentRetryCount--;
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
+            }
         }
 
 
@@ -39,7 +122,7 @@ namespace CK.WordPredictor.Engines
         {
             if( e.PropertyName == "FilterAlreadyShownWords" )
             {
-                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.FilterAlreadyShownWords;
+                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
             }
         }
 

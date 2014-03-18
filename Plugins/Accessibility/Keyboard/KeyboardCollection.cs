@@ -189,20 +189,19 @@ namespace CK.Keyboard
                     }
 
                     Keyboard previous = _current;
+
                     if( value != null && value.Context != _context ) throw new ApplicationException( R.KeyboardErrorUnknown );
 
                     if( previous != null && Context.PluginRunner != null ) Context.PluginRunner.Remove( previous.RequirementLayer, false );
+
                     _current = value;
+
                     if( _current != null && Context.PluginRunner != null ) Context.PluginRunner.Add( _current.RequirementLayer, true );
 
                     if( CurrentChanged != null )
                     {
                         CurrentChanged( this, new CurrentKeyboardChangedEventArgs( Context, previous ) );
                     }
-
-                    // This will fired KeyboardActivated event if the new current wasn't active. 
-                    // Fired after the CurrentChanged event.
-                    _current.IsActive = true;
                     
                     Context.SetKeyboardContextDirty();
                 }

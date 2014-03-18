@@ -42,10 +42,10 @@ namespace CK.WindowManager.Model
             {
                 visited.Add( me );
 
-                if( me.Top != null && !excludes.HasFlag( BindingPosition.Top ) ) BrowseExclude( me.Top, visited, excludes );
-                if( me.Left != null && !excludes.HasFlag( BindingPosition.Left ) ) BrowseExclude( me.Left, visited, excludes );
-                if( me.Bottom != null && !excludes.HasFlag( BindingPosition.Bottom ) ) BrowseExclude( me.Bottom, visited, excludes );
-                if( me.Right != null && !excludes.HasFlag( BindingPosition.Right ) ) BrowseExclude( me.Right, visited, excludes );
+                if( me.Top != null && !excludes.HasFlag( BindingPosition.Top ) ) BrowseExclude( me.Top.SpatialBinding, visited, excludes );
+                if( me.Left != null && !excludes.HasFlag( BindingPosition.Left ) ) BrowseExclude( me.Left.SpatialBinding, visited, excludes );
+                if( me.Bottom != null && !excludes.HasFlag( BindingPosition.Bottom ) ) BrowseExclude( me.Bottom.SpatialBinding, visited, excludes );
+                if( me.Right != null && !excludes.HasFlag( BindingPosition.Right ) ) BrowseExclude( me.Right.SpatialBinding, visited, excludes );
             }
         }
 
@@ -54,10 +54,10 @@ namespace CK.WindowManager.Model
             var visited = new List<IWindowElement>();
             visited.Add( me.Window );
 
-            if( me.Top != null && position.HasFlag( BindingPosition.Top ) ) Browse( me.Top, visited );
-            if( me.Left != null && position.HasFlag( BindingPosition.Left ) ) Browse( me.Left, visited );
-            if( me.Bottom != null && position.HasFlag( BindingPosition.Bottom ) ) Browse( me.Bottom, visited );
-            if( me.Right != null && position.HasFlag( BindingPosition.Right ) ) Browse( me.Right, visited );
+            if( me.Top != null && position.HasFlag( BindingPosition.Top ) ) Browse( me.Top.SpatialBinding, visited );
+            if( me.Left != null && position.HasFlag( BindingPosition.Left ) ) Browse( me.Left.SpatialBinding, visited );
+            if( me.Bottom != null && position.HasFlag( BindingPosition.Bottom ) ) Browse( me.Bottom.SpatialBinding, visited );
+            if( me.Right != null && position.HasFlag( BindingPosition.Right ) ) Browse( me.Right.SpatialBinding, visited );
 
             return visited.Except( new[] { me.Window } );
         }
@@ -68,10 +68,10 @@ namespace CK.WindowManager.Model
             {
                 visited.Add( me.Window );
 
-                if( me.Top != null ) Browse( me.Top, visited );
-                if( me.Left != null ) Browse( me.Left, visited );
-                if( me.Bottom != null ) Browse( me.Bottom, visited );
-                if( me.Right != null ) Browse( me.Right, visited );
+                if( me.Top != null ) Browse( me.Top.SpatialBinding, visited );
+                if( me.Left != null ) Browse( me.Left.SpatialBinding, visited );
+                if( me.Bottom != null ) Browse( me.Bottom.SpatialBinding, visited );
+                if( me.Right != null ) Browse( me.Right.SpatialBinding, visited );
             }
         }
 

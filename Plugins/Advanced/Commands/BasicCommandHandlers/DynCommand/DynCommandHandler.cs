@@ -59,8 +59,10 @@ namespace BasicCommandHandlers
         {
             if( WindowManager.Status.IsStartingOrStarted )
             {
-                IWindowElement el = WindowManager.Service.GetByName( "Skin" );
-                if( el != null ) el.Hide();
+                foreach( var we in WindowManager.Service.WindowElements ) we.Window.Dispatcher.Invoke( (Action)( () =>
+                    {
+                        we.Minimize();
+                    } ) );
             }
         }
         void ToggleHostMinimized()

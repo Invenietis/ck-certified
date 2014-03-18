@@ -10,21 +10,44 @@ namespace CommonServices.Accessibility
     public interface IHighlighterService : IDynamicService
     {
         /// <summary>
-        /// Gets if the highlighter is running or not (maybe stopped, or just paused)
+        /// Gets if the highlighter is running or not (maybe stopped, or just paused).
         /// </summary>
         bool IsHighlighting { get; }
 
         /// <summary>
-        /// Register a highlightable tree in the service in order to be available for the highlighting
+        /// Register a highlightable tree in the service in order to be available for the highlighting.
         /// </summary>
+        /// <param name="elementID"></param>
         /// <param name="root"></param>
-        void RegisterTree( IHighlightableElement root );
+        void RegisterTree( string elementID, IHighlightableElement root );
 
         /// <summary>
         /// Remove an tree that have been registered before. It can be a subtree of any highlightable element.
         /// </summary>
+        /// <remarks>The elementID and the element must match the association made ​​in the collection</remarks>
+        /// <param name="elementID"></param>
         /// <param name="element"></param>
-        void UnregisterTree( IHighlightableElement element );
+        void UnregisterTree( string elementID, IHighlightableElement element );
+
+        /// <summary>
+        /// Adds an element at the beginning or end of an existing element that implements <see cref="IExtensibleHighlightableElement"/>.
+        /// </summary>
+        /// <param name="targetModuleName">It is the elementID in which we will search  the <see cref="IExtensibleHighlightableElement"/> to add the element</param>
+        /// <param name="extensibleElementName">It is the name of <see cref="IExtensibleHighlightableElement"/> in which we want to add the element</param>
+        /// <param name="position">Pre or Post position of the element</param>
+        /// <param name="element"></param>
+        /// <returns>Return true, if the targetModuleName contains the wanted <see cref="IExtensibleHighlightableElement"/> and if the <see cref="IExtensibleHighlightableElement"/> doesn't already contain the added element. Otherwise return false</returns>
+        bool RegisterInRegisteredElementAt( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element );
+
+        /// <summary>
+        /// Removes an element at the beginning or end of an existing element that implements <see cref="IExtensibleHighlightableElement"/>.
+        /// </summary>
+        /// <param name="targetModuleName">It is the elementID in which we will search  the <see cref="IExtensibleHighlightableElement"/> to remove the element</param>
+        /// <param name="extensibleElementName">It is the name of <see cref="IExtensibleHighlightableElement"/> in which we want to remove the element</param>
+        /// <param name="position">Pre or Post position of the element</param>
+        /// <param name="element"></param>
+        /// <returns>Return true, if the targetModuleName contains the wanted <see cref="IExtensibleHighlightableElement"/> and if the <see cref="IExtensibleHighlightableElement"/> contains the removed element. Otherwise return false</returns>
+        bool UnregisterInRegisteredElement( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element );
 
         /// <summary>
         /// Pause the highlighter scroller. Call Resume to resume the execution where it was paused.

@@ -22,6 +22,8 @@ namespace TextTemplate
         TemplateEditor _editor;
         TemplateEditorViewModel _viewModel;
 
+        const string HIGHLIGH_REGISTER_ID = "TextTemplate";
+
         ICKReadOnlyList<IHighlightableElement> _children;
 
         [DynamicService( Requires = RunningRequirement.Optional )]
@@ -55,11 +57,11 @@ namespace TextTemplate
             {
                 if( e.Current == InternalRunningStatus.Started )
                 {
-                    Highlighter.Service.RegisterTree( this );
+                    Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, this );
                 }
                 else if( e.Current == InternalRunningStatus.Stopping )
                 {
-                    Highlighter.Service.UnregisterTree( this );
+                    Highlighter.Service.UnregisterTree( HIGHLIGH_REGISTER_ID, this );
                 }
             };
 
@@ -170,7 +172,7 @@ namespace TextTemplate
         public void Stop()
         {
             if( Highlighter.Status.IsStartingOrStarted )
-                Highlighter.Service.UnregisterTree( this );
+                Highlighter.Service.UnregisterTree( HIGHLIGH_REGISTER_ID, this );
         }
 
         public void Teardown()

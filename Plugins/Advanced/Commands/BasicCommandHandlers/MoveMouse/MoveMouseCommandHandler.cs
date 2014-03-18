@@ -46,7 +46,7 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> HighlighterService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -62,17 +62,18 @@ namespace BasicCommandHandlers
 
         void OnInternalBeat( object sender, EventArgs e )
         {
-            if( _currentMotionFunction != null )
+            if ( _currentMotionFunction != null )
                 _currentMotionFunction();
         }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            if( e.Command.StartsWith( PROTOCOL ) )
+            if ( e.Command.StartsWith( PROTOCOL ) )
             {
-                if( HighlighterService.Service.IsHighlighting )
+                if ( _timer.IsEnabled )
                 {
-                    HighlighterService.Service.Pause();
+                    if ( HighlighterService.Status.IsStartingOrStarted )
+                        HighlighterService.Service.Pause();
 
                     string[] parameters = e.Command.Substring( PROTOCOL.Length ).Trim().Split( ',' );
                     string direction = parameters[0];
@@ -82,7 +83,8 @@ namespace BasicCommandHandlers
                 }
                 else
                 {
-                    HighlighterService.Service.Resume();
+                    if ( HighlighterService.Status.IsStartingOrStarted )
+                        HighlighterService.Service.Resume();
                     EndMouseMotion();
                 }
             }
@@ -91,14 +93,14 @@ namespace BasicCommandHandlers
         public void BeginMouseMotion( string direction, int speed )
         {
             // timer should not be enabled. If it is enabled it could be due to 
-            if( _timer.IsEnabled ) _timer.Stop();
+            if ( _timer.IsEnabled ) _timer.Stop();
 
             // setup speed
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, speed );
 
             Action motion = null;
             #region create motion function based on the direction
-            switch( direction )
+            switch ( direction )
             {
                 case "U":
                     motion = () =>
@@ -134,11 +136,11 @@ namespace BasicCommandHandlers
                     break;
             }
 
-            if( motion == null )
+            if ( motion == null )
             {
 
                 double angle = 0.0;
-                switch( direction )
+                switch ( direction )
                 {
                     case "UL":
                         angle = -( ( 3 * Math.PI ) / 4 );
@@ -185,7 +187,8 @@ namespace BasicCommandHandlers
 
         public override void Stop()
         {
-            ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
+            if ( ProtocolManagerService.Status.IsStartingOrStarted )
+                ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
             base.Stop();
         }
     }

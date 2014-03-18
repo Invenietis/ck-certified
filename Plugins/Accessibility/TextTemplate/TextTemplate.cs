@@ -96,6 +96,8 @@ namespace TextTemplate
             {
                 Skip = SkippingBehavior.Skip;
             };
+
+            Highlighter.Service.HighlightImmediately( this );
         }
 
         public void SendFormatedTemplate()

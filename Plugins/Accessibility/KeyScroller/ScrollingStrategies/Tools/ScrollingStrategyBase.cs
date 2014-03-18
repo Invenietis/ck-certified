@@ -17,7 +17,8 @@ namespace KeyScroller
         protected IPluginConfigAccessor _configuration;
         protected DispatcherTimer _timer;
         protected int _currentId = -1;
-        protected int _repeatCount = 1;
+        protected bool _isDelayed = false;
+        protected IHighlightableElement _goToElement;
 
         protected Stack<IHighlightableElement> _currentElementParents = null;
         protected IHighlightableElement _previousElement = null;
@@ -158,20 +159,27 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement GetNextElement( ActionType actionType )
         {
+            // defer action to the next tick
+            if( _lastDirective != null && _lastDirective.ActionTime == ActionTime.Delayed )
+            {
+                _lastDirective.ActionTime = ActionTime.NextTick;
+                return _currentElement;
+            }
+
             // reset the action type to normal if we are not on a StayOnTheSameLocked
             if ( actionType != ActionType.StayOnTheSameLocked )
                 _lastDirective.NextActionType = ActionType.Normal;
 
             //We retrieve parents that implement IHighlightableElementController
-            var controllingParents = _currentElementParents.Where( ( i ) => { return i is IHighlightableElementController; } );
+            var controlingParents = _currentElementParents.Where( ( i ) => { return i is IHighlightableElementController; } );
 
-            foreach ( IHighlightableElementController parent in controllingParents )
+            foreach ( IHighlightableElementController parent in controlingParents )
             {
                 //we offer the possibility to change action
                 actionType = parent.PreviewChildAction( _currentElement, actionType );
             }
 
-            foreach ( IHighlightableElementController parent in controllingParents )
+            foreach ( IHighlightableElementController parent in controlingParents )
             {
                 //inform that there is a new ActionType
                 parent.OnChildAction( actionType );
@@ -179,7 +187,13 @@ namespace KeyScroller
 
             IHighlightableElement nextElement = null;
 
-            if ( actionType == ActionType.AbsoluteRoot )
+            // used to highlight an element immediately
+            if( _goToElement != null )
+            {
+                nextElement = _goToElement;
+                _goToElement = null;
+            }
+            else if ( actionType == ActionType.AbsoluteRoot )
             {
                 nextElement = GetUpToAbsoluteRoot();
             }
@@ -312,6 +326,20 @@ namespace KeyScroller
 
         public abstract void OnExternalEvent();
 
+        /// <summary>
+        /// This function forces the highlight of the given element.
+        /// </summary>
+        /// <param name="element">The element highlight.</param>
+        /// <remarks> 
+        /// This function is useful only when there is no alternative to.
+        /// </remarks>
+        public void GoToElement( IHighlightableElement element )
+        {
+            _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.Immediate );
+            _goToElement = element;
+            EnsureReactivity();
+        }
+
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
             if ( _lastDirective == null ) _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.NextTick );
@@ -350,15 +378,18 @@ namespace KeyScroller
         /// </summary>
         internal void EnsureReactivity()
         {
-            if ( _lastDirective != null && _lastDirective.ActionTime == ActionTime.Immediate )
+            if( _lastDirective != null )
             {
-                //Setting the ActionTime back to NextTick. Immediate has to be set explicitely at each step;
-                _lastDirective.ActionTime = ActionTime.NextTick;
+                if( _lastDirective.ActionTime == ActionTime.Immediate )
+                {
+                    //Setting the ActionTime back to NextTick. Immediate has to be set explicitely at each step;
+                    _lastDirective.ActionTime = ActionTime.NextTick;
 
-                _timer.Stop();
-                OnInternalBeat( this, EventArgs.Empty );
-                //Console.Out.WriteLine( "Immediate !" );
-                _timer.Start();
+                    _timer.Stop();
+                    OnInternalBeat( this, EventArgs.Empty );
+                    //Console.Out.WriteLine( "Immediate !" );
+                    _timer.Start();
+                }
             }
         }
 

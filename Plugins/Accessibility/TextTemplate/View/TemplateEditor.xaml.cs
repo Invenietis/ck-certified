@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
-
+using System.Linq;
 namespace TextTemplate
 {
     public class ContentControlDuFutur : ContentControl
@@ -47,13 +47,18 @@ namespace TextTemplate
             InitializeComponent();
             RenderTemplate();
             DataContext = model;
+
             this.MouseDown += (o, e) =>
             {
                 if (e.ChangedButton == MouseButton.Left)
                     this.DragMove();
             };
+
             _model.Cancel.PropertyChanged += ( o, e ) => { if(_model.Cancel.IsHighlighted) ((Button)FindName( "cancel" )).Focus(); };
             _model.ValidateTemplate.PropertyChanged += ( o, e ) => { if( _model.ValidateTemplate.IsHighlighted ) ((Button)FindName( "ok" )).Focus(); };
+            KeyDown += _model.Window_KeyDown;
+
+            this.ContentRendered += ( o, e ) => FocusOnElement( _bindings.Keys.FirstOrDefault() );
         }
 
         void RenderTemplate()
@@ -105,7 +110,8 @@ namespace TextTemplate
 
         public void FocusOnElement(IText text)
         {
-            if (!_bindings.ContainsKey(text)) return;
+
+            if (text == null || !_bindings.ContainsKey(text)) return;
             _bindings[text].Focus();
         }
 

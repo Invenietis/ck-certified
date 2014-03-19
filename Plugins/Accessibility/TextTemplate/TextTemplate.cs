@@ -17,6 +17,7 @@ namespace TextTemplate
     {
         public static readonly string PlaceholderOpenTag = "{{";
         public static readonly string PlaceholderCloseTag = "}}";
+        bool _isHighlightable = false;
 
         const string CMD = "placeholder";
         TemplateEditor _editor;
@@ -53,6 +54,8 @@ namespace TextTemplate
 
         public void Start()
         {
+            if( !_isHighlightable ) return;
+
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, this );
@@ -92,12 +95,14 @@ namespace TextTemplate
             _children = new CKReadOnlyListOnIList<IHighlightableElement>( list );
             Skip = SkippingBehavior.None;
             _editor.Show();
+            _editor.Activate();
             _editor.Closed += ( o, e ) =>
             {
                 Skip = SkippingBehavior.Skip;
             };
 
-            Highlighter.Service.HighlightImmediately( this );
+            if( _isHighlightable && Highlighter.Status == InternalRunningStatus.Started )
+                Highlighter.Service.HighlightImmediately( this );
         }
 
         public void SendFormatedTemplate()

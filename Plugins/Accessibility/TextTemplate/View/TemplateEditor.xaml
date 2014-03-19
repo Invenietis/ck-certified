@@ -15,7 +15,8 @@
             ResizeMode="CanResize"
             Background="White"
             WindowStyle="ToolWindow"
-            SizeToContent="Height">
+            SizeToContent="Height"
+        >
     <Window.Resources>
         <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
         <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
@@ -50,12 +51,13 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="me:ContentControlDuFutur" x:Key="textcontrol" >
+            <Setter Property="Focusable" Value="False" />
             <Setter Property="Template">
                 <Setter.Value >
                     <ControlTemplate>
-                        <Grid ClipToBounds="False">
+                        <Grid ClipToBounds="False" >
                             <me:ClickSelectTextBox Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding Text, Mode=OneTime}" Name="textbox" />
-                            <Line StrokeDashArray="0.0 2.0 0.0" StrokeThickness="2" Stroke="{StaticResource GrayColor}" Height="1" X1="0" X2="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}" VerticalAlignment="Bottom" />
+                            <Line Focusable="False" StrokeDashArray="0.0 2.0 0.0" StrokeThickness="2" Stroke="{StaticResource GrayColor}" Height="1" X1="0" X2="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}" VerticalAlignment="Bottom" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -87,6 +89,9 @@
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
                 </Trigger>
@@ -98,9 +103,10 @@
                     <Setter Property="BorderBrush" Value="Gray"></Setter>
                     <Setter Property="Background" Value="#81b9ee"></Setter>
                 </Trigger>
+                
             </Style.Triggers>
         </Style>
-        <Style  x:Key="ok" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+        <Style x:Key="ok" BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=ValidateTemplate.IsHighlighted}" Value="true">
                     <Setter Property="Button.Foreground" Value="{Binding Source={StaticResource ResourceKey=HighlightColor}}" />

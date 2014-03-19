@@ -4,6 +4,7 @@ using HighlightModel;
 using System;
 using System.ComponentModel;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace TextTemplate
 {
@@ -56,6 +57,19 @@ namespace TextTemplate
                 if (_cancel == null) _cancel = new HighlightableCommand(FireCanceled);
 
                 return _cancel;
+            }
+        }
+
+        public void Window_KeyDown( object sender, KeyEventArgs e )
+        {
+            switch( e.Key )
+            {
+                case Key.Enter:
+                    ValidateTemplate.Execute( null );
+                    break;
+                case Key.Escape:
+                    Cancel.Execute( null );
+                    break;
             }
         }
 

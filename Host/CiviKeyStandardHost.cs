@@ -104,14 +104,21 @@ namespace Host
             var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SendInput
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{D173E013-2491-4491-BF3E-CA2F8552B5EB}" ), RunningRequirement.MustExistAndRun );//KeyboardDisplayer
 
-            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
-            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+            //Command handlers. These plugins register their protocols onto the keyboard editor.
+            //Therefor, we need them started in order to be able to create any type of Key Command.
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{418F670B-46E8-4BE2-AF37-95F43040EEA6}" ), RunningRequirement.MustExistAndRun );//KeySequenceCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{78D84978-7A59-4211-BE04-DD25B5E2FDC1}" ), RunningRequirement.MustExistAndRun );//TextTemplateCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun );//ClicCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun );//MoveMouseCommandHandler
 
             // ToDoJL
             //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler
+            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
+            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
             ctx.PluginRunner.Add( hostRequirements );
 

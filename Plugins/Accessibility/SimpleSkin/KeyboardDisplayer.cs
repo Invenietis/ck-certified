@@ -35,7 +35,7 @@ namespace SimpleSkin
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
         [RequiredService]

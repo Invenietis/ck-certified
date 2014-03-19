@@ -39,12 +39,11 @@ namespace CK.WindowManager
 
         public void DeleteButton( IWindowElement button )
         {
-
             if( TopMostService.Status == InternalRunningStatus.Started )
             {
                 TopMostService.Service.UnregisterTopMostElement( button.Window );
             }
-            button.Window.Hide();
+            button.Window.Dispatcher.Invoke( (Action)(() => button.Window.Hide()) );
         }
 
         VMUnbindButton CreateVM( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )

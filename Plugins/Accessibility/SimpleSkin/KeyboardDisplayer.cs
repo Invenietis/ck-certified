@@ -36,7 +36,7 @@ namespace SimpleSkin
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         [DynamicService( Requires = RunningRequirement.Optional )]
-        public IService<IHighlighterService> HighlighterService { get; set; }
+        public IService<IHighlighterService> Highlighter { get; set; }
 
         [RequiredService]
         public IContext Context { get; set; }
@@ -181,7 +181,7 @@ namespace SimpleSkin
         {
             UnregisterPrediction();
             UnregisterEvents();
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 UninitializeHighlighter();
                 ForEachSkin( s =>
@@ -323,7 +323,7 @@ namespace SimpleSkin
                 {
                     if( !_registeredElementInfo.ContainsKey( s.ViewModel.KeyboardVM.Keyboard.Name ) ) RegisterHighlighter( s );
                 } );
-                foreach( var element in _registeredElementInfo.Values ) HighlighterService.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
+                foreach( var element in _registeredElementInfo.Values ) Highlighter.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
                 UnregisterPrediction();
                 RegisterPrediction();
             }
@@ -339,8 +339,8 @@ namespace SimpleSkin
 
         private void InitializeHighligther()
         {
-            HighlighterService.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 ForEachSkin( RegisterHighlighter );
             }
@@ -349,27 +349,27 @@ namespace SimpleSkin
 
         private void UninitializeHighlighter()
         {
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 ForEachSkin( UnregisterHighlighter );
-                if( _miniView != null ) HighlighterService.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                if( _miniView != null ) Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
             }
-            HighlighterService.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
+            Highlighter.ServiceStatusChanged -= OnHighlighterServiceStatusChanged;
         }
 
         private void UnregisterHighlighter( SkinInfo skinInfo )
         {
-            if( HighlighterService.Status > InternalRunningStatus.Stopped )
+            if( Highlighter.Status.IsStartingOrStarted )
             {
-                HighlighterService.Service.UnregisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM );
+                Highlighter.Service.UnregisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM );
             }
         }
 
         private void RegisterHighlighter( SkinInfo skinInfo )
         {
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                HighlighterService.Service.RegisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name,
+                Highlighter.Service.RegisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name,
                     new ExtensibleHighlightableElementProxy( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM ) );
             }
         }
@@ -379,14 +379,14 @@ namespace SimpleSkin
         //if the target keyboard isn't active and isn't registered, the prediction is registered as a module (a root element)
         private void RegisterPrediction()
         {
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 if( _skins.ContainsKey( PredictionKeyboardName ) )
                 {
                     if( KeyboardContext.Status == InternalRunningStatus.Started )
                     {
                         //if the current isn't registered
-                        if( HighlighterService.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
+                        if( Highlighter.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins["Prediction"].ViewModel.KeyboardVM ) )
                         {
                             Object o = Config[KeyboardContext.Service.CurrentKeyboard.CurrentLayout]["HighlightBackground"];
                             if( o != null ) Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = o;
@@ -395,26 +395,26 @@ namespace SimpleSkin
                         }
                     }
                     Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = ColorConverter.ConvertFromString( "#FFBDCFF4" );
-                    HighlighterService.Service.RegisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
+                    Highlighter.Service.RegisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
                 }
             }
         }
 
         private void UnregisterPrediction()
         {
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 if( _skins.ContainsKey( PredictionKeyboardName ) )
                 {
                     if( KeyboardContext.Status == InternalRunningStatus.Started )
                     {
-                        if( !string.IsNullOrEmpty( _includedKeyboardName ) && HighlighterService.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins[PredictionKeyboardName].ViewModel.KeyboardVM ) )
+                        if( !string.IsNullOrEmpty( _includedKeyboardName ) && Highlighter.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins[PredictionKeyboardName].ViewModel.KeyboardVM ) )
                         {
                             _includedKeyboardName = string.Empty;
                             return;
                         }
                     }
-                    HighlighterService.Service.UnregisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
+                    Highlighter.Service.UnregisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
                     _includedKeyboardName = string.Empty;
                 }
             }
@@ -422,18 +422,18 @@ namespace SimpleSkin
 
         void RegisterInRegisteredElement( RegisteredElementInfo element )
         {
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                HighlighterService.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
+                Highlighter.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
             }
             _registeredElementInfo.Add( element.SkinInfo.ViewModel.KeyboardVM.Keyboard.Name, element );
         }
 
         void UnregisterInRegisteredElement( RegisteredElementInfo element )
         {
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                HighlighterService.Service.UnregisterInRegisteredElement( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
+                Highlighter.Service.UnregisterInRegisteredElement( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
             }
             _registeredElementInfo.Remove( element.SkinInfo.ViewModel.KeyboardVM.Keyboard.Name );
         }
@@ -517,7 +517,7 @@ namespace SimpleSkin
                 _skins.Add( e.Keyboard.Name, skin );
 
                 //Update name with Unregister and Register
-                if( HighlighterService.Status == InternalRunningStatus.Started )
+                if( Highlighter.Status == InternalRunningStatus.Started )
                 {
                     RegisteredElementInfo element;
                     if( _registeredElementInfo.TryGetValue( e.PreviousName, out element ) )
@@ -566,7 +566,7 @@ namespace SimpleSkin
             SubscribeToWindowManager( skinInfo );
             RegisterToTopMostService( skinInfo );
 
-            if( HighlighterService.Status == InternalRunningStatus.Started ) RegisterHighlighter( skinInfo );
+            if( Highlighter.Status == InternalRunningStatus.Started ) RegisterHighlighter( skinInfo );
         }
 
         void UninitializeActiveWindows( SkinInfo skin )
@@ -581,10 +581,11 @@ namespace SimpleSkin
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
             skin.Dispatcher.Invoke( (Action)(() =>
             {
+
                 //temporary 03/03/2014
                 if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
                 {
-                    HighlighterService.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                    Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                     _miniView.Hide();
                     _viewHidden = false;
                 }
@@ -599,7 +600,7 @@ namespace SimpleSkin
 
             Config.User.Set( PlacementString( skin ), placement );
 
-            if( HighlighterService.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 UnregisterHighlighter( skin );
                 RegisteredElementInfo element;
@@ -653,9 +654,9 @@ namespace SimpleSkin
                 skinInfo.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     ShowMiniView( skinInfo );
-                    if( HighlighterService.Status == InternalRunningStatus.Started )
+                    if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        HighlighterService.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
+                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
                         UnregisterHighlighter( skinInfo );
                     }
                 }), null );
@@ -694,7 +695,7 @@ namespace SimpleSkin
                 {
                     if( _miniView.Visibility != Visibility.Hidden )
                     {
-                        HighlighterService.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                         _miniView.Hide();
                     }
                 }) );

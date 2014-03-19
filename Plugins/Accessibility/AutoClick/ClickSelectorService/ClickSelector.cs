@@ -132,6 +132,7 @@ namespace CK.Plugins.AutoClick
         public void Stop()
         {
             UnregisterHighlighterService();
+            Highlighter.ServiceStatusChanged -= Highlighter_ServiceStatusChanged;
             Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
 
             _clickSelectorWindow.Close();

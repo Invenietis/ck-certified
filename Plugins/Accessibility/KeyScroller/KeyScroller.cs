@@ -269,7 +269,7 @@ namespace KeyScroller
 
         private void OnInputTriggered( ITrigger t )
         {
-            _scrollingStrategy.TriggerExternalEvent();
+            _scrollingStrategy.OnExternalEvent();
         }
     }
 }

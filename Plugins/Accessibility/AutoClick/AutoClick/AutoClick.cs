@@ -380,22 +380,22 @@ namespace CK.Plugins.AutoClick
                     case ClickInstruction.None:
                         break;
                     case ClickInstruction.RightButtonDown:
-                        MouseProcessor.CurrentPositionRightDown();
+                        MouseProcessor.RightButtonDown();
                         break;
                     case ClickInstruction.RightButtonUp:
-                        MouseProcessor.CurrentPositionRightUp();
+                        MouseProcessor.RightButtonUp();
                         break;
                     case ClickInstruction.LeftButtonDown:
-                        MouseProcessor.CurrentPositionLeftDown();
+                        MouseProcessor.LeftButtonDown();
                         break;
                     case ClickInstruction.LeftButtonUp:
-                        MouseProcessor.CurrentPositionLeftUp();
+                        MouseProcessor.LeftButtonUp();
                         break;
                     case ClickInstruction.WheelDown:
-                        MouseProcessor.CurrentPositionMiddleDown();
+                        MouseProcessor.MiddleButtonDown();
                         break;
                     case ClickInstruction.WheelUp:
-                        MouseProcessor.CurrentPositionMiddleUp();
+                        MouseProcessor.MiddleButtonUp();
                         break;
                     default:
                         break;

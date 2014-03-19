@@ -34,11 +34,12 @@ using CK.Plugin;
 namespace PointerDeviceDriver
 {
     /// <summary>
+    /// 
     /// Implementation of IPointerDeviceDriver used to Drive the Mouse in a Windows environement
     /// </summary>
     [Plugin( "{CD792CE7-9ABA-4177-858C-AF7BA5D8D5B3}", PublicName = "Pointer DeviceDriver", Version = "1.0",
      Categories = new string[] { "Advanced" },
-     Description = "Plugin that enables one to simulate a click or to catch MouseMove events." )]
+     Description = "Plugin that enables catching MouseMove events." )]
     public class MouseDriver : IPlugin, IPointerDeviceDriver
     {
         SimpleDispatchTimerWrapper _pointerPosGetter;
@@ -180,51 +181,6 @@ namespace PointerDeviceDriver
                 _pointerPosGetter = null;
             }
         }
-
-        public void MovePointer( int x, int y )
-        {
-            _syncCtx.Post( delegate( object p ) { DoMovePointer( (PointStruct)p ); }, new PointStruct( x, y ) );
-        }
-
-        static void DoMovePointer( PointStruct p )
-        {
-            // Set cursor position to specified coordinates.
-            Win32Wrapper.SetCursorPos( p.X, p.Y );
-            // Throw a low level mouse move event to tell it to the world.
-            Win32Wrapper.mouse_event( MouseEventFlags.MOVE, 0, 0, 0, 0 );
-        }
-
-        /// <summary>
-        /// Simulate a ButtonDown Event
-        /// </summary>
-        /// <param name="buttonInfo">Default button is Left, look at ButtonInfo to see available buttons</param>
-        //public void SimulateButtonDown( ButtonInfo buttonInfo, string extraInfo )
-        //{
-        //    if( buttonInfo == ButtonInfo.DefaultButton )
-        //        Win32Wrapper.mouse_event( MouseEventFlags.LEFTDOWN, 0, 0, 0, 0 );
-
-        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Right )
-        //        Win32Wrapper.mouse_event( MouseEventFlags.RIGHTDOWN, 0, 0, 0, 0 );
-
-        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
-        //        Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEDOWN, 0, 0, 0, 0 );
-        //}
-
-        /// <summary>
-        /// Simulate a ButtonUp Event
-        /// </summary>
-        /// <param name="buttonInfo">Default button is Left, look at ButtonInfo to see available buttons</param>
-        //public void SimulateButtonUp( ButtonInfo buttonInfo, string extraInfo )
-        //{
-        //    if( buttonInfo == ButtonInfo.DefaultButton )
-        //        Win32Wrapper.mouse_event( MouseEventFlags.LEFTUP, 0, 0, 0, 0 );
-
-        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Right )
-        //        Win32Wrapper.mouse_event( MouseEventFlags.RIGHTUP, 0, 0, 0, 0 );
-
-        //    if( buttonInfo == ButtonInfo.XButton && extraInfo == ButtonExtraInfo.Middle )
-        //        Win32Wrapper.mouse_event( MouseEventFlags.MIDDLEUP, 0, 0, 0, 0 );
-        //}
 
         /// <summary>
         /// Method which provides an interpretation for all hook events.

@@ -92,7 +92,7 @@ namespace MouseRadar
             _radar.Initialize();
             Pause();
             Configuration.ConfigChanged += OnConfigChanged;
-            _radar.RotationDelayExpired += (o, e) =>
+            _radar.RotationDelayExpired += ( o, e ) =>
             {
                 _yield = true;
             };
@@ -101,7 +101,7 @@ namespace MouseRadar
         public void Stop()
         {
             _radar.Dispose();
-            if( Highlighter.Status.IsStartingOrStarted )
+            if ( Highlighter.Status.IsStartingOrStarted )
                 Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
         }
 
@@ -112,7 +112,7 @@ namespace MouseRadar
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            switch( e.Key )
+            switch ( e.Key )
             {
                 case "Opacity":
                     _radar.ViewModel.Opacity = (int)e.Value / 100f;
@@ -174,14 +174,19 @@ namespace MouseRadar
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            if( beginScrollingInfo.PreviousElement != this ) //otherwise we should already be focused
-                Focus();
-            else //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, we relay the scroller's tick to the radar.
+            //When begin highlight is triggered, we have three cases : 
+            // - we are begin scrolled on, because the scroller is scrolling on the module level. In this case we focus the radar to show the user that the radar is currently being scrolled on.
+            // - we are already focused (the current action is stayonthesamelocked and beginScrollingInfo.PreviousElement == this). In this case we do nothing but tell the radar to check that its tick is still in sync with the configuration.
+            // - we are paused and the radar is the only element in the scrolling tree (the current action is Normal and beginScrollingInfo.PreviousElement == this) : we do the same as the previous case. 
+
+            if ( beginScrollingInfo.PreviousElement != this )
+                Focus(); //We are scrolling on the module level
+            else //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, or we are the only element in the scrolling tree : we relay the scroller's tick to the radar.
                 _radar.Tick( beginScrollingInfo );
 
-            if (_yield)
+            if ( _yield )
             {
-                //Once arrived at the end of the last lap, we release the scroller.
+                //Once the DelayRadar has ticked, we release the scroller.
                 scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
                 scrollingDirective.ActionTime = ActionTime.Immediate;
             }
@@ -191,11 +196,11 @@ namespace MouseRadar
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            if( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
+            if ( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
                 Blur();
 
             //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it) 
-            if( ActionType != ActionType.StayOnTheSameLocked && IsActive )
+            if ( ActionType != ActionType.StayOnTheSameLocked && IsActive )
             {
                 Pause();
                 _yield = false;

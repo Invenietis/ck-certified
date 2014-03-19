@@ -54,26 +54,6 @@ namespace CommonServices
 
         int CurrentPointerYLocation { get; }
 
-
-        /// <summary>
-        /// Moves the pointer to x,y screen coordinates.
-        /// </summary>
-        void MovePointer(int x, int y);
-
-        ///// <summary>
-        ///// Simulate a device button down
-        ///// </summary>
-        ///// <param name="btInfo">Button Informations, use DefaultButton to keep it generic</param>
-        ///// <param name="extraInfo">Used to specify custom info about a XButton, look at the current implementation</param>
-        //void SimulateButtonDown(ButtonInfo btInfo, string extraInfo);
-
-        ///// <summary>
-        ///// Simulate a device button up
-        ///// </summary>
-        ///// <param name="btInfo">Button Informations, use DefaultButton to keep it generic</param>
-        ///// <param name="extraInfo">Used to specify custom info about a XButton, look at the current implementation of IPointerDeviceDriver</param>
-        //void SimulateButtonUp(ButtonInfo btInfo, string extraInfo);
-
     }
 
     public delegate void PointerDeviceEventHandler(object sender, PointerDeviceEventArgs e);

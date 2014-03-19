@@ -50,13 +50,52 @@ namespace CommonServices
         /// </summary>
         event PointerDeviceEventHandler PointerButtonUp;
 
+        /// <summary>
+        /// Fired when the wheel is activated
+        /// </summary>
+        event WheelActionEventHandler WheelAction;
+
+        ///// <summary>
+        ///// Fired when a double click is triggered
+        ///// </summary>
+        //event PointerDeviceEventHandler PointerButtonDoubleClick;
+
         int CurrentPointerXLocation { get; }
 
         int CurrentPointerYLocation { get; }
 
     }
 
-    public delegate void PointerDeviceEventHandler(object sender, PointerDeviceEventArgs e);
+    public delegate void PointerDeviceEventHandler( object sender, PointerDeviceEventArgs e );
+    public delegate void WheelActionEventHandler( object sender, WheelActionEventArgs e );
+
+    public class WheelActionEventArgs : PointerDeviceEventArgs
+    {
+
+        public WheelActionEventArgs( int x, int y, ButtonInfo buttonInfo, string extraInfo, InputSource source, int wheelDelta )
+            : base( x, y, buttonInfo, extraInfo, source )
+        {
+            Delta = wheelDelta;
+        }
+
+        /// <summary>
+        /// A positive value means that the wheel is rolling away from the user.
+        /// A negative value means that the wheel is rolling towards the user.
+        /// </summary>
+        public int Delta { get; set; }
+
+        /// <summary>
+        /// Gets whether the action is a click (in this case, Delta == 120, see MSDN for more information)
+        /// </summary>
+        public bool IsClick
+        {
+            get
+            {
+                //120 is the value sent when the WheelAction is a click.
+                return Delta == 120;
+            }
+        }
+    }
 
     /// <summary>
     /// EventArgs which define basic parrameters for a PointerDevice action.
@@ -73,22 +112,20 @@ namespace CommonServices
         /// </summary>
         public readonly int Y;
 
+        private bool _cancel = false;
+
+        public PointerDeviceEventArgs( int x, int y, ButtonInfo buttonInfo, string extraInfo, InputSource source )
+        {
+            X = x;
+            Y = y;
+            Source = source;
+        }
+
         // Current button used, if XButton look at ExtraInfo.
         public readonly ButtonInfo ButtonInfo;
 
         // If using an XButton, specify custom info about the button, Look at the current implementation of IPointerDeviceDriver
         public readonly string ExtraInfo;
-
-        private bool _cancel = false;
-
-        public PointerDeviceEventArgs(int x, int y, ButtonInfo buttonInfo, string extraInfo, InputSource source)
-        {
-            X = x;
-            Y = y;
-            ButtonInfo = buttonInfo;
-            ExtraInfo = extraInfo;
-            Source = source;
-        }
 
         public InputSource Source { get; set; }
 

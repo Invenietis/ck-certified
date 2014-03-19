@@ -46,7 +46,7 @@ namespace KeyScroller
         /// <returns>The root of the first registered tree</returns>
         protected virtual IHighlightableElement GetUpToAbsoluteRoot()
         {
-            _currentId = -1;
+            _currentId = 0;
             _currentElementParents = new Stack<IHighlightableElement>();
 
             return RegisteredElements.FirstOrDefault();
@@ -71,7 +71,7 @@ namespace KeyScroller
             rootChildren = _currentElementParents.Peek().Children;
 
             //Returning the first child.
-            _currentId = -1;
+            _currentId = 0;
             return rootChildren.First();
         }
 

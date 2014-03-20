@@ -151,8 +151,9 @@ namespace CK.WindowManager
 
         private void DispatchWhenRequired( Dispatcher d,  Action a )
         {
+            //An Invoke is not mandatory for this service. Setting the windows synchronously in the right z-order is not necessary
             if( d.CheckAccess() ) a();
-            else d.Invoke( a );
+            else d.BeginInvoke( a );
         }
 
         public bool UnregisterTopMostElement( Window window )

@@ -162,7 +162,7 @@ namespace MouseRadar
             }
 
             //Each time the input is triggered, we reset the lapcount and the starting angle of the lap count. (thanks to that, we release the scroller in an homogenous way : X laps after the last call to SelectElement)
-            Console.Out.WriteLine( "LapCount = 0" );
+            //Console.Out.WriteLine( "LapCount = 0" );
             ViewModel.LapCount = 0;
             ViewModel.StartingAngle = ViewModel.Angle;
 

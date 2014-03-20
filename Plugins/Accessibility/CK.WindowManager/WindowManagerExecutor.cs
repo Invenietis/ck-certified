@@ -124,44 +124,44 @@ namespace CK.WindowManager
         {
             if( binding.Left != null )
             {
-                binding.Left.UndindButton.Window.Dispatcher.Invoke( (Action)( () =>
+                binding.Left.UnbindButton.Window.Dispatcher.Invoke( (Action)( () =>
                 {
-                    binding.Left.UndindButton.Move( binding.Window.Top + binding.Window.Height / 2 - binding.Left.UndindButton.Window.Width / 2, binding.Window.Left - binding.Left.UndindButton.Window.Height / 2 );
-                    binding.Left.UndindButton.Window.Show();
+                    binding.Left.UnbindButton.Move( binding.Window.Top + binding.Window.Height / 2 - binding.Left.UnbindButton.Window.Width / 2, binding.Window.Left - binding.Left.UnbindButton.Window.Height / 2 );
+                    binding.Left.UnbindButton.Window.Show();
                 } ) );
             }
             if( binding.Right != null )
             {
-                binding.Right.UndindButton.Window.Dispatcher.Invoke( (Action)(() =>
+                binding.Right.UnbindButton.Window.Dispatcher.Invoke( (Action)(() =>
                 {
-                    binding.Right.UndindButton.Move( binding.Window.Top + binding.Window.Height / 2, binding.Window.Left + binding.Window.Width - binding.Right.UndindButton.Window.Width / 2 );
-                    binding.Right.UndindButton.Window.Show(); 
+                    binding.Right.UnbindButton.Move( binding.Window.Top + binding.Window.Height / 2, binding.Window.Left + binding.Window.Width - binding.Right.UnbindButton.Window.Width / 2 );
+                    binding.Right.UnbindButton.Window.Show(); 
                 }) );          
             }
             if( binding.Bottom != null )
             {
-                binding.Bottom.UndindButton.Window.Dispatcher.Invoke( (Action)(() =>
+                binding.Bottom.UnbindButton.Window.Dispatcher.Invoke( (Action)(() =>
                 {
-                    binding.Bottom.UndindButton.Move( binding.Window.Top + binding.Window.Height - binding.Bottom.UndindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Bottom.UndindButton.Window.Width / 2 );
-                    binding.Bottom.UndindButton.Window.Show();
+                    binding.Bottom.UnbindButton.Move( binding.Window.Top + binding.Window.Height - binding.Bottom.UnbindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
+                    binding.Bottom.UnbindButton.Window.Show();
                 }) ); 
             }
             if( binding.Top != null )
             {
-                binding.Top.UndindButton.Window.Dispatcher.Invoke( (Action)(() =>
+                binding.Top.UnbindButton.Window.Dispatcher.Invoke( (Action)(() =>
                 {
-                    binding.Top.UndindButton.Move( binding.Window.Top - binding.Top.UndindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Top.UndindButton.Window.Width / 2 );
-                    binding.Top.UndindButton.Window.Show();
+                    binding.Top.UnbindButton.Move( binding.Window.Top - binding.Top.UnbindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
+                    binding.Top.UnbindButton.Window.Show();
                 }) ); 
             }
         }
 
         void HidingButton( ISpatialBinding binding )
         {
-            if( binding.Left != null && binding.Left.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Left.UndindButton.Window.Hide();
-            if( binding.Right != null && binding.Right.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Right.UndindButton.Window.Hide();
-            if( binding.Bottom != null && binding.Bottom.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Bottom.UndindButton.Window.Hide();
-            if( binding.Top != null && binding.Top.UndindButton.Window.Visibility != Visibility.Hidden ) binding.Top.UndindButton.Window.Hide();
+            if( binding.Left != null && binding.Left.UnbindButton.Window.Visibility != Visibility.Hidden ) binding.Left.UnbindButton.Window.Hide();
+            if( binding.Right != null && binding.Right.UnbindButton.Window.Visibility != Visibility.Hidden ) binding.Right.UnbindButton.Window.Hide();
+            if( binding.Bottom != null && binding.Bottom.UnbindButton.Window.Visibility != Visibility.Hidden ) binding.Bottom.UnbindButton.Window.Hide();
+            if( binding.Top != null && binding.Top.UnbindButton.Window.Visibility != Visibility.Hidden ) binding.Top.UnbindButton.Window.Hide();
         }
 
         void ResizeHorizontaly( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )

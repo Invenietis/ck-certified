@@ -38,6 +38,8 @@ using CK.Core;
 using System.ComponentModel;
 using Common.Logging;
 using CK.Context.SemVer;
+using System.Windows.Media.Imaging;
+using System.Windows.Interop;
 
 namespace Host
 {
@@ -138,6 +140,11 @@ namespace Host
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapSource>>( new BitmapSourceSerializer<BitmapSource>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<InteropBitmap>>( new BitmapSourceSerializer<InteropBitmap>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<CachedBitmap>>( new BitmapSourceSerializer<CachedBitmap>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapFrame>>( new BitmapSourceSerializer<BitmapFrame>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapImage>>( new BitmapSourceSerializer<BitmapImage>() );
                 //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 

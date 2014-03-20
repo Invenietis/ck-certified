@@ -372,7 +372,7 @@ namespace SimpleSkin.ViewModels
                 {
                     source = ( (Image)o ).Source.ToString();
                 }
-                else if( o is InteropBitmap )
+                else if( o is BitmapSource )
                 {
                     ( (ImageSource)o ).Freeze();
                     source = o;

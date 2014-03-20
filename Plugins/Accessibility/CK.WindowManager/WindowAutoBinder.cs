@@ -23,13 +23,9 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IPointerDeviceDriver PointerDeviceDriver { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<ICommonTimer> CommonTimer { get; set; }
-
         const int XY_VARIATION_ACCEPTED = 5;
 
         Timer _timer = null;
-        IWindowElement _window = null;
 
         public double AttractionRadius = 65;
 

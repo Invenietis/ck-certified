@@ -79,7 +79,7 @@ namespace CK.Keyboard
         {
             get { return _keyboards.Current; }
             set 
-            {      
+            {
                 _keyboards.Current = (Keyboard)value;
             }
         }

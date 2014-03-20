@@ -81,8 +81,8 @@ namespace CK.WindowManager.Model
         ISpatialBinding SpatialBinding { get; }
 
         /// <summary>
-        /// Gets the associate UnbindButton
+        /// Gets the associated UnbindButton
         /// </summary>
-        IWindowElement UndindButton { get; }
+        IWindowElement UnbindButton { get; }
     }
 }

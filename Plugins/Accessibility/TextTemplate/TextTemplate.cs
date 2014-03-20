@@ -39,7 +39,7 @@ namespace TextTemplate
             _viewModel.TemplateValidated += ( o, e ) =>
             {
                 string generatedText = _viewModel.Template.GenerateFormatedString();
-                Console.WriteLine( generatedText );
+                //Console.WriteLine( generatedText );
                 _editor.WindowState = System.Windows.WindowState.Minimized;
                 SendFormatedTemplate();
                 _editor.Close();

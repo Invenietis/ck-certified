@@ -294,25 +294,25 @@ namespace CK.WindowManager
 
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Bottom.UndindButton );
+                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Bottom.UnbindButton );
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Left.UndindButton );
+                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Left.UnbindButton );
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Top.UndindButton );
+                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Top.UnbindButton );
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Right.UndindButton );
+                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Right.UnbindButton );
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );
                     }
@@ -383,11 +383,11 @@ namespace CK.WindowManager
             public SpatialBindingWithButtonElement( ISpatialBinding binding, IWindowElement button )
             {
                 SpatialBinding = binding;
-                UndindButton = button;
+                UnbindButton = button;
             }
 
             public ISpatialBinding SpatialBinding { get; private set; }
-            public IWindowElement UndindButton { get; private set; }
+            public IWindowElement UnbindButton { get; private set; }
         }
 
         class SerializableBindings : IStructuredSerializable

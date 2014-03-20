@@ -39,14 +39,14 @@ namespace MouseRadar
 
         void Pause()
         {
-            Console.WriteLine( "Pause" );
+            //Console.WriteLine( "Pause" );
 
             _radar.Pause();
         }
 
         void Resume()
         {
-            Console.WriteLine( "Resume" );
+            //Console.WriteLine( "Resume" );
 
             ActionType = ActionType.StayOnTheSameLocked;
             Debug.Assert( _radar.CurrentStep == RadarStep.Paused );

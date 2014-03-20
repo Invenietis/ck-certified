@@ -61,7 +61,7 @@ namespace Host.Services.Helper
             //Set the transparency
             Bitmap i =(Bitmap) Bitmap.FromStream( stream );
             stream.Seek( 0, SeekOrigin.Begin );
-            i.MakeTransparent();
+            i.MakeTransparent(System.Drawing.Color.Black);
             i.Save( stream, ImageFormat.Png );
             stream.Seek( 0, SeekOrigin.Begin );
             

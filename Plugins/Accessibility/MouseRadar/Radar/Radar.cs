@@ -127,8 +127,6 @@ namespace MouseRadar
                 _timerTranslate.Interval = new TimeSpan( (int)translateNanoTickTime );
 
                 UpdateRotationDelay();
-                //Console.Out.WriteLine( "Actual New beat : " + rotateNanoTickTime );
-                //Console.Out.WriteLine( "" );
             }
         }
 
@@ -326,7 +324,7 @@ namespace MouseRadar
             }
 
             if( collision != ScreenBound.None ) ScreenBoundCollide( collision );
-            _mouseDriver.MovePointer( moveX, moveY );
+            CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( moveX, moveY );
         }
 
         Point GetTranslation( int x, int y )

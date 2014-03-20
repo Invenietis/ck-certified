@@ -38,7 +38,7 @@ namespace SimpleSkinEditor
             for( int i = from; i <= to; i++ ) yield return i;
         }
 
-        public IEnumerable<double> FontSizes { get { return _sizes == null ? _sizes = GetSizes( 10, 30 ) : _sizes; } }
+        public IEnumerable<double> FontSizes { get { return _sizes == null ? _sizes = GetSizes( 10, 50 ) : _sizes; } }
 
         public double FontSize
         {

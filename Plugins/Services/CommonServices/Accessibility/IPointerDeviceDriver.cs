@@ -119,6 +119,8 @@ namespace CommonServices
             X = x;
             Y = y;
             Source = source;
+            ExtraInfo = extraInfo;
+            ButtonInfo = buttonInfo;
         }
 
         // Current button used, if XButton look at ExtraInfo.
@@ -155,7 +157,4 @@ namespace CommonServices
         DefaultButton = 1048576,
         XButton = 2097152
     }
-
-
-
 }

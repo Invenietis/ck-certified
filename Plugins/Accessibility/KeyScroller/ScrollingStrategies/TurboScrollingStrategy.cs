@@ -37,7 +37,7 @@ namespace KeyScroller
             : base( timer, elements, configuration )
         {
             _normalInterval = _timer.Interval;
-            TurboInterval = _configuration.User.GetOrSet<double>( "TurboSpeed", 100 );
+            TurboInterval = (double)_configuration.User.GetOrSet( "TurboSpeed", 100 );
             _normalSpeedTimer = new Timer();
             _normalSpeedTimer.Interval = 5000;
             _normalSpeedTimer.Elapsed += ( o, e ) => SetTurboWithCheck();

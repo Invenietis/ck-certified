@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Threading;
 using CK.Plugin.Config;
 using HighlightModel;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -16,10 +17,10 @@ namespace KeyScroller
     public class TurboScrollingStrategy : OneByOneScrollingStrategy
     {
         const string StrategyName = "TurboScrollingStrategy";
-        TimeSpan _normalInterval;
-        DispatcherTimer _normalSpeedTimer;
+        double _normalInterval;
+        Timer _normalSpeedTimer;
 
-        public TimeSpan TurboInterval { get; private set; }
+        public double TurboInterval { get; private set; }
         bool IsTurboMode
         {
             get
@@ -32,15 +33,15 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public TurboScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public TurboScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
             _normalInterval = _timer.Interval;
-            TurboInterval = new TimeSpan( 0, 0, 0, 0, _configuration.User.GetOrSet( "TurboSpeed", 100 ) );
-            _normalSpeedTimer = new DispatcherTimer( DispatcherPriority.Normal );
-            _normalSpeedTimer.Interval = new TimeSpan( 0, 0, 0, 0, 5000 );
-            _normalSpeedTimer.Tick += ( o, e ) => SetTurboWithCheck();
-            _timer.Tick += ( o, e ) => { if( IsTurboMode ) SetTurboWithCheck(); };
+            TurboInterval = _configuration.User.GetOrSet<double>( "TurboSpeed", 100 );
+            _normalSpeedTimer = new Timer();
+            _normalSpeedTimer.Interval = 5000;
+            _normalSpeedTimer.Elapsed += ( o, e ) => SetTurboWithCheck();
+            _timer.Elapsed += ( o, e ) => { if ( IsTurboMode ) SetTurboWithCheck(); };
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace KeyScroller
             {
                 if( e.Key == "Speed" )
                 {
-                    var newInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
+                    var newInterval = (double)e.Value;
                     if( !IsTurboMode ) _normalInterval = newInterval;
                     else
                     {
@@ -75,7 +76,7 @@ namespace KeyScroller
                 }
                 if( e.Key == "TurboSpeed" )
                 {
-                    TurboInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
+                    TurboInterval =  (double)e.Value;
                     if( _timer.Interval != _normalInterval ) SetTurboWithCheck();
                 }
             }

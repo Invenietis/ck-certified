@@ -74,11 +74,11 @@ namespace KeyScroller
                     if ( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new TurboScrollingStrategy( _timer, _registeredElements, Configuration );
 
-                case "SimpleScrollingStrategy":
+                case "OneByOneScrollingStrategy":
                     if ( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new OneByOneScrollingStrategy( _timer, _registeredElements, Configuration );
 
-                case "SplitScrollingStrategy":
+                case "HalfZoneScrollingStrategy":
                     if ( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new HalfZoneScrollingStrategy( _timer, _registeredElements, Configuration );
 

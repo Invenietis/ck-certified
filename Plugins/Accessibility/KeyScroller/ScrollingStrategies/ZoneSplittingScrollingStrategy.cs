@@ -41,7 +41,10 @@ namespace KeyScroller
                 parentObj = _currentElementParents.Peek();
                 parentSibblings = parentObj.Children;
             }
-            else parentSibblings = RegisteredElements;
+            else
+            {
+                parentSibblings = RegisteredElements;
+            }
 
             // if it's a splitted zone, "insert" it in the model logically
             if( parent is VMSplitZone )
@@ -129,7 +132,7 @@ namespace KeyScroller
                 {
                     _nextElement = GetStayOnTheSame( elements );
                 }
-                else if( _currentId < 0 || actionType != ActionType.EnterChild )
+                else if( _currentId < 0 || actionType != ActionType.EnterChild && elements.Count( he => he.Skip != SkippingBehavior.Skip ) > 1 )
                 {
                     // if it's the first iteration, or if we just have to go to the next sibbling
                     VMSplitZone splitZone = null;

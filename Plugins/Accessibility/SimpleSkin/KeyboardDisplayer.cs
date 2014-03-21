@@ -695,7 +695,8 @@ namespace SimpleSkin
                 {
                     if( _miniView.Visibility != Visibility.Hidden )
                     {
-                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                        if( Highlighter.Status.IsStartingOrStarted)
+                            Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                         _miniView.Hide();
                     }
                 }) );

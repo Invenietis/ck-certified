@@ -8,12 +8,14 @@
     <PluginData>
       <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
         <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Keyboard Name="Clavier-souris">
+          <Keyboard Name="Clavier-souris" IsCurrent="1" IsActive="True">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="MustExistAndRun"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMoveMouseCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
@@ -37,31 +39,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Up-Left" />
+                        <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UL, 40</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Up-Left" />
+                        <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UL, 20</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Up-Left" />
+                        <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UL, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Up-Left" />
+                        <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UL, 30</Cmd>
@@ -69,10 +86,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/top-left.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -81,31 +96,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Up" />
+                        <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:U, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Up" />
+                        <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:U, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Up" />
+                        <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:U, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Up" />
+                        <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:U, 15</Cmd>
@@ -113,10 +143,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/top.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -125,31 +153,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Up-Right" />
+                        <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UR, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Up-Right" />
+                        <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UR, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Up-Right" />
+                        <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UR, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Up-Right" />
+                        <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:UR, 15</Cmd>
@@ -157,10 +200,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/top-right.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -179,31 +220,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Left" />
+                        <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:L, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Left" />
+                        <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:L, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Left" />
+                        <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:L, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Left" />
+                        <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:L, 15</Cmd>
@@ -211,10 +267,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/left.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -223,31 +277,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Right" />
+                        <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:R, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Right" />
+                        <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:R, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Right" />
+                        <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:R, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Right" />
+                        <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:R, 15</Cmd>
@@ -255,10 +324,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/right.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -277,31 +344,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Left-Bottom" />
+                        <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BL, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Bottom-Left" />
+                        <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BL, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Bottom-Left" />
+                        <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BL, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Left-Bottom" />
+                        <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BL, 15</Cmd>
@@ -309,10 +391,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/left-bottom.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -321,31 +401,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Bottom" />
+                        <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:B, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Bottom" />
+                        <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:B, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Bottom" />
+                        <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:B, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Bottom" />
+                        <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:B, 15</Cmd>
@@ -353,10 +448,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/bottom.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -365,31 +458,46 @@
                   <Key>
                     <KeyModes>
                       <KeyMode Mode="Mini" Enabled="true" Description="">
-                        <KeyUp Label="Right-Bottom" />
+                        <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BR, 30</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="Rapide" Enabled="true" Description="">
-                        <KeyUp Label="Right-Bottom" />
+                        <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BR, 10</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="SuperRapide" Enabled="true" Description="">
-                        <KeyUp Label="Right-Bottom" />
+                        <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BR, 3</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
-                        <KeyUp Label="Right-Bottom" />
+                        <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
                             <Cmd>movemouse:BR, 15</Cmd>
@@ -397,10 +505,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-                              <Image Source="pack://application:,,,/SimpleSkin;component/Images/arrows/right-bottom.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
-                            </data>
-                            <data key="DisplayType" type="String">Image</data>
+                            <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -490,6 +596,7 @@
                             <data key="Image" type="Structured" typeName="System.Windows.Controls.Image, PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                               <Image Source="pack://application:,,,/SimpleSkin;component/Images/clics/dragdrop.png" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
                             </data>
+                            <data key="DisplayType" type="String">Image</data>
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -646,21 +753,27 @@
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="5" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="110" Y="5" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="215" Y="5" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
@@ -671,14 +784,18 @@
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="110" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="215" Y="110" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
@@ -689,21 +806,27 @@
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="215" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="110" Y="215" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="215" Y="215" W="100" H="100" Visible="true">
                           <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
+                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                              <data key="FontSize" type="Double">35</data>
+                            </p>
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
@@ -828,6 +951,9 @@
                     <data key="InsideBorderColor" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
                       <Color xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">#00000000</Color>
                     </data>
+                  </p>
+                  <p guid="66ad1d1c-bf19-405d-93d3-30ca39b9e52f" version="1.0.0" name="Keyboard editor">
+                    <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
                   </p>
                 </PluginsData>
               </Layout>
@@ -2264,17 +2390,17 @@
               </Layout>
             </Layouts>
           </Keyboard>
-          <Keyboard Name="Azerty" IsCurrent="1" IsActive="True">
+          <Keyboard Name="Azerty">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
-                <ServiceRequirement AssemblyQualifiedName="CK.Plugins.SendInputDriver.ISendStringService, SendInputDriver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IHelpCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IDynCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
-                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IChangeKeyboardCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IDynCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IHelpCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CK.Plugins.SendInputDriver.ISendStringService, SendInputDriver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
@@ -3995,8 +4121,8 @@
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                            <data key="DisplayType" type="String">Label</data>
-                            <data key="Image" type="null" />
+                            <data key="DisplayType" type="String">Image</data>
+                            <data key="Image" type="String">pack://application:,,,/SimpleSkin;component/Images/padlock.png</data>
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -5503,7 +5629,7 @@
               </Zone>
             </Zones>
             <Layouts>
-              <Layout IsCurrent="true" Name="" Width="938" Height="325">
+              <Layout IsCurrent="true" Name="" Width="935" Height="280">
                 <RequirementLayer Name="Layout">
                   <PluginRequirements></PluginRequirements>
                   <ServiceRequirements></ServiceRequirements>
@@ -5515,49 +5641,49 @@
                   <Zone Name="Numéros">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="2" Y="50" W="75" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="2" Y="5" W="75" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="80" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="80" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="135" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="135" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="190" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="190" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="245" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="245" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="300" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="300" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="355" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="355" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="" X="410" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="410" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
-                        <LayoutKeyMode Mode="" X="465" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="465" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="" X="520" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="520" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="575" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="575" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="630" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="630" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="685" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="685" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
-                        <LayoutKeyMode Mode="" X="740" Y="50" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="740" Y="5" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="14">
-                        <LayoutKeyMode Mode="" X="795" Y="50" W="75" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="795" Y="5" W="75" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">45</data>
@@ -5573,7 +5699,7 @@
                   <Zone Name="{Tab}azertyuiop{enter}">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="2" Y="105" W="100" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="2" Y="60" W="100" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">35</data>
@@ -5618,10 +5744,10 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="105" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="105" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="160" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="160" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
                         <LayoutKeyMode Mode="agrave" X="215" Y="105" W="50" H="50" Visible="true">
@@ -5651,16 +5777,16 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="215" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="215" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="270" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="270" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="325" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="325" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="380" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="380" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
                         <LayoutKeyMode Mode="agrave" X="435" Y="105" W="50" H="50" Visible="true">
@@ -5690,7 +5816,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="435" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="435" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
                         <LayoutKeyMode Mode="agrave" X="490" Y="105" W="50" H="50" Visible="true">
@@ -5720,7 +5846,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="490" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="490" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
                         <LayoutKeyMode Mode="agrave" X="545" Y="105" W="50" H="50" Visible="true">
@@ -5759,19 +5885,19 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="545" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="545" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="600" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="600" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="655" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="655" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="710" Y="105" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="710" Y="60" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
-                        <LayoutKeyMode Mode="" X="785" Y="105" W="85" H="105" Visible="true">
+                        <LayoutKeyMode Mode="" X="785" Y="60" W="85" H="105" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">50</data>
@@ -5797,7 +5923,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="160" W="120" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="2" Y="115" W="120" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">25</data>
@@ -5806,40 +5932,40 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="125" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="125" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="180" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="180" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="235" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="235" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="290" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="290" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="345" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="345" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="400" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="400" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="" X="455" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="455" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
-                        <LayoutKeyMode Mode="" X="510" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="510" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="" X="565" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="565" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="620" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="620" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="675" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="675" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="730" Y="160" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="730" Y="115" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -5859,7 +5985,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="215" W="100" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="2" Y="170" W="100" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">40</data>
@@ -5871,25 +5997,25 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="105" Y="215" W="50" H="25" Visible="true" />
+                        <LayoutKeyMode Mode="" X="105" Y="170" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="105" Y="240" W="50" H="25" Visible="true" />
+                        <LayoutKeyMode Mode="" X="105" Y="195" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="160" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="160" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="215" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="215" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="270" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="270" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="325" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="325" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="" X="380" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="380" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
                         <LayoutKeyMode Mode="tilde" X="435" Y="215" W="50" H="50" Visible="true">
@@ -5901,19 +6027,19 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="435" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="435" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="" X="490" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="490" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="545" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="545" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="600" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="600" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="655" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="655" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
                         <LayoutKeyMode Mode="shift" X="710" Y="215" W="50" H="50" Visible="true">
@@ -5929,7 +6055,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="710" Y="215" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="710" Y="170" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">40</data>
@@ -5941,7 +6067,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="14">
-                        <LayoutKeyMode Mode="" X="820" Y="215" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="820" Y="170" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -5960,10 +6086,10 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="270" W="75" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="2" Y="225" W="75" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="80" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="80" Y="225" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
@@ -5982,13 +6108,13 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="135" Y="270" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="135" Y="225" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="190" Y="270" W="350" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="190" Y="225" W="350" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="545" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="545" Y="225" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
@@ -6007,7 +6133,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="600" Y="270" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="600" Y="225" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
                         <LayoutKeyMode Mode="ctrl" X="655" Y="270" W="50" H="50" Visible="true">
@@ -6022,14 +6148,14 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="655" Y="270" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="655" Y="225" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
                   <Zone Name="Fleches">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="765" Y="215" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="765" Y="170" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6038,7 +6164,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="710" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="710" Y="225" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6047,7 +6173,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="765" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="765" Y="225" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6056,7 +6182,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="820" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="820" Y="225" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6072,7 +6198,7 @@
                   <Zone Name="Fonctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="880" Y="50" W="50" H="25" Visible="true">
+                        <LayoutKeyMode Mode="" X="880" Y="5" W="50" H="25" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
@@ -6091,31 +6217,31 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="880" Y="75" W="50" H="25" Visible="true" />
+                        <LayoutKeyMode Mode="" X="880" Y="30" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="880" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="880" Y="60" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="880" Y="160" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="880" Y="115" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="880" Y="215" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="880" Y="170" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="880" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="880" Y="225" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>

@@ -691,7 +691,7 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            _miniView.Dispatcher.Invoke( (Action)(() =>
+            _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     if( _miniView.Visibility != Visibility.Hidden )
                     {
@@ -703,7 +703,7 @@ namespace SimpleSkin
 
             foreach( var skin in _skins.Values )
             {
-                skin.Dispatcher.Invoke( (Action)(() =>
+                skin.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     skin.Skin.WindowState = WindowState.Normal;
                 }), null );

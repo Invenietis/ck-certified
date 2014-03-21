@@ -8,7 +8,7 @@
     <PluginData>
       <p guid="2ed1562f-2416-45cb-9fc8-eef941e3edbc" version="2.5.2" name="CK.KeyboardContext">
         <data key="KeyboardCollection" type="Structured" typeName="CK.Keyboard.KeyboardCollection, CK.Keyboard, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Keyboard Name="Clavier-souris" IsCurrent="1" IsActive="True">
+          <Keyboard Name="Clavier-souris">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>
@@ -2390,7 +2390,7 @@
               </Layout>
             </Layouts>
           </Keyboard>
-          <Keyboard Name="Azerty">
+          <Keyboard Name="Azerty" IsCurrent="1" IsActive="True">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
               <ServiceRequirements>

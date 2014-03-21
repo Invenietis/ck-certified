@@ -254,14 +254,19 @@ namespace CK.WindowManager
             if( binding != null )
             {
                 // The Window that moves first
+<<<<<<< f-roadmap-2013
+                foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
+                    window.Restore();
+=======
                 foreach ( ISpatialBinding descendants in binding.AllDescendants() )
                 {
                     descendants.Window.Restore();
-                    if( descendants.Top != null && !descendants.Top.UnbindButton.Window.IsVisible ) descendants.Top.UnbindButton.Window.Show();
-                    if( descendants.Bottom != null && !descendants.Bottom.UnbindButton.Window.IsVisible ) descendants.Bottom.UnbindButton.Window.Show();
-                    if( descendants.Right != null && !descendants.Right.UnbindButton.Window.IsVisible ) descendants.Right.UnbindButton.Window.Show();
-                    if( descendants.Left != null && !descendants.Left.UnbindButton.Window.IsVisible ) descendants.Left.UnbindButton.Window.Show();
+                    if( descendants.Top != null && descendants.Top.UnbindButton.Window.WindowState != WindowState.Normal ) descendants.Top.UnbindButton.Restore();
+                    if( descendants.Bottom != null && descendants.Bottom.UnbindButton.Window.WindowState != WindowState.Normal ) descendants.Bottom.UnbindButton.Restore();
+                    if( descendants.Right != null && descendants.Right.UnbindButton.Window.WindowState != WindowState.Normal ) descendants.Right.UnbindButton.Restore();
+                    if( descendants.Left != null && descendants.Left.UnbindButton.Window.WindowState != WindowState.Normal ) descendants.Left.UnbindButton.Restore();
                 }
+>>>>>>> local
             }
         }
 
@@ -270,14 +275,19 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
+<<<<<<< f-roadmap-2013
+                foreach( IWindowElement window in binding.AllDescendants().Select( x => x.Window ) )
+                    window.Minimize();
+=======
                 foreach ( ISpatialBinding descendants in binding.AllDescendants() )
                 {
                     descendants.Window.Minimize();
-                    if( descendants.Top != null && descendants.Top.UnbindButton.Window.IsVisible ) descendants.Top.UnbindButton.Window.Hide();
-                    if( descendants.Bottom != null && descendants.Bottom.UnbindButton.Window.IsVisible ) descendants.Bottom.UnbindButton.Window.Hide();
-                    if( descendants.Right != null && descendants.Right.UnbindButton.Window.IsVisible ) descendants.Right.UnbindButton.Window.Hide();
-                    if( descendants.Left != null && descendants.Left.UnbindButton.Window.IsVisible ) descendants.Left.UnbindButton.Window.Hide();
+                    if( descendants.Top != null && descendants.Top.UnbindButton.Window.WindowState != WindowState.Minimized ) descendants.Top.UnbindButton.Minimize();
+                    if( descendants.Bottom != null && descendants.Bottom.UnbindButton.Window.WindowState != WindowState.Minimized ) descendants.Bottom.UnbindButton.Minimize();
+                    if( descendants.Right != null && descendants.Right.UnbindButton.Window.WindowState != WindowState.Minimized ) descendants.Right.UnbindButton.Minimize();
+                    if( descendants.Left != null && descendants.Left.UnbindButton.Window.WindowState != WindowState.Minimized ) descendants.Left.UnbindButton.Minimize();
                 }
+>>>>>>> local
             }
         }
 

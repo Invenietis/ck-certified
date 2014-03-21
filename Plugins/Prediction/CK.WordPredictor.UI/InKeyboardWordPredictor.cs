@@ -79,6 +79,7 @@ namespace CK.WordPredictor.UI
                 if( PredictionKeyboard == null ) PredictionKeyboard = Context.Keyboards.Create( "Prediction" );
             }
             PredictionKeyboard.CurrentLayout.H = 50;
+            PredictionKeyboard.CurrentLayout.W = 800;
             PredictionKeyboard.IsActive = true;
             Feature.AutonomousKeyboardPredictionFactory.RemovePredictionZone( PredictionKeyboard );
             Feature.AutonomousKeyboardPredictionFactory.CreatePredictionZone( PredictionKeyboard, Feature.MaxSuggestedWords );

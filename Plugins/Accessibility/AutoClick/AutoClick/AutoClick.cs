@@ -183,6 +183,9 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
+            WindowBinder.Service.Unbind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), false );
+            TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+            WindowManager.Service.UnregisterWindow( "AutoClick" );
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             UnregisterEvents();
             Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );

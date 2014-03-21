@@ -134,12 +134,12 @@ namespace CK.WindowManager.Model
 
         public void Minimize()
         {
-            DispatchWhenRequired( () => _w.WindowState = WindowState.Minimized );
+            DispatchWhenRequired( () => _w.WindowState = WindowState.Minimized, false );
         }
 
         public void Restore()
         {
-            DispatchWhenRequired( () => _w.WindowState = WindowState.Normal );
+            DispatchWhenRequired( () => _w.WindowState = WindowState.Normal, false );
         }
 
         private T DispatchWhenRequired<T>( Func<T> f )
@@ -149,10 +149,16 @@ namespace CK.WindowManager.Model
             return (T)Dispatcher.Invoke( f );
         }
 
-        private void DispatchWhenRequired( Action d )
+        private void DispatchWhenRequired( Action d, bool synchronous = true )
         {
             if( Dispatcher.CheckAccess() ) d();
-            else Dispatcher.Invoke( d );
+            else
+            {
+                if( synchronous )
+                    Dispatcher.Invoke( d );
+                else
+                    Dispatcher.BeginInvoke( d );
+            }
         }
 
         class DisableElementEvents : IDisposable

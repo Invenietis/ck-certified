@@ -43,7 +43,6 @@ namespace CK.WindowManager.Model
             {
                 Window.Dispatcher.BeginInvoke( new Action( () =>
                 {
-
                     Window.Opacity = .8;
                     Window.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromRgb( 152, 120, 152 ) );
                     Window.ResizeMode = ResizeMode.NoResize;

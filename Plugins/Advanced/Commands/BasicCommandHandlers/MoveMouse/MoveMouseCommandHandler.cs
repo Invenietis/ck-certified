@@ -105,15 +105,16 @@ namespace BasicCommandHandlers
                 case "U":
                     motion = () =>
                     {
-                        PointerDriver.Service.MovePointer(
+                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( 
                             PointerDriver.Service.CurrentPointerXLocation,
                             PointerDriver.Service.CurrentPointerYLocation - STEP );
+
                     };
                     break;
                 case "R":
                     motion = () =>
                     {
-                        PointerDriver.Service.MovePointer(
+                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition(
                             PointerDriver.Service.CurrentPointerXLocation + STEP,
                             PointerDriver.Service.CurrentPointerYLocation );
                     };
@@ -121,7 +122,7 @@ namespace BasicCommandHandlers
                 case "B":
                     motion = () =>
                     {
-                        PointerDriver.Service.MovePointer(
+                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition(
                             PointerDriver.Service.CurrentPointerXLocation,
                             PointerDriver.Service.CurrentPointerYLocation + STEP );
                     };
@@ -129,7 +130,7 @@ namespace BasicCommandHandlers
                 case "L":
                     motion = () =>
                     {
-                        PointerDriver.Service.MovePointer(
+                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition(
                             PointerDriver.Service.CurrentPointerXLocation - STEP,
                             PointerDriver.Service.CurrentPointerYLocation );
                     };
@@ -160,7 +161,7 @@ namespace BasicCommandHandlers
                 {
                     int x = (int)( PointerDriver.Service.CurrentPointerXLocation + ( STEP * Math.Cos( angle ) ) );
                     int y = (int)( PointerDriver.Service.CurrentPointerYLocation + ( STEP * Math.Sin( angle ) ) );
-                    PointerDriver.Service.MovePointer( x, y );
+                    CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( x, y );
                 };
             }
             #endregion

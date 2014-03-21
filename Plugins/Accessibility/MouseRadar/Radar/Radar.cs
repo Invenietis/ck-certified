@@ -111,28 +111,26 @@ namespace MouseRadar
 
         double weight = 40;
 
-        void ProcessScrollingTick( TimeSpan newScrollingTick )
+        void ProcessScrollingTick( double newScrollingTick )
         {
             //Making sure the inner timers don't get a tick interval < 1 ms
-            if( newScrollingTick.TotalMilliseconds < weight ) newScrollingTick = new TimeSpan( 0, 0, 0, 0, (int)weight );
+            if( newScrollingTick < weight ) newScrollingTick = (double)weight;
 
-            if( newScrollingTick.TotalMilliseconds != _previousScrollingTick.TotalMilliseconds )
+            if( newScrollingTick != _previousScrollingTick )
             {
                 _previousScrollingTick = newScrollingTick;
 
-                double rotateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
+                double rotateNanoTickTime = newScrollingTick / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
                 _timerRotate.Interval = new TimeSpan( (long)rotateNanoTickTime );
 
-                double translateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
+                double translateNanoTickTime = newScrollingTick / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
                 _timerTranslate.Interval = new TimeSpan( (int)translateNanoTickTime );
 
                 UpdateRotationDelay();
-                //Console.Out.WriteLine( "Actual New beat : " + rotateNanoTickTime );
-                //Console.Out.WriteLine( "" );
             }
         }
 
-        TimeSpan _previousScrollingTick = new TimeSpan( 0 );
+        double _previousScrollingTick = 0;
         internal void Tick( BeginScrollingInfo scrollingInfo )
         {
             ProcessScrollingTick( scrollingInfo.TickInterval );
@@ -164,7 +162,7 @@ namespace MouseRadar
             }
 
             //Each time the input is triggered, we reset the lapcount and the starting angle of the lap count. (thanks to that, we release the scroller in an homogenous way : X laps after the last call to SelectElement)
-            Console.Out.WriteLine( "LapCount = 0" );
+            //Console.Out.WriteLine( "LapCount = 0" );
             ViewModel.LapCount = 0;
             ViewModel.StartingAngle = ViewModel.Angle;
 
@@ -326,7 +324,7 @@ namespace MouseRadar
             }
 
             if( collision != ScreenBound.None ) ScreenBoundCollide( collision );
-            _mouseDriver.MovePointer( moveX, moveY );
+            CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( moveX, moveY );
         }
 
         Point GetTranslation( int x, int y )

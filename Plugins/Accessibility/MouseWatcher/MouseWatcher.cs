@@ -38,7 +38,7 @@ namespace MouseWatcher
     /// </summary>
     [Plugin( "{D4D8660C-973B-46d3-8414-6FCC02AD74F5}", PublicName = "Mouse Watcher", Version = "1.0.0", Categories = new string[] { "Advanced" } )]
     public class MouseWatcher : IPlugin, IMouseWatcher
-    {        
+    {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IPointerDeviceDriver MouseDriver { get; set; }
 
@@ -52,40 +52,42 @@ namespace MouseWatcher
         public bool IsPaused
         {
             get { return _isPaused; }
-            set 
-            { 
+            set
+            {
                 _isPaused = value;
-                
-                if( value ) ResetAndStopAllWatches();
+
+                if ( value ) ResetAndStopAllWatches();
                 else LaunchTimers();
             }
         }
 
         private int _countDownDuration;
-        public int CountDownDuration { 
-            get { return _countDownDuration; } 
-            set 
+        public int CountDownDuration
+        {
+            get { return _countDownDuration; }
+            set
             {
-                if( value < 100 )
+                if ( value < 100 )
                     _countDownDuration = 100;
                 else
                     _countDownDuration = value;
-                if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( "CountDownDuration" ) );
-            } 
+                if ( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( "CountDownDuration" ) );
+            }
         }
 
         private int _timeBeforeCountDownStarts;
-        public int TimeBeforeCountDownStarts { 
-            get { return _timeBeforeCountDownStarts; } 
-            set 
+        public int TimeBeforeCountDownStarts
+        {
+            get { return _timeBeforeCountDownStarts; }
+            set
             {
-                if( value < 100 )
+                if ( value < 100 )
                     _timeBeforeCountDownStarts = 100;
                 else
                     _timeBeforeCountDownStarts = value;
 
                 _idleTimer.Interval = new TimeSpan( 0, 0, 0, 0, TimeBeforeCountDownStarts );
-                if( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( "TimeBeforeCountDownStarts" ) );
+                if ( PropertyChanged != null ) PropertyChanged( this, new PropertyChangedEventArgs( "TimeBeforeCountDownStarts" ) );
             }
         }
 
@@ -98,13 +100,13 @@ namespace MouseWatcher
 
         public void Start()
         {
-            if( Config.User["CountDownDuration"] != null )
+            if ( Config.User["CountDownDuration"] != null )
                 CountDownDuration = (int)Config.User["CountDownDuration"];
             else CountDownDuration = 2000;
 
-            if( Config.User["TimeBeforeCountDownStarts"] != null )
+            if ( Config.User["TimeBeforeCountDownStarts"] != null )
                 TimeBeforeCountDownStarts = (int)Config.User["TimeBeforeCountDownStarts"];
-            else TimeBeforeCountDownStarts = 1500;            
+            else TimeBeforeCountDownStarts = 1500;
 
             Initialize();
         }
@@ -116,12 +118,12 @@ namespace MouseWatcher
             MouseDriver.PointerButtonDown -= new PointerDeviceEventHandler( OnPointerAction );
             MouseDriver.PointerButtonUp -= new PointerDeviceEventHandler( OnPointerAction );
             _updateTimer.Tick -= new EventHandler( onTimerTick );
-            _idleTimer.Tick -= new EventHandler( onIdleStopWatchTick );            
+            _idleTimer.Tick -= new EventHandler( onIdleStopWatchTick );
         }
 
         public void Teardown()
         {
-           
+
         }
 
         #endregion
@@ -132,14 +134,14 @@ namespace MouseWatcher
 
         public event AutoClickCountDownEventHandler StartingCountDown;
 
-        public event EventHandler  LaunchClick;
-        public event EventHandler  ClickCanceled;
-        public event EventHandler  HasPaused;
-        public event EventHandler  HasResumed;
+        public event EventHandler LaunchClick;
+        public event EventHandler ClickCanceled;
+        public event EventHandler HasPaused;
+        public event EventHandler HasResumed;
 
         public int ProgressValue
         {
-            get { return (int)((double)((double)_progressStopwatch.Elapsed.TotalMilliseconds / (double)CountDownDuration) * (double)100); }
+            get { return (int)( (double)( (double)_progressStopwatch.Elapsed.TotalMilliseconds / (double)CountDownDuration ) * (double)100 ); }
         }
 
         #endregion
@@ -154,22 +156,28 @@ namespace MouseWatcher
             //This timer is used to spot when the user hasn't been moving for a while, and then start the progressStopwatch
             _idleTimer.Interval = new TimeSpan( 0, 0, 0, 0, TimeBeforeCountDownStarts );
             _idleTimer.Tick += new EventHandler( onIdleStopWatchTick );
-           
-            MouseDriver.PointerMove += new PointerDeviceEventHandler( OnPointerAction );
-            MouseDriver.PointerButtonDown += new PointerDeviceEventHandler( OnPointerAction );
-            MouseDriver.PointerButtonUp += new PointerDeviceEventHandler( OnPointerAction );
+
+            MouseDriver.PointerMove += OnPointerAction;
+            MouseDriver.PointerButtonDown += OnPointerAction;
+            MouseDriver.PointerButtonUp += OnPointerAction;
+            //MouseDriver.PointerButtonDoubleClick += OnDoubleClick;
+            MouseDriver.WheelAction += OnWheelAction;
 
             LaunchTimers();
+        }
+
+        private void OnWheelAction( object sender, WheelActionEventArgs e )
+        {
         }
 
         private void onTimerTick( object sender, EventArgs e )
         {
             //The updateTimer has ticked, we refresh the view and check if the Progressvalue isn't already at 100
-            if( ProgressValue >= 100 )
+            if ( ProgressValue >= 100 )
             {
                 ProgressCompleted();
             }
-            else if( ProgressValueChanged != null )
+            else if ( ProgressValueChanged != null )
             {
                 ProgressValueChanged( this, new AutoClickProgressValueChangedEventArgs( ProgressValue ) );
             }
@@ -179,24 +187,24 @@ namespace MouseWatcher
         {
             LaunchTimers(); //Back to the first state
 
-            if( LaunchClick != null )
+            if ( LaunchClick != null )
                 LaunchClick( this, EventArgs.Empty );
         }
 
         private void onIdleStopWatchTick( object sender, EventArgs e )
         {
             //Entering second state
-            StartProgressWatch();            
+            StartProgressWatch();
         }
 
         private void OnPointerAction( object sender, EventArgs e )
         {
             //Back to the frst state : only idle is launched
-            if( !IsPaused )
+            if ( !IsPaused )
             {
                 LaunchTimers();
 
-                if( ClickCanceled != null )
+                if ( ClickCanceled != null )
                     ClickCanceled( this, EventArgs.Empty );
             }
         }
@@ -206,13 +214,13 @@ namespace MouseWatcher
         /// </summary>
         private void StartProgressWatch()
         {
-            if( StartingCountDown != null )
+            if ( StartingCountDown != null )
                 StartingCountDown( this, new AutoClickCountDownEventArgs( CountDownDuration ) );
 
             _idleTimer.Stop();
-            _updateTimer.Stop();            
+            _updateTimer.Stop();
             _progressStopwatch.Reset();
-            
+
             _progressStopwatch.Start();
             _updateTimer.Start();
         }
@@ -222,8 +230,8 @@ namespace MouseWatcher
         /// </summary>
         public void ResetAndStopAllWatches()
         {
-            _idleTimer.Stop();            
-            _progressStopwatch.Reset();            
+            _idleTimer.Stop();
+            _progressStopwatch.Reset();
             _updateTimer.Stop();
         }
 
@@ -234,8 +242,8 @@ namespace MouseWatcher
         {
             _progressStopwatch.Reset();
             _updateTimer.Stop();
-            _idleTimer.Stop();            
-            _idleTimer.Start();            
+            _idleTimer.Stop();
+            _idleTimer.Start();
         }
 
         #region IMouseWatcher Members
@@ -246,7 +254,7 @@ namespace MouseWatcher
         {
             ResetAndStopAllWatches();
             _isPaused = true;
-            if( HasPaused != null )
+            if ( HasPaused != null )
                 HasPaused( this, EventArgs.Empty );
         }
 
@@ -254,7 +262,7 @@ namespace MouseWatcher
         {
             LaunchTimers();
             _isPaused = false;
-            if( HasResumed != null )
+            if ( HasResumed != null )
                 HasResumed( this, EventArgs.Empty );
         }
 

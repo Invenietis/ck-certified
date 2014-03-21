@@ -40,6 +40,7 @@ using Color = System.Windows.Media.Color;
 using FontStyle = System.Windows.FontStyle;
 using Image = System.Windows.Controls.Image;
 using System.Windows.Interop;
+using CK.Windows;
 
 namespace SimpleSkin.ViewModels
 {
@@ -291,17 +292,17 @@ namespace SimpleSkin.ViewModels
         {
             _keyDownCmd = new KeyCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Push() ), null );
+                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)( () => _key.Push() ), null );
             } );
 
             _keyUpCmd = new KeyCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Release() ), null );
+                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)( () => _key.Release() ), null );
             } );
 
             _keyPressedCmd = new KeyCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Release( true ) ), null );
+                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)( () => _key.Release( true ) ), null );
             } );
         }
 
@@ -368,11 +369,11 @@ namespace SimpleSkin.ViewModels
             {
                 object source = String.Empty;
 
-                if( o is Image ) //If there is an image in the config, the SkinThread needs to deserialize the image, in order to be its owner.
+                if( o is Image ) //If there is an image in the config, the NoFocus Thread needs to deserialize the image, in order to be its owner.
                 {
                     source = ( (Image)o ).Source.ToString();
                 }
-                else if( o is InteropBitmap )
+                else if( o is BitmapSource )
                 {
                     ( (ImageSource)o ).Freeze();
                     source = o;

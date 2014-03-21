@@ -23,19 +23,15 @@ namespace FileLauncher
             {
                 _path = value;
                 if( !File.Exists( _path )) return;
-                
-                Bitmap bmp = System.Drawing.Icon.ExtractAssociatedIcon(_path).ToBitmap();
-                Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                   bmp.GetHbitmap(),
-                   IntPtr.Zero,
-                   System.Windows.Int32Rect.Empty,
-                   BitmapSizeOptions.FromWidthAndHeight(bmp.Size.Width, bmp.Size.Height));
-
+                SetIconFromPath();
                 LastAccessTime = File.GetLastAccessTime( _path );
             }
         }
 
         public ImageSource Icon { get; set; }
+
+       
+
         public bool IsLocated 
         { 
             get { return Lookup == FileLookup.Url && Uri.IsWellFormedUriString(Path, UriKind.Absolute) || File.Exists(Path); }
@@ -66,6 +62,17 @@ namespace FileLauncher
                     Lookup = FileLookup.Other;
                 }
             }
+        }
+
+        void SetIconFromPath()
+        {
+            Icon ico = System.Drawing.Icon.ExtractAssociatedIcon( _path );
+            Bitmap bmp = System.Drawing.Icon.ExtractAssociatedIcon( _path ).ToBitmap();
+            Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+               bmp.GetHbitmap(),
+               IntPtr.Zero,
+               System.Windows.Int32Rect.Empty,
+               BitmapSizeOptions.FromWidthAndHeight( bmp.Size.Width, bmp.Size.Height ) );
         }
 
         #region IComparable Members

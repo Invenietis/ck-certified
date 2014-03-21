@@ -222,7 +222,7 @@ namespace FileLauncher
 
             if( path.Length == 0 || it > INTERATION_LIMIT )
             {
-                if( it > INTERATION_LIMIT ) Console.WriteLine("Iteration limit reached !");
+                //if( it > INTERATION_LIMIT ) Console.WriteLine("Iteration limit reached !");
                 return null;
             }
             if(File.Exists(path)) return path;

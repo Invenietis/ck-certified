@@ -6,6 +6,7 @@ using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
 using System.Diagnostics;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -15,7 +16,7 @@ namespace KeyScroller
 
         protected Dictionary<string, IHighlightableElement> _elements;
         protected IPluginConfigAccessor _configuration;
-        protected DispatcherTimer _timer;
+        protected Timer _timer;
         protected int _currentId = -1;
         protected bool _isDelayed = false;
         protected IHighlightableElement _goToElement;
@@ -32,7 +33,7 @@ namespace KeyScroller
             get { return _roElements = _elements.Values.ToReadOnlyList(); }
         }
 
-        public ScrollingStrategyBase( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ScrollingStrategyBase( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
         {
             _elements = elements;
             _timer = timer;
@@ -46,7 +47,7 @@ namespace KeyScroller
         /// <returns>The root of the first registered tree</returns>
         protected virtual IHighlightableElement GetUpToAbsoluteRoot()
         {
-            _currentId = -1;
+            _currentId = 0;
             _currentElementParents = new Stack<IHighlightableElement>();
 
             return RegisteredElements.FirstOrDefault();
@@ -71,7 +72,7 @@ namespace KeyScroller
             rootChildren = _currentElementParents.Peek().Children;
 
             //Returning the first child.
-            _currentId = -1;
+            _currentId = 0;
             return rootChildren.First();
         }
 
@@ -271,26 +272,26 @@ namespace KeyScroller
 
             StartTimer();
 
-            _timer.Tick += OnInternalBeat;
+            _timer.Elapsed += OnInternalBeat;
             _configuration.ConfigChanged += OnConfigChanged;
             _isStarted = true;
         }
 
         public virtual void Stop()
         {
-            if ( _timer.IsEnabled )
+            if ( _timer.Enabled )
             {
                 FireEndHighlight( _currentElement, null );
-                _timer.IsEnabled = false;
+                _timer.Enabled = false;
             }
-            _timer.Tick -= OnInternalBeat;
+            _timer.Elapsed -= OnInternalBeat;
             _configuration.ConfigChanged -= OnConfigChanged;
             _isStarted = false;
         }
 
         public virtual void Pause( bool forceEndHighlight )
         {
-            if ( _timer.IsEnabled )
+            if ( _timer.Enabled )
             {
                 if ( forceEndHighlight )
                 {
@@ -307,7 +308,7 @@ namespace KeyScroller
 
         protected virtual void StartTimer()
         {
-            if ( !_timer.IsEnabled && _elements.Count > 0 )
+            if ( !_timer.Enabled && _elements.Count > 0 )
             {
                 _timer.Start();
             }
@@ -319,7 +320,7 @@ namespace KeyScroller
             {
                 if ( e.Key == "Speed" )
                 {
-                    _timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
+                    _timer.Interval = (double)e.Value;
                 }
             }
         }

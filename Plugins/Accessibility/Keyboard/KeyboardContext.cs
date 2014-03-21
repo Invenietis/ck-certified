@@ -80,11 +80,7 @@ namespace CK.Keyboard
             get { return _keyboards.Current; }
             set 
             {
-                Console.WriteLine( "Current Keyboard : " + _keyboards.Current.Name ); 
-                
                 _keyboards.Current = (Keyboard)value;
-
-                Console.WriteLine( "Current Keyboard : " + _keyboards.Current.Name ); 
             }
         }
 

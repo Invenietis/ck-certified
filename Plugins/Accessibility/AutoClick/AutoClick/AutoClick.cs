@@ -183,6 +183,9 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
+            WindowBinder.Service.Unbind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), false );
+            TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+            WindowManager.Service.UnregisterWindow( "AutoClick" );
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
             UnregisterEvents();
             Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
@@ -380,22 +383,22 @@ namespace CK.Plugins.AutoClick
                     case ClickInstruction.None:
                         break;
                     case ClickInstruction.RightButtonDown:
-                        MouseProcessor.CurrentPositionRightDown();
+                        MouseProcessor.RightButtonDown();
                         break;
                     case ClickInstruction.RightButtonUp:
-                        MouseProcessor.CurrentPositionRightUp();
+                        MouseProcessor.RightButtonUp();
                         break;
                     case ClickInstruction.LeftButtonDown:
-                        MouseProcessor.CurrentPositionLeftDown();
+                        MouseProcessor.LeftButtonDown();
                         break;
                     case ClickInstruction.LeftButtonUp:
-                        MouseProcessor.CurrentPositionLeftUp();
+                        MouseProcessor.LeftButtonUp();
                         break;
                     case ClickInstruction.WheelDown:
-                        MouseProcessor.CurrentPositionMiddleDown();
+                        MouseProcessor.MiddleButtonDown();
                         break;
                     case ClickInstruction.WheelUp:
-                        MouseProcessor.CurrentPositionMiddleUp();
+                        MouseProcessor.MiddleButtonUp();
                         break;
                     default:
                         break;

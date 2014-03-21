@@ -4,6 +4,7 @@ using CK.Core;
 using HighlightModel;
 using CK.Plugin.Config;
 using System.Diagnostics;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -14,7 +15,7 @@ namespace KeyScroller
     public class OneByOneScrollingStrategy : ScrollingStrategyBase
     {
         const string StrategyName = "OneByOneScrollingStrategy";
-        public OneByOneScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public OneByOneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

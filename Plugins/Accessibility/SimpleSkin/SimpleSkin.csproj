@@ -82,7 +82,7 @@
     </Reference>
     <Reference Include="CK.Windows.Core, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.10.3-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.10.4-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -118,13 +118,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Editor\EditorViewModel.BackgroundProperties.cs" />
-    <Compile Include="Editor\EditorView.xaml.cs">
-      <DependentUpon>EditorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\EditorViewModel.cs" />
-    <Compile Include="Editor\EditorViewModel.FontProperties.cs" />
-    <Compile Include="Editor\SimpleSkinEditor.cs" />
     <Compile Include="Helpers\DraggableVisualAttachedProperty.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>
@@ -194,10 +187,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Editor\EditorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MiniView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -221,12 +210,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Editor\Images\pipette.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Editor\Images\reset.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\downarrow.png" />

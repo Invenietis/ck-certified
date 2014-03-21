@@ -8,6 +8,7 @@ using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -27,7 +28,7 @@ namespace KeyScroller
 
         Dictionary<string, IHighlightableElement> _registeredElements;
         IScrollingStrategy _scrollingStrategy;
-        DispatcherTimer _timer;
+        Timer _timer;
         Dictionary<string, IScrollingStrategy> _strategies;
         ITrigger _currentTrigger;
 
@@ -49,9 +50,9 @@ namespace KeyScroller
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _timer = new DispatcherTimer();
+            _timer = new Timer();
             int timerSpeed = Configuration.User.GetOrSet( "Speed", 1000 );
-            _timer.Interval = new TimeSpan( 0, 0, 0, 0, timerSpeed );
+            _timer.Interval = timerSpeed;
 
             _registeredElements = new Dictionary<string, IHighlightableElement>();
             _strategies = new Dictionary<string, IScrollingStrategy>();
@@ -73,11 +74,11 @@ namespace KeyScroller
                     if ( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new TurboScrollingStrategy( _timer, _registeredElements, Configuration );
 
-                case "SimpleScrollingStrategy":
+                case "OneByOneScrollingStrategy":
                     if ( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new OneByOneScrollingStrategy( _timer, _registeredElements, Configuration );
 
-                case "SplitScrollingStrategy":
+                case "HalfZoneScrollingStrategy":
                     if ( _strategies.ContainsKey( name ) ) return _strategies[name];
                     return new HalfZoneScrollingStrategy( _timer, _registeredElements, Configuration );
 
@@ -141,7 +142,7 @@ namespace KeyScroller
             _scrollingStrategy.GoToElement( element );
         }
 
-        public bool IsHighlighting { get { return _timer.IsEnabled; } }
+        public bool IsHighlighting { get { return _timer.Enabled; } }
 
         public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
         {

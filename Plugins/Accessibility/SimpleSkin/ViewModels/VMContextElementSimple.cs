@@ -1,5 +1,6 @@
 ﻿using System;
 using CK.WPF.ViewModel;
+using CK.Windows;
 
 namespace SimpleSkin.ViewModels
 {
@@ -22,7 +23,7 @@ namespace SimpleSkin.ViewModels
         internal void ThreadSafeSet<T>( T value, Action<T> setter )
         {
             T val = value;
-            Context.SkinDispatcher.Invoke( setter, val );
+            NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );
         }
     }
 }

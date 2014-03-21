@@ -32,7 +32,7 @@ namespace CK.WindowManager
 
             TopMostService.Service.RegisterTopMostElement( "30", button.Window );
 
-            PlacingButton( button, spatialBinding, slaveSpatialBinding, position );
+            InitialPlacingButton( button, spatialBinding, slaveSpatialBinding, position );
 
             return button;
         }
@@ -57,32 +57,32 @@ namespace CK.WindowManager
             {
                 move = () =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top + 10, spatialBinding.Window.Left ).Silent();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top - 10, slaveSpatialBinding.Window.Left ).Silent();
+                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top + 10, spatialBinding.Window.Left ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top - 10, slaveSpatialBinding.Window.Left ).Broadcast();
                     };
             }
             else if( position == BindingPosition.Bottom )
             {
                 move = () =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top - 10, spatialBinding.Window.Left ).Silent();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top + 10, slaveSpatialBinding.Window.Left ).Silent();
+                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top - 10, spatialBinding.Window.Left ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top + 10, slaveSpatialBinding.Window.Left ).Broadcast();
                     };
             }
             else if( position == BindingPosition.Right )
             {
                 move = () =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top, spatialBinding.Window.Left - 10 ).Silent();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top, slaveSpatialBinding.Window.Left + 10 ).Silent();
+                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top, spatialBinding.Window.Left - 10 ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top, slaveSpatialBinding.Window.Left + 10 ).Broadcast();
                     };
             }
             else if( position == BindingPosition.Left )
             {
                 move = () =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top, spatialBinding.Window.Left + 10 ).Silent();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top, slaveSpatialBinding.Window.Left - 10 ).Silent();
+                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top, spatialBinding.Window.Left + 10 ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top, slaveSpatialBinding.Window.Left - 10 ).Broadcast();
                     };
             }
 
@@ -93,7 +93,7 @@ namespace CK.WindowManager
             } );
         }
 
-        void PlacingButton( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
+        void InitialPlacingButton( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
             if( position == BindingPosition.Top )
             {
@@ -107,7 +107,7 @@ namespace CK.WindowManager
             }
             else if( position == BindingPosition.Right )
             {
-                button.Window.Top = spatialBinding.Window.Top + spatialBinding.Window.Height / 2;
+                button.Window.Top = spatialBinding.Window.Top + spatialBinding.Window.Height / 2 - button.Window.Height / 2;
                 button.Window.Left = spatialBinding.Window.Left + spatialBinding.Window.Width - button.Window.Width / 2;
             }
             else if( position == BindingPosition.Left )

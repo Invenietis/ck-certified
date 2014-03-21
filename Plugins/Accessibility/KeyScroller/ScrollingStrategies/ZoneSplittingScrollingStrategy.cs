@@ -5,6 +5,7 @@ using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
 using SimpleSkin.ViewModels;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -21,7 +22,7 @@ namespace KeyScroller
 
         IHighlightableElement _nextElement = null;
 
-        public HalfZoneScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public HalfZoneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

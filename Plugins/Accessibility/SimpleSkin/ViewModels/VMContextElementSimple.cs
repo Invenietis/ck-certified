@@ -20,10 +20,13 @@ namespace SimpleSkin.ViewModels
 
         internal abstract void Dispose();
 
-        internal void ThreadSafeSet<T>( T value, Action<T> setter )
+        internal void ThreadSafeSet<T>( T value, Action<T> setter, bool synchronous = true )
         {
             T val = value;
-            NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );
+            if( synchronous )
+                NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );
+            else
+                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( setter, val );
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Windows;
 using CK.Windows.Config;
 
 namespace Host.VM
@@ -69,15 +71,20 @@ namespace Host.VM
         protected virtual void NotifyOfPropertiesChange()
         {
             NotifyOfPropertyChange( () => ActivatePlugin );
-            OnConfigChanged( this, null );
+            OnConfigChangedInternal( this, null );
         }
 
         private void OnConfigChangedWrapper( object sender, ConfigChangedEventArgs e )
         {
             if( e.MultiPluginId.Contains( _plugin ) )
             {
-                OnConfigChanged( sender, e );
+                OnConfigChangedInternal( sender, e );
             }
+        }
+
+        void OnConfigChangedInternal(object sender, ConfigChangedEventArgs e)
+        {
+            NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => OnConfigChanged( sender, e )) );
         }
 
         protected abstract void OnConfigChanged( object sender, ConfigChangedEventArgs e );
@@ -91,6 +98,11 @@ namespace Host.VM
         {
             InitializePlugin();
             base.OnInitialize();
+        }
+
+        protected void OnPropertyChanged( string propertyName )
+        {
+            OnPropertyChanged( new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -627,10 +627,8 @@ namespace SimpleSkin
             SkinWindow window = sender as SkinWindow;
             if( window != null && window.WindowState == WindowState.Minimized )
             {
-                foreach( var skin in _skins.Values )
-                {
-                    HideSkin( skin );
-                }
+                ForEachSkin( HideSkin );
+
                 //temporary
                 UnregisterPrediction();
             }
@@ -701,15 +699,10 @@ namespace SimpleSkin
                     }
                 } ) );
 
-            foreach( var skin in _skins.Values )
-            {
-                skin.Dispatcher.BeginInvoke( (Action)( () =>
-                {
-                    skin.Skin.WindowState = WindowState.Normal;
-                } ), null );
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RestoreAllWindows();
 
-                RegisterHighlighter( skin );
-            }
+            ForEachSkin( RegisterHighlighter );
+
             //temporary
             UnregisterPrediction();
             RegisterPrediction();

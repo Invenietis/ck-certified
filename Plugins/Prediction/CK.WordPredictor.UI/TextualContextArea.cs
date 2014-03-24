@@ -225,7 +225,7 @@ namespace CK.WordPredictor.UI
             {
                 Feature.PropertyChanged += OnFeaturePropertyChanged;
             }
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }

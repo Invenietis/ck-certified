@@ -169,7 +169,6 @@ namespace CK.Plugins.AutoClick
 
             WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
             TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
-            WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
 
             OnPause( this, EventArgs.Empty );
 
@@ -201,15 +200,16 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
-            //WindowBinder.Service.Unbind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), false );
-            TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
-            WindowManager.Service.UnregisterWindow( "AutoClick" );
+            if( TopMostService.Status.IsStartingOrStarted )
+                TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+
+            if( WindowManager.Status.IsStartingOrStarted )
+                WindowManager.Service.UnregisterWindow( "AutoClick" );
 
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
 
             UnregisterEvents();
             Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
-
         }
 
         public void Teardown()

@@ -124,8 +124,10 @@ namespace SimpleSkin
                         var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
                         var vm = new VMContextActiveKeyboard( activeKeyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, NoFocusManager.Default.NoFocusDispatcher );
 
+                        bool sitb = activeKeyboard.Name != "Prediction";
                         var skin = NoFocusManager.Default.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
                         {
+                            ShowInTaskbar = sitb,
                             DataContext = vm
                         } );
 
@@ -321,13 +323,13 @@ namespace SimpleSkin
             {
                 if( _viewHidden == true )
                 {
-                    _miniView.Dispatcher.BeginInvoke( (Action)(() =>
+                    _miniView.Dispatcher.BeginInvoke( (Action)( () =>
                     {
                         if( Highlighter.Status == InternalRunningStatus.Started )
                         {
                             Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
                         }
-                    }) );
+                    } ) );
                 }
                 else
                 {
@@ -344,13 +346,13 @@ namespace SimpleSkin
             {
                 if( _viewHidden == true )
                 {
-                    _miniView.Dispatcher.BeginInvoke( (Action)(() =>
+                    _miniView.Dispatcher.BeginInvoke( (Action)( () =>
                     {
                         if( Highlighter.Status == InternalRunningStatus.Started )
                         {
                             Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                         }
-                    }) );
+                    } ) );
                 }
                 else
                 {
@@ -578,8 +580,10 @@ namespace SimpleSkin
             var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
             var vm = new VMContextActiveKeyboard( keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, NoFocusManager.Default.NoFocusDispatcher );
 
+            bool sitb = keyboard.Name != "Prediction";
             var skin = NoFocusManager.Default.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
             {
+                ShowInTaskbar = sitb,
                 DataContext = vm
             } );
 
@@ -607,7 +611,6 @@ namespace SimpleSkin
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
             skin.Dispatcher.Invoke( (Action)( () =>
             {
-
                 //temporary 03/03/2014
                 if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
                 {
@@ -754,102 +757,6 @@ namespace SimpleSkin
             UnregisterPrediction();
             RegisterPrediction();
         }
-
-        //void OnCurrentKeyboardChanging( object sender, CurrentKeyboardChangingEventArgs e )
-        //{
-        //    Debug.Assert( _skins.ContainsKey( e.Current.Name ) );
-        //    SkinInfo skin = _skins[e.Current.Name];
-
-        //    e.Current.IsActive = false;
-        //    e.Next.IsActive = true;
-
-        //    if( e.Next == null )
-        //    {
-        //        _skinDispatcher.BeginInvoke( (Action)(() =>
-        //        {
-        //            if( _miniView != null && _miniView.IsVisible )
-        //            {
-        //                Debug.Assert( !_viewHidden, "The miniview is visible yet _viewHidden is false" );
-        //                _miniView.Hide();
-        //            }
-
-        //            if( _skinWindow != null && _skinWindow.IsVisible )
-        //            {
-        //                _skinWindow.Hide();
-        //            }
-        //        }), null );
-        //    }
-        //    else
-        //    {
-        //        //if the previous keyboard was null
-        //        if( e.Current == null )
-        //        {
-        //            _skinDispatcher.BeginInvoke( (Action)(() =>
-        //            {
-        //                //if the view was not hidden before setting the keyboard to null
-        //                if( _skinWindow != null && !_viewHidden )
-        //                {
-        //                    Debug.Assert( !_skinWindow.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the skin view was already visible" );
-        //                    _skinWindow.Show();
-        //                }
-        //                else if( _miniView != null )
-        //                {
-        //                    Debug.Assert( !_miniView.IsVisible, "Changing the current keyboard from null to an existing keyboard, but the miniview was already visible" );
-        //                    _miniView.Show();
-        //                }
-        //            }), null );
-        //        }
-        //    }
-        //}
-
-        //void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
-        //{
-        //    InitializeHighligther();
-
-        //    if( Highlighter.Status == InternalRunningStatus.Started )
-        //    {
-        //        Highlighter.Service.RegisterTree( "Keyboard", _ctxVm.KeyboardVM );
-        //    }
-
-        //    if( e.Current != null && _skinWindow != null )
-        //    {
-        //        if( Config.User[PlacementString] != null )
-        //        {
-        //            WINDOWPLACEMENT placement = (WINDOWPLACEMENT)Config.User[PlacementString];
-        //            if( _viewHidden ) placement.showCmd = 0;
-        //            else placement.showCmd = 8; //Show without taking focus
-
-        //            _skinDispatcher.BeginInvoke( (Action)(() => CKWindowTools.SetPlacement( _skinWindow.Hwnd, placement )), null );
-        //        }
-        //        else
-        //        {
-        //            int w;
-        //            int h;
-        //            var viewPortSize = Config[_ctxVm.KeyboardContext.CurrentKeyboard.CurrentLayout]["ViewPortSize"];
-        //            if( viewPortSize != null )
-        //            {
-        //                Size size = (Size)viewPortSize;
-        //                w = (int)size.Width;
-        //                h = (int)size.Height;
-        //            }
-        //            else
-        //            {
-        //                w = _ctxVm.KeyboardVM.W;
-        //                h = _ctxVm.KeyboardVM.H;
-        //            }
-
-        //            _skinDispatcher.BeginInvoke( (Action)(() => SetDefaultWindowPosition( w, h )), null );
-        //        }
-        //    }
-        //}
-
-        //void OnConfigChanged( object sender, ConfigChangedEventArgs e )
-        //{
-        //    if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
-        //    {
-        //        if( e.Key == "autohide" || e.Key == "autohide-timeout" ) UpdateAutoHideConfig();
-        //    }
-        //}
 
         #endregion
     }

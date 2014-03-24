@@ -10,7 +10,7 @@ namespace ScreenScroller
     ///                                                   4 5 6
     ///                                                   7 8 9
     ///                                                  
-    ///                 this Grid arranges the that way : 1 2 3
+    ///                 this Grid arranges that way :     1 2 3
     ///                                                   6 5 4
     ///                                                   7 8 9
     /// It works for any number of children.

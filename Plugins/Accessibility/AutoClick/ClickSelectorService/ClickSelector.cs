@@ -306,7 +306,11 @@ namespace CK.Plugins.AutoClick
                 WindowManager.Service.WindowRestored += OnWindowRestored;
                 WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
             }
-            else if( e.Current <= InternalRunningStatus.Stopping )
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                WindowManager.Service.UnregisterWindow( "ClickSelector" );
+            }
+            else if( e.Current <= InternalRunningStatus.Stopped )
             {
                 WindowManager.Service.WindowMinimized -= OnWindowMinimized;
                 WindowManager.Service.WindowRestored -= OnWindowRestored;
@@ -351,7 +355,7 @@ namespace CK.Plugins.AutoClick
         void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
-            else if( e.Current <= InternalRunningStatus.Stopping ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+            else if( e.Current == InternalRunningStatus.Stopping ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
         }
 
 

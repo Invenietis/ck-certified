@@ -167,27 +167,10 @@ namespace CK.Plugins.AutoClick
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
 
-            WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
-            TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
-
             OnPause( this, EventArgs.Empty );
 
-            if( TopMostService.Status.IsStartingOrStarted )
-                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
-
-            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
-        }
-
-        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
-            }
-            else if( e.Current <= InternalRunningStatus.Stopping )
-            {
-                TopMostService.Service.UnregisterTopMostElement( _mouseIndicatorWindow );
-            }
+            InitializeWindowManager();
+            InitializeTopMost();
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
@@ -200,11 +183,8 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
-            if( TopMostService.Status.IsStartingOrStarted )
-                TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
-
-            if( WindowManager.Status.IsStartingOrStarted )
-                WindowManager.Service.UnregisterWindow( "AutoClick" );
+            UninitializeTopMost();
+            UninitializeWindowManager();
 
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
 
@@ -228,6 +208,92 @@ namespace CK.Plugins.AutoClick
             _editorWindow = null;
             _mouseIndicatorWindow = null;
             _autoClickWindow = null;
+        }
+
+        #endregion
+
+        #region IWindowManager Members
+
+        void InitializeWindowManager()
+        {
+            RegisterWindowManager();
+            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
+        }
+
+        void UninitializeWindowManager()
+        {
+            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
+            UnregisterWindowManager();
+        }
+
+        void OnWindowManagerStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                WindowManager.Service.UnregisterWindow( "AutoClick" );
+            }
+        }
+
+        void RegisterWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+        }
+
+        void UnregisterWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.UnregisterWindow( "AutoClick" );
+        }
+
+        #endregion IWindowManager Members
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
+                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
+            }
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+                TopMostService.Service.UnregisterTopMostElement( _mouseIndicatorWindow );
+            }
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
+                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+                TopMostService.Service.UnregisterTopMostElement( _mouseIndicatorWindow );
+            }
         }
 
         #endregion

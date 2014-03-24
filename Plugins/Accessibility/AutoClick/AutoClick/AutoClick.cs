@@ -419,8 +419,6 @@ namespace CK.Plugins.AutoClick
                 MouseWatcher.Service.PropertyChanged -= OnMouseWatcherPropertyChanged;
             }
 
-            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
-
             Selector.Service.ClickChosen -= OnClickChosen;
             Selector.Service.ResumeEvent -= OnResume;
             Selector.Service.StopEvent -= OnPause;

@@ -383,5 +383,20 @@ namespace CK.WindowManager
             }
         }
 
+
+        #region IWindowManager Members
+
+
+        public void MinimizeAllWindows()
+        {
+            foreach( var w in _dic.Keys ) w.Minimize();
+        }
+
+        public void RestoreAllWindows()
+        {
+            foreach( var w in _dic.Keys ) w.Restore();
+        }
+
+        #endregion
     }
 }

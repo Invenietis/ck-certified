@@ -54,6 +54,10 @@ namespace CK.WindowManager.Model
         /// <param name="height"></param>
         IManualInteractionResult Resize( IWindowElement window, double width, double height );
 
+        void MinimizeAllWindows();
+
+        void RestoreAllWindows();
+
         /// <summary>
         /// Minimizes the host.
         /// </summary>

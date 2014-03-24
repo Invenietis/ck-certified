@@ -201,7 +201,7 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
-            WindowBinder.Service.Unbind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), false );
+            //WindowBinder.Service.Unbind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), false );
             TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
             WindowManager.Service.UnregisterWindow( "AutoClick" );
 

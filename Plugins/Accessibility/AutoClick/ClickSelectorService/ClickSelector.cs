@@ -160,7 +160,6 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
-            WindowManager.Service.UnregisterWindow( "ClickSelector" );
             TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
             UnregisterHighlighterService();
 

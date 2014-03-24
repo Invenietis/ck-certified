@@ -43,8 +43,8 @@ namespace Host.VM
 
             _action = () =>
             {
-                NotifyOfPropertyChange( () => EnableAutoHide );
-                NotifyOfPropertyChange( () => AutoHideTimeOut );
+                OnPropertyChanged( "EnableAutoHide" );
+                OnPropertyChanged( "AutoHideTimeOut" );
             };
         }
 

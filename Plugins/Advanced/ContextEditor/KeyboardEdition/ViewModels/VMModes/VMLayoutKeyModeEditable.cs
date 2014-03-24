@@ -5,7 +5,6 @@ using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
 
-//TODOJL : When having the time, replace the VMKeyboardMode of a VMKeyEditable by this object and its Layout parallel
 namespace KeyboardEditor.ViewModels
 {
     public class VMLayoutKeyModeEditable : VMKeyModeBase, IModeViewModel
@@ -121,8 +120,6 @@ namespace KeyboardEditor.ViewModels
                     }
                 }
 
-                //Context.KeyboardVM.CurrentMode = _model.Mode;
-
                 _isSelected = value;
                 OnPropertyChanged( "IsSelected" );
 
@@ -164,7 +161,7 @@ namespace KeyboardEditor.ViewModels
                 return _deleteLayoutKeyModeCommand;
             }
         }
-       
+
         protected override void OnModeChangedTriggered()
         {
             OnPropertyChanged( "ShowLabel" );

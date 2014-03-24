@@ -8,6 +8,7 @@ using CK.Core;
 using CommonServices.Accessibility;
 using HighlightModel;
 using CommonServices;
+using CK.WindowManager.Model;
 
 namespace ScreenScroller
 {
@@ -37,6 +38,9 @@ namespace ScreenScroller
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDevideDriver { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
             Root = this;
@@ -57,12 +61,21 @@ namespace ScreenScroller
             InitializeGrid();
 
             InitializeHighligther();
+
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.RegisterTopMostElement( "150", screen );
+                }
+            }
+
             Config.ConfigChanged += OnConfigChanged;
         }
 
         private void InitializeGrid()
         {
-            foreach ( System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens.Reverse() )
+            foreach( System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens.Reverse() )
             {
                 var node = new NodeViewModel( this, s.Bounds.Top, s.Bounds.Left, SquareSize * SquareSize, ClickDepth, false );
 
@@ -89,9 +102,9 @@ namespace ScreenScroller
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if ( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
-                switch ( e.Key )
+                switch( e.Key )
                 {
                     case "MaxLapCount":
                         MaxLapCount = (int)e.Value;
@@ -119,8 +132,12 @@ namespace ScreenScroller
         {
             Config.ConfigChanged += OnConfigChanged;
             UnInitializeHighlighter();
-            foreach ( var screen in _screens )
+
+            bool unregisterTopMost = TopMostService.Status.IsStartingOrStarted;
+
+            foreach( var screen in _screens )
             {
+                if( unregisterTopMost ) TopMostService.Service.UnregisterTopMostElement( screen );
                 screen.Close();
             }
         }
@@ -153,7 +170,7 @@ namespace ScreenScroller
                 int previousLevel = previousNode == null ? -1 : previousNode.Level;
                 int currentLevel = _currentNode == null ? -1 : _currentNode.Level;
 
-                if ( LevelChanged != null )
+                if( LevelChanged != null )
                     LevelChanged( this, new LevelChangedEventArgs( previousLevel, currentLevel ) );
             }
         }
@@ -163,9 +180,9 @@ namespace ScreenScroller
         {
             //If we haven't entered the children yet, we highlight all of the screens.
             //Once a first Select element has been triggered, we start scrolling the screens.
-            if ( CurrentNode == null )
+            if( CurrentNode == null )
             {
-                foreach ( var node in ChildNodes )
+                foreach( var node in ChildNodes )
                 {
                     node.IsHighlighted = true;
                 }
@@ -180,20 +197,20 @@ namespace ScreenScroller
         private void ProcessTick( ScrollingDirective scrollingDirective )
         {
             //if we have just entered the root, we need to highlight all the screens, except the one that has been entered.
-            if ( _hasJustBeenEntered )
+            if( _hasJustBeenEntered )
             {
                 _hasJustBeenEntered = false;
-                foreach ( var node in ChildNodes )
+                foreach( var node in ChildNodes )
                 {
-                    if ( node.Index != CurrentIndex )
+                    if( node.Index != CurrentIndex )
                         node.IsHighlighted = false;
                 }
             }
 
             //And we move to the next node
-            if ( !CurrentNode.MoveNext() ) //if the node was at the end of its laps
+            if( !CurrentNode.MoveNext() ) //if the node was at the end of its laps
             {
-                if ( CurrentNode.IsRoot || ( CurrentNode.Parent.IsRoot && CurrentNode.Parent.ChildNodes.Count == 1 ) ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
+                if( CurrentNode.IsRoot || (CurrentNode.Parent.IsRoot && CurrentNode.Parent.ChildNodes.Count == 1) ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
                 {
                     CurrentNode = null;
                     _entered = false;
@@ -211,9 +228,9 @@ namespace ScreenScroller
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            if ( !_entered ) //we were scrolling the plugin itself (we hadn't entered yet), which had highlighted all the screens
+            if( !_entered ) //we were scrolling the plugin itself (we hadn't entered yet), which had highlighted all the screens
             {
-                foreach ( var node in ChildNodes )
+                foreach( var node in ChildNodes )
                 {
                     node.IsHighlighted = false;
                 }
@@ -230,9 +247,9 @@ namespace ScreenScroller
         {
             scrollingDirective.NextActionType = ActionType.StayOnTheSameLocked;
 
-            if ( CurrentNode == null )
+            if( CurrentNode == null )
             {
-                if ( ChildNodes.Count == 1 )
+                if( ChildNodes.Count == 1 )
                 {
                     CurrentNode = ChildNodes.Single();
                     CurrentNode.Entered();
@@ -246,7 +263,7 @@ namespace ScreenScroller
             }
             else
             {
-                if ( CurrentNode.Level < ClickDepth - 1 )
+                if( CurrentNode.Level < ClickDepth - 1 )
                 {
                     CurrentNode = CurrentNode.ChildNodes.ElementAt( CurrentNode.CurrentIndex );
                     CurrentNode.Entered();
@@ -254,7 +271,7 @@ namespace ScreenScroller
                 else
                 {
                     NodeViewModel selectedNode = CurrentNode.ChildNodes[CurrentNode.CurrentIndex];
-                    CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( (int)( selectedNode.OffsetWidth + ( selectedNode.Width / 2 ) ), (int)( selectedNode.OffsetHeight + ( selectedNode.Height / 2 ) ) );
+                    CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( (int)(selectedNode.OffsetWidth + (selectedNode.Width / 2)), (int)(selectedNode.OffsetHeight + (selectedNode.Height / 2)) );
 
                     CurrentNode.ChildNodes.ElementAt( CurrentNode.CurrentIndex ).IsHighlighted = false;
                     CurrentNode = null;
@@ -270,11 +287,11 @@ namespace ScreenScroller
 
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if ( e.Current == InternalRunningStatus.Started )
+            if( e.Current == InternalRunningStatus.Started )
             {
                 RegisterHighlighter();
             }
-            else if ( e.Current == InternalRunningStatus.Stopping )
+            else if( e.Current <= InternalRunningStatus.Stopping )
             {
                 UnregisterHighlighter();
             }
@@ -283,7 +300,7 @@ namespace ScreenScroller
         private void InitializeHighligther()
         {
             Highlighter.ServiceStatusChanged += OnHighlighterServiceStatusChanged;
-            if ( Highlighter.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 RegisterHighlighter();
             }
@@ -291,7 +308,7 @@ namespace ScreenScroller
 
         private void UnInitializeHighlighter()
         {
-            if ( Highlighter.Status == InternalRunningStatus.Started )
+            if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 UnregisterHighlighter();
             }

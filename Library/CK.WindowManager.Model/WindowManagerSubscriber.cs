@@ -84,7 +84,7 @@ namespace CK.WindowManager.Model
             {
                 RegisterWindowBinder();
             }
-            else if( e.Current == InternalRunningStatus.Stopping )
+            else if( e.Current <= InternalRunningStatus.Stopping )
             {
                 UnregisterWindowBinder();
             }

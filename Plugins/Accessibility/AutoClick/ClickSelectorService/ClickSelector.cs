@@ -52,9 +52,6 @@ namespace CK.Plugins.AutoClick
         public IService<IWindowManager> WindowManager { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowBinder> WindowBinder { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ITopMostService> TopMostService { get; set; }
 
         private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
@@ -78,22 +75,15 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
-            RegisterHighlighterService();
 
             int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
             int defaultWidth = defaultHeight / 4;
 
-            Highlighter.ServiceStatusChanged += OnHighlighterStatusChanged;
-
-            //Register WindowsManager events
-            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
-            if( WindowManager.Status.IsStartingOrStarted )
-            {
-                WindowManager.Service.WindowMinimized += OnWindowMinimized;
-                WindowManager.Service.WindowRestored += OnWindowRestored;
-            }
-
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
+
+            InitializeHighlighter();
+            InitializeWindowManager();
+            InitializeTopMost();
 
             if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) )
             {
@@ -109,9 +99,6 @@ namespace CK.Plugins.AutoClick
             //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
             if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) ) Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
             CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
-
-            WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
-            TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
@@ -122,54 +109,13 @@ namespace CK.Plugins.AutoClick
             _clickSelectorWindow.Height = defaultHeight;
         }
 
-        void OnHighlighterStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                RegisterHighlighterService();
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                UnregisterHighlighterService();
-            }
-        }
-
-        void OnWindowRestored( object sender, WindowElementEventArgs e )
-        {
-            if( e.Window == _clickSelectorWindow ) RegisterHighlighterService();
-        }
-
-        void OnWindowMinimized( object sender, WindowElementEventArgs e )
-        {
-            if( e.Window == _clickSelectorWindow ) UnregisterHighlighterService();
-        }
-
-        void OnWindowManagerStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                WindowManager.Service.WindowMinimized += OnWindowMinimized;
-                WindowManager.Service.WindowRestored += OnWindowRestored;
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                WindowManager.Service.WindowMinimized -= OnWindowMinimized;
-                WindowManager.Service.WindowRestored -= OnWindowRestored;
-            }
-        } 
-
         public void Stop()
         {
             TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
-            UnregisterHighlighterService();
 
-            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
-            if( WindowManager.Status.IsStartingOrStarted )
-            {
-                WindowManager.Service.WindowMinimized -= OnWindowMinimized;
-                WindowManager.Service.WindowRestored -= OnWindowRestored;
-            }
-            Highlighter.ServiceStatusChanged -= OnHighlighterStatusChanged;
+            UninitializeTopMost();
+            UninitializeWindowManager();
+            UninitializeHighlighter();
 
             Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
 
@@ -229,7 +175,30 @@ namespace CK.Plugins.AutoClick
 
         #region IHighlightable Members
 
-        private void RegisterHighlighterService()
+        void InitializeHighlighter()
+        {
+            RegisterHighlighterService();
+            Highlighter.ServiceStatusChanged += OnHighlighterStatusChanged;
+        }
+        void UninitializeHighlighter()
+        {
+            Highlighter.ServiceStatusChanged -= OnHighlighterStatusChanged;
+            UnregisterHighlighterService();
+        }
+
+        void OnHighlighterStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                RegisterHighlighterService();
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                UnregisterHighlighterService();
+            }
+        }
+
+        void RegisterHighlighterService()
         {
             if( Highlighter.Status.IsStartingOrStarted )
             {
@@ -237,7 +206,7 @@ namespace CK.Plugins.AutoClick
             }
         }
 
-        private void UnregisterHighlighterService()
+        void UnregisterHighlighterService()
         {
             if( Highlighter.Status.IsStartingOrStarted )
             {
@@ -292,6 +261,105 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
+        #region IWindowManager Members
+
+        void InitializeWindowManager()
+        {
+            RegisterWindowManager();
+
+            //Register WindowsManager events
+            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
+            if( WindowManager.Status.IsStartingOrStarted )
+            {
+                WindowManager.Service.WindowMinimized += OnWindowMinimized;
+                WindowManager.Service.WindowRestored += OnWindowRestored;
+            }
+        }
+
+        void UninitializeWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted )
+            {
+                WindowManager.Service.WindowMinimized -= OnWindowMinimized;
+                WindowManager.Service.WindowRestored -= OnWindowRestored;
+            }
+            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
+
+            UnregisterWindowManager();
+        }
+
+        void OnWindowRestored( object sender, WindowElementEventArgs e )
+        {
+            if( e.Window.Window == _clickSelectorWindow ) RegisterHighlighterService();
+        }
+
+        void OnWindowMinimized( object sender, WindowElementEventArgs e )
+        {
+            if( e.Window.Window == _clickSelectorWindow ) UnregisterHighlighterService();
+        }
+
+        void OnWindowManagerStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                WindowManager.Service.WindowMinimized += OnWindowMinimized;
+                WindowManager.Service.WindowRestored += OnWindowRestored;
+                WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                WindowManager.Service.UnregisterWindow( "ClickSelector" );
+            }
+            else if( e.Current <= InternalRunningStatus.Stopped )
+            {
+                WindowManager.Service.WindowMinimized -= OnWindowMinimized;
+                WindowManager.Service.WindowRestored -= OnWindowRestored;
+            }
+        }
+
+        void RegisterWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
+        }
+
+        void UnregisterWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.UnregisterWindow( "ClickSelector" );
+        }
+
+        #endregion IWindowManager Members
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+            else if( e.Current == InternalRunningStatus.Stopping ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+        }
+
+
+        #endregion
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {

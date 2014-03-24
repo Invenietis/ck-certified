@@ -98,30 +98,34 @@ namespace Host
             {
                 if( CivikeyHost.UserConfig.Set( "ShowTaskbarIcon", value ) != ChangeStatus.None )
                 {
-                    if( !value && !ShowSystrayIcon ) ShowSystrayIcon = true;
+                    // v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
+                    //if( !value && !ShowSystrayIcon ) ShowSystrayIcon = true;
                     NotifyOfPropertyChange( "ShowTaskbarIcon" );
                 }
             }
         }
 
+
+
         /// <summary>
-        ///  Gets whether the application should be visible in the Systray.
+        /// v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
+        /// Gets whether the application should be visible in the Systray.
         /// </summary>
-        public bool ShowSystrayIcon
-        {
-            get
-            {
-                return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
-            }
-            set
-            {
-                if( CivikeyStandardHost.Instance.UserConfig.Set( "ShowSystrayIcon", value ) != ChangeStatus.None )
-                {
-                    if( !value && !ShowTaskbarIcon ) ShowTaskbarIcon = true;
-                    NotifyOfPropertyChange( "ShowSystrayIcon" );
-                }
-            }
-        }
+        //public bool ShowSystrayIcon
+        //{
+        //    get
+        //    {
+        //        return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
+        //    }
+        //    set
+        //    {
+        //        if( CivikeyStandardHost.Instance.UserConfig.Set( "ShowSystrayIcon", value ) != ChangeStatus.None )
+        //        {
+        //            if( !value && !ShowTaskbarIcon ) ShowTaskbarIcon = true;
+        //            NotifyOfPropertyChange( "ShowSystrayIcon" );
+        //        }
+        //    }
+        //}
 
         protected override void OnViewLoaded( object view )
         {

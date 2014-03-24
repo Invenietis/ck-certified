@@ -312,7 +312,6 @@ namespace SimpleSkin.ViewModels
             get
             {
                 //TODO : Improve (temporary)
-
                 if( Keyboard.Name == "Prediction" ) return SkippingBehavior.EnterChildren;
 
                 if( Zones.Count == 0 || Zones.All( z => z.Skip == SkippingBehavior.Skip ) )
@@ -341,6 +340,7 @@ namespace SimpleSkin.ViewModels
             scrollingDirective.NextActionType = ActionType.EnterChild;
             return scrollingDirective;
         }
+
         public bool IsHighlightableTreeRoot
         {
             get { return true; }

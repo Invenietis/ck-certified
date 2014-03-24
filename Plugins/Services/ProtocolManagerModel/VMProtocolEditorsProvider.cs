@@ -65,9 +65,11 @@ namespace ProtocolManagerModel
                 ProtocolEditor.Wrapper = value;
 
                 //Creating the ParameterManager on the fly
-                if( value != null ) ProtocolEditor.ParameterManager = ProtocolEditor.Wrapper.CreateParameterManager();
-
-                ProtocolEditor.ParameterManager.Root = this;
+                if( value != null )
+                {
+                    ProtocolEditor.ParameterManager = ProtocolEditor.Wrapper.CreateParameterManager();
+                    ProtocolEditor.ParameterManager.Root = this;
+                }
 
                 OnPropertyChanged( "ProtocolEditor" );
                 OnPropertyChanged( "SelectedProtocolEditorWrapper" );

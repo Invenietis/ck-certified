@@ -114,11 +114,11 @@ namespace CK.WordPredictor.UI
 
         void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
             }
-            if( e.Current == InternalRunningStatus.Starting )
+            if( e.Current <= InternalRunningStatus.Starting )
             {
                 WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }

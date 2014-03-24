@@ -126,6 +126,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
+      <Project>{fda960f6-d429-4696-9306-b473dae41e5b}</Project>
+      <Name>CK.WindowManager.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6c0f25a7-6468-4d02-aba4-dc7f1ad209e1}</Project>
       <Name>CK.WPF.Controls</Name>
@@ -137,6 +141,10 @@
     <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
       <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
       <Name>HighlightModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CK.WindowManager\CK.WindowManager.csproj">
+      <Project>{968fc28c-d500-41aa-ab45-0fc4581b8713}</Project>
+      <Name>CK.WindowManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\KeyScroller\KeyScroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>

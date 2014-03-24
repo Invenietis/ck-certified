@@ -169,6 +169,10 @@ namespace KeyScroller
                         }
                     }
                 }
+                else if( _elements.Count == 1 && _nextElement.Children.Count == 0)
+                {
+                    _nextElement = GetStayOnTheSame( elements );
+                }
                 else
                 {
                     _nextElement = GetEnterChild( _nextElement.Children );

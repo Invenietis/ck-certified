@@ -7,6 +7,7 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using CK.Core;
 using System.Diagnostics;
+using CK.WindowManager.Model;
 
 namespace MouseRadar
 {
@@ -36,6 +37,9 @@ namespace MouseRadar
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> Highlighter { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.Optional )]
+        public ITopMostService TopMostService { get; set; }
 
         void Pause()
         {
@@ -71,6 +75,7 @@ namespace MouseRadar
         public void Start()
         {
             _radar = new Radar( MouseDriver.Service );
+            TopMostService.RegisterTopMostElement( "200", _radar );
 
             _focusedOpacity = (float)( Configuration.User.GetOrSet( "Opacity", 100 ) ) / 100f;
             _blurredOpacity = .1f;

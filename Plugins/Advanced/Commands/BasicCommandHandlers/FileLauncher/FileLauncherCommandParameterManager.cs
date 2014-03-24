@@ -260,6 +260,7 @@ namespace BasicCommandHandlers
                 else
                 {
                     SelectedFileLauncherType = TypeSelections.FirstOrDefault( t => t.Type == FileLauncherType.Browse );
+                    SelectedFile = file;
                 }
                 SelectedFileLauncherType.IsSelected = true;
             } );

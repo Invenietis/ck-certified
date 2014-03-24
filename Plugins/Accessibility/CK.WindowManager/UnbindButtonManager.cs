@@ -23,6 +23,22 @@ namespace CK.WindowManager
 
         public WindowElement CreateButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            if( NoFocusManager.Default.NoFocusDispatcher.CheckAccess() )
+            {
+                return InitializeButton( spatialBinding, slaveSpatialBinding, position );
+            }
+            else
+            {
+                return (WindowElement)NoFocusManager.Default.NoFocusDispatcher.Invoke( (Func<WindowElement>)(() =>
+                    {
+                        return InitializeButton( spatialBinding, slaveSpatialBinding, position );
+                    }) );
+            }
+
+        }
+
+        WindowElement InitializeButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
+        {
             WindowElement button = null;
 
             button = new WindowElement( new UnbindButtonView( NoFocusManager.Default )
@@ -39,11 +55,15 @@ namespace CK.WindowManager
 
         public void DeleteButton( IWindowElement button )
         {
-            if( TopMostService.Status == InternalRunningStatus.Started )
-            {
-                TopMostService.Service.UnregisterTopMostElement( button.Window );
-            }
-            button.Window.Dispatcher.Invoke( (Action)( () => button.Window.Hide() ) );
+            
+            button.Window.Dispatcher.Invoke( (Action)(() =>
+                {
+                    button.Window.Hide();
+                    if( TopMostService.Status == InternalRunningStatus.Started )
+                    {
+                        TopMostService.Service.UnregisterTopMostElement( button.Window );
+                    }
+                }) );
         }
 
         VMUnbindButton CreateVM( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
@@ -105,7 +125,7 @@ namespace CK.WindowManager
             height = spatialBinding.Window.Window.Height;
             width = spatialBinding.Window.Window.Width;
             left = spatialBinding.Window.Window.Left;
-            
+
             Action moveButtons = () =>
             {
                 if( position == BindingPosition.Top )
@@ -133,10 +153,10 @@ namespace CK.WindowManager
             if( !button.Window.Dispatcher.CheckAccess() )
             {
                 //Button placing is not crucial, so we can safely use BeginInvoke.
-                button.Window.Dispatcher.BeginInvoke( (Action)( () =>
+                button.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     moveButtons();
-                } ) );
+                }) );
             }
             else
             {
@@ -151,7 +171,7 @@ namespace CK.WindowManager
             if( !spatialBinding.Window.Window.Dispatcher.CheckAccess() )
             {
                 //Button placing is not crucial, so we can safely use BeginInvoke
-                spatialBinding.Window.Window.Dispatcher.BeginInvoke( (Action)( () => DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position ) ) );
+                spatialBinding.Window.Window.Dispatcher.BeginInvoke( (Action)(() => DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position )) );
             }
             else
             {

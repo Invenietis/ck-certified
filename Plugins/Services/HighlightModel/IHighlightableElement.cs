@@ -171,5 +171,4 @@ namespace HighlightModel
         AbsoluteRoot = 8,
 
     }
-
 }

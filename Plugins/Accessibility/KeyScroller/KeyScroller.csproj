@@ -94,6 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyScroller.cs" />
+    <Compile Include="ScrollingStrategies\Tools\HighlightableWrapperNode.cs" />
+    <Compile Include="ScrollingStrategies\Tools\IHighlightableWrapperNode.cs" />
     <Compile Include="ScrollingStrategies\ZoneScrollingStrategy.cs" />
     <Compile Include="Editor\BasicScrollEditor.cs" />
     <Compile Include="Editor\EditorView.xaml.cs">

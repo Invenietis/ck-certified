@@ -111,26 +111,26 @@ namespace MouseRadar
 
         double weight = 40;
 
-        void ProcessScrollingTick( TimeSpan newScrollingTick )
+        void ProcessScrollingTick( double newScrollingTick )
         {
             //Making sure the inner timers don't get a tick interval < 1 ms
-            if( newScrollingTick.TotalMilliseconds < weight ) newScrollingTick = new TimeSpan( 0, 0, 0, 0, (int)weight );
+            if( newScrollingTick < weight ) newScrollingTick = (double)weight;
 
-            if( newScrollingTick.TotalMilliseconds != _previousScrollingTick.TotalMilliseconds )
+            if( newScrollingTick != _previousScrollingTick )
             {
                 _previousScrollingTick = newScrollingTick;
 
-                double rotateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
+                double rotateNanoTickTime = newScrollingTick / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
                 _timerRotate.Interval = new TimeSpan( (long)rotateNanoTickTime );
 
-                double translateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
+                double translateNanoTickTime = newScrollingTick / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
                 _timerTranslate.Interval = new TimeSpan( (int)translateNanoTickTime );
 
                 UpdateRotationDelay();
             }
         }
 
-        TimeSpan _previousScrollingTick = new TimeSpan( 0 );
+        double _previousScrollingTick = 0;
         internal void Tick( BeginScrollingInfo scrollingInfo )
         {
             ProcessScrollingTick( scrollingInfo.TickInterval );

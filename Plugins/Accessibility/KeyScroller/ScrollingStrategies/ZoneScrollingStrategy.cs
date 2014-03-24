@@ -2,6 +2,7 @@
 using System.Windows.Threading;
 using HighlightModel;
 using CK.Plugin.Config;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -18,7 +19,7 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public ZoneScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ZoneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }

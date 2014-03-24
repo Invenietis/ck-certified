@@ -691,18 +691,19 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            _miniView.Dispatcher.Invoke( (Action)(() =>
+            _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     if( _miniView.Visibility != Visibility.Hidden )
                     {
-                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                        if( Highlighter.Status.IsStartingOrStarted)
+                            Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                         _miniView.Hide();
                     }
                 }) );
 
             foreach( var skin in _skins.Values )
             {
-                skin.Dispatcher.Invoke( (Action)(() =>
+                skin.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     skin.Skin.WindowState = WindowState.Normal;
                 }), null );

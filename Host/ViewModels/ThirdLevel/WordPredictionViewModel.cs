@@ -92,11 +92,11 @@ namespace Host.VM
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            NotifyOfPropertyChange( () => MaxSuggestedWords );
-            NotifyOfPropertyChange( () => InsertSpaceAfterPredictedWord );
-            NotifyOfPropertyChange( () => UsesSemanticPrediction );
-            NotifyOfPropertyChange( () => FilterAlreadyShownWords );
-            NotifyOfPropertyChange( () => DisplayContextEditor );
+            OnPropertyChanged( "MaxSuggestedWords" );
+            OnPropertyChanged( "InsertSpaceAfterPredictedWord" );
+            OnPropertyChanged( "UsesSemanticPrediction" );
+            OnPropertyChanged( "FilterAlreadyShownWords" );
+            OnPropertyChanged( "DisplayContextEditor" );
         }
 
         protected override void OnInitialize()

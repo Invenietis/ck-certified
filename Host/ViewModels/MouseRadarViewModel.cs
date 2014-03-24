@@ -36,10 +36,10 @@ namespace Host.VM
 
         protected override void NotifyOfPropertiesChange()
         {
-            NotifyOfPropertyChange( () => RadarSize );
-            NotifyOfPropertyChange( () => Opacity );
-            NotifyOfPropertyChange( () => RadarColor );
-            NotifyOfPropertyChange( () => ArrowColor );
+            OnPropertyChanged( "RadarSize" );
+            OnPropertyChanged( "Opacity" );
+            OnPropertyChanged( "RadarColor" );
+            OnPropertyChanged( "ArrowColor" );
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )

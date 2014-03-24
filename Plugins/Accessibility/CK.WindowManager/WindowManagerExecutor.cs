@@ -127,7 +127,7 @@ namespace CK.WindowManager
                 {
                     binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
                     //binding.Left.UnbindButton.Window.Show();
-                }) );
+                } ) );
                 PlacingButton( binding.Left.SpatialBinding, binding );
             }
 
@@ -258,13 +258,16 @@ namespace CK.WindowManager
             if( binding != null )
             {
                 // The Window that moves first
-                foreach( ISpatialBinding descendants in binding.AllDescendants() )
+                foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
-                    descendants.Window.Restore();
-                    if( descendants.Top != null && !descendants.Top.UnbindButton.Window.IsVisible ) descendants.Top.UnbindButton.Window.Show();
-                    if( descendants.Bottom != null && !descendants.Bottom.UnbindButton.Window.IsVisible ) descendants.Bottom.UnbindButton.Window.Show();
-                    if( descendants.Right != null && !descendants.Right.UnbindButton.Window.IsVisible ) descendants.Right.UnbindButton.Window.Show();
-                    if( descendants.Left != null && !descendants.Left.UnbindButton.Window.IsVisible ) descendants.Left.UnbindButton.Window.Show();
+                    descendant.Window.Restore();
+                    DispatchWhenRequired( descendant.Top.UnbindButton.Window.Dispatcher, (Action)( () =>
+                    {
+                        if( descendant.Top != null && !descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Show();
+                        if( descendant.Bottom != null && !descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Show();
+                        if( descendant.Right != null && !descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Show();
+                        if( descendant.Left != null && !descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Show();
+                    } ), false );
                 }
             }
         }
@@ -274,13 +277,16 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
-                foreach( ISpatialBinding descendants in binding.AllDescendants() )
+                foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
-                    descendants.Window.Minimize();
-                    if( descendants.Top != null && descendants.Top.UnbindButton.Window.IsVisible ) descendants.Top.UnbindButton.Window.Hide();
-                    if( descendants.Bottom != null && descendants.Bottom.UnbindButton.Window.IsVisible ) descendants.Bottom.UnbindButton.Window.Hide();
-                    if( descendants.Right != null && descendants.Right.UnbindButton.Window.IsVisible ) descendants.Right.UnbindButton.Window.Hide();
-                    if( descendants.Left != null && descendants.Left.UnbindButton.Window.IsVisible ) descendants.Left.UnbindButton.Window.Hide();
+                    descendant.Window.Minimize();
+                    DispatchWhenRequired( descendant.Top.UnbindButton.Window.Dispatcher, (Action)( () =>
+                    {
+                        if( descendant.Top != null && descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Hide();
+                        if( descendant.Bottom != null && descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Hide();
+                        if( descendant.Right != null && descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Hide();
+                        if( descendant.Left != null && descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Hide();
+                    } ), false );
                 }
             }
         }

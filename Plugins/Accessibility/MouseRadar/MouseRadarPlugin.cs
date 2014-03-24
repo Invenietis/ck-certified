@@ -39,19 +39,15 @@ namespace MouseRadar
         public IService<IHighlighterService> Highlighter { get; set; }
 
         [DynamicService( Requires = RunningRequirement.Optional )]
-        public ITopMostService TopMostService { get; set; }
+        public IService<ITopMostService> TopMostService { get; set; }
 
         void Pause()
         {
-            //Console.WriteLine( "Pause" );
-
             _radar.Pause();
         }
 
         void Resume()
         {
-            //Console.WriteLine( "Resume" );
-
             ActionType = ActionType.StayOnTheSameLocked;
             Debug.Assert( _radar.CurrentStep == RadarStep.Paused );
             _radar.ToNextStep();
@@ -75,7 +71,6 @@ namespace MouseRadar
         public void Start()
         {
             _radar = new Radar( MouseDriver.Service );
-            TopMostService.RegisterTopMostElement( "200", _radar );
 
             _focusedOpacity = (float)( Configuration.User.GetOrSet( "Opacity", 100 ) ) / 100f;
             _blurredOpacity = .1f;
@@ -101,13 +96,32 @@ namespace MouseRadar
             {
                 _yield = true;
             };
+
+            if( TopMostService.Status.IsStartingOrStarted )
+                TopMostService.Service.RegisterTopMostElement( "200", _radar );
+
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "200", _radar );
+            }
+            else if( e.Current <= InternalRunningStatus.Stopping )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _radar );
+            }
         }
 
         public void Stop()
         {
             _radar.Dispose();
-            if ( Highlighter.Status.IsStartingOrStarted )
+            if( Highlighter.Status.IsStartingOrStarted )
                 Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
+
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
         }
 
         public void Teardown()
@@ -117,7 +131,7 @@ namespace MouseRadar
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            switch ( e.Key )
+            switch( e.Key )
             {
                 case "Opacity":
                     _radar.ViewModel.Opacity = (int)e.Value / 100f;
@@ -184,12 +198,12 @@ namespace MouseRadar
             // - we are already focused (the current action is stayonthesamelocked and beginScrollingInfo.PreviousElement == this). In this case we do nothing but tell the radar to check that its tick is still in sync with the configuration.
             // - we are paused and the radar is the only element in the scrolling tree (the current action is Normal and beginScrollingInfo.PreviousElement == this) : we do the same as the previous case. 
 
-            if ( beginScrollingInfo.PreviousElement != this )
+            if( beginScrollingInfo.PreviousElement != this )
                 Focus(); //We are scrolling on the module level
             else //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, or we are the only element in the scrolling tree : we relay the scroller's tick to the radar.
                 _radar.Tick( beginScrollingInfo );
 
-            if ( _yield )
+            if( _yield )
             {
                 //Once the DelayRadar has ticked, we release the scroller.
                 scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
@@ -201,11 +215,11 @@ namespace MouseRadar
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            if ( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
+            if( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
                 Blur();
 
             //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it) 
-            if ( ActionType != ActionType.StayOnTheSameLocked && IsActive )
+            if( ActionType != ActionType.StayOnTheSameLocked && IsActive )
             {
                 Pause();
                 _yield = false;

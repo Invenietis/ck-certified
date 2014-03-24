@@ -121,27 +121,28 @@ namespace CK.Plugins.AutoClick
 
         #region IPlugin Members
 
+
+        int defaultHeight;
+        int defaultWidth;
+
         public bool Setup( IPluginSetupInfo info )
         {
+            _isPaused = true;
+
+            defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 10;
+            defaultWidth = defaultHeight / 2;
+
             return true;
         }
 
         public void Start()
         {
-            _isPaused = true;
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
 
-            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 10;
-            int defaultWidth = defaultHeight / 2;
-
             if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
-            {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            }
             else
-            {
                 _autoClickWindow.Width = _autoClickWindow.Height = 0;
-            }
 
             _mouseIndicatorWindow = new MouseDecoratorWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
@@ -161,7 +162,7 @@ namespace CK.Plugins.AutoClick
 
             //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
             if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_autoClickWindow.Left, (int)_autoClickWindow.Top ) )
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_autoClickWindow.Left + _autoClickWindow.ActualWidth), (int)_autoClickWindow.Top ) ) )
+                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _autoClickWindow.Left + _autoClickWindow.ActualWidth ), (int)_autoClickWindow.Top ) ) )
             {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
@@ -171,6 +172,23 @@ namespace CK.Plugins.AutoClick
             WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
 
             OnPause( this, EventArgs.Empty );
+
+            if( TopMostService.Status.IsStartingOrStarted )
+                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
+
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
+            }
+            else if( e.Current <= InternalRunningStatus.Stopping )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _mouseIndicatorWindow );
+            }
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
@@ -186,9 +204,12 @@ namespace CK.Plugins.AutoClick
             WindowBinder.Service.Unbind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), false );
             TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
             WindowManager.Service.UnregisterWindow( "AutoClick" );
+
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
+
             UnregisterEvents();
             Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
+
         }
 
         public void Teardown()
@@ -303,7 +324,7 @@ namespace CK.Plugins.AutoClick
         private void RegisterEvents()
         {
             MouseDriver.Service.PointerMove += OnPointerMove;
-            
+
             MouseWatcher.Service.LaunchClick += OnClickAsked;
             MouseWatcher.Service.ProgressValueChanged += OnProgressValueChanged;
             MouseWatcher.Service.ClickCanceled += OnClickCancelled;
@@ -331,6 +352,8 @@ namespace CK.Plugins.AutoClick
                 MouseWatcher.Service.HasResumed -= OnHasResumed;
                 MouseWatcher.Service.PropertyChanged -= OnMouseWatcherPropertyChanged;
             }
+
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
 
             Selector.Service.ClickChosen -= OnClickChosen;
             Selector.Service.ResumeEvent -= OnResume;
@@ -435,13 +458,13 @@ namespace CK.Plugins.AutoClick
         {
             get
             {
-                return _showHelpCommand ?? (_showHelpCommand = new CK.Windows.App.VMCommand( () =>
+                return _showHelpCommand ?? ( _showHelpCommand = new CK.Windows.App.VMCommand( () =>
                 {
                     if( HelpService.Status == InternalRunningStatus.Started )
                     {
                         HelpService.Service.ShowHelpFor( PluginId, true );
                     }
-                } ));
+                } ) );
             }
         }
 

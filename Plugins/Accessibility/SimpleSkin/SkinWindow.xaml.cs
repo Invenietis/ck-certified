@@ -26,6 +26,7 @@ using System.Windows;
 using CK.Windows;
 using System.Windows.Media;
 using SimpleSkin.Helpers;
+using System.Windows.Controls;
 
 namespace SimpleSkin
 {
@@ -42,6 +43,9 @@ namespace SimpleSkin
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
+            FrameworkElement border = visualElement as FrameworkElement;
+            //Allows drag and drop when the background is set
+            if( border != null && border.Name == "InsideBorder" ) return true;
             if( DraggableVisualAttachedProperty.GetDraggableVisual( visualElement ) ) return true;
             var parent = VisualTreeHelper.GetParent( visualElement );
             return parent is SkinWindow || base.IsDraggableVisual( visualElement );

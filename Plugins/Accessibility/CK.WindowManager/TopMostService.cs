@@ -128,28 +128,30 @@ namespace CK.WindowManager
         }
 
         int _nb = 0;
-        private  void window_Activated( object sender, EventArgs e )
+        private void window_Activated( object sender, EventArgs e )
         {
             UpdateTopMostWindows();
         }
 
         private void UpdateTopMostWindows()
         {
-            List<Window> windows;
+            List<Window> windows = new List<Window>();
+
+            List<Window> l;
+            //create a copy
             foreach( var s in _indexList )
             {
                 Debug.Assert( _stringToWindows.ContainsKey( s ) );
 
-                if( _stringToWindows.TryGetValue( s, out windows ) )
+                if( _stringToWindows.TryGetValue( s, out l ) ) windows.AddRange( l );
+            }
+
+            foreach( var w in windows )
+            {
+                DispatchWhenRequired( w.Dispatcher, () =>
                 {
-                    foreach( var w in windows )
-                    {
-                        DispatchWhenRequired( w.Dispatcher, () =>
-                        {
-                            CK.Windows.Interop.Win.Functions.SetWindowPos( new WindowInteropHelper( w ).Handle, new IntPtr( (int)CK.Windows.Interop.Win.SpecialWindowHandles.TOPMOST ), 0, 0, 0, 0, Windows.Interop.Win.SetWindowPosFlags.IgnoreMove | Windows.Interop.Win.SetWindowPosFlags.IgnoreResize | Windows.Interop.Win.SetWindowPosFlags.DoNotActivate );
-                        } );
-                    }
-                }
+                    CK.Windows.Interop.Win.Functions.SetWindowPos( new WindowInteropHelper( w ).Handle, new IntPtr( (int)CK.Windows.Interop.Win.SpecialWindowHandles.TOPMOST ), 0, 0, 0, 0, Windows.Interop.Win.SetWindowPosFlags.IgnoreMove | Windows.Interop.Win.SetWindowPosFlags.IgnoreResize | Windows.Interop.Win.SetWindowPosFlags.DoNotActivate );
+                } );
             }
         }
 

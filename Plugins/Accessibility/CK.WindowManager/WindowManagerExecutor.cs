@@ -6,6 +6,7 @@ using System.Windows;
 using System;
 using CommonServices;
 using System.Windows.Threading;
+using CK.Windows;
 
 namespace CK.WindowManager
 {
@@ -123,41 +124,41 @@ namespace CK.WindowManager
 
             if( binding.Left != null && binding.Left.SpatialBinding != master )
             {
-                binding.Left.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)( () =>
+                binding.Left.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
                     //binding.Left.UnbindButton.Window.Show();
-                } ) );
+                }) );
                 PlacingButton( binding.Left.SpatialBinding, binding );
             }
 
             if( binding.Right != null && binding.Right.SpatialBinding != master )
             {
-                binding.Right.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)( () =>
+                binding.Right.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Right.UnbindButton.Move( top + height / 2 - binding.Right.UnbindButton.Window.Height / 2, left + width - binding.Right.UnbindButton.Window.Width / 2 );
                     //binding.Right.UnbindButton.Window.Show();
-                } ) );
+                }) );
                 PlacingButton( binding.Right.SpatialBinding, binding );
             }
 
             if( binding.Bottom != null && binding.Bottom.SpatialBinding != master )
             {
-                binding.Bottom.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)( () =>
+                binding.Bottom.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Bottom.UnbindButton.Move( top + height - binding.Bottom.UnbindButton.Window.Height / 2, left + width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
                     //binding.Bottom.UnbindButton.Window.Show();
-                } ) );
+                }) );
                 PlacingButton( binding.Bottom.SpatialBinding, binding );
             }
 
             if( binding.Top != null && binding.Top.SpatialBinding != master )
             {
-                binding.Top.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)( () =>
+                binding.Top.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Top.UnbindButton.Move( top - binding.Top.UnbindButton.Window.Height / 2, left + width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
                     //binding.Top.UnbindButton.Window.Show();
-                } ) );
+                }) );
                 PlacingButton( binding.Top.SpatialBinding, binding );
             }
         }
@@ -232,7 +233,7 @@ namespace CK.WindowManager
         {
             if( e.BindingType == BindingEventType.Attach )
             {
-                DispatchWhenRequired( e.Binding.Origin.Window.Dispatcher, (Action)( () =>
+                DispatchWhenRequired( e.Binding.Origin.Window.Dispatcher, (Action)(() =>
                 {
                     Rect r = e.Binding.GetWindowArea();
                     if( r != Rect.Empty )
@@ -243,7 +244,7 @@ namespace CK.WindowManager
                         move.Broadcast();
                         resize.Broadcast();
                     }
-                } ), false );
+                }), false );
             }
         }
 
@@ -261,13 +262,13 @@ namespace CK.WindowManager
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Restore();
-                    DispatchWhenRequired( descendant.Top.UnbindButton.Window.Dispatcher, (Action)( () =>
+                    DispatchWhenRequired( NoFocusManager.Default.NoFocusDispatcher, (Action)(() =>
                     {
                         if( descendant.Top != null && !descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Show();
                         if( descendant.Bottom != null && !descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Show();
                         if( descendant.Right != null && !descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Show();
                         if( descendant.Left != null && !descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Show();
-                    } ), false );
+                    }), false );
                 }
             }
         }
@@ -280,13 +281,13 @@ namespace CK.WindowManager
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Minimize();
-                    DispatchWhenRequired( descendant.Top.UnbindButton.Window.Dispatcher, (Action)( () =>
+                    DispatchWhenRequired( NoFocusManager.Default.NoFocusDispatcher, (Action)(() =>
                     {
                         if( descendant.Top != null && descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Hide();
                         if( descendant.Bottom != null && descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Hide();
                         if( descendant.Right != null && descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Hide();
                         if( descendant.Left != null && descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Hide();
-                    } ), false );
+                    }), false );
                 }
             }
         }

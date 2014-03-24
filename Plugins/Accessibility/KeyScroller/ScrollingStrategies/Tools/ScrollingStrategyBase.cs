@@ -320,7 +320,7 @@ namespace KeyScroller
             {
                 if ( e.Key == "Speed" )
                 {
-                    _timer.Interval = (double)e.Value;
+                    _timer.Interval = (double)(int)e.Value;
                 }
             }
         }

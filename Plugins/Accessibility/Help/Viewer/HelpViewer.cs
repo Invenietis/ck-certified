@@ -23,6 +23,9 @@ namespace Help
         [RequiredService]
         public IHostInformation HostInformations { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IHelpUpdaterService> HelpUpdater { get; set; }
+
         [RequiredService]
         public IContext Context { get; set; }
 

@@ -100,9 +100,12 @@ namespace Host.VM
             base.OnInitialize();
         }
 
+        public new event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged( string propertyName )
         {
-            OnPropertyChanged( new PropertyChangedEventArgs(propertyName));
+            if( PropertyChanged != null ) 
+                PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
         }
     }
 }

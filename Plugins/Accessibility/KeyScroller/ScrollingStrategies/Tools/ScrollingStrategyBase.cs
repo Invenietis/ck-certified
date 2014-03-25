@@ -224,6 +224,11 @@ namespace KeyScroller
                         if( index != -1 )
                         {
                             _currentId = index;
+                            //avoids a StackOverFlow, if children 0 and we have skip.EnterChild
+                            if( elements[index].Children.Count == 0 || elements[index].Children.All( he => he.Skip == SkippingBehavior.Skip ) )
+                            {
+                                return _currentElement;
+                            }
                             nextElement = GetEnterChild( elements );
                             return GetSkipBehavior( nextElement );
                         }
@@ -320,7 +325,7 @@ namespace KeyScroller
             {
                 if ( e.Key == "Speed" )
                 {
-                    _timer.Interval = (double)e.Value;
+                    _timer.Interval = (double)(int)e.Value;
                 }
             }
         }

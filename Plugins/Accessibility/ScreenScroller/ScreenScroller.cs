@@ -62,13 +62,7 @@ namespace ScreenScroller
 
             InitializeHighligther();
 
-            if( TopMostService.Status.IsStartingOrStarted )
-            {
-                foreach( var screen in _screens )
-                {
-                    TopMostService.Service.RegisterTopMostElement( "150", screen );
-                }
-            }
+            InitializeTopMost();
 
             Config.ConfigChanged += OnConfigChanged;
         }
@@ -131,13 +125,11 @@ namespace ScreenScroller
         public void Stop()
         {
             Config.ConfigChanged += OnConfigChanged;
+            UninitializeTopMost();
             UnInitializeHighlighter();
-
-            bool unregisterTopMost = TopMostService.Status.IsStartingOrStarted;
 
             foreach( var screen in _screens )
             {
-                if( unregisterTopMost ) TopMostService.Service.UnregisterTopMostElement( screen );
                 screen.Close();
             }
         }
@@ -145,6 +137,61 @@ namespace ScreenScroller
         public void Teardown()
         {
         }
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.RegisterTopMostElement( "150", screen );
+                }
+            }
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.UnregisterTopMostElement( screen );
+                }
+            }
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.RegisterTopMostElement( "150", screen );
+                }
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.UnregisterTopMostElement( screen );
+                }
+            }
+        }
+
+        #endregion
 
         #region Hightlight Implementation
 

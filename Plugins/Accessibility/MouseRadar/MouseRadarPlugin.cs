@@ -97,31 +97,13 @@ namespace MouseRadar
                 _yield = true;
             };
 
-            if( TopMostService.Status.IsStartingOrStarted )
-                TopMostService.Service.RegisterTopMostElement( "200", _radar );
-
-            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
-        }
-
-        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                TopMostService.Service.RegisterTopMostElement( "200", _radar );
-            }
-            else if( e.Current <= InternalRunningStatus.Stopping )
-            {
-                TopMostService.Service.UnregisterTopMostElement( _radar );
-            }
+            InitializeTopMost();
         }
 
         public void Stop()
         {
+            UninitializeTopMost();
             _radar.Dispose();
-            if( Highlighter.Status.IsStartingOrStarted )
-                Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
-
-            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
         }
 
         public void Teardown()
@@ -242,6 +224,43 @@ namespace MouseRadar
         public bool IsHighlightableTreeRoot
         {
             get { return _radar.CurrentStep == RadarStep.Paused; }//if the radar is not paused, it is scrolling, so we actually are NOT on the root, we are on a virtual step that is child of the root.
+        }
+
+        #endregion
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.RegisterTopMostElement( "200", _radar );
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.UnregisterTopMostElement( _radar );
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "200", _radar );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _radar );
+            }
         }
 
         #endregion

@@ -27,9 +27,6 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IUnbindButtonManager> UnbindButtonManager { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<ITopMostService> TopMostService { get; set; }
-
         public IPluginConfigAccessor Config { get; set; }
 
         IDictionary<IWindowElement, SpatialBinding> _spatialBindings = new Dictionary<IWindowElement, SpatialBinding>();

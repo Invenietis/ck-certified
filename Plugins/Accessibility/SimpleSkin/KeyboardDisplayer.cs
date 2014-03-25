@@ -614,7 +614,9 @@ namespace SimpleSkin
                 //temporary 03/03/2014
                 if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
                 {
-                    Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                    if( Highlighter.Status == InternalRunningStatus.Started )
+                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+
                     _miniView.Hide();
                     _viewHidden = false;
                 }

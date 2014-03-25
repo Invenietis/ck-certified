@@ -5,6 +5,7 @@
     Title="Auto click"
     WindowStyle="None"     
     ShowInTaskbar="False"
+    ShowActivated="False"
     Background="Transparent"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views">

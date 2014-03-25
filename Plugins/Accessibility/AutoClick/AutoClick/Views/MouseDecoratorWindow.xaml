@@ -8,6 +8,7 @@
              Width="20" Height="20"
              WindowStyle="None"
             ShowInTaskbar="False"
+            ShowActivated="False"
             AllowsTransparency="True"
             Background="Transparent"            
             Topmost="True">

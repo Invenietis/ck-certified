@@ -291,7 +291,7 @@ namespace ScreenScroller
             {
                 RegisterHighlighter();
             }
-            else if( e.Current <= InternalRunningStatus.Stopping )
+            else if( e.Current == InternalRunningStatus.Stopping )
             {
                 UnregisterHighlighter();
             }

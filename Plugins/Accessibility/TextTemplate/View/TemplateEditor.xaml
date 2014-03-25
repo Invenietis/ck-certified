@@ -8,6 +8,7 @@
             xmlns:r="clr-namespace:TextTemplate.Resource"
             mc:Ignorable="d"   
             ShowInTaskbar="False"
+            ShowActivated="False"
             Width="600"
             MinWidth="100"
             MinHeight="150"

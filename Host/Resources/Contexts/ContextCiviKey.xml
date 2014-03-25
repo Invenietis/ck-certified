@@ -3357,6 +3357,11 @@
                             <Cmd>sendString:ã</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ä" />
@@ -3365,6 +3370,11 @@
                             <Cmd>sendString:ä</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="a" />
@@ -3519,6 +3529,11 @@
                             <Cmd>sendString:ë</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="e" />
@@ -3737,6 +3752,11 @@
                             <Cmd>sendString:ü</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="u" />
@@ -3835,6 +3855,11 @@
                             <Cmd>sendString:ï</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="i" />
@@ -3941,6 +3966,11 @@
                             <Cmd>sendString:õ</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="trema" Enabled="true" Description="">
                         <KeyUp Label="ö" />
@@ -3949,6 +3979,11 @@
                             <Cmd>sendString:ö</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="o" />
@@ -4896,6 +4931,11 @@
                             <Cmd>sendString:ñ</Cmd>
                           </KeyProgram>
                         </KeyDown>
+                        <PluginsData>
+                          <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                            <data key="DisplayType" type="String">Label</data>
+                          </p>
+                        </PluginsData>
                       </KeyMode>
                       <KeyMode Mode="" Enabled="true" Description="">
                         <KeyUp Label="n" />
@@ -5629,7 +5669,7 @@
               </Zone>
             </Zones>
             <Layouts>
-              <Layout IsCurrent="true" Name="" Width="935" Height="280">
+              <Layout IsCurrent="true" Name="" Width="955" Height="295">
                 <RequirementLayer Name="Layout">
                   <PluginRequirements></PluginRequirements>
                   <ServiceRequirements></ServiceRequirements>
@@ -5641,49 +5681,49 @@
                   <Zone Name="Numéros">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="2" Y="5" W="75" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="15" Y="15" W="75" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="80" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="95" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="135" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="150" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="190" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="205" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="245" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="260" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="300" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="315" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="355" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="370" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="" X="410" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="425" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
-                        <LayoutKeyMode Mode="" X="465" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="480" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="" X="520" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="535" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="575" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="590" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="630" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="645" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="685" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="700" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
-                        <LayoutKeyMode Mode="" X="740" Y="5" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="755" Y="15" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="14">
-                        <LayoutKeyMode Mode="" X="795" Y="5" W="75" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="810" Y="15" W="75" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">45</data>
@@ -5699,7 +5739,7 @@
                   <Zone Name="{Tab}azertyuiop{enter}">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="2" Y="60" W="100" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="15" Y="70" W="100" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">35</data>
@@ -5708,7 +5748,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="agrave" X="105" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="agrave" X="120" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5717,7 +5757,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="circonflexe" X="105" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="120" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5726,7 +5766,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="tilde" X="105" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="tilde" X="120" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5735,7 +5775,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="trema" X="105" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="trema" X="120" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5744,13 +5784,13 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="105" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="120" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="160" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="175" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="agrave" X="215" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="agrave" X="230" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5759,7 +5799,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="circonflexe" X="215" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="230" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5768,7 +5808,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="trema" X="215" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="trema" X="230" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5777,19 +5817,19 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="215" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="230" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="270" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="285" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="325" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="340" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="380" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="395" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="agrave" X="435" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="agrave" X="450" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5798,7 +5838,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="circonflexe" X="435" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="450" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5807,7 +5847,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="trema" X="435" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="trema" X="450" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5816,10 +5856,10 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="435" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="450" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
-                        <LayoutKeyMode Mode="agrave" X="490" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="agrave" X="505" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5828,7 +5868,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="circonflexe" X="490" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="505" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5837,7 +5877,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="trema" X="490" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="trema" X="505" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5846,10 +5886,10 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="490" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="505" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="agrave" X="545" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="agrave" X="560" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5858,7 +5898,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="circonflexe" X="545" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="circonflexe" X="560" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5867,7 +5907,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="tilde" X="545" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="tilde" X="560" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5876,7 +5916,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="trema" X="545" Y="105" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="trema" X="560" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5885,19 +5925,19 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="545" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="560" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="600" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="615" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="655" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="670" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="710" Y="60" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="725" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
-                        <LayoutKeyMode Mode="" X="785" Y="60" W="85" H="105" Visible="true">
+                        <LayoutKeyMode Mode="" X="800" Y="70" W="85" H="105" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">50</data>
@@ -5910,7 +5950,7 @@
                   <Zone Name="{Lock}qsdfghjklmù*">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="shift" X="2" Y="160" W="120" H="50" Visible="true">
+                        <LayoutKeyMode Mode="shift" X="15" Y="125" W="120" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5923,7 +5963,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="115" W="120" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="15" Y="125" W="120" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">25</data>
@@ -5932,47 +5972,47 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="125" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="140" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="180" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="195" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="235" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="250" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="290" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="305" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="345" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="360" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="400" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="415" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="" X="455" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="470" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
-                        <LayoutKeyMode Mode="" X="510" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="525" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="" X="565" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="580" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="620" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="635" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="675" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="690" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="730" Y="115" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="745" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
                   <Zone Name="wxcvbn,;">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="shift" X="2" Y="215" W="100" H="50" Visible="true">
+                        <LayoutKeyMode Mode="shift" X="15" Y="180" W="100" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -5985,7 +6025,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="170" W="100" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="15" Y="180" W="100" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">40</data>
@@ -5997,28 +6037,28 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="105" Y="170" W="50" H="25" Visible="true" />
+                        <LayoutKeyMode Mode="" X="120" Y="180" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="105" Y="195" W="50" H="25" Visible="true" />
+                        <LayoutKeyMode Mode="" X="120" Y="205" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="160" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="175" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="215" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="230" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="270" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="285" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="" X="325" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="340" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="7">
-                        <LayoutKeyMode Mode="" X="380" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="395" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="8">
-                        <LayoutKeyMode Mode="tilde" X="435" Y="215" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="tilde" X="450" Y="180" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6027,22 +6067,22 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="435" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="450" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="9">
-                        <LayoutKeyMode Mode="" X="490" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="505" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="10">
-                        <LayoutKeyMode Mode="" X="545" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="560" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="11">
-                        <LayoutKeyMode Mode="" X="600" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="615" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="12">
-                        <LayoutKeyMode Mode="" X="655" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="670" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="13">
-                        <LayoutKeyMode Mode="shift" X="710" Y="215" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="shift" X="725" Y="180" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6055,7 +6095,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="710" Y="170" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="725" Y="180" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">40</data>
@@ -6067,14 +6107,14 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="14">
-                        <LayoutKeyMode Mode="" X="820" Y="170" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="835" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
                   <Zone Name="ctrl, win, etc..">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="ctrl" X="2" Y="270" W="75" H="50" Visible="true">
+                        <LayoutKeyMode Mode="ctrl" X="15" Y="235" W="75" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6086,17 +6126,17 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="2" Y="225" W="75" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="15" Y="235" W="75" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="80" Y="225" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="95" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="alt" X="135" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="alt" X="150" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6108,20 +6148,20 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="135" Y="225" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="150" Y="235" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="190" Y="225" W="350" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="205" Y="235" W="350" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="545" Y="225" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="560" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="alt" X="600" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="alt" X="615" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6133,10 +6173,10 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="600" Y="225" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="615" Y="235" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="6">
-                        <LayoutKeyMode Mode="ctrl" X="655" Y="270" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="ctrl" X="670" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6148,14 +6188,14 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="655" Y="225" W="50" H="50" Visible="true" />
+                        <LayoutKeyMode Mode="" X="670" Y="235" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
                   <Zone Name="Fleches">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="765" Y="170" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="780" Y="180" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6164,7 +6204,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="710" Y="225" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="725" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6173,7 +6213,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="765" Y="225" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="780" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6182,7 +6222,7 @@
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="820" Y="225" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="835" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="FontSize" type="Double">30</data>
@@ -6198,14 +6238,14 @@
                   <Zone Name="Fonctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="880" Y="5" W="50" H="25" Visible="true">
+                        <LayoutKeyMode Mode="" X="895" Y="15" W="50" H="25" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="fn" X="880" Y="75" W="50" H="25" Visible="true">
+                        <LayoutKeyMode Mode="fn" X="895" Y="40" W="50" H="25" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                               <data key="Background" type="Structured" typeName="System.Windows.Media.Color, PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
@@ -6217,31 +6257,31 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="880" Y="30" W="50" H="25" Visible="true" />
+                        <LayoutKeyMode Mode="" X="895" Y="40" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="880" Y="60" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="895" Y="70" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="880" Y="115" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="895" Y="125" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="880" Y="170" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="895" Y="180" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="880" Y="225" W="50" H="50" Visible="true">
+                        <LayoutKeyMode Mode="" X="895" Y="235" W="50" H="50" Visible="true">
                           <PluginsData>
                             <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
                           </PluginsData>

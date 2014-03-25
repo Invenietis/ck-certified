@@ -44,16 +44,11 @@
         <Setter Property="Control.Template" Value="{StaticResource NoFocusButtonTemplate}" />
         <Style.Triggers>
             <Trigger Property="Button.IsMouseOver" Value="True">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">
-                            <LinearGradientBrush.GradientStops>
-                                <GradientStop Color="#FFD8D8D8" Offset="0"/>
-                                <GradientStop Color="#FFFFFFFF" Offset="1"/>
-                            </LinearGradientBrush.GradientStops>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Background" Value="#EEE" />
+            </Trigger>
+            <Trigger Property="Button.IsPressed" Value="True">
+                <Setter Property="Foreground" Value="#FFF" />
+                <Setter Property="Background" Value="#444" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -61,22 +56,16 @@
     <Style TargetType="{x:Type Button}" x:Key="NoFocusSelectableButtonStyle" BasedOn="{StaticResource EditorRoundButtonStyle}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter Property="Button.Background" Value="{StaticResource ButtonOverBrush}" />
+                <Setter Property="Button.Background" Value="#dcf0ff"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding IsSelected}" Value="False">
-                <Setter Property="Button.Background" Value="Transparent"/>
+                <Setter Property="Button.Background" Value="#FFF"/>
             </DataTrigger>
             <Trigger Property="Button.IsMouseOver" Value="True">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="-0.117562,0.418708" EndPoint="-0.117562,0.418708">
-                            <LinearGradientBrush.GradientStops>
-                                <GradientStop Color="#FFD8D8D8" Offset="0"/>
-                                <GradientStop Color="#FFFFFFFF" Offset="1"/>
-                            </LinearGradientBrush.GradientStops>
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="Background" Value="#EEE" />
+            </Trigger>
+            <Trigger Property="Button.IsPressed" Value="True">
+                <Setter Property="Foreground" Value="#000" />
             </Trigger>
         </Style.Triggers>
     </Style>

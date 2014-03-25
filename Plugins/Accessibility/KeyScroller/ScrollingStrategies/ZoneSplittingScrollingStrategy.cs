@@ -98,7 +98,7 @@ namespace KeyScroller
             else
             {
                 _currentElementParents.Push( _nextElement );
-            }
+            } 
 
             return _nextElement.Children[0];
         }
@@ -132,7 +132,7 @@ namespace KeyScroller
                 {
                     _nextElement = GetStayOnTheSame( elements );
                 }
-                else if( _currentId < 0 || actionType != ActionType.EnterChild && elements.Count( he => he.Skip != SkippingBehavior.Skip ) > 1 )
+                else if( _currentId < 0 || actionType != ActionType.EnterChild )
                 {
                     // if it's the first iteration, or if we just have to go to the next sibbling
                     VMSplitZone splitZone = null;
@@ -174,7 +174,7 @@ namespace KeyScroller
                 {
                     _nextElement = GetStayOnTheSame( elements );
                 }
-                else
+                else if( _nextElement.Children.Count > 0 )
                 {
                     _nextElement = GetEnterChild( _nextElement.Children );
                 }

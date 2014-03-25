@@ -63,8 +63,8 @@ namespace CK.WordPredictor.UI
                         return; //We don't remove and recreate the zone if the new value equals the previous one
                 }
 
-                Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
-                Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
+                //Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
+                //Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
                 EnsurePredictionKeyboard();
             }
         }
@@ -83,7 +83,6 @@ namespace CK.WordPredictor.UI
             PredictionKeyboard.IsActive = true;
             Feature.AutonomousKeyboardPredictionFactory.RemovePredictionZone( PredictionKeyboard );
             Feature.AutonomousKeyboardPredictionFactory.CreatePredictionZone( PredictionKeyboard, Feature.MaxSuggestedWords );
-            
         }
 
         public void Stop()

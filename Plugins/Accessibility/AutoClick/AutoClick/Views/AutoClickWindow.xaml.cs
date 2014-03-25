@@ -33,6 +33,7 @@ namespace CK.Plugins.AutoClick.Views
     public partial class AutoClickWindow : CKWindow
     {
         public AutoClickWindow()
+            : base()
         {
             InitializeComponent();
         }

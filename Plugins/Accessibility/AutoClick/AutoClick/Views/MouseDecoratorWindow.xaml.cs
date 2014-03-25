@@ -22,13 +22,14 @@
 #endregion
 
 using System.Windows;
+using CK.Windows;
 
 namespace CK.Plugins.AutoClick.Views
 {
     /// <summary>
     /// Interaction logic for AutoClickEditorWindow.xaml
     /// </summary>
-    public partial class MouseDecoratorWindow : Window
+    public partial class MouseDecoratorWindow : CKWindow
     {
 
         public MouseDecoratorWindow()

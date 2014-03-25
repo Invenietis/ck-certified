@@ -658,6 +658,8 @@ namespace SimpleSkin
             {
                 ForEachSkin( HideSkin );
 
+                if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.MinimizeAllWindows();
+
                 //temporary
                 UnregisterPrediction();
             }

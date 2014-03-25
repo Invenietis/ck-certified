@@ -105,8 +105,6 @@ namespace Host
             }
         }
 
-
-
         /// <summary>
         /// v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
         /// Gets whether the application should be visible in the Systray.

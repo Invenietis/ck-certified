@@ -28,14 +28,13 @@
     <!---->
     
     <!-- BOTH : SelectedIsPressedButtonStyle : When the button is selected, it has a "pressed" rendering-->
-    <Style x:Key="SelectedIsPressedButtonStyle" TargetType="{x:Type views:ActionOnMouseEnterButton}">
+    <!--<Style x:Key="SelectedIsPressedButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type views:ActionOnMouseEnterButton}">
-                    <Microsoft_Windows_Themes:ButtonChrome x:Name="button" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
-                                                           RenderPressed="{TemplateBinding views:ActionOnMouseEnterButton.Selected}"
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Microsoft_Windows_Themes:ButtonChrome x:Name="button" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
                                                            Background="{TemplateBinding Background}"
                                                            BorderBrush="{TemplateBinding BorderBrush}">
                         <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
@@ -45,13 +44,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <Style TargetType="{x:Type Image}">
         <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
     </Style>
-   
-    
+
+
     <lib:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <converters:InstructionToImageConverter x:Key="InstructionToImageConverter" />
     <converters:PathToImageConverter x:Key="PathToImageConverter" />

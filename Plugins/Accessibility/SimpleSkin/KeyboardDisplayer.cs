@@ -79,36 +79,19 @@ namespace SimpleSkin
             public bool IsClosing;
         }
 
-        class RegisteredElementInfo
-        {
-            public RegisteredElementInfo( string targetModuleName, string extensibleElementName, ChildPosition position, SkinInfo skin )
-            {
-                TargetModuleName = targetModuleName;
-                ExtensibleElementName = extensibleElementName;
-                Position = position;
-                SkinInfo = skin;
-            }
-
-            public readonly string TargetModuleName;
-            public readonly string ExtensibleElementName;
-            public readonly ChildPosition Position;
-            public readonly SkinInfo SkinInfo;
-        }
-
-        #region IPlugin Members
-
         IDictionary<string, SkinInfo> _skins;
-        IDictionary<string, RegisteredElementInfo> _registeredElementInfo;
 
         bool _viewHidden;
         MiniViewVM _miniViewVm;
         MiniView _miniView;
+
         public bool IsViewHidden { get { return _viewHidden; } }
+
+        #region IPlugin Members
 
         public bool Setup( IPluginSetupInfo info )
         {
             _skins = new Dictionary<string, SkinInfo>();
-            _registeredElementInfo = new Dictionary<string, RegisteredElementInfo>();
             return true;
         }
 
@@ -131,6 +114,80 @@ namespace SimpleSkin
             UnregisterPrediction();
             RegisterPrediction();
         }
+
+        public void Stop()
+        {
+            //temporary
+            UnregisterPrediction();
+
+            UnregisterEvents();
+
+            UninitializeMiniview();
+
+            foreach( var skin in _skins.Values )
+            {
+                UninitializeActiveWindows( skin );
+            }
+
+            _skins.Clear();
+        }
+
+        public void Teardown()
+        {
+        }
+
+        #endregion
+
+        #region WindowManager and WindowBinder Members
+
+        void Subscribe( SkinInfo skinInfo )
+        {
+            skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
+        }
+
+        void Unsubscribe( SkinInfo skinInfo )
+        {
+            skinInfo.Subscriber.Unsubscribe();
+        }
+
+        #endregion WindowManager and WindowBidner Members
+
+        #region TopMostService Methods
+
+        void RegisterTopMostService( SkinInfo skinInfo )
+        {
+            if( TopMostService.Status == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "10", skinInfo.Skin );
+            }
+        }
+
+        void UnregisterTopMostService( SkinInfo skinInfo )
+        {
+            if( TopMostService.Status == InternalRunningStatus.Started )
+            {
+                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
+                } ) );
+            }
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                ForEachSkin( s => RegisterTopMostService( s ) );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                ForEachSkin( s => UnregisterTopMostService( s ) );
+            }
+        }
+
+        #endregion TopMostService Methods
+
+        #region Windows Initialization
 
         void InitializeActiveWindow( IKeyboard keyboard )
         {
@@ -202,26 +259,6 @@ namespace SimpleSkin
             _skins.Remove( skin.ViewModel.KeyboardVM.Keyboard.Name );
         }
 
-        //TODOF i think, we can factorize this
-        public void Stop()
-        {
-            //temporary
-            UnregisterPrediction();
-
-            UnregisterEvents();
-
-            UninitializeMiniview();
-
-            foreach( var skin in _skins.Values )
-            {
-                UninitializeActiveWindows( skin );
-            }
-
-            Debug.Assert( _registeredElementInfo.Count == 0 );
-
-            _skins.Clear();
-        }
-
         private void UninitializeMiniview()
         {
             _miniView.Dispatcher.Invoke( (Action)(() =>
@@ -234,61 +271,6 @@ namespace SimpleSkin
                     }
                 }) );
         }
-
-        public void Teardown()
-        {
-        }
-
-        #endregion
-
-        #region WindowManager and WindowBinder Members
-
-        void Subscribe( SkinInfo skinInfo )
-        {
-            skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
-        }
-
-        void Unsubscribe( SkinInfo skinInfo )
-        {
-            skinInfo.Subscriber.Unsubscribe();
-        }
-
-        #endregion WindowManager and WindowBidner Members
-
-        #region TopMostService
-
-        void RegisterTopMostService( SkinInfo skinInfo )
-        {
-            if( TopMostService.Status == InternalRunningStatus.Started )
-            {
-                TopMostService.Service.RegisterTopMostElement( "10", skinInfo.Skin );
-            }
-        }
-
-        void UnregisterTopMostService( SkinInfo skinInfo )
-        {
-            if( TopMostService.Status == InternalRunningStatus.Started )
-            {
-                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
-                {
-                    TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
-                } ) );
-            }
-        }
-
-        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                ForEachSkin( s => RegisterTopMostService( s ) );
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                ForEachSkin( s => UnregisterTopMostService( s ) );
-            }
-        }
-
-        #endregion TopMostService
 
         string PlacementString( SkinInfo skinInfo )
         {
@@ -336,8 +318,10 @@ namespace SimpleSkin
             defaultPlacement = CKWindowTools.GetPlacement( skinInfo.Skin.Hwnd );
 
             WINDOWPLACEMENT actualPlacement = Config.User.GetOrSet( PlacementString( skinInfo ), defaultPlacement );
-            skinInfo.Dispatcher.Invoke( (Action)( () => CKWindowTools.SetPlacement( skinInfo.Skin.Hwnd, actualPlacement ) ), null );
+            skinInfo.Dispatcher.Invoke( (Action)(() => CKWindowTools.SetPlacement( skinInfo.Skin.Hwnd, actualPlacement )), null );
         }
+
+        #endregion Windows Initialization
 
         #region Hightlight Methods
 
@@ -357,13 +341,9 @@ namespace SimpleSkin
                 }
                 else
                 {
-                    ForEachSkin( s =>
-                    {
-                        if( !_registeredElementInfo.ContainsKey( s.ViewModel.KeyboardVM.Keyboard.Name ) ) RegisterHighlighter( s );
-                    } );
-                    foreach( var element in _registeredElementInfo.Values ) Highlighter.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
-                    UnregisterPrediction();
-                    RegisterPrediction();
+                    ForEachSkin( s => RegisterHighlighter( s ) );
+
+                    DirtyTemporaryPredictionInjectionInCurrentKeyboard();
                 }
             }
             else if( e.Current == InternalRunningStatus.Stopping )
@@ -380,10 +360,7 @@ namespace SimpleSkin
                 }
                 else
                 {
-                    ForEachSkin( s =>
-                    {
-                        if( !_registeredElementInfo.ContainsKey( s.ViewModel.KeyboardVM.Keyboard.Name ) ) UnregisterHighlighter( s );
-                    } );
+                    ForEachSkin( s => UnregisterHighlighter( s ) );
                     UnregisterPrediction();
                 }
             }
@@ -406,23 +383,7 @@ namespace SimpleSkin
             }
         }
 
-        void RegisterInRegisteredElement( RegisteredElementInfo element )
-        {
-            if( Highlighter.Status == InternalRunningStatus.Started )
-            {
-                Highlighter.Service.RegisterInRegisteredElementAt( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
-            }
-            _registeredElementInfo.Add( element.SkinInfo.ViewModel.KeyboardVM.Keyboard.Name, element );
-        }
-
-        void UnregisterInRegisteredElement( RegisteredElementInfo element )
-        {
-            if( Highlighter.Status == InternalRunningStatus.Started )
-            {
-                Highlighter.Service.UnregisterInRegisteredElement( element.TargetModuleName, element.ExtensibleElementName, element.Position, element.SkinInfo.ViewModel.KeyboardVM );
-            }
-            _registeredElementInfo.Remove( element.SkinInfo.ViewModel.KeyboardVM.Keyboard.Name );
-        }
+        #endregion
 
         #region Prediction temporary region
 
@@ -471,11 +432,15 @@ namespace SimpleSkin
             }
         }
 
-        #endregion
+        private void DirtyTemporaryPredictionInjectionInCurrentKeyboard()
+        {
+            UnregisterPrediction();
+            RegisterPrediction();
+        }
 
         #endregion
 
-        #region OnXXXX
+        #region Register Unregister Events
 
         private void RegisterEvents()
         {
@@ -519,22 +484,23 @@ namespace SimpleSkin
             skinInfo.Skin.Closing -= new CancelEventHandler( OnWindowClosing );
         }
 
+        #endregion Register Unregister Events
+
+        #region OnXXXX
+
         void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
         {
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
-            SkinInfo skin = _skins[e.Keyboard.Name];
-            UninitializeActiveWindows( skin );
-            //temporary
-            UnregisterPrediction();
-            RegisterPrediction();
+            UninitializeActiveWindows( _skins[e.Keyboard.Name] );
+
+            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
 
         void OnKeyboardActivated( object sender, KeyboardEventArgs e )
         {
             InitializeActiveWindow( e.Keyboard );
-            UnregisterPrediction();
-            RegisterPrediction();
+            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
 
         void OnKeyboardRenamed( object sender, KeyboardRenamedEventArgs e )
@@ -544,17 +510,6 @@ namespace SimpleSkin
             {
                 _skins.Remove( e.PreviousName );
                 _skins.Add( e.Keyboard.Name, skin );
-
-                //Update name with Unregister and Register
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    RegisteredElementInfo element;
-                    if( _registeredElementInfo.TryGetValue( e.PreviousName, out element ) )
-                    {
-                        UnregisterInRegisteredElement( element );
-                        RegisterInRegisteredElement( element );
-                    }
-                }
             }
         }
 
@@ -562,9 +517,7 @@ namespace SimpleSkin
         {
             if( e.Keyboard.IsActive )
             {
-                Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
-                SkinInfo skin = _skins[e.Keyboard.Name];
-                UninitializeActiveWindows( skin );
+                OnKeyboardDeactivated( sender, e );
             }
         }
 
@@ -572,7 +525,7 @@ namespace SimpleSkin
         {
             if( e.Keyboard.IsActive && !_skins.ContainsKey( e.Keyboard.Name ) )
             {
-                InitializeActiveWindow( e.Keyboard );
+                OnKeyboardActivated( sender, e );
             }
         }
 
@@ -661,9 +614,7 @@ namespace SimpleSkin
 
             ForEachSkin( RegisterHighlighter );
 
-            //temporary
-            UnregisterPrediction();
-            RegisterPrediction();
+            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
             _viewHidden = false;
         }
 
@@ -682,9 +633,8 @@ namespace SimpleSkin
                 skinInfo.IsClosing = true;
                 skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
             }
-            //temporary
-            UnregisterPrediction();
-            RegisterPrediction();
+
+            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
 
         #endregion

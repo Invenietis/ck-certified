@@ -12,11 +12,11 @@ using System.Timers;
 
 namespace KeyScroller
 {
-    [Plugin( KeyScrollerPlugin.PluginIdString,
+    [Plugin( ScrollerPlugin.PluginIdString,
            PublicName = PluginPublicName,
-           Version = KeyScrollerPlugin.PluginIdVersion,
+           Version = ScrollerPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class KeyScrollerPlugin : IPlugin, IHighlighterService
+    public class ScrollerPlugin : IPlugin, IHighlighterService
     {
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
         public static List<string> AvailableStrategies = new List<string>();
@@ -24,10 +24,10 @@ namespace KeyScroller
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "KeyScroller";
+        const string PluginPublicName = "Scroller";
 
         Dictionary<string, IHighlightableElement> _registeredElements;
-        IScrollingStrategy _scrollingStrategy;
+        ScrollingStrategy _scrollingStrategy;
         Timer _timer;
         Dictionary<string, IScrollingStrategy> _strategies;
         ITrigger _currentTrigger;
@@ -43,7 +43,7 @@ namespace KeyScroller
         public IService<ITriggerService> InputTrigger { get; set; }
 
         //List the available strategy at the class init
-        static KeyScrollerPlugin()
+        static ScrollerPlugin()
         {
             AvailableStrategies.AddRange( StrategyAttribute.GetStrategies() );
         }
@@ -61,8 +61,8 @@ namespace KeyScroller
             {
                 _strategies.Add( name, GetStrategyByName( name ) );
             }
-            _scrollingStrategy = GetStrategyByName( Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ) );
-
+            //_scrollingStrategy = GetStrategyByName( Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ) );
+            _scrollingStrategy = new ScrollingStrategy( _timer );
             return true;
         }
 
@@ -94,16 +94,17 @@ namespace KeyScroller
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
             InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
+            _scrollingStrategy.Start();
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if ( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
+            if ( e.MultiPluginId.Any( u => u.UniqueId == ScrollerPlugin.PluginId.UniqueId ) )
             {
                 if ( e.Key == "Strategy" )
                 {
                     _scrollingStrategy.Stop();
-                    _scrollingStrategy = GetStrategyByName( e.Value.ToString() );
+                   // _scrollingStrategy = GetStrategyByName( e.Value.ToString() );
                     _scrollingStrategy.Start();
                 }
                 if ( e.Key == "Trigger" )
@@ -146,12 +147,13 @@ namespace KeyScroller
 
         public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
         {
-            if ( !_registeredElements.ContainsKey( targetModuleName ) )
-            {
-                _registeredElements.Add( targetModuleName, element );
-                if ( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
-                if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
-            }
+            //if ( !_registeredElements.ContainsKey( targetModuleName ) )
+            //{
+            //    _registeredElements.Add( targetModuleName, element );
+            //    if ( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
+            //    if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
+            //}
+            _scrollingStrategy.AddModule( element );
         }
 
         public void UnregisterTree( string targetModuleName, IHighlightableElement element )

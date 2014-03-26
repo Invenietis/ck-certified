@@ -23,7 +23,7 @@ namespace KeyScroller.Editor
             _keyboardTriggerConfig = keyboardTriggerConfig;
             _triggerService = triggerService;
 
-            _currentIndexStrategy = KeyScrollerPlugin.AvailableStrategies.IndexOf(_scrollConfig.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
+            _currentIndexStrategy = ScrollerPlugin.AvailableStrategies.IndexOf(_scrollConfig.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ));
             this.DisplayName = R.ScrollEditor;
         }
 
@@ -78,7 +78,7 @@ namespace KeyScroller.Editor
         {
             get
             {
-                foreach( string name in KeyScrollerPlugin.AvailableStrategies )
+                foreach( string name in ScrollerPlugin.AvailableStrategies )
                 {
                     yield return R.ResourceManager.GetString(name);
                 }
@@ -87,14 +87,14 @@ namespace KeyScroller.Editor
 
         public bool IsTurboStrategy
         {
-            get { return _currentIndexStrategy == -1 ? false : KeyScrollerPlugin.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
+            get { return _currentIndexStrategy == -1 ? false : ScrollerPlugin.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
         }
 
         public int CurrentIndexStrategy
         {
             set
             {
-                _scrollConfig.User["Strategy"] = KeyScrollerPlugin.AvailableStrategies[value];
+                _scrollConfig.User["Strategy"] = ScrollerPlugin.AvailableStrategies[value];
                 _currentIndexStrategy = value;
                 NotifyOfPropertyChange( () => CurrentIndexStrategy );
                 NotifyOfPropertyChange( () => IsTurboStrategy );

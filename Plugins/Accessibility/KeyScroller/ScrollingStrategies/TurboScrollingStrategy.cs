@@ -62,7 +62,7 @@ namespace KeyScroller
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
+            if( e.MultiPluginId.Any( u => u.UniqueId == ScrollerPlugin.PluginId.UniqueId ) )
             {
                 if( e.Key == "Speed" )
                 {

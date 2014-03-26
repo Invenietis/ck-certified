@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CK.Core;
 using HighlightModel;
 
-namespace KeyScroller.ScrollingStrategies.Tools
+namespace KeyScroller
 {
     public class HighlightableWrapperNode : IHighlightableWrapperNode
     {
@@ -49,9 +50,9 @@ namespace KeyScroller.ScrollingStrategies.Tools
             get
             {
                 int idx;
-                if( _next == null && (idx = Parent.Highlightable.Children.IndexOf( Highlightable )) > -1 )
+                if( _next == null && Parent != null && ( idx = Parent.Highlightable.Children.IndexOf( Highlightable ) ) > -1 )
                 {
-                    IHighlightableElement elem = Parent.Highlightable.Children.ElementAt( idx + 1 );
+                    IHighlightableElement elem = idx + 1 >= Parent.Highlightable.Children.Count ? null : Parent.Highlightable.Children.ElementAt( idx + 1 );
                     if(elem != null )
                         _next = new HighlightableWrapperNode( elem, Parent, Root );
                 }
@@ -86,9 +87,9 @@ namespace KeyScroller.ScrollingStrategies.Tools
                 return _last;
             } 
         }
-    
+  
 
-        public HighlightModel.IHighlightableElement Highlightable { get; private set; }
+        public HighlightModel.IHighlightableElement Highlightable { get; protected set; }
   
 
         public bool HasChild
@@ -99,6 +100,77 @@ namespace KeyScroller.ScrollingStrategies.Tools
         public bool IsRoot
         {
             get { return Root == this; }
+        }
+
+        #endregion
+    }
+    public class HighlightableWrapperRoot : HighlightableWrapperNode, IHighlightableElement
+    {
+        List<IHighlightableElement> _children;
+
+        public HighlightableWrapperRoot() : base(null)
+        {
+            Highlightable = this;
+            _children = new List<IHighlightableElement>();
+        }
+
+        public void AddChild(IHighlightableElement child)
+        {
+            _children.Add( child );
+            Children = new CKReadOnlyListOnIList<IHighlightableElement>( _children );
+        }
+
+        #region IHighlightableElement Members
+
+        public CK.Core.ICKReadOnlyList<IHighlightableElement> Children
+        {
+            get;
+            private set;
+        }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return 0; }
+        }
+
+        public int Height
+        {
+            get { return 0; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.EnterChildren; }
+        }
+
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { throw new NotImplementedException(); }
         }
 
         #endregion

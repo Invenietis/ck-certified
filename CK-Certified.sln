@@ -70,7 +70,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightModel", "Plugins\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardEditor", "Plugins\Advanced\ContextEditor\KeyboardEditor.csproj", "{30ADB3D6-ED05-403D-BEEC-9862200126B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyScroller", "Plugins\Accessibility\KeyScroller\KeyScroller.csproj", "{61618F4C-1288-401F-8644-77990429918C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scroller", "Plugins\Accessibility\KeyScroller\Scroller.csproj", "{61618F4C-1288-401F-8644-77990429918C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BB945194-C1F5-432A-B4AF-F9E46B665486} = {BB945194-C1F5-432A-B4AF-F9E46B665486}
 	EndProjectSection

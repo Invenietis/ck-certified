@@ -148,9 +148,9 @@
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Accessibility\KeyScroller\KeyScroller.csproj">
+    <ProjectReference Include="..\..\Accessibility\KeyScroller\Scroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
-      <Name>KeyScroller</Name>
+      <Name>Scroller</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Accessibility\SimpleSkin\SimpleSkin.csproj">
       <Project>{6ffe0480-6c42-413b-b59d-78793ac651c7}</Project>

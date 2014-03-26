@@ -152,9 +152,9 @@
       <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
       <Name>HighlightModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KeyScroller\KeyScroller.csproj">
+    <ProjectReference Include="..\KeyScroller\Scroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
-      <Name>KeyScroller</Name>
+      <Name>Scroller</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

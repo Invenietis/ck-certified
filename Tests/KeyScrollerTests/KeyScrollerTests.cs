@@ -15,7 +15,7 @@ namespace KeyScrollerTests
         [Test]
         public void KeyScrollerRegisterTest()
         {
-            KeyScrollerPlugin scroller = new KeyScrollerPlugin();
+            ScrollerPlugin scroller = new ScrollerPlugin();
             scroller.InputTrigger = TestHelper.MockIServiceTriggerService().Object;
             scroller.Configuration = TestHelper.MockPluginConfigAccessor().Object;
             scroller.Setup( null );

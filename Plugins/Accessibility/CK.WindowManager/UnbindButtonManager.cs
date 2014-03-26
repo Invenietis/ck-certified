@@ -55,7 +55,7 @@ namespace CK.WindowManager
         {
             button.Window.Dispatcher.Invoke( (Action)(() =>
                 {
-                    button.Window.Hide();
+                    button.Window.Close();
                     TopMostService.Service.UnregisterTopMostElement( button.Window );
                 }) );
         }

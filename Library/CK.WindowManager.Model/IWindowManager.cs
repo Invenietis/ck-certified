@@ -54,6 +54,10 @@ namespace CK.WindowManager.Model
         /// <param name="height"></param>
         IManualInteractionResult Resize( IWindowElement window, double width, double height );
 
+        void MinimizeAllWindows();
+
+        void RestoreAllWindows();
+
         /// <summary>
         /// Minimizes the host.
         /// </summary>
@@ -77,7 +81,7 @@ namespace CK.WindowManager.Model
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is hidden.
         /// </summary>
-        event EventHandler<WindowElementEventArgs> WindowHidden;
+        event EventHandler<WindowElementEventArgs> WindowMinimized;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is restored.

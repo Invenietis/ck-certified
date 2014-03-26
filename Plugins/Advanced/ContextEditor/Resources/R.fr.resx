@@ -306,6 +306,12 @@ Etes-vous sur de vouloir faire cela ?</value>
   <data name="StringToSend" xml:space="preserve">
     <value>Chaîne de caractères à envoyer : </value>
   </data>
+  <data name="TextTemplateAdd" xml:space="preserve">
+    <value>Ajouter un champ de saisie</value>
+  </data>
+  <data name="TextTemplateTitle" xml:space="preserve">
+    <value>Editer un modèle</value>
+  </data>
   <data name="WindowTitle" xml:space="preserve">
     <value>Assistant de création de claviers</value>
   </data>

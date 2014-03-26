@@ -300,7 +300,7 @@ namespace KeyboardEditor.ViewModels
         {
             for( int i = from; i <= to; i++ ) yield return i;
         }
-        public IEnumerable<double> FontSizes { get { return _sizes ?? (_sizes = GetSizes( 10, 30 )); } }
+        public IEnumerable<double> FontSizes { get { return _sizes ?? (_sizes = GetSizes( 10, 50 )); } }
 
 
         #endregion

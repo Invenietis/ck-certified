@@ -59,7 +59,7 @@ namespace BasicCommandHandlers
         {
             if( WindowManager.Status.IsStartingOrStarted )
             {
-                foreach( var we in WindowManager.Service.WindowElements ) we.Hide();
+                WindowManager.Service.MinimizeAllWindows();
             }
         }
         void ToggleHostMinimized()

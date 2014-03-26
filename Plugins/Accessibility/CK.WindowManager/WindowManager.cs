@@ -121,7 +121,7 @@ namespace CK.WindowManager
             }
         }
 
-        protected virtual void OnWindowHidden( object sender, EventArgs e )
+        protected virtual void OnWindowMinimized( object sender, EventArgs e )
         {
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
@@ -129,8 +129,8 @@ namespace CK.WindowManager
                 WindowElementData data = null;
                 if( _dic.TryGetValue( windowElement, out data ) )
                 {
-                    if( WindowHidden != null )
-                        WindowHidden( sender, new WindowElementEventArgs( windowElement ) );
+                    if( WindowMinimized != null )
+                        WindowMinimized( sender, new WindowElementEventArgs( windowElement ) );
                 }
             }
         }
@@ -196,7 +196,7 @@ namespace CK.WindowManager
             } );
 
             windowElement.GotFocus += OnWindowGotFocus;
-            windowElement.Hidden += OnWindowHidden;
+            windowElement.Minimized += OnWindowMinimized;
             windowElement.Restored += OnWindowRestored;
             windowElement.LocationChanged += OnWindowLocationChanged;
             windowElement.SizeChanged += OnWindowSizeChanged;
@@ -217,7 +217,7 @@ namespace CK.WindowManager
             if( _dic.TryGetValue( windowElement, out data ) )
             {
                 data.Window.GotFocus -= OnWindowGotFocus;
-                data.Window.Hidden -= OnWindowHidden;
+                data.Window.Minimized -= OnWindowMinimized;
                 data.Window.Restored -= OnWindowRestored;
                 data.Window.LocationChanged -= OnWindowLocationChanged;
                 data.Window.SizeChanged -= OnWindowSizeChanged;
@@ -232,7 +232,7 @@ namespace CK.WindowManager
 
         public event EventHandler<WindowElementEventArgs> WindowGotFocus;
 
-        public event EventHandler<WindowElementEventArgs> WindowHidden;
+        public event EventHandler<WindowElementEventArgs> WindowMinimized;
 
         public event EventHandler<WindowElementEventArgs> WindowRestored;
 
@@ -383,5 +383,20 @@ namespace CK.WindowManager
             }
         }
 
+
+        #region IWindowManager Members
+
+
+        public void MinimizeAllWindows()
+        {
+            foreach( var w in _dic.Keys ) w.Minimize();
+        }
+
+        public void RestoreAllWindows()
+        {
+            foreach( var w in _dic.Keys ) w.Restore();
+        }
+
+        #endregion
     }
 }

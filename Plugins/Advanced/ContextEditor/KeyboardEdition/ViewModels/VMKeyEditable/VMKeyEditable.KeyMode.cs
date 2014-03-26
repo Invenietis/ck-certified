@@ -51,6 +51,7 @@ namespace KeyboardEditor.ViewModels
             foreach( var layoutKeyMode in LayoutKeyModes )
             {
                 layoutKeyMode.TriggerPropertyChanged( "IsSelected" );
+                layoutKeyMode.TriggerModeChanged();
             }
 
             OnPropertyChanged( "IsSelected" );
@@ -60,7 +61,7 @@ namespace KeyboardEditor.ViewModels
 
         /// <summary>
         /// This regions contains overrides to the <see cref="VMKey"/> properties.
-        /// It enables hidding the fallback if necessary.
+        /// It enables hiding the fallback if necessary.
         /// </summary>
         #region KeyMode properties overrides
 

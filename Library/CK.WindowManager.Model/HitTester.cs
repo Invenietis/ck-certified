@@ -36,24 +36,14 @@ namespace CK.WindowManager.Model
             if( _lock == true ) throw new ApplicationException( "You must check the state before perform a hit test" );
 
             Rect rect = setToChallenge[binding.Window];
-            Rect enlargedAreaTopBottom = Rect.Inflate( rect, 0, radius );
-            Rect enlargedAreaRightLeft = Rect.Inflate( rect, radius, 0 );
+            Rect enlargedArea = Rect.Inflate( rect, radius, radius );
 
             IWindowElement matchedWindow = null;
-
-            Rect intersectArea = GetIntersectionArea( binding, setToChallenge, rect, ref enlargedAreaRightLeft, out matchedWindow );
+            Rect intersectArea = GetIntersectionArea( binding, setToChallenge,  rect, ref enlargedArea, out matchedWindow );
             if( intersectArea != Rect.Empty )
             {
                 Debug.Assert( matchedWindow != null );
-                _lastResult = new HitTestResult( matchedWindow, binding.Window, enlargedAreaRightLeft, intersectArea );
-                return _lastResult;
-            }
-
-            intersectArea = GetIntersectionArea( binding, setToChallenge,  rect, ref enlargedAreaTopBottom, out matchedWindow );
-            if( intersectArea != Rect.Empty )
-            {
-                Debug.Assert( matchedWindow != null );
-                _lastResult = new HitTestResult( matchedWindow, binding.Window, enlargedAreaTopBottom, intersectArea );
+                _lastResult = new HitTestResult( matchedWindow, binding.Window, enlargedArea, intersectArea );
                 return _lastResult;
             }
             return null;
@@ -70,7 +60,7 @@ namespace CK.WindowManager.Model
                 // If in all registered windows a window intersect with the one that moved
                 if( otherWindow != binding.Window && !boundWindows.Contains( otherWindow ) )
                 {
-                    rect = setToChallenge[otherWindow];
+                    rect = setToChallenge[otherWindow]; 
                     if( !rectWindow.IntersectsWith( rect ) && rect.IntersectsWith( enlargedRectangle ) ) return Rect.Intersect( enlargedRectangle, rect );
                 }
             }

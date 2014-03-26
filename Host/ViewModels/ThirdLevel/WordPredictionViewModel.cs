@@ -92,11 +92,11 @@ namespace Host.VM
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            NotifyOfPropertyChange( () => MaxSuggestedWords );
-            NotifyOfPropertyChange( () => InsertSpaceAfterPredictedWord );
-            NotifyOfPropertyChange( () => UsesSemanticPrediction );
-            NotifyOfPropertyChange( () => FilterAlreadyShownWords );
-            NotifyOfPropertyChange( () => DisplayContextEditor );
+            OnPropertyChanged( "MaxSuggestedWords" );
+            OnPropertyChanged( "InsertSpaceAfterPredictedWord" );
+            OnPropertyChanged( "UsesSemanticPrediction" );
+            OnPropertyChanged( "FilterAlreadyShownWords" );
+            OnPropertyChanged( "DisplayContextEditor" );
         }
 
         protected override void OnInitialize()
@@ -119,7 +119,6 @@ namespace Host.VM
             filter.DisplayName = R.WordPredictionFilterAlreadySuggestedWord;
             g.Items.Add( filter );
 
-            //Hidden, we'll wait for the feature to have less bugs
             var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
             contextEditor.DisplayName = R.WordPredictionDisplayPredictionEditorWindow;
             g.Items.Add( contextEditor );

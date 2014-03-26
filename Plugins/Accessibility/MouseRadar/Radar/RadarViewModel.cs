@@ -24,7 +24,7 @@ namespace MouseRadar
             _opacity = 1;
             AngleMin = 0;
             AngleMax = 360;
-            ScreenScale = new Point();
+            ScreenScale = new Point(1,1);
         }
 
         public float Opacity

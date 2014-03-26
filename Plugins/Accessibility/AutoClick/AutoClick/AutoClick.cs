@@ -39,6 +39,7 @@ using CK.WindowManager.Model;
 using System.IO;
 using Help.Services;
 using CK.InputDriver;
+using CK.InputDriver.Hook;
 
 namespace CK.Plugins.AutoClick
 {
@@ -120,27 +121,28 @@ namespace CK.Plugins.AutoClick
 
         #region IPlugin Members
 
+
+        int defaultHeight;
+        int defaultWidth;
+
         public bool Setup( IPluginSetupInfo info )
         {
+            _isPaused = true;
+
+            defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 10;
+            defaultWidth = defaultHeight / 2;
+
             return true;
         }
 
         public void Start()
         {
-            _isPaused = true;
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
 
-            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 10;
-            int defaultWidth = defaultHeight / 2;
-
             if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
-            {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            }
             else
-            {
                 _autoClickWindow.Width = _autoClickWindow.Height = 0;
-            }
 
             _mouseIndicatorWindow = new MouseDecoratorWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
@@ -160,16 +162,15 @@ namespace CK.Plugins.AutoClick
 
             //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
             if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_autoClickWindow.Left, (int)_autoClickWindow.Top ) )
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_autoClickWindow.Left + _autoClickWindow.ActualWidth), (int)_autoClickWindow.Top ) ) )
+                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _autoClickWindow.Left + _autoClickWindow.ActualWidth ), (int)_autoClickWindow.Top ) ) )
             {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
 
-            WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
-            TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
-            WindowBinder.Service.Bind( WindowManager.Service.GetByName( "AutoClick" ), WindowManager.Service.GetByName( "ClickSelector" ), BindingPosition.Bottom );
-
             OnPause( this, EventArgs.Empty );
+
+            InitializeWindowManager();
+            InitializeTopMost();
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
@@ -182,7 +183,11 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
+            UninitializeTopMost();
+            UninitializeWindowManager();
+
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
+
             UnregisterEvents();
             Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
         }
@@ -203,6 +208,92 @@ namespace CK.Plugins.AutoClick
             _editorWindow = null;
             _mouseIndicatorWindow = null;
             _autoClickWindow = null;
+        }
+
+        #endregion
+
+        #region IWindowManager Members
+
+        void InitializeWindowManager()
+        {
+            RegisterWindowManager();
+            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
+        }
+
+        void UninitializeWindowManager()
+        {
+            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
+            UnregisterWindowManager();
+        }
+
+        void OnWindowManagerStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                WindowManager.Service.UnregisterWindow( "AutoClick" );
+            }
+        }
+
+        void RegisterWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RegisterWindow( "AutoClick", _autoClickWindow );
+        }
+
+        void UnregisterWindowManager()
+        {
+            if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.UnregisterWindow( "AutoClick" );
+        }
+
+        #endregion IWindowManager Members
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
+                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
+            }
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+                TopMostService.Service.UnregisterTopMostElement( _mouseIndicatorWindow );
+            }
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "10", _autoClickWindow );
+                TopMostService.Service.RegisterTopMostElement( "200", _mouseIndicatorWindow );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _autoClickWindow );
+                TopMostService.Service.UnregisterTopMostElement( _mouseIndicatorWindow );
+            }
         }
 
         #endregion
@@ -298,7 +389,7 @@ namespace CK.Plugins.AutoClick
 
         private void RegisterEvents()
         {
-            MouseDriver.Service.PointerMove += new PointerDeviceEventHandler( OnPointerMove );
+            MouseDriver.Service.PointerMove += OnPointerMove;
 
             MouseWatcher.Service.LaunchClick += OnClickAsked;
             MouseWatcher.Service.ProgressValueChanged += OnProgressValueChanged;
@@ -312,6 +403,7 @@ namespace CK.Plugins.AutoClick
 
             MouseDriver.ServiceStatusChanged += OnMouseDriverServiceStatusChanged;
         }
+
         private void UnregisterEvents()
         {
             if( MouseDriver.Status != InternalRunningStatus.Stopped && MouseDriver.Status != InternalRunningStatus.Disabled )
@@ -378,22 +470,22 @@ namespace CK.Plugins.AutoClick
                     case ClickInstruction.None:
                         break;
                     case ClickInstruction.RightButtonDown:
-                        MouseProcessor.CurrentPositionRightDown();
+                        MouseProcessor.RightButtonDown();
                         break;
                     case ClickInstruction.RightButtonUp:
-                        MouseProcessor.CurrentPositionRightUp();
+                        MouseProcessor.RightButtonUp();
                         break;
                     case ClickInstruction.LeftButtonDown:
-                        MouseProcessor.CurrentPositionLeftDown();
+                        MouseProcessor.LeftButtonDown();
                         break;
                     case ClickInstruction.LeftButtonUp:
-                        MouseProcessor.CurrentPositionLeftUp();
+                        MouseProcessor.LeftButtonUp();
                         break;
                     case ClickInstruction.WheelDown:
-                        MouseProcessor.CurrentPositionMiddleDown();
+                        MouseProcessor.MiddleButtonDown();
                         break;
                     case ClickInstruction.WheelUp:
-                        MouseProcessor.CurrentPositionMiddleUp();
+                        MouseProcessor.MiddleButtonUp();
                         break;
                     default:
                         break;
@@ -430,13 +522,13 @@ namespace CK.Plugins.AutoClick
         {
             get
             {
-                return _showHelpCommand ?? (_showHelpCommand = new CK.Windows.App.VMCommand( () =>
+                return _showHelpCommand ?? ( _showHelpCommand = new CK.Windows.App.VMCommand( () =>
                 {
                     if( HelpService.Status == InternalRunningStatus.Started )
                     {
                         HelpService.Service.ShowHelpFor( PluginId, true );
                     }
-                } ));
+                } ) );
             }
         }
 

@@ -8,7 +8,7 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version="1.0" )]
     public class InKeyboardWordPredictor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -63,8 +63,8 @@ namespace CK.WordPredictor.UI
                         return; //We don't remove and recreate the zone if the new value equals the previous one
                 }
 
-                Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
-                Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
+                //Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
+                //Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
                 EnsurePredictionKeyboard();
             }
         }
@@ -78,11 +78,11 @@ namespace CK.WordPredictor.UI
                 PredictionKeyboard = Context.Keyboards["Prediction"];
                 if( PredictionKeyboard == null ) PredictionKeyboard = Context.Keyboards.Create( "Prediction" );
             }
-            PredictionKeyboard.IsActive = true;
             PredictionKeyboard.CurrentLayout.H = 50;
+            PredictionKeyboard.CurrentLayout.W = 800;
+            PredictionKeyboard.IsActive = true;
             Feature.AutonomousKeyboardPredictionFactory.RemovePredictionZone( PredictionKeyboard );
             Feature.AutonomousKeyboardPredictionFactory.CreatePredictionZone( PredictionKeyboard, Feature.MaxSuggestedWords );
-            
         }
 
         public void Stop()
@@ -113,11 +113,11 @@ namespace CK.WordPredictor.UI
 
         void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
             }
-            if( e.Current == InternalRunningStatus.Starting )
+            if( e.Current <= InternalRunningStatus.Starting )
             {
                 WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }

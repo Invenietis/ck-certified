@@ -8,6 +8,7 @@ using CK.Core;
 using CommonServices.Accessibility;
 using HighlightModel;
 using CommonServices;
+using CK.WindowManager.Model;
 
 namespace ScreenScroller
 {
@@ -37,6 +38,9 @@ namespace ScreenScroller
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDevideDriver { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         public bool Setup( IPluginSetupInfo info )
         {
             Root = this;
@@ -57,6 +61,9 @@ namespace ScreenScroller
             InitializeGrid();
 
             InitializeHighligther();
+
+            InitializeTopMost();
+
             Config.ConfigChanged += OnConfigChanged;
         }
 
@@ -118,7 +125,9 @@ namespace ScreenScroller
         public void Stop()
         {
             Config.ConfigChanged += OnConfigChanged;
+            UninitializeTopMost();
             UnInitializeHighlighter();
+
             foreach( var screen in _screens )
             {
                 screen.Close();
@@ -128,6 +137,61 @@ namespace ScreenScroller
         public void Teardown()
         {
         }
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.RegisterTopMostElement( "150", screen );
+                }
+            }
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.UnregisterTopMostElement( screen );
+                }
+            }
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.RegisterTopMostElement( "150", screen );
+                }
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                foreach( var screen in _screens )
+                {
+                    TopMostService.Service.UnregisterTopMostElement( screen );
+                }
+            }
+        }
+
+        #endregion
 
         #region Hightlight Implementation
 
@@ -193,7 +257,7 @@ namespace ScreenScroller
             //And we move to the next node
             if( !CurrentNode.MoveNext() ) //if the node was at the end of its laps
             {
-                if( CurrentNode.IsRoot || ( CurrentNode.Parent.IsRoot && CurrentNode.Parent.ChildNodes.Count == 1 ) ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
+                if( CurrentNode.IsRoot || (CurrentNode.Parent.IsRoot && CurrentNode.Parent.ChildNodes.Count == 1) ) //we are getting out of the root level, so we release the scroller so that it can scroll on the other devices.
                 {
                     CurrentNode = null;
                     _entered = false;
@@ -254,7 +318,7 @@ namespace ScreenScroller
                 else
                 {
                     NodeViewModel selectedNode = CurrentNode.ChildNodes[CurrentNode.CurrentIndex];
-                    PointerDevideDriver.Service.MovePointer( (int)( selectedNode.OffsetWidth + ( selectedNode.Width / 2 ) ), (int)( selectedNode.OffsetHeight + ( selectedNode.Height / 2 ) ) );
+                    CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( (int)(selectedNode.OffsetWidth + (selectedNode.Width / 2)), (int)(selectedNode.OffsetHeight + (selectedNode.Height / 2)) );
 
                     CurrentNode.ChildNodes.ElementAt( CurrentNode.CurrentIndex ).IsHighlighted = false;
                     CurrentNode = null;

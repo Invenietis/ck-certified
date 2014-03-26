@@ -66,7 +66,7 @@
     </Reference>
     <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.10.2-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.10.3-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accessibility\IKeyboardDriver.cs" />
+    <Compile Include="Accessibility\ITextTemplateService.cs" />
     <Compile Include="Advanced\Commands\BasicCommandHandler.cs" />
     <Compile Include="Advanced\Commands\IFileLauncherCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\IHelpCommandHandlerService.cs" />
@@ -107,10 +108,11 @@
     <Compile Include="Advanced\Commands\IModeCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\ISendKeyCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\ICommandManagerService.cs" />
+    <Compile Include="Advanced\Commands\ITextTemplateCommandHandlerService.cs" />
     <Compile Include="Advanced\ITriggerService.cs" />
     <Compile Include="Advanced\ILogService.cs" />
     <Compile Include="Advanced\IUpdateChecker.cs" />
-    <Compile Include="Advanced\IFileLauncherService.cs" />
+    <Compile Include="Accessibility\IFileLauncherService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accessibility\ICommonTimer.cs">
       <SubType>Code</SubType>

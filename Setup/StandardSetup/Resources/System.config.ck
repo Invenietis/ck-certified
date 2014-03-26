@@ -3,6 +3,7 @@
   <System>
     <PluginStatusCollection>
       <PluginStatus Guid="36c4764a-111c-45e4-83d6-e38fc1df5979" Status="AutomaticStart"></PluginStatus>
+	  <PluginStatus Guid="b63bb144-1c13-4a3b-93bd-ac5233f4f18e" Status="AutomaticStart"></PluginStatus>
       <PluginStatus Guid="11C83441-6818-4A8B-97A0-1761E1A54251" Status="AutomaticStart"></PluginStatus>
 	  <PluginStatus Guid="4f82cc10-1115-4ff0-b483-e95eeea21107" Status="AutomaticStart"></PluginStatus>
     </PluginStatusCollection>

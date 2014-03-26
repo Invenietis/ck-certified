@@ -32,7 +32,7 @@ namespace CK.WPF.ViewModel
         {
             Image image = new Image();
 
-            if (imageData is InteropBitmap)
+            if (imageData is BitmapSource)
             {
                 var img = new Image();
                 img.Source = imageData as ImageSource;

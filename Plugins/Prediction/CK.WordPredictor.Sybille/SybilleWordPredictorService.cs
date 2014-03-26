@@ -7,7 +7,7 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", PublicName = "Sybille", Categories = new[] { "Prediction" } )]
+    [Plugin( "{1764F522-A9E9-40E5-B821-25E12D10DC65}", PublicName = "Sybille", Categories = new[] { "Prediction" } , Version="1.0")]
     public class SybilleWordPredictorService : WordPredictorServiceBase
     {
         IWordPredictorEngineFactory _engineFactory;

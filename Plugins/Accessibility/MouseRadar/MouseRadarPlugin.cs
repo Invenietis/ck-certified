@@ -7,6 +7,7 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using CK.Core;
 using System.Diagnostics;
+using CK.WindowManager.Model;
 
 namespace MouseRadar
 {
@@ -37,17 +38,16 @@ namespace MouseRadar
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.Optional )]
+        public IService<ITopMostService> TopMostService { get; set; }
+
         void Pause()
         {
-            Console.WriteLine( "Pause" );
-
             _radar.Pause();
         }
 
         void Resume()
         {
-            Console.WriteLine( "Resume" );
-
             ActionType = ActionType.StayOnTheSameLocked;
             Debug.Assert( _radar.CurrentStep == RadarStep.Paused );
             _radar.ToNextStep();
@@ -92,17 +92,18 @@ namespace MouseRadar
             _radar.Initialize();
             Pause();
             Configuration.ConfigChanged += OnConfigChanged;
-            _radar.RotationDelayExpired += (o, e) =>
+            _radar.RotationDelayExpired += ( o, e ) =>
             {
                 _yield = true;
             };
+
+            InitializeTopMost();
         }
 
         public void Stop()
         {
+            UninitializeTopMost();
             _radar.Dispose();
-            if( Highlighter.Status.IsStartingOrStarted )
-                Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
         }
 
         public void Teardown()
@@ -174,14 +175,19 @@ namespace MouseRadar
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            if( beginScrollingInfo.PreviousElement != this ) //otherwise we should already be focused
-                Focus();
-            else //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, we relay the scroller's tick to the radar.
+            //When begin highlight is triggered, we have three cases : 
+            // - we are begin scrolled on, because the scroller is scrolling on the module level. In this case we focus the radar to show the user that the radar is currently being scrolled on.
+            // - we are already focused (the current action is stayonthesamelocked and beginScrollingInfo.PreviousElement == this). In this case we do nothing but tell the radar to check that its tick is still in sync with the configuration.
+            // - we are paused and the radar is the only element in the scrolling tree (the current action is Normal and beginScrollingInfo.PreviousElement == this) : we do the same as the previous case. 
+
+            if( beginScrollingInfo.PreviousElement != this )
+                Focus(); //We are scrolling on the module level
+            else //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, or we are the only element in the scrolling tree : we relay the scroller's tick to the radar.
                 _radar.Tick( beginScrollingInfo );
 
-            if (_yield)
+            if( _yield )
             {
-                //Once arrived at the end of the last lap, we release the scroller.
+                //Once the DelayRadar has ticked, we release the scroller.
                 scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
                 scrollingDirective.ActionTime = ActionTime.Immediate;
             }
@@ -218,6 +224,43 @@ namespace MouseRadar
         public bool IsHighlightableTreeRoot
         {
             get { return _radar.CurrentStep == RadarStep.Paused; }//if the radar is not paused, it is scrolling, so we actually are NOT on the root, we are on a virtual step that is child of the root.
+        }
+
+        #endregion
+
+        #region ITopMostService Members
+
+        void InitializeTopMost()
+        {
+            RegisterTopMost();
+            TopMostService.ServiceStatusChanged += OnTopMostServiceStatusChanged;
+        }
+        void UninitializeTopMost()
+        {
+            TopMostService.ServiceStatusChanged -= OnTopMostServiceStatusChanged;
+            UnregisterTopMost();
+        }
+
+        void RegisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.RegisterTopMostElement( "200", _radar );
+        }
+
+        void UnregisterTopMost()
+        {
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.UnregisterTopMostElement( _radar );
+        }
+
+        void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        {
+            if( e.Current == InternalRunningStatus.Started )
+            {
+                TopMostService.Service.RegisterTopMostElement( "200", _radar );
+            }
+            else if( e.Current == InternalRunningStatus.Stopping )
+            {
+                TopMostService.Service.UnregisterTopMostElement( _radar );
+            }
         }
 
         #endregion

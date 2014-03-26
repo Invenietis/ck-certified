@@ -308,6 +308,12 @@ Are you sure that you want to erase this existing keyboard ?</value>
   <data name="StringToSend" xml:space="preserve">
     <value>String to send : </value>
   </data>
+  <data name="TextTemplateAdd" xml:space="preserve">
+    <value>Add a placeholder</value>
+  </data>
+  <data name="TextTemplateTitle" xml:space="preserve">
+    <value>Edit a template</value>
+  </data>
   <data name="WindowTitle" xml:space="preserve">
     <value>Keyboard creation wizard</value>
   </data>

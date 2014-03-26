@@ -39,6 +39,15 @@ namespace KeyScroller
         void Stop();
 
         /// <summary>
+        /// This function forces the highlight of the given element.
+        /// </summary>
+        /// <param name="element">The element highlight.</param>
+        /// <remarks> 
+        /// This function is useful only when there is no alternative to.
+        /// </remarks>
+        void GoToElement( IHighlightableElement element );
+
+        /// <summary>
         /// Suspend the scrolling strategy
         /// </summary>
         void Pause( bool forceEndHighlight );
@@ -54,7 +63,8 @@ namespace KeyScroller
         void OnExternalEvent();
 
         /// <summary>
-        /// A JLK Made method
+        /// Warns the strategy that an element has been unregistered.
+        /// Typically used to check whether the current element belongs to the unregistered element's tree, in order to call endhighlight on it.
         /// </summary>
         void ElementUnregistered( IHighlightableElement element );
     }

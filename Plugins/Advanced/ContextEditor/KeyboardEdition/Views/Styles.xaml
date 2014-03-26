@@ -22,7 +22,7 @@
     <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
     <vm:ImageConverter x:Key="imageconverter"/>
 
-    <SolidColorBrush Color="#FF065AA0" x:Key="EditorMainColor"/>
+    <SolidColorBrush Color="#4481ba" x:Key="EditorMainColor"/>
     <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
 
     <Style TargetType="{x:Type TextBlock}">

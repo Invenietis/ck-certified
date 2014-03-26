@@ -46,9 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.InputDriver, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CK.InputDriver, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\CK.InputDriver.0.1.0-develop\lib\net40\CK.InputDriver.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.InputDriver.0.3.1-develop\lib\net40\CK.InputDriver.dll</HintPath>
     </Reference>
     <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,7 +72,7 @@
     </Reference>
     <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\CK.SharedDic.2.10.2-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.SharedDic.2.10.3-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -91,6 +91,8 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms">
       <Private>False</Private>
     </Reference>
@@ -116,6 +118,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="TextTemplate\TextTemplateCommandHandler.cs" />
+    <Compile Include="TextTemplate\TextTemplateCommandParameterManager.cs" />
     <Compile Include="KeySequence\KeySequenceCommandHandler.cs" />
     <Compile Include="KeySequence\KeySequenceCommandParameterManager.cs" />
     <Compile Include="MonitorOnce\MonitorOnceCommandParameterManager.cs" />
@@ -135,7 +139,7 @@
     </Compile>
     <Compile Include="Help\HelpCommandHandler.cs" />
     <Compile Include="MoveMouse\MoveMouseCommandParameterManager.cs" />
-    <Compile Include="MoveMouse\MoveMouse.cs" />
+    <Compile Include="MoveMouse\MoveMouseCommandHandler.cs" />
     <Compile Include="Tools\Keybd.cs" />
     <Compile Include="MonitorOnce\MonitorOnceCommandHandler.cs" />
     <Compile Include="DynCommand\DynCommandHandler.cs" />

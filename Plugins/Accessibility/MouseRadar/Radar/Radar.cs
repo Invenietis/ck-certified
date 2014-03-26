@@ -17,7 +17,10 @@ namespace MouseRadar
 
     public partial class Radar : IDisposable
     {
-        public static readonly int ROTATION_DELAY = 5000; //milliseconds
+        public static readonly int DEFAULT_ROTATION_DELAY = 5000; //Default max rotation time
+        public int RotationDelay { get; private set; } //the setted max rotation time
+        int _rotationMaxIntervals; //Max _timerRotate intervals. Used when RotationDelay > DEFAULT_ROTATION_DELAY
+        int _rotationIntervalCount; //The _timerRotate intervals counter
 
         IPointerDeviceDriver _mouseDriver;
         //int _translationDirection = 1;
@@ -25,6 +28,8 @@ namespace MouseRadar
         int _originX;
         int _originY;
         int _rayon;
+        int _rotationSpeed;
+
         Stopwatch _watch;
 
         ScreenBound _previousCollision = ScreenBound.None;
@@ -45,8 +50,15 @@ namespace MouseRadar
         /// <summary>
         /// Gets or sets the number of ticks required to turn full circle
         /// </summary>
-        internal int RotationSpeed { get; set; }
-
+        internal int RotationSpeed
+        {
+            get { return _rotationSpeed; }
+            set
+            {
+                _rotationSpeed = value;
+                UpdateRotationDelay();
+            }
+        }
         public bool SnakeMode { get; set; }
         internal RadarStep CurrentStep { get; private set; }
 
@@ -70,7 +82,7 @@ namespace MouseRadar
 
             CurrentStep = RadarStep.Paused;
 
-            _timerRotate = new DispatcherTimer( DispatcherPriority.Normal );
+            _timerRotate = new DispatcherTimer( DispatcherPriority.Send );
             _timerRotate.Interval = new TimeSpan( 0 );
             _timerRotate.Tick += ProcessRotation;
 
@@ -99,27 +111,26 @@ namespace MouseRadar
 
         double weight = 40;
 
-        void ProcessScrollingTick( TimeSpan newScrollingTick )
+        void ProcessScrollingTick( double newScrollingTick )
         {
             //Making sure the inner timers don't get a tick interval < 1 ms
-            if( newScrollingTick.TotalMilliseconds < weight ) newScrollingTick = new TimeSpan( 0, 0, 0, 0, (int)weight );
+            if( newScrollingTick < weight ) newScrollingTick = (double)weight;
 
-            if( newScrollingTick.TotalMilliseconds != _previousScrollingTick.TotalMilliseconds )
+            if( newScrollingTick != _previousScrollingTick )
             {
                 _previousScrollingTick = newScrollingTick;
 
-                double rotateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
+                double rotateNanoTickTime = newScrollingTick / weight * Math.Pow( 10, 4 ); //interval between two ticks for the rotation timer
                 _timerRotate.Interval = new TimeSpan( (long)rotateNanoTickTime );
 
-                double translateNanoTickTime = newScrollingTick.TotalMilliseconds / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
+                double translateNanoTickTime = newScrollingTick / weight * Math.Pow( 10, 4 ); //interval between two ticks for the translation timer
                 _timerTranslate.Interval = new TimeSpan( (int)translateNanoTickTime );
 
-                //Console.Out.WriteLine( "Actual New beat : " + rotateNanoTickTime );
-                //Console.Out.WriteLine( "" );
+                UpdateRotationDelay();
             }
         }
 
-        TimeSpan _previousScrollingTick = new TimeSpan( 0 );
+        double _previousScrollingTick = 0;
         internal void Tick( BeginScrollingInfo scrollingInfo )
         {
             ProcessScrollingTick( scrollingInfo.TickInterval );
@@ -151,11 +162,19 @@ namespace MouseRadar
             }
 
             //Each time the input is triggered, we reset the lapcount and the starting angle of the lap count. (thanks to that, we release the scroller in an homogenous way : X laps after the last call to SelectElement)
-            Console.Out.WriteLine( "LapCount = 0" );
+            //Console.Out.WriteLine( "LapCount = 0" );
             ViewModel.LapCount = 0;
             ViewModel.StartingAngle = ViewModel.Angle;
 
             return CurrentStep;
+        }
+        
+        void UpdateRotationDelay()
+        {
+            int revolutionTime = _timerRotate == null ? 0 : (int)(_timerRotate.Interval.TotalMilliseconds * 360f / (double)RotationSpeed);
+            _rotationMaxIntervals = 360 / RotationSpeed;
+
+            RotationDelay = revolutionTime > DEFAULT_ROTATION_DELAY ? revolutionTime : DEFAULT_ROTATION_DELAY;
         }
 
         #region Rotation
@@ -163,6 +182,7 @@ namespace MouseRadar
         void StartRotation()
         {
             _watch = Stopwatch.StartNew();
+            _rotationIntervalCount = 0;
             CurrentStep = RadarStep.Rotating;
             _timerRotate.Start();
         }
@@ -175,13 +195,15 @@ namespace MouseRadar
 
         void ProcessRotation( object sender, EventArgs e )
         {
-            if (_watch.ElapsedMilliseconds >= ROTATION_DELAY)
+            if( RotationDelay <= DEFAULT_ROTATION_DELAY && _watch.ElapsedMilliseconds >= RotationDelay || RotationDelay > DEFAULT_ROTATION_DELAY && _rotationIntervalCount > _rotationMaxIntervals )
             {
                 FireRotationDelayExpired();
+                _rotationIntervalCount = 0;
                 _watch = Stopwatch.StartNew();
             }
 
             ViewModel.Angle += (float)RotationSpeed / 1f;
+            ++_rotationIntervalCount;
         }
 
         private void FireRotationDelayExpired()
@@ -302,7 +324,7 @@ namespace MouseRadar
             }
 
             if( collision != ScreenBound.None ) ScreenBoundCollide( collision );
-            _mouseDriver.MovePointer( moveX, moveY );
+            CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( moveX, moveY );
         }
 
         Point GetTranslation( int x, int y )

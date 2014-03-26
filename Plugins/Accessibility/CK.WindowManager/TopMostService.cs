@@ -61,6 +61,16 @@ namespace CK.WindowManager
             if( string.IsNullOrEmpty( levelName ) ) throw new ArgumentNullException( "levelName" );
             if( window == null ) throw new ArgumentNullException( "window" );
 
+            if( AddTopMostWindow( levelName, window ) )
+            {
+                UpdateTopMostWindows();
+                return true;
+            }
+            return false;
+        }
+
+        private bool AddTopMostWindow( string levelName, Window window )
+        {
             if( _windowToString.ContainsKey( window ) ) return false;
 
             List<Window> windows;
@@ -104,7 +114,7 @@ namespace CK.WindowManager
             return false;
         }
 
-        void AddNewIndexAndItem( int index, string levelName, Window window)
+        private void AddNewIndexAndItem( int index, string levelName, Window window )
         {
             _indexList.Insert( index, levelName );
 
@@ -116,49 +126,56 @@ namespace CK.WindowManager
 
             window.Activated += window_Activated;
         }
+
         int _nb = 0;
-        void window_Activated( object sender, EventArgs e )
+        private void window_Activated( object sender, EventArgs e )
         {
-            Window window = sender as Window;
-            if( window != null )
+            UpdateTopMostWindows();
+        }
+
+        private void UpdateTopMostWindows()
+        {
+            List<Window> windows = new List<Window>();
+
+            List<Window> l;
+            //create a copy
+            foreach( var s in _indexList )
             {
-                Debug.Assert( _windowToString.ContainsKey( window ) );
+                Debug.Assert( _stringToWindows.ContainsKey( s ) );
 
-                string levelName;
-                if( _windowToString.TryGetValue( window, out levelName ) )
+                if( _stringToWindows.TryGetValue( s, out l ) ) windows.AddRange( l );
+            }
+
+            foreach( var w in windows )
+            {
+                DispatchWhenRequired( w.Dispatcher, () =>
                 {
-                    Debug.Assert( _indexList.Contains( levelName ) );
-
-                    List<Window> windows;
-                    foreach( var s in _indexList )
-                    {
-                        Debug.Assert( _stringToWindows.ContainsKey( s ) );
-
-                        if( _stringToWindows.TryGetValue( s, out windows ) )
-                        {
-                            foreach( var w in windows )
-                            {
-                                DispatchWhenRequired( w.Dispatcher, () =>
-                                    {
-                                        CK.Windows.Interop.Win.Functions.SetWindowPos( new WindowInteropHelper( w ).Handle, new IntPtr( (int)CK.Windows.Interop.Win.SpecialWindowHandles.TOPMOST ), 0, 0, 0, 0, Windows.Interop.Win.SetWindowPosFlags.IgnoreMove | Windows.Interop.Win.SetWindowPosFlags.IgnoreResize | Windows.Interop.Win.SetWindowPosFlags.DoNotActivate );
-                                    } );
-                            }
-                        }
-                    }
-                }
+                    CK.Windows.Interop.Win.Functions.SetWindowPos( new WindowInteropHelper( w ).Handle, new IntPtr( (int)CK.Windows.Interop.Win.SpecialWindowHandles.TOPMOST ), 0, 0, 0, 0, Windows.Interop.Win.SetWindowPosFlags.IgnoreMove | Windows.Interop.Win.SetWindowPosFlags.IgnoreResize | Windows.Interop.Win.SetWindowPosFlags.DoNotActivate );
+                } );
             }
         }
 
-        private void DispatchWhenRequired( Dispatcher d,  Action a )
+        private void DispatchWhenRequired( Dispatcher d, Action a )
         {
+            //An Invoke is not mandatory for this service. Setting the windows synchronously in the right z-order is not necessary
             if( d.CheckAccess() ) a();
-            else d.Invoke( a );
+            else d.BeginInvoke( a );
         }
 
         public bool UnregisterTopMostElement( Window window )
         {
             if( window == null ) throw new ArgumentNullException( "window" );
 
+            if( RemoveTopMostWindow( window ) )
+            {
+                UpdateTopMostWindows();
+                return true;
+            }
+            return false;
+        }
+
+        private bool RemoveTopMostWindow( Window window )
+        {
             string levelName;
             if( _windowToString.TryGetValue( window, out levelName ) )
             {
@@ -179,7 +196,6 @@ namespace CK.WindowManager
             }
             return false;
         }
-
         #endregion
     }
 }

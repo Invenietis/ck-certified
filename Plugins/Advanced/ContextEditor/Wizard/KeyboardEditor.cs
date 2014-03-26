@@ -263,8 +263,6 @@ namespace KeyboardEditor
                          */
 
                         string name = keyboardToRevert.Name;
-                        keyboardToRevert.Destroy();
-
                         IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( name );
                         if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
 
@@ -274,6 +272,9 @@ namespace KeyboardEditor
 
                         if( keyboardToRevertIsCurrent )
                             KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
+
+                        
+                        keyboardToRevert.Destroy();
                     }
                 }
             }

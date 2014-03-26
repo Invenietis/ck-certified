@@ -55,7 +55,6 @@ namespace BasicCommandHandlers
             LaunchFile( cmd.Content );
         }
 
-
         #region IFileLauncherCommandHandlerService Members
 
         public void LaunchFile( string command )
@@ -67,29 +66,28 @@ namespace BasicCommandHandlers
         }
 
         #endregion
-    }
-
-    public class Command
-    {
-        public static class Contents
+        public class Command
         {
-            public static readonly int FILE_NAME = 0;
-            public static readonly int FILE_LOOKUP = 1;
-            public static readonly int FILE_PATH = 2;
-            public static readonly int FILE_SPECIAL_DIRECTORY = 3;
-        }
+            public static class Contents
+            {
+                public static readonly int FILE_NAME = 0;
+                public static readonly int FILE_LOOKUP = 1;
+                public static readonly int FILE_PATH = 2;
+                public static readonly int FILE_SPECIAL_DIRECTORY = 3;
+            }
 
-        static readonly string SeparationToken = ":";
-        public string Name { get; private set; }
-        public string Content { get; private set; }
+            static readonly string SeparationToken = ":";
+            public string Name { get; private set; }
+            public string Content { get; private set; }
 
-        public Command( string cmd )
-        {
-            int pos = cmd.IndexOf( SeparationToken );
-            if( pos < 0 ) return;
+            public Command( string cmd )
+            {
+                int pos = cmd.IndexOf( SeparationToken );
+                if( pos < 0 ) return;
 
-            Name = cmd.Substring( 0, pos );
-            Content = cmd.Substring( pos + SeparationToken.Length );
+                Name = cmd.Substring( 0, pos );
+                Content = cmd.Substring( pos + SeparationToken.Length );
+            }
         }
     }
 }

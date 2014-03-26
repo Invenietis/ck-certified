@@ -41,7 +41,7 @@
             <DockPanel Margin="0 5 0 5">
                 <TextBlock VerticalAlignment="Center" Text="{x:Static r:R.RadarRadius}" />
                 <DockPanel HorizontalAlignment="Right">
-                    <TextBox Text="{Binding RadarSize}" Width="50" />
+                    <TextBox Text="{Binding RadarSize, UpdateSourceTrigger=PropertyChanged}" Width="50" />
                     <TextBlock Margin="10 0 10 0">pixels</TextBlock>
                 </DockPanel>
             </DockPanel>

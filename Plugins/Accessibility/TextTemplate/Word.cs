@@ -13,6 +13,7 @@ namespace TextTemplate
         protected string _text;
         protected bool _isHighlighted;
         protected TextTemplate _textTemplate;
+        protected bool _selected;
 
         public bool IsEditable { get; private set; }
 
@@ -74,6 +75,16 @@ namespace TextTemplate
             }
         }
 
+        public bool IsSelected
+        {
+            get { return _selected; }
+            set
+            {
+                _selected = value;
+                NotifyPropertyChanged( "IsSelected" );
+            }
+        }
+
         void NotifyPropertyChanged(string property)
         {
             if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(property));
@@ -83,7 +94,9 @@ namespace TextTemplate
 
         public ScrollingDirective BeginHighlight(BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective)
         {
+            _selected = false;
             IsHighlighted = true;
+
             if(_textTemplate != null) _textTemplate.FocusOnElement(this);
             return scrollingDirective;
         }
@@ -92,13 +105,15 @@ namespace TextTemplate
         {
             IsHighlighted = false;
 
+            if( !_selected ) _textTemplate.RemoveFocus( this ); //Keep the focus if the text is selected
             return scrollingDirective;
         }
 
         public ScrollingDirective SelectElement(ScrollingDirective scrollingDirective)
         {
+            _selected = true;
             scrollingDirective.NextActionType = HighlightModel.ActionType.AbsoluteRoot;
-            
+            _textTemplate.FocusOnElement( this );
             return scrollingDirective;
         }
 
@@ -113,7 +128,7 @@ namespace TextTemplate
     {
         public NewLine() : base()
         {
-            _text = Environment.NewLine;
+            _text = "\n";
         }
     }
 

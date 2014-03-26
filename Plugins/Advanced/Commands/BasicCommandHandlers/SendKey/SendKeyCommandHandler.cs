@@ -55,13 +55,6 @@ namespace BasicCommandHandlers
                 string parameter = e.Command.Substring( e.Command.IndexOf( ':' ) + 1 );
                 SendKey( parameter );
             }
-
-            //CommandParser p = new CommandParser( e.Command );
-            //string str;
-            //if( p.IsIdentifier( out str ) && !e.Canceled && str == CMDSendKey )
-            //{
-            //    if( str == CMDSendKey ) SendKey( p.StringValue );
-            //}
         }
 
         /// <summary>

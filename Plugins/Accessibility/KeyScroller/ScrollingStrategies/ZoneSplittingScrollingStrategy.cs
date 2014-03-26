@@ -5,6 +5,7 @@ using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
 using SimpleSkin.ViewModels;
+using System.Timers;
 
 namespace KeyScroller
 {
@@ -21,7 +22,7 @@ namespace KeyScroller
 
         IHighlightableElement _nextElement = null;
 
-        public HalfZoneScrollingStrategy( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public HalfZoneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
             : base( timer, elements, configuration )
         {
         }
@@ -40,7 +41,10 @@ namespace KeyScroller
                 parentObj = _currentElementParents.Peek();
                 parentSibblings = parentObj.Children;
             }
-            else parentSibblings = RegisteredElements;
+            else
+            {
+                parentSibblings = RegisteredElements;
+            }
 
             // if it's a splitted zone, "insert" it in the model logically
             if( parent is VMSplitZone )
@@ -94,7 +98,7 @@ namespace KeyScroller
             else
             {
                 _currentElementParents.Push( _nextElement );
-            }
+            } 
 
             return _nextElement.Children[0];
         }
@@ -166,7 +170,11 @@ namespace KeyScroller
                         }
                     }
                 }
-                else
+                else if( _elements.Count == 1 && _nextElement.Children.Count == 0)
+                {
+                    _nextElement = GetStayOnTheSame( elements );
+                }
+                else if( _nextElement.Children.Count > 0 )
                 {
                     _nextElement = GetEnterChild( _nextElement.Children );
                 }

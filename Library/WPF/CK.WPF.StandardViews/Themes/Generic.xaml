@@ -86,9 +86,9 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>
-                        <TextBlock x:Name="Letter" 
+                        <TextBlock x:Name="Letter"
                                    Foreground="{TemplateBinding Foreground}" 
-                                   Text="{TemplateBinding UpLabel}" 
+                                   Text='{TemplateBinding UpLabel}' 
                                    Focusable="False" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
                                FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"

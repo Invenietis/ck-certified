@@ -69,7 +69,7 @@
     </Reference>
     <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.10.2-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.10.3-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
     <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,7 +85,7 @@
     </Reference>
     <Reference Include="CK.Windows.Core, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.10.2-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.10.4-develop\lib\net40\CK.Windows.Core.dll</HintPath>
     </Reference>
     <Reference Include="CK.Windows.Interop, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,9 +129,11 @@
     <Compile Include="KeyboardEdition\Components\Converters\HasOrderToBooleanConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ImageConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\FileLauncherTypeSelector.cs" />
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
     <Compile Include="KeyboardEdition\Components\TemplateSelectors\BreadcrumbTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\Components\TemplateSelectors\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\UserControls\CaretIndexBehavior.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeBase.cs" />

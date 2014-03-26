@@ -7,7 +7,7 @@
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     xmlns:helpers="clr-namespace:SimpleSkin.Helpers"
     WindowStartupLocation="Manual"
-    Title="Simple skin"
+    Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
     ShowActivated="False" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
@@ -19,6 +19,13 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#FFA2BDF2"/>
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>

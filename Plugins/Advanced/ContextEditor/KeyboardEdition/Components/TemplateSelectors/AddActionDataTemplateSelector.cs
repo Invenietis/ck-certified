@@ -16,6 +16,7 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate DefaultDataTemplate { get; set; }
         public DataTemplate MonitorOnceDataTemplate { get; set; }
         public DataTemplate KeySequenceDataTemplate { get; set; }
+        public DataTemplate TextTemplateDataTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
@@ -37,6 +38,7 @@ namespace KeyboardEditor.ViewModels
             if( item is MonitorOnceCommandParameterManager ) return MonitorOnceDataTemplate;
 
             if( item is KeySequenceCommandParameterManager ) return KeySequenceDataTemplate;
+            if( item is TextTemplateCommandParameterManager ) return TextTemplateDataTemplate;
 
             return DefaultDataTemplate;
         }

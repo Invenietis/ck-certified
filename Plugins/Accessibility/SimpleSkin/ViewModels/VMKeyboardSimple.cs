@@ -267,10 +267,10 @@ namespace SimpleSkin.ViewModels
                 {
                     ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
                     OnPropertyChanged( "IsHighlighting" );
-                    foreach( var key in Keys )
-                    {
-                        key.IsHighlighting = value;
-                    }
+                    //foreach( var key in Keys )
+                    //{
+                    //    key.IsHighlighting = value;
+                    //}
                 }
             }
         }
@@ -311,6 +311,9 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
+                //TODO : Improve (temporary)
+                if( Keyboard.Name == "Prediction" ) return SkippingBehavior.EnterChildren;
+
                 if( Zones.Count == 0 || Zones.All( z => z.Skip == SkippingBehavior.Skip ) )
                     return SkippingBehavior.Skip; //If there are no zones or that they are all to be skipped, we skip this root element
                 return SkippingBehavior.None;
@@ -337,6 +340,7 @@ namespace SimpleSkin.ViewModels
             scrollingDirective.NextActionType = ActionType.EnterChild;
             return scrollingDirective;
         }
+
         public bool IsHighlightableTreeRoot
         {
             get { return true; }

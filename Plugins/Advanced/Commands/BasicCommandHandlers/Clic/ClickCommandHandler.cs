@@ -94,7 +94,7 @@ namespace BasicCommandHandlers
             //This API doesn't enable adding the CiviKey flag to the windows message. Therefor, we don't know that the event is sent by CiviKey; which is infinite loop prone.
             //PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
             //PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
-            MouseProcessor.CurrentPositionLeftClick();
+            MouseProcessor.LeftButtonClick();
         }
 
         public void DoubleClic()
@@ -107,19 +107,19 @@ namespace BasicCommandHandlers
         {
             //PointerDriver.Service.SimulateButtonDown( ButtonInfo.XButton, "Right" );
             //PointerDriver.Service.SimulateButtonUp( ButtonInfo.XButton, "Right" );
-            MouseProcessor.CurrentPositionRightClick();
+            MouseProcessor.RightButtonClick();
         }
 
         public void LeftPush()
         {
             //PointerDriver.Service.SimulateButtonDown( ButtonInfo.DefaultButton, "" );
-            MouseProcessor.CurrentPositionLeftDown();
+            MouseProcessor.LeftButtonDown();
         }
 
         public void LeftRelease()
         {
             //PointerDriver.Service.SimulateButtonUp( ButtonInfo.DefaultButton, "" );
-            MouseProcessor.CurrentPositionLeftUp();
+            MouseProcessor.LeftButtonUp();
         }
 
         #endregion

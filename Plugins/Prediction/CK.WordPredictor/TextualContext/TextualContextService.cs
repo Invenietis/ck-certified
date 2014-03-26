@@ -74,28 +74,29 @@ namespace CK.WordPredictor
 
         public void Stop()
         {
-            if( PredictionTextAreaService != null && PredictionTextAreaService.Service != null )
+            if( PredictionTextAreaService.Status == InternalRunningStatus.Starting )
             {
                 PredictionTextAreaService.Service.PredictionAreaTextSent -= OnPredictionAreaContentSent;
                 PredictionTextAreaService.Service.PredictionAreaContentChanged -= OnPredictionAreaServicePropertyChanged;
             }
             PredictionTextAreaService.ServiceStatusChanged -= OnPredictionAreaServiceStatusChanged;
 
-            if( CommandTextualContextService != null && CommandTextualContextService.Service != null )
+            if( CommandTextualContextService.Status == InternalRunningStatus.Starting )
             {
                 CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
             }
             CommandTextualContextService.ServiceStatusChanged -= OnCommandTextualContextServiceStatusChanged;
 
-            if( SendKeyService != null && SendKeyService.Service != null )
+            if( SendKeyService.Status == InternalRunningStatus.Started )
             {
                 SendKeyService.Service.KeySent -= OnOldKeySent;
             }
             SendKeyService.ServiceStatusChanged -= OnSendKeyServiceStatusChanged;
 
-            if( SendStringService != null && SendStringService.Service != null )
+            if( SendStringService.Status == InternalRunningStatus.Started )
             {
                 SendStringService.Service.StringSent -= OnStringSent;
+                SendStringService.Service.KeySent -= OnKeySent;
             }
             SendStringService.ServiceStatusChanged -= OnSendStringServiceStatusChanged;
         }
@@ -407,7 +408,7 @@ namespace CK.WordPredictor
 
         void OnCommandTextualContextServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 CommandTextualContextService.Service.TextualContextClear -= OnTextualContextClear;
             }
@@ -419,7 +420,7 @@ namespace CK.WordPredictor
 
         private void OnPredictionAreaServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 PredictionTextAreaService.Service.PredictionAreaTextSent -= OnPredictionAreaContentSent;
                 PredictionTextAreaService.Service.PredictionAreaContentChanged -= OnPredictionAreaServicePropertyChanged;
@@ -433,7 +434,7 @@ namespace CK.WordPredictor
 
         void OnSendStringServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 SendStringService.Service.KeySent -= OnKeySent;
                 SendStringService.Service.StringSent -= OnStringSent;
@@ -447,7 +448,7 @@ namespace CK.WordPredictor
 
         void OnSendKeyServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 SendKeyService.Service.KeySent -= OnOldKeySent;
             }

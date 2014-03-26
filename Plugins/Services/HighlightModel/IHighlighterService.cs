@@ -15,11 +15,20 @@ namespace CommonServices.Accessibility
         bool IsHighlighting { get; }
 
         /// <summary>
+        /// This function forces the highlight of the given element.
+        /// </summary>
+        /// <param name="element">The element highlight.</param>
+        /// <remarks> 
+        /// This function is useful only when there is no alternative to.
+        /// </remarks>
+        void HighlightImmediately( IHighlightableElement element );
+
+        /// <summary>
         /// Register a highlightable tree in the service in order to be available for the highlighting.
         /// </summary>
         /// <param name="elementID"></param>
         /// <param name="root"></param>
-        void RegisterTree( string elementID, IHighlightableElement root );
+        void RegisterTree( string elementID, IHighlightableElement root, bool HighlightDirectly = false );
 
         /// <summary>
         /// Remove an tree that have been registered before. It can be a subtree of any highlightable element.

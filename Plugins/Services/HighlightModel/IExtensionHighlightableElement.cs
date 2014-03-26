@@ -24,7 +24,7 @@ namespace HighlightModel
         bool UnregisterElement( ChildPosition position, IHighlightableElement element );
 
         /// <summary>
-        /// This is the name that identify the IExtensibleHighlightableElement.
+        /// This is the name that identifies the IExtensibleHighlightableElement.
         /// </summary>
         string Name { get; }
 

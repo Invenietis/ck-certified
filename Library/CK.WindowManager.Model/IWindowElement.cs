@@ -24,7 +24,7 @@ namespace CK.WindowManager.Model
         /// <summary>
         /// Raised when the window element is hidden.
         /// </summary>
-        event EventHandler Hidden;
+        event EventHandler Minimized;
 
         /// <summary>
         /// Raised when the window element is restored (from hidden state for ex).
@@ -70,7 +70,7 @@ namespace CK.WindowManager.Model
         /// <param name="height"></param>
         void Resize( double width, double height );
 
-        void Hide();
+        void Minimize();
 
         void Restore();
 

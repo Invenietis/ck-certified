@@ -83,26 +83,26 @@ namespace HighlightModel
     /// </summary> 
     public class BeginScrollingInfo
     {
-        public BeginScrollingInfo( TimeSpan tickInterval, IHighlightableElement previousElement )
+        public BeginScrollingInfo( double tickInterval, IHighlightableElement previousElement )
         {
             TickInterval = tickInterval;
             PreviousElement = previousElement;
         }
 
-        public TimeSpan TickInterval { get; private set; }
+        public double TickInterval { get; private set; }
         public IHighlightableElement PreviousElement { get; private set; }
     }
 
     public class EndScrollingInfo
     {
-        public EndScrollingInfo( TimeSpan tickInterval, IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        public EndScrollingInfo( double tickInterval, IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
         {
             TickInterval = tickInterval;
             PreviouslyHighlightedElement = previouslyHighlightedElement;
             ElementToBeHighlighted = elementToBeHighlighted;
         }
 
-        public TimeSpan TickInterval { get; private set; }
+        public double TickInterval { get; private set; }
         public IHighlightableElement PreviouslyHighlightedElement { get; private set; }
         public IHighlightableElement ElementToBeHighlighted { get; private set; }
     }
@@ -120,7 +120,11 @@ namespace HighlightModel
         /// <summary>
         /// The KeyScroller immediately hightlights the next element, without waiting for the next tick.
         /// </summary>
-        Immediate = 1
+        Immediate = 1,
+        /// <summary>
+        /// The KeyScroller wait one tick before execute the action.
+        /// </summary>
+        Delayed = 2,
     }
 
 

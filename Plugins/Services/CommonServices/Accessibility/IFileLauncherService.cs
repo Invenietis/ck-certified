@@ -9,7 +9,8 @@ namespace CommonServices
     {
         Registry = 2,
         SpecialFolder = 4,
-        Other = 8
+        Url = 8,
+        Other = 16
     }
 
     public interface IWildFile : IComparable
@@ -40,6 +41,11 @@ namespace CommonServices
         /// The icon associated with the file.
         /// </summary>
         ImageSource Icon { get; }
+
+        /// <summary>
+        /// Last access time in local time
+        /// </summary>
+        DateTime LastAccessTime { get; }
     }
     
     public interface IFileLocator

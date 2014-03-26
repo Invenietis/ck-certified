@@ -722,15 +722,18 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            _miniView.Dispatcher.BeginInvoke( (Action)( () =>
-                {
-                    if( _miniView.Visibility != Visibility.Hidden )
+            if( _viewHidden )
+            {
+                _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                     {
-                        if( Highlighter.Status.IsStartingOrStarted )
-                            Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
-                        _miniView.Hide();
-                    }
-                } ) );
+                        if( _miniView.Visibility != Visibility.Hidden )
+                        {
+                            if( Highlighter.Status.IsStartingOrStarted )
+                                Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                            _miniView.Hide();
+                        }
+                    }) );
+            }
 
             if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RestoreAllWindows();
 

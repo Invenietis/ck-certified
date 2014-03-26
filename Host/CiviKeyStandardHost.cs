@@ -92,16 +92,24 @@ namespace Host
 
         public override IContext CreateContext()
         {
+            //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
+            //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.
+            //If a system conf is found and loaded at this point, plugin will be set as disabled (because the plugins are not yet discovered). If there is a userconf, the requirements will be parsed again later, and everything will work fine.
+            //The problem occurs when there is no user conf. (this happens when CiviKey is first laucnhed)
+
+
             IContext ctx = base.CreateContext();
 
             _log.Debug( "LAUNCHING" );
-            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
 
             _notificationMngr = new NotificationManager();
 
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
+            _log.Debug( "Discovering plugins..." );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
+            _log.Debug( "Plugins discovered" );
+            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
 
             var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext

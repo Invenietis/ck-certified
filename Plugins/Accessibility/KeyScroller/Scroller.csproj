@@ -96,7 +96,9 @@
     <Compile Include="Scroller.cs" />
     <Compile Include="ScrollingStrategies\Tools\HighlightableWrapperNode.cs" />
     <Compile Include="ScrollingStrategies\Tools\IHighlightableWrapperNode.cs" />
+    <Compile Include="ScrollingStrategies\Tools\ITreeWalker.cs" />
     <Compile Include="ScrollingStrategies\Tools\ScrollingStrategy.cs" />
+    <Compile Include="ScrollingStrategies\Tools\TreeWalker.cs" />
     <Compile Include="ScrollingStrategies\ZoneScrollingStrategy.cs" />
     <Compile Include="Editor\BasicScrollEditor.cs" />
     <Compile Include="Editor\EditorView.xaml.cs">

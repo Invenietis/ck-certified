@@ -62,7 +62,7 @@ namespace KeyScroller
                 _strategies.Add( name, GetStrategyByName( name ) );
             }
             //_scrollingStrategy = GetStrategyByName( Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ) );
-            _scrollingStrategy = new ScrollingStrategy( _timer );
+            _scrollingStrategy = new ScrollingStrategy( _timer, _registeredElements );
             return true;
         }
 
@@ -147,13 +147,13 @@ namespace KeyScroller
 
         public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
         {
-            //if ( !_registeredElements.ContainsKey( targetModuleName ) )
-            //{
-            //    _registeredElements.Add( targetModuleName, element );
-            //    if ( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
-            //    if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
-            //}
-            _scrollingStrategy.AddModule( element );
+            if( !_registeredElements.ContainsKey( targetModuleName ) )
+            {
+                _registeredElements.Add( targetModuleName, element );
+                if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
+                if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
+            }
+
         }
 
         public void UnregisterTree( string targetModuleName, IHighlightableElement element )

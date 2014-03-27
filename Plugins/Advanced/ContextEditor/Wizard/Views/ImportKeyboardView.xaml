@@ -1,0 +1,118 @@
+﻿<Window x:Class="KeyboardEditor.Wizard.Views.ImportKeyboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:KeyboardEditor.Wizard.ViewModels"
+             xmlns:core="clr-namespace:CK.Windows;assembly=CK.Windows.Core" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Width="450" Height="550" Padding="5 5 5 5" Topmost="True" Title="Importer des claviers">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
+            <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
+            <SolidColorBrush Color="#4f4f4f" x:Key="GrayColor"/>
+            <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
+            <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
+            <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
+            <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
+            
+            <Style x:Key="description" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 0 5 0"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+
+            <Style x:Key="step" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 12 5 0"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{StaticResource DefaultColor}" />
+                <Setter Property="Foreground" Value="#FFFFFF" />
+                <Setter Property="HorizontalAlignment" Value="Right"  />
+                <Setter Property="Margin" Value="10 0 10 0" />
+                <Setter Property="BorderBrush" Value="#295884" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="12 6 12 6" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#FFF"></Setter>
+                        <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="BorderBrush" Value="Gray"></Setter>
+                        <Setter Property="Background" Value="#81b9ee"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <core:BooleanToVisibilityConverter x:Key="converter"/>
+            
+            <DataTemplate DataType="{x:Type vm:CheckBoxImportKeyboardViewModel}">
+                <Button Margin="3 3 3 0" Command="{Binding CheckCommand}" Style="{StaticResource CK.Config.Link}">
+                    <DockPanel>
+                        <CheckBox DockPanel.Dock="Right" IsChecked="{Binding IsSelected}"/>
+                        <Path ToolTip="This keyboard already exists !" Visibility="{Binding AlreadyExist, Converter={StaticResource converter}}" DockPanel.Dock="Right"  Data="F1M874.094,289.369L854.3,254.63C854.028,254.151 853.515,253.856 852.958,253.856 852.403,253.856 851.89,254.151 851.617,254.63L831.824,289.369C831.555,289.84 831.559,290.416 831.835,290.883 832.111,291.348 832.618,291.634 833.165,291.634L872.752,291.634C873.299,291.634 873.805,291.348 874.081,290.883 874.357,290.416 874.361,289.84 874.094,289.369 M855.653,287.189L850.264,287.189 850.264,282.745 855.653,282.745 855.653,287.189z M855.653,279.41L850.264,279.41 850.264,266.077 855.653,266.077 855.653,279.41z" Stretch="Uniform" Fill="#000000" Width="16" Height="16" Margin="0,0,10,0" RenderTransformOrigin="0.5,0.5"></Path>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding KeyboardName}" Margin="2 0 0 0"/>
+                    </DockPanel>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Selectionner un fichier"/>
+            <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+            <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
+            <TextBox ToolTip="{Binding FilePath}" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
+        </DockPanel>
+        <StackPanel Grid.Row="1">
+            <TextBlock Style="{StaticResource step}" Text="2. Selectionner les claviers à importer"/>
+            <TextBlock Style="{StaticResource description}" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+        </StackPanel>
+        <ScrollViewer  Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding CheckBoxs}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical">
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+        <DockPanel Grid.Row="3">
+            <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Importer les claviers"/>
+            <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+            <Button IsEnabled="{Binding CanExecuteImport}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
+            <ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>
+        </DockPanel>
+    </Grid>
+</Window>

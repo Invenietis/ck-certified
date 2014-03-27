@@ -37,6 +37,7 @@ namespace Host.VM
         //SkinViewModel _sVm;
         AutoClickViewModel _acVm;
         WordPredictionViewModel _wpVm;
+        ShareKeyboardViewModel _skVm;
         AppAdvancedConfigViewModel _appAdvcVm;
 
         public AppConfigViewModel( AppViewModel app )
@@ -56,7 +57,7 @@ namespace Host.VM
                 profiles.RefreshValues( s, e );
             };
 
-            this.AddLink( _appAdvcVm ?? ( _appAdvcVm = new AppAdvancedConfigViewModel( _app ) ) );
+            this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
 
             //JL : this feature has been removed.
             //this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
@@ -64,9 +65,10 @@ namespace Host.VM
             //JL : 13/12/2013 : The screenscroller editor presents performance issues when modifying parameters.
             //For now, I'll let this plugin without configuration, we'll ask the ergotherapist whether the configuration panel is necessary before spending time on it.
             //this.AddLink( _ssVm ?? ( _ssVm = new ScreenScrollerViewModel( _app ) ) );  
-            
-            this.AddLink( _acVm ?? ( _acVm = new AutoClickViewModel( _app ) ) );
-            this.AddLink( _wpVm ?? ( _wpVm = new WordPredictionViewModel( _app ) ) );
+
+            this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
+            this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
+            this.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );

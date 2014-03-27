@@ -8,6 +8,7 @@ using CK.WindowManager.Model;
 using System.Diagnostics;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using System.Timers;
 
 namespace CK.WindowManager
 {
@@ -26,8 +27,12 @@ namespace CK.WindowManager
 
         List<string> _indexList;
 
+        Timer _timer;
+
         public TopMostService()
         {
+            _timer = new Timer( 50 );
+            _timer.Elapsed += _timer_Elapsed;
             _windowToString = new Dictionary<Window, string>();
             _stringToWindows = new Dictionary<string, List<Window>>();
             _indexList = new List<string>();
@@ -127,10 +132,23 @@ namespace CK.WindowManager
             window.Activated += window_Activated;
         }
 
-        int _nb = 0;
+        bool lockUpdate = false;
         private void window_Activated( object sender, EventArgs e )
         {
+            //DIRTYFIX
+            if( !lockUpdate )
+            {
+                lockUpdate = true;
+                _timer.Start();
+            }
+        }
+
+        void _timer_Elapsed( object sender, ElapsedEventArgs e )
+        {
+            //DIRTYFIX
+            _timer.Stop();
             UpdateTopMostWindows();
+            lockUpdate = false;
         }
 
         private void UpdateTopMostWindows()

@@ -23,7 +23,7 @@
                 <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#FFA2BDF2"/>
+                            <SolidColorBrush Color="{Binding HighlightBackground}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>

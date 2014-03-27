@@ -398,7 +398,7 @@ namespace SimpleSkin
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name,
-                    new ExtensibleHighlightableElementProxy( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM ) );
+                    new ExtensibleHighlightableElementProxy( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM, true ) );
             }
         }
 
@@ -722,15 +722,18 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            _miniView.Dispatcher.BeginInvoke( (Action)( () =>
-                {
-                    if( _miniView.Visibility != Visibility.Hidden )
+            if( _viewHidden )
+            {
+                _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                     {
-                        if( Highlighter.Status.IsStartingOrStarted )
-                            Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
-                        _miniView.Hide();
-                    }
-                } ) );
+                        if( _miniView.Visibility != Visibility.Hidden )
+                        {
+                            if( Highlighter.Status.IsStartingOrStarted )
+                                Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                            _miniView.Hide();
+                        }
+                    }) );
+            }
 
             if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RestoreAllWindows();
 

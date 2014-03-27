@@ -74,6 +74,7 @@ namespace CK.WindowManager
         //TODO test if the pointer is in the window
         private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
+            //DIRTYFIX
             //Allows the bypass the fact that Windows puts a window to the initial position
             //if the windows was moved during the PointerKeyUp treatment event
             if( _bindResult != null && _activationTimer == null )

@@ -58,11 +58,11 @@ namespace CK.Plugins.AutoClick
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IMouseWatcher> MouseWatcher { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IHelpViewerService> HelpService { get; set; }
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IClickSelector> Selector { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IHelpViewerService> HelpService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowManager> WindowManager { get; set; }

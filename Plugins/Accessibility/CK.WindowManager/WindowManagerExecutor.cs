@@ -23,9 +23,6 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowBinder WindowBinder { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
-        public IPointerDeviceDriver PointerDeviceDriver { get; set; }
-
         public WindowManagerExecutor()
         {
             _placeholder = new PreviewBindingInfo();
@@ -162,9 +159,6 @@ namespace CK.WindowManager
                 PlacingButton( binding.Top.SpatialBinding, binding );
             }
         }
-
-
-
 
         void ResizeHorizontally( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
         {

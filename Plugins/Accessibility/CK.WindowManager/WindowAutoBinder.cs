@@ -23,10 +23,6 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IPointerDeviceDriver PointerDeviceDriver { get; set; }
 
-        const int XY_VARIATION_ACCEPTED = 5;
-
-        Timer _timer = null;
-
         public double AttractionRadius = 65;
 
         HitTester _tester;
@@ -40,39 +36,12 @@ namespace CK.WindowManager
             _tester = new HitTester();
         }
 
-        void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
-        {
-            //avoids bind during a resize
-            if( !_resizeMoveLock && !_pointerDownLock )
-            {
-                if( _tester.CanTest )
-                {
-                    ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
-                    IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
-
-                    IBinding result = _tester.Test( binding, rect, AttractionRadius );
-                    if( result != null )
-                    {
-                        _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
-                    }
-                    else
-                    {
-                        if( _tester.LastResult != null )
-                        {
-                            WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
-                            _bindResult = null;
-                        }
-                    }
-                }
-            }
-            _resizeMoveLock = false;
-            //Console.WriteLine( "OnWindowMoved ! {0} {1}*{2}", e.Window.Name, e.Window.Top, e.Window.Left );
-        }
+        #region PointerDeviceDriver Members
 
         private DispatcherTimer _activationTimer;
 
         //TODO test if the pointer is in the window
-        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
+        void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
         {
             //DIRTYFIX
             //Allows the bypass the fact that Windows puts a window to the initial position
@@ -106,6 +75,10 @@ namespace CK.WindowManager
             }
         }
 
+        #endregion PointerDeviceDriver Members
+
+        #region WindowBinder Members
+
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
             _tester.Block();
@@ -115,18 +88,51 @@ namespace CK.WindowManager
         {
             _tester.Release();
         }
-        
+
+        #endregion WindowBinder Members
+
+        #region WindowManager Members
+
         //avoids bind during a resize
         void OnWindowResized( object sender, WindowElementResizeEventArgs e )
         {
             _resizeMoveLock = true;
         }
 
+        void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
+        {
+            //avoids bind during a resize
+            if( !_resizeMoveLock && !_pointerDownLock )
+            {
+                if( _tester.CanTest )
+                {
+                    ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+                    IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
+
+                    IBinding result = _tester.Test( binding, rect, AttractionRadius );
+                    if( result != null )
+                    {
+                        _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
+                    }
+                    else
+                    {
+                        if( _tester.LastResult != null )
+                        {
+                            WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
+                            _bindResult = null;
+                        }
+                    }
+                }
+            }
+            _resizeMoveLock = false;
+        }
+
+        #endregion WindowManager Members
+
         #region IPlugin Members
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _timer = new Timer();
             _pointerDownLock = true;
             return true;
         }
@@ -162,7 +168,6 @@ namespace CK.WindowManager
 
         public void Teardown()
         {
-            _timer.Dispose();
         }
 
         #endregion

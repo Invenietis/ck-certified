@@ -153,7 +153,7 @@ namespace KeyboardEditor.Wizard.ViewModels
             {
                 string whiteList = GenerateWhiteList();
                 //if empty dialog box
-                _owner.ImportKeyboards( _filePath, GenerateWhiteList() );
+                _owner.ImportKeyboards( _filePath, whiteList );
             }
             UpdateAlreadyExist();
             CanExecute = true;

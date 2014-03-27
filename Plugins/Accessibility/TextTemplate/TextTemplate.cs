@@ -67,7 +67,7 @@ namespace TextTemplate
                 {
                     Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, this );
                 }
-                else if( e.Current <= InternalRunningStatus.Stopping )
+                else if( e.Current == InternalRunningStatus.Stopping )
                 {
                     Highlighter.Service.UnregisterTree( HIGHLIGH_REGISTER_ID, this );
                 }

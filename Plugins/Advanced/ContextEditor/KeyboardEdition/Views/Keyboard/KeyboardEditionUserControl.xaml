@@ -98,6 +98,14 @@
                         </DockPanel>
                     </Border>
                 </StackPanel>
+                
+                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="HIGHLIGHT REPEAT : "/>
+                <Separator Style="{StaticResource SectionSeperatorStyle}" />
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Repeat number :</TextBlock>
+                    <ComboBox Margin="0 3" ItemsSource="{Binding LoopCounts}" SelectedValue="{Binding LoopCount}" />
+                </StackPanel>
             </StackPanel>
         </Border>
     </StackPanel>

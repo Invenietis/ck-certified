@@ -30,7 +30,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -211,7 +210,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -335,7 +333,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -516,7 +513,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -621,7 +617,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -703,7 +698,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -733,7 +727,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -835,25 +828,13 @@
                   <Zone Name="Clics">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="5" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="5" Y="330" W="70" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="80" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="80" Y="330" W="70" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="155" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="155" Y="330" W="70" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
                         <LayoutKeyMode Mode="GaucheEnfonce" X="230" Y="330" W="70" H="50" Visible="true">
@@ -865,11 +846,7 @@
                             </p>
                           </PluginsData>
                         </LayoutKeyMode>
-                        <LayoutKeyMode Mode="" X="230" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="230" Y="330" W="70" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -928,11 +905,7 @@
                   <Zone Name="Changer de clavier">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="330" Y="330" W="100" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="330" Y="330" W="100" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -958,11 +931,21 @@
                 </PluginsData>
               </Layout>
             </Layouts>
+            <PluginsData>
+              <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                <data key="LoopCount" type="Double">2</data>
+              </p>
+            </PluginsData>
           </Keyboard>
           <Keyboard Name="Ergonomique">
             <RequirementLayer Name="Keyboard">
               <PluginRequirements></PluginRequirements>
-              <ServiceRequirements></ServiceRequirements>
+              <ServiceRequirements>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IMonitorOnceCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.IModeCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CommonServices.ISendKeyCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+                <ServiceRequirement AssemblyQualifiedName="CK.Plugins.SendInputDriver.ISendStringService, SendInputDriver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
+              </ServiceRequirements>
             </RequirementLayer>
             <Modes Current="">
               <Mode>shift</Mode>
@@ -972,7 +955,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -1216,7 +1198,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -1504,7 +1485,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -1810,7 +1790,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -2099,7 +2078,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -2182,7 +2160,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -2386,9 +2363,17 @@
                     </data>
                     <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
                   </p>
+                  <p guid="66ad1d1c-bf19-405d-93d3-30ca39b9e52f" version="1.0.0" name="Keyboard editor">
+                    <data key="KeyboardBackground" type="String">pack://application:,,,/SimpleSkin;component/Images/skinBackground.png</data>
+                  </p>
                 </PluginsData>
               </Layout>
             </Layouts>
+            <PluginsData>
+              <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                <data key="LoopCount" type="Double">2</data>
+              </p>
+            </PluginsData>
           </Keyboard>
           <Keyboard Name="Azerty" IsCurrent="1" IsActive="True">
             <RequirementLayer Name="Keyboard">
@@ -2418,7 +2403,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -3244,7 +3228,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -4139,7 +4122,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -4631,7 +4613,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -5122,7 +5103,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -5293,7 +5273,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -5535,7 +5514,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -5663,7 +5641,6 @@
                 <PluginsData>
                   <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                     <data key="Index" type="Int32">-1</data>
-                    <data key="LoopCount" type="Int32">1</data>
                   </p>
                 </PluginsData>
               </Zone>
@@ -6129,11 +6106,7 @@
                         <LayoutKeyMode Mode="" X="15" Y="235" W="75" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
-                        <LayoutKeyMode Mode="" X="95" Y="235" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="95" Y="235" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
                         <LayoutKeyMode Mode="alt" X="150" Y="235" W="50" H="50" Visible="true">
@@ -6154,11 +6127,7 @@
                         <LayoutKeyMode Mode="" X="205" Y="235" W="350" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="560" Y="235" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="560" Y="235" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
                         <LayoutKeyMode Mode="alt" X="615" Y="235" W="50" H="50" Visible="true">
@@ -6238,11 +6207,7 @@
                   <Zone Name="Fonctions">
                     <LayoutKeys>
                       <LayoutKey Index="0">
-                        <LayoutKeyMode Mode="" X="895" Y="15" W="50" H="25" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="895" Y="15" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="fn" X="895" Y="40" W="50" H="25" Visible="true">
@@ -6260,32 +6225,16 @@
                         <LayoutKeyMode Mode="" X="895" Y="40" W="50" H="25" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="2">
-                        <LayoutKeyMode Mode="" X="895" Y="70" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="895" Y="70" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="3">
-                        <LayoutKeyMode Mode="" X="895" Y="125" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="895" Y="125" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="4">
-                        <LayoutKeyMode Mode="" X="895" Y="180" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="895" Y="180" W="50" H="50" Visible="true" />
                       </LayoutKey>
                       <LayoutKey Index="5">
-                        <LayoutKeyMode Mode="" X="895" Y="235" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
-                        </LayoutKeyMode>
+                        <LayoutKeyMode Mode="" X="895" Y="235" W="50" H="50" Visible="true" />
                       </LayoutKey>
                     </LayoutKeys>
                   </Zone>
@@ -6312,6 +6261,11 @@
                 </PluginsData>
               </Layout>
             </Layouts>
+            <PluginsData>
+              <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
+                <data key="LoopCount" type="Double">2</data>
+              </p>
+            </PluginsData>
           </Keyboard>
         </data>
       </p>

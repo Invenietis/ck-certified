@@ -25,6 +25,7 @@ using CK.Keyboard.Model;
 using HighlightModel;
 using CK.Core;
 using System.Linq;
+using CK.WPF.ViewModel;
 
 namespace SimpleSkin.ViewModels
 {
@@ -35,16 +36,21 @@ namespace SimpleSkin.ViewModels
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
-        private int _loopCount;
-        private int _initialLoopCount;
+        private double _loopCount;
+        private double _initialLoopCount;
         private int _index;
 
-        public int LoopCount
+        public double LoopCount
         {
             get { return _loopCount; }
         }
 
-        public int InitialLoopCount
+        private void SafeUpdateLoopCount()
+        {
+            ThreadSafeSet<double>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
+        }
+
+        public double InitialLoopCount
         {
             get { return _initialLoopCount;  }
         }
@@ -54,12 +60,12 @@ namespace SimpleSkin.ViewModels
             get { return _zone.Index; }
         }
 
-        internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone, int index, int repeatCount = 1 )
+        internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone, int index )
             : base( ctx )
         {
             _zone = zone;
             _index = index;
-            _loopCount = _initialLoopCount = repeatCount;
+            SafeUpdateLoopCount();
             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
@@ -77,6 +83,11 @@ namespace SimpleSkin.ViewModels
                 _index = (int)e.Value;
                 OnPropertyChanged( "Index" );
                 //TODO : trigger IndexChanged
+            }
+            else if( e.Key == "LoopCount" )
+            {
+                _initialLoopCount = _loopCount = (double)e.Value;
+                OnPropertyChanged( "LoopCount" );
             }
         }
 
@@ -186,22 +197,25 @@ namespace SimpleSkin.ViewModels
             get { return false; }
         }
 
+        IHighlightableElement _previousElement;
         public ActionType PreviewChildAction(IHighlightableElement element, ActionType action)
         {
-            if (_initialLoopCount != 1 && _keys[_keys.Count - 1] == element)
+            ActionType a = action;
+            if( _initialLoopCount != 1 && _previousElement != element && _keys[_keys.Count - 1] == element )
             {
                 if( _loopCount == 1 )
                 {
                     _loopCount = _initialLoopCount;
-                    return ActionType.UpToParent;
+                    a = ActionType.UpToParent;
                 }
                 else
                 {
                     _loopCount--;
-                    return ActionType.GoToFirstSibling;
+                    a = ActionType.GoToFirstSibling;
                 }
             }
-            return action;
+            _previousElement = element;
+            return a;
         }
 
         public void OnChildAction( ActionType action )

@@ -272,7 +272,7 @@ namespace SimpleSkin.ViewModels
             // ToDoJL Check index
             //we give a Zone a default Index of -1, it means that it has no Index yet.
             //This index will be used by the editor and the keyscroller
-            return new VMZoneSimple( this, z, Config[z].GetOrSet<int>( "Index", -1 ), Config[z].GetOrSet<int>( "LoopCount", 2 ) );
+            return new VMZoneSimple( this, z, Config[z].GetOrSet<int>( "Index", -1 ) );
         }
 
         private VMKeySimple CreateKey( IKey k )

@@ -116,7 +116,7 @@ namespace KeyboardEditor.Wizard
             return keyboardNames;
         }
 
-        public void ImportKeyboards( string filePath, string whiteListFilter = "")
+        public void ImportKeyboards( string filePath, string whiteListFilter = "" )
         {
             Debug.Assert( filePath != null );
             HashSet<string> filter = new HashSet<string>( whiteListFilter.Split( '|' ) );
@@ -131,21 +131,38 @@ namespace KeyboardEditor.Wizard
                         while( r.IsStartElement( "Keyboard" ) )
                         {
                             string n = r.GetAttribute( "Name" );
+                            IKeyboard k = null;
                             if( string.IsNullOrWhiteSpace( whiteListFilter ) || filter.Contains( n ) )
                             {
                                 if( KeyboardContext.Service.Keyboards.FirstOrDefault( kb => kb.Name == n ) != null )
                                 {
-                                    KeyboardContext.Service.Keyboards[n].Destroy();
+                                    if( KeyboardContext.Service.Keyboards[n] == KeyboardContext.Service.CurrentKeyboard )
+                                    {
+                                        k = KeyboardContext.Service.Keyboards[n];
+                                        k.Rename( k.GetHashCode().ToString() );
+                                    }
+                                    else
+                                    {
+                                        KeyboardContext.Service.Keyboards[n].Destroy();
+                                    }
                                 }
                                 //IKeyboard keyboard = KeyboardContext.Service.Keyboards.Create( n );
                                 //reader.ReadInlineObjectStructured( keyboard );
 
                                 IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( n );
                                 if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
+                                using( var sub = reader.OpenSubReader() )
+                                {
+                                    _sharedDictionary.RegisterReader( sub, CK.SharedDic.MergeMode.None );
+                                    //Erasing all properties of the keyboard. We re-apply the backedup ones.
+                                    serializableKeyboard.ReadContent( sub );
+                                }
 
-                                _sharedDictionary.RegisterReader( reader, CK.SharedDic.MergeMode.None );
-                                //Erasing all properties of the keyboard. We re-apply the backedup ones.
-                                serializableKeyboard.ReadContent( reader );
+                                if( k != null )
+                                {
+                                    KeyboardContext.Service.CurrentKeyboard = (IKeyboard)serializableKeyboard;
+                                    k.Destroy();
+                                }
                             }
                             r.ReadToNextSibling( "Keyboard" );
                         }

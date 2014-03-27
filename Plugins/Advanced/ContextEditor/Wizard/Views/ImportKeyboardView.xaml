@@ -13,6 +13,8 @@
                 <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <core:BooleanToVisibilityConverter x:Key="converter"/>
+
             <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
             <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
             <SolidColorBrush Color="#4f4f4f" x:Key="GrayColor"/>
@@ -29,9 +31,26 @@
             </Style>
 
             <Style x:Key="step" TargetType="TextBlock">
-                <Setter Property="Margin" Value="5 12 5 0"/>
+                <Setter Property="Margin" Value="5 0 5 0"/>
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="Foreground" Value="Black"/>
+            </Style>
+
+            <Style x:Key="overlay" TargetType="Grid">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Visibility" Value="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}"></Setter>
+                <Setter Property="Opacity" Value="0"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanExecute}" Value="False">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.2" Duration="0:0:0.5" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
 
             <Style TargetType="{x:Type Button}">
@@ -66,8 +85,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
-            <core:BooleanToVisibilityConverter x:Key="converter"/>
             
             <DataTemplate DataType="{x:Type vm:CheckBoxImportKeyboardViewModel}">
                 <Button Margin="3 3 3 0" Command="{Binding CheckCommand}" Style="{StaticResource CK.Config.Link}">
@@ -82,37 +99,41 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0">
-            <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Selectionner un fichier"/>
-            <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
-            <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
-            <TextBox ToolTip="{Binding FilePath}" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
-        </DockPanel>
-        <StackPanel Grid.Row="1">
-            <TextBlock Style="{StaticResource step}" Text="2. Selectionner les claviers à importer"/>
-            <TextBlock Style="{StaticResource description}" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
-        </StackPanel>
-        <ScrollViewer  Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding CheckBoxs}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical">
-                        </StackPanel>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
-        <DockPanel Grid.Row="3">
-            <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Importer les claviers"/>
-            <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
-            <Button IsEnabled="{Binding CanExecuteImport}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
-            <ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>
-        </DockPanel>
+        <Grid Margin="12 12 12 12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0">
+                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Selectionner un fichier"/>
+                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
+                <TextBox ToolTip="{Binding FilePath}" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
+            </DockPanel>
+            <StackPanel Grid.Row="1">
+                <TextBlock Style="{StaticResource step}" Text="2. Selectionner les claviers à importer"/>
+                <TextBlock Style="{StaticResource description}" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+            </StackPanel>
+            <ScrollViewer  Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding CheckBoxs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical">
+                            </StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+            <DockPanel Grid.Row="3">
+                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Importer les claviers"/>
+                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <Button IsEnabled="{Binding CanExecuteImport}" HorizontalAlignment="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" VerticalAlignment="Top" Width="70"></Button>
+                <!--<ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>-->
+            </DockPanel>
+        </Grid>
+        <Grid Style="{StaticResource overlay}" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}"></Grid>
     </Grid>
+    
 </Window>

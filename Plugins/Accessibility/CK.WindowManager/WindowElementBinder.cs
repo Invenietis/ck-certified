@@ -539,6 +539,7 @@ namespace CK.WindowManager
 
         public void Stop()
         {
+            WindowManager.Service.Registered -= OnRegistered;
             WindowManager.Service.Unregistered -= WindowManager_Unregistered;
             Config.User.Set( "SerializableBindings", _persistantBindings );
         }

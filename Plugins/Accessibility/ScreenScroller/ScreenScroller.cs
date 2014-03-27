@@ -35,9 +35,6 @@ namespace ScreenScroller
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IService<IPointerDeviceDriver> PointerDevideDriver { get; set; }
-
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ITopMostService> TopMostService { get; set; }
 

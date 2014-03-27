@@ -25,10 +25,10 @@
                 <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="MiniViewStoryboard" AutoReverse="True" RepeatBehavior="Forever">
-            <DoubleAnimation From="0.9" To="1" Duration="0:0:1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
+        <Storyboard x:Key="MiniViewStoryboard" AutoReverse="True" RepeatBehavior="Forever" DesiredFrameRate="20" FillBehavior="HoldEnd">
+            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
             </DoubleAnimation>
-            <DoubleAnimation From="0.9" To="1" Duration="0:0:1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
+            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
             </DoubleAnimation>
         </Storyboard>
     </Window.Resources>
@@ -54,7 +54,7 @@
                                 <BeginStoryboard Name="BeginMiniViewStoryboard" Storyboard="{StaticResource MiniViewStoryboard}"/>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
-                                <StopStoryboard BeginStoryboardName="BeginMiniViewStoryboard"/>
+                                <PauseStoryboard BeginStoryboardName="BeginMiniViewStoryboard"/>
                             </DataTrigger.ExitActions>
                         </DataTrigger>
                         <Trigger Property="UIElement.IsVisible" Value="True">
@@ -91,7 +91,7 @@
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="0" ScaleY="0"/>
-                    <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                    <ScaleTransform />
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>

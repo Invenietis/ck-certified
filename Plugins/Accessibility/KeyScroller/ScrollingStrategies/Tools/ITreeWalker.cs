@@ -8,6 +8,9 @@ namespace KeyScroller
 {
     public interface ITreeWalker
     {
+        /// <summary>
+        /// Get the current element of the walker
+        /// </summary>
         IHighlightableElement Current { get; }
 
         /// <summary>

@@ -19,7 +19,6 @@ namespace KeyScroller
     public class ScrollerPlugin : IPlugin, IHighlighterService
     {
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
-        public static List<string> AvailableStrategies = new List<string>();
 
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -27,9 +26,8 @@ namespace KeyScroller
         const string PluginPublicName = "Scroller";
 
         Dictionary<string, IHighlightableElement> _registeredElements;
-        ScrollingStrategy _scrollingStrategy;
+        StrategyBridge _scrollingStrategy;
         Timer _timer;
-        Dictionary<string, IScrollingStrategy> _strategies;
         ITrigger _currentTrigger;
 
         public IPluginConfigAccessor Configuration { get; set; }
@@ -42,11 +40,6 @@ namespace KeyScroller
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> InputTrigger { get; set; }
 
-        //List the available strategy at the class init
-        static ScrollerPlugin()
-        {
-            AvailableStrategies.AddRange( StrategyAttribute.GetStrategies() );
-        }
 
         public bool Setup( IPluginSetupInfo info )
         {
@@ -55,46 +48,20 @@ namespace KeyScroller
             _timer.Interval = timerSpeed;
 
             _registeredElements = new Dictionary<string, IHighlightableElement>();
-            _strategies = new Dictionary<string, IScrollingStrategy>();
 
-            foreach ( string name in AvailableStrategies )
-            {
-                _strategies.Add( name, GetStrategyByName( name ) );
-            }
-            //_scrollingStrategy = GetStrategyByName( Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ) );
-            _scrollingStrategy = new ScrollingStrategy( _timer, _registeredElements );
+            _scrollingStrategy = new StrategyBridge( _timer, _registeredElements, Configuration );
+            
             return true;
-        }
-
-        IScrollingStrategy GetStrategyByName( string name )
-        {
-            switch ( name )
-            {
-                case "TurboScrollingStrategy":
-                    if ( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration );
-
-                case "OneByOneScrollingStrategy":
-                    if ( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new OneByOneScrollingStrategy( _timer, _registeredElements, Configuration );
-
-                case "HalfZoneScrollingStrategy":
-                    if ( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new HalfZoneScrollingStrategy( _timer, _registeredElements, Configuration );
-
-                default:
-                    if ( _strategies.ContainsKey( "BasicScrollingStrategy" ) ) return _strategies["BasicScrollingStrategy"];
-                    return new ZoneScrollingStrategy( _timer, _registeredElements, Configuration );
-            }
         }
 
         public void Start()
         {
+            _scrollingStrategy.SwitchTo( "ZoneScrollingStrategy" );
             Configuration.ConfigChanged += OnConfigChanged;
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
             InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
-            _scrollingStrategy.Start();
+            
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -103,9 +70,7 @@ namespace KeyScroller
             {
                 if ( e.Key == "Strategy" )
                 {
-                    _scrollingStrategy.Stop();
-                   // _scrollingStrategy = GetStrategyByName( e.Value.ToString() );
-                    _scrollingStrategy.Start();
+                    _scrollingStrategy.SwitchTo( e.Value.ToString() );
                 }
                 if ( e.Key == "Trigger" )
                 {

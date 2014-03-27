@@ -1,10 +1,10 @@
-﻿using HighlightModel;
+﻿using System.Collections.Generic;
+using System.Timers;
+using CK.Plugin.Config;
+using HighlightModel;
 
 namespace KeyScroller
 {
-    /// <summary>
-    /// 
-    /// </summary>
     internal interface IScrollingStrategy
     {
         bool IsStarted { get; }
@@ -14,25 +14,19 @@ namespace KeyScroller
         /// </summary>
         string Name { get; }
 
-        ///// <summary>
-        ///// Event fired to trigger the highlightment of a particular element (or tree).
-        ///// </summary>
-        //event EventHandler<HighlightEventArgs> BeginHighlight;
-
-        ///// <summary>
-        ///// Event fired to end the highlightment of a particular element (or tree).
-        ///// </summary>
-        //event EventHandler<HighlightEventArgs> EndHighlight;
-
-        ///// <summary>
-        ///// Event fired when an element has been spotted by the highlighter to be selected.
-        ///// </summary>
-        //event EventHandler<HighlightEventArgs> SelectElement;
+        /// <summary>
+        /// Initialize the scrolling strategy with the given parameters
+        /// </summary>
+        /// <param name="timer">The heart beat timer</param>
+        /// <param name="elements">the dictionnary of the registered elements</param>
+        /// <param name="config">the config accessor</param>
+        void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config );
 
         /// <summary>
         /// Start the scrolling strategy
         /// </summary>
         void Start();
+
         /// <summary>
         /// Stop the scrolling strategy
         /// </summary>

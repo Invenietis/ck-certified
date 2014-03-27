@@ -94,8 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Scroller.cs" />
-    <Compile Include="ScrollingStrategies\Tools\HighlightableWrapperNode.cs" />
-    <Compile Include="ScrollingStrategies\Tools\IHighlightableWrapperNode.cs" />
     <Compile Include="ScrollingStrategies\Tools\ITreeWalker.cs" />
     <Compile Include="ScrollingStrategies\Tools\ScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\Tools\TreeWalker.cs" />
@@ -117,11 +115,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScrollingStrategies\Tools\ScrollingStrategyBase.cs" />
     <Compile Include="ScrollingStrategies\OneByOneScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\ZoneSplittingScrollingStrategy.cs" />
     <Compile Include="ScrollingStrategies\Tools\StrategyAttribute.cs" />
     <Compile Include="ScrollingStrategies\TurboScrollingStrategy.cs" />
+    <Compile Include="StrategyBridge.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">

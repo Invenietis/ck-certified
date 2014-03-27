@@ -8,83 +8,51 @@ using System.Timers;
 
 namespace KeyScroller
 {
+    public class OneByOneWalker : Walker
+    {
+        public override bool UpToParent()
+        {
+            base.UpToParent();
+            return MoveNext();
+        }
+    }
+
     /// <summary>
     /// Scrolling on each key one after the other, without taking zones into account
     /// </summary>
     [StrategyAttribute( OneByOneScrollingStrategy.StrategyName )]
-    public class OneByOneScrollingStrategy : ScrollingStrategyBase
+    public class OneByOneScrollingStrategy : ScrollingStrategy
     {
         const string StrategyName = "OneByOneScrollingStrategy";
-        public OneByOneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
-            : base( timer, elements, configuration )
-        {
-        }
-
         public override string Name
         {
             get { return StrategyName; }
         }
 
-        protected override IHighlightableElement GetUpToParent()
+        public OneByOneScrollingStrategy() : base()
         {
-            IHighlightableElement nextElement = null;
-            // if there is no parent, we are at the root level, we'll start iterating on the current tree's next sibling
-            if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
-
-            //We get the parent and fetch its siblings
-            IHighlightableElement parent = _currentElementParents.Pop();
-            ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
-            if( _currentElementParents.Count > 0 )
-            {
-                parentSiblings = _currentElementParents.Peek().Children;
-            }
-            else
-            {
-                //there, we actually are at the root level
-                Debug.Assert( parent.IsHighlightableTreeRoot );
-                parentSiblings = RegisteredElements;
-
-                //If this tree is the only tree at the root level, we directly start iterating on its children
-                if( parentSiblings.Count == 1 ) return GetNextElement( ActionType.EnterChild );
-            }
-
-            //We get the current element's parent. The idea it to directly enter the next sibling's children to bypass the zones.
-            int parentId = parentSiblings.IndexOf( parent );
-
-            //When the parent is the last of its level, we go up to the next upper level. 
-            if( parentId == parentSiblings.Count - 1 )
-            {
-                _currentId = parentId = 0;
-                return GetNextElement( ActionType.UpToParent );
-            }
-            else ++parentId; //otherwise we get to the next parent to start iterating on its children
-
-            nextElement = parentSiblings[parentId];
-
-            _currentElement = nextElement;
-            _currentId = parentId;
-
-            return GetNextElement( ActionType.EnterChild );
+            Johnnie = new OneByOneWalker();
         }
 
-        protected override IHighlightableElement GetSkipBehavior( IHighlightableElement element )
+        protected override void ProcessSkipBehavior()
         {
-            switch( element.Skip )
+            switch( Johnnie.Current.Skip )
             {
                 case SkippingBehavior.Skip:
-                    return GetNextElement( ActionType.Normal );
+                    MoveNext( ActionType.MoveNext );
+                    break;
                 default:
-                    if( element != null && element.Children.Count > 0 && !element.IsHighlightableTreeRoot )
+                    if( Johnnie.Current.Children.Count > 0 )
                     {
-                        return GetNextElement( ActionType.EnterChild );
+                        MoveNext( ActionType.EnterChild );
                     }
-                    return element;
+                    break;
             }
         }
 
         public override void OnExternalEvent()
         {
-            if( _currentElement != null )
+            if( Johnnie.Current != null )
             {
                 FireSelectElement();
             }

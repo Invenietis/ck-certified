@@ -198,7 +198,7 @@ namespace SimpleSkin.ViewModels
                 else
                 {
                     _loopCount--;
-                    return ActionType.GoToFirstSibling;
+                    return ActionType.MoveToFirst;
                 }
             }
             return action;
@@ -206,7 +206,7 @@ namespace SimpleSkin.ViewModels
 
         public void OnChildAction( ActionType action )
         {
-            if( action == ActionType.RelativeRoot || action == ActionType.AbsoluteRoot )  _loopCount = _initialLoopCount;
+            if( action == ActionType.GoToRelativeRoot || action == ActionType.GoToAbsoluteRoot )  _loopCount = _initialLoopCount;
         }
 
         #region IHighlightableElementUnregisterSensitive Members

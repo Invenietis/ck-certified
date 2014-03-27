@@ -236,7 +236,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             //TODO : remove when this is transformed into a clicktype provider
             _holder.Click();
 
-            scrollingDirective.NextActionType = ActionType.AbsoluteRoot;
+            scrollingDirective.NextActionType = ActionType.GoToAbsoluteRoot;
             return scrollingDirective;
         }
         public bool IsHighlightableTreeRoot

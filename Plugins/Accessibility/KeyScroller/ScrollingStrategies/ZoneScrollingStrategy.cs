@@ -10,7 +10,7 @@ namespace KeyScroller
     /// Scrolling on each zone, then entering the zone to scroll on each key
     /// </summary>
     [StrategyAttribute( ZoneScrollingStrategy.StrategyName )]
-    internal class ZoneScrollingStrategy : ScrollingStrategyBase
+    internal class ZoneScrollingStrategy : ScrollingStrategy
     {
         const string StrategyName = "ZoneScrollingStrategy";
 
@@ -19,19 +19,14 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public ZoneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
-            : base( timer, elements, configuration )
-        {
-        }
-
         public override void OnExternalEvent()
         {
-            if( _currentElement != null )
+            if( Johnnie.Current != null )
             {
-                if( _currentElement.Children.Count > 0 ) _lastDirective.NextActionType = ActionType.EnterChild;
+                if( Johnnie.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
                 else
                 {
-                    _lastDirective.NextActionType = ActionType.StayOnTheSameOnce;
+                    LastDirective.NextActionType = ActionType.StayOnTheSameOnce;
                 }
                 FireSelectElement();
             }

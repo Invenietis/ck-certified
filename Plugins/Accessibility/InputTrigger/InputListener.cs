@@ -78,7 +78,7 @@ namespace InputTrigger
                     return 3;
             }
 
-            throw new Exception( String.Format( "The specified buttonInfo is incorrect. (ButtonInfo : {0}, ExtraInfo : {1}) ", buttonInfo.ToString(), extraInfo ) );
+            return 0;
         }
 
         #region IDisposable Members

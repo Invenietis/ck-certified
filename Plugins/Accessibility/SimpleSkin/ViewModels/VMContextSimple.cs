@@ -84,7 +84,7 @@ namespace SimpleSkin.ViewModels
                 return () =>
                 {
                     var kb = KeyboardContext.Keyboards[_activeKeyboardName];
-                    if( kb != null && kb.IsActive ) return kb;
+                    if( kb != null ) return kb;
 
                     return null;
                 };

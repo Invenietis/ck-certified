@@ -294,6 +294,15 @@
   <data name="SkinEditorSectionName" xml:space="preserve">
     <value>Keyboard edition</value>
   </data>
+  <data name="ShareKeyboard" xml:space="preserve">
+    <value>Import or Export a keyboard</value>
+  </data>
+  <data name="ImportKeyboard" xml:space="preserve">
+    <value>Import a keyboard</value>
+  </data>
+  <data name="ExportKeyboard" xml:space="preserve">
+    <value>Export a keyboard</value>
+  </data>
   <data name="ScrollConfig" xml:space="preserve">
     <value>Edit scrolling configuration</value>
   </data>

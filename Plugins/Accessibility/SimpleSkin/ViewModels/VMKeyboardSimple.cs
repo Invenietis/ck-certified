@@ -80,6 +80,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateW();
             SafeUpdateH();
             SafeUpdateInsideBorderColor();
+            SafeUpdateHighlightBackground();
             UpdateBackgroundPath();
         }
 
@@ -191,6 +192,10 @@ namespace SimpleSkin.ViewModels
                     case "InsideBorderColor":
                         SafeUpdateInsideBorderColor();
                         OnPropertyChanged( "InsideBorderColor" );
+                        break;
+                    case "HighlightBackground":
+                        SafeUpdateHighlightBackground();
+                        OnPropertyChanged( "HighlightBackground" );
                         break;
                 }
             }
@@ -305,6 +310,22 @@ namespace SimpleSkin.ViewModels
         public int Height
         {
             get { return H; }
+        }
+
+        Color _highlightBackground;
+        public Color HighlightBackground
+        {
+            get { return _highlightBackground; }
+        }
+
+        private void SafeUpdateHighlightBackground()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightBackground", (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" ) );
+            ThreadSafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _highlightBackground = (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" );
+                else _highlightBackground = v;
+            } );
         }
 
         public SkippingBehavior Skip

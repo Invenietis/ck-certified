@@ -255,21 +255,19 @@ namespace SimpleSkin
             }) );
 
             Config.User.Set( PlacementString( skin ), placement );
-
-            _skins.Remove( skin.ViewModel.KeyboardVM.Keyboard.Name );
         }
 
         private void UninitializeMiniview()
         {
-            _miniView.Dispatcher.Invoke( (Action)(() =>
-                {
-                    if( _miniView != null )
+            if( _miniView != null )
+            {
+                _miniView.Dispatcher.Invoke( (Action)(() =>
                     {
                         Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                         _miniView.Close();
                         _viewHidden = false;
-                    }
-                }) );
+                    }) );
+            }
         }
 
         string PlacementString( SkinInfo skinInfo )
@@ -493,6 +491,7 @@ namespace SimpleSkin
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
             UninitializeActiveWindows( _skins[e.Keyboard.Name] );
+            _skins.Remove( _skins[e.Keyboard.Name].ViewModel.KeyboardVM.Keyboard.Name );
 
             DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
@@ -59,27 +60,43 @@ namespace KeyboardEditor.Wizard.ViewModels
             internal set;
         }
 
+        bool CheckSelectedKeyboards()
+        {
+            if( _checkBoxs.Any( cb => cb.IsSelected ) )
+            {
+                return true;
+            }
+            MessageBox.Show( "Aucun clavier n'est sélectionné.", "Information", System.Windows.MessageBoxButton.OK );
+            return false;
+        }
+
+
         void ShowSaveWindow()
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Keyboards"; // Default file name
-            dlg.DefaultExt = ".xml"; // Default file extension
-            dlg.Filter = "CiviKey keyboard (.xml)|*.xml"; // Filter files by extension
+            CanExecute = false;
 
-            // Show save file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process save file dialog box results
-            if( result == true )
+            if( CheckSelectedKeyboards() )
             {
-                SaveInXml( dlg.FileName );
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = "Keyboards"; // Default file name
+                dlg.DefaultExt = ".xml"; // Default file extension
+                dlg.Filter = "CiviKey keyboard (.xml)|*.xml"; // Filter files by extension
+
+                // Show save file dialog box
+                Nullable<bool> result = dlg.ShowDialog();
+
+                // Process save file dialog box results
+                if( result == true )
+                {
+                    SaveInXml( dlg.FileName );
+                }
             }
+
+            CanExecute = true;
         }
 
         void SaveInXml( string fileName )
         {
-            CanExecute = false;
-
             List<IKeyboard> keyboardsToSerialize = new List<IKeyboard>();
             // Save document
             foreach( var cb in _checkBoxs )
@@ -90,8 +107,6 @@ namespace KeyboardEditor.Wizard.ViewModels
                 }
             }
             _owner.ExportKeyboards( fileName, keyboardsToSerialize );
-
-            CanExecute = true;
         }
     }
 }

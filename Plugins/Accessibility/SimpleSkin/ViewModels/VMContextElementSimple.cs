@@ -1,6 +1,8 @@
 ﻿using System;
 using CK.WPF.ViewModel;
 using CK.Windows;
+using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace SimpleSkin.ViewModels
 {
@@ -20,8 +22,10 @@ namespace SimpleSkin.ViewModels
 
         internal abstract void Dispose();
 
-        internal void ThreadSafeSet<T>( T value, Action<T> setter, bool synchronous = true )
+        internal void SafeSet<T>( T value, Action<T> setter, bool synchronous = true )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             T val = value;
             if( synchronous )
                 NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );

@@ -77,6 +77,20 @@ namespace SimpleSkin
 
         public void Start()
         {
+            //var vm = new VMContextActiveKeyboard( KeyboardContext.Service.Keyboards.Where( k => k.Name == "Azerty" ).First().Name, Context, KeyboardContext.Service.Keyboards.Context, Config );
+
+            //var skin = NoFocusManager.Default.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
+            //{
+            //    DataContext = vm
+            //} );
+            //try
+            //{
+            //    NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() => { skin.Show(); }) );
+            //}
+            //catch( Exception e )
+            //{
+            //    Console.WriteLine( "" );
+            //}
             ChangeActiveCurrentKeyboardStatus( true );
             RegisterEvents();
         }
@@ -133,7 +147,7 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( e.Current != null ) ChangeActiveCurrentKeyboardStatus(true);
+            if( e.Current != null ) ChangeActiveCurrentKeyboardStatus( true );
         }
 
         void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )

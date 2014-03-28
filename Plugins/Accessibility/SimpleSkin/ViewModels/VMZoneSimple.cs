@@ -26,6 +26,10 @@ using HighlightModel;
 using CK.Core;
 using System.Linq;
 using CK.WPF.ViewModel;
+using System.Diagnostics;
+using System.Windows.Threading;
+using CK.Windows;
+using System;
 
 namespace SimpleSkin.ViewModels
 {
@@ -47,12 +51,12 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateLoopCount()
         {
-            ThreadSafeSet<double>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
+            SafeSet<double>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
         }
 
         public double InitialLoopCount
         {
-            get { return _initialLoopCount;  }
+            get { return _initialLoopCount; }
         }
 
         public int Index
@@ -63,6 +67,7 @@ namespace SimpleSkin.ViewModels
         internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone, int index )
             : base( ctx )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _zone = zone;
             _index = index;
             SafeUpdateLoopCount();
@@ -78,29 +83,40 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, CK.Plugin.Config.ConfigChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Obj == _zone && e.Key == "Index" )
             {
                 _index = (int)e.Value;
-                OnPropertyChanged( "Index" );
+                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "Index" );
+                }) );
                 //TODO : trigger IndexChanged
             }
             else if( e.Key == "LoopCount" )
             {
                 _initialLoopCount = _loopCount = (double)e.Value;
-                OnPropertyChanged( "LoopCount" );
+                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "LoopCount" );
+                }) );
             }
         }
-
 
         public VMZoneSimple( VMContextSimpleBase ctx )
             : base( ctx )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
         }
 
         internal override void Dispose()
         {
-            Keys.Clear();
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+            {
+                Keys.Clear();
+            }) );
         }
 
         #region IHighlightable members
@@ -134,6 +150,7 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( Keys.Count == 0 || Keys.All( k => k.Skip == SkippingBehavior.Skip ) )
                 {
                     return SkippingBehavior.Skip;
@@ -156,9 +173,10 @@ namespace SimpleSkin.ViewModels
             get { return _isHighlighting; }
             set
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( value != _isHighlighting )
                 {
-                    ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
+                    SafeSet<bool>( value, ( v ) => _isHighlighting = v );
                     OnPropertyChanged( "IsHighlighting" );
                     foreach( var key in Keys )
                     {
@@ -198,7 +216,7 @@ namespace SimpleSkin.ViewModels
         }
 
         IHighlightableElement _previousElement;
-        public ActionType PreviewChildAction(IHighlightableElement element, ActionType action)
+        public ActionType PreviewChildAction( IHighlightableElement element, ActionType action )
         {
             ActionType a = action;
             if( _initialLoopCount != 1 && _previousElement != element && _keys[_keys.Count - 1] == element )
@@ -220,7 +238,7 @@ namespace SimpleSkin.ViewModels
 
         public void OnChildAction( ActionType action )
         {
-            if( action == ActionType.RelativeRoot || action == ActionType.AbsoluteRoot )  _loopCount = _initialLoopCount;
+            if( action == ActionType.RelativeRoot || action == ActionType.AbsoluteRoot ) _loopCount = _initialLoopCount;
         }
 
         #region IHighlightableElementUnregisterSensitive Members

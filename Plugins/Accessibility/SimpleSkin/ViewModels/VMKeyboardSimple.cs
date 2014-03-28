@@ -330,16 +330,16 @@ namespace SimpleSkin.ViewModels
             } );
         }
 
-        double _loopCount;
-        public double LoopCount
+        int _loopCount;
+        public int LoopCount
         {
             get { return _loopCount; }
         }
 
         private void SafeUpdateLoopCount()
         {
-            double i = Context.Config[Keyboard].GetOrSet<double>( "LoopCount", 1 );
-            ThreadSafeSet<double>( i, ( v ) =>
+            int i = Context.Config[Keyboard].GetOrSet<int>( "LoopCount", 1 );
+            ThreadSafeSet<int>( i, ( v ) =>
             {
                 _loopCount = i;
             } );

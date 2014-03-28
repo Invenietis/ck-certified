@@ -36,21 +36,21 @@ namespace SimpleSkin.ViewModels
         public string Name { get { return _zone.Name; } }
         IZone _zone;
 
-        private double _loopCount;
-        private double _initialLoopCount;
+        private int _loopCount;
+        private int _initialLoopCount;
         private int _index;
 
-        public double LoopCount
+        public int LoopCount
         {
             get { return _loopCount; }
         }
 
         private void SafeUpdateLoopCount()
         {
-            ThreadSafeSet<double>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
+            ThreadSafeSet<int>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
         }
 
-        public double InitialLoopCount
+        public int InitialLoopCount
         {
             get { return _initialLoopCount;  }
         }
@@ -84,9 +84,9 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Index" );
                 //TODO : trigger IndexChanged
             }
-            else if( e.Key == "LoopCount" )
+            else if( e.Obj == _zone.Keyboard && e.Key == "LoopCount" )
             {
-                _initialLoopCount = _loopCount = (double)e.Value;
+                _initialLoopCount = _loopCount = (int)e.Value;
                 OnPropertyChanged( "LoopCount" );
             }
         }

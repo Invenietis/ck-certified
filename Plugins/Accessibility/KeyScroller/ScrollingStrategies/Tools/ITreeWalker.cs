@@ -9,6 +9,11 @@ namespace KeyScroller
     public interface ITreeWalker
     {
         /// <summary>
+        /// Get the current parents stack
+        /// </summary>
+        Stack<IHighlightableElement> Parents { get; }
+
+        /// <summary>
         /// Get the current element of the walker
         /// </summary>
         IHighlightableElement Current { get; }
@@ -48,5 +53,15 @@ namespace KeyScroller
         /// </summary>
         /// <param name="element"></param>
         void GoTo(IHighlightableElement element);
+
+        /// <summary>
+        /// Move the walker to the absolute root
+        /// </summary>
+        void GoToAbsoluteRoot();
+
+        /// <summary>
+        /// move the cursor to the relative root (the root modul)
+        /// </summary>
+        void GoToRelativeRoot();
     }
 }

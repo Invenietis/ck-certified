@@ -10,18 +10,23 @@ namespace KeyScroller
 {
     public class OneByOneWalker : Walker
     {
+        public OneByOneWalker( IHighlightableElement root ) : base( root ) { }
+
         public override bool UpToParent()
         {
             base.UpToParent();
-            return MoveNext();
+            if(MoveNext()) return true;
+
+            GoToAbsoluteRoot();
+            return false;
         }
     }
 
     /// <summary>
-    /// Scrolling on each key one after the other, without taking zones into account
+    /// A ScrollingStrategy that scroll only on sheets elements.
     /// </summary>
     [StrategyAttribute( OneByOneScrollingStrategy.StrategyName )]
-    public class OneByOneScrollingStrategy : ScrollingStrategy
+    public class OneByOneScrollingStrategy : ScrollingStrategyBase
     {
         const string StrategyName = "OneByOneScrollingStrategy";
         public override string Name
@@ -31,7 +36,7 @@ namespace KeyScroller
 
         public OneByOneScrollingStrategy() : base()
         {
-            Johnnie = new OneByOneWalker();
+            Johnnie = new OneByOneWalker(this);
         }
 
         protected override void ProcessSkipBehavior()
@@ -42,7 +47,7 @@ namespace KeyScroller
                     MoveNext( ActionType.MoveNext );
                     break;
                 default:
-                    if( Johnnie.Current.Children.Count > 0 )
+                    if( Johnnie.Current.Children.Count > 0 && !Johnnie.Current.IsHighlightableTreeRoot || Johnnie.Current.Skip == SkippingBehavior.EnterChildren )
                     {
                         MoveNext( ActionType.EnterChild );
                     }

@@ -23,6 +23,10 @@ namespace KeyScroller
 
         }
 
+        /// <summary>
+        /// Get the list of all types that implements IScrollingStrategy
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<Type> GetStrategyTypes()
         {
             foreach( Type type in Assembly.GetExecutingAssembly().GetTypes().Where( x => typeof( IScrollingStrategy ).IsAssignableFrom( x ) ) )
@@ -31,6 +35,10 @@ namespace KeyScroller
             }
         }
 
+        /// <summary>
+        /// Get all the available strategy names
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<string> GetStrategyNames()
         {
             foreach( Type type in Assembly.GetExecutingAssembly().GetTypes().Where( x => typeof( IScrollingStrategy ).IsAssignableFrom( x ) ) )

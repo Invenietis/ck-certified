@@ -56,7 +56,7 @@ namespace KeyScroller
 
         public void Start()
         {
-            _scrollingStrategy.SwitchTo( "ZoneScrollingStrategy" );
+            _scrollingStrategy.SwitchTo( Configuration.User.GetOrSet( "Strategy", "ZoneScrollingStrategy" ) );
             Configuration.ConfigChanged += OnConfigChanged;
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );

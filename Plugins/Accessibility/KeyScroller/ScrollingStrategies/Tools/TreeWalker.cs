@@ -9,11 +9,14 @@ namespace KeyScroller
 {
     public class Walker : ITreeWalker
     {
-        Stack<IHighlightableElement> _stack; 
+        IHighlightableElement _root;
 
-        public Walker()
+        public Stack<IHighlightableElement> Parents { get; private set; } 
+
+        public Walker(IHighlightableElement root)
         {
-            _stack = new Stack<IHighlightableElement>();
+            Parents = new Stack<IHighlightableElement>();
+            _root = root;
         }
 
         protected virtual ICKReadOnlyList<IHighlightableElement> GetSibblings()
@@ -23,7 +26,7 @@ namespace KeyScroller
 
         protected virtual IHighlightableElement Peek()
         {
-            return _stack.Count > 0 ? _stack.Peek() : null;
+            return Parents.Count > 0 ? Parents.Peek() : null;
         }
         
         #region ITreeWalker Members
@@ -31,7 +34,7 @@ namespace KeyScroller
         public IHighlightableElement Current
         {
             get;
-            private set;
+            protected set;
         }
 
         public virtual bool MoveNext()
@@ -42,7 +45,7 @@ namespace KeyScroller
 
             int idx = sibblings.IndexOf( Current );
 
-            if( idx < 0 ) throw new InvalidOperationException("Something goeas wrong : the current element is not contains by its parent");
+            if( idx < 0 ) throw new InvalidOperationException("Something goes wrong : the current element is not contained by its parent !");
 
             //The current child is the last one
             if( idx + 1 >= sibblings.Count ) return false;
@@ -66,8 +69,8 @@ namespace KeyScroller
         public virtual bool EnterChild()
         {
             if( Current.Children.Count == 0 ) return false;
-            
-            _stack.Push( Current );
+
+            Parents.Push( Current );
             Current = Current.Children[0];
             return true;
         }
@@ -76,15 +79,35 @@ namespace KeyScroller
         {
             if( Peek() == null ) return false;
 
-            Current = _stack.Pop();
+            Current = Parents.Pop();
             return true;
         }
 
         public virtual void GoTo( HighlightModel.IHighlightableElement element )
         {
             if( element == null ) throw new ArgumentNullException( "element" );
-            _stack.Clear();
+            Parents.Clear();
+
+            if(element != _root) Parents.Push( _root );
+
             Current = element;
+        }
+
+        public void GoToAbsoluteRoot()
+        {
+            GoTo( _root );
+        }
+
+        public void GoToRelativeRoot()
+        {
+            while( Parents.Count > 1 )
+            {
+                Current = Parents.Pop();
+            }
+
+            //Check if that the founded element in the parent stack is really a root element. Get the absolute root if not.
+            if( !Current.IsHighlightableTreeRoot )
+                GoToAbsoluteRoot();
         }
         #endregion
     }

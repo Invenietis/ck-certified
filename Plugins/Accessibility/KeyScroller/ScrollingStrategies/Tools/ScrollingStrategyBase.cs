@@ -9,7 +9,7 @@ using HighlightModel;
 
 namespace KeyScroller
 {
-    public abstract class ScrollingStrategy : IScrollingStrategy, IHighlightableElement
+    public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
         protected IPluginConfigAccessor Configuration { get; set; }
         protected Timer Timer { get; set; }
@@ -18,9 +18,10 @@ namespace KeyScroller
         protected ITreeWalker Johnnie { get; set; }     //Big up to Olivier Spineli
         protected Dictionary<string, IHighlightableElement> Elements { get; set; }
 
-        public ScrollingStrategy()
+        public ScrollingStrategyBase()
         {
-            Johnnie = new Walker();
+            LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
+            Johnnie = new Walker( this );
         }
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
@@ -57,12 +58,9 @@ namespace KeyScroller
         /// <summary>
         /// Move the cursor to the next element according to the given ActionType
         /// </summary>
-        /// <param name="action"></param>
+        /// <param name="action">The ActionType that indicate the move direction</param>
         public virtual void MoveNext( ActionType action )
         {
-            if( Johnnie.Current == null) 
-                Johnnie.GoTo( this );
-
             //False if there are registered elements
             if( Johnnie.Current == this && Children.Count == 0 ) return;
 
@@ -75,23 +73,29 @@ namespace KeyScroller
                     if( !Johnnie.MoveNext() )
                         MoveNext(ActionType.UpToParent);
                     break;
+
                 case ActionType.UpToParent:
                     if( !Johnnie.UpToParent() )
                         MoveNext(ActionType.MoveToFirst);
                     break;
+
                 case ActionType.EnterChild :
                     if( !Johnnie.EnterChild() )
                         MoveNext(ActionType.MoveNext);
                     break;
+
                 case ActionType.MoveToFirst :
                     Johnnie.MoveFirst();
                     break;
+
                 case ActionType.MoveToLast :
                     Johnnie.MoveLast();
                     break;
+
                 case ActionType.StayOnTheSame :
                     LastDirective.NextActionType = ActionType.StayOnTheSame;
                     break;
+
                 default :
                      //StayOnTheSameOnce
                     break;
@@ -179,15 +183,15 @@ namespace KeyScroller
 
         #region IScrollingStrategy Members
 
+        public abstract string Name
+        {
+            get;
+        }
+
         public virtual bool IsStarted
         {
             get;
             protected set;
-        }
-
-        public abstract string Name
-        {
-            get;
         }
 
         public virtual void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
@@ -203,7 +207,9 @@ namespace KeyScroller
 
             Timer.Elapsed += OnInternalBeat;
             Configuration.ConfigChanged += OnConfigChanged;
-
+            
+            //Reset the walker
+            Johnnie.GoTo( this );
             Timer.Start();
             IsStarted = true;
         }
@@ -313,7 +319,7 @@ namespace KeyScroller
 
         public bool IsHighlightableTreeRoot
         {
-            get { return false; }
+            get { return true; }
         }
 
         #endregion

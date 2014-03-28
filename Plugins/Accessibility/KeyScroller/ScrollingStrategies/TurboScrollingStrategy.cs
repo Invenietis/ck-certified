@@ -22,16 +22,27 @@ namespace KeyScroller
 
         public double TurboInterval { get; private set; }
 
-        public TurboScrollingStrategy() : base()
-        {
-
-        }
-
         bool IsTurboMode
         {
             get
             {
                 return Timer.Interval == TurboInterval;
+            }
+        }
+        
+        /// <summary>
+        /// Method that sets the turbo if we are not scrolling on the "root" level
+        /// </summary>
+        private void SetTurboWithCheck()
+        {
+            //If we are scrolling on a root element and that the next action is not to enter the children, we explicitely set the interval to the normal one.
+            //Because we don't want to scroll too fast on the elements
+            if( Johnnie.Current.IsHighlightableTreeRoot && LastDirective.NextActionType != ActionType.EnterChild )
+                Timer.Interval = _normalInterval;
+            else
+            {
+                Timer.Interval = TurboInterval;
+                _normalSpeedTimer.Stop();
             }
         }
 
@@ -50,21 +61,6 @@ namespace KeyScroller
             _normalSpeedTimer.Interval = 5000;
             _normalSpeedTimer.Elapsed += ( o, e ) => SetTurboWithCheck();
             Timer.Elapsed += ( o, e ) => { if( IsTurboMode ) SetTurboWithCheck(); };
-        }
-        /// <summary>
-        /// Method that sets the turbo if we are not scrolling on the "root" level
-        /// </summary>
-        private void SetTurboWithCheck()
-        {
-            //If we are scrolling on a root element and that the next action is not to enter the children, we explicitely set the interval to the normal one.
-            //Because we don't want to scroll too fast on the elements
-            if( Johnnie.Current == null || (Johnnie.Current.IsHighlightableTreeRoot && LastDirective.NextActionType != ActionType.EnterChild) )
-                Timer.Interval = _normalInterval;
-            else
-            {
-                Timer.Interval = TurboInterval;
-                _normalSpeedTimer.Stop();
-            }
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -94,17 +90,20 @@ namespace KeyScroller
             base.Start();
             SetTurboWithCheck();
         }
+
         public override void Pause( bool forceEndHighlight )
         {
             base.Pause( forceEndHighlight );
             Timer.Interval = _normalInterval;
         }
+
         public override void Stop()
         {
             base.Stop();
             Timer.Interval = _normalInterval;
             _normalSpeedTimer.Stop();
         }
+
         public override void OnExternalEvent()
         {
             if( Johnnie.Current != null && (!IsTurboMode || Johnnie.Current.IsHighlightableTreeRoot) )

@@ -8,6 +8,9 @@ using HighlightModel;
 
 namespace KeyScroller
 {
+    /// <summary>
+    /// Make the bridge between the different implementations
+    /// </summary>
     public class StrategyBridge : IScrollingStrategy
     {
         IScrollingStrategy _current;
@@ -19,7 +22,8 @@ namespace KeyScroller
 
             foreach(Type t in  StrategyAttribute.GetStrategyTypes())
             {
-                if( t == typeof( IScrollingStrategy ) || t == typeof( StrategyBridge ) || t == typeof( ScrollingStrategy ) )
+                //Ignore some types
+                if( t == typeof( IScrollingStrategy ) || t == typeof( StrategyBridge ) || t == typeof( ScrollingStrategyBase ) )
                     continue;
 
                 IScrollingStrategy instance = (IScrollingStrategy) Activator.CreateInstance( t );
@@ -36,6 +40,10 @@ namespace KeyScroller
                 throw new InvalidOperationException( "One scrolling strategy at least must be available" );
         }
 
+        /// <summary>
+        /// Switch to the specified strategy
+        /// </summary>
+        /// <param name="strategyName">The name of the strategy to switch to</param>
         public void SwitchTo(string strategyName)
         {
             if( !Implementations.ContainsKey( strategyName ) ) 

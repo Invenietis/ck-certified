@@ -1,13 +1,15 @@
-﻿<Window x:Class="CK.Plugins.AutoClick.Views.MouseDecoratorWindow"
+﻿<ckwincore:CKWindow x:Class="CK.Plugins.AutoClick.Views.MouseDecoratorWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"             
+             xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"
+             xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
              mc:Ignorable="d"
              Width="20" Height="20"
              WindowStyle="None"
             ShowInTaskbar="False"
+            ShowActivated="False"
             AllowsTransparency="True"
             Background="Transparent"            
             Topmost="True">
@@ -27,4 +29,4 @@
                                      BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}" Visibility="{Binding ShowMouseIndicator, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/> 
         </Viewbox>
     </StackPanel>
-</Window>
+</ckwincore:CKWindow>

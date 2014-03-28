@@ -26,6 +26,8 @@ namespace Help.Update
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "Help updater";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        Queue<IPluginProxy> _checked;
+        Queue<IPluginProxy> _pending;
 
         static ILog _log = LogManager.GetLogger( typeof( HelpUpdateManager ) );
 
@@ -52,6 +54,7 @@ namespace Help.Update
         public bool Setup( IPluginSetupInfo info )
         {
             _http = new HttpClient();
+            
             return true;
         }
 
@@ -64,6 +67,10 @@ namespace Help.Update
             PluginRunner.ApplyDone += OnPluginRunnerApplyDone;
 
             _helpContents.FindOrCreateBaseContent();
+            _helpContents.FindOrCreateDefaultContent( HostHelp.FakeHostHelpId, HostHelp.GetDefaultHelp );
+
+            _checked = new Queue<IPluginProxy>();
+            _pending = new Queue<IPluginProxy>();
         }
 
         public void Stop()
@@ -80,32 +87,31 @@ namespace Help.Update
         {
             if( e.Success )
             {
-                RegisterAllAvailableDefaultHelpContentsAsync().Wait();
+                EnqueueHelpablePlugin();
                 AutoUpdateAsync();
             }
         }
 
         #region Auto register marked plugins
 
-        Task RegisterAllAvailableDefaultHelpContentsAsync()
+        void EnqueueHelpablePlugin()
         {
             IEnumerable<IPluginProxy> inspectablePlugins = PluginRunner.PluginHost.LoadedPlugins
                                                                 .Where( IsHelpablePlugin );
-            return Task.Factory.StartNew( () =>
+            foreach( var p in inspectablePlugins )
             {
-                foreach( var p in inspectablePlugins )
-                {
-                    IHaveDefaultHelp helpP = p.RealPluginObject as IHaveDefaultHelp;
-                    _helpContents.FindOrCreateDefaultContent( p, helpP.GetDefaultHelp );
-                }
-
-                _helpContents.FindOrCreateDefaultContent( HostHelp.FakeHostHelpId, HostHelp.GetDefaultHelp );
-            } );
+                _pending.Enqueue( p );
+            }
+        }
+        
+        bool IsQueuded(IPluginProxy pluginProxy)
+        {
+            return _pending.Contains( pluginProxy ) || _checked.Contains( pluginProxy );
         }
 
         bool IsHelpablePlugin( IPluginProxy pluginProxy )
         {
-            return pluginProxy.Status == InternalRunningStatus.Started
+            return !IsQueuded(pluginProxy) && pluginProxy.Status == InternalRunningStatus.Started
                 && typeof( IHaveDefaultHelp ).IsAssignableFrom( pluginProxy.RealPluginObject.GetType() );
         }
 
@@ -136,26 +142,32 @@ namespace Help.Update
         /// <summary>
         /// Automatically update help contents of currently started plugin when it's possible
         /// </summary>
-        Task AutoUpdateAsync()
+        void AutoUpdateAsync()
         {
-            IList<INamedVersionedUniqueId> pluginsToProcess =  PluginRunner.PluginHost.LoadedPlugins.Cast<INamedVersionedUniqueId>().ToList();
-            pluginsToProcess.Add( HostHelp.FakeHostHelpId );
+            IPluginProxy plugin;
 
-            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 5 };
+            while( _pending.Count > 0 )
+            {
+                plugin = _pending.Dequeue();
+                IHaveDefaultHelp helpP = plugin.RealPluginObject as IHaveDefaultHelp;
+                _helpContents.FindOrCreateDefaultContent( plugin, helpP.GetDefaultHelp );
 
-            return Task.Factory.StartNew( () => Parallel.ForEach( pluginsToProcess, parallelOptions, item => AutoUpdateAsync( item ).Wait() ) );
+                AutoUpdateAsync( plugin );
+                _checked.Enqueue( plugin );
+            }
         }
 
-        Task AutoUpdateAsync( INamedVersionedUniqueId plugin )
+        void AutoUpdateAsync( INamedVersionedUniqueId plugin )
         {
-            return CheckForUpdate( plugin, true )
+            CheckForUpdate( plugin, true )
                 .ContinueWith( u =>
                 {
                     if( u.Result )
                     {
+
+                        Console.WriteLine( "Check updates for" + plugin.PublicName );
                         DownloadUpdate( plugin, true )
-                            .ContinueWith( t => AutoInstallUpdate( plugin, t.Result ) )
-                            .Wait();
+                            .ContinueWith( t => AutoInstallUpdate( plugin, t.Result ) );
                     }
                 } );
         }

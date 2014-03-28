@@ -76,10 +76,11 @@ namespace SimpleSkin.ViewModels
                 }
             }
 
-
             SafeUpdateW();
             SafeUpdateH();
             SafeUpdateInsideBorderColor();
+            SafeUpdateHighlightBackground();
+            SafeUpdateLoopCount();
             UpdateBackgroundPath();
         }
 
@@ -192,6 +193,14 @@ namespace SimpleSkin.ViewModels
                         SafeUpdateInsideBorderColor();
                         OnPropertyChanged( "InsideBorderColor" );
                         break;
+                    case "HighlightBackground":
+                        SafeUpdateHighlightBackground();
+                        OnPropertyChanged( "HighlightBackground" );
+                        break;
+                    case "LoopCount":
+                        SafeUpdateLoopCount();
+                        OnPropertyChanged( "LoopCount" );
+                        break;
                 }
             }
         }
@@ -207,7 +216,6 @@ namespace SimpleSkin.ViewModels
             Context.Config.ConfigChanged += OnConfigChanged;
         }
 
-
         private void UnregisterEvents()
         {
             _keyboard.KeyCreated -= OnKeyCreated;
@@ -222,7 +230,6 @@ namespace SimpleSkin.ViewModels
         #endregion
 
         #region "Design" properties
-
 
         private int _w;
         /// <summary>
@@ -305,6 +312,37 @@ namespace SimpleSkin.ViewModels
         public int Height
         {
             get { return H; }
+        }
+
+        Color _highlightBackground;
+        public Color HighlightBackground
+        {
+            get { return _highlightBackground; }
+        }
+
+        private void SafeUpdateHighlightBackground()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightBackground", (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" ) );
+            ThreadSafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _highlightBackground = (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" );
+                else _highlightBackground = v;
+            } );
+        }
+
+        double _loopCount;
+        public double LoopCount
+        {
+            get { return _loopCount; }
+        }
+
+        private void SafeUpdateLoopCount()
+        {
+            double i = Context.Config[Keyboard].GetOrSet<double>( "LoopCount", 1 );
+            ThreadSafeSet<double>( i, ( v ) =>
+            {
+                _loopCount = i;
+            } );
         }
 
         public SkippingBehavior Skip

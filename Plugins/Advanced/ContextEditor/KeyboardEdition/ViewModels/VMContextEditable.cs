@@ -62,7 +62,7 @@ namespace KeyboardEditor.ViewModels
         IPluginConfigAccessor _config;
         IContext _ctx;
         VMKeyboardEditable _currentKeyboard;
-        ModeTypes _currentlyDisplayedModeType = ModeTypes.Mode;
+        ModeTypes _currentlyDisplayedModeType = ModeTypes.None;
         Dictionary<object, VMContextElementEditable> _dic;
         EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
 
@@ -82,7 +82,7 @@ namespace KeyboardEditor.ViewModels
             _ctx = root.Context;
             _config = config;
             _root = root;
-            
+
             SkinConfiguration = skinConfiguration;
 
             DefaultImages = new Dictionary<string, string>();
@@ -159,11 +159,11 @@ namespace KeyboardEditor.ViewModels
 
                     if( SelectedElement is VMKeyEditable )
                     {
-                        ( (VMKeyEditable)SelectedElement ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
-                        ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                        ((VMKeyEditable)SelectedElement).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                        ((VMKeyEditable)SelectedElement).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
                     }
-                    else if( SelectedElement is VMKeyModeEditable ) ( (VMKeyModeEditable)SelectedElement ).TriggerPropertyChanged( "IsSelected" );
-                    else if( SelectedElement is VMLayoutKeyModeEditable ) ( (VMLayoutKeyModeEditable)SelectedElement ).TriggerPropertyChanged( "IsSelected" );
+                    else if( SelectedElement is VMKeyModeEditable ) ((VMKeyModeEditable)SelectedElement).TriggerPropertyChanged( "IsSelected" );
+                    else if( SelectedElement is VMLayoutKeyModeEditable ) ((VMLayoutKeyModeEditable)SelectedElement).TriggerPropertyChanged( "IsSelected" );
 
                     OnPropertyChanged( "CurrentlyDisplayedModeType" );
                 }
@@ -209,13 +209,23 @@ namespace KeyboardEditor.ViewModels
                 if( _selectedElement != value && value != null )
                 {
                     if( _selectedElement != null )
+                    {
+                        _previouslySelectedElement = _selectedElement;
                         _selectedElement.IsSelected = false;
+                    }
                     _selectedElement = value;
                     _selectedElement.IsSelected = true;
                     OnPropertyChanged( "SelectedElement" );
                     //Console.Out.WriteLine( "select elemnt CHANGED ! ------------------------" );
                 }
             }
+        }
+
+        VMContextElementEditable _previouslySelectedElement;
+        public VMContextElementEditable PreviouslySelectedElement
+        {
+            get { return _previouslySelectedElement; }
+            private set { _previouslySelectedElement = value; }
         }
 
         public IPluginConfigAccessor SkinConfiguration { get; set; }
@@ -271,7 +281,7 @@ namespace KeyboardEditor.ViewModels
 
         private void OnKeyDown( object sender, HookInvokedEventArgs e )
         {
-            Keys key = (Keys)( ( (int)e.LParam >> 16 ) & 0xFFFF );
+            Keys key = (Keys)(((int)e.LParam >> 16) & 0xFFFF);
             int modifier = (int)e.LParam & 0xFFFF;
             int delta = modifier == Constants.SHIFT ? 10 : 1;
             SelectedElement.OnKeyDownAction( (int)key, delta );
@@ -279,17 +289,18 @@ namespace KeyboardEditor.ViewModels
 
         private void OnMouseEventTriggered( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
         {
-            if( SelectedElement as VMKeyEditable != null ) ( SelectedElement as VMKeyEditable ).TriggerMouseEvent( eventType, args );
+            if( SelectedElement as VMKeyEditable != null ) (SelectedElement as VMKeyEditable).TriggerMouseEvent( eventType, args );
+            else if( SelectedElement as VMKeyModeBase != null ) ((SelectedElement as VMKeyModeBase).Parent as VMKeyEditable).TriggerMouseEvent( eventType, args );
             else if( SelectedElement as VMZoneEditable != null )
             {
-                foreach( var key in ( SelectedElement as VMZoneEditable ).Keys )
+                foreach( var key in (SelectedElement as VMZoneEditable).Keys )
                 {
                     key.TriggerMouseEvent( eventType, args );
                 }
             }
             else if( SelectedElement as VMKeyboardEditable != null )
             {
-                foreach( var zone in ( SelectedElement as VMKeyboardEditable ).Zones )
+                foreach( var zone in (SelectedElement as VMKeyboardEditable).Zones )
                 {
                     foreach( var key in zone.Keys )
                     {
@@ -391,6 +402,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElementEditable>( ( elem ) =>
                     {
+                        if( elem is VMKeyEditable ) CurrentlyDisplayedModeType = ModeTypes.None;
                         SelectedElement = elem;
                     } );
                 }

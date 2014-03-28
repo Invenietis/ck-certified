@@ -101,7 +101,8 @@ namespace KeyboardEditor.ViewModels
                     _originalLeft = X;
                     _originalTop = Y;
 
-                    Context.SelectedElement = this;
+                    IsSelected = true;
+                    //Context.SelectedElement = this;
                 } );
             }
         }

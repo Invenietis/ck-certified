@@ -15,19 +15,21 @@ namespace HighlightModel
 
         List<IHighlightableElement> _preChildren;
         List<IHighlightableElement> _postChildren;
+        bool _highlightPrePostChildren;
 
         public IHighlightableElement HighlightableElement
         {
             get { return _element;  }
         }
 
-        public ExtensibleHighlightableElementProxy( string name, IHighlightableElement element )
+        public ExtensibleHighlightableElementProxy( string name, IHighlightableElement element, bool highlightPrePostChildren = false )
         {
             if( element == null ) throw new ArgumentNullException( "element" );
 
             _preChildren = new List<IHighlightableElement>();
             _postChildren = new List<IHighlightableElement>();
 
+            _highlightPrePostChildren = highlightPrePostChildren;
             _element = element;
             _name = name;
         }
@@ -125,11 +127,21 @@ namespace HighlightModel
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            if( _highlightPrePostChildren )
+            {
+                foreach( var p in _preChildren ) p.BeginHighlight( beginScrollingInfo, scrollingDirective );
+                foreach( var p in _postChildren ) p.BeginHighlight( beginScrollingInfo, scrollingDirective );
+            }
             return _element.BeginHighlight( beginScrollingInfo, scrollingDirective );
         }
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            if( _highlightPrePostChildren )
+            {
+                foreach( var p in _preChildren ) p.EndHighlight( endScrollingInfo, scrollingDirective );
+                foreach( var p in _postChildren ) p.EndHighlight( endScrollingInfo, scrollingDirective );
+            }
             return _element.EndHighlight( endScrollingInfo, scrollingDirective );
         }
 

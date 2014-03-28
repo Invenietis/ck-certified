@@ -94,6 +94,8 @@ namespace SimpleSkin
         {
         }
 
+        #endregion
+
         #region ToolMethods
 
         void ChangeActiveCurrentKeyboardStatus( bool active )
@@ -106,20 +108,7 @@ namespace SimpleSkin
                 KeyboardContext.Service.CurrentKeyboard.IsActive = active;
                 if( active ) KeyboardContext.Service.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;
             }
-
         }
-
-        void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
-        {
-            if( e.Keyboard == KeyboardContext.Service.CurrentKeyboard )
-            {
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginIdString ), ConfigUserAction.Stopped );
-                Context.PluginRunner.Apply();
-                return;
-            }
-        }
-
-        #endregion
 
         #endregion
 
@@ -145,6 +134,16 @@ namespace SimpleSkin
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             if( e.Current != null ) ChangeActiveCurrentKeyboardStatus(true);
+        }
+
+        void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
+        {
+            if( e.Keyboard == KeyboardContext.Service.CurrentKeyboard )
+            {
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginIdString ), ConfigUserAction.Stopped );
+                Context.PluginRunner.Apply();
+                return;
+            }
         }
 
         #endregion

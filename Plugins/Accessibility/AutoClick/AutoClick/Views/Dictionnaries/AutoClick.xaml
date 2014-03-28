@@ -7,11 +7,11 @@
     xmlns:b="clr-namespace:CK.Plugins.AutoClick.Behaviors"
     xmlns:lib="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
-    
+
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/AutoClick;component/SharedDictionnaries/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
+
     <!--<lib:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <converters:InstructionToImageConverter x:Key="InstructionToImageConverter" />
     <converters:PathToImageConverter x:Key="PathToImageConverter" />-->
@@ -73,7 +73,7 @@
                                                     <PathGeometry>
                                                         <PathFigure StartPoint="10,10" IsClosed="True">
                                                             <LineSegment Point="10,2" />
-                                                            <ArcSegment Size="8,8" SweepDirection="Clockwise" Point="9.9,2" IsLargeArc="True">                   
+                                                            <ArcSegment Size="8,8" SweepDirection="Clockwise" Point="9.9,2" IsLargeArc="True">
                                                             </ArcSegment>
                                                         </PathFigure>
                                                     </PathGeometry>
@@ -95,14 +95,16 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="pie" Property="Opacity" Value="0.01" />                        <!--Stopped + show PauseImage-->
+                <Setter TargetName="pie" Property="Opacity" Value="0.01" />
+                <!--Stopped + show PauseImage-->
                 <Setter TargetName="pauseImage" Property="Opacity" Value="1" />
                 <Setter TargetName="playImage" Property="Opacity" Value="0.01" />
                 <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True" />                     <!--Running + show PlayImage-->
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <!--Running + show PlayImage-->
                     <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="False" />
                 </MultiTrigger.Conditions>
                 <Setter TargetName="pie" Property="Opacity" Value="1"  />
@@ -116,18 +118,20 @@
                 <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
             </MultiTrigger>
             <MultiTrigger>
-                <MultiTrigger.Conditions>                    
-                    <Condition Property="IsMouseOver" Value="False" />                 <!--Running + no show + no bg brush-->
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="False" />
+                    <!--Running + no show + no bg brush-->
                     <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="False" />
                 </MultiTrigger.Conditions>
                 <Setter TargetName="pie" Property="Opacity" Value="1" />
                 <Setter TargetName="pauseImage" Property="Opacity" Value="0.01" />
-                <Setter TargetName="playImage" Property="Opacity" Value="0.01" />               
-            </MultiTrigger>            
-            
+                <Setter TargetName="playImage" Property="Opacity" Value="0.01" />
+            </MultiTrigger>
+
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True" />                    <!--Stopped + PauseImage-->
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <!--Stopped + PauseImage-->
                     <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="True" />
                 </MultiTrigger.Conditions>
                 <Setter TargetName="pie" Property="Opacity" Value="0.01" />
@@ -209,17 +213,18 @@
                                               IsPaused="{Binding IsPaused, Mode=OneWay}" />-->
                 <!-- The Show/Hide Editor button -->
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                    <views:ActionOnMouseEnterButton Selected="{Binding IsEditorOpened}"  
-                                              MouseEnterCommand="{Binding ToggleEditorVisibilityCommand}"                                              
-                                              Style="{StaticResource SelectedIsPressedButtonStyle}"
-                                              Content="{StaticResource EditorHiddenContent}"
-                                              Width="20" Height="20" />
-                    <views:ActionOnMouseEnterButton
-                                              MouseEnterCommand="{Binding ShowHelpCommand}"                                           
-                                              Style="{StaticResource SelectedIsPressedButtonStyle}"      
+                    <Button                   Command="{Binding ToggleEditorVisibilityCommand}"                                              
+                                              Width="20" Height="20" >
+                            <Path Data="M9.706234,51.033211C8.8426228,51.033211 7.9786911,51.362331 7.3172436,52.020577 5.9969063,53.335663 5.9969063,55.474945 7.3172436,56.795437 8.6401386,58.110325 10.772972,58.110325 12.093298,56.795437 13.408524,55.474945 13.408524,53.335663 12.093298,52.020577 11.433136,51.362331 10.569845,51.033211 9.706234,51.033211z M36.795098,36.901001L44.805398,44.975102 49.546398,45.976501 58.061998,58.8932 54.851097,62.112 41.920098,53.589703 40.921498,48.848801 32.923998,40.7915z M16.103878,36.897003L27.163997,47.955608C22.044195,53.497063,17.833112,58.106525,15.708069,60.224907L15.71067,60.228909C12.421604,63.528378 7.0906792,63.551678 3.8222942,60.290108 0.55794907,57.016735 0.58530045,51.697678 3.8848648,48.398205L3.8848648,48.395706z M5.8735714,13.560596C5.4733295,13.560595 5.0735779,13.714872 4.7649803,14.023427 4.1452255,14.637938 4.1452255,15.639454 4.7649803,16.241064L23.421496,34.906666C24.029501,35.525074 25.034608,35.519875 25.641512,34.906666 26.265116,34.290756 26.265116,33.29454 25.640112,32.67733L6.985096,14.023427C6.6745434,13.714872,6.2738132,13.560595,5.8735714,13.560596z M10.426508,9.009408C10.023506,9.009409 9.6205025,9.1634035 9.3171005,9.4713936 8.6946964,10.093763 8.6946964,11.078079 9.3171005,11.704289L27.973528,30.354492C28.590732,30.983501 29.588139,30.983501 30.194842,30.351893 30.809447,29.737183 30.809447,28.743666 30.194842,28.135555L11.535915,9.4713936C11.232513,9.1634035,10.82951,9.009409,10.426508,9.009408z M8.5140762,4.7760001C10.692169,4.7760001,12.869925,5.6080461,14.532036,7.2721382L38.497,31.147406 26.468217,43.188 2.4940948,19.300913C-0.83136749,15.983259 -0.83136749,10.591072 2.4940948,7.2721382 4.1575546,5.6080461 6.3359852,4.7760001 8.5140762,4.7760001z M48.401098,0C50.518183,3.3140125E-08,52.53647,0.42700887,54.374958,1.1887387L46.015612,9.5497122C44.506523,11.058777,44.506523,13.528916,46.015612,15.03804L49.194092,18.220291C50.701784,19.728214,53.174465,19.728214,54.682257,18.220291L62.933401,9.9636593C63.610695,11.713687 63.999998,13.609617 63.999998,15.595349 63.999998,24.207388 57.014242,31.187998 48.401098,31.187998 39.790455,31.187998 32.809998,24.207388 32.809998,15.595349 32.809998,6.9883914 39.790455,3.3140125E-08 48.401098,0z" Stretch="Uniform" Fill="#FF000000" Width="10" Height="10" />
+                    </Button>
+                    <Button                   Command="{Binding ShowHelpCommand}"                                           
                                               Width="20" Height="20" ToolTip="Afficher l'aide de l'auto-click">
-                        <Image Source="/AutoClick;component/Res/Images/help.png" Width="16" Height="16"></Image>
-                    </views:ActionOnMouseEnterButton>
+                        <Grid>
+                            <Ellipse Height="16" Width="16"></Ellipse>
+                            <Path Data="F1M1355.27,1727.8L1346.08,1727.8C1346.06,1726.48 1346.05,1725.67 1346.05,1725.38 1346.05,1722.41 1346.54,1719.96 1347.52,1718.04 1348.51,1716.12 1350.47,1713.96 1353.43,1711.56 1356.38,1709.16 1358.14,1707.58 1358.72,1706.84 1359.61,1705.66 1360.05,1704.37 1360.05,1702.95 1360.05,1700.98 1359.27,1699.29 1357.7,1697.89 1356.12,1696.49 1354,1695.78 1351.34,1695.78 1348.77,1695.78 1346.62,1696.52 1344.89,1697.98 1343.16,1699.44 1341.98,1701.68 1341.33,1704.68L1332.04,1703.53C1332.3,1699.23 1334.13,1695.58 1337.53,1692.58 1340.93,1689.58 1345.38,1688.08 1350.91,1688.08 1356.72,1688.08 1361.34,1689.6 1364.77,1692.63 1368.21,1695.67 1369.92,1699.2 1369.92,1703.24 1369.92,1705.47 1369.29,1707.58 1368.03,1709.58 1366.77,1711.57 1364.08,1714.28 1359.95,1717.71 1357.81,1719.49 1356.48,1720.92 1355.97,1722 1355.45,1723.08 1355.22,1725.01 1355.27,1727.8z M1346.08,1741.41L1346.08,1731.29 1356.2,1731.29 1356.2,1741.41 1346.08,1741.41z" Stretch="Uniform" Fill="#FF000000" Width="10" Height="10" />
+                        </Grid>
+                        <!--<Image Source="/AutoClick;component/Res/Images/help.png" Width="16" Height="16"></Image>-->
+                    </Button>
                 </StackPanel>
             </DockPanel>
 

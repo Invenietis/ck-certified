@@ -27,9 +27,6 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IUnbindButtonManager> UnbindButtonManager { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<ITopMostService> TopMostService { get; set; }
-
         public IPluginConfigAccessor Config { get; set; }
 
         IDictionary<IWindowElement, SpatialBinding> _spatialBindings = new Dictionary<IWindowElement, SpatialBinding>();
@@ -542,6 +539,7 @@ namespace CK.WindowManager
 
         public void Stop()
         {
+            WindowManager.Service.Registered -= OnRegistered;
             WindowManager.Service.Unregistered -= WindowManager_Unregistered;
             Config.User.Set( "SerializableBindings", _persistantBindings );
         }

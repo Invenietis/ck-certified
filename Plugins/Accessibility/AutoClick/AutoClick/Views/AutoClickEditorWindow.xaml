@@ -6,7 +6,8 @@
              Background="#FFEFEFEF"
              mc:Ignorable="d"
              Width="400" Height="365"
-            ShowInTaskbar="False"
+             ShowInTaskbar="False"
+             ShowActivated="False"
              Topmost="True"
              WindowStyle="None">
     <Window.Resources>

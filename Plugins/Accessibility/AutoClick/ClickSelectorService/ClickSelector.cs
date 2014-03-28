@@ -349,13 +349,13 @@ namespace CK.Plugins.AutoClick
 
         void UnregisterTopMost()
         {
-            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+            if( TopMostService.Status.IsStartingOrStarted ) TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
         }
 
         void OnTopMostServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
-            else if( e.Current == InternalRunningStatus.Stopping ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
+            else if( e.Current == InternalRunningStatus.Stopping ) TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
         }
 
 

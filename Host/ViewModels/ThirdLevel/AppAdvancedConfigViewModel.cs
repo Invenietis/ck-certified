@@ -21,7 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using Host.Resources; 
+using Host.Resources;
 using CK.Windows.Config;
 using System.IO;
 using System.Security.Principal;
@@ -55,7 +55,7 @@ namespace Host.VM
 
             // v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
             //g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
-            
+
             //TODOJL
             //this.AddAction( "Check online help contents", _app.HelpUpdaterService.StartManualUpdate );
 

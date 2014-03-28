@@ -223,7 +223,7 @@
                 <ColumnDefinition Width="8*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <!-- TreeView -->
-            <TreeView Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10">
+            <TreeView Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
                 <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}"/>
             </TreeView>
 

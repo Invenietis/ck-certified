@@ -151,15 +151,30 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _isSelected != value )
                 {
-                    _isSelected = value;
+                    _isSelected = false;
 
-                    //When selecting the layoutkeymode or the keymode via the KeyEditionTemplate, the key (this element) is selected in the treeview. The two way binding triggers this set.
-                    //We need to avoid setting the current element in this case.
-                    if( Context.SelectedElement != KeyModeVM && Context.SelectedElement != LayoutKeyModeVM ) Context.SelectedElement = this;
-                    if( value ) ZIndex = 100;
+                    if( value )
+                    {
+                        ZIndex = 100;
+                        Parent.IsExpanded = value;
+
+                        //When selecting the layoutkeymode or the keymode via the KeyEditionTemplate, the key (this element) is selected in the treeview. The two way binding triggers this set.
+                        //We need to avoid setting the current element in this case.
+                        if( Context.SelectedElement != KeyModeVM && Context.SelectedElement != LayoutKeyModeVM )
+                        {
+                            if( Context.CurrentlyDisplayedModeType == ModeTypes.Mode ) Context.SelectedElement = this.KeyModeVM;
+                            else if( Context.CurrentlyDisplayedModeType == ModeTypes.Layout ) Context.SelectedElement = this.LayoutKeyModeVM;
+                            else { _isSelected = true; Context.SelectedElement = this; }
+                        }
+                    }
                     else ZIndex = 1;
 
-                    if( value ) Parent.IsExpanded = value;
+                    if( !value )
+                    {
+                        this.KeyModeVM.IsSelected = false;
+                        this.LayoutKeyModeVM.IsSelected = false;
+                    }
+
                     OnPropertyChanged( "IsSelected" );
                     OnPropertyChanged( "IsBeingEdited" );
                     OnPropertyChanged( "Opacity" );
@@ -195,12 +210,12 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// If there is no <see cref="IKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="IKeyMode"/> should be displayed.
         /// </summary>
-        public bool ShowKeyModeFallback { get { return ( ShowFallback & FallbackVisibility.FallbackOnKeyMode ) == FallbackVisibility.FallbackOnKeyMode; } }
+        public bool ShowKeyModeFallback { get { return (ShowFallback & FallbackVisibility.FallbackOnKeyMode) == FallbackVisibility.FallbackOnKeyMode; } }
 
         /// <summary>
         /// If there is no <see cref="ILayoutKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="ILayoutKeyMode"/> should be displayed.
         /// </summary>
-        public bool ShowLayoutFallback { get { return ( ShowFallback & FallbackVisibility.FallbackOnLayout ) == FallbackVisibility.FallbackOnLayout; } }
+        public bool ShowLayoutFallback { get { return (ShowFallback & FallbackVisibility.FallbackOnLayout) == FallbackVisibility.FallbackOnLayout; } }
 
         /// <summary>
         /// Gets the current actualKey layout.
@@ -262,9 +277,9 @@ namespace KeyboardEditor.ViewModels
             if( o != null )
             {
                 var source = o as ImageSource;
-                if (source != null)
+                if( source != null )
                     _imageSource = source;
-                else 
+                else
                     _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
             }
             else _imageSource = null;
@@ -330,7 +345,7 @@ namespace KeyboardEditor.ViewModels
             get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
             set
             {
-                IsVisible = ( value == Visibility.Visible );
+                IsVisible = (value == Visibility.Visible);
             }
         }
 

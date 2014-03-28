@@ -11,7 +11,6 @@ namespace CK.WindowManager
     [Plugin( "{BEA2BC3A-B7A1-4AF5-A86E-A039B7197BA8}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.UnbindButtonManager", Version = "1.0.0" )]
     public class UnbindButtonManager : IPlugin, IUnbindButtonManager
     {
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IWindowManager> WindowManager { get; set; }
 
@@ -34,7 +33,6 @@ namespace CK.WindowManager
                         return InitializeButton( spatialBinding, slaveSpatialBinding, position );
                     }) );
             }
-
         }
 
         WindowElement InitializeButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
@@ -46,23 +44,19 @@ namespace CK.WindowManager
                 DataContext = CreateVM( spatialBinding, slaveSpatialBinding, position )
             }, "unbindButton" );
 
-            TopMostService.Service.RegisterTopMostElement( "30", button.Window );
-
             InitialButtonPlacing( button, spatialBinding, slaveSpatialBinding, position );
+
+            TopMostService.Service.RegisterTopMostElement( "30", button.Window );
 
             return button;
         }
 
         public void DeleteButton( IWindowElement button )
         {
-            
             button.Window.Dispatcher.Invoke( (Action)(() =>
                 {
-                    button.Window.Hide();
-                    if( TopMostService.Status == InternalRunningStatus.Started )
-                    {
-                        TopMostService.Service.UnregisterTopMostElement( button.Window );
-                    }
+                    button.Window.Close();
+                    TopMostService.Service.UnregisterTopMostElement( button.Window );
                 }) );
         }
 
@@ -162,8 +156,6 @@ namespace CK.WindowManager
             {
                 moveButtons();
             }
-
-
         }
 
         void InitialButtonPlacing( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
@@ -199,5 +191,6 @@ namespace CK.WindowManager
         }
 
         #endregion
+
     }
 }

@@ -70,7 +70,7 @@ namespace BasicCommandHandlers
         {
             if ( e.Command.StartsWith( PROTOCOL ) )
             {
-                if ( _timer.IsEnabled )
+                if ( !_timer.IsEnabled )
                 {
                     if ( HighlighterService.Status.IsStartingOrStarted )
                         HighlighterService.Service.Pause();

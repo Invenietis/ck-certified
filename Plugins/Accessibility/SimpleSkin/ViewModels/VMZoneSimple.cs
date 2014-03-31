@@ -50,7 +50,7 @@ namespace SimpleSkin.ViewModels
             ThreadSafeSet<int>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
         }
 
-        public double InitialLoopCount
+        public int InitialLoopCount
         {
             get { return _initialLoopCount;  }
         }
@@ -84,7 +84,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Index" );
                 //TODO : trigger IndexChanged
             }
-            else if( e.Key == "LoopCount" )
+            else if( e.Obj == _zone.Keyboard && e.Key == "LoopCount" )
             {
                 _initialLoopCount = _loopCount = (int)e.Value;
                 OnPropertyChanged( "LoopCount" );

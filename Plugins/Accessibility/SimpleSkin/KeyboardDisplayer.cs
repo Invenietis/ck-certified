@@ -64,6 +64,7 @@ namespace SimpleSkin
                 ViewModel = vm;
                 Dispatcher = d;
                 Subscriber = sub;
+                NameKeyboard = vm.KeyboardVM.Keyboard.Name;
             }
 
             public readonly WindowManagerSubscriber Subscriber;
@@ -74,7 +75,10 @@ namespace SimpleSkin
 
             public readonly Dispatcher Dispatcher;
 
-            public string NameKeyboard { get { return ViewModel.KeyboardVM.Keyboard.Name; } }
+            /// <summary>
+            /// must be updated manual
+            /// </summary>
+            public string NameKeyboard;
 
             public bool IsClosing;
         }
@@ -142,7 +146,7 @@ namespace SimpleSkin
 
         void Subscribe( SkinInfo skinInfo )
         {
-            skinInfo.Subscriber.Subscribe( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.Skin );
+            skinInfo.Subscriber.Subscribe( skinInfo.NameKeyboard, skinInfo.Skin );
         }
 
         void Unsubscribe( SkinInfo skinInfo )
@@ -221,6 +225,7 @@ namespace SimpleSkin
             }), null );
         }
 
+        // when we call this function, we must remove the skin in dictionary 
         void UninitializeActiveWindows( SkinInfo skin )
         {
             skin.ViewModel.Dispose();
@@ -368,7 +373,7 @@ namespace SimpleSkin
         {
             if( Highlighter.Status.IsStartingOrStarted )
             {
-                Highlighter.Service.UnregisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM );
+                Highlighter.Service.UnregisterTree( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM );
             }
         }
 
@@ -376,8 +381,8 @@ namespace SimpleSkin
         {
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( skinInfo.ViewModel.KeyboardVM.Keyboard.Name,
-                    new ExtensibleHighlightableElementProxy( skinInfo.ViewModel.KeyboardVM.Keyboard.Name, skinInfo.ViewModel.KeyboardVM ) );
+                Highlighter.Service.RegisterTree( skinInfo.NameKeyboard,
+                    new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM ) );
             }
         }
 
@@ -513,7 +518,14 @@ namespace SimpleSkin
             if( _skins.TryGetValue( e.PreviousName, out skin ) )
             {
                 _skins.Remove( e.PreviousName );
-                _skins.Add( e.Keyboard.Name, skin );
+                UnregisterHighlighter( skin );
+                Unsubscribe( skin );
+
+                skin.NameKeyboard = e.Keyboard.Name;
+                _skins.Add( skin.NameKeyboard, skin );
+                RegisterHighlighter( skin );
+                Subscribe( skin );
+
             }
         }
 

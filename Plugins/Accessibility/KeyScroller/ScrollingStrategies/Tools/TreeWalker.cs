@@ -19,9 +19,9 @@ namespace Scroller
             Root = root;
         }
 
-        protected virtual ICKReadOnlyList<IHighlightableElement> GetSibblings()
+        public virtual ICKReadOnlyList<IHighlightableElement> Sibblings
         {
-            return Peek() != null ? Peek().Children : null;
+            get { return Peek() != null ? Peek().Children : CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         protected virtual IHighlightableElement Peek()
@@ -39,31 +39,28 @@ namespace Scroller
 
         public virtual bool MoveNext()
         {
-            ICKReadOnlyList<IHighlightableElement> sibblings = GetSibblings();
-            if( sibblings == null || sibblings.Count == 1 ) //false if there is no parent or there are no sibblings at all
+            if( Sibblings.Count <= 1 ) //false if there are no sibblings at all
                 return false;
 
-            int idx = sibblings.IndexOf( Current );
+            int idx = Sibblings.IndexOf( Current );
 
             if( idx < 0 ) throw new InvalidOperationException("Something goes wrong : the current element is not contained by its parent !");
 
             //The current child is the last one
-            if( idx + 1 >= sibblings.Count ) return false;
+            if( idx + 1 >= Sibblings.Count ) return false;
 
-            Current = sibblings.ElementAt( idx + 1 );
+            Current = Sibblings.ElementAt( idx + 1 );
             return true;
         }
 
         public virtual void MoveFirst()
         {
-            ICKReadOnlyList<IHighlightableElement> sibblings = GetSibblings();
-            Current = sibblings == null ? Current : sibblings[0];
+            Current = Sibblings.Count == 0 ? Current : Sibblings[0];
         }
 
         public virtual void MoveLast()
         {
-            ICKReadOnlyList<IHighlightableElement> sibblings = GetSibblings();
-            Current = sibblings == null ? Current : sibblings[sibblings.Count - 1];
+            Current = Sibblings.Count == 0 ? Current : Sibblings[Sibblings.Count - 1];
         }
 
         public virtual bool EnterChild()

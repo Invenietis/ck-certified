@@ -5,7 +5,7 @@ using HighlightModel;
 using CK.Plugin.Config;
 using System.Diagnostics;
 using System.Timers;
-
+using System.Linq;
 namespace Scroller
 {
     /// <summary>
@@ -29,7 +29,7 @@ namespace Scroller
                     break;
                 default:
 
-                    if( Johnnie.Current.Children.Count > 0 && !Johnnie.Current.IsHighlightableTreeRoot || Johnnie.Current.Skip == SkippingBehavior.EnterChildren )
+                    if( Johnnie.Current.Children.Count > 0 && !Johnnie.Current.IsHighlightableTreeRoot || Johnnie.Current.Skip == SkippingBehavior.EnterChildren || Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count > 0 )
                     {
                         if( action != ActionType.UpToParent )
                             MoveNext( ActionType.EnterChild );

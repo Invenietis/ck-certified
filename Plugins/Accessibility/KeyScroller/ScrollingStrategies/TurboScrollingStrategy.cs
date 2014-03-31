@@ -115,8 +115,9 @@ namespace Scroller
                 }
                 else
                 {
-                    SetTurboWithCheck();
+                    
                     FireSelectElement();
+                    SetTurboWithCheck();
                 }
             }
             else if( IsTurboMode )

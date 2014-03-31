@@ -134,7 +134,6 @@
     <Compile Include="ViewModels\VMContextSimple.cs" />
     <Compile Include="ViewModels\VMKeyboardSimple.cs" />
     <Compile Include="ViewModels\VMKeySimple.cs" />
-    <Compile Include="ViewModels\VMSplitZone.cs" />
     <Compile Include="ViewModels\VMZoneSimple.cs" />
   </ItemGroup>
   <ItemGroup>

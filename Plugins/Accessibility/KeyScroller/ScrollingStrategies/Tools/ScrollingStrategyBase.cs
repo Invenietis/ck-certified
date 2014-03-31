@@ -61,12 +61,35 @@ namespace Scroller
         /// <param name="action">The ActionType that indicate the move direction</param>
         public virtual void MoveNext( ActionType action )
         {
+            Console.WriteLine( "NEXT \n" );
             //False if there are registered elements
             if( Johnnie.Current == this && Children.Count == 0 ) return;
 
+            // defer action to the next tick
+            if( LastDirective != null && LastDirective.ActionTime == ActionTime.Delayed )
+            {
+                LastDirective.ActionTime = ActionTime.NextTick;
+                return;
+            }
+
+            //We retrieve parents that implement IHighlightableElementController
+            var controlingParents = Johnnie.Parents.Where( ( i ) => { return i is IHighlightableElementController; } );
+
+            foreach( IHighlightableElementController parent in controlingParents )
+            {
+                //we offer the possibility to change action
+                action = parent.PreviewChildAction( Johnnie.Current, action );
+            }
+
+            foreach( IHighlightableElementController parent in controlingParents )
+            {
+                //inform that there is a new ActionType
+                parent.OnChildAction( action );
+            }
+
             // reset the action type
             LastDirective.NextActionType = ActionType.MoveNext;
-
+            
             switch(action)
             {
                 case ActionType.MoveNext :
@@ -128,7 +151,15 @@ namespace Scroller
                     else
                         MoveNext( ActionType.MoveNext );
                     break;
-                default : 
+                default :
+                    if(Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count > 0 )
+                    {
+                        if( action != ActionType.UpToParent )
+                            MoveNext( ActionType.EnterChild );
+                        else
+                            MoveNext( ActionType.MoveNext );
+                        break;
+                    }
                     break;
             }
         }

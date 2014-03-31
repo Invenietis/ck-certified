@@ -244,9 +244,9 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        public double LoopCount
+        public int LoopCount
         {
-            get { return LayoutElement.Keyboard.GetPropertyValue<double>( _context.SkinConfiguration, "LoopCount", 1 ); }
+            get { return LayoutElement.Keyboard.GetPropertyValue<int>( _context.SkinConfiguration, "LoopCount", 1 ); }
             set
             {
                 _context.SkinConfiguration[LayoutElement.Keyboard]["LoopCount"] = value;
@@ -310,12 +310,12 @@ namespace KeyboardEditor.ViewModels
         }
         public IEnumerable<double> FontSizes { get { return _sizes ?? (_sizes = GetSizes( 10, 50 )); } }
 
-        IEnumerable<double> _loopCounts;
-        IEnumerable<double> GetLoopCounts( int from, int to )
+        IEnumerable<int> _loopCounts;
+        IEnumerable<int> GetLoopCounts( int from, int to )
         {
             for( int i = from; i <= to; i++ ) yield return i;
         }
-        public IEnumerable<double> LoopCounts { get { return _loopCounts ?? (_loopCounts = GetLoopCounts( 1, 5 )); } }
+        public IEnumerable<int> LoopCounts { get { return _loopCounts ?? (_loopCounts = GetLoopCounts( 1, 5 )); } }
 
 
         #endregion

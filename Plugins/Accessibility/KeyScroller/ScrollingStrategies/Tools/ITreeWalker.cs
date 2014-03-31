@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CK.Core;
 using HighlightModel;
 
 namespace Scroller
@@ -12,6 +13,11 @@ namespace Scroller
         /// Get the current parents stack
         /// </summary>
         Stack<IHighlightableElement> Parents { get; }
+
+        /// <summary>
+        /// Get the sibblings of the current element
+        /// </summary>
+        ICKReadOnlyList<IHighlightableElement> Sibblings { get; }
 
         /// <summary>
         /// Get the current element of the walker

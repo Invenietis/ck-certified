@@ -55,11 +55,10 @@ namespace Scroller
 
         public override bool MoveNext()
         {
-            ICKReadOnlyList<IHighlightableElement> sibblings = GetSibblings();
-            if( sibblings == null || sibblings.Count == 1 ) //false if there is no parent or there are no sibblings at all
+            if( Sibblings.Count <= 1 ) //false if there are no sibblings at all
                 return false;
 
-            int idx = sibblings.IndexOf( Current );
+            int idx = Sibblings.IndexOf( Current );
 
             //False when the element is found in its parents 
             //or when the parent is a root element and the current element is a virtualzone : 
@@ -70,9 +69,9 @@ namespace Scroller
             if( idx >= 0 )
             {
                 //The current child is the last one
-                if( idx + 1 >= sibblings.Count ) return false;
+                if( idx + 1 >= Sibblings.Count ) return false;
 
-                Current = sibblings.ElementAt( idx + 1 );
+                Current = Sibblings.ElementAt( idx + 1 );
                 return true;
             }
 

@@ -933,7 +933,7 @@
             </Layouts>
             <PluginsData>
               <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                <data key="LoopCount" type="Double">2</data>
+                <data key="LoopCount" type="Int32">2</data>
               </p>
             </PluginsData>
           </Keyboard>
@@ -2371,7 +2371,7 @@
             </Layouts>
             <PluginsData>
               <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                <data key="LoopCount" type="Double">2</data>
+                <data key="LoopCount" type="Int32">2</data>
               </p>
             </PluginsData>
           </Keyboard>
@@ -6263,7 +6263,7 @@
             </Layouts>
             <PluginsData>
               <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
-                <data key="LoopCount" type="Double">2</data>
+                <data key="LoopCount" type="Int32">2</data>
               </p>
             </PluginsData>
           </Keyboard>

@@ -15,12 +15,12 @@ namespace Scroller
         protected Timer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }
         protected IHighlightableElement PreviousElement { get; set; }
-        protected ITreeWalker Johnnie { get; set; }     //Big up to Olivier Spineli
+        protected ITreeWalker Walker { get; set; }     //Big up to Olivier Spineli
         protected Dictionary<string, IHighlightableElement> Elements { get; set; }
 
         bool CanMove()
         {
-            if( Johnnie.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
+            if( Walker.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
                 return false;
 
             if( Elements.Values.All( e => e.Children.All(c => c.Skip == SkippingBehavior.Skip )) )
@@ -32,7 +32,7 @@ namespace Scroller
         public ScrollingStrategyBase()
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
-            Johnnie = new Walker( this );
+            Walker = new Walker( this );
         }
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
@@ -41,17 +41,17 @@ namespace Scroller
             if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
 
             //Saving the currently highlighted element
-            PreviousElement = Johnnie.Current;
+            PreviousElement = Walker.Current;
 
             //Move the cursor to the next element
             MoveNext( LastDirective.NextActionType );
 
             //End highlight on the previous element (if different from the current one)
             if( PreviousElement != null )
-                FireEndHighlight( PreviousElement, Johnnie.Current );
+                FireEndHighlight( PreviousElement, Walker.Current );
 
             //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
-            if( Johnnie.Current != null )
+            if( Walker.Current != null )
                 FireBeginHighlight();
         }
 
@@ -84,12 +84,12 @@ namespace Scroller
             }
 
             //We retrieve parents that implement IHighlightableElementController
-            var controlingParents = Johnnie.Parents.Where( ( i ) => { return i is IHighlightableElementController; } );
+            var controlingParents = Walker.Parents.Where( ( i ) => { return i is IHighlightableElementController; } );
 
             foreach( IHighlightableElementController parent in controlingParents )
             {
                 //we offer the possibility to change action
-                action = parent.PreviewChildAction( Johnnie.Current, action );
+                action = parent.PreviewChildAction( Walker.Current, action );
             }
 
             foreach( IHighlightableElementController parent in controlingParents )
@@ -104,26 +104,26 @@ namespace Scroller
             switch(action)
             {
                 case ActionType.MoveNext :
-                    if( !Johnnie.MoveNext() )
+                    if( !Walker.MoveNext() )
                         MoveNext(ActionType.UpToParent);
                     break;
 
                 case ActionType.UpToParent:
-                    if( !Johnnie.UpToParent() )
+                    if( !Walker.UpToParent() )
                         MoveNext(ActionType.MoveToFirst);
                     break;
 
                 case ActionType.EnterChild :
-                    if( !Johnnie.EnterChild() )
+                    if( !Walker.EnterChild() )
                         MoveNext(ActionType.MoveNext);
                     break;
 
                 case ActionType.MoveToFirst :
-                    Johnnie.MoveFirst();
+                    Walker.MoveFirst();
                     break;
 
                 case ActionType.MoveToLast :
-                    Johnnie.MoveLast();
+                    Walker.MoveLast();
                     break;
 
                 case ActionType.StayOnTheSame :
@@ -131,7 +131,7 @@ namespace Scroller
                     break;
 
                 case ActionType.GoToRelativeRoot :
-                    Johnnie.GoToRelativeRoot();
+                    Walker.GoToRelativeRoot();
                     MoveNext( ActionType.EnterChild );
                     break;
 
@@ -149,7 +149,7 @@ namespace Scroller
         /// </summary>
         protected virtual void ProcessSkipBehavior( ActionType action )
         {
-            switch(Johnnie.Current.Skip)
+            switch(Walker.Current.Skip)
             {
                 case SkippingBehavior.Skip :
                     MoveNext(ActionType.MoveNext);
@@ -164,7 +164,7 @@ namespace Scroller
                     break;
                 default :
                     //Enter in the module if it the only one registered
-                    if( Johnnie.Current.IsHighlightableTreeRoot && Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count( s => s.Skip != SkippingBehavior.Skip ) > 0 )
+                    if( Walker.Current.IsHighlightableTreeRoot && Walker.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Walker.Current.Children.Count( s => s.Skip != SkippingBehavior.Skip ) > 0 )
                     {
                         if( action != ActionType.UpToParent )
                             MoveNext( ActionType.EnterChild );
@@ -202,9 +202,9 @@ namespace Scroller
         /// </summary>
         protected virtual void FireSelectElement()
         {
-            if( Johnnie.Current != null )
+            if( Walker.Current != null )
             {
-                LastDirective = Johnnie.Current.SelectElement( LastDirective );
+                LastDirective = Walker.Current.SelectElement( LastDirective );
                 EnsureReactivity();
             }
         }
@@ -215,9 +215,9 @@ namespace Scroller
         /// </summary>
         protected virtual void FireBeginHighlight()
         {
-            if( Johnnie.Current != null )
+            if( Walker.Current != null )
             {
-                LastDirective = Johnnie.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval, PreviousElement ), LastDirective );
+                LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval, PreviousElement ), LastDirective );
                 EnsureReactivity();
             }
         }
@@ -263,7 +263,7 @@ namespace Scroller
             Configuration.ConfigChanged += OnConfigChanged;
             
             //Reset the walker
-            Johnnie.GoToAbsoluteRoot();
+            Walker.GoToAbsoluteRoot();
             Timer.Start();
             IsStarted = true;
         }
@@ -272,7 +272,7 @@ namespace Scroller
         {
             if( Timer.Enabled )
             {
-                FireEndHighlight( Johnnie.Current, null );
+                FireEndHighlight( Walker.Current, null );
                 Timer.Enabled = false;
             }
             Timer.Elapsed -= OnInternalBeat;
@@ -285,8 +285,8 @@ namespace Scroller
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.Immediate );
 
-            Johnnie.Current.EndHighlight( new EndScrollingInfo( Timer.Interval, PreviousElement, element ), LastDirective );
-            Johnnie.GoTo( element );
+            Walker.Current.EndHighlight( new EndScrollingInfo( Timer.Interval, PreviousElement, element ), LastDirective );
+            Walker.GoTo( element );
             EnsureReactivity();
         }
 
@@ -296,7 +296,7 @@ namespace Scroller
             {
                 if( forceEndHighlight )
                 {
-                    FireEndHighlight( Johnnie.Current, null );
+                    FireEndHighlight( Walker.Current, null );
                 }
                 Timer.Stop();
             }
@@ -309,9 +309,9 @@ namespace Scroller
 
         public virtual void OnExternalEvent()
         {
-            if( Johnnie.Current != null )
+            if( Walker.Current != null )
             {
-                if( Johnnie.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
+                if( Walker.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
                 else
                 {
                     LastDirective.NextActionType = ActionType.StayOnTheSameOnce;

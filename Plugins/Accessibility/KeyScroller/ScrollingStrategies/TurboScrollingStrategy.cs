@@ -37,7 +37,7 @@ namespace Scroller
         {
             //If we are scrolling on a root element and that the next action is not to enter the children, we explicitely set the interval to the normal one.
             //Because we don't want to scroll too fast on the elements
-            if( Johnnie.Current.IsHighlightableTreeRoot && LastDirective.NextActionType != ActionType.EnterChild )
+            if( Walker.Current.IsHighlightableTreeRoot && LastDirective.NextActionType != ActionType.EnterChild )
                 Timer.Interval = _normalInterval;
             else
             {
@@ -106,9 +106,9 @@ namespace Scroller
 
         public override void OnExternalEvent()
         {
-            if( Johnnie.Current != null && (!IsTurboMode || Johnnie.Current.IsHighlightableTreeRoot) )
+            if( Walker.Current != null && (!IsTurboMode || Walker.Current.IsHighlightableTreeRoot) )
             {
-                if( Johnnie.Current.IsHighlightableTreeRoot )
+                if( Walker.Current.IsHighlightableTreeRoot )
                 {
                     FireSelectElement();
                     SetTurboWithCheck();

@@ -22,14 +22,14 @@ namespace Scroller
 
         protected override void ProcessSkipBehavior(ActionType action)
         { 
-            switch( Johnnie.Current.Skip )
+            switch( Walker.Current.Skip )
             {
                 case SkippingBehavior.Skip:
                     MoveNext( ActionType.MoveNext );
                     break;
                 default:
 
-                    if( Johnnie.Current.Children.Count > 0 && !Johnnie.Current.IsHighlightableTreeRoot || Johnnie.Current.Skip == SkippingBehavior.EnterChildren || Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count > 0 )
+                    if( Walker.Current.Children.Count > 0 && !Walker.Current.IsHighlightableTreeRoot || Walker.Current.Skip == SkippingBehavior.EnterChildren || Walker.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Walker.Current.Children.Count > 0 )
                     {
                         if( action != ActionType.UpToParent )
                             MoveNext( ActionType.EnterChild );
@@ -42,7 +42,7 @@ namespace Scroller
 
         public override void OnExternalEvent()
         {
-            if( Johnnie.Current != null )
+            if( Walker.Current != null )
             {
                 FireSelectElement();
             }

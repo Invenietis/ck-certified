@@ -21,9 +21,9 @@ namespace Scroller
 
         public override void OnExternalEvent()
         {
-            if( Johnnie.Current != null )
+            if( Walker.Current != null )
             {
-                if( Johnnie.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
+                if( Walker.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
                 else
                 {
                     LastDirective.NextActionType = ActionType.StayOnTheSameOnce;

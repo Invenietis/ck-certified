@@ -20,7 +20,7 @@ namespace Scroller
         {
             if( ZoneDivider < 2 ) throw new InvalidOperationException( "The ZoneDivider can't be less than 2 !" );
 
-            Johnnie = new ZondeDivderWalker( this );
+            Walker = new ZondeDivderWalker( this );
         }
 
         public override string Name

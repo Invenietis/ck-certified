@@ -243,6 +243,9 @@ Are you sure you want to go back ?</value>
   <data name="MouseMoveSpeed" xml:space="preserve">
     <value>Length of each move (pixels) </value>
   </data>
+  <data name="SnakeMode" xml:space="preserve">
+    <value>Loop over screen </value>
+  </data>
   <data name="NewCommand" xml:space="preserve">
     <value>Create a new command : </value>
   </data>

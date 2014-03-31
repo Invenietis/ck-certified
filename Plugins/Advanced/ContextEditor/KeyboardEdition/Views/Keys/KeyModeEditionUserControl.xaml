@@ -122,6 +122,10 @@
                         <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.MouseMoveSpeed}" />
                         <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged}" />
                     </DockPanel>
+                    <DockPanel LastChildFill="True" Margin="0 5 0 0">
+                        <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.SnakeMode}" />
+                        <CheckBox DockPanel.Dock="Right" IsChecked="{Binding SnakeMode}" />
+                    </DockPanel>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="texttemplatedatatemplate">

@@ -28,6 +28,9 @@ using CK.Plugin;
 using System.Windows.Threading;
 using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using System.Windows.Forms;
+using System.Drawing;
+using CK.InputDriver;
 
 namespace BasicCommandHandlers
 {
@@ -42,6 +45,8 @@ namespace BasicCommandHandlers
 
         DispatcherTimer _timer;
         Action _currentMotionFunction;
+        RegionHelper _regionHelper;
+        bool _snakeMode = true;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }
@@ -57,117 +62,153 @@ namespace BasicCommandHandlers
             _timer = new DispatcherTimer();
             _timer.Tick += OnInternalBeat;
 
+            _regionHelper = new RegionHelper();
+            foreach( var s in Screen.AllScreens ) _regionHelper.Add( s.Bounds );
+
             return base.Setup( info );
         }
 
         void OnInternalBeat( object sender, EventArgs e )
         {
-            if ( _currentMotionFunction != null )
+            if( _currentMotionFunction != null )
                 _currentMotionFunction();
         }
 
         protected override void OnCommandSent( object sender, CommandSentEventArgs e )
         {
-            if ( e.Command.StartsWith( PROTOCOL ) )
+            if( e.Command.StartsWith( PROTOCOL ) )
             {
-                if ( !_timer.IsEnabled )
+                if( !_timer.IsEnabled )
                 {
-                    if ( HighlighterService.Status.IsStartingOrStarted )
+                    if( HighlighterService.Status.IsStartingOrStarted )
                         HighlighterService.Service.Pause();
 
                     string[] parameters = e.Command.Substring( PROTOCOL.Length ).Trim().Split( ',' );
                     string direction = parameters[0];
                     int speed = int.Parse( parameters[1] );
+                    bool snakeMode;
 
+                    if( parameters.Length == 3)
+                    {
+                        if( bool.TryParse( parameters[2], out snakeMode ) )
+                        {
+                            BeginMouseMotion( direction, speed, snakeMode );
+                            return;
+                        }
+                    }
                     BeginMouseMotion( direction, speed );
                 }
                 else
                 {
-                    if ( HighlighterService.Status.IsStartingOrStarted )
+                    if( HighlighterService.Status.IsStartingOrStarted )
                         HighlighterService.Service.Resume();
                     EndMouseMotion();
                 }
             }
         }
 
-        public void BeginMouseMotion( string direction, int speed )
+        public void BeginMouseMotion( string direction, int speed, bool snakeMode = false )
         {
             // timer should not be enabled. If it is enabled it could be due to 
-            if ( _timer.IsEnabled ) _timer.Stop();
+            if( _timer.IsEnabled ) _timer.Stop();
 
             // setup speed
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, speed );
 
             Action motion = null;
             #region create motion function based on the direction
-            switch ( direction )
+            switch( direction )
             {
                 case "U":
                     motion = () =>
                     {
-                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( 
-                            PointerDriver.Service.CurrentPointerXLocation,
-                            PointerDriver.Service.CurrentPointerYLocation - STEP );
-
+                        SnakeMode( PointerDriver.Service.CurrentPointerXLocation, PointerDriver.Service.CurrentPointerYLocation, 0, -STEP, snakeMode );
                     };
                     break;
                 case "R":
                     motion = () =>
                     {
-                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition(
-                            PointerDriver.Service.CurrentPointerXLocation + STEP,
-                            PointerDriver.Service.CurrentPointerYLocation );
+                        SnakeMode( PointerDriver.Service.CurrentPointerXLocation, PointerDriver.Service.CurrentPointerYLocation, STEP, 0, snakeMode );
                     };
                     break;
                 case "B":
                     motion = () =>
                     {
-                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition(
-                            PointerDriver.Service.CurrentPointerXLocation,
-                            PointerDriver.Service.CurrentPointerYLocation + STEP );
+                        SnakeMode( PointerDriver.Service.CurrentPointerXLocation, PointerDriver.Service.CurrentPointerYLocation, 0, STEP, snakeMode );
                     };
                     break;
                 case "L":
                     motion = () =>
                     {
-                        CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition(
-                            PointerDriver.Service.CurrentPointerXLocation - STEP,
-                            PointerDriver.Service.CurrentPointerYLocation );
+                        SnakeMode( PointerDriver.Service.CurrentPointerXLocation, PointerDriver.Service.CurrentPointerYLocation, -STEP, 0, snakeMode );
                     };
                     break;
             }
 
-            if ( motion == null )
+            if( motion == null )
             {
 
                 double angle = 0.0;
-                switch ( direction )
+                switch( direction )
                 {
                     case "UL":
-                        angle = -( ( 3 * Math.PI ) / 4 );
+                        angle = -((3 * Math.PI) / 4);
                         break;
                     case "BL":
-                        angle = ( 3 * Math.PI ) / 4;
+                        angle = (3 * Math.PI) / 4;
                         break;
                     case "BR":
                         angle = Math.PI / 4;
                         break;
                     case "UR":
-                        angle = -( Math.PI / 4 );
+                        angle = -(Math.PI / 4);
                         break;
                 }
 
                 motion = () =>
                 {
-                    int x = (int)( PointerDriver.Service.CurrentPointerXLocation + ( STEP * Math.Cos( angle ) ) );
-                    int y = (int)( PointerDriver.Service.CurrentPointerYLocation + ( STEP * Math.Sin( angle ) ) );
-                    CK.InputDriver.MouseProcessor.MoveMouseToAbsolutePosition( x, y );
+                    //int x = (int)(X + (STEP * Math.Cos( angle )));
+                    //int y = (int)(Y + (STEP * Math.Sin( angle )));
+                    //MouseProcessor.MoveMouseToAbsolutePosition( x, y );
+
+                    SnakeMode( PointerDriver.Service.CurrentPointerXLocation, PointerDriver.Service.CurrentPointerYLocation, (int)(STEP * Math.Cos( angle )), (int)(STEP * Math.Sin( angle )), snakeMode );
                 };
             }
             #endregion
 
             _currentMotionFunction = motion;
             _timer.Start();
+        }
+
+        void SnakeMode( int X, int Y, int XStep, int YStep, bool snakeMode )
+        {
+            int nextX = X + XStep;
+            int nextY = Y + YStep;
+            if( snakeMode )
+            {
+                Rectangle screen = Screen.GetBounds( new Point( nextX, nextY ) );
+                if( XStep != 0 )
+                {
+                    Point xPoint = new Point( X + XStep, Y );
+                    if( !_regionHelper.Contains( xPoint ) )
+                    {
+                        nextX = RegionHelper.ContainsInXBounds( xPoint, screen ) ?
+                            X + XStep : (XStep > 0) ? _regionHelper.GetMinXPosition( Y ) : _regionHelper.GetMaxXPosition( Y );
+                    }
+
+                }
+                if( YStep != 0 )
+                {
+                    Point yPoint = new Point( X, Y + YStep );
+                    if( !_regionHelper.Contains( yPoint ) )
+                    {
+                        nextY = RegionHelper.ContainsInYBounds( yPoint, screen ) ?
+                            Y + YStep : (YStep > 0) ? _regionHelper.GetMinYPosition( X ) : _regionHelper.GetMaxYPosition( X );
+                    }
+                }
+            }
+            MouseProcessor.MoveMouseToAbsolutePosition( nextX, nextY );
+            //MouseProcessor.MoveMouseToAbsolutePosition( X+1, Y+1 );
         }
 
         public void EndMouseMotion()
@@ -188,7 +229,7 @@ namespace BasicCommandHandlers
 
         public override void Stop()
         {
-            if ( ProtocolManagerService.Status.IsStartingOrStarted )
+            if( ProtocolManagerService.Status.IsStartingOrStarted )
                 ProtocolManagerService.Service.Unregister( PROTOCOL_BASE );
             base.Stop();
         }

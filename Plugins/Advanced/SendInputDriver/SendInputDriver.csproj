@@ -38,9 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.InputDriver, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CK.InputDriver, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.InputDriver.0.3.1-develop\lib\net40\CK.InputDriver.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.InputDriver.0.3.2-develop\lib\net40\CK.InputDriver.dll</HintPath>
     </Reference>
     <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

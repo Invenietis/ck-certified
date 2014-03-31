@@ -547,7 +547,7 @@ namespace SimpleSkin
             SkinWindow window = sender as SkinWindow;
             if( window != null && window.WindowState == WindowState.Minimized )
             {
-                ForEachSkin( HideSkin );
+                HideSkin();
 
                 if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.MinimizeAllWindows();
 
@@ -565,25 +565,26 @@ namespace SimpleSkin
         /// <summary>
         /// Hides the skin and shows the keyboard's MiniView
         /// </summary>
-        void HideSkin( SkinInfo skinInfo )
+        void HideSkin()
         {
             if( !_viewHidden )
             {
                 _viewHidden = true;
 
-                skinInfo.Dispatcher.BeginInvoke( (Action)(() =>
+                ShowMiniView();
+                _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                 {
-                    ShowMiniView( skinInfo );
                     if( Highlighter.Status == InternalRunningStatus.Started )
                     {
                         Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
-                        UnregisterHighlighter( skinInfo );
+                        
                     }
                 }), null );
+                ForEachSkin( UnregisterHighlighter );
             }
         }
 
-        void ShowMiniView( SkinInfo skinInfo )
+        void ShowMiniView()
         {
             if( _miniView == null )
             {

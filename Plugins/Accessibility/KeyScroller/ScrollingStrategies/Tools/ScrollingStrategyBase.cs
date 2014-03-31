@@ -18,6 +18,17 @@ namespace Scroller
         protected ITreeWalker Johnnie { get; set; }     //Big up to Olivier Spineli
         protected Dictionary<string, IHighlightableElement> Elements { get; set; }
 
+        bool CanMove()
+        {
+            if( Johnnie.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
+                return false;
+
+            if( Elements.Values.All( e => e.Children.All(c => c.Skip == SkippingBehavior.Skip )) )
+                return false;
+
+            return true;
+        }
+
         public ScrollingStrategyBase()
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
@@ -61,12 +72,9 @@ namespace Scroller
         /// <param name="action">The ActionType that indicate the move direction</param>
         public virtual void MoveNext( ActionType action )
         {
+            if( !CanMove() ) return;
+
             Console.WriteLine( "NEXT \n" );
-            //False if there are registered elements wich have children
-            if(     Johnnie.Current == this && Children.Count == 0 
-                ||  this.Children.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 
-                &&  Children[0].Children.Count( s => s.Skip != SkippingBehavior.Skip ) == 0 )
-                return;
 
             // defer action to the next tick
             if( LastDirective != null && LastDirective.ActionTime == ActionTime.Delayed )
@@ -156,7 +164,7 @@ namespace Scroller
                     break;
                 default :
                     //Enter in the module if it the only one registered
-                    if( Johnnie.Current.IsHighlightableTreeRoot && Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count > 0 )
+                    if( Johnnie.Current.IsHighlightableTreeRoot && Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count( s => s.Skip != SkippingBehavior.Skip ) > 0 )
                     {
                         if( action != ActionType.UpToParent )
                             MoveNext( ActionType.EnterChild );

@@ -382,7 +382,7 @@ namespace SimpleSkin
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( skinInfo.NameKeyboard,
-                    new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM ) );
+                    new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM, true ) );
             }
         }
 
@@ -571,16 +571,16 @@ namespace SimpleSkin
             {
                 _viewHidden = true;
 
+                ForEachSkin( UnregisterHighlighter );
+
                 ShowMiniView();
                 _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
-                        
+                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm, true );
                     }
                 }), null );
-                ForEachSkin( UnregisterHighlighter );
             }
         }
 

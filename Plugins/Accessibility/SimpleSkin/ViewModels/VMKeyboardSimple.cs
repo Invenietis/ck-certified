@@ -62,7 +62,7 @@ namespace SimpleSkin.ViewModels
         internal VMKeyboardSimple( VMContextSimpleBase ctx, IKeyboard kb )
             : base( ctx )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             _zones = new ObservableCollection<VMZoneSimple>();
             _keys = new ObservableCollection<VMKeySimple>();
@@ -91,8 +91,8 @@ namespace SimpleSkin.ViewModels
 
         internal override void Dispose()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-            NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 _zones.Clear();
                 _keys.Clear();
@@ -102,8 +102,8 @@ namespace SimpleSkin.ViewModels
 
         public void TriggerPropertyChanged()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-            NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
             {
                 OnPropertyChanged( "Keys" );
                 OnPropertyChanged( "BackgroundImagePath" );
@@ -114,12 +114,12 @@ namespace SimpleSkin.ViewModels
 
         void OnKeyCreated( object sender, KeyEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             VMKeySimple kvm = Context.Obtain( e.Key );
             VMZoneSimple zvm = Context.Obtain( e.Key.Zone );
 
-            NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
             {
                 zvm.Keys.Add( kvm );
                 _keys.Add( kvm );
@@ -128,9 +128,9 @@ namespace SimpleSkin.ViewModels
 
         void OnKeyDestroyed( object sender, KeyEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
                 _keys.Remove( Context.Obtain( e.Key ) );
@@ -140,10 +140,10 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             var zvm =  Context.Obtain( e.Zone );
 
-            NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
            {
                Zones.Add( zvm );
            }) );
@@ -151,7 +151,7 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneMoved( object sender, ZoneEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             VMZoneSimple zoneVM = Zones.Where( z => z.Name == e.Zone.Name ).Single();
 
@@ -162,7 +162,7 @@ namespace SimpleSkin.ViewModels
             }
             Zones.Clear();
 
-            NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
            {
                Zones = temp;
                OnPropertyChanged( "Zones" );
@@ -171,19 +171,19 @@ namespace SimpleSkin.ViewModels
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             foreach( var k in e.Zone.Keys )
             {
                 var mk = Context.Obtain( k );
-                NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                 {
                     Keys.Remove( mk );
                 }) );
                 Context.OnModelDestroy( k );
             }
 
-            NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 Zones.Remove( Context.Obtain( e.Zone ) );
             }) );
@@ -193,13 +193,13 @@ namespace SimpleSkin.ViewModels
 
         void OnLayoutSizeChanged( object sender, LayoutEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Layout == _keyboard.CurrentLayout )
             {
                 UpdateH();
                 UpdateW();
 
-                NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                 {
                     OnPropertyChanged( "H" );
                     OnPropertyChanged( "W" );
@@ -209,35 +209,35 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Obj == Layout )
             {
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
                         UpdateBackgroundPath();
-                        NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                         {
                             OnPropertyChanged( "BackgroundImagePath" );
                         }) );
                         break;
                     case "InsideBorderColor":
                         SafeUpdateInsideBorderColor();
-                        NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                         {
                             OnPropertyChanged( "InsideBorderColor" );
                         }) );
                         break;
                     case "HighlightBackground":
                         UpdateHighlightBackground();
-                        NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                         {
                             OnPropertyChanged( "HighlightBackground" );
                         }) );
                         break;
                     case "LoopCount":
                         UpdateLoopCount();
-                        NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                         {
                             OnPropertyChanged( "LoopCount" );
                         }) );
@@ -314,7 +314,7 @@ namespace SimpleSkin.ViewModels
                 if( value != _isHighlighting )
                 {
                     SafeSet<bool>( value, ( v ) => _isHighlighting = v );
-                    NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+                    Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                     {
                         OnPropertyChanged( "IsHighlighting" );
                     }) );

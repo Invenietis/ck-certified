@@ -57,7 +57,7 @@ namespace SimpleSkin.ViewModels
         internal VMKeySimple( VMContextSimpleBase ctx, IKey k )
             : base( ctx )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
             _key = k;
 
@@ -94,26 +94,26 @@ namespace SimpleSkin.ViewModels
 
         public void OnKeyPropertyChanged( object sender, KeyPropertyChangedEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( _actionsOnPropertiesChanged.ContainsKey( e.PropertyName ) )
                 _actionsOnPropertiesChanged[e.PropertyName].Run();
         }
 
         internal override void Dispose()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             UnregisterEvents();
         }
 
         void OnCurrentModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             OnPropertyChanged( "IsFallback" );
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 LayoutPropertyChangedTriggers( e.Key );
@@ -163,7 +163,7 @@ namespace SimpleSkin.ViewModels
 
         private void PropertyChangedTriggers( string propertyName = "" )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             switch( propertyName )
             {
                 case "Image":
@@ -180,7 +180,7 @@ namespace SimpleSkin.ViewModels
         }
         private void LayoutPropertyChangedTriggers( string propertyName = "" )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( String.IsNullOrWhiteSpace( propertyName ) )
             {
                 SafeUpdateX();
@@ -299,20 +299,20 @@ namespace SimpleSkin.ViewModels
 
         void ResetCommands()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher );
             _keyDownCmd = new KeyCommand( () =>
             {
-                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Push()), null );
+                Context.NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Push()), null );
             } );
 
             _keyUpCmd = new KeyCommand( () =>
             {
-                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Release()), null );
+                Context.NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Release()), null );
             } );
 
             _keyPressedCmd = new KeyCommand( () =>
             {
-                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Release( true )), null );
+                Context.NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Release( true )), null );
             } );
         }
 
@@ -373,7 +373,7 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateImage()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             var o = Context.Config[_key.Current].GetOrSet<object>( "Image", null );
 
             if( o != null )
@@ -696,7 +696,7 @@ namespace SimpleSkin.ViewModels
             get { return _isHighlighting; }
             set
             {
-                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( value != _isHighlighting )
                 {
                     SafeSet<bool>( value, ( v ) => _isHighlighting = v );
@@ -753,7 +753,7 @@ namespace SimpleSkin.ViewModels
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             scrollingDirective.NextActionType = ActionType.RelativeRoot;
             //allows the repeat of the same key

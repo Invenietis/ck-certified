@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Threading;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Windows;
@@ -82,9 +85,10 @@ namespace Host.VM
             }
         }
 
-        void OnConfigChangedInternal(object sender, ConfigChangedEventArgs e)
+        void OnConfigChangedInternal( object sender, ConfigChangedEventArgs e )
         {
-            NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => OnConfigChanged( sender, e )) );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            OnConfigChanged( sender, e );
         }
 
         protected abstract void OnConfigChanged( object sender, ConfigChangedEventArgs e );
@@ -104,7 +108,7 @@ namespace Host.VM
 
         protected void OnPropertyChanged( string propertyName )
         {
-            if( PropertyChanged != null ) 
+            if( PropertyChanged != null )
                 PropertyChanged( this, new PropertyChangedEventArgs( propertyName ) );
         }
     }

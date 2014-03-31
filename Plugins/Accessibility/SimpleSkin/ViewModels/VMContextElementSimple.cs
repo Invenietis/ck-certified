@@ -24,13 +24,13 @@ namespace SimpleSkin.ViewModels
 
         internal void SafeSet<T>( T value, Action<T> setter, bool synchronous = true )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == _context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             T val = value;
             if( synchronous )
-                NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );
+                _context.NoFocusManager.NoFocusDispatcher.Invoke( setter, val );
             else
-                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( setter, val );
+                _context.NoFocusManager.NoFocusDispatcher.BeginInvoke( setter, val );
         }
     }
 }

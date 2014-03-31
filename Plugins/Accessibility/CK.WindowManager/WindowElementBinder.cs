@@ -11,6 +11,7 @@ using CK.Plugin.Config;
 using System.Linq;
 using System.Windows;
 using CK.Windows;
+using System.Windows.Threading;
 
 namespace CK.WindowManager
 {
@@ -50,6 +51,8 @@ namespace CK.WindowManager
 
         private bool CanBind( IWindowElement target, IWindowElement origin, BindingPosition position, out SpatialBinding targetSpatialBinding, out SpatialBinding originSpatialBinding )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             originSpatialBinding = null;
             using( _logger.OpenGroup( LogLevel.Info, "Master binding..." ) )
             {
@@ -118,9 +121,11 @@ namespace CK.WindowManager
 
             return true;
         }
-      
+
         public IBindResult PreviewBind( IWindowElement target, IWindowElement origin, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( target == null ) throw new ArgumentNullException( "master" );
             if( origin == null ) throw new ArgumentNullException( "slave" );
 
@@ -152,6 +157,8 @@ namespace CK.WindowManager
 
         public IBindResult PreviewUnbind( IWindowElement target, IWindowElement origin )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             var binding = new SimpleBinding
             {
                 Target = target,
@@ -172,11 +179,13 @@ namespace CK.WindowManager
 
         public void Bind( IWindowElement master, IWindowElement slave, BindingPosition position, bool saveBinding = false )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( master == null ) throw new ArgumentNullException( "master" );
             if( slave == null ) throw new ArgumentNullException( "slave" );
 
             //Console.WriteLine( "BIND thread id: {0} TimeSpan : {1}", Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
-            
+
             // Spatial binding point of view
             using( _logger.OpenGroup( LogLevel.Info, "Attaching {0} on {1} at {2}", master.Name, slave.Name, position.ToString() ) )
             {
@@ -224,46 +233,43 @@ namespace CK.WindowManager
                         Debug.Assert( slaveSpatialBinding != null );
 
                         //TODO : FIXWITHDOCKING
-                        NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
+                        WindowElement button = UnbindButtonManager.Service.CreateButton( spatialBinding, slaveSpatialBinding, position );
+
+                        if( position == BindingPosition.Top )
                         {
-                            WindowElement button = UnbindButtonManager.Service.CreateButton( spatialBinding, slaveSpatialBinding, position);
+                            spatialBinding.Top = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
+                            slaveSpatialBinding.Bottom = new SpatialBindingWithButtonElement( spatialBinding, button );
+                        }
+                        if( position == BindingPosition.Left )
+                        {
+                            spatialBinding.Left = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
+                            slaveSpatialBinding.Right = new SpatialBindingWithButtonElement( spatialBinding, button );
+                        }
+                        if( position == BindingPosition.Bottom )
+                        {
+                            spatialBinding.Bottom = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
+                            slaveSpatialBinding.Top = new SpatialBindingWithButtonElement( spatialBinding, button );
+                        }
+                        if( position == BindingPosition.Right )
+                        {
+                            spatialBinding.Right = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
+                            slaveSpatialBinding.Left = new SpatialBindingWithButtonElement( spatialBinding, button );
+                        }
 
-                            if( position == BindingPosition.Top )
-                            {
-                                spatialBinding.Top = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                                slaveSpatialBinding.Bottom = new SpatialBindingWithButtonElement( spatialBinding, button );
-                            }
-                            if( position == BindingPosition.Left )
-                            {
-                                spatialBinding.Left = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                                slaveSpatialBinding.Right = new SpatialBindingWithButtonElement( spatialBinding, button );
-                            }
-                            if( position == BindingPosition.Bottom )
-                            {
-                                spatialBinding.Bottom = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                                slaveSpatialBinding.Top = new SpatialBindingWithButtonElement( spatialBinding, button );
-                            }
-                            if( position == BindingPosition.Right )
-                            {
-                                spatialBinding.Right = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                                slaveSpatialBinding.Left = new SpatialBindingWithButtonElement( spatialBinding, button );
-                            }
+                        if( saveBinding )
+                            _persistantBindings.Add( binding );
 
-                            if( saveBinding )
-                                _persistantBindings.Add( binding );
+                        var evtAfter = new WindowBindedEventArgs
+                        {
+                            Binding = binding,
+                            BindingType = BindingEventType.Attach
+                        };
 
-                            var evtAfter = new WindowBindedEventArgs
-                            {
-                                Binding = binding,
-                                BindingType = BindingEventType.Attach
-                            };
+                        button.Window.Show();
 
-                            button.Window.Show();
-
-                            _logger.Trace( "After binding..." );
-                            if( AfterBinding != null )
-                                AfterBinding( this, evtAfter );
-                        }) );
+                        _logger.Trace( "After binding..." );
+                        if( AfterBinding != null )
+                            AfterBinding( this, evtAfter );
                     }
                 }
             }
@@ -271,6 +277,8 @@ namespace CK.WindowManager
 
         public void Unbind( IWindowElement me, IWindowElement other, bool saveBinding = true )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( me == null ) throw new ArgumentNullException( "me" );
             if( other == null ) throw new ArgumentNullException( "other" );
 
@@ -573,8 +581,9 @@ namespace CK.WindowManager
 
             public void Seal()
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
                 //Console.WriteLine( "BEFORE BIND ! Origin : {0} Target : {1} ;;; BEFORE BIND thread id: {2} TimeSpan : {3}", _simpleBinding.Origin.Name, _simpleBinding.Target.Name, Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
-                
+
                 _binder.Bind( _simpleBinding.Target, _simpleBinding.Origin, _simpleBinding.Position, true );
 
                 //Console.WriteLine( "AFTER BIND ! Origin : {0} Target : {1} ;;; AFTER BIND thread id: {2} TimeSpan : {3}", _simpleBinding.Origin.Name, _simpleBinding.Target.Name, Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );

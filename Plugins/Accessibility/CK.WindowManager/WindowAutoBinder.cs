@@ -81,11 +81,15 @@ namespace CK.WindowManager
 
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             _tester.Block();
         }
 
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             _tester.Release();
         }
 
@@ -96,11 +100,15 @@ namespace CK.WindowManager
         //avoids bind during a resize
         void OnWindowResized( object sender, WindowElementResizeEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             _resizeMoveLock = true;
         }
 
         void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             //avoids bind during a resize
             if( !_resizeMoveLock && !_pointerDownLock )
             {

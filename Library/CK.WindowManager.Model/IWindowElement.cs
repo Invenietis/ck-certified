@@ -30,7 +30,7 @@ namespace CK.WindowManager.Model
         /// Raised when the window element is restored (from hidden state for ex).
         /// </summary>
         event EventHandler Restored;
-        
+
         /// <summary>
         /// Gets the name of the window element.
         /// </summary>

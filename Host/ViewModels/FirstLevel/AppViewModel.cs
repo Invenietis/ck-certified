@@ -96,6 +96,8 @@ namespace Host
             get { return CivikeyHost.UserConfig.GetOrSet( "ShowTaskbarIcon", true ); }
             set
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
                 if( CivikeyHost.UserConfig.Set( "ShowTaskbarIcon", value ) != ChangeStatus.None )
                 {
                     // v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
@@ -175,6 +177,8 @@ namespace Host
 
         void OnBeforeExitApplication( object sender, CK.Context.ApplicationExitingEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( !_closing )
             {
                 _closing = true;
@@ -215,10 +219,10 @@ namespace Host
         {
             get
             {
-                return _showHelpCommand ?? ( _showHelpCommand = new VMCommand( () =>
+                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
                 {
                     CivikeyHost.FireShowHostHelp();
-                } ) );
+                } ));
             }
         }
 
@@ -284,11 +288,13 @@ namespace Host
             get { return _isMinimized; }
             set
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
                 if( !ShowTaskbarIcon ) IsVisible = !value;
 
                 //We have to push this delegate on the dispatcher queue to have the different changes processed correctly
                 Application.Current.Dispatcher.BeginInvoke( DispatcherPriority.Background,
-                    new System.Action( delegate()
+                    new System.Action( () =>
                     {
                         _isMinimized = value;
                         NotifyOfPropertyChange( "IsMinimized" );

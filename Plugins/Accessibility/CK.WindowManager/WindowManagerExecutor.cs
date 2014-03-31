@@ -7,6 +7,7 @@ using System;
 using CommonServices;
 using System.Windows.Threading;
 using CK.Windows;
+using System.Diagnostics;
 
 namespace CK.WindowManager
 {
@@ -15,7 +16,6 @@ namespace CK.WindowManager
     {
         PreviewBindingInfo _placeholder;
         DefaultActivityLogger _logger;
-        //Action _resized; //warning cyclelife : it's use for OnPointerButtonUp
 
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowManager WindowManager { get; set; }
@@ -32,6 +32,7 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attached to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
@@ -45,19 +46,13 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowResized( object sender, WindowElementResizeEventArgs e )
         {
-            //MIXED
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attached to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
             if( binding != null )
             {
-                //To simplify the multithread management we avoid hiding and showing the buttons. 
-                //(their visibility used to be bound to event like the mousebuttonup/mousebuttondown, which is a problem multi-thread wise)   
-                //if ( ( e.DeltaHeight != 0 || e.DeltaWidth != 0 ) && binding.Left != null )
-                //{
-                //    binding.Left.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)( () => HidingButton( binding ) ) );
-                //}
-
                 if( e.DeltaHeight != 0 )
                 {
                     if( binding.Left != null ) ResizeVertically( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
@@ -80,6 +75,8 @@ namespace CK.WindowManager
 
         void PlacingWindow( ISpatialBinding binding, IWindowElement master )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             Rect reference = WindowManager.GetClientArea( binding.Window );
             Rect slave = Rect.Empty;
 
@@ -111,6 +108,8 @@ namespace CK.WindowManager
 
         void PlacingButton( ISpatialBinding binding, ISpatialBinding master )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             double top = 0;
             double height = 0;
             double width = 0;
@@ -125,43 +124,33 @@ namespace CK.WindowManager
 
             if( binding.Left != null && binding.Left.SpatialBinding != master )
             {
-                binding.Left.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
-                {
-                    binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
-                }) );
+                binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Left.SpatialBinding, binding );
             }
 
             if( binding.Right != null && binding.Right.SpatialBinding != master )
             {
-                binding.Right.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
-                {
-                    binding.Right.UnbindButton.Move( top + height / 2 - binding.Right.UnbindButton.Window.Height / 2, left + width - binding.Right.UnbindButton.Window.Width / 2 );
-                }) );
+                binding.Right.UnbindButton.Move( top + height / 2 - binding.Right.UnbindButton.Window.Height / 2, left + width - binding.Right.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Right.SpatialBinding, binding );
             }
 
             if( binding.Bottom != null && binding.Bottom.SpatialBinding != master )
             {
-                binding.Bottom.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
-                {
-                    binding.Bottom.UnbindButton.Move( top + height - binding.Bottom.UnbindButton.Window.Height / 2, left + width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
-                }) );
+                binding.Bottom.UnbindButton.Move( top + height - binding.Bottom.UnbindButton.Window.Height / 2, left + width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Bottom.SpatialBinding, binding );
             }
 
             if( binding.Top != null && binding.Top.SpatialBinding != master )
             {
-                binding.Top.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
-                {
-                    binding.Top.UnbindButton.Move( top - binding.Top.UnbindButton.Window.Height / 2, left + width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
-                }) );
+                binding.Top.UnbindButton.Move( top - binding.Top.UnbindButton.Window.Height / 2, left + width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Top.SpatialBinding, binding );
             }
         }
 
         void ResizeHorizontally( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             if( spatial != null )
             {
                 var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial } );
@@ -179,6 +168,7 @@ namespace CK.WindowManager
         /// </summary>
         private void SpecialMoveRight( WindowElementResizeEventArgs e, ISpatialBinding spatial )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
             if( spatial != null )
             {
                 foreach( var windowDesc in spatial.SubTree( BindingPosition.Right ) )
@@ -190,6 +180,8 @@ namespace CK.WindowManager
 
         void ResizeVertically( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             if( spatial != null )
             {
                 var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial } );
@@ -207,6 +199,8 @@ namespace CK.WindowManager
         /// </summary>
         private void SpecialMoveBottom( WindowElementResizeEventArgs e, ISpatialBinding spatial )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( spatial != null )
             {
                 //var window = binding.Bottom.Window;
@@ -218,6 +212,8 @@ namespace CK.WindowManager
 
         void OnPreviewBinding( object sender, WindowBindedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( e.BindingType == BindingEventType.Attach )
             {
                 if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding );
@@ -227,20 +223,19 @@ namespace CK.WindowManager
 
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( e.BindingType == BindingEventType.Attach )
             {
-                DispatchWhenRequired( e.Binding.Origin.Window.Dispatcher, (Action)(() =>
+                Rect r = e.Binding.GetWindowArea();
+                if( r != Rect.Empty )
                 {
-                    Rect r = e.Binding.GetWindowArea();
-                    if( r != Rect.Empty )
-                    {
-                        //Console.WriteLine( "OnBeforeBinding ! Origin : {0}", e.Binding.Origin.Name );
-                        var move = WindowManager.Move( e.Binding.Origin, r.Top, r.Left );
-                        var resize = WindowManager.Resize( e.Binding.Origin, r.Width, r.Height );
-                        move.Broadcast();
-                        resize.Broadcast();
-                    }
-                }), false );
+                    //Console.WriteLine( "OnBeforeBinding ! Origin : {0}", e.Binding.Origin.Name );
+                    var move = WindowManager.Move( e.Binding.Origin, r.Top, r.Left );
+                    var resize = WindowManager.Resize( e.Binding.Origin, r.Width, r.Height );
+                    move.Broadcast();
+                    resize.Broadcast();
+                }
             }
         }
 
@@ -251,7 +246,8 @@ namespace CK.WindowManager
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )
         {
-            //MIXED
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
@@ -259,33 +255,28 @@ namespace CK.WindowManager
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Restore();
-                    DispatchWhenRequired( NoFocusManager.Default.ExternalDispatcher, (Action)(() =>
-                    {
-                        if( descendant.Top != null && !descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Show();
-                        if( descendant.Bottom != null && !descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Show();
-                        if( descendant.Right != null && !descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Show();
-                        if( descendant.Left != null && !descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Show();
-                    }), false );
+                    if( descendant.Top != null && !descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Show();
+                    if( descendant.Bottom != null && !descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Show();
+                    if( descendant.Right != null && !descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Show();
+                    if( descendant.Left != null && !descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Show();
                 }
             }
         }
 
         void OnWindowMinimized( object sender, WindowElementEventArgs e )
         {
-            //MIXED
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Minimize();
-                    DispatchWhenRequired( NoFocusManager.Default.ExternalDispatcher, (Action)(() =>
-                    {
-                        if( descendant.Top != null && descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Hide();
-                        if( descendant.Bottom != null && descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Hide();
-                        if( descendant.Right != null && descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Hide();
-                        if( descendant.Left != null && descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Hide();
-                    }), false );
+                    if( descendant.Top != null && descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Hide();
+                    if( descendant.Bottom != null && descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Hide();
+                    if( descendant.Right != null && descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Hide();
+                    if( descendant.Left != null && descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Hide();
                 }
             }
         }
@@ -327,24 +318,5 @@ namespace CK.WindowManager
         }
 
         #endregion
-
-        private T DispatchWhenRequired<T>( Dispatcher dispatcher, Func<T> f )
-        {
-            if( dispatcher.CheckAccess() ) return f();
-
-            return (T)dispatcher.Invoke( f );
-        }
-
-        private void DispatchWhenRequired( Dispatcher dispatcher, Action d, bool synchronous = true )
-        {
-            if( dispatcher.CheckAccess() ) d();
-            else
-            {
-                if( synchronous )
-                    dispatcher.Invoke( d );
-                else
-                    dispatcher.BeginInvoke( d );
-            }
-        }
     }
 }

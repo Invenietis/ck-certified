@@ -67,7 +67,7 @@ namespace SimpleSkin.ViewModels
         internal VMZoneSimple( VMContextSimpleBase ctx, IZone zone, int index )
             : base( ctx )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _zone = zone;
             _index = index;
             SafeUpdateLoopCount();
@@ -83,11 +83,11 @@ namespace SimpleSkin.ViewModels
 
         void OnConfigChanged( object sender, CK.Plugin.Config.ConfigChangedEventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Obj == _zone && e.Key == "Index" )
             {
                 _index = (int)e.Value;
-                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                 {
                     OnPropertyChanged( "Index" );
                 }) );
@@ -96,7 +96,7 @@ namespace SimpleSkin.ViewModels
             else if( e.Key == "LoopCount" )
             {
                 _initialLoopCount = _loopCount = (double)e.Value;
-                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                 {
                     OnPropertyChanged( "LoopCount" );
                 }) );
@@ -106,14 +106,14 @@ namespace SimpleSkin.ViewModels
         public VMZoneSimple( VMContextSimpleBase ctx )
             : base( ctx )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
         }
 
         internal override void Dispose()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-            NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 Keys.Clear();
             }) );
@@ -150,7 +150,7 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( Keys.Count == 0 || Keys.All( k => k.Skip == SkippingBehavior.Skip ) )
                 {
                     return SkippingBehavior.Skip;
@@ -173,7 +173,7 @@ namespace SimpleSkin.ViewModels
             get { return _isHighlighting; }
             set
             {
-                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( value != _isHighlighting )
                 {
                     SafeSet<bool>( value, ( v ) => _isHighlighting = v );

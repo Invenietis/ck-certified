@@ -1,4 +1,7 @@
-﻿using CK.Plugin;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Threading;
+using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
@@ -34,6 +37,8 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             _vm = new TextualContextPreviewViewModel( TextualContextService );
             _window = new TextualContextPreviewWindow( _vm );
             _window.Width = 600;

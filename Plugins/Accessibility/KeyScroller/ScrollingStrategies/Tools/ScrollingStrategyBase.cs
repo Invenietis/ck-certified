@@ -32,7 +32,7 @@ namespace Scroller
         public ScrollingStrategyBase()
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
-            Walker = new Walker( this );
+            Walker = new TreeWalker( this );
         }
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )

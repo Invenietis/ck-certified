@@ -7,13 +7,13 @@ using HighlightModel;
 
 namespace Scroller
 {
-    public class Walker : ITreeWalker
+    public class TreeWalker : ITreeWalker
     {
         protected IHighlightableElement Root;
 
         public Stack<IHighlightableElement> Parents { get; private set; } 
 
-        public Walker(IHighlightableElement root)
+        public TreeWalker(IHighlightableElement root)
         {
             Parents = new Stack<IHighlightableElement>();
             Root = root;

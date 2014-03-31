@@ -29,7 +29,7 @@ namespace Scroller
         }
     }
 
-    public class ZondeDivderWalker : Walker
+    public class ZondeDivderWalker : TreeWalker
     {
         public ZondeDivderWalker(IHighlightableElement root) : base ( root )
         { }

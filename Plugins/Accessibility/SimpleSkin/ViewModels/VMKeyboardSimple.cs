@@ -82,6 +82,8 @@ namespace SimpleSkin.ViewModels
             SafeUpdateHighlightBackground();
             SafeUpdateLoopCount();
             UpdateBackgroundPath();
+
+            IsHighlightableTreeRoot = true;
         }
 
         internal override void Dispose()
@@ -381,7 +383,8 @@ namespace SimpleSkin.ViewModels
 
         public bool IsHighlightableTreeRoot
         {
-            get { return true; }
+            get;
+            set;
         }
 
         #endregion

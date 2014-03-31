@@ -6,7 +6,7 @@ using CK.Plugin.Config;
 using HighlightModel;
 using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
     /// <summary>
     /// Scrolling very fast on each key one after the other, without taking zones into account. Once a select element is triggered, the scrolling goes slowlier. 

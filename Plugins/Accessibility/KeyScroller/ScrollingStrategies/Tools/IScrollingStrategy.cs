@@ -3,7 +3,7 @@ using System.Timers;
 using CK.Plugin.Config;
 using HighlightModel;
 
-namespace KeyScroller
+namespace Scroller
 {
     internal interface IScrollingStrategy
     {

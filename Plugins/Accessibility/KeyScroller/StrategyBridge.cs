@@ -1,26 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Timers;
 using CK.Plugin.Config;
 using HighlightModel;
 
-namespace KeyScroller
+namespace Scroller
 {
     /// <summary>
     /// Make the bridge between the different implementations
     /// </summary>
     public class StrategyBridge : IScrollingStrategy
     {
+        public static List<string> AvailableStrategies { get; private set; }
         IScrollingStrategy _current;
         Dictionary<string, IScrollingStrategy> Implementations { get; set; }
+
+        /// <summary>
+        /// Get the list of all types that implements IScrollingStrategy
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetStrategyTypes()
+        {
+            foreach( Type type in Assembly.GetExecutingAssembly().GetTypes().Where( x => typeof( IScrollingStrategy ).IsAssignableFrom( x ) ) )
+            {
+                yield return type;
+            }
+        }
+
+        /// <summary>
+        /// Get all the available strategy names
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<string> GetStrategyNames()
+        {
+            foreach( Type type in Assembly.GetExecutingAssembly().GetTypes().Where( x => typeof( IScrollingStrategy ).IsAssignableFrom( x ) ) )
+            {
+                StrategyAttribute strategy = (StrategyAttribute)type.GetCustomAttributes( typeof( StrategyAttribute ), false ).FirstOrDefault();
+                if( strategy != null )
+                {
+                    yield return strategy.Name;
+                }
+            }
+        }
+
+        static StrategyBridge()
+        {
+            AvailableStrategies = GetStrategyNames().ToList();
+        }
 
         public StrategyBridge( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
         {
             Implementations = new Dictionary<string, IScrollingStrategy>();
 
-            foreach(Type t in  StrategyAttribute.GetStrategyTypes())
+            foreach(Type t in  GetStrategyTypes())
             {
                 //Ignore some types
                 if( t == typeof( IScrollingStrategy ) || t == typeof( StrategyBridge ) || t == typeof( ScrollingStrategyBase ) )

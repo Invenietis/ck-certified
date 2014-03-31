@@ -10,7 +10,7 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
     [Plugin( ScrollerPlugin.PluginIdString,
            PublicName = PluginPublicName,
@@ -44,8 +44,8 @@ namespace KeyScroller
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new Timer();
-            int timerSpeed = Configuration.User.GetOrSet( "Speed", 1000 );
-            _timer.Interval = timerSpeed;
+
+            _timer.Interval = Configuration.User.GetOrSet( "Speed", 1000 );
 
             _registeredElements = new Dictionary<string, IHighlightableElement>();
 
@@ -142,11 +142,6 @@ namespace KeyScroller
                         return false;
                     } );
 
-                    if ( _registeredElements.Count == 0 )
-                    {
-                        _scrollingStrategy.Stop();
-                    }
-
                     //Warning the strategy that an element has been unregistered
                     _scrollingStrategy.ElementUnregistered( element );
                 }
@@ -191,13 +186,16 @@ namespace KeyScroller
             IHighlightableElement registeredElement;
             if ( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
             {
+                _scrollingStrategy.ElementUnregistered( element );
+
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
                     if ( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
                     else return false;
-                } );
+                } );   
             }
+            
             return false;
         }
 

@@ -7,7 +7,7 @@ using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
 
-namespace KeyScroller
+namespace Scroller
 {
     public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
@@ -96,18 +96,24 @@ namespace KeyScroller
                     LastDirective.NextActionType = ActionType.StayOnTheSame;
                     break;
 
+                case ActionType.GoToRelativeRoot :
+                    Johnnie.GoToRelativeRoot();
+                    MoveNext( ActionType.EnterChild );
+                    break;
+
                 default :
-                     //StayOnTheSameOnce
+                    //StayOnTheSameOnce
+                    LastDirective.NextActionType = ActionType.GoToRelativeRoot;
                     break;
             }
 
-            ProcessSkipBehavior();
+            ProcessSkipBehavior(action);
         }
 
         /// <summary>
         /// Read the the SkipBehavior of the current element and process it.
         /// </summary>
-        protected virtual void ProcessSkipBehavior()
+        protected virtual void ProcessSkipBehavior( ActionType action )
         {
             switch(Johnnie.Current.Skip)
             {
@@ -115,7 +121,12 @@ namespace KeyScroller
                     MoveNext(ActionType.MoveNext);
                     break;
                 case SkippingBehavior.EnterChildren :
-                    MoveNext( ActionType.EnterChild );
+
+                    //False if the walker goes up. (Avoid infinite loop)
+                    if( action != ActionType.UpToParent )
+                        MoveNext( ActionType.EnterChild );
+                    else
+                        MoveNext( ActionType.MoveNext );
                     break;
                 default : 
                     break;
@@ -209,7 +220,7 @@ namespace KeyScroller
             Configuration.ConfigChanged += OnConfigChanged;
             
             //Reset the walker
-            Johnnie.GoTo( this );
+            Johnnie.GoToAbsoluteRoot();
             Timer.Start();
             IsStarted = true;
         }
@@ -230,7 +241,10 @@ namespace KeyScroller
         public virtual void GoToElement( HighlightModel.IHighlightableElement element )
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.Immediate );
+
+            Johnnie.Current.EndHighlight( new EndScrollingInfo( Timer.Interval, PreviousElement, element ), LastDirective );
             Johnnie.GoTo( element );
+            EnsureReactivity();
         }
 
         public virtual void Pause( bool forceEndHighlight )
@@ -265,7 +279,8 @@ namespace KeyScroller
 
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
-            Johnnie.GoTo( this );
+            GoToElement( this );
+            EnsureReactivity();
         }
 
         #endregion

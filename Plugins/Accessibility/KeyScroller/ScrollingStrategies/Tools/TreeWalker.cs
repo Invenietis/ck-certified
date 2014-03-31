@@ -5,18 +5,18 @@ using System.Text;
 using CK.Core;
 using HighlightModel;
 
-namespace KeyScroller
+namespace Scroller
 {
     public class Walker : ITreeWalker
     {
-        IHighlightableElement _root;
+        protected IHighlightableElement Root;
 
         public Stack<IHighlightableElement> Parents { get; private set; } 
 
         public Walker(IHighlightableElement root)
         {
             Parents = new Stack<IHighlightableElement>();
-            _root = root;
+            Root = root;
         }
 
         protected virtual ICKReadOnlyList<IHighlightableElement> GetSibblings()
@@ -88,14 +88,14 @@ namespace KeyScroller
             if( element == null ) throw new ArgumentNullException( "element" );
             Parents.Clear();
 
-            if(element != _root) Parents.Push( _root );
+            if(element != Root) Parents.Push( Root );
 
             Current = element;
         }
 
         public void GoToAbsoluteRoot()
         {
-            GoTo( _root );
+            GoTo( Root );
         }
 
         public void GoToRelativeRoot()

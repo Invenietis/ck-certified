@@ -8,15 +8,15 @@ using SimpleSkin.ViewModels;
 using System.Timers;
 using System;
 
-namespace KeyScroller
+namespace Scroller
 {
-    [Strategy( ZoneDividerScrollingStrategy.StrategyName )]
-    internal class ZoneDividerScrollingStrategy : ZoneScrollingStrategy
+    [Strategy( HalfZoneScrollingStrategy.StrategyName )]
+    internal class HalfZoneScrollingStrategy : ZoneScrollingStrategy
     {
         public static readonly int ZoneDivider = 2;
-        const string StrategyName = "ZoneDividerScrollingStrategy";
+        const string StrategyName = "HalfZoneScrollingStrategy";
 
-        public ZoneDividerScrollingStrategy() : base()
+        public HalfZoneScrollingStrategy() : base()
         {
             if( ZoneDivider < 2 ) throw new InvalidOperationException( "The ZoneDivider can't be less than 2 !" );
 
@@ -33,19 +33,20 @@ namespace KeyScroller
     {
         public ZondeDivderWalker(IHighlightableElement root) : base ( root )
         { }
+
         public override bool EnterChild()
         {
             if( Current.Children.Count == 0 ) return false;
 
-            //False if there are not enough children or if one child is already an VirtualZone or if the current element is a Root
-            if(Current.Children.Count > ZoneDividerScrollingStrategy.ZoneDivider && Current.Children[0] as VirtualZone == null )
+            //False if the current element is not a root/relative root or if there are not enough children or if one child is an KeySimple
+            if( !Current.IsHighlightableTreeRoot && Current.Children.Count > HalfZoneScrollingStrategy.ZoneDivider && Current.Children[0] as VMKeySimple != null && Peek() as VirtualZone == null )
             {
                 IHighlightableElement old = Current;
                 Current = new VirtualZone(Current);
                 
-                if( old.IsHighlightableTreeRoot ) ((VirtualZone) Current).Skip = SkippingBehavior.Skip;
+                //if( old.IsHighlightableTreeRoot ) ((VirtualZone) Current).Skip = SkippingBehavior.Skip;
 
-                var parent = Parents.Peek() as VirtualZone;
+                var parent = Peek() as VirtualZone;
                 if( parent != null ) parent.UpdateChild( old, Current );
             }
 
@@ -60,8 +61,10 @@ namespace KeyScroller
 
             int idx = sibblings.IndexOf( Current );
 
-            //False when the element is found in its parents or when the parent is a root element
-            if( idx < 0 && (Peek() == null || !Peek().IsHighlightableTreeRoot) ) 
+            //False when the element is found in its parents 
+            //or when the parent is a root element and the current element is a virtualzone : 
+            //Means that we may found the WrappedElement of the current VirtualZone in the sibblings list.
+            if( idx < 0 && (Peek() == null || !Peek().IsHighlightableTreeRoot && Current as VirtualZone == null) ) 
                 throw new InvalidOperationException( "Something goes wrong : the current element is not contained by its parent !" );
             
             if( idx >= 0 )
@@ -73,7 +76,9 @@ namespace KeyScroller
                 return true;
             }
 
-            return UpToParent();
+            //Here we get the wrapped element and restart the procedure.
+            Current = ((VirtualZone) Current).WrappedElement;
+            return MoveNext();
         }
     }
 }

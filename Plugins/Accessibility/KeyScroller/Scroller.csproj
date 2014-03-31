@@ -7,8 +7,8 @@
     <ProjectGuid>{61618F4C-1288-401F-8644-77990429918C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KeyScroller</RootNamespace>
-    <AssemblyName>KeyScroller</AssemblyName>
+    <RootNamespace>Scroller</RootNamespace>
+    <AssemblyName>Scroller</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <UICulture>en-US</UICulture>

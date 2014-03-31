@@ -150,7 +150,7 @@
   <data name="TurboScrollingStrategy" xml:space="preserve">
     <value>Défilement rapide (touche par touche)</value>
   </data>
-  <data name="ZoneDividerScrollingStrategy" xml:space="preserve">
+  <data name="HalfZoneScrollingStrategy" xml:space="preserve">
     <value>Défilement par demi-zone</value>
   </data>
 </root>

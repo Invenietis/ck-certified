@@ -6,9 +6,9 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Core;
 using CommonServices;
-using KeyScroller.Resources;
+using Scroller.Resources;
 
-namespace KeyScroller.Editor
+namespace Scroller.Editor
 {
     class EditorViewModel : Screen
     {
@@ -23,7 +23,7 @@ namespace KeyScroller.Editor
             _keyboardTriggerConfig = keyboardTriggerConfig;
             _triggerService = triggerService;
 
-            _currentIndexStrategy = StrategyAttribute.AvailableStrategies.IndexOf( _scrollConfig.User.GetOrSet( "Strategy", "ZoneScrollingStrategy" ) );
+            _currentIndexStrategy = StrategyBridge.AvailableStrategies.IndexOf( _scrollConfig.User.GetOrSet( "Strategy", "ZoneScrollingStrategy" ) );
             this.DisplayName = R.ScrollEditor;
         }
 
@@ -78,7 +78,7 @@ namespace KeyScroller.Editor
         {
             get
             {
-                foreach( string name in StrategyAttribute.AvailableStrategies )
+                foreach( string name in StrategyBridge.AvailableStrategies )
                 {
                     yield return R.ResourceManager.GetString(name);
                 }
@@ -87,14 +87,14 @@ namespace KeyScroller.Editor
 
         public bool IsTurboStrategy
         {
-            get { return _currentIndexStrategy == -1 ? false : StrategyAttribute.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
+            get { return _currentIndexStrategy == -1 ? false : StrategyBridge.AvailableStrategies[_currentIndexStrategy] == "TurboScrollingStrategy"; }
         }
 
         public int CurrentIndexStrategy
         {
             set
             {
-                _scrollConfig.User["Strategy"] = StrategyAttribute.AvailableStrategies[value];
+                _scrollConfig.User["Strategy"] = StrategyBridge.AvailableStrategies[value];
                 _currentIndexStrategy = value;
                 NotifyOfPropertyChange( () => CurrentIndexStrategy );
                 NotifyOfPropertyChange( () => IsTurboStrategy );
@@ -114,12 +114,12 @@ namespace KeyScroller.Editor
                     {
                         System.Windows.Forms.Keys keyName = (System.Windows.Forms.Keys) selectedKey.KeyCode;
                       
-                        return string.Format( KeyScroller.Resources.R.Listening, keyName.ToString() );
+                        return string.Format( Scroller.Resources.R.Listening, keyName.ToString() );
                     }
                     else if( selectedKey.Source == TriggerDevice.Pointer )
-                        return string.Format( KeyScroller.Resources.R.PointerListening, MouseClicFromCode( selectedKey.KeyCode ) );
+                        return string.Format( Scroller.Resources.R.PointerListening, MouseClicFromCode( selectedKey.KeyCode ) );
                 }
-                return KeyScroller.Resources.R.NothingSelected;
+                return Scroller.Resources.R.NothingSelected;
             }
         }
 

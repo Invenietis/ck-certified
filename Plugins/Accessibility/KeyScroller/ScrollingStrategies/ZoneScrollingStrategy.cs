@@ -4,7 +4,7 @@ using HighlightModel;
 using CK.Plugin.Config;
 using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
     /// <summary>
     /// Scrolling on each zone, then entering the zone to scroll on each key

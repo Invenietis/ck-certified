@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KeyScroller.Resources {
+namespace Scroller.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace KeyScroller.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KeyScroller.Resources.R", typeof(R).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scroller.Resources.R", typeof(R).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,15 @@ namespace KeyScroller.Resources {
         public static string ActionStrategy {
             get {
                 return ResourceManager.GetString("ActionStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scrolling by half-zone.
+        /// </summary>
+        public static string HalfZoneScrollingStrategy {
+            get {
+                return ResourceManager.GetString("HalfZoneScrollingStrategy", resourceCulture);
             }
         }
         
@@ -147,15 +156,6 @@ namespace KeyScroller.Resources {
         public static string TurboScrollingStrategy {
             get {
                 return ResourceManager.GetString("TurboScrollingStrategy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scrolling by half-zone.
-        /// </summary>
-        public static string ZoneDividerScrollingStrategy {
-            get {
-                return ResourceManager.GetString("ZoneDividerScrollingStrategy", resourceCulture);
             }
         }
         

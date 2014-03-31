@@ -6,7 +6,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
 
-namespace KeyScroller.Editor
+namespace Scroller.Editor
 {
     [Plugin( BasicScrollEditor.PluginIdString,
            PublicName = PluginPublicName,

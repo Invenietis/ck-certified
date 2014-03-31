@@ -6,22 +6,8 @@ using CK.Plugin.Config;
 using System.Diagnostics;
 using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
-    public class OneByOneWalker : Walker
-    {
-        public OneByOneWalker( IHighlightableElement root ) : base( root ) { }
-
-        public override bool UpToParent()
-        {
-            base.UpToParent();
-            if(MoveNext()) return true;
-
-            GoToAbsoluteRoot();
-            return false;
-        }
-    }
-
     /// <summary>
     /// A ScrollingStrategy that scroll only on sheets elements.
     /// </summary>
@@ -34,22 +20,21 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public OneByOneScrollingStrategy() : base()
-        {
-            Johnnie = new OneByOneWalker(this);
-        }
-
-        protected override void ProcessSkipBehavior()
-        {
+        protected override void ProcessSkipBehavior(ActionType action)
+        { 
             switch( Johnnie.Current.Skip )
             {
                 case SkippingBehavior.Skip:
                     MoveNext( ActionType.MoveNext );
                     break;
                 default:
+
                     if( Johnnie.Current.Children.Count > 0 && !Johnnie.Current.IsHighlightableTreeRoot || Johnnie.Current.Skip == SkippingBehavior.EnterChildren )
                     {
-                        MoveNext( ActionType.EnterChild );
+                        if( action != ActionType.UpToParent )
+                            MoveNext( ActionType.EnterChild );
+                        else
+                            MoveNext( ActionType.MoveNext );
                     }
                     break;
             }

@@ -382,7 +382,7 @@ namespace SimpleSkin
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( skinInfo.NameKeyboard,
-                    new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM ) );
+                    new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM, true ) );
             }
         }
 
@@ -552,7 +552,7 @@ namespace SimpleSkin
             SkinWindow window = sender as SkinWindow;
             if( window != null && window.WindowState == WindowState.Minimized )
             {
-                ForEachSkin( HideSkin );
+                HideSkin();
 
                 if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.MinimizeAllWindows();
 
@@ -570,25 +570,26 @@ namespace SimpleSkin
         /// <summary>
         /// Hides the skin and shows the keyboard's MiniView
         /// </summary>
-        void HideSkin( SkinInfo skinInfo )
+        void HideSkin()
         {
             if( !_viewHidden )
             {
                 _viewHidden = true;
 
-                skinInfo.Dispatcher.BeginInvoke( (Action)(() =>
+                ForEachSkin( UnregisterHighlighter );
+
+                ShowMiniView();
+                _miniView.Dispatcher.BeginInvoke( (Action)(() =>
                 {
-                    ShowMiniView( skinInfo );
                     if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
-                        UnregisterHighlighter( skinInfo );
+                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm, true );
                     }
                 }), null );
             }
         }
 
-        void ShowMiniView( SkinInfo skinInfo )
+        void ShowMiniView()
         {
             if( _miniView == null )
             {

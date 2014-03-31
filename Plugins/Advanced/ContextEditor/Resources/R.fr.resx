@@ -240,7 +240,10 @@ Etes-vos sûr de vouloir continuer ?</value>
     <value>Modification du nom du clavier</value>
   </data>
   <data name="MouseMoveSpeed" xml:space="preserve">
-    <value>Vitesse (en pixels/déplacement) :</value>
+    <value>Vitesse (en pixels/déplacement) : </value>
+  </data>
+  <data name="SnakeMode" xml:space="preserve">
+    <value>Boucler sur l'écran : </value>
   </data>
   <data name="NewCommand" xml:space="preserve">
     <value>Créer une nouvelle commande : </value>

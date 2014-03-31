@@ -89,19 +89,6 @@ namespace PointerDeviceDriver
             _m.OnHookProc = OnHookInvoqued;
         }
 
-        private void GetCurrentPointerPos( object sender, EventArgs e )
-        {
-            PointStruct p;
-            if ( Win32Wrapper.GetCursorPos( out p ) )
-            {
-                if ( ( _lastPointerPosition.X != p.X || _lastPointerPosition.Y != p.Y ) && PointerMove != null )
-                {
-                    _lastPointerPosition = p;
-                    //PointerMove( this, new PointerDeviceEventArgs( (int)_lastPointerPosition.X, (int)_lastPointerPosition.Y, new ButtonInfo(), String.Empty, InputSource.Unknown ) );
-                }
-            }
-        }
-
         public void Stop()
         {
         }

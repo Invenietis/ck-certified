@@ -22,8 +22,8 @@ namespace BasicCommandHandlers
                 { "L", R.Left }, 
                 { "UL", R.UpLeft },
                 { "UR", R.UpRight }, 
-                { "DR", R.BottomRight }, 
-                { "DL", R.BottomLeft  } 
+                { "BR", R.BottomRight }, 
+                { "BL", R.BottomLeft  } 
             };
         }
 
@@ -54,13 +54,25 @@ namespace BasicCommandHandlers
             }
         }
 
+        bool _snakeMode;
+        public bool SnakeMode
+        {
+            get { return _snakeMode; }
+            set
+            {
+                _snakeMode = value;
+                OnPropertyChanged( "SnakeMode" );
+            }
+        }
+
         public void FillFromString( string parameter )
         {
             string selectedDirection = null;
             int selectedSpeed = 0;
+            bool snakeMode = false;
 
             string[] splittedParameter = parameter.Split( ',' );
-            if( splittedParameter.Length == 2 )
+            if( splittedParameter.Length >= 2 )
             {
                 if( _values.TryGetValue( splittedParameter[0].Trim(), out selectedDirection ) )
                 {
@@ -73,6 +85,16 @@ namespace BasicCommandHandlers
                     SelectedSpeed = selectedSpeed;
                 }
                 else SelectedSpeed = 0;
+
+                //avoids breaking change
+                if( splittedParameter.Length == 3 )
+                {
+                    if( bool.TryParse( splittedParameter[2].Trim(), out snakeMode ) )
+                    {
+                        SnakeMode = snakeMode;
+                    }
+                    else SnakeMode = false;
+                }
             }
         }
 
@@ -86,7 +108,7 @@ namespace BasicCommandHandlers
         public string GetParameterString()
         {
             if( SelectedDirection == null || SelectedSpeed <= 0 ) return String.Empty;
-            return String.Format( "{0}, {1}", _values.Where( x => x.Value == SelectedDirection ).Single().Key, SelectedSpeed );
+            return String.Format( "{0}, {1}, {2}", _values.Where( x => x.Value == SelectedDirection ).Single().Key, SelectedSpeed, SnakeMode );
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

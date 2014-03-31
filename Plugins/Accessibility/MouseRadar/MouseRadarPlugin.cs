@@ -103,6 +103,7 @@ namespace MouseRadar
         public void Stop()
         {
             UninitializeTopMost();
+            Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
             _radar.Dispose();
             Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
         }

@@ -46,9 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.InputDriver, Version=0.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CK.InputDriver, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\CK.InputDriver.0.3.1-develop\lib\net40\CK.InputDriver.dll</HintPath>
+      <HintPath>..\..\..\..\packages\CK.InputDriver.0.3.2-develop\lib\net40\CK.InputDriver.dll</HintPath>
     </Reference>
     <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -153,6 +153,7 @@
     <Compile Include="SendKey\SendKeyCommandHandler.cs" />
     <Compile Include="SendKey\SendKeyCommandParameterManager.cs" />
     <Compile Include="SendString\SimpleKeyCommandParameter.cs" />
+    <Compile Include="Tools\RegionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Host.Services\Host.Services.csproj">
@@ -203,6 +204,7 @@
     <EmbeddedResource Include="Resources\R.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -48,7 +48,7 @@ namespace MouseRadar
 
         void Resume()
         {
-            ActionType = ActionType.StayOnTheSameLocked;
+            ActionType = ActionType.StayOnTheSame;
             Debug.Assert( _radar.CurrentStep == RadarStep.Paused );
             _radar.ToNextStep();
         }
@@ -84,7 +84,7 @@ namespace MouseRadar
             _radar.RotationSpeed = Configuration.User.GetOrSet( "RotationSpeed", 1 );
             _radar.TranslationSpeed = Configuration.User.GetOrSet( "TranslationSpeed", 1 );
 
-            ActionType = HighlightModel.ActionType.StayOnTheSameLocked;
+            ActionType = HighlightModel.ActionType.StayOnTheSame;
 
             Highlighter.Service.RegisterTree( "MouseRadarPlugin", this );
 
@@ -105,6 +105,7 @@ namespace MouseRadar
             UninitializeTopMost();
             Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
             _radar.Dispose();
+            Highlighter.Service.UnregisterTree( "MouseRadarPlugin", this );
         }
 
         public void Teardown()
@@ -189,7 +190,7 @@ namespace MouseRadar
             if( _yield )
             {
                 //Once the DelayRadar has ticked, we release the scroller.
-                scrollingDirective.NextActionType = ActionType = ActionType.AbsoluteRoot;
+                scrollingDirective.NextActionType = ActionType = ActionType.GoToAbsoluteRoot;
                 scrollingDirective.ActionTime = ActionTime.Immediate;
             }
 
@@ -202,7 +203,7 @@ namespace MouseRadar
                 Blur();
 
             //If the scroller was released (see BeginHighlight), we can pause the radar (we are no longer scrolling on it) 
-            if( ActionType != ActionType.StayOnTheSameLocked && IsActive )
+            if( ActionType != ActionType.StayOnTheSame && IsActive )
             {
                 Pause();
                 _yield = false;
@@ -216,7 +217,7 @@ namespace MouseRadar
             _radar.ToNextStep();
 
             //In any case, when we trigger the input when on the radar, we set the NextType as ActionType.StayOnTheSameLocked.
-            scrollingDirective.NextActionType = ActionType = ActionType.StayOnTheSameLocked;
+            scrollingDirective.NextActionType = ActionType = ActionType.StayOnTheSame;
             scrollingDirective.ActionTime = ActionTime.Immediate;
 
             return scrollingDirective;

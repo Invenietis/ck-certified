@@ -10,26 +10,24 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
-    [Plugin( KeyScrollerPlugin.PluginIdString,
+    [Plugin( ScrollerPlugin.PluginIdString,
            PublicName = PluginPublicName,
-           Version = KeyScrollerPlugin.PluginIdVersion,
+           Version = ScrollerPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class KeyScrollerPlugin : IPlugin, IHighlighterService
+    public class ScrollerPlugin : IPlugin, IHighlighterService
     {
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
-        public static List<string> AvailableStrategies = new List<string>();
 
         internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "KeyScroller";
+        const string PluginPublicName = "Scroller";
 
         Dictionary<string, IHighlightableElement> _registeredElements;
-        IScrollingStrategy _scrollingStrategy;
+        StrategyBridge _scrollingStrategy;
         Timer _timer;
-        Dictionary<string, IScrollingStrategy> _strategies;
         ITrigger _currentTrigger;
 
         public IPluginConfigAccessor Configuration { get; set; }
@@ -42,69 +40,37 @@ namespace KeyScroller
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> InputTrigger { get; set; }
 
-        //List the available strategy at the class init
-        static KeyScrollerPlugin()
-        {
-            AvailableStrategies.AddRange( StrategyAttribute.GetStrategies() );
-        }
 
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new Timer();
-            int timerSpeed = Configuration.User.GetOrSet( "Speed", 1000 );
-            _timer.Interval = timerSpeed;
+
+            _timer.Interval = Configuration.User.GetOrSet( "Speed", 1000 );
 
             _registeredElements = new Dictionary<string, IHighlightableElement>();
-            _strategies = new Dictionary<string, IScrollingStrategy>();
 
-            foreach ( string name in AvailableStrategies )
-            {
-                _strategies.Add( name, GetStrategyByName( name ) );
-            }
-            _scrollingStrategy = GetStrategyByName( Configuration.User.GetOrSet( "Strategy", "BasicScrollingStrategy" ) );
-
+            _scrollingStrategy = new StrategyBridge( _timer, _registeredElements, Configuration );
+            
             return true;
-        }
-
-        IScrollingStrategy GetStrategyByName( string name )
-        {
-            switch ( name )
-            {
-                case "TurboScrollingStrategy":
-                    if ( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new TurboScrollingStrategy( _timer, _registeredElements, Configuration );
-
-                case "OneByOneScrollingStrategy":
-                    if ( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new OneByOneScrollingStrategy( _timer, _registeredElements, Configuration );
-
-                case "HalfZoneScrollingStrategy":
-                    if ( _strategies.ContainsKey( name ) ) return _strategies[name];
-                    return new HalfZoneScrollingStrategy( _timer, _registeredElements, Configuration );
-
-                default:
-                    if ( _strategies.ContainsKey( "BasicScrollingStrategy" ) ) return _strategies["BasicScrollingStrategy"];
-                    return new ZoneScrollingStrategy( _timer, _registeredElements, Configuration );
-            }
         }
 
         public void Start()
         {
+            _scrollingStrategy.SwitchTo( Configuration.User.GetOrSet( "Strategy", "ZoneScrollingStrategy" ) );
             Configuration.ConfigChanged += OnConfigChanged;
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
             InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
+            
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if ( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
+            if ( e.MultiPluginId.Any( u => u.UniqueId == ScrollerPlugin.PluginId.UniqueId ) )
             {
                 if ( e.Key == "Strategy" )
                 {
-                    _scrollingStrategy.Stop();
-                    _scrollingStrategy = GetStrategyByName( e.Value.ToString() );
-                    _scrollingStrategy.Start();
+                    _scrollingStrategy.SwitchTo( e.Value.ToString() );
                 }
                 if ( e.Key == "Trigger" )
                 {
@@ -146,12 +112,13 @@ namespace KeyScroller
 
         public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
         {
-            if ( !_registeredElements.ContainsKey( targetModuleName ) )
+            if( !_registeredElements.ContainsKey( targetModuleName ) )
             {
                 _registeredElements.Add( targetModuleName, element );
-                if ( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
+                if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
                 if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
             }
+
         }
 
         public void UnregisterTree( string targetModuleName, IHighlightableElement element )
@@ -174,11 +141,6 @@ namespace KeyScroller
                         if ( iheus != null ) iheus.OnUnregisterTree();
                         return false;
                     } );
-
-                    if ( _registeredElements.Count == 0 )
-                    {
-                        _scrollingStrategy.Stop();
-                    }
 
                     //Warning the strategy that an element has been unregistered
                     _scrollingStrategy.ElementUnregistered( element );
@@ -224,13 +186,16 @@ namespace KeyScroller
             IHighlightableElement registeredElement;
             if ( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
             {
+                _scrollingStrategy.ElementUnregistered( element );
+
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
                     if ( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
                     else return false;
-                } );
+                } );   
             }
+            
             return false;
         }
 

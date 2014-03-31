@@ -112,7 +112,7 @@ namespace TextTemplate
         public ScrollingDirective SelectElement(ScrollingDirective scrollingDirective)
         {
             _selected = true;
-            scrollingDirective.NextActionType = HighlightModel.ActionType.AbsoluteRoot;
+            scrollingDirective.NextActionType = HighlightModel.ActionType.GoToAbsoluteRoot;
             _textTemplate.FocusOnElement( this );
             return scrollingDirective;
         }

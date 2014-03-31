@@ -136,7 +136,7 @@ namespace HighlightModel
         /// <summary>
         /// No special behavior 
         /// </summary>
-        Normal = 0,
+        MoveNext = 0,
         /// <summary>
         /// Try to scroll on the current element's children
         /// </summary>
@@ -152,24 +152,23 @@ namespace HighlightModel
         /// <summary>
         /// Stay on the current element until the element says otherwise
         /// </summary>
-        StayOnTheSameLocked = 4,
+        StayOnTheSame = 4,
         /// <summary>
         /// Go up to the first sibling
         /// </summary>
-        GoToFirstSibling = 5,
+        MoveToFirst = 5,
         /// <summary>
         /// Go up to the last sibling
         /// </summary>
-        GoToLastSibling = 6,
+        MoveToLast = 6,
         /// <summary>
         /// Go up to the root of the tree containing the element, and start iterating on its first child
         /// </summary>
-        RelativeRoot = 7,
+        GoToRelativeRoot = 7,
         /// <summary>
         /// Go up to the very root of the keyscroller (to the parent of the RelativeRoot), and start iterating on its first child
         /// </summary>
-        AbsoluteRoot = 8,
+        GoToAbsoluteRoot = 8,
 
     }
-
 }

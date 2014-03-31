@@ -741,7 +741,7 @@ namespace SimpleSkin.ViewModels
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            scrollingDirective.NextActionType = ActionType.RelativeRoot;
+            scrollingDirective.NextActionType = ActionType.GoToRelativeRoot;
             //allows the repeat of the same key
             scrollingDirective.ActionTime = ActionTime.Delayed;
 

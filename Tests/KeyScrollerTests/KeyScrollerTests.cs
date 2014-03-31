@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HighlightModel;
-using KeyScroller;
+using Scroller;
 using NUnit.Framework;
 
 namespace KeyScrollerTests
@@ -15,7 +15,7 @@ namespace KeyScrollerTests
         [Test]
         public void KeyScrollerRegisterTest()
         {
-            KeyScrollerPlugin scroller = new KeyScrollerPlugin();
+            ScrollerPlugin scroller = new ScrollerPlugin();
             scroller.InputTrigger = TestHelper.MockIServiceTriggerService().Object;
             scroller.Configuration = TestHelper.MockPluginConfigAccessor().Object;
             scroller.Setup( null );

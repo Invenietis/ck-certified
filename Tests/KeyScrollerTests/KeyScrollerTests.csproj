@@ -74,9 +74,9 @@
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugins\Accessibility\KeyScroller\KeyScroller.csproj">
+    <ProjectReference Include="..\..\Plugins\Accessibility\KeyScroller\Scroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
-      <Name>KeyScroller</Name>
+      <Name>Scroller</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Plugins\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>

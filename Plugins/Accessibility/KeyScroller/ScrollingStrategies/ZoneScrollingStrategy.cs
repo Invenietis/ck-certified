@@ -4,7 +4,7 @@ using HighlightModel;
 using CK.Plugin.Config;
 using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
     /// <summary>
     /// Scrolling on each zone, then entering the zone to scroll on each key
@@ -19,19 +19,14 @@ namespace KeyScroller
             get { return StrategyName; }
         }
 
-        public ZoneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
-            : base( timer, elements, configuration )
-        {
-        }
-
         public override void OnExternalEvent()
         {
-            if( _currentElement != null )
+            if( Walker.Current != null )
             {
-                if( _currentElement.Children.Count > 0 ) _lastDirective.NextActionType = ActionType.EnterChild;
+                if( Walker.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
                 else
                 {
-                    _lastDirective.NextActionType = ActionType.StayOnTheSameOnce;
+                    LastDirective.NextActionType = ActionType.StayOnTheSameOnce;
                 }
                 FireSelectElement();
             }

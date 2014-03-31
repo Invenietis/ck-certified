@@ -6,181 +6,78 @@ using CK.Plugin.Config;
 using HighlightModel;
 using SimpleSkin.ViewModels;
 using System.Timers;
+using System;
 
-namespace KeyScroller
+namespace Scroller
 {
     [Strategy( HalfZoneScrollingStrategy.StrategyName )]
     internal class HalfZoneScrollingStrategy : ZoneScrollingStrategy
     {
+        public static readonly int ZoneDivider = 2;
         const string StrategyName = "HalfZoneScrollingStrategy";
-        const int ChildrenLimitBeforeSplit = 6;
+
+        public HalfZoneScrollingStrategy() : base()
+        {
+            if( ZoneDivider < 2 ) throw new InvalidOperationException( "The ZoneDivider can't be less than 2 !" );
+
+            Walker = new ZondeDivderWalker( this );
+        }
 
         public override string Name
         {
             get { return StrategyName; }
         }
+    }
 
-        IHighlightableElement _nextElement = null;
+    public class ZondeDivderWalker : TreeWalker
+    {
+        public ZondeDivderWalker(IHighlightableElement root) : base ( root )
+        { }
 
-        public HalfZoneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
-            : base( timer, elements, configuration )
+        public override bool EnterChild()
         {
+            if( Current.Children.Count == 0 ) return false;
+
+            //False if the current element is not a root/relative root or if there are not enough children or if one child is an KeySimple
+            if( !Current.IsHighlightableTreeRoot && Current.Children.Count > HalfZoneScrollingStrategy.ZoneDivider && Current.Children[0] as VMKeySimple != null && Peek() as VirtualZone == null )
+            {
+                IHighlightableElement old = Current;
+                Current = new VirtualZone(Current);
+                
+                //if( old.IsHighlightableTreeRoot ) ((VirtualZone) Current).Skip = SkippingBehavior.Skip;
+
+                var parent = Peek() as VirtualZone;
+                if( parent != null ) parent.UpdateChild( old, Current );
+            }
+
+            return base.EnterChild();
         }
 
-        protected override IHighlightableElement GetUpToParent()
+        public override bool MoveNext()
         {
-            IHighlightableElement nextElement = null;
-            // if there is no parent, go to normal next element
-            if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
+            if( Sibblings.Count <= 1 ) //false if there are no sibblings at all
+                return false;
 
-            IHighlightableElement parent = _currentElementParents.Pop();
-            IHighlightableElement parentObj = null;
-            ICKReadOnlyList<IHighlightableElement> parentSibblings = null;
-            if( _currentElementParents.Count > 0 )
-            {
-                parentObj = _currentElementParents.Peek();
-                parentSibblings = parentObj.Children;
-            }
-            else
-            {
-                parentSibblings = RegisteredElements;
-            }
+            int idx = Sibblings.IndexOf( Current );
 
-            // if it's a splitted zone, "insert" it in the model logically
-            if( parent is VMSplitZone )
+            //False when the element is found in its parents 
+            //or when the parent is a root element and the current element is a virtualzone : 
+            //Means that we may found the WrappedElement of the current VirtualZone in the sibblings list.
+            if( idx < 0 && (Peek() == null || !Peek().IsHighlightableTreeRoot && Current as VirtualZone == null) ) 
+                throw new InvalidOperationException( "Something goes wrong : the current element is not contained by its parent !" );
+            
+            if( idx >= 0 )
             {
-                var parentSplitZone = parent as VMSplitZone;
-                if( parentObj is VMZoneSimple && !( parentObj is VMSplitZone ) )
-                {
-                    if( _currentElementParents.Count >= 1 )
-                    {
-                        parentObj = _currentElementParents.Skip( 1 ).Take( 1 ).SingleOrDefault();
-                        if( parentObj != null ) parentSibblings = parentObj.Children;
-                    }
-                }
+                //The current child is the last one
+                if( idx + 1 >= Sibblings.Count ) return false;
 
-                _currentId = parentSibblings.IndexOf( parentSplitZone.Original );
-                nextElement = parentSplitZone.Parent ?? parentSplitZone;
-            }
-            else
-            {
-                _currentId = parentSibblings.IndexOf( parent );
-                nextElement = parent;
+                Current = Sibblings.ElementAt( idx + 1 );
+                return true;
             }
 
-            if( _currentId < 0 ) _currentId = 0;
-
-            // if the parent skipping behavior is enter children, we skip it
-            if( parent.Skip == SkippingBehavior.EnterChildren )
-            {
-                _currentElement = nextElement;
-                return GetNextElement( ActionType.Normal );
-            }
-
-            return nextElement;
-        }
-
-        protected override IHighlightableElement GetEnterChild( ICKReadOnlyList<IHighlightableElement> elements )
-        {
-            // if the current element does not have any children ... go to the normal next element
-            if( _nextElement == null || ( _nextElement != null && _nextElement.Children.Count == 0 ) ) return GetNextElement( ActionType.Normal );
-            // otherwise we just push the element as a parent and set the the first child as the current element
-            _currentId = 0;
-
-            var vmz = _nextElement as VMZoneSimple;
-            if( vmz != null && !( vmz is VMSplitZone ) && vmz.Children.Count > ChildrenLimitBeforeSplit )
-            {
-                _nextElement = new VMSplitZone( vmz, vmz.Children.Skip( 0 ).Take( vmz.Children.Count / 2 ), vmz.Children.Skip( vmz.Children.Count / 2 ) );
-                // push the original zone in the history
-                _currentElementParents.Push( vmz );
-                return _nextElement;
-            }
-            else
-            {
-                _currentElementParents.Push( _nextElement );
-            } 
-
-            return _nextElement.Children[0];
-        }
-
-        protected override IHighlightableElement GetNextElement( ActionType actionType )
-        {
-            // reset the action type to normal
-            if( actionType != ActionType.StayOnTheSameLocked )
-                _lastDirective.NextActionType = ActionType.Normal;
-
-            if( actionType == ActionType.AbsoluteRoot )
-            {
-                _nextElement = GetUpToAbsoluteRoot();
-            }
-            else if( actionType == ActionType.RelativeRoot )
-            {
-                _nextElement = GetUpToRelativeRoot();
-            }
-            else if( actionType == ActionType.UpToParent )
-            {
-                _nextElement = GetUpToParent();
-            }
-            else
-            {
-                ICKReadOnlyList<IHighlightableElement> elements = null;
-                // get the sibling of the current element
-                if( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
-                else elements = RegisteredElements;
-
-                if( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
-                {
-                    _nextElement = GetStayOnTheSame( elements );
-                }
-                else if( _currentId < 0 || actionType != ActionType.EnterChild )
-                {
-                    // if it's the first iteration, or if we just have to go to the next sibbling
-                    VMSplitZone splitZone = null;
-
-                    if( _nextElement != null )
-                    {
-                        splitZone = _nextElement as VMSplitZone;
-                    }
-
-                    if( splitZone != null && splitZone.Next != null )
-                    {
-                        _nextElement = splitZone.Next;
-                    }
-                    else
-                    {
-                        if( _currentId < elements.Count - 1 ) _currentId++;
-                        // if we are at the end of this elements set and if there is a parent in the stack, move to parent
-                        else if( _currentElementParents.Count > 0 ) return GetNextElement( ActionType.UpToParent );
-                        // otherwise we go back to the first element
-                        else _currentId = 0;
-
-                        var nextElementToSplit = elements[_currentId];
-                        if( ( _nextElement is VMSplitZone ) )
-                        {
-                            _nextElement = GetUpToParent();
-                        }
-                        else if( !( nextElementToSplit is VMZoneSimple ) )
-                        {
-                            _nextElement = nextElementToSplit;
-                        }
-                        else
-                        {
-                            var vmz = nextElementToSplit as VMZoneSimple;
-                            _nextElement = vmz;
-                        }
-                    }
-                }
-                else if( _elements.Count == 1 && _nextElement.Children.Count == 0)
-                {
-                    _nextElement = GetStayOnTheSame( elements );
-                }
-                else if( _nextElement.Children.Count > 0 )
-                {
-                    _nextElement = GetEnterChild( _nextElement.Children );
-                }
-            }
-
-            return GetSkipBehavior( _nextElement );
+            //Here we get the wrapped element and restart the procedure.
+            Current = ((VirtualZone) Current).WrappedElement;
+            return MoveNext();
         }
     }
 }

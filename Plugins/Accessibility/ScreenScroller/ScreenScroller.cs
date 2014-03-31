@@ -258,7 +258,7 @@ namespace ScreenScroller
                 {
                     CurrentNode = null;
                     _entered = false;
-                    scrollingDirective.NextActionType = ActionType.Normal;
+                    scrollingDirective.NextActionType = ActionType.MoveNext;
                 }
                 else
                 {
@@ -289,7 +289,7 @@ namespace ScreenScroller
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            scrollingDirective.NextActionType = ActionType.StayOnTheSameLocked;
+            scrollingDirective.NextActionType = ActionType.StayOnTheSame;
 
             if( CurrentNode == null )
             {
@@ -321,7 +321,7 @@ namespace ScreenScroller
                     CurrentNode = null;
                     _entered = false;
                     ExitAll();
-                    scrollingDirective.NextActionType = ActionType.AbsoluteRoot;
+                    scrollingDirective.NextActionType = ActionType.GoToAbsoluteRoot;
                 }
             }
 

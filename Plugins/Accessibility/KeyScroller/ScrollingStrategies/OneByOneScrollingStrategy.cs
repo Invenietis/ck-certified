@@ -5,86 +5,44 @@ using HighlightModel;
 using CK.Plugin.Config;
 using System.Diagnostics;
 using System.Timers;
-
-namespace KeyScroller
+using System.Linq;
+namespace Scroller
 {
     /// <summary>
-    /// Scrolling on each key one after the other, without taking zones into account
+    /// A ScrollingStrategy that scroll only on sheets elements.
     /// </summary>
     [StrategyAttribute( OneByOneScrollingStrategy.StrategyName )]
     public class OneByOneScrollingStrategy : ScrollingStrategyBase
     {
         const string StrategyName = "OneByOneScrollingStrategy";
-        public OneByOneScrollingStrategy( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
-            : base( timer, elements, configuration )
-        {
-        }
-
         public override string Name
         {
             get { return StrategyName; }
         }
 
-        protected override IHighlightableElement GetUpToParent()
-        {
-            IHighlightableElement nextElement = null;
-            // if there is no parent, we are at the root level, we'll start iterating on the current tree's next sibling
-            if( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
-
-            //We get the parent and fetch its siblings
-            IHighlightableElement parent = _currentElementParents.Pop();
-            ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
-            if( _currentElementParents.Count > 0 )
-            {
-                parentSiblings = _currentElementParents.Peek().Children;
-            }
-            else
-            {
-                //there, we actually are at the root level
-                Debug.Assert( parent.IsHighlightableTreeRoot );
-                parentSiblings = RegisteredElements;
-
-                //If this tree is the only tree at the root level, we directly start iterating on its children
-                if( parentSiblings.Count == 1 ) return GetNextElement( ActionType.EnterChild );
-            }
-
-            //We get the current element's parent. The idea it to directly enter the next sibling's children to bypass the zones.
-            int parentId = parentSiblings.IndexOf( parent );
-
-            //When the parent is the last of its level, we go up to the next upper level. 
-            if( parentId == parentSiblings.Count - 1 )
-            {
-                _currentId = parentId = 0;
-                return GetNextElement( ActionType.UpToParent );
-            }
-            else ++parentId; //otherwise we get to the next parent to start iterating on its children
-
-            nextElement = parentSiblings[parentId];
-
-            _currentElement = nextElement;
-            _currentId = parentId;
-
-            return GetNextElement( ActionType.EnterChild );
-        }
-
-        protected override IHighlightableElement GetSkipBehavior( IHighlightableElement element )
-        {
-            switch( element.Skip )
+        protected override void ProcessSkipBehavior(ActionType action)
+        { 
+            switch( Walker.Current.Skip )
             {
                 case SkippingBehavior.Skip:
-                    return GetNextElement( ActionType.Normal );
+                    MoveNext( ActionType.MoveNext );
+                    break;
                 default:
-                    if( element != null && element.Children.Count > 0 && !element.IsHighlightableTreeRoot )
+
+                    if( Walker.Current.Children.Count > 0 && !Walker.Current.IsHighlightableTreeRoot || Walker.Current.Skip == SkippingBehavior.EnterChildren || Walker.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Walker.Current.Children.Count > 0 )
                     {
-                        return GetNextElement( ActionType.EnterChild );
+                        if( action != ActionType.UpToParent )
+                            MoveNext( ActionType.EnterChild );
+                        else
+                            MoveNext( ActionType.MoveNext );
                     }
-                    return element;
+                    break;
             }
         }
 
         public override void OnExternalEvent()
         {
-            if( _currentElement != null )
+            if( Walker.Current != null )
             {
                 FireSelectElement();
             }

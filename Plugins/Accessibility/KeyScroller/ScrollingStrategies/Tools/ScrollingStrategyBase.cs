@@ -1,381 +1,178 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Threading;
+using System.Text;
+using System.Timers;
 using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
-using System.Diagnostics;
-using System.Timers;
 
-namespace KeyScroller
+namespace Scroller
 {
-    public abstract class ScrollingStrategyBase : IScrollingStrategy
+    public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
-        ICKReadOnlyList<IHighlightableElement> _roElements;
+        protected IPluginConfigAccessor Configuration { get; set; }
+        protected Timer Timer { get; set; }
+        protected ScrollingDirective LastDirective { get; set; }
+        protected IHighlightableElement PreviousElement { get; set; }
+        protected ITreeWalker Walker { get; set; }     //Big up to Olivier Spineli
+        protected Dictionary<string, IHighlightableElement> Elements { get; set; }
 
-        protected Dictionary<string, IHighlightableElement> _elements;
-        protected IPluginConfigAccessor _configuration;
-        protected Timer _timer;
-        protected int _currentId = -1;
-        protected bool _isDelayed = false;
-        protected IHighlightableElement _goToElement;
-
-        protected Stack<IHighlightableElement> _currentElementParents = null;
-        protected IHighlightableElement _previousElement = null;
-        protected IHighlightableElement _currentElement = null;
-        protected ScrollingDirective _lastDirective;
-
-        internal ICKReadOnlyList<IHighlightableElement> RegisteredElements
+        bool CanMove()
         {
-            // ToDOJL
-            //get { return _roElements ?? ( _roElements = _elements.Values.ToReadOnlyList() ); }
-            get { return _roElements = _elements.Values.ToReadOnlyList(); }
+            if( Walker.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
+                return false;
+
+            if( Elements.Values.All( e => e.Children.All(c => c.Skip == SkippingBehavior.Skip )) )
+                return false;
+
+            return true;
         }
 
-        public ScrollingStrategyBase( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor configuration )
+        public ScrollingStrategyBase()
         {
-            _elements = elements;
-            _timer = timer;
-            _currentElementParents = new Stack<IHighlightableElement>();
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Goes up in the tree and returns the root of the first registered tree
-        /// </summary>
-        /// <returns>The root of the first registered tree</returns>
-        protected virtual IHighlightableElement GetUpToAbsoluteRoot()
-        {
-            _currentId = 0;
-            _currentElementParents = new Stack<IHighlightableElement>();
-
-            return RegisteredElements.FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Goes up in the tree and returns the first child of the relative root of the current element's tree 
-        /// For example : the RelativeRoot of the keyboard is the VMKeyboard itself. We are going to get the keyboard's first child and to start iterating on it directly. 
-        /// </summary>
-        /// <returns>The first child of the current element's relative root</returns>
-        protected virtual IHighlightableElement GetUpToRelativeRoot()
-        {
-            if ( _currentElementParents.Count == 0 ) return _currentElement;
-
-            //Getting the children of the root element of the current tree
-
-            ICKReadOnlyList<IHighlightableElement> rootChildren = null;
-            while ( _currentElementParents.Count > 1 )
-            {
-                _currentElementParents.Pop();
-            }
-            rootChildren = _currentElementParents.Peek().Children;
-
-            //Returning the first child.
-            _currentId = 0;
-            return rootChildren.First();
-        }
-
-        protected virtual IHighlightableElement GetUpToParent()
-        {
-            IHighlightableElement nextElement = null;
-            // if there is no parent, go to normal next element
-            if ( _currentElementParents.Count == 0 ) return GetNextElement( ActionType.Normal );
-
-            //We get the parent and fetch its siblings
-            IHighlightableElement parent = _currentElementParents.Pop();
-            ICKReadOnlyList<IHighlightableElement> parentSiblings = null;
-            if ( _currentElementParents.Count > 0 )
-            {
-                parentSiblings = _currentElementParents.Peek().Children;
-            }
-            else
-            {
-                //there, we actually are at the root level
-                Debug.Assert( parent.IsHighlightableTreeRoot );
-                parentSiblings = RegisteredElements;
-
-                //If this tree is the only tree at the root level not skip, we directly start iterating on its children
-                if ( parentSiblings.Count( he => he.Skip != SkippingBehavior.Skip ) == 1 )
-                {
-                    _currentId = parentSiblings.IndexOf( he => he.Skip != SkippingBehavior.Skip );
-                    return GetNextElement( ActionType.EnterChild );
-                }
-            }
-
-            _currentId = parentSiblings.IndexOf( parent );
-            nextElement = parent;
-
-            // if the parent skipping behavior is enter children, we skip it
-            if ( parent.Skip == SkippingBehavior.EnterChildren )
-            {
-                _currentElement = nextElement;
-                return GetNextElement( ActionType.Normal );
-            }
-
-            return nextElement;
-        }
-
-        protected virtual IHighlightableElement GetStayOnTheSame( ICKReadOnlyList<IHighlightableElement> elements )
-        {
-            return elements[_currentId];
-        }
-
-        protected virtual IHighlightableElement GetSkipBehavior( IHighlightableElement element )
-        {
-            switch ( element.Skip )
-            {
-                case SkippingBehavior.Skip:
-                    return GetNextElement( ActionType.Normal );
-                case SkippingBehavior.EnterChildren:
-                    return GetNextElement( ActionType.EnterChild );
-                default:
-                    return element;
-            }
-        }
-
-        protected virtual IHighlightableElement GetEnterChild( ICKReadOnlyList<IHighlightableElement> elements )
-        {
-            // if the current element does not have any children ... go to the normal next element
-            if ( elements[_currentId].Children.Count == 0 ) return GetNextElement( ActionType.Normal );
-            // otherwise we just push the element as a parent and set the first child as the current element
-            _currentElementParents.Push( elements[_currentId] );
-            int tmpId = _currentId;
-            _currentId = 0;
-
-            return elements[tmpId].Children[0];
-        }
-
-        protected virtual IHighlightableElement GetGoToFirstSibling( ICKReadOnlyList<IHighlightableElement> elements )
-        {
-            _currentId = 0;
-            return elements[_currentId];
-        }
-
-        protected virtual IHighlightableElement GetGoToLastSibling( ICKReadOnlyList<IHighlightableElement> elements )
-        {
-            _currentId = elements.Count - 1;
-            return elements[_currentId];
-        }
-
-        protected virtual IHighlightableElement GetNextElement( ActionType actionType )
-        {
-            // defer action to the next tick
-            if( _lastDirective != null && _lastDirective.ActionTime == ActionTime.Delayed )
-            {
-                _lastDirective.ActionTime = ActionTime.NextTick;
-                return _currentElement;
-            }
-
-            // reset the action type to normal if we are not on a StayOnTheSameLocked
-            if ( actionType != ActionType.StayOnTheSameLocked )
-                _lastDirective.NextActionType = ActionType.Normal;
-
-            //We retrieve parents that implement IHighlightableElementController
-            var controlingParents = _currentElementParents.Where( ( i ) => { return i is IHighlightableElementController; } );
-
-            foreach ( IHighlightableElementController parent in controlingParents )
-            {
-                //we offer the possibility to change action
-                actionType = parent.PreviewChildAction( _currentElement, actionType );
-            }
-
-            foreach ( IHighlightableElementController parent in controlingParents )
-            {
-                //inform that there is a new ActionType
-                parent.OnChildAction( actionType );
-            }
-
-            IHighlightableElement nextElement = null;
-
-            // used to highlight an element immediately
-            if( _goToElement != null )
-            {
-                nextElement = _goToElement;
-                _goToElement = null;
-            }
-            else if ( actionType == ActionType.AbsoluteRoot )
-            {
-                nextElement = GetUpToAbsoluteRoot();
-            }
-            else if ( actionType == ActionType.RelativeRoot )
-            {
-                nextElement = GetUpToRelativeRoot();
-            }
-            else if ( actionType == ActionType.UpToParent )
-            {
-                nextElement = GetUpToParent();
-            }
-            else
-            {
-                ICKReadOnlyList<IHighlightableElement> elements = null;
-                // get the sibling of the current element
-                if ( _currentElementParents.Count > 0 ) elements = _currentElementParents.Peek().Children;
-                else
-                {
-                    //We are on the root level
-                    elements = RegisteredElements;
-
-                    // ToDoJL
-                    //We are on the root level, and there is only one element or just one element is not skip, so we directly enter it.
-                    if ( actionType != ActionType.EnterChild && elements.Count( he => he.Skip != SkippingBehavior.Skip ) == 1 )
-                    {
-                        int index = elements.IndexOf( he => he.Skip != SkippingBehavior.Skip && he.Children.Count > 0 );
-                        if( index != -1 )
-                        {
-                            _currentId = index;
-                            //avoids a StackOverFlow, if children 0 and we have skip.EnterChild
-                            if( elements[index].Children.Count == 0 || elements[index].Children.All( he => he.Skip == SkippingBehavior.Skip ) )
-                            {
-                                return _currentElement;
-                            }
-                            nextElement = GetEnterChild( elements );
-                            return GetSkipBehavior( nextElement );
-                        }
-                    }
-                }
-
-                if ( actionType == ActionType.StayOnTheSameOnce || actionType == ActionType.StayOnTheSameLocked )
-                {
-                    nextElement = GetStayOnTheSame( elements );
-                }
-                else if ( actionType == ActionType.GoToFirstSibling )
-                {
-                    nextElement = GetGoToFirstSibling( elements );
-                }
-                else if ( actionType == ActionType.GoToLastSibling )
-                {
-                    nextElement = GetGoToLastSibling( elements );
-                }
-                else if ( _currentId < 0 || actionType != ActionType.EnterChild )
-                {
-                    // if it's the first iteration, or if we just have to go to the next sibbling
-                    if ( _currentId < elements.Count - 1 ) _currentId++;
-                    // if we are at the end of this elements set and if there is a parent in the stack, move to parent
-                    else if ( _currentElementParents.Count > 0 ) return GetNextElement( ActionType.UpToParent );
-                    // otherwise we go back to the first element
-                    else _currentId = 0;
-
-                    nextElement = elements[_currentId];
-                }
-                else
-                {
-                    nextElement = GetEnterChild( elements );
-                }
-            }
-
-            if ( RegisteredElements.All( e => e.Skip == SkippingBehavior.Skip ) ) return nextElement;
-
-            return GetSkipBehavior( nextElement );
-        }
-
-        bool _isStarted;
-        public bool IsStarted { get { return _isStarted; } }
-        public virtual void Start()
-        {
-            Debug.Assert( !_isStarted );
-
-            StartTimer();
-
-            _timer.Elapsed += OnInternalBeat;
-            _configuration.ConfigChanged += OnConfigChanged;
-            _isStarted = true;
-        }
-
-        public virtual void Stop()
-        {
-            if ( _timer.Enabled )
-            {
-                FireEndHighlight( _currentElement, null );
-                _timer.Enabled = false;
-            }
-            _timer.Elapsed -= OnInternalBeat;
-            _configuration.ConfigChanged -= OnConfigChanged;
-            _isStarted = false;
-        }
-
-        public virtual void Pause( bool forceEndHighlight )
-        {
-            if ( _timer.Enabled )
-            {
-                if ( forceEndHighlight )
-                {
-                    FireEndHighlight( _currentElement, null );
-                }
-                _timer.Stop();
-            }
-        }
-
-        public virtual void Resume()
-        {
-            StartTimer();
-        }
-
-        protected virtual void StartTimer()
-        {
-            if ( !_timer.Enabled && _elements.Count > 0 )
-            {
-                _timer.Start();
-            }
-        }
-
-        protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )
-        {
-            if ( e.MultiPluginId.Any( u => u.UniqueId == KeyScrollerPlugin.PluginId.UniqueId ) )
-            {
-                if ( e.Key == "Speed" )
-                {
-                    _timer.Interval = (double)(int)e.Value;
-                }
-            }
-        }
-
-        public abstract void OnExternalEvent();
-
-        /// <summary>
-        /// This function forces the highlight of the given element.
-        /// </summary>
-        /// <param name="element">The element highlight.</param>
-        /// <remarks> 
-        /// This function is useful only when there is no alternative to.
-        /// </remarks>
-        public void GoToElement( IHighlightableElement element )
-        {
-            _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.Immediate );
-            _goToElement = element;
-            EnsureReactivity();
+            LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
+            Walker = new TreeWalker( this );
         }
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            if ( _lastDirective == null ) _lastDirective = new ScrollingDirective( ActionType.Normal, ActionTime.NextTick );
+            Console.WriteLine( "BEAT \n" );
+            if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
 
             //Saving the currently highlighted element
-            _previousElement = _currentElement;
+            PreviousElement = Walker.Current;
 
-            //Fetching the next element
-            _currentElement = GetNextElement( _lastDirective.NextActionType );
+            //Move the cursor to the next element
+            MoveNext( LastDirective.NextActionType );
 
             //End highlight on the previous element (if different from the current one)
-            if ( _previousElement != null )
-                FireEndHighlight( _previousElement, _currentElement );
+            if( PreviousElement != null )
+                FireEndHighlight( PreviousElement, Walker.Current );
 
             //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
-            if ( _currentElement != null )
+            if( Walker.Current != null )
                 FireBeginHighlight();
         }
 
-        /// <summary>
-        /// Calls the SelectElement method of the current IHighlightableElement
-        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to SelectElement.
-        /// </summary>
-        protected void FireSelectElement()
+        protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if ( _currentElement != null )
+            if( e.MultiPluginId.Any( u => u.UniqueId == ScrollerPlugin.PluginId.UniqueId ) )
             {
-                _lastDirective = _currentElement.SelectElement( _lastDirective );
+                if( e.Key == "Speed" )
+                {
+                    Timer.Interval = (double)(int)e.Value;
+                }
+            }
+        }
 
-                EnsureReactivity();
+        /// <summary>
+        /// Move the cursor to the next element according to the given ActionType
+        /// </summary>
+        /// <param name="action">The ActionType that indicate the move direction</param>
+        public virtual void MoveNext( ActionType action )
+        {
+            if( !CanMove() ) return;
+
+            Console.WriteLine( "NEXT \n" );
+
+            // defer action to the next tick
+            if( LastDirective != null && LastDirective.ActionTime == ActionTime.Delayed )
+            {
+                LastDirective.ActionTime = ActionTime.NextTick;
+                return;
+            }
+
+            //We retrieve parents that implement IHighlightableElementController
+            var controlingParents = Walker.Parents.Where( ( i ) => { return i is IHighlightableElementController; } );
+
+            foreach( IHighlightableElementController parent in controlingParents )
+            {
+                //we offer the possibility to change action
+                action = parent.PreviewChildAction( Walker.Current, action );
+            }
+
+            foreach( IHighlightableElementController parent in controlingParents )
+            {
+                //inform that there is a new ActionType
+                parent.OnChildAction( action );
+            }
+
+            // reset the action type
+            LastDirective.NextActionType = ActionType.MoveNext;
+            
+            switch(action)
+            {
+                case ActionType.MoveNext :
+                    if( !Walker.MoveNext() )
+                        MoveNext(ActionType.UpToParent);
+                    break;
+
+                case ActionType.UpToParent:
+                    if( !Walker.UpToParent() )
+                        MoveNext(ActionType.MoveToFirst);
+                    break;
+
+                case ActionType.EnterChild :
+                    if( !Walker.EnterChild() )
+                        MoveNext(ActionType.MoveNext);
+                    break;
+
+                case ActionType.MoveToFirst :
+                    Walker.MoveFirst();
+                    break;
+
+                case ActionType.MoveToLast :
+                    Walker.MoveLast();
+                    break;
+
+                case ActionType.StayOnTheSame :
+                    LastDirective.NextActionType = ActionType.StayOnTheSame;
+                    break;
+
+                case ActionType.GoToRelativeRoot :
+                    Walker.GoToRelativeRoot();
+                    MoveNext( ActionType.EnterChild );
+                    break;
+
+                default :
+                    //StayOnTheSameOnce
+                    LastDirective.NextActionType = ActionType.GoToRelativeRoot;
+                    break;
+            }
+
+            ProcessSkipBehavior(action);
+        }
+
+        /// <summary>
+        /// Read the the SkipBehavior of the current element and process it.
+        /// </summary>
+        protected virtual void ProcessSkipBehavior( ActionType action )
+        {
+            switch(Walker.Current.Skip)
+            {
+                case SkippingBehavior.Skip :
+                    MoveNext(ActionType.MoveNext);
+                    break;
+                case SkippingBehavior.EnterChildren :
+
+                    //False if the walker goes up. (Avoid infinite loop)
+                    if( action != ActionType.UpToParent )
+                        MoveNext( ActionType.EnterChild );
+                    else
+                        MoveNext( ActionType.MoveNext );
+                    break;
+                default :
+                    //Enter in the module if it the only one registered
+                    if( Walker.Current.IsHighlightableTreeRoot && Walker.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Walker.Current.Children.Count( s => s.Skip != SkippingBehavior.Skip ) > 0 )
+                    {
+                        if( action != ActionType.UpToParent )
+                            MoveNext( ActionType.EnterChild );
+                        else
+                            MoveNext( ActionType.MoveNext );
+                        break;
+                    }
+                    break;
             }
         }
 
@@ -384,50 +181,43 @@ namespace KeyScroller
         /// </summary>
         internal void EnsureReactivity()
         {
-            if( _lastDirective != null )
+            if( LastDirective != null )
             {
-                if( _lastDirective.ActionTime == ActionTime.Immediate )
+                if( LastDirective.ActionTime == ActionTime.Immediate )
                 {
                     //Setting the ActionTime back to NextTick. Immediate has to be set explicitely at each step;
-                    _lastDirective.ActionTime = ActionTime.NextTick;
+                    LastDirective.ActionTime = ActionTime.NextTick;
 
-                    _timer.Stop();
+                    Timer.Stop();
                     OnInternalBeat( this, EventArgs.Empty );
                     //Console.Out.WriteLine( "Immediate !" );
-                    _timer.Start();
+                    Timer.Start();
                 }
             }
         }
 
-        public abstract string Name
+        /// <summary>
+        /// Calls the SelectElement method of the current IHighlightableElement
+        /// It also sets LastDirective to the ScrollingDirective object returned by the call to SelectElement.
+        /// </summary>
+        protected virtual void FireSelectElement()
         {
-            get;
-        }
-
-        public void ElementUnregistered( IHighlightableElement unregisteredElement )
-        {
-            IEnumerable<IHighlightableElement> parents = _currentElementParents.Select( e => { return e is ExtensibleHighlightableElementProxy ? ( (ExtensibleHighlightableElementProxy)e ).HighlightableElement : e; } );
-
-            if ( parents.Contains( unregisteredElement ) )
+            if( Walker.Current != null )
             {
-                //The unregistered element is one of the parents of the current element, so we need to stop iterating on this element and start on the next one.
-                FireEndHighlight( _currentElement, null );
-
-                //We flush the parent list. When we call the next element, we'll be on the next registered tree
-                _currentElementParents = new Stack<IHighlightableElement>();
-                _currentId = 0;
+                LastDirective = Walker.Current.SelectElement( LastDirective );
+                EnsureReactivity();
             }
         }
 
         /// <summary>
         /// Calls the BeginHighlight method of the current IHighlightableElement
-        /// It also sets _lastDirective to the ScrollingDirective object returned by the call to BeginHighlight.
+        /// It also sets LastDirective to the ScrollingDirective object returned by the call to BeginHighlight.
         /// </summary>
-        void FireBeginHighlight()
+        protected virtual void FireBeginHighlight()
         {
-            if ( _currentElement != null )
+            if( Walker.Current != null )
             {
-                _lastDirective = _currentElement.BeginHighlight( new BeginScrollingInfo( _timer.Interval, _previousElement ), _lastDirective );
+                LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval, PreviousElement ), LastDirective );
                 EnsureReactivity();
             }
         }
@@ -436,13 +226,160 @@ namespace KeyScroller
         /// Calls the EndHighlight method of the current IHighlightableElement
         /// It also sets _lastDirective to the ScrollingDirective object returned by the call to EndHighlight.
         /// </summary>
-        void FireEndHighlight( IHighlightableElement previouslyHighlightedElement, IHighlightableElement elementToBeHighlighted )
+        protected virtual void FireEndHighlight( IHighlightableElement previousElement, IHighlightableElement element )
         {
-            if ( previouslyHighlightedElement != null )
+            if( previousElement != null )
             {
-                _lastDirective = previouslyHighlightedElement.EndHighlight( new EndScrollingInfo( _timer.Interval, previouslyHighlightedElement, elementToBeHighlighted ), _lastDirective );
+                LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval, previousElement, element ), LastDirective );
                 EnsureReactivity();
             }
         }
+
+        #region IScrollingStrategy Members
+
+        public abstract string Name
+        {
+            get;
+        }
+
+        public virtual bool IsStarted
+        {
+            get;
+            protected set;
+        }
+
+        public virtual void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        {
+            Timer = timer;
+            Elements = elements;
+            Configuration = config;
+        }
+
+        public virtual void Start()
+        {
+            if( IsStarted ) return;
+
+            Timer.Elapsed += OnInternalBeat;
+            Configuration.ConfigChanged += OnConfigChanged;
+            
+            //Reset the walker
+            Walker.GoToAbsoluteRoot();
+            Timer.Start();
+            IsStarted = true;
+        }
+
+        public virtual void Stop()
+        {
+            if( Timer.Enabled )
+            {
+                FireEndHighlight( Walker.Current, null );
+                Timer.Enabled = false;
+            }
+            Timer.Elapsed -= OnInternalBeat;
+            Configuration.ConfigChanged -= OnConfigChanged;
+            Timer.Stop();
+            IsStarted = false;
+        }
+
+        public virtual void GoToElement( HighlightModel.IHighlightableElement element )
+        {
+            LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.Immediate );
+
+            Walker.Current.EndHighlight( new EndScrollingInfo( Timer.Interval, PreviousElement, element ), LastDirective );
+            Walker.GoTo( element );
+            EnsureReactivity();
+        }
+
+        public virtual void Pause( bool forceEndHighlight )
+        {
+            if( Timer.Enabled )
+            {
+                if( forceEndHighlight )
+                {
+                    FireEndHighlight( Walker.Current, null );
+                }
+                Timer.Stop();
+            }
+        }
+
+        public virtual void Resume()
+        {
+            if( !Timer.Enabled ) Timer.Start();
+        }
+
+        public virtual void OnExternalEvent()
+        {
+            if( Walker.Current != null )
+            {
+                if( Walker.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
+                else
+                {
+                    LastDirective.NextActionType = ActionType.StayOnTheSameOnce;
+                }
+                FireSelectElement();
+            }
+        }
+
+        public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
+        {
+            GoToElement( this );
+            EnsureReactivity();
+        }
+
+        #endregion
+
+        #region IHighlightableElement Members
+
+        public ICKReadOnlyList<IHighlightableElement> Children
+        {
+            get { return new CKReadOnlyListOnIList<IHighlightableElement>(Elements.Values.ToList()); }
+        }
+
+        public int X
+        {
+            get { return 0; }
+        }
+
+        public int Y
+        {
+            get { return 0; }
+        }
+
+        public int Width
+        {
+            get { return 0; }
+        }
+
+        public int Height
+        {
+            get { return 0; }
+        }
+
+        public SkippingBehavior Skip
+        {
+            get { return SkippingBehavior.EnterChildren; }
+        }
+
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return true; }
+        }
+
+        #endregion
     }
 }

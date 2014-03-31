@@ -23,7 +23,7 @@
 
 using System.Windows;
 
-namespace KeyScroller.Editor
+namespace Scroller.Editor
 {
     /// <summary>
     /// Interaction logic for SkinEditorWindow.xaml

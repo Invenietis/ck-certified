@@ -141,9 +141,11 @@ namespace SimpleSkin.ViewModels
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            var zvm =  Context.Obtain( e.Zone );
+
             NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
            {
-               Zones.Add( Context.Obtain( e.Zone ) );
+               Zones.Add( zvm );
            }) );
         }
 

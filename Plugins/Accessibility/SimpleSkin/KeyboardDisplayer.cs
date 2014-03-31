@@ -235,7 +235,7 @@ namespace SimpleSkin
 
             UnregisterSkinEvents( skin );
             Unsubscribe( skin );
-            UnregisterHighlighter( skin );
+            UnregisterFromHighlighter( skin );
             UnregisterTopMostService( skin );
 
             if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
@@ -261,7 +261,6 @@ namespace SimpleSkin
             }
 
             Config.User.Set( PlacementString( skin ), placement );
-            _skins.Remove( skin.ViewModel.KeyboardVM.Keyboard.Name );
         }
 
         private void UninitializeMiniview()
@@ -383,13 +382,13 @@ namespace SimpleSkin
                 }
                 else
                 {
-                    ForEachSkin( s => UnregisterHighlighter( s ) );
+                    ForEachSkin( s => UnregisterFromHighlighter( s ) );
                     UnregisterPrediction();
                 }
             }
         }
 
-        private void UnregisterHighlighter( SkinInfo skinInfo )
+        private void UnregisterFromHighlighter( SkinInfo skinInfo )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
@@ -591,12 +590,15 @@ namespace SimpleSkin
                         NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
                         {
                             ShowMiniView();
+                            if( Highlighter.Status == InternalRunningStatus.Started )
+                            {
+                                Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
+                                ForEachSkin( UnregisterFromHighlighter );
+                            }
                         }) );
-
-                        ForEachSkin( HideSkin, true );
                     }
 
-                    //THREAD : tocheck
+                    //MIXED
                     if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.MinimizeAllWindows();
                 }
                 else if( window.WindowState == WindowState.Normal )
@@ -611,22 +613,6 @@ namespace SimpleSkin
                     UnregisterPrediction();
                 }) );
             }
-        }
-
-        /// <summary>
-        /// Hides the skin and shows the keyboard's MiniView
-        /// </summary>
-        void HideSkin( SkinInfo skinInfo )
-        {
-            //MIXED
-            skinInfo.Dispatcher.BeginInvoke( (Action)(() =>
-            {
-                if( Highlighter.Status == InternalRunningStatus.Started )
-                {
-                    Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
-                    UnregisterHighlighter( skinInfo );
-                }
-            }), null );
         }
 
         void ShowMiniView()
@@ -659,16 +645,17 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            //MIXED 
+            //MIXED
             NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
             {
-                if( _miniView.Visibility != Visibility.Hidden )
+                if( _miniView != null && _miniView.Visibility != Visibility.Hidden )
                 {
                     if( Highlighter.Status.IsStartingOrStarted )
                         Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
                     _miniView.Hide();
                 }
 
+                //Dispatched afterwards
                 if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RestoreAllWindows();
 
                 ForEachSkin( RegisterHighlighter );
@@ -704,13 +691,13 @@ namespace SimpleSkin
 
         #region Helper
 
-       /// <summary>
-       /// Calls the action for each skin.
-       /// As skins can belong to different dispatchers, you may specify whether it should make sure the call is made through each skin Dispatcher.
-       /// </summary>
-       /// <param name="action">the action to call on each skin</param>
-       /// <param name="dispatch">whether this aciton should be called on a skin's own dispatcher</param>
-       /// <param name="synchronous">Only taken into account if dispatch == true</param>
+        /// <summary>
+        /// Calls the action for each skin.
+        /// As skins can belong to different dispatchers, you may specify whether it should make sure the call is made through each skin Dispatcher.
+        /// </summary>
+        /// <param name="action">the action to call on each skin</param>
+        /// <param name="dispatch">whether this aciton should be called on a skin's own dispatcher</param>
+        /// <param name="synchronous">Only taken into account if dispatch == true</param>
         private void ForEachSkin( Action<SkinInfo> action, bool dispatch = false, bool synchronous = true )
         {
             //MIXED

@@ -62,8 +62,11 @@ namespace Scroller
         public virtual void MoveNext( ActionType action )
         {
             Console.WriteLine( "NEXT \n" );
-            //False if there are registered elements
-            if( Johnnie.Current == this && Children.Count == 0 ) return;
+            //False if there are registered elements wich have children
+            if(     Johnnie.Current == this && Children.Count == 0 
+                ||  this.Children.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 
+                &&  Children[0].Children.Count( s => s.Skip != SkippingBehavior.Skip ) == 0 )
+                return;
 
             // defer action to the next tick
             if( LastDirective != null && LastDirective.ActionTime == ActionTime.Delayed )
@@ -152,7 +155,8 @@ namespace Scroller
                         MoveNext( ActionType.MoveNext );
                     break;
                 default :
-                    if(Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count > 0 )
+                    //Enter in the module if it the only one registered
+                    if( Johnnie.Current.IsHighlightableTreeRoot && Johnnie.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Johnnie.Current.Children.Count > 0 )
                     {
                         if( action != ActionType.UpToParent )
                             MoveNext( ActionType.EnterChild );

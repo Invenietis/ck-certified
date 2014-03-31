@@ -263,6 +263,10 @@ namespace KeyboardEditor
                          */
 
                         string name = keyboardToRevert.Name;
+
+                        //Avoids that the new keyboard have "(1)" in his name.
+                        keyboardToRevert.Rename( keyboardToRevert.GetHashCode().ToString() );
+
                         IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( name );
                         if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
 

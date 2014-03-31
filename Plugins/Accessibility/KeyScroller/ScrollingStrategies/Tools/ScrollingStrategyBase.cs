@@ -37,7 +37,6 @@ namespace Scroller
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            Console.WriteLine( "BEAT \n" );
             if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
 
             //Saving the currently highlighted element
@@ -73,8 +72,6 @@ namespace Scroller
         public virtual void MoveNext( ActionType action )
         {
             if( !CanMove() ) return;
-
-            Console.WriteLine( "NEXT \n" );
 
             // defer action to the next tick
             if( LastDirective != null && LastDirective.ActionTime == ActionTime.Delayed )

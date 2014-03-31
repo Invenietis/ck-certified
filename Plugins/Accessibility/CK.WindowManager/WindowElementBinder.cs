@@ -224,7 +224,7 @@ namespace CK.WindowManager
                         Debug.Assert( slaveSpatialBinding != null );
 
                         //TODO : FIXWITHDOCKING
-                        NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                        NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
                         {
                             WindowElement button = UnbindButtonManager.Service.CreateButton( spatialBinding, slaveSpatialBinding, position);
 
@@ -291,25 +291,25 @@ namespace CK.WindowManager
 
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Bottom.UnbindButton );
+                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Bottom.UnbindButton );
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Left.UnbindButton );
+                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Left.UnbindButton );
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Top.UnbindButton );
+                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Top.UnbindButton );
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.SpatialBinding.Window == other )
                     {
-                        UnbindButtonManager.Service.DeleteButton( spatialBinding.Right.UnbindButton );
+                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Right.UnbindButton );
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );
                     }

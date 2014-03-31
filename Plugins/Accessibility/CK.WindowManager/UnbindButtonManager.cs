@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows.Threading;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Windows;
@@ -22,24 +24,20 @@ namespace CK.WindowManager
 
         public WindowElement CreateButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
-            if( NoFocusManager.Default.NoFocusDispatcher.CheckAccess() )
+            Func<WindowElement> func = (Func<WindowElement>)(() =>
             {
                 return InitializeButton( spatialBinding, slaveSpatialBinding, position );
-            }
-            else
-            {
-                return (WindowElement)NoFocusManager.Default.NoFocusDispatcher.Invoke( (Func<WindowElement>)(() =>
-                    {
-                        return InitializeButton( spatialBinding, slaveSpatialBinding, position );
-                    }) );
-            }
+            });
+
+            return NoFocusManager.Default.ExternalDispatcher.CheckAccess() ? func() : (WindowElement)NoFocusManager.Default.ExternalDispatcher.Invoke( func );
         }
 
         WindowElement InitializeButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             WindowElement button = null;
 
-            button = new WindowElement( new UnbindButtonView( NoFocusManager.Default )
+            button = new WindowElement( new UnbindButtonView()
             {
                 DataContext = CreateVM( spatialBinding, slaveSpatialBinding, position )
             }, "unbindButton" );
@@ -51,17 +49,19 @@ namespace CK.WindowManager
             return button;
         }
 
-        public void DeleteButton( IWindowElement button )
+        public void RemoveButton( IWindowElement button )
         {
-            button.Window.Dispatcher.Invoke( (Action)(() =>
-                {
-                    button.Window.Close();
-                    TopMostService.Service.UnregisterTopMostElement( button.Window );
-                }) );
+            NoFocusManager.Default.ExternalDispatcher.Invoke( (Action)(() =>
+            {
+                button.Window.Close();
+                TopMostService.Service.UnregisterTopMostElement( button.Window );
+            }) );
         }
 
         VMUnbindButton CreateVM( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( position == BindingPosition.None )
                 return null;
 
@@ -109,16 +109,19 @@ namespace CK.WindowManager
 
         void DoPlaceButtons( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             double top = 0;
             double height = 0;
             double width = 0;
             double left = 0;
 
-            //We necessarily are on the spatialBinding Window's thread
-            top = spatialBinding.Window.Window.Top;
-            height = spatialBinding.Window.Window.Height;
-            width = spatialBinding.Window.Window.Width;
-            left = spatialBinding.Window.Window.Left;
+            var pos = WindowManager.Service.GetClientArea( spatialBinding.Window );
+
+            top = pos.Top;
+            height = pos.Height;
+            width = pos.Width;
+            left = pos.Left;
 
             Action moveButtons = () =>
             {
@@ -160,15 +163,8 @@ namespace CK.WindowManager
 
         void InitialButtonPlacing( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
-            if( !spatialBinding.Window.Window.Dispatcher.CheckAccess() )
-            {
-                //Button placing is not crucial, so we can safely use BeginInvoke
-                spatialBinding.Window.Window.Dispatcher.BeginInvoke( (Action)(() => DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position )) );
-            }
-            else
-            {
-                DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position );
-            }
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position );
         }
 
         #region IPlugin Members

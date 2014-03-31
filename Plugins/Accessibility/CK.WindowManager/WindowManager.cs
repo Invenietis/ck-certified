@@ -24,7 +24,7 @@ namespace CK.WindowManager
         /// <summary>
         /// The HostManipulator, enables minimizing the host.
         /// </summary>
-        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? (_hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>()); } }
 
         public IReadOnlyList<IWindowElement> WindowElements
         {
@@ -42,6 +42,7 @@ namespace CK.WindowManager
 
         public virtual IManualInteractionResult Move( IWindowElement window, double top, double left )
         {
+            //MIXED
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
             {
@@ -57,6 +58,7 @@ namespace CK.WindowManager
 
         public virtual IManualInteractionResult Resize( IWindowElement window, double width, double height )
         {
+            //MIXED
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
             {
@@ -70,6 +72,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowSizeChanged( object sender, EventArgs e )
         {
+            //MIXED
             IWindowElement windowElementFromSender = sender as IWindowElement;
             if( windowElementFromSender != null )
             {
@@ -92,24 +95,26 @@ namespace CK.WindowManager
         }
 
         /// <summary>
-        /// This function is called by a function that  bypass the window system event.
+        /// This function is called by a function that bypasses the window system event.
         /// Warning : do not call a function that is called when a WindowMoved event that leading to a call MoveResult.Broadcast
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
         {
+            //MIXED
             IWindowElement windowElementFromSender = sender as IWindowElement;
             if( windowElementFromSender != null )
             {
                 WindowElementData data = null;
                 if( _dic.TryGetValue( windowElementFromSender, out data ) )
                 {
-                    //Console.WriteLine( "OnWindowLocationChanged ! {0} {1}*{2}", data.Window.Name, data.Window.Top, data.Window.Left );
-                    double deltaTop = data.Window.Top - data.Top;
-                    double deltaLeft = data.Window.Left - data.Left;
-
+                    //This is done to reduce the number of times we fetch a window's position directly from the Window, which could trigger Invokes
+                    double previousTop = data.Top;
+                    double previousLeft = data.Left;
                     data.UpdateFromWindow();
+                    double deltaTop = data.Top - previousTop;
+                    double deltaLeft = data.Left - previousLeft;
 
                     if( deltaTop != 0 || deltaLeft != 0 )
                     {
@@ -123,6 +128,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowMinimized( object sender, EventArgs e )
         {
+            //MIXED
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
             {
@@ -137,6 +143,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowRestored( object sender, EventArgs e )
         {
+            //MIXED
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
             {
@@ -151,6 +158,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowGotFocus( object sender, EventArgs e )
         {
+            //MIXED
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
             {
@@ -237,7 +245,7 @@ namespace CK.WindowManager
         public event EventHandler<WindowElementEventArgs> WindowRestored;
 
         /// <summary>
-        /// Warning : create the reentrancy call if the same functio is call with WindowElement.LocationChanged event and WindowMoved event
+        /// Warning : creates a reentrancy call if the same function is called with WindowElement.LocationChanged event and WindowMoved event
         /// </summary>
         public event EventHandler<WindowElementLocationEventArgs> WindowMoved;
 
@@ -312,6 +320,7 @@ namespace CK.WindowManager
                 // Broadcast, with a homemade LocationChanged event
                 _m.OnWindowLocationChanged( _data.Window, EventArgs.Empty );
             }
+
             public void Silent()
             {
             }
@@ -389,11 +398,13 @@ namespace CK.WindowManager
 
         public void MinimizeAllWindows()
         {
+            //MIXED
             foreach( var w in _dic.Keys ) w.Minimize();
         }
 
         public void RestoreAllWindows()
         {
+            //MIXED
             foreach( var w in _dic.Keys ) w.Restore();
         }
 

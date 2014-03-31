@@ -533,6 +533,7 @@ namespace SimpleSkin
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
             UninitializeActiveWindows( _skins[e.Keyboard.Name] );
+            _skins.Remove( e.Keyboard.Name );
 
             DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }

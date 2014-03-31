@@ -18,10 +18,10 @@ namespace CK.WindowManager
     /// <summary>
     /// Interaction logic for UnbindButtonView.xaml
     /// </summary>
-    public partial class UnbindButtonView : CKNoFocusWindow
+    public partial class UnbindButtonView : CKWindow
     {
-        public UnbindButtonView( NoFocusManager noFocusManager )
-            : base( noFocusManager ) 
+        public UnbindButtonView(  )
+            : base( )
         {
             InitializeComponent();
         }

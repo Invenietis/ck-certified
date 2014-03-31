@@ -38,21 +38,25 @@ namespace CK.WindowManager.Model
 
         /// <summary>
         /// Gets top edge, in relation to the desktop, in logical units (1/96").
+        /// If called from another thread and in order to get this info without fearing deadlocks, try <see cref="IWindowManager.GetClientArea"/> 
         /// </summary>
         double Top { get; }
 
         /// <summary>
         /// Gets the left edge, in relation to the desktop, in logical units (1/96").
+        /// If called from another thread and in order to get this info without fearing deadlocks, try <see cref="IWindowManager.GetClientArea"/> 
         /// </summary>
         double Left { get; }
 
         /// <summary>
         /// Gets the width, in device-independent units (1/96").
+        /// If called from another thread and in order to get this info without fearing deadlocks, try <see cref="IWindowManager.GetClientArea"/> 
         /// </summary>
         double Width { get; }
 
         /// <summary>
         /// Gets the height, in device-independent units (1/96").
+        /// If called from another thread and in order to get this info without fearing deadlocks, try <see cref="IWindowManager.GetClientArea"/> 
         /// </summary>
         double Height { get; }
 

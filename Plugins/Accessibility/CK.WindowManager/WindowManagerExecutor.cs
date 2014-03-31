@@ -45,6 +45,7 @@ namespace CK.WindowManager
 
         void OnWindowManagerWindowResized( object sender, WindowElementResizeEventArgs e )
         {
+            //MIXED
             IWindowElement triggerHolder = e.Window;
             // Gets all windows attached to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
@@ -79,32 +80,33 @@ namespace CK.WindowManager
 
         void PlacingWindow( ISpatialBinding binding, IWindowElement master )
         {
-            IWindowElement window = null;
+            Rect reference = WindowManager.GetClientArea( binding.Window );
+            Rect slave = Rect.Empty;
+
             if( binding.Top != null && binding.Top.SpatialBinding.Window != master )
             {
-                window = binding.Top.SpatialBinding.Window;
-                WindowManager.Move( window, binding.Window.Top - window.Height, binding.Window.Left );
+                slave = WindowManager.GetClientArea( binding.Top.SpatialBinding.Window );
+                WindowManager.Move( binding.Top.SpatialBinding.Window, reference.Top - slave.Height, reference.Left );
                 PlacingWindow( binding.Top.SpatialBinding, binding.Window );
             }
             if( binding.Bottom != null && binding.Bottom.SpatialBinding.Window != master )
             {
-                window = binding.Bottom.SpatialBinding.Window;
-                WindowManager.Move( window, binding.Window.Top + binding.Window.Height, binding.Window.Left );
+                slave = WindowManager.GetClientArea( binding.Bottom.SpatialBinding.Window );
+                WindowManager.Move( binding.Bottom.SpatialBinding.Window, reference.Top + reference.Height, reference.Left );
                 PlacingWindow( binding.Bottom.SpatialBinding, binding.Window );
             }
             if( binding.Left != null && binding.Left.SpatialBinding.Window != master )
             {
-                window = binding.Left.SpatialBinding.Window;
-                WindowManager.Move( window, binding.Window.Top, binding.Window.Left - window.Width );
+                slave = WindowManager.GetClientArea( binding.Left.SpatialBinding.Window );
+                WindowManager.Move( binding.Left.SpatialBinding.Window, reference.Top, reference.Left - slave.Width );
                 PlacingWindow( binding.Left.SpatialBinding, binding.Window );
             }
             if( binding.Right != null && binding.Right.SpatialBinding.Window != master )
             {
-                window = binding.Right.SpatialBinding.Window;
-                WindowManager.Move( window, binding.Window.Top, binding.Window.Left + binding.Window.Width );
+                slave = WindowManager.GetClientArea( binding.Right.SpatialBinding.Window );
+                WindowManager.Move( binding.Right.SpatialBinding.Window, reference.Top, reference.Left + reference.Width );
                 PlacingWindow( binding.Right.SpatialBinding, binding.Window );
             }
-
         }
 
         void PlacingButton( ISpatialBinding binding, ISpatialBinding master )
@@ -114,17 +116,18 @@ namespace CK.WindowManager
             double width = 0;
             double left = 0;
 
-            top = binding.Window.Top;
-            height = binding.Window.Height;
-            width = binding.Window.Width;
-            left = binding.Window.Left;
+            var pos = WindowManager.GetClientArea( binding.Window );
+
+            top = pos.Top;
+            height = pos.Height;
+            width = pos.Width;
+            left = pos.Left;
 
             if( binding.Left != null && binding.Left.SpatialBinding != master )
             {
                 binding.Left.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
-                    //binding.Left.UnbindButton.Window.Show();
                 }) );
                 PlacingButton( binding.Left.SpatialBinding, binding );
             }
@@ -134,7 +137,6 @@ namespace CK.WindowManager
                 binding.Right.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Right.UnbindButton.Move( top + height / 2 - binding.Right.UnbindButton.Window.Height / 2, left + width - binding.Right.UnbindButton.Window.Width / 2 );
-                    //binding.Right.UnbindButton.Window.Show();
                 }) );
                 PlacingButton( binding.Right.SpatialBinding, binding );
             }
@@ -144,7 +146,6 @@ namespace CK.WindowManager
                 binding.Bottom.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Bottom.UnbindButton.Move( top + height - binding.Bottom.UnbindButton.Window.Height / 2, left + width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
-                    //binding.Bottom.UnbindButton.Window.Show();
                 }) );
                 PlacingButton( binding.Bottom.SpatialBinding, binding );
             }
@@ -154,7 +155,6 @@ namespace CK.WindowManager
                 binding.Top.UnbindButton.Window.Dispatcher.BeginInvoke( (Action)(() =>
                 {
                     binding.Top.UnbindButton.Move( top - binding.Top.UnbindButton.Window.Height / 2, left + width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
-                    //binding.Top.UnbindButton.Window.Show();
                 }) );
                 PlacingButton( binding.Top.SpatialBinding, binding );
             }
@@ -182,7 +182,9 @@ namespace CK.WindowManager
             if( spatial != null )
             {
                 foreach( var windowDesc in spatial.SubTree( BindingPosition.Right ) )
+                {
                     WindowManager.Move( windowDesc, windowDesc.Top, windowDesc.Left + e.DeltaWidth ).Silent();
+                }
             }
         }
 
@@ -249,6 +251,7 @@ namespace CK.WindowManager
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )
         {
+            //MIXED
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
@@ -256,7 +259,7 @@ namespace CK.WindowManager
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Restore();
-                    DispatchWhenRequired( NoFocusManager.Default.NoFocusDispatcher, (Action)(() =>
+                    DispatchWhenRequired( NoFocusManager.Default.ExternalDispatcher, (Action)(() =>
                     {
                         if( descendant.Top != null && !descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Show();
                         if( descendant.Bottom != null && !descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Show();
@@ -269,13 +272,14 @@ namespace CK.WindowManager
 
         void OnWindowMinimized( object sender, WindowElementEventArgs e )
         {
+            //MIXED
             ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
             if( binding != null )
             {
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Minimize();
-                    DispatchWhenRequired( NoFocusManager.Default.NoFocusDispatcher, (Action)(() =>
+                    DispatchWhenRequired( NoFocusManager.Default.ExternalDispatcher, (Action)(() =>
                     {
                         if( descendant.Top != null && descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Hide();
                         if( descendant.Bottom != null && descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Hide();

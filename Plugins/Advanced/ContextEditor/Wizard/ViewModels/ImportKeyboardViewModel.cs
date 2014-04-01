@@ -123,7 +123,7 @@ namespace KeyboardEditor.Wizard.ViewModels
             {
                 if( cb.IsSelected && cb.AlreadyExist )
                 {
-                    return MessageBox.Show( "Etes-vous sûr de vouloir importer un clavier déjà existant ? \n( Celui-ci va être effacé )", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
+                    return MessageBox.Show( "Un ou plusieurs des claviers que vous voulez importer existent déjà dans votre civiKey. \n Ces derniers seront écrasés par les claviers que vous venez de sélectionner.\n Etes-vous sur de vouloir continuer ?", "Confirmer l'import", System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
                 }
             }
             return true;
@@ -163,7 +163,7 @@ namespace KeyboardEditor.Wizard.ViewModels
                 _owner.ImportKeyboards( _filePath, whiteList );
             }
             UpdateAlreadyExist();
-            MessageBox.Show( "L'import s'est fini avec succès.", "Information", System.Windows.MessageBoxButton.OK );
+            MessageBox.Show( "L'opération d'import s'est déroulée avec succès.", "Information", System.Windows.MessageBoxButton.OK );
             CleanViewModel();
             CanExecute = true; 
         }

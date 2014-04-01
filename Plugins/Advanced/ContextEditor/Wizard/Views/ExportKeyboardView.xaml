@@ -56,7 +56,7 @@
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource DefaultColor}" />
                 <Setter Property="Foreground" Value="#FFFFFF" />
-                <Setter Property="HorizontalAlignment" Value="Right"  />
+                <Setter Property="HorizontalAlignment" Value="Right" />
                 <Setter Property="Margin" Value="10 0 10 0" />
                 <Setter Property="BorderBrush" Value="#295884" />
                 <Setter Property="BorderThickness" Value="1" />
@@ -90,7 +90,7 @@
                 <Button Margin="3 3 3 0" Command="{Binding CheckCommand}" Style="{StaticResource CK.Config.Link}">
                     <DockPanel>
                         <CheckBox DockPanel.Dock="Right" IsChecked="{Binding IsSelected}"/>
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding Keyboard.Name}" Margin="2 0 0 0"/>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Keyboard.Name}" Margin="2 0 0 0" />
                     </DockPanel>
                 </Button>
             </DataTemplate>
@@ -98,7 +98,7 @@
     </Window.Resources>
 
     <Grid>
-        <Grid Margin="12 12 12 12">
+        <Grid Margin="12">
             <Grid.Resources>
             </Grid.Resources>
             <Grid.RowDefinitions>
@@ -107,8 +107,8 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel  Grid.Row="0">
-                <TextBlock Style="{StaticResource step}" Text="1. Selectionner les claviers à exporter" />
-                <TextBlock Style="{StaticResource description}" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <TextBlock Style="{StaticResource step}" Text="1. Sélectionner les claviers à exporter" />
+                <TextBlock Style="{StaticResource description}" Text="Cochez les claviers CiviKey que vous voulez transférer sur un autre ordinateur."/>
             </StackPanel>
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding CheckBoxs}">
@@ -122,7 +122,7 @@
             </ScrollViewer>
             <DockPanel Grid.Row="2">
                 <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="2. Sauvegarder les claviers dans un fichier"/>
-                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="En cliquant sur le bouton 'Exporter' un fichier nommé keyboards.xml sera créé. Il contiendra les claviers cochés ci-dessus. Transférez ensuite ce fichier sur un autre ordinateur et utilisez la fonctionnalité d'import pour utiliser ces claviers depuis un CiviKey situé sur une autre machine."/>
                 <Button IsEnabled="{Binding CanExecute}" Margin="3 3 3 3" Width="60" Command="{Binding SaveCommand}" Content="Export"/>
                 <!--<ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"/>-->
             </DockPanel>

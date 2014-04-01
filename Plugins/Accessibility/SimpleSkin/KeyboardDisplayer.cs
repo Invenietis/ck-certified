@@ -504,7 +504,7 @@ namespace SimpleSkin
 
             //temporary 03/03/2014
             skinInfo.Skin.StateChanged += OnStateChanged;
-            skinInfo.Skin.Closing += OnSkinWindowClosing;
+            skinInfo.Skin.Closing += new CancelEventHandler( OnWindowClosing );
         }
 
         private void UnregisterEvents()
@@ -530,7 +530,7 @@ namespace SimpleSkin
             //temporary 03/03/2014
             skinInfo.Skin.StateChanged -= OnStateChanged;
 
-            skinInfo.Skin.Closing -= new CancelEventHandler( OnSkinWindowClosing );
+            skinInfo.Skin.Closing -= new CancelEventHandler( OnWindowClosing );
         }
 
         #endregion Register Unregister Events
@@ -551,6 +551,7 @@ namespace SimpleSkin
         void OnKeyboardActivated( object sender, KeyboardEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            if( _viewHidden && WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RestoreAllWindows();
             InitializeActiveWindow( e.Keyboard );
             DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
@@ -639,6 +640,7 @@ namespace SimpleSkin
                 _miniViewVm = new MiniViewVM( this );
 
                 _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
+                _miniView.Closing += OnWindowClosing;
                 _miniView.Show();
 
                 if( !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth / 2, _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||
@@ -678,7 +680,7 @@ namespace SimpleSkin
 
         #endregion temporary
 
-        void OnSkinWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
+        void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
             NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() =>
             {

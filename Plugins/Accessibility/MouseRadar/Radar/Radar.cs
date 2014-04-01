@@ -59,6 +59,7 @@ namespace MouseRadar
                 UpdateRotationDelay();
             }
         }
+
         public bool SnakeMode { get; set; }
         internal RadarStep CurrentStep { get; private set; }
 
@@ -83,11 +84,11 @@ namespace MouseRadar
             CurrentStep = RadarStep.Paused;
 
             _timerRotate = new DispatcherTimer( DispatcherPriority.Send );
-            _timerRotate.Interval = new TimeSpan( 0 );
+            _timerRotate.Interval = new TimeSpan( 1000 );
             _timerRotate.Tick += ProcessRotation;
 
             _timerTranslate = new DispatcherTimer( DispatcherPriority.Normal );
-            _timerTranslate.Interval = new TimeSpan( 0 );
+            _timerTranslate.Interval = new TimeSpan( 1000 );
             _timerTranslate.Tick += ProcessTranslation;
 
             _mouseDriver.PointerMove += OnMouseLocationChanged;

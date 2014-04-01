@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace MouseRadar
 {
@@ -24,7 +26,7 @@ namespace MouseRadar
             _opacity = 1;
             AngleMin = 0;
             AngleMax = 360;
-            ScreenScale = new Point(1,1);
+            ScreenScale = new Point( 1, 1 );
         }
 
         public float Opacity
@@ -101,6 +103,8 @@ namespace MouseRadar
             get { return _angle; }
             set
             {
+                if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
                 //brain workout
                 if( AngleMin > AngleMax )
                 {
@@ -119,7 +123,7 @@ namespace MouseRadar
                     if( value >= AngleMax )
                     {
                         _angle = value - AngleMax + AngleMin;
-                        LapCount++; 
+                        LapCount++;
                     }
                     else if( value < AngleMin )
                     {
@@ -127,6 +131,8 @@ namespace MouseRadar
                     }
                     else _angle = value;
                 }
+
+                Console.WriteLine( "Angle : " + _angle );
 
                 FirePropertyChanged( "Angle" );
             }

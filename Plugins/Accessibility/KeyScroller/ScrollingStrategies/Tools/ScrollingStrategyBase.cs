@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using System.Windows;
 using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
@@ -26,21 +27,24 @@ namespace Scroller
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
+            Application.Current.Dispatcher.Invoke( (Action)(() =>
+            {
+                if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
 
-            //Saving the currently highlighted element
-            PreviousElement = Walker.Current;
+                //Saving the currently highlighted element
+                PreviousElement = Walker.Current;
 
-            //Move the cursor to the next element
-            MoveNext( LastDirective.NextActionType );
+                //Move the cursor to the next element
+                MoveNext( LastDirective.NextActionType );
 
-            //End highlight on the previous element (if different from the current one)
-            if( PreviousElement != null )
-                FireEndHighlight( PreviousElement, Walker.Current );
+                //End highlight on the previous element (if different from the current one)
+                if( PreviousElement != null )
+                    FireEndHighlight( PreviousElement, Walker.Current );
 
-            //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
-            if( Walker.Current != null )
-                FireBeginHighlight();
+                //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
+                if( Walker.Current != null )
+                    FireBeginHighlight();
+            }) );
         }
 
         protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -74,48 +78,48 @@ namespace Scroller
 
             // reset the action type
             LastDirective.NextActionType = ActionType.MoveNext;
-            
-            switch(action)
+
+            switch( action )
             {
-                case ActionType.MoveNext :
+                case ActionType.MoveNext:
                     if( !Walker.MoveNext() )
-                        MoveNext(ActionType.UpToParent);
+                        MoveNext( ActionType.UpToParent );
                     break;
 
                 case ActionType.UpToParent:
                     if( !Walker.UpToParent() )
-                        MoveNext(ActionType.MoveToFirst);
+                        MoveNext( ActionType.MoveToFirst );
                     break;
 
-                case ActionType.EnterChild :
+                case ActionType.EnterChild:
                     if( !Walker.EnterChild() )
-                        MoveNext(ActionType.MoveNext);
+                        MoveNext( ActionType.MoveNext );
                     break;
 
-                case ActionType.MoveToFirst :
+                case ActionType.MoveToFirst:
                     Walker.MoveFirst();
                     break;
 
-                case ActionType.MoveToLast :
+                case ActionType.MoveToLast:
                     Walker.MoveLast();
                     break;
 
-                case ActionType.StayOnTheSame :
+                case ActionType.StayOnTheSame:
                     LastDirective.NextActionType = ActionType.StayOnTheSame;
                     break;
 
-                case ActionType.GoToRelativeRoot :
+                case ActionType.GoToRelativeRoot:
                     Walker.GoToRelativeRoot();
                     MoveNext( ActionType.EnterChild );
                     break;
 
-                default :
+                default:
                     //StayOnTheSameOnce
                     LastDirective.NextActionType = ActionType.GoToRelativeRoot;
                     break;
             }
 
-            ProcessSkipBehavior(action);
+            ProcessSkipBehavior( action );
         }
 
         /// <summary>
@@ -163,12 +167,12 @@ namespace Scroller
         /// </summary>
         protected virtual void ProcessSkipBehavior( ActionType action )
         {
-            switch(Walker.Current.Skip)
+            switch( Walker.Current.Skip )
             {
-                case SkippingBehavior.Skip :
-                    MoveNext(ActionType.MoveNext);
+                case SkippingBehavior.Skip:
+                    MoveNext( ActionType.MoveNext );
                     break;
-                case SkippingBehavior.EnterChildren :
+                case SkippingBehavior.EnterChildren:
 
                     //False if the walker goes up. (Avoid infinite loop)
                     if( action != ActionType.UpToParent )
@@ -176,7 +180,7 @@ namespace Scroller
                     else
                         MoveNext( ActionType.MoveNext );
                     break;
-                default :
+                default:
                     //Enter in the module if it the only one registered
                     if( Walker.Current.IsHighlightableTreeRoot && Walker.Sibblings.Count( s => s.Skip != SkippingBehavior.Skip ) == 1 && Walker.Current.Children.Count( s => s.Skip != SkippingBehavior.Skip ) > 0 )
                     {
@@ -275,7 +279,7 @@ namespace Scroller
 
             Timer.Elapsed += OnInternalBeat;
             Configuration.ConfigChanged += OnConfigChanged;
-            
+
             //Reset the walker
             Walker.GoToAbsoluteRoot();
             Timer.Start();
@@ -346,7 +350,7 @@ namespace Scroller
 
         public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return new CKReadOnlyListOnIList<IHighlightableElement>(Elements.Values.ToList()); }
+            get { return new CKReadOnlyListOnIList<IHighlightableElement>( Elements.Values.ToList() ); }
         }
 
         public int X

@@ -107,14 +107,15 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0">
-                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Selectionner un fichier"/>
-                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Sélectionner un fichier"/>
+                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Utilisez le bouton Parcourir pour sélectionner un fichier .xml contenant le ou les claviers CiviKey à importer."/>
                 <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
                 <TextBox ToolTip="{Binding FilePath}" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
             </DockPanel>
             <StackPanel Grid.Row="1">
-                <TextBlock Style="{StaticResource step}" Text="2. Selectionner les claviers à importer"/>
-                <TextBlock Style="{StaticResource description}" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <TextBlock Style="{StaticResource step}" Text="2. Sélectionner les claviers à importer"/>
+                <TextBlock Style="{StaticResource description}" Text="Les claviers CiviKeys trouvés dans le fichier sont listés ci-dessous. Cochez ceux qui vous intéressent pour pouvoir les importer."/>
+                <TextBlock Style="{StaticResource description}" Text="Si vous importez un clavier ayant le même nom que l'un des vôtres, votre clavier sera écrasé et remplacé par le clavier importé."/>
             </StackPanel>
             <ScrollViewer  Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding CheckBoxs}">
@@ -128,7 +129,7 @@
             </ScrollViewer>
             <DockPanel Grid.Row="3">
                 <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Importer les claviers"/>
-                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Lorem ipsum dolor sit amet, consectetur adipisicing. Duis aute irure dolor in reprehenderit in voluptate velit"/>
+                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Cliquez sur le bouton Importer pour effectuer lancer l'import."/>
                 <Button IsEnabled="{Binding CanExecuteImport}" HorizontalAlignment="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" VerticalAlignment="Top" Width="70"></Button>
                 <!--<ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>-->
             </DockPanel>

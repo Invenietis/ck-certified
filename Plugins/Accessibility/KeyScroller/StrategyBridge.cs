@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Timers;
+using System.Windows.Threading;
 using CK.Plugin.Config;
 using HighlightModel;
 
@@ -51,7 +51,7 @@ namespace Scroller
             AvailableStrategies = GetStrategyNames().ToList();
         }
 
-        public StrategyBridge( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public StrategyBridge( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
         {
             Implementations = new Dictionary<string, IScrollingStrategy>();
 
@@ -101,7 +101,7 @@ namespace Scroller
             get { return _current.Name; }
         }
 
-        public void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
         {
             _current.Setup( timer, elements, config );
         }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Timers;
 using System.Windows;
+using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
@@ -13,7 +13,7 @@ namespace Scroller
     public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
         protected IPluginConfigAccessor Configuration { get; set; }
-        protected Timer Timer { get; set; }
+        protected DispatcherTimer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }
         protected IHighlightableElement PreviousElement { get; set; }
         protected ITreeWalker Walker { get; set; }
@@ -53,7 +53,7 @@ namespace Scroller
             {
                 if( e.Key == "Speed" )
                 {
-                    Timer.Interval = (double)(int)e.Value;
+                    Timer.Interval = new TimeSpan(0, 0, 0, 0,  (int) e.Value);
                 }
             }
         }
@@ -240,7 +240,7 @@ namespace Scroller
         {
             if( Walker.Current != null )
             {
-                LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval, PreviousElement ), LastDirective );
+                LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval.Ticks, PreviousElement ), LastDirective );
                 EnsureReactivity();
             }
         }
@@ -253,7 +253,7 @@ namespace Scroller
         {
             if( previousElement != null )
             {
-                LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval, previousElement, element ), LastDirective );
+                LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, previousElement, element ), LastDirective );
                 EnsureReactivity();
             }
         }
@@ -271,7 +271,7 @@ namespace Scroller
             protected set;
         }
 
-        public virtual void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public virtual void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
         {
             Timer = timer;
             Elements = elements;
@@ -282,7 +282,7 @@ namespace Scroller
         {
             if( IsStarted ) return;
 
-            Timer.Elapsed += OnInternalBeat;
+            Timer.Tick += OnInternalBeat;
             Configuration.ConfigChanged += OnConfigChanged;
 
             //Reset the walker
@@ -294,12 +294,12 @@ namespace Scroller
 
         public virtual void Stop()
         {
-            if( Timer.Enabled )
+            if( Timer.IsEnabled )
             {
                 FireEndHighlight( Walker.Current, null );
-                Timer.Enabled = false;
+                Timer.IsEnabled = false;
             }
-            Timer.Elapsed -= OnInternalBeat;
+            Timer.Tick -= OnInternalBeat;
             Configuration.ConfigChanged -= OnConfigChanged;
             Timer.Stop();
             IsStarted = false;
@@ -309,14 +309,14 @@ namespace Scroller
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.Immediate );
 
-            Walker.Current.EndHighlight( new EndScrollingInfo( Timer.Interval, PreviousElement, element ), LastDirective );
+            Walker.Current.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, PreviousElement, element ), LastDirective );
             Walker.GoTo( element );
             EnsureReactivity();
         }
 
         public virtual void Pause( bool forceEndHighlight )
         {
-            if( Timer.Enabled )
+            if( Timer.IsEnabled )
             {
                 if( forceEndHighlight )
                 {
@@ -328,7 +328,7 @@ namespace Scroller
 
         public virtual void Resume()
         {
-            if( !Timer.Enabled ) Timer.Start();
+            if( !Timer.IsEnabled ) Timer.Start();
         }
 
         public virtual void OnExternalEvent()

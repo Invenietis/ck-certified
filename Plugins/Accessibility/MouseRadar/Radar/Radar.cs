@@ -114,6 +114,8 @@ namespace MouseRadar
 
         void ProcessScrollingTick( double newScrollingTick )
         {
+            newScrollingTick /= 10000;
+
             //Making sure the inner timers don't get a tick interval < 1 ms
             if( newScrollingTick < weight ) newScrollingTick = (double)weight;
 

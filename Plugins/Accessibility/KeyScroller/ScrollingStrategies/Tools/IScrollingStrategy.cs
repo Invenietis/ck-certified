@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Timers;
+using System.Windows.Threading;
 using CK.Plugin.Config;
 using HighlightModel;
 
@@ -20,7 +20,7 @@ namespace Scroller
         /// <param name="timer">The heart beat timer</param>
         /// <param name="elements">the dictionnary of the registered elements</param>
         /// <param name="config">the config accessor</param>
-        void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config );
+        void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config );
 
         /// <summary>
         /// Start the scrolling strategy

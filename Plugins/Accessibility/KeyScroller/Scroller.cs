@@ -8,7 +8,6 @@ using CK.Plugin.Config;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
-using System.Timers;
 
 namespace Scroller
 {
@@ -27,7 +26,7 @@ namespace Scroller
 
         Dictionary<string, IHighlightableElement> _registeredElements;
         StrategyBridge _scrollingStrategy;
-        Timer _timer;
+        DispatcherTimer _timer;
         ITrigger _currentTrigger;
 
         public IPluginConfigAccessor Configuration { get; set; }
@@ -43,9 +42,9 @@ namespace Scroller
 
         public bool Setup( IPluginSetupInfo info )
         {
-            _timer = new Timer();
+            _timer = new DispatcherTimer();
 
-            _timer.Interval = Configuration.User.GetOrSet( "Speed", 1000 );
+            _timer.Interval = new TimeSpan(0, 0, 0, 0, Configuration.User.GetOrSet( "Speed", 1000 ));
 
             _registeredElements = new Dictionary<string, IHighlightableElement>();
 
@@ -108,7 +107,7 @@ namespace Scroller
             _scrollingStrategy.GoToElement( element );
         }
 
-        public bool IsHighlighting { get { return _timer.Enabled; } }
+        public bool IsHighlighting { get { return _timer.IsEnabled; } }
 
         public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
         {

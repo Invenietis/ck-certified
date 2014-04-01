@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Threading;
 using CK.Plugin.Config;
 using HighlightModel;
-using System.Timers;
 
 namespace Scroller
 {
@@ -17,10 +16,10 @@ namespace Scroller
     public class TurboScrollingStrategy : OneByOneScrollingStrategy
     {
         const string StrategyName = "TurboScrollingStrategy";
-        double _normalInterval;
-        Timer _normalSpeedTimer;
+        TimeSpan _normalInterval;
+        DispatcherTimer _normalSpeedTimer;
 
-        public double TurboInterval { get; private set; }
+        public TimeSpan TurboInterval { get; private set; }
 
         bool IsTurboMode
         {
@@ -51,16 +50,16 @@ namespace Scroller
             get { return StrategyName; }
         }
 
-        public override void Setup( Timer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public override void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
         {
             base.Setup( timer, elements, config );
 
             _normalInterval = Timer.Interval;
-            TurboInterval = (double) Configuration.User.GetOrSet( "TurboSpeed", 100 );
-            _normalSpeedTimer = new Timer();
-            _normalSpeedTimer.Interval = 5000;
-            _normalSpeedTimer.Elapsed += ( o, e ) => SetTurboWithCheck();
-            Timer.Elapsed += ( o, e ) => { if( IsTurboMode ) SetTurboWithCheck(); };
+            TurboInterval = new TimeSpan(0, 0, 0, 0, Configuration.User.GetOrSet( "TurboSpeed", 100 ));
+            _normalSpeedTimer = new DispatcherTimer();
+            _normalSpeedTimer.Interval = new TimeSpan(0, 0, 0, 5);
+            _normalSpeedTimer.Tick += ( o, e ) => SetTurboWithCheck();
+            Timer.Tick += ( o, e ) => { if( IsTurboMode ) SetTurboWithCheck(); };
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -69,7 +68,7 @@ namespace Scroller
             {
                 if( e.Key == "Speed" )
                 {
-                    var newInterval = (double) (int) e.Value;
+                    var newInterval = new TimeSpan(0, 0, 0, 0, (int) e.Value);
                     if( !IsTurboMode ) _normalInterval = newInterval;
                     else
                     {
@@ -79,7 +78,7 @@ namespace Scroller
                 }
                 if( e.Key == "TurboSpeed" )
                 {
-                    TurboInterval = (double)(int) e.Value;
+                    TurboInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                     if( Timer.Interval != _normalInterval ) SetTurboWithCheck();
                 }
             }

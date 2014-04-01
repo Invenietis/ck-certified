@@ -25,7 +25,8 @@ namespace Host.ViewModels
             _keyboards = new ObservableCollection<KeyboardModel>();
             foreach( IKeyboard keyboard in _ctx.Keyboards )
             {
-                _keyboards.Add( new KeyboardModel( keyboard ) );
+                if( keyboard.Name != "Prediction" )
+                    _keyboards.Add( new KeyboardModel( keyboard ) );
             }
 
             RegisterEvents();
@@ -49,10 +50,14 @@ namespace Host.ViewModels
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
-            var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
-            destroyedKeyboard.Dispose();
-            
-            _keyboards.Remove( destroyedKeyboard );
+            //temporary
+            if( e.Keyboard.Name != "Prediction" )
+            {
+                var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
+                destroyedKeyboard.Dispose();
+
+                _keyboards.Remove( destroyedKeyboard );
+            }
         }
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )

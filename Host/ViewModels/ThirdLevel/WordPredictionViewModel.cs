@@ -56,7 +56,7 @@ namespace Host.VM
 
         public bool FilterAlreadyShownWords
         {
-            get { return Config != null ? Config.GetOrSet( "FilterAlreadyShownWords", true ) : true; }
+            get { return Config != null ? Config.GetOrSet( "FilterAlreadyShownWords", false ) : true; }
             set
             {
                 if( Config != null ) Config.Set( "FilterAlreadyShownWords", value );

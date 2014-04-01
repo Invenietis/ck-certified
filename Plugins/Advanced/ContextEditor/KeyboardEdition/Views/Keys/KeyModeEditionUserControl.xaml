@@ -20,6 +20,8 @@
             <!--<ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
             <ckc:NotNullConverter x:Key="notnullconverter"/>-->
+
+
             <DataTemplate x:Key="filelauncherbrowsetemplate">
                 <StackPanel Orientation="Horizontal" Margin="0 10 0 0" HorizontalAlignment="Stretch">
                     <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3">
@@ -68,7 +70,7 @@
             </DataTemplate>
             <DataTemplate x:Key="filelauncherurltemplate">
                 <WrapPanel HorizontalAlignment="Stretch" >
-                    <Label>Url : </Label>
+                    <Label>Url :</Label>
                     <TextBox Text="{Binding AppPath}" Width="200" HorizontalAlignment="Stretch"/>
                 </WrapPanel>
             </DataTemplate>
@@ -104,7 +106,7 @@
                     <TextBox DockPanel.Dock="Right" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
                 </DockPanel>
             </DataTemplate>
-            
+
             <DataTemplate x:Key="comboboxdatatemplate">
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Left" Text="{Binding Title, Mode=OneTime}" />
@@ -113,6 +115,9 @@
             </DataTemplate>
 
             <DataTemplate x:Key="movemousedatatemplate">
+                <DataTemplate.Resources>
+                    <vm:EnsureIntegerConverter x:Key="ensureintegerconverter"/>
+                </DataTemplate.Resources>
                 <StackPanel>
                     <DockPanel LastChildFill="True">
                         <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.Direction}" />
@@ -120,7 +125,7 @@
                     </DockPanel>
                     <DockPanel LastChildFill="True" Margin="0 5 0 0">
                         <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.MouseMoveSpeed}" />
-                        <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBox DockPanel.Dock="Right" Text="{Binding SelectedSpeed, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ensureintegerconverter}}" />
                     </DockPanel>
                     <DockPanel LastChildFill="True" Margin="0 5 0 0">
                         <TextBlock DockPanel.Dock="Left" Text="{x:Static r:R.SnakeMode}" />

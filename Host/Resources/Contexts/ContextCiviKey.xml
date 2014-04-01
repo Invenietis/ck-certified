@@ -18,7 +18,7 @@
                 <ServiceRequirement AssemblyQualifiedName="CommonServices.IClicCommandHandlerService, CommonServices, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Requirement="OptionalTryStart"></ServiceRequirement>
               </ServiceRequirements>
             </RequirementLayer>
-            <Modes Current="">
+            <Modes Current="Rapide">
               <Mode>GaucheEnfonce</Mode>
               <Mode>Mini</Mode>
               <Mode>Normal</Mode>
@@ -41,7 +41,7 @@
                         <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 40</Cmd>
+                            <Cmd>movemouse:UL, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -54,12 +54,13 @@
                         <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 20</Cmd>
+                            <Cmd>movemouse:UL, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -73,6 +74,7 @@
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -80,7 +82,7 @@
                         <KeyUp Label="↖" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UL, 30</Cmd>
+                            <Cmd>movemouse:UL, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -98,7 +100,7 @@
                         <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 30</Cmd>
+                            <Cmd>movemouse:U, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -111,12 +113,13 @@
                         <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 10</Cmd>
+                            <Cmd>movemouse:U, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -124,12 +127,13 @@
                         <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 3</Cmd>
+                            <Cmd>movemouse:U, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -137,7 +141,7 @@
                         <KeyUp Label="↑" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:U, 15</Cmd>
+                            <Cmd>movemouse:U, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -155,7 +159,7 @@
                         <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 30</Cmd>
+                            <Cmd>movemouse:UR, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -168,12 +172,13 @@
                         <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 10</Cmd>
+                            <Cmd>movemouse:UR, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -181,12 +186,13 @@
                         <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 3</Cmd>
+                            <Cmd>movemouse:UR, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -194,7 +200,7 @@
                         <KeyUp Label="↗" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:UR, 15</Cmd>
+                            <Cmd>movemouse:UR, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -221,7 +227,7 @@
                         <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 30</Cmd>
+                            <Cmd>movemouse:L, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -234,12 +240,13 @@
                         <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 10</Cmd>
+                            <Cmd>movemouse:L, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -247,12 +254,13 @@
                         <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 3</Cmd>
+                            <Cmd>movemouse:L, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -260,7 +268,7 @@
                         <KeyUp Label="←" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:L, 15</Cmd>
+                            <Cmd>movemouse:L, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -278,7 +286,7 @@
                         <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 30</Cmd>
+                            <Cmd>movemouse:R, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -291,12 +299,13 @@
                         <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 10</Cmd>
+                            <Cmd>movemouse:R, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -304,12 +313,13 @@
                         <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 3</Cmd>
+                            <Cmd>movemouse:R, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -317,7 +327,7 @@
                         <KeyUp Label="→" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:R, 15</Cmd>
+                            <Cmd>movemouse:R, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -344,7 +354,7 @@
                         <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 30</Cmd>
+                            <Cmd>movemouse:BL, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -357,12 +367,13 @@
                         <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 10</Cmd>
+                            <Cmd>movemouse:BL, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -370,12 +381,13 @@
                         <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 3</Cmd>
+                            <Cmd>movemouse:BL, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -383,7 +395,7 @@
                         <KeyUp Label="↙" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BL, 15</Cmd>
+                            <Cmd>movemouse:BL, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -401,7 +413,7 @@
                         <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 30</Cmd>
+                            <Cmd>movemouse:B, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -414,12 +426,13 @@
                         <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 10</Cmd>
+                            <Cmd>movemouse:B, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -427,12 +440,13 @@
                         <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 3</Cmd>
+                            <Cmd>movemouse:B, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -440,7 +454,7 @@
                         <KeyUp Label="↓" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:B, 15</Cmd>
+                            <Cmd>movemouse:B, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -458,7 +472,7 @@
                         <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 30</Cmd>
+                            <Cmd>movemouse:BR, 50, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
@@ -471,12 +485,13 @@
                         <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 10</Cmd>
+                            <Cmd>movemouse:BR, 20, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -484,12 +499,13 @@
                         <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 3</Cmd>
+                            <Cmd>movemouse:BR, 10, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>
                           <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager">
                             <data key="DisplayType" type="String">Label</data>
+                            <data key="Image" type="null" />
                           </p>
                         </PluginsData>
                       </KeyMode>
@@ -497,7 +513,7 @@
                         <KeyUp Label="↘" />
                         <KeyDown>
                           <KeyProgram xml:space="preserve">
-                            <Cmd>movemouse:BR, 15</Cmd>
+                            <Cmd>movemouse:BR, 40, False</Cmd>
                           </KeyProgram>
                         </KeyDown>
                         <PluginsData>

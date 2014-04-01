@@ -25,7 +25,8 @@ namespace KeyboardEditor.ViewModels
             KeyboardVms = new List<KeyboardViewModel>();
             foreach( var keyboard in _keyboards )
             {
-                if(root.KeyboardContext.Service.CurrentKeyboard != keyboard)
+                                                                                //temporary
+                if( root.KeyboardContext.Service.CurrentKeyboard != keyboard && keyboard.Name != "Prediction" )
                     KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }
 
@@ -53,7 +54,7 @@ namespace KeyboardEditor.ViewModels
                     _selectedKeyboard = k;
 
                     OnKeyboardSelected( k );
-                   
+
                 } );
 
                 return _selectionCommand;

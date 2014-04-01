@@ -24,6 +24,8 @@
 using CK.Windows;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace CK.Plugins.AutoClick.Views
 {
@@ -41,7 +43,7 @@ namespace CK.Plugins.AutoClick.Views
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
             var parent = VisualTreeHelper.GetParent( visualElement );
-            return parent is ClickSelectorWindow;
+            return parent is ClickSelectorWindow || visualElement is Path || (visualElement is Border && !(parent is ActionOnMouseEnterButton));
         }
     }
 }

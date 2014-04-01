@@ -123,7 +123,7 @@ namespace KeyboardEditor.Wizard.ViewModels
             {
                 if( cb.IsSelected && cb.AlreadyExist )
                 {
-                    return MessageBox.Show( "Etes-vous sûr de vouloir importer un clavier déjà existant ? ( Celui-ci va être effacé )", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
+                    return MessageBox.Show( "Etes-vous sûr de vouloir importer un clavier déjà existant ? \n( Celui-ci va être effacé )", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
                 }
             }
             return true;
@@ -156,7 +156,15 @@ namespace KeyboardEditor.Wizard.ViewModels
                 _owner.ImportKeyboards( _filePath, whiteList );
             }
             UpdateAlreadyExist();
+            MessageBox.Show( "L'import s'est fini avec succès.", "Information", System.Windows.MessageBoxButton.OK );
+            CleanViewModel();
             CanExecute = true;
+        }
+
+        void CleanViewModel()
+        {
+            _checkBoxs.Clear();
+            _filePath = string.Empty;
         }
 
         string GenerateWhiteList()

@@ -25,7 +25,7 @@ namespace CK.WindowManager
 
         public WindowElement CreateButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
             return InitializeButton( spatialBinding, slaveSpatialBinding, position );
         }
 
@@ -48,7 +48,7 @@ namespace CK.WindowManager
 
         public void RemoveButton( IWindowElement button )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             button.Window.Close();
             TopMostService.Service.UnregisterTopMostElement( button.Window );

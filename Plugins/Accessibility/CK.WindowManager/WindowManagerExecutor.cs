@@ -17,10 +17,10 @@ namespace CK.WindowManager
         PreviewBindingInfo _placeholder;
         DefaultActivityLogger _logger;
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWindowManager WindowManager { get; set; }
 
-        [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWindowBinder WindowBinder { get; set; }
 
         public WindowManagerExecutor()

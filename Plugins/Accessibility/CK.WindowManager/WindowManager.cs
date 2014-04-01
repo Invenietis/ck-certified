@@ -45,7 +45,7 @@ namespace CK.WindowManager
 
         public virtual IManualInteractionResult Move( IWindowElement window, double top, double left )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
@@ -62,7 +62,7 @@ namespace CK.WindowManager
 
         public virtual IManualInteractionResult Resize( IWindowElement window, double width, double height )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
@@ -82,7 +82,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowSizeChanged( object sender, EventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             IWindowElement windowElementFromSender = sender as IWindowElement;
             if( windowElementFromSender != null )
@@ -119,7 +119,7 @@ namespace CK.WindowManager
         /// <param name="e"></param>
         protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowLocationChangedInternal to make sure the correct thread carries on." );
 
             IWindowElement windowElementFromSender = sender as IWindowElement;
             if( windowElementFromSender != null )
@@ -151,7 +151,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowMinimized( object sender, EventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowMinimizedInternal to make sure the correct thread carries on." );
 
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
@@ -172,7 +172,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowRestored( object sender, EventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowRestoredInternal to make sure the correct thread carries on." );
 
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
@@ -193,7 +193,7 @@ namespace CK.WindowManager
 
         protected virtual void OnWindowGotFocus( object sender, EventArgs e )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowGotFocus to make sure the correct thread carries on." );
 
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
@@ -210,7 +210,7 @@ namespace CK.WindowManager
 
         public void ToggleHostMinimized()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
             IWindowElement element = _lastFocused;
             if( element == null && _dic.Count > 0 ) element = _dic.Keys.FirstOrDefault();
 
@@ -228,7 +228,8 @@ namespace CK.WindowManager
 
         public virtual void Register( IWindowElement windowElement )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             if( windowElement == null ) throw new ArgumentNullException( "windowElement" );
             if( _dic.ContainsKey( windowElement ) ) return;
 
@@ -254,7 +255,8 @@ namespace CK.WindowManager
 
         public virtual void Unregister( IWindowElement windowElement )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             if( windowElement == null )
                 throw new InvalidOperationException( "The window element holder must hold a valid, non null reference to a window element." );
 
@@ -441,14 +443,14 @@ namespace CK.WindowManager
 
         public void MinimizeAllWindows()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             foreach( var w in _dic.Keys ) w.Minimize();
         }
 
         public void RestoreAllWindows()
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             foreach( var w in _dic.Keys ) w.Restore();
         }

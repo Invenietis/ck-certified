@@ -193,7 +193,7 @@ namespace CK.WindowManager
         {
             if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
-            if( window == null ) throw new ArgumentNullException( "window" );
+            if( window == null ) throw new ArgumentNullException( "The window parameter cannot be null" );
 
             if( RemoveTopMostWindow( window ) )
             {

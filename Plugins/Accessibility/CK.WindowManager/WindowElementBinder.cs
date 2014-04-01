@@ -124,7 +124,7 @@ namespace CK.WindowManager
 
         public IBindResult PreviewBind( IWindowElement target, IWindowElement origin, BindingPosition position )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             if( target == null ) throw new ArgumentNullException( "master" );
             if( origin == null ) throw new ArgumentNullException( "slave" );
@@ -157,7 +157,7 @@ namespace CK.WindowManager
 
         public IBindResult PreviewUnbind( IWindowElement target, IWindowElement origin )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             var binding = new SimpleBinding
             {
@@ -179,7 +179,7 @@ namespace CK.WindowManager
 
         public void Bind( IWindowElement master, IWindowElement slave, BindingPosition position, bool saveBinding = false )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             if( master == null ) throw new ArgumentNullException( "master" );
             if( slave == null ) throw new ArgumentNullException( "slave" );
@@ -277,7 +277,7 @@ namespace CK.WindowManager
 
         public void Unbind( IWindowElement me, IWindowElement other, bool saveBinding = true )
         {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
             if( me == null ) throw new ArgumentNullException( "me" );
             if( other == null ) throw new ArgumentNullException( "other" );

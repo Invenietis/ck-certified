@@ -100,20 +100,28 @@ namespace KeyboardEditor.Wizard
         public List<string> GetImportKeyboardNames( string filePath )
         {
             List<string> keyboardNames = new List<string>();
-            using( FileStream str = new FileStream( filePath, FileMode.Open ) )
+            try
             {
-                using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
+                using( FileStream str = new FileStream( filePath, FileMode.Open ) )
                 {
-                    XmlReader r = reader.Xml;
-                    //r.Read();
-                    while( r.IsStartElement( "Keyboard" ) )
+                    using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
-                        keyboardNames.Add( r.GetAttribute( "Name" ) );
-                        r.ReadToNextSibling( "Keyboard" );
+                        XmlReader r = reader.Xml;
+                        //r.Read();
+                        while( r.IsStartElement( "Keyboard" ) )
+                        { 
+                            keyboardNames.Add( r.GetAttribute( "Name" ) );
+                            r.ReadToNextSibling( "Keyboard" );
+                        }
                     }
                 }
+                return keyboardNames;
+
             }
-            return keyboardNames;
+            catch( Exception e )
+            {
+                return new List<string>();
+            }
         }
 
         public void ImportKeyboards( string filePath, string whiteListFilter = "" )

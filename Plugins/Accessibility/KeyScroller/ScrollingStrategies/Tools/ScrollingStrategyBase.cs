@@ -128,11 +128,16 @@ namespace Scroller
         /// <returns></returns>
         protected bool CanMove()
         {
-            if( Walker.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
+            //False when the current is root or when there is almost one module that have highlightable children
+            if( Walker.Current == this && Children.
+                Count( 
+                c =>    c.Skip != SkippingBehavior.Skip || 
+                        c.Skip == SkippingBehavior.EnterChildren && c.Children.Count( e => e.Skip != SkippingBehavior.Skip ) > 0
+                    ) == 0 )
                 return false;
 
-            //if( Elements.Values.All( e => e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
-            //    return false;
+            if( Elements.Values.All( e => e.Children.Count > 0 && e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
+                return false;
 
             return true;
         }

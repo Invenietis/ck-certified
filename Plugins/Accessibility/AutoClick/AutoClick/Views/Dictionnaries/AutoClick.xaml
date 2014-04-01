@@ -95,10 +95,10 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="views:WPFClickTypeWatch.IsPaused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="pie" Property="Opacity" Value="0.01" />
+                <Setter TargetName="pie" Property="Opacity" Value="0" />
                 <!--Stopped + show PauseImage-->
                 <Setter TargetName="pauseImage" Property="Opacity" Value="1" />
-                <Setter TargetName="playImage" Property="Opacity" Value="0.01" />
+                <Setter TargetName="playImage" Property="Opacity" Value="0" />
                 <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
             </MultiTrigger>
             <MultiTrigger>
@@ -114,7 +114,7 @@
                         <OuterGlowBitmapEffect GlowColor="White" GlowSize="5" />
                     </Setter.Value>
                 </Setter>
-                <Setter TargetName="pauseImage" Property="Opacity" Value="0.01"  />
+                <Setter TargetName="pauseImage" Property="Opacity" Value="0"  />
                 <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
             </MultiTrigger>
             <MultiTrigger>

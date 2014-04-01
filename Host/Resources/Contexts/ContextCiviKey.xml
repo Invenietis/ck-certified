@@ -829,23 +829,14 @@
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="5" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="80" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="155" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
@@ -859,9 +850,6 @@
                           </PluginsData>
                         </LayoutKeyMode>
                         <LayoutKeyMode Mode="" X="230" Y="330" W="70" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>
@@ -922,9 +910,6 @@
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="330" Y="330" W="100" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>
@@ -6109,9 +6094,6 @@
                       </LayoutKey>
                       <LayoutKey Index="1">
                         <LayoutKeyMode Mode="" X="95" Y="235" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="2">
@@ -6134,9 +6116,6 @@
                       </LayoutKey>
                       <LayoutKey Index="4">
                         <LayoutKeyMode Mode="" X="560" Y="235" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="5">
@@ -6218,9 +6197,6 @@
                     <LayoutKeys>
                       <LayoutKey Index="0">
                         <LayoutKeyMode Mode="" X="895" Y="15" W="50" H="25" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="1">
@@ -6240,30 +6216,18 @@
                       </LayoutKey>
                       <LayoutKey Index="2">
                         <LayoutKeyMode Mode="" X="895" Y="70" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="3">
                         <LayoutKeyMode Mode="" X="895" Y="125" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="4">
                         <LayoutKeyMode Mode="" X="895" Y="180" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                       <LayoutKey Index="5">
                         <LayoutKeyMode Mode="" X="895" Y="235" W="50" H="50" Visible="true">
-                          <PluginsData>
-                            <p guid="36c4764a-111c-45e4-83d6-e38fc1df5979" version="1.6.0" name="MainKeyboardManager" />
-                          </PluginsData>
                         </LayoutKeyMode>
                       </LayoutKey>
                     </LayoutKeys>

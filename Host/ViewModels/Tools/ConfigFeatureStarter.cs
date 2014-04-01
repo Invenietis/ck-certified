@@ -29,12 +29,14 @@ using CK.Plugin.Config;
 using System.Windows.Input;
 using CK.Windows.Config;
 using CK.Windows;
+using System.Collections.Generic;
 
 namespace Host.VM
 {
     public class ConfigFeatureStarter : ConfigItem
     {
-        Guid[] _pluginIds;
+        Guid[] _linkedPluginIds;
+        Guid[] _startWithPlugin;
         ISimplePluginRunner _runner;
         IUserConfiguration _userConfig;
 
@@ -42,13 +44,37 @@ namespace Host.VM
         public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginId )
             : base( configManager )
         {
-            _pluginIds = pluginId;
+            _linkedPluginIds = pluginId;
+            _startWithPlugin = new Guid[0];
             _runner = runner;
             _userConfig = userConfig;
 
             _runner.PluginHost.StatusChanged += ( o, e ) =>
             {
-                if( _pluginIds.Contains( e.PluginProxy.PluginKey.PluginId ) )
+                if( _linkedPluginIds.Contains( e.PluginProxy.PluginKey.PluginId ) )
+                {
+                    NotifyOfPropertyChange( () => Start );
+                    NotifyOfPropertyChange( () => Stop );
+                    NotifyOfPropertyChange( () => IsRunning );
+                    NotifyOfPropertyChange( () => IsRunnable );
+                }
+            };
+
+            Start = new SimpleCommand( StartPlugin, CanStart );
+            Stop = new SimpleCommand( StopPlugin );
+        }
+
+        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, IEnumerable<Guid> linkedPluginIds, IEnumerable<Guid> startWithPlugin )
+            : base( configManager )
+        {
+            _linkedPluginIds = linkedPluginIds.ToArray();
+            _startWithPlugin = startWithPlugin.ToArray();
+            _runner = runner;
+            _userConfig = userConfig;
+
+            _runner.PluginHost.StatusChanged += ( o, e ) =>
+            {
+                if( _linkedPluginIds.Contains( e.PluginProxy.PluginKey.PluginId ) )
                 {
                     NotifyOfPropertyChange( () => Start );
                     NotifyOfPropertyChange( () => Stop );
@@ -63,7 +89,7 @@ namespace Host.VM
 
         bool CanStart()
         {
-            return _pluginIds.All
+            return _linkedPluginIds.All
             ( 
                 ( id ) =>
                 {
@@ -75,7 +101,13 @@ namespace Host.VM
 
         void StartPlugin()
         {
-            foreach( var id in _pluginIds )
+            foreach( var id in _linkedPluginIds )
+            {
+                _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
+                _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Started );
+            }
+
+            foreach( var id in _startWithPlugin )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Started );
@@ -89,7 +121,7 @@ namespace Host.VM
 
         void StopPlugin()
         {
-            foreach( var id in _pluginIds )
+            foreach( var id in _linkedPluginIds )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.Manual );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Stopped );
@@ -103,7 +135,7 @@ namespace Host.VM
 
         public bool IsRunning
         {
-            get { return _pluginIds.All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) );}
+            get { return _linkedPluginIds.All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) );}
         }
 
         //Can't find all the info to decide whether a plugin is Disabled or not, yet.

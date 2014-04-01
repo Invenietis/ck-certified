@@ -115,7 +115,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to auto click.
+        ///   Looks up a localized string similar to Auto click.
         /// </summary>
         public static string AutoClickSectionName {
             get {
@@ -156,6 +156,15 @@ namespace Host.Resources {
         public static string CKIsRunning {
             get {
                 return ResourceManager.GetString("CKIsRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scroll to click.
+        /// </summary>
+        public static string ClickTypeSelectorName {
+            get {
+                return ResourceManager.GetString("ClickTypeSelectorName", resourceCulture);
             }
         }
         

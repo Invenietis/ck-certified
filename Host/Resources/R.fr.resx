@@ -135,6 +135,9 @@
   <data name="AutoClickSectionName" xml:space="preserve">
     <value>le clic automatique</value>
   </data>
+  <data name="ClickTypeSelectorName" xml:space="preserve">
+    <value>le clic par défilement</value>
+  </data>
   <data name="AutoClickShowMousePanelOption" xml:space="preserve">
     <value>Afficher l'indicateur de progression au dessus du pointeur</value>
   </data>

@@ -133,7 +133,10 @@
     <value>Countdown duration</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
-    <value>auto click</value>
+    <value>Auto click</value>
+  </data>
+  <data name="ClickTypeSelectorName" xml:space="preserve">
+    <value>Scroll to click</value>
   </data>
   <data name="AutoClickShowMousePanelOption" xml:space="preserve">
     <value>Show a progress indicator above the pointer</value>

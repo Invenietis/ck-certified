@@ -164,7 +164,6 @@ namespace KeyboardEditor.Wizard
                                     k.Destroy();
                                 }
                             }
-                            r.ReadToNextSibling( "Keyboard" );
                         }
                     }
                 }

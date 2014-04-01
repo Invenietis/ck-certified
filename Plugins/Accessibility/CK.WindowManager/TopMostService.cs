@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Timers;
+using System.Threading;
 
 namespace CK.WindowManager
 {
@@ -27,11 +28,11 @@ namespace CK.WindowManager
 
         List<string> _indexList;
 
-        Timer _timer;
+        System.Timers.Timer _timer;
 
         public TopMostService()
         {
-            _timer = new Timer( 50 );
+            _timer = new System.Timers.Timer( 50 );
             _timer.Elapsed += _timer_Elapsed;
             _windowToString = new Dictionary<Window, string>();
             _stringToWindows = new Dictionary<string, List<Window>>();
@@ -63,6 +64,8 @@ namespace CK.WindowManager
 
         public bool RegisterTopMostElement( string levelName, Window window )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             if( string.IsNullOrEmpty( levelName ) ) throw new ArgumentNullException( "levelName" );
             if( window == null ) throw new ArgumentNullException( "window" );
 
@@ -76,6 +79,8 @@ namespace CK.WindowManager
 
         private bool AddTopMostWindow( string levelName, Window window )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( _windowToString.ContainsKey( window ) ) return false;
 
             List<Window> windows;
@@ -168,21 +173,27 @@ namespace CK.WindowManager
             {
                 DispatchWhenRequired( w.Dispatcher, () =>
                 {
-                    CK.Windows.Interop.Win.Functions.SetWindowPos( new WindowInteropHelper( w ).Handle, new IntPtr( (int)CK.Windows.Interop.Win.SpecialWindowHandles.TOPMOST ), 0, 0, 0, 0, Windows.Interop.Win.SetWindowPosFlags.IgnoreMove | Windows.Interop.Win.SetWindowPosFlags.IgnoreResize | Windows.Interop.Win.SetWindowPosFlags.DoNotActivate );
+                    CK.Windows.Interop.Win.Functions.SetWindowPos(
+                        new WindowInteropHelper( w ).Handle,
+                        new IntPtr( (int)CK.Windows.Interop.Win.SpecialWindowHandles.TOPMOST ), 0, 0, 0, 0,
+                        Windows.Interop.Win.SetWindowPosFlags.IgnoreMove
+                        | Windows.Interop.Win.SetWindowPosFlags.IgnoreResize
+                        | Windows.Interop.Win.SetWindowPosFlags.DoNotActivate );
                 } );
             }
         }
 
         private void DispatchWhenRequired( Dispatcher d, Action a )
         {
-            //An Invoke is not mandatory for this service. Setting the windows synchronously in the right z-order is not necessary
             if( d.CheckAccess() ) a();
-            else d.BeginInvoke( a );
+            else d.Invoke( a );
         }
 
         public bool UnregisterTopMostElement( Window window )
         {
-            if( window == null ) throw new ArgumentNullException( "window" );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
+            if( window == null ) throw new ArgumentNullException( "The window parameter cannot be null" );
 
             if( RemoveTopMostWindow( window ) )
             {

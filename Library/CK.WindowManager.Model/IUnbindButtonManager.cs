@@ -11,6 +11,6 @@ namespace CK.WindowManager
     {
         WindowElement CreateButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position );
 
-        void DeleteButton( IWindowElement button );
+        void RemoveButton( IWindowElement button );
     }
 }

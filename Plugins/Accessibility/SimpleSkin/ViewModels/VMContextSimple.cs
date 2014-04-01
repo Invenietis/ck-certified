@@ -31,19 +31,25 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Windows.Threading;
 using SimpleSkin.ViewModels.Versionning;
+using CK.Windows;
+using System.Diagnostics;
 
 namespace SimpleSkin.ViewModels
 {
     public class VMContextCurrentKeyboardSimple : VMContextSimpleBase
     {
-        public VMContextCurrentKeyboardSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
-            : base( ctx, kbctx, config, skinDispatcher )
+        public VMContextCurrentKeyboardSimple( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
+            : base( noFocusManager, ctx, kbctx, config )
         {
         }
 
         protected override Func<IKeyboard> KeyboardSelector
         {
-            get { return () => KeyboardContext.Keyboards.Context.CurrentKeyboard; }
+            get
+            {
+                //Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                return () => KeyboardContext.Keyboards.Context.CurrentKeyboard;
+            }
         }
 
     }
@@ -52,20 +58,22 @@ namespace SimpleSkin.ViewModels
     {
         string _activeKeyboardName;
 
-        public VMContextActiveKeyboard( string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
-            : base( ctx, kbctx, config, skinDispatcher )
+        public VMContextActiveKeyboard( NoFocusManager noFocusManager, string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
+            : base( noFocusManager, ctx, kbctx, config )
         {
             _activeKeyboardName = activeKeyboardName;
             kbctx.Keyboards.KeyboardActivated += OnKeyboardActivated;
             kbctx.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;
-
         }
 
         void OnKeyboardActivated( object sender, KeyboardEventArgs e )
         {
             if( _activeKeyboardName == e.Keyboard.Name )
             {
-                OnPropertyChanged( "KeyboardVM" );
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
             }
         }
 
@@ -73,7 +81,10 @@ namespace SimpleSkin.ViewModels
         {
             if( _activeKeyboardName == e.Keyboard.Name )
             {
-                OnPropertyChanged( "KeyboardVM" );
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
             }
         }
 
@@ -81,6 +92,7 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
+                //Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 return () =>
                 {
                     var kb = KeyboardContext.Keyboards[_activeKeyboardName];
@@ -97,6 +109,7 @@ namespace SimpleSkin.ViewModels
 
         public override void Dispose()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             base.Dispose();
             KeyboardContext.Keyboards.KeyboardActivated -= OnKeyboardActivated;
             KeyboardContext.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
@@ -116,21 +129,35 @@ namespace SimpleSkin.ViewModels
 
         public VMKeyboardSimple KeyboardVM
         {
-            get { return _keyboard ?? ( _keyboard = Obtain( KeyboardSelector() ) ); }
+            get
+            {
+                if( _keyboard == null )
+                {
+                    IKeyboard k = null;
+                    //NoFocusManager.ExternalDispatcher.Invoke( (Action)(() => 
+                    k = KeyboardSelector();
+                    //) );
+                    _keyboard = Obtain( k );
+                }
+
+                return _keyboard;
+            }
         }
 
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
 
-        public Dispatcher SkinDispatcher { get; private set; }
+        NoFocusManager _noFocusManager;
+        public NoFocusManager NoFocusManager { get { return _noFocusManager; } }
 
         protected abstract Func<IKeyboard> KeyboardSelector { get; }
 
-        public VMContextSimpleBase( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
+        public VMContextSimpleBase( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
         {
-            SkinDispatcher = skinDispatcher;
-
+            _noFocusManager = noFocusManager;
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            
             _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();
             _config = config;
@@ -143,7 +170,10 @@ namespace SimpleSkin.ViewModels
                 {
                     VMKeyboardSimple kb = CreateKeyboard( keyboard );
                     _dic.Add( keyboard, kb );
-                    _keyboards.Add( kb );
+                    NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                    {
+                        _keyboards.Add( kb );
+                    }) );
                 }
             }
             else
@@ -206,6 +236,7 @@ namespace SimpleSkin.ViewModels
 
         internal void OnModelDestroy( object m )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             VMContextElement vm;
             if( _dic.TryGetValue( m, out vm ) )
             {
@@ -216,33 +247,53 @@ namespace SimpleSkin.ViewModels
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             VMKeyboardSimple k = CreateKeyboard( e.Keyboard );
             _dic.Add( e.Keyboard, k );
-            _keyboards.Add( k );
+            NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            {
+                _keyboards.Add( k );
+            }) );
         }
 
         protected virtual void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Current != null )
             {
                 _keyboard = Obtain( e.Current );
                 _keyboard.TriggerPropertyChanged();
-                OnPropertyChanged( "KeyboardVM" );
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
             }
         }
 
         void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
             if( e.PropertyName == "CurrentContextProfile" )
             {
-                OnPropertyChanged( "KeyboardVM" );
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
             }
         }
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
-            _keyboards.Remove( Obtain( e.Keyboard ) );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+            {
+                _keyboards.Remove( Obtain( e.Keyboard ) );
+            }) );
+
             OnModelDestroy( e.Keyboard );
         }
 
@@ -264,11 +315,14 @@ namespace SimpleSkin.ViewModels
 
         private VMKeyboardSimple CreateKeyboard( IKeyboard kb )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             return new VMKeyboardSimple( this, kb );
         }
 
         private VMZoneSimple CreateZone( IZone z )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             // ToDoJL Check index
             //we give a Zone a default Index of -1, it means that it has no Index yet.
             //This index will be used by the editor and the keyscroller
@@ -277,6 +331,7 @@ namespace SimpleSkin.ViewModels
 
         private VMKeySimple CreateKey( IKey k )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             V150To160.EnsureKeyVersion( Config, k );
             return new VMKeySimple( this, k );
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using CK.Windows;
@@ -185,8 +186,8 @@ namespace CK.WindowManager.Model
         public void ToggleHostMinimized( IHostManipulator manipulator )
         {
             IntPtr ptr = IntPtr.Zero;
-            Dispatcher.Invoke( (Action)( () => ptr = _w.Hwnd ), null );
-            Application.Current.Dispatcher.BeginInvoke( (Action)( () => manipulator.ToggleMinimize( ptr ) ), null );
+            Dispatcher.Invoke( (Action)(() => ptr = _w.Hwnd), null );
+            NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => manipulator.ToggleMinimize( ptr )), null );
         }
     }
 }

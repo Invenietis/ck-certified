@@ -65,36 +65,43 @@ namespace CK.WindowManager.Model
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> got the focus.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementEventArgs> WindowGotFocus;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is registered.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementEventArgs> Registered;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is unregistered.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementEventArgs> Unregistered;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is hidden.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementEventArgs> WindowMinimized;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is restored.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementEventArgs> WindowRestored;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/>  is moved.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementLocationEventArgs> WindowMoved;
 
         /// <summary>
         /// Raised when a <see cref="IWindowElement"/> is resized.
+        /// Called on the main dispatcher.
         /// </summary>
         event EventHandler<WindowElementResizeEventArgs> WindowResized;
 

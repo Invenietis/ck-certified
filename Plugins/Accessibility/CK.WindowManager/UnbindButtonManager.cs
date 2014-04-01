@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Threading;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Windows;
@@ -22,24 +25,16 @@ namespace CK.WindowManager
 
         public WindowElement CreateButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
-            if( NoFocusManager.Default.NoFocusDispatcher.CheckAccess() )
-            {
-                return InitializeButton( spatialBinding, slaveSpatialBinding, position );
-            }
-            else
-            {
-                return (WindowElement)NoFocusManager.Default.NoFocusDispatcher.Invoke( (Func<WindowElement>)(() =>
-                    {
-                        return InitializeButton( spatialBinding, slaveSpatialBinding, position );
-                    }) );
-            }
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+            return InitializeButton( spatialBinding, slaveSpatialBinding, position );
         }
 
         WindowElement InitializeButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             WindowElement button = null;
 
-            button = new WindowElement( new UnbindButtonView( NoFocusManager.Default )
+            button = new WindowElement( new UnbindButtonView()
             {
                 DataContext = CreateVM( spatialBinding, slaveSpatialBinding, position )
             }, "unbindButton" );
@@ -51,74 +46,80 @@ namespace CK.WindowManager
             return button;
         }
 
-        public void DeleteButton( IWindowElement button )
+        public void RemoveButton( IWindowElement button )
         {
-            button.Window.Dispatcher.Invoke( (Action)(() =>
-                {
-                    button.Window.Close();
-                    TopMostService.Service.UnregisterTopMostElement( button.Window );
-                }) );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
+            button.Window.Close();
+            TopMostService.Service.UnregisterTopMostElement( button.Window );
         }
 
         VMUnbindButton CreateVM( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( position == BindingPosition.None )
                 return null;
 
-            Action move = null;
+            Action<Rect,Rect> move = null;
 
             if( position == BindingPosition.Top )
             {
-                move = () =>
-                    {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top + 10, spatialBinding.Window.Left ).Broadcast();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top - 10, slaveSpatialBinding.Window.Left ).Broadcast();
-                    };
+                move = ( windowRectangle, slaveWindowRectangle ) =>
+                {
+                    WindowManager.Service.Move( spatialBinding.Window, windowRectangle.Top + 10, windowRectangle.Left ).Broadcast();
+                    WindowManager.Service.Move( slaveSpatialBinding.Window, slaveWindowRectangle.Top - 10, slaveWindowRectangle.Left ).Broadcast();
+                };
             }
             else if( position == BindingPosition.Bottom )
             {
-                move = () =>
+                move = ( windowRectangle, slaveWindowRectangle ) =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top - 10, spatialBinding.Window.Left ).Broadcast();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top + 10, slaveSpatialBinding.Window.Left ).Broadcast();
+                        WindowManager.Service.Move( spatialBinding.Window, windowRectangle.Top - 10, windowRectangle.Left ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveWindowRectangle.Top + 10, slaveWindowRectangle.Left ).Broadcast();
                     };
             }
             else if( position == BindingPosition.Right )
             {
-                move = () =>
+                move = ( windowRectangle, slaveWindowRectangle ) =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top, spatialBinding.Window.Left - 10 ).Broadcast();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top, slaveSpatialBinding.Window.Left + 10 ).Broadcast();
+                        WindowManager.Service.Move( spatialBinding.Window, windowRectangle.Top, windowRectangle.Left - 10 ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveWindowRectangle.Top, slaveWindowRectangle.Left + 10 ).Broadcast();
                     };
             }
             else if( position == BindingPosition.Left )
             {
-                move = () =>
+                move = ( windowRectangle, slaveWindowRectangle ) =>
                     {
-                        WindowManager.Service.Move( spatialBinding.Window, spatialBinding.Window.Top, spatialBinding.Window.Left + 10 ).Broadcast();
-                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveSpatialBinding.Window.Top, slaveSpatialBinding.Window.Left - 10 ).Broadcast();
+                        WindowManager.Service.Move( spatialBinding.Window, windowRectangle.Top, windowRectangle.Left + 10 ).Broadcast();
+                        WindowManager.Service.Move( slaveSpatialBinding.Window, slaveWindowRectangle.Top, slaveWindowRectangle.Left - 10 ).Broadcast();
                     };
             }
 
             return new VMUnbindButton( () =>
             {
+                Rect windowRectangle = WindowManager.Service.GetClientArea( spatialBinding.Window );
+                Rect slaveWindowRectangle = WindowManager.Service.GetClientArea( slaveSpatialBinding.Window );
                 WindowBinder.Service.Unbind( spatialBinding.Window, slaveSpatialBinding.Window, false );
-                move();
+                move( windowRectangle, slaveWindowRectangle );
             } );
         }
 
         void DoPlaceButtons( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             double top = 0;
             double height = 0;
             double width = 0;
             double left = 0;
 
-            //We necessarily are on the spatialBinding Window's thread
-            top = spatialBinding.Window.Window.Top;
-            height = spatialBinding.Window.Window.Height;
-            width = spatialBinding.Window.Window.Width;
-            left = spatialBinding.Window.Window.Left;
+            var pos = WindowManager.Service.GetClientArea( spatialBinding.Window );
+
+            top = pos.Top;
+            height = pos.Height;
+            width = pos.Width;
+            left = pos.Left;
 
             Action moveButtons = () =>
             {
@@ -144,31 +145,14 @@ namespace CK.WindowManager
                 }
             };
 
-            if( !button.Window.Dispatcher.CheckAccess() )
-            {
-                //Button placing is not crucial, so we can safely use BeginInvoke.
-                button.Window.Dispatcher.BeginInvoke( (Action)(() =>
-                {
-                    moveButtons();
-                }) );
-            }
-            else
-            {
-                moveButtons();
-            }
+            moveButtons();
         }
 
         void InitialButtonPlacing( WindowElement button, ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position )
         {
-            if( !spatialBinding.Window.Window.Dispatcher.CheckAccess() )
-            {
-                //Button placing is not crucial, so we can safely use BeginInvoke
-                spatialBinding.Window.Window.Dispatcher.BeginInvoke( (Action)(() => DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position )) );
-            }
-            else
-            {
-                DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position );
-            }
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            DoPlaceButtons( button, spatialBinding, slaveSpatialBinding, position );
         }
 
         #region IPlugin Members

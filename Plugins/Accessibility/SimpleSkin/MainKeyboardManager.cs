@@ -133,7 +133,7 @@ namespace SimpleSkin
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            if( e.Current != null ) ChangeActiveCurrentKeyboardStatus(true);
+            if( e.Current != null ) ChangeActiveCurrentKeyboardStatus( true );
         }
 
         void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )

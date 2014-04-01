@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using CK.Context;
 using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
+using CK.Windows;
 using Host.Services;
 
 namespace CK.WindowManager
@@ -24,7 +27,7 @@ namespace CK.WindowManager
         /// <summary>
         /// The HostManipulator, enables minimizing the host.
         /// </summary>
-        public IHostManipulator HostManipulator { get { return _hostManipulator ?? ( _hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>() ); } }
+        public IHostManipulator HostManipulator { get { return _hostManipulator ?? (_hostManipulator = Context.ServiceContainer.GetService<IHostManipulator>()); } }
 
         public IReadOnlyList<IWindowElement> WindowElements
         {
@@ -42,21 +45,25 @@ namespace CK.WindowManager
 
         public virtual IManualInteractionResult Move( IWindowElement window, double top, double left )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
             {
-                WindowElementData cloneData = (WindowElementData)data.Clone();
+                WindowElementData dataSnapshot = (WindowElementData)data.Clone();
+                Rect newRect = Rect.Empty;
 
-                //Console.WriteLine( "WINDOW MANAGER Move ! {0} {1}*{2}", window.Name, top, left );
                 window.Move( top, left );
 
-                return new MoveResult( this, data, cloneData );
+                return new MoveResult( this, data, dataSnapshot );
             }
             return NullResult.Default;
         }
 
         public virtual IManualInteractionResult Resize( IWindowElement window, double width, double height )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             WindowElementData data = null;
             if( _dic.TryGetValue( window, out data ) )
             {
@@ -68,18 +75,26 @@ namespace CK.WindowManager
             return NullResult.Default;
         }
 
+        private void OnWindowSizeChangedInternal( object sender, EventArgs e )
+        {
+            DispatchWhenRequired( (Action)(() => OnWindowSizeChanged( sender, e )) );
+        }
+
         protected virtual void OnWindowSizeChanged( object sender, EventArgs e )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             IWindowElement windowElementFromSender = sender as IWindowElement;
             if( windowElementFromSender != null )
             {
                 WindowElementData data = null;
                 if( _dic.TryGetValue( windowElementFromSender, out data ) )
                 {
-                    double deltaWidth = data.Window.Width - data.Width;
-                    double deltaHeight = data.Window.Height - data.Height;
-
+                    double previousWidth = data.Width;
+                    double previousHeight = data.Height;
                     data.UpdateFromWindow();
+                    double deltaWidth = data.Width - previousWidth;
+                    double deltaHeight = data.Height - previousHeight;
 
                     if( deltaWidth != 0 || deltaHeight != 0 )
                     {
@@ -91,25 +106,33 @@ namespace CK.WindowManager
             }
         }
 
+        private void OnWindowLocationChangedInternal( object sender, EventArgs e )
+        {
+            DispatchWhenRequired( (Action)(() => OnWindowLocationChanged( sender, e )) );
+        }
+
         /// <summary>
-        /// This function is called by a function that  bypass the window system event.
+        /// This function is called by a function that bypasses the window system event.
         /// Warning : do not call a function that is called when a WindowMoved event that leading to a call MoveResult.Broadcast
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected virtual void OnWindowLocationChanged( object sender, EventArgs e )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowLocationChangedInternal to make sure the correct thread carries on." );
+
             IWindowElement windowElementFromSender = sender as IWindowElement;
             if( windowElementFromSender != null )
             {
                 WindowElementData data = null;
                 if( _dic.TryGetValue( windowElementFromSender, out data ) )
                 {
-                    //Console.WriteLine( "OnWindowLocationChanged ! {0} {1}*{2}", data.Window.Name, data.Window.Top, data.Window.Left );
-                    double deltaTop = data.Window.Top - data.Top;
-                    double deltaLeft = data.Window.Left - data.Left;
-
+                    //This is done to reduce the number of times we fetch a window's position directly from the Window, which could trigger Invokes
+                    double previousTop = data.Top;
+                    double previousLeft = data.Left;
                     data.UpdateFromWindow();
+                    double deltaTop = data.Top - previousTop;
+                    double deltaLeft = data.Left - previousLeft;
 
                     if( deltaTop != 0 || deltaLeft != 0 )
                     {
@@ -121,8 +144,15 @@ namespace CK.WindowManager
             }
         }
 
+        private void OnWindowMinimizedInternal( object sender, EventArgs e )
+        {
+            DispatchWhenRequired( (Action)(() => OnWindowMinimized( sender, e )) );
+        }
+
         protected virtual void OnWindowMinimized( object sender, EventArgs e )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowMinimizedInternal to make sure the correct thread carries on." );
+
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
             {
@@ -135,8 +165,15 @@ namespace CK.WindowManager
             }
         }
 
+        private void OnWindowRestoredInternal( object sender, EventArgs e )
+        {
+            DispatchWhenRequired( (Action)(() => OnWindowRestored( sender, e )) );
+        }
+
         protected virtual void OnWindowRestored( object sender, EventArgs e )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowRestoredInternal to make sure the correct thread carries on." );
+
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
             {
@@ -149,8 +186,15 @@ namespace CK.WindowManager
             }
         }
 
+        private void OnWindowGotFocusInternal( object sender, EventArgs e )
+        {
+            DispatchWhenRequired( (Action)(() => OnWindowGotFocus( sender, e )) );
+        }
+
         protected virtual void OnWindowGotFocus( object sender, EventArgs e )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread. Call OnWindowGotFocus to make sure the correct thread carries on." );
+
             IWindowElement windowElement = sender as IWindowElement;
             if( windowElement != null )
             {
@@ -166,6 +210,7 @@ namespace CK.WindowManager
 
         public void ToggleHostMinimized()
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
             IWindowElement element = _lastFocused;
             if( element == null && _dic.Count > 0 ) element = _dic.Keys.FirstOrDefault();
 
@@ -183,6 +228,8 @@ namespace CK.WindowManager
 
         public virtual void Register( IWindowElement windowElement )
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             if( windowElement == null ) throw new ArgumentNullException( "windowElement" );
             if( _dic.ContainsKey( windowElement ) ) return;
 
@@ -195,11 +242,11 @@ namespace CK.WindowManager
                 Top = windowElement.Top
             } );
 
-            windowElement.GotFocus += OnWindowGotFocus;
-            windowElement.Minimized += OnWindowMinimized;
-            windowElement.Restored += OnWindowRestored;
-            windowElement.LocationChanged += OnWindowLocationChanged;
-            windowElement.SizeChanged += OnWindowSizeChanged;
+            windowElement.GotFocus += OnWindowGotFocusInternal;
+            windowElement.Minimized += OnWindowMinimizedInternal;
+            windowElement.Restored += OnWindowRestoredInternal;
+            windowElement.LocationChanged += OnWindowLocationChangedInternal;
+            windowElement.SizeChanged += OnWindowSizeChangedInternal;
 
             if( Registered != null )
                 Registered( this, new WindowElementEventArgs( windowElement ) );
@@ -208,19 +255,19 @@ namespace CK.WindowManager
 
         public virtual void Unregister( IWindowElement windowElement )
         {
-            if( windowElement == null )
-                throw new ArgumentNullException( "windowElement" );
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             if( windowElement == null )
                 throw new InvalidOperationException( "The window element holder must hold a valid, non null reference to a window element." );
 
             WindowElementData data = null;
             if( _dic.TryGetValue( windowElement, out data ) )
             {
-                data.Window.GotFocus -= OnWindowGotFocus;
-                data.Window.Minimized -= OnWindowMinimized;
-                data.Window.Restored -= OnWindowRestored;
-                data.Window.LocationChanged -= OnWindowLocationChanged;
-                data.Window.SizeChanged -= OnWindowSizeChanged;
+                data.Window.GotFocus -= OnWindowGotFocusInternal;
+                data.Window.Minimized -= OnWindowMinimizedInternal;
+                data.Window.Restored -= OnWindowRestoredInternal;
+                data.Window.LocationChanged -= OnWindowLocationChangedInternal;
+                data.Window.SizeChanged -= OnWindowSizeChangedInternal;
                 _dic.Remove( windowElement );
 
                 if( Unregistered != null )
@@ -237,7 +284,7 @@ namespace CK.WindowManager
         public event EventHandler<WindowElementEventArgs> WindowRestored;
 
         /// <summary>
-        /// Warning : create the reentrancy call if the same functio is call with WindowElement.LocationChanged event and WindowMoved event
+        /// Warning : creates a reentrancy call if the same function is called with WindowElement.LocationChanged event and WindowMoved event
         /// </summary>
         public event EventHandler<WindowElementLocationEventArgs> WindowMoved;
 
@@ -288,13 +335,13 @@ namespace CK.WindowManager
         {
             WindowManager _m;
             WindowElementData _data;
-            WindowElementData _clonedData;
+            WindowElementData _dataSnapshot;
 
-            public MoveResult( WindowManager m, WindowElementData data, WindowElementData clonedData )
+            public MoveResult( WindowManager m, WindowElementData data, WindowElementData dataSnapshot )
             {
                 _m = m;
                 _data = data;
-                _clonedData = clonedData;
+                _dataSnapshot = dataSnapshot;
 
                 data.Top = data.Window.Top;
                 data.Left = data.Window.Left;
@@ -306,12 +353,14 @@ namespace CK.WindowManager
             /// </summary>
             public void Broadcast()
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
                 // Restores values...
-                _data.Top = _clonedData.Top;
-                _data.Left = _clonedData.Left;
+                _data.Top = _dataSnapshot.Top;
+                _data.Left = _dataSnapshot.Left;
                 // Broadcast, with a homemade LocationChanged event
                 _m.OnWindowLocationChanged( _data.Window, EventArgs.Empty );
             }
+
             public void Silent()
             {
             }
@@ -377,23 +426,32 @@ namespace CK.WindowManager
                 Width = Window.Width;
                 Height = Window.Height;
             }
+
             internal Rect ToRect()
             {
                 return new Rect( Left, Top, Width, Height );
             }
         }
 
+        private void DispatchWhenRequired( Action a )
+        {
+            if( Application.Current.Dispatcher.CheckAccess() ) a();
+            else Application.Current.Dispatcher.BeginInvoke( a );
+        }
 
         #region IWindowManager Members
 
-
         public void MinimizeAllWindows()
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             foreach( var w in _dic.Keys ) w.Minimize();
         }
 
         public void RestoreAllWindows()
         {
+            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
+
             foreach( var w in _dic.Keys ) w.Restore();
         }
 

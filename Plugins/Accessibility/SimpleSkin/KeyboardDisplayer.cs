@@ -83,6 +83,8 @@ namespace SimpleSkin
             public bool IsClosing;
         }
 
+        public NoFocusManager NoFocusManager { get { return NoFocusManager.Default; } }
+
         IDictionary<string, SkinInfo> _skins;
 
         bool _viewHidden;
@@ -101,6 +103,7 @@ namespace SimpleSkin
 
         public void Start()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( KeyboardContext.Service.Keyboards.Actives.Count == 0 )
             {
                 ShowNoActiveKeyboardNotification();
@@ -121,6 +124,7 @@ namespace SimpleSkin
 
         public void Stop()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             //temporary
             UnregisterPrediction();
 
@@ -168,12 +172,14 @@ namespace SimpleSkin
 
         void UnregisterTopMostService( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( TopMostService.Status == InternalRunningStatus.Started )
             {
-                skinInfo.Dispatcher.BeginInvoke( new Action( () =>
-                {
-                    TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
-                } ) );
+                //skinInfo.Dispatcher.BeginInvoke( new Action( () =>
+                //{
+                TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
+                //} ) );
             }
         }
 
@@ -195,91 +201,98 @@ namespace SimpleSkin
 
         void InitializeActiveWindow( IKeyboard keyboard )
         {
-            var vm = new VMContextActiveKeyboard( keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, NoFocusManager.Default.NoFocusDispatcher );
-            NoFocusManager.Default.NoFocusDispatcher.Invoke( (Action)(() =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            var vm = new VMContextActiveKeyboard( NoFocusManager, keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config );
+            var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+
+            bool sitb = keyboard.Name != "Prediction";
+            var skin = NoFocusManager.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
             {
-                var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+                ShowInTaskbar = sitb,
+                DataContext = vm
+            } );
 
-                bool sitb = keyboard.Name != "Prediction";
-                var skin = NoFocusManager.Default.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
-                {
-                    ShowInTaskbar = sitb,
-                    DataContext = vm
-                } );
+            SkinInfo skinInfo = new SkinInfo( skin, vm, NoFocusManager.NoFocusDispatcher, subscriber );
+            _skins.Add( keyboard.Name, skinInfo );
 
-                SkinInfo skinInfo = new SkinInfo( skin, vm, NoFocusManager.Default.NoFocusDispatcher, subscriber );
-                _skins.Add( keyboard.Name, skinInfo );
-
-                InitializeWindowLayout( skinInfo );
-
+            InitializeWindowLayout( skinInfo );
+            skinInfo.Dispatcher.Invoke( (Action)(() =>
+            {
                 skinInfo.Skin.Show();
+            }) );
+            SetWindowPlacement( skinInfo );
 
-                SetWindowPlacement( skinInfo );
+            Subscribe( skinInfo );
+            RegisterHighlighter( skinInfo );
+            RegisterTopMostService( skinInfo );
 
-                Subscribe( skinInfo );
-                RegisterHighlighter( skinInfo );
-                RegisterTopMostService( skinInfo );
-
-                RegisterSkinEvents( skinInfo );
-
-            }), null );
+            RegisterSkinEvents( skinInfo );
         }
 
         // when we call this function, we must remove the skin in dictionary 
         void UninitializeActiveWindows( SkinInfo skin )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             skin.ViewModel.Dispose();
             //Setting the config is done after closing the window because modifying a value in the Config
             //Triggers a Caliburn Micro OnNotifyPropertyChanged, which calls an Invoke on the main UI Thread.
             //generating random locks.
             //Once the LayoutManager is ready, we won't need this anymore.
             WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-            skin.Dispatcher.Invoke( (Action)(() =>
+
+            UnregisterSkinEvents( skin );
+            Unsubscribe( skin );
+            UnregisterFromHighlighter( skin );
+            UnregisterTopMostService( skin );
+
+            if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
             {
-                UnregisterSkinEvents( skin );
-                Unsubscribe( skin );
-                UnregisterHighlighter( skin );
-                RegisterTopMostService( skin );
-                //temporary 03/03/2014
-                if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
-                {
-                    if( Highlighter.Status.IsStartingOrStarted )
-                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
-                    _miniView.Hide();
-                    _viewHidden = false;
-                }
+                if( Highlighter.Status.IsStartingOrStarted )
+                    Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
 
-                placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
+                _miniView.Hide();
+                _viewHidden = false;
+            }
 
-                if( !skin.IsClosing )
+            placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
+
+            //temporary 03/03/2014
+            if( !skin.IsClosing )
+            {
+                skin.IsClosing = true;
+                skin.Skin.Dispatcher.Invoke( (Action)(() =>
                 {
-                    skin.IsClosing = true;
                     skin.Skin.Close();
-                }
-
-            }) );
+                }) );
+            }
 
             Config.User.Set( PlacementString( skin ), placement );
         }
 
         private void UninitializeMiniview()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( _miniView != null )
             {
-                _miniView.Dispatcher.Invoke( (Action)(() =>
-                    {
-                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
-                        _miniView.Close();
-                        _viewHidden = false;
-                    }) );
+                if( Highlighter.Status.IsStartingOrStarted )
+                    Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+
+                _miniView.Close();
+                _viewHidden = false;
             }
+
         }
 
         string PlacementString( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( skinInfo.ViewModel.KeyboardVM != null && skinInfo.ViewModel.KeyboardVM.Keyboard != null )
                 return skinInfo.ViewModel.KeyboardVM.Keyboard.Name + ".WindowPlacement";
-            return "";
+
+            return String.Empty;
         }
 
         /// <summary>
@@ -287,21 +300,33 @@ namespace SimpleSkin
         /// </summary>
         private void InitializeWindowLayout( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             int defaultWidth = skinInfo.ViewModel.KeyboardVM.W;
             int defaultHeight = skinInfo.ViewModel.KeyboardVM.H;
 
             if( !Config.User.Contains( PlacementString( skinInfo ) ) )
             {
                 var viewPortSize = Config[skinInfo.ViewModel.KeyboardVM.Layout]["ViewPortSize"];
-                if( viewPortSize != null )
+
+                skinInfo.Skin.Dispatcher.Invoke( (Action)(() =>
                 {
-                    Size size = (Size)viewPortSize;
-                    SetDefaultWindowPosition( skinInfo, (int)size.Width, (int)size.Height );
-                }
-                else
-                    SetDefaultWindowPosition( skinInfo, defaultWidth, defaultHeight ); //first launch : places the skin in the default position
+                    if( viewPortSize != null )
+                    {
+                        Size size = (Size)viewPortSize;
+                        SetDefaultWindowPosition( skinInfo, (int)size.Width, (int)size.Height );
+                    }
+                    else
+                        SetDefaultWindowPosition( skinInfo, defaultWidth, defaultHeight ); //first launch : places the skin in the default position
+                }) );
             }
-            else skinInfo.Skin.Width = skinInfo.Skin.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
+            else
+            {
+                skinInfo.Skin.Dispatcher.Invoke( (Action)(() =>
+                {
+                    skinInfo.Skin.Width = skinInfo.Skin.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
+                }) );
+            }
         }
 
         /// <summary>
@@ -309,6 +334,8 @@ namespace SimpleSkin
         /// </summary>
         private void SetDefaultWindowPosition( SkinInfo skinInfo, int defaultWidth, int defaultHeight )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == skinInfo.Dispatcher, "This method should only be called by the window's dispatcher." );
+
             skinInfo.Skin.Top = 0;
             skinInfo.Skin.Left = 0;
             skinInfo.Skin.Width = defaultWidth;
@@ -317,10 +344,12 @@ namespace SimpleSkin
 
         private void SetWindowPlacement( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             var defaultPlacement = new WINDOWPLACEMENT();
             defaultPlacement = CKWindowTools.GetPlacement( skinInfo.Skin.Hwnd );
-
             WINDOWPLACEMENT actualPlacement = Config.User.GetOrSet( PlacementString( skinInfo ), defaultPlacement );
+
             skinInfo.Dispatcher.Invoke( (Action)(() => CKWindowTools.SetPlacement( skinInfo.Skin.Hwnd, actualPlacement )), null );
         }
 
@@ -330,22 +359,20 @@ namespace SimpleSkin
 
         void OnHighlighterServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( e.Current == InternalRunningStatus.Started )
             {
                 if( _viewHidden == true )
                 {
-                    _miniView.Dispatcher.BeginInvoke( (Action)(() =>
+                    if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        if( Highlighter.Status == InternalRunningStatus.Started )
-                        {
-                            Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
-                        }
-                    }) );
+                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
+                    }
                 }
                 else
                 {
                     ForEachSkin( s => RegisterHighlighter( s ) );
-
                     DirtyTemporaryPredictionInjectionInCurrentKeyboard();
                 }
             }
@@ -353,24 +380,23 @@ namespace SimpleSkin
             {
                 if( _viewHidden == true )
                 {
-                    _miniView.Dispatcher.BeginInvoke( (Action)(() =>
+                    if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        if( Highlighter.Status == InternalRunningStatus.Started )
-                        {
-                            Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
-                        }
-                    }) );
+                        Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                    }
                 }
                 else
                 {
-                    ForEachSkin( s => UnregisterHighlighter( s ) );
+                    ForEachSkin( s => UnregisterFromHighlighter( s ) );
                     UnregisterPrediction();
                 }
             }
         }
 
-        private void UnregisterHighlighter( SkinInfo skinInfo )
+        private void UnregisterFromHighlighter( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( Highlighter.Status.IsStartingOrStarted )
             {
                 Highlighter.Service.UnregisterTree( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM );
@@ -379,6 +405,8 @@ namespace SimpleSkin
 
         private void RegisterHighlighter( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.RegisterTree( skinInfo.NameKeyboard,
@@ -394,6 +422,8 @@ namespace SimpleSkin
         //if the target keyboard isn't active and isn't registered, the prediction is registered as a module (a root element)
         private void RegisterPrediction()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 if( _skins.ContainsKey( PredictionKeyboardName ) )
@@ -420,6 +450,8 @@ namespace SimpleSkin
 
         private void UnregisterPrediction()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
                 if( _skins.ContainsKey( PredictionKeyboardName ) )
@@ -442,6 +474,8 @@ namespace SimpleSkin
 
         private void DirtyTemporaryPredictionInjectionInCurrentKeyboard()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             UnregisterPrediction();
             RegisterPrediction();
         }
@@ -452,6 +486,8 @@ namespace SimpleSkin
 
         private void RegisterEvents()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             KeyboardContext.Service.Keyboards.KeyboardActivated += OnKeyboardActivated;
             KeyboardContext.Service.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;
             KeyboardContext.Service.Keyboards.KeyboardDestroyed += OnKeyboardDestroyed;
@@ -464,14 +500,17 @@ namespace SimpleSkin
 
         private void RegisterSkinEvents( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             //temporary 03/03/2014
             skinInfo.Skin.StateChanged += OnStateChanged;
-
             skinInfo.Skin.Closing += new CancelEventHandler( OnWindowClosing );
         }
 
         private void UnregisterEvents()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             KeyboardContext.Service.Keyboards.KeyboardActivated -= OnKeyboardActivated;
             KeyboardContext.Service.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
             KeyboardContext.Service.Keyboards.KeyboardDestroyed -= OnKeyboardDestroyed;
@@ -486,6 +525,8 @@ namespace SimpleSkin
 
         private void UnregisterSkinEvents( SkinInfo skinInfo )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             //temporary 03/03/2014
             skinInfo.Skin.StateChanged -= OnStateChanged;
 
@@ -498,6 +539,7 @@ namespace SimpleSkin
 
         void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
             UninitializeActiveWindows( _skins[e.Keyboard.Name] );
@@ -508,12 +550,14 @@ namespace SimpleSkin
 
         void OnKeyboardActivated( object sender, KeyboardEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             InitializeActiveWindow( e.Keyboard );
             DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
 
         void OnKeyboardRenamed( object sender, KeyboardRenamedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             SkinInfo skin;
             if( _skins.TryGetValue( e.PreviousName, out skin ) )
             {
@@ -531,6 +575,7 @@ namespace SimpleSkin
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Keyboard.IsActive )
             {
                 OnKeyboardDeactivated( sender, e );
@@ -539,6 +584,7 @@ namespace SimpleSkin
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Keyboard.IsActive && !_skins.ContainsKey( e.Keyboard.Name ) )
             {
                 OnKeyboardActivated( sender, e );
@@ -550,47 +596,44 @@ namespace SimpleSkin
         void OnStateChanged( object sender, EventArgs e )
         {
             SkinWindow window = sender as SkinWindow;
-            if( window != null && window.WindowState == WindowState.Minimized )
+            if( window != null )
             {
-                HideSkin();
+                WindowState state = window.WindowState;
 
-                if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.MinimizeAllWindows();
-
-                //temporary
-                UnregisterPrediction();
-            }
-            if( window != null && window.WindowState == WindowState.Normal )
-            {
-                RestoreSkin();
-                //temporary
-                UnregisterPrediction();
-            }
-        }
-
-        /// <summary>
-        /// Hides the skin and shows the keyboard's MiniView
-        /// </summary>
-        void HideSkin()
-        {
-            if( !_viewHidden )
-            {
-                _viewHidden = true;
-
-                ForEachSkin( UnregisterHighlighter );
-
-                ShowMiniView();
-                _miniView.Dispatcher.BeginInvoke( (Action)(() =>
+                NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() =>
                 {
-                    if( Highlighter.Status == InternalRunningStatus.Started )
+                    if( state == WindowState.Minimized )
                     {
-                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm, true );
+                        if( !_viewHidden )
+                        {
+                            _viewHidden = true;
+
+                            ShowMiniView();
+
+                            if( Highlighter.Status == InternalRunningStatus.Started )
+                            {
+                                Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
+                                ForEachSkin( UnregisterFromHighlighter );
+                            }
+                        }
+
+                        if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.MinimizeAllWindows();
                     }
-                }), null );
+                    else if( state == WindowState.Normal )
+                    {
+                        RestoreSkin();
+                    }
+
+                    //temporary
+                    UnregisterPrediction();
+                }) );
             }
         }
 
         void ShowMiniView()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             if( _miniView == null )
             {
                 _miniViewVm = new MiniViewVM( this );
@@ -617,20 +660,19 @@ namespace SimpleSkin
         /// </summary>
         public void RestoreSkin()
         {
-            _miniView.Dispatcher.BeginInvoke( (Action)(() =>
-                {
-                    if( _miniView.Visibility != Visibility.Hidden )
-                    {
-                        if( Highlighter.Status.IsStartingOrStarted )
-                            Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
-                        _miniView.Hide();
-                    }
-                }) );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
+            if( _miniView != null && _miniView.Visibility != Visibility.Hidden )
+            {
+                if( Highlighter.Status.IsStartingOrStarted )
+                    Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
+                _miniView.Hide();
+            }
+
+            //Dispatched afterwards
             if( WindowManager.Status.IsStartingOrStarted ) WindowManager.Service.RestoreAllWindows();
 
             ForEachSkin( RegisterHighlighter );
-
             DirtyTemporaryPredictionInjectionInCurrentKeyboard();
             _viewHidden = false;
         }
@@ -639,25 +681,35 @@ namespace SimpleSkin
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
-            SkinWindow sw = sender as SkinWindow;
-
-            Debug.Assert( sw != null );
-            Debug.Assert( _skins.Values.FirstOrDefault( si => si.Skin == sw ) != null );
-
-            SkinInfo skinInfo = _skins.Values.First( si => si.Skin == sw );
-            if( !skinInfo.IsClosing )
+            NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() =>
             {
-                skinInfo.IsClosing = true;
-                skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
-            }
+                SkinWindow sw = sender as SkinWindow;
 
-            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
+                Debug.Assert( sw != null );
+                Debug.Assert( _skins.Values.FirstOrDefault( si => si.Skin == sw ) != null );
+
+                SkinInfo skinInfo = _skins.Values.First( si => si.Skin == sw );
+                if( !skinInfo.IsClosing )
+                {
+                    skinInfo.IsClosing = true;
+                    skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
+                }
+
+                DirtyTemporaryPredictionInjectionInCurrentKeyboard();
+            }) );
         }
 
         #endregion
 
         #region Helper
 
+        /// <summary>
+        /// Calls the action for each skin.
+        /// As skins can belong to different dispatchers, you may specify whether it should make sure the call is made through each skin Dispatcher.
+        /// </summary>
+        /// <param name="action">the action to call on each skin</param>
+        /// <param name="dispatch">whether this aciton should be called on a skin's own dispatcher</param>
+        /// <param name="synchronous">Only taken into account if dispatch == true</param>
         private void ForEachSkin( Action<SkinInfo> action )
         {
             foreach( var skin in _skins.Values )
@@ -668,14 +720,14 @@ namespace SimpleSkin
 
         private void ShowNoActiveKeyboardNotification()
         {
-            Application.Current.Dispatcher.BeginInvoke( (Action)(() =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            //TODO : re-enable
+            if( Notification != null )
             {
-                if( Notification != null )
-                {
-                    Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est actif",
-                        "Aucun clavier n'est actif, veuillez activer un clavier.", 1000, NotificationTypes.Warning );
-                }
-            }), null );
+                Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est actif",
+                    "Aucun clavier n'est actif, veuillez activer un clavier.", 1000, NotificationTypes.Warning );
+            }
         }
 
         #endregion Helper

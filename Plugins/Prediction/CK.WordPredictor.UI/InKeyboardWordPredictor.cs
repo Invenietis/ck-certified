@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Threading;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Windows;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version="1.0" )]
+    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version = "1.0" )]
     public class InKeyboardWordPredictor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -31,6 +34,7 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( Context != null )
             {
                 //Feature.PredictionContextFactory.CreatePredictionZone( Context.CurrentKeyboard, Feature.MaxSuggestedWords );
@@ -53,6 +57,7 @@ namespace CK.WordPredictor.UI
 
         void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.PropertyName == "WordPredictionMaxSuggestedWords" )
             {
                 object newValue = Config.User["WordPredictionMaxSuggestedWords"];
@@ -72,6 +77,7 @@ namespace CK.WordPredictor.UI
         //Create a Prédiction Keyboard in a new window
         private void EnsurePredictionKeyboard()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( PredictionKeyboard == null )
             {
                 // Also Create an new keyboard and makes it active
@@ -87,7 +93,7 @@ namespace CK.WordPredictor.UI
 
         public void Stop()
         {
-            if( WordPredictorService != null && WordPredictorService.Service != null )
+            if( WordPredictorService.Status.IsStartingOrStarted )
             {
                 WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
                 WordPredictorService.ServiceStatusChanged -= OnWordPredictorServiceStatusChanged;
@@ -107,17 +113,19 @@ namespace CK.WordPredictor.UI
 
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             //Feature.PredictionContextFactory.RemovePredictionZone( e.Previous );
             //Feature.PredictionContextFactory.CreatePredictionZone( e.Current, Feature.MaxSuggestedWords );
         }
 
         void OnWordPredictorServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
-            if( e.Current <= InternalRunningStatus.Stopping )
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            if( e.Current.IsStoppingOrStopped )
             {
                 WordPredictorService.Service.Words.CollectionChanged -= OnWordPredictedCollectionChanged;
             }
-            if( e.Current <= InternalRunningStatus.Starting )
+            else if( e.Current.IsStartingOrStarted )
             {
                 WordPredictorService.Service.Words.CollectionChanged += OnWordPredictedCollectionChanged;
             }
@@ -125,15 +133,23 @@ namespace CK.WordPredictor.UI
 
         protected void OnWordPredictedCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
         {
-            var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-            SetupPredictionZone( e, zone );
-            if( PredictionKeyboard != null )
-                SetupPredictionZone( e, PredictionKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName] );
+            Debug.Assert( Dispatcher.CurrentDispatcher != NoFocusManager.Default.ExternalDispatcher && Dispatcher.CurrentDispatcher != NoFocusManager.Default.NoFocusDispatcher, "The predicted words are supposed to be fetched by a worker thread." );
 
+            //Manipulation of the Context is done through the main thread.
+            NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
+            {
+                var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
+                //If there is a prediction zone in the current keyboard, that's the one we are going ot fill
+                if( zone != null )
+                    SetupPredictionZone( e, zone );
+                else if( PredictionKeyboard != null ) //otherwise we check whether we have a prediction keyboard
+                    SetupPredictionZone( e, PredictionKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName] );
+            }) );
         }
 
         private void SetupPredictionZone( NotifyCollectionChangedEventArgs e, IZone zone )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( zone != null && e.Action == NotifyCollectionChangedAction.Reset )
             {
                 for( int i = 0; i < Feature.MaxSuggestedWords; ++i )

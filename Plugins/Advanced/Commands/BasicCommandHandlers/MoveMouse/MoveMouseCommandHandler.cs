@@ -192,7 +192,7 @@ namespace BasicCommandHandlers
                     Point xPoint = new Point( X + XStep, Y );
                     if( !_regionHelper.Contains( xPoint ) )
                     {
-                        nextX = RegionHelper.ContainsInXBounds( xPoint, screen ) ?
+                        nextX = RegionHelper.ContainedInXBounds( xPoint, screen ) ?
                             X + XStep : (XStep > 0) ? _regionHelper.GetMinXPosition( Y ) : _regionHelper.GetMaxXPosition( Y );
                     }
 
@@ -202,13 +202,12 @@ namespace BasicCommandHandlers
                     Point yPoint = new Point( X, Y + YStep );
                     if( !_regionHelper.Contains( yPoint ) )
                     {
-                        nextY = RegionHelper.ContainsInYBounds( yPoint, screen ) ?
+                        nextY = RegionHelper.ContainedInYBounds( yPoint, screen ) ?
                             Y + YStep : (YStep > 0) ? _regionHelper.GetMinYPosition( X ) : _regionHelper.GetMaxYPosition( X );
                     }
                 }
             }
             MouseProcessor.MoveMouseToAbsolutePosition( nextX, nextY );
-            //MouseProcessor.MoveMouseToAbsolutePosition( X+1, Y+1 );
         }
 
         public void EndMouseMotion()

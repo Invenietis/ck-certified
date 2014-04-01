@@ -131,8 +131,8 @@ namespace Scroller
             if( Walker.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
                 return false;
 
-            if( Elements.Values.All( e => e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
-                return false;
+            //if( Elements.Values.All( e => e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
+            //    return false;
 
             return true;
         }
@@ -282,6 +282,7 @@ namespace Scroller
 
             //Reset the walker
             Walker.GoToAbsoluteRoot();
+            MoveNext( ActionType.MoveNext );
             Timer.Start();
             IsStarted = true;
         }

@@ -562,7 +562,7 @@ namespace SimpleSkin
             if( _skins.TryGetValue( e.PreviousName, out skin ) )
             {
                 _skins.Remove( e.PreviousName );
-                UnregisterHighlighter( skin );
+                UnregisterFromHighlighter( skin );
                 Unsubscribe( skin );
 
                 skin.NameKeyboard = e.Keyboard.Name;

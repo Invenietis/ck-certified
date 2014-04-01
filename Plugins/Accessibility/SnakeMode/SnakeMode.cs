@@ -12,11 +12,10 @@ using CommonServices;
 
 namespace SnakeMode
 {
-    [Plugin( SnakeMode.PluginIdString, PublicName = PluginPublicName, Version = SnakeMode.PluginIdVersion,
-       Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( SnakeMode.PluginIdString, PublicName = PluginPublicName, Version = SnakeMode.PluginIdVersion )]
     public class SnakeMode : IPlugin
     {
-        const string PluginPublicName = "SnakeMode";
+        const string PluginPublicName = "Snake Mode";
         const string PluginIdString = "{D237F483-A351-424D-B1B7-E84A17ED5C81}";
         const string PluginIdVersion = "0.1.0";
 
@@ -62,6 +61,7 @@ namespace SnakeMode
 
         public void Stop()
         {
+            PointerDriver.Service.PointerMove -= Service_PointerMove;
             _timer.Stop();
         }
 
@@ -85,7 +85,7 @@ namespace SnakeMode
                 {
                     if( screen.Right == newPoint.X ) nextX = _regionHelper.GetMinXPosition( newPoint.Y ) + 1;
                     else if( screen.Left == newPoint.X ) nextX = _regionHelper.GetMaxXPosition( newPoint.Y ) - 1;
-                    if( screen.Top == newPoint.Y ) 
+                    if( screen.Top == newPoint.Y )
                         nextY = _regionHelper.GetMaxYPosition( newPoint.Y ) - 1;
                     else if( screen.Bottom == newPoint.Y ) nextY = _regionHelper.GetMinYPosition( newPoint.Y ) + 1;
                 }
@@ -97,7 +97,7 @@ namespace SnakeMode
                     else if( screen.Bottom < newPoint.Y ) nextY = _regionHelper.GetMinYPosition( newPoint.Y ) + 1;
                 }
 
-                if( nextX !=  newPoint.X || nextY != newPoint.Y) MouseProcessor.MoveMouseToAbsolutePosition( nextX, nextY );
+                if( nextX != newPoint.X || nextY != newPoint.Y ) MouseProcessor.MoveMouseToAbsolutePosition( nextX, nextY );
                 _isActive = false;
             }
         }

@@ -163,7 +163,7 @@ namespace KeyboardEditor.Wizard.ViewModels
                 _owner.ImportKeyboards( _filePath, whiteList );
             }
             UpdateAlreadyExist();
-            MessageBox.Show( "L'import s'est déroulé avec succès.", "Information", System.Windows.MessageBoxButton.OK );
+            MessageBox.Show( "L'opération d'import s'est déroulée avec succès.", "Information", System.Windows.MessageBoxButton.OK );
             CleanViewModel();
             CanExecute = true; 
         }

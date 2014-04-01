@@ -47,10 +47,11 @@ namespace KeyboardEditor.Wizard.ViewModels
         }
 
         void CreateCheckBox()
-        {
+        { 
             foreach( var k in _keyboards )
             {
-                _checkBoxs.Add( new CheckBoxExportKeyboardViewModel( k ) );
+                if( k.Keyboard.Name != "Prediction") //TEMPORARY
+                    _checkBoxs.Add( new CheckBoxExportKeyboardViewModel( k ) );
             }
         }
 

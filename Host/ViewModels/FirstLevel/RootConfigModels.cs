@@ -50,10 +50,14 @@ namespace Host.ViewModels
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
-            var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
-            destroyedKeyboard.Dispose();
+            //temporary
+            if( e.Keyboard.Name != "Prediction" )
+            {
+                var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
+                destroyedKeyboard.Dispose();
 
-            _keyboards.Remove( destroyedKeyboard );
+                _keyboards.Remove( destroyedKeyboard );
+            }
         }
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )

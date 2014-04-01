@@ -15,19 +15,8 @@ namespace Scroller
         protected Timer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }
         protected IHighlightableElement PreviousElement { get; set; }
-        protected ITreeWalker Walker { get; set; }     //Big up to Olivier Spineli
+        protected ITreeWalker Walker { get; set; }
         protected Dictionary<string, IHighlightableElement> Elements { get; set; }
-
-        bool CanMove()
-        {
-            if( Walker.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
-                return false;
-
-            if( Elements.Values.All( e => e.Children.All(c => c.Skip == SkippingBehavior.Skip )) )
-                return false;
-
-            return true;
-        }
 
         public ScrollingStrategyBase()
         {
@@ -80,20 +69,8 @@ namespace Scroller
                 return;
             }
 
-            //We retrieve parents that implement IHighlightableElementController
-            var controlingParents = Walker.Parents.Where( ( i ) => { return i is IHighlightableElementController; } );
-
-            foreach( IHighlightableElementController parent in controlingParents )
-            {
-                //we offer the possibility to change action
-                action = parent.PreviewChildAction( Walker.Current, action );
-            }
-
-            foreach( IHighlightableElementController parent in controlingParents )
-            {
-                //inform that there is a new ActionType
-                parent.OnChildAction( action );
-            }
+            //Inform all controller element of the current action
+            action = WarnNextAction( action );
 
             // reset the action type
             LastDirective.NextActionType = ActionType.MoveNext;
@@ -139,6 +116,46 @@ namespace Scroller
             }
 
             ProcessSkipBehavior(action);
+        }
+
+        /// <summary>
+        /// Determine whether a move can be performed or not.
+        /// </summary>
+        /// <returns></returns>
+        protected bool CanMove()
+        {
+            if( Walker.Current == this && Children.Count( c => c.Skip != SkippingBehavior.Skip ) == 0 )
+                return false;
+
+            if( Elements.Values.All( e => e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Allow IHighlightableElementController to change the given action used for the next move
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        protected ActionType WarnNextAction( ActionType action )
+        {
+            //We retrieve parents that implement IHighlightableElementController
+            var controlingParents = Walker.Parents.Where( ( i ) => { return i is IHighlightableElementController; } );
+
+            foreach( IHighlightableElementController parent in controlingParents )
+            {
+                //we offer the possibility to change action
+                action = parent.PreviewChildAction( Walker.Current, action );
+            }
+
+            foreach( IHighlightableElementController parent in controlingParents )
+            {
+                //inform that there is a new ActionType
+                parent.OnChildAction( action );
+            }
+
+            return action;
         }
 
         /// <summary>

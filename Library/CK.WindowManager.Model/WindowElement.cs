@@ -121,6 +121,18 @@ namespace CK.WindowManager.Model
             } );
         }
 
+        void IWindowElement.Move( CallWithDelayedGet cwdg )
+        {
+            DispatchWhenRequired( () =>
+            {
+                using( new DisableElementEvents( () => _w.LocationChanged -= OnWindowLocationChanged, () => _w.LocationChanged += OnWindowLocationChanged ) )
+                {
+                    if( cwdg.a != _w.Top ) _w.Top = cwdg.a;
+                    if( cwdg.b != _w.Left ) _w.Left = cwdg.b;
+                }
+            } );
+        }
+
         void IWindowElement.Resize( double width, double height )
         {
             DispatchWhenRequired( () =>
@@ -129,6 +141,18 @@ namespace CK.WindowManager.Model
                 {
                     _w.Width = width < 0 ? 0 : width;
                     _w.Height = height < 0 ? 0 : height;
+                }
+            } );
+        }
+
+        void IWindowElement.Resize( CallWithDelayedGet cwdg )
+        {
+            DispatchWhenRequired( () =>
+            {
+                using( new DisableElementEvents( () => _w.SizeChanged -= OnWindowSizeChanged, () => _w.SizeChanged += OnWindowSizeChanged ) )
+                {
+                    _w.Width = cwdg.a < 0 ? 0 : cwdg.a;
+                    _w.Height = cwdg.b < 0 ? 0 : cwdg.b;
                 }
             } );
         }
@@ -188,6 +212,28 @@ namespace CK.WindowManager.Model
             IntPtr ptr = IntPtr.Zero;
             Dispatcher.Invoke( (Action)(() => ptr = _w.Hwnd), null );
             NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => manipulator.ToggleMinimize( ptr )), null );
+        }
+    }
+
+    public class CallWithDelayedGet
+    {
+        Func<double> _a;
+        Func<double> _b;
+
+        public double a
+        {
+            get { return _a(); }
+        }
+
+        public double b
+        {
+            get { return _b(); }
+        }
+
+        public CallWithDelayedGet( Func<double> a, Func<double> b )
+        {
+            _a = a;
+            _b = b;
         }
     }
 }

@@ -39,7 +39,6 @@ namespace KeyboardEditor.Wizard.ViewModels
                 {
                     _filePath = value;
                     OnPropertyChanged();
-                    UpdateCanExecuteImport();
                 }
             }
         }
@@ -72,7 +71,7 @@ namespace KeyboardEditor.Wizard.ViewModels
         }
         void UpdateCanExecuteImport()
         {
-            CanExecuteImport = !string.IsNullOrWhiteSpace( _filePath ) && _canExecute;
+            CanExecuteImport = !string.IsNullOrWhiteSpace( _filePath ) && _canExecute && _checkBoxs.Any( cb => cb.IsSelected );
         }
 
         public ICommand OpenCommand
@@ -131,18 +130,26 @@ namespace KeyboardEditor.Wizard.ViewModels
 
         void CreateCheckBox( IEnumerable<string> keyboardNames )
         {
-            _checkBoxs.Clear();
+            CheckBoxs.Clear();
 
             if( !keyboardNames.Any() )
                 MessageBox.Show( "Aucun clavier n'a pu être identifié dans le fichier sélectionné.", "Information", System.Windows.MessageBoxButton.OK );
             else
             {
+                CheckBoxImportKeyboardViewModel checkbox = null;
                 foreach( var k in keyboardNames )
                 {
-                    CheckBoxs.Add( new CheckBoxImportKeyboardViewModel( k, _keyboards.FirstOrDefault( kb => kb.Name == k ) != null ) );
+                    checkbox = new CheckBoxImportKeyboardViewModel( k, _keyboards.FirstOrDefault( kb => kb.Name == k ) != null );
+                    CheckBoxs.Add( checkbox );
+                    checkbox.PropertyChanged += checkbox_PropertyChanged;
                 }
             }
 
+        }
+
+        void checkbox_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == "IsSelected" ) UpdateCanExecuteImport();
         }
 
         void UpdateAlreadyExist()
@@ -159,19 +166,28 @@ namespace KeyboardEditor.Wizard.ViewModels
             if( CheckAlreadyExistKeyboards() )
             {
                 string whiteList = GenerateWhiteList();
-                //if empty dialog box
-                _owner.ImportKeyboards( _filePath, whiteList );
+                try
+                {
+                    _owner.ImportKeyboards( _filePath, whiteList );
+                }
+                catch
+                {
+                    MessageBox.Show( "Un des claviers sélectionnés est corrompu.", "Information", System.Windows.MessageBoxButton.OK );
+                    CanExecute = true;
+                    return;
+                }
+                UpdateAlreadyExist();
+                MessageBox.Show( "L'opération d'import s'est déroulée avec succès.", "Information", System.Windows.MessageBoxButton.OK );
             }
-            UpdateAlreadyExist();
-            MessageBox.Show( "L'opération d'import s'est déroulée avec succès.", "Information", System.Windows.MessageBoxButton.OK );
             CleanViewModel();
             CanExecute = true; 
         }
 
         void CleanViewModel()
         {
-            _checkBoxs.Clear();
-            _filePath = string.Empty;
+            foreach( var cb in _checkBoxs ) cb.PropertyChanged -= checkbox_PropertyChanged;
+            CheckBoxs.Clear();
+            FilePath = string.Empty;
         }
 
         string GenerateWhiteList()

@@ -110,7 +110,7 @@
                 <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Sélectionner un fichier"/>
                 <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Utilisez le bouton Parcourir pour sélectionner un fichier .xml contenant le ou les claviers CiviKey à importer."/>
                 <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
-                <TextBox ToolTip="{Binding FilePath}" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
+                <TextBox ToolTip="{Binding FilePath}" IsReadOnly="True" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
             </DockPanel>
             <StackPanel Grid.Row="1">
                 <TextBlock Style="{StaticResource step}" Text="2. Sélectionner les claviers à importer"/>

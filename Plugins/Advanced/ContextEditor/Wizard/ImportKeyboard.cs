@@ -116,7 +116,6 @@ namespace KeyboardEditor.Wizard
                     }
                 }
                 return keyboardNames;
-
             }
             catch( Exception e )
             {

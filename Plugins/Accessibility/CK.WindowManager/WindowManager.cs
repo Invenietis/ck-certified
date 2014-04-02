@@ -59,7 +59,7 @@ namespace CK.WindowManager
             return NullResult.Default;
         }
 
-        public virtual IManualInteractionResult Move( IWindowElement window, CallWithDelayedGet cwdg )
+        public virtual IManualInteractionResult Move( IWindowElement window, CallGetWithDelayed cwdg )
         {
             if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 
@@ -90,7 +90,7 @@ namespace CK.WindowManager
             return NullResult.Default;
         }
 
-        public virtual IManualInteractionResult Resize( IWindowElement window, CallWithDelayedGet cwdg )
+        public virtual IManualInteractionResult Resize( IWindowElement window, CallGetWithDelayed cwdg )
         {
             if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
 

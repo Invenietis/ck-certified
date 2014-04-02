@@ -121,7 +121,7 @@ namespace CK.WindowManager.Model
             } );
         }
 
-        void IWindowElement.Move( CallWithDelayedGet cwdg )
+        void IWindowElement.Move( CallGetWithDelayed cwdg )
         {
             DispatchWhenRequired( () =>
             {
@@ -145,7 +145,7 @@ namespace CK.WindowManager.Model
             } );
         }
 
-        void IWindowElement.Resize( CallWithDelayedGet cwdg )
+        void IWindowElement.Resize( CallGetWithDelayed cwdg )
         {
             DispatchWhenRequired( () =>
             {
@@ -215,7 +215,7 @@ namespace CK.WindowManager.Model
         }
     }
 
-    public class CallWithDelayedGet
+    public class CallGetWithDelayed
     {
         Func<double> _a;
         Func<double> _b;
@@ -230,7 +230,7 @@ namespace CK.WindowManager.Model
             get { return _b(); }
         }
 
-        public CallWithDelayedGet( Func<double> a, Func<double> b )
+        public CallGetWithDelayed( Func<double> a, Func<double> b )
         {
             _a = a;
             _b = b;

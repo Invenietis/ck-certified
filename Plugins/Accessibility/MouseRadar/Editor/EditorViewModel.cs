@@ -31,7 +31,7 @@ namespace MouseRadar.Editor
             get { return _config.User.GetOrSet( "RadarSize", 50 ); }
             set
             {
-                _config.User["RadarSize"] = value;
+                _config.User["RadarSize"] = ( value > 200 ) ? 200 : value;
                 NotifyOfPropertyChange( "RadarSize" );
             }
         }

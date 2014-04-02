@@ -9,5 +9,15 @@
     </PluginStatusCollection>
     <UserProfileCollection>
     </UserProfileCollection>
+	<Plugins>
+      <p guid="f6b5d818-3c04-4a46-ad65-afc5458a394c" version="1.0.0" name="CK.WindowManager.WindowElementBinder">
+        <data key="SerializableBindings" type="Structured" typeName="CK.WindowManager.WindowElementBinder+SerializableBindings, CK.WindowManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Bindings>
+            <Bind Master="Azerty" Slave="Prediction" Position="Top" />
+            <Bind Master="Ergonomique" Slave="Prediction" Position="Top" />
+          </Bindings>
+        </data>
+      </p>
+	</Plugins>
   </System>
 </CK-Structured>

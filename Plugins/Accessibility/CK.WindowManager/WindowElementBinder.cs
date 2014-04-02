@@ -451,6 +451,17 @@ namespace CK.WindowManager
                 Bindings.Add( new SerializableBinding( binding.Target.Name, binding.Origin.Name, binding.Position ) );
             }
 
+            public bool Contains( SimpleBinding binding )
+            {
+                return Bindings.Any( sb => Comparer( sb, binding ) );
+            }
+
+            bool Comparer( SerializableBinding sb, SimpleBinding s )
+            {
+                return (sb.Target == s.Target.Name && sb.Origin == s.Origin.Name && sb.Position == s.Position)
+                    || (sb.Target == s.Origin.Name && sb.Origin == s.Target.Name && sb.Position == GetOppositePosition( s.Position ));
+            }
+
             public void Remove( CK.WindowManager.WindowElementBinder.SimpleBinding binding )
             {
                 //TODO performance
@@ -514,7 +525,10 @@ namespace CK.WindowManager
 
         public void Start()
         {
-            _persistantBindings = Config.User.GetOrSet( "SerializableBindings", _persistantBindings );
+            _persistantBindings = (SerializableBindings)Config.User["SerializableBindings"];
+            if( _persistantBindings == null ) _persistantBindings = (SerializableBindings)Config.System["SerializableBindings"];
+            if( _persistantBindings == null ) _persistantBindings = new SerializableBindings();
+
             WindowManager.Service.Unregistered += WindowManager_Unregistered;
             WindowManager.Service.Registered += OnRegistered;
         }

@@ -117,6 +117,7 @@ namespace SimpleSkin.ViewModels
             {
                 Keys.Clear();
             }) );
+            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         #region IHighlightable members

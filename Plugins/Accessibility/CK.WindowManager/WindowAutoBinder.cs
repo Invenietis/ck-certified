@@ -166,6 +166,7 @@ namespace CK.WindowManager
         public void Stop()
         {
             PointerDeviceDriver.PointerButtonUp -= OnPointerButtonUp;
+            PointerDeviceDriver.PointerButtonDown -= OnPointerButtonDown;
 
             WindowBinder.AfterBinding -= OnAfterBinding;
             WindowBinder.BeforeBinding -= OnBeforeBinding;

@@ -473,8 +473,8 @@ namespace KeyboardEditor.ViewModels
                 if( _selectedImage.Value != value.Value )
                 {
                     _selectedImage = value;
-                    if( !Context.DefaultImages.Values.Contains( value.Value ) )
-                        Context.AddDefaultImage( value.Key, value.Value );
+                    //if( !Context.DefaultImages.Values.Contains( value.Value ) )
+                    //    Context.AddDefaultImage( value.Key, value.Value );
 
                     if( File.Exists( _selectedImage.Value ) )
                     {

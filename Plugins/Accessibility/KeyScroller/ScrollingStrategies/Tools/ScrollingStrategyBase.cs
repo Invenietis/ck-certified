@@ -27,24 +27,21 @@ namespace Scroller
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
-            Application.Current.Dispatcher.Invoke( (Action)(() =>
-            {
-                if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
+            if( LastDirective == null ) LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
 
-                //Saving the currently highlighted element
-                PreviousElement = Walker.Current;
+            //Saving the currently highlighted element
+            PreviousElement = Walker.Current;
 
-                //Move the cursor to the next element
-                MoveNext( LastDirective.NextActionType );
+            //Move the cursor to the next element
+            MoveNext( LastDirective.NextActionType );
 
-                //End highlight on the previous element (if different from the current one)
-                if( PreviousElement != null )
-                    FireEndHighlight( PreviousElement, Walker.Current );
+            //End highlight on the previous element (if different from the current one)
+            if( PreviousElement != null )
+                FireEndHighlight( PreviousElement, Walker.Current );
 
-                //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
-                if( Walker.Current != null )
-                    FireBeginHighlight();
-            }) );
+            //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
+            if( Walker.Current != null )
+                FireBeginHighlight();
         }
 
         protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -287,7 +284,7 @@ namespace Scroller
 
             //Reset the walker
             Walker.GoToAbsoluteRoot();
-            MoveNext( ActionType.MoveNext );
+            OnInternalBeat( this, new EventArgs() );
             Timer.Start();
             IsStarted = true;
         }
@@ -311,7 +308,6 @@ namespace Scroller
 
             Walker.Current.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, PreviousElement, element ), LastDirective );
             Walker.GoTo( element );
-            EnsureReactivity();
         }
 
         public virtual void Pause( bool forceEndHighlight )
@@ -347,7 +343,6 @@ namespace Scroller
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
             GoToElement( this );
-            EnsureReactivity();
         }
 
         #endregion

@@ -70,7 +70,7 @@ namespace Host
             }
 
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
-            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) { DisplayName = R.AutoClickSectionName };
+            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid[]{ _autoclicId }, new Guid[]{ _clickSelectorId } ) { DisplayName = R.AutoClickSectionName };
             var clickTypeSelector = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid[]{ _clickSelectorId }, new Guid[]{ _basicScrollId } ) { DisplayName = R.ClickTypeSelectorName };
             var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId ) { DisplayName = R.Scrolling };
             var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId ) { DisplayName = R.Radar };

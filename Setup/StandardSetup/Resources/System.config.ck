@@ -15,6 +15,7 @@
           <Bindings>
             <Bind Master="Azerty" Slave="Prediction" Position="Top" />
             <Bind Master="Ergonomique" Slave="Prediction" Position="Top" />
+            <Bind Master="ClickSelector" Slave="AutoClick" Position="Top" />
           </Bindings>
         </data>
       </p>

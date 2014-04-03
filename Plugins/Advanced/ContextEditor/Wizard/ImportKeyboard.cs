@@ -107,7 +107,7 @@ namespace KeyboardEditor.Wizard
                     using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
                         XmlReader r = reader.Xml;
-                        r.ReadToFollowing( "Keyboard" );
+                        if( !r.IsStartElement( "Keyboard" ) ) r.ReadToFollowing( "Keyboard" );
                         while( r.IsStartElement( "Keyboard" ) )
                         { 
                             keyboardNames.Add( r.GetAttribute( "Name" ) );
@@ -135,7 +135,7 @@ namespace KeyboardEditor.Wizard
                     using( IStructuredReader reader = SimpleStructuredReader.CreateReader( str, Context.ServiceContainer ) )
                     {
                         XmlReader r = reader.Xml;
-                        r.ReadToFollowing( "Keyboard" );
+                        if( !r.IsStartElement( "Keyboard" ) ) r.ReadToFollowing( "Keyboard" );
                         while( r.IsStartElement( "Keyboard" ) )
                         {
                             string n = r.GetAttribute( "Name" );

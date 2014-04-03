@@ -139,8 +139,8 @@ namespace CK.WindowManager.Model
             {
                 using( new DisableElementEvents( () => _w.SizeChanged -= OnWindowSizeChanged, () => _w.SizeChanged += OnWindowSizeChanged ) )
                 {
-                    _w.Width = width < 0 ? 0 : width;
-                    _w.Height = height < 0 ? 0 : height;
+                    if( _w.Width != width ) _w.Width = width < 0 ? 0 : width;
+                    if( _w.Height !=height ) _w.Height = height < 0 ? 0 : height;
                 }
             } );
         }

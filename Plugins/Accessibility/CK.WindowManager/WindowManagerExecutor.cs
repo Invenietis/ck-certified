@@ -40,7 +40,7 @@ namespace CK.WindowManager
             if( binding != null )
             {
                 //temporary
-                ResizingWindow( binding );
+                //ResizingWindow( binding );
                 PlacingWindow( binding );
                 PlacingButton( binding );
             }
@@ -50,31 +50,31 @@ namespace CK.WindowManager
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
 
-            IWindowElement triggerHolder = e.Window;
-            // Gets all windows attached to the given window
-            ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
-            if( binding != null )
-            {
-                //if( e.DeltaHeight != 0 )
-                //{
-                //    if( binding.Left != null ) ResizeVertically( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
-                //    if( binding.Right != null ) ResizeVertically( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
-                //    SpecialMoveBottom( e, binding );
-                //}
-                //if( e.DeltaWidth != 0 )
-                //{
-                //    if( binding.Top != null ) ResizeHorizontally( e, binding.Top.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
-                //    if( binding.Bottom != null ) ResizeHorizontally( e, binding.Bottom.SpatialBinding, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
-                //    SpecialMoveRight( e, binding );
-                //}
+            //IWindowElement triggerHolder = e.Window;
+            //// Gets all windows attached to the given window
+            //ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
+            //if( binding != null )
+            //{
+            //    //if( e.DeltaHeight != 0 )
+            //    //{
+            //    //    if( binding.Left != null ) ResizeVertically( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
+            //    //    if( binding.Right != null ) ResizeVertically( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
+            //    //    SpecialMoveBottom( e, binding );
+            //    //}
+            //    //if( e.DeltaWidth != 0 )
+            //    //{
+            //    //    if( binding.Top != null ) ResizeHorizontally( e, binding.Top.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
+            //    //    if( binding.Bottom != null ) ResizeHorizontally( e, binding.Bottom.SpatialBinding, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
+            //    //    SpecialMoveRight( e, binding );
+            //    //}
 
-                if( e.DeltaHeight != 0 || e.DeltaWidth != 0 )
-                {
-                    ResizingWindow( binding );
-                    PlacingWindow( binding );
-                    PlacingButton( binding );
-                }
-            }
+            //    if( e.DeltaHeight != 0 || e.DeltaWidth != 0 )
+            //    {
+            //        //ResizingWindow( binding );
+            //        //PlacingWindow( binding );
+            //        //PlacingButton( binding );
+            //    }
+            //}
         }
 
         void PlacingWindow( ISpatialBinding binding, BindingPosition masterPosition = BindingPosition.None )
@@ -87,25 +87,25 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Top && binding.Top != null )
             {
                 slave = binding.Top.SpatialBinding.Window;
-                binding.Top.SpatialBinding.Window.Move( reference.Top - slave.Height, reference.Left );
+                WindowManager.Move( binding.Top.SpatialBinding.Window, reference.Top - slave.Height, reference.Left );
                 PlacingWindow( binding.Top.SpatialBinding, BindingPosition.Bottom );
             }
             if( masterPosition != BindingPosition.Bottom && binding.Bottom != null )
             {
                 slave = binding.Bottom.SpatialBinding.Window;
-                binding.Bottom.SpatialBinding.Window.Move( reference.Top + reference.Height, reference.Left );
+                WindowManager.Move( binding.Bottom.SpatialBinding.Window, reference.Top + reference.Height, reference.Left );
                 PlacingWindow( binding.Bottom.SpatialBinding, BindingPosition.Top );
             }
             if( masterPosition != BindingPosition.Left && binding.Left != null )
             {
                 slave = binding.Left.SpatialBinding.Window;
-                binding.Left.SpatialBinding.Window.Move( reference.Top, reference.Left - slave.Width );
+                WindowManager.Move( binding.Left.SpatialBinding.Window, reference.Top, reference.Left - slave.Width );
                 PlacingWindow( binding.Left.SpatialBinding, BindingPosition.Right );
             }
             if( masterPosition != BindingPosition.Right && binding.Right != null )
             {
                 slave = binding.Right.SpatialBinding.Window;
-                binding.Right.SpatialBinding.Window.Move( reference.Top, reference.Left + reference.Width );
+                WindowManager.Move( binding.Right.SpatialBinding.Window, reference.Top, reference.Left + reference.Width );
                 PlacingWindow( binding.Right.SpatialBinding, BindingPosition.Left );
             }
         }
@@ -123,8 +123,7 @@ namespace CK.WindowManager
                 slave = binding.Top.SpatialBinding.Window;
                 if( reference.Height != slave.Height )
                 {
-                    binding.Top.SpatialBinding.Window.Resize( binding.Window.Width, binding.Top.SpatialBinding.Window.Height );
-                    binding.Top.SpatialBinding.Window.Move( reference.Top - slave.Height, reference.Left );
+                    WindowManager.Resize( binding.Top.SpatialBinding.Window, binding.Window.Width, binding.Top.SpatialBinding.Window.Height );
                     ResizingWindow( binding.Top.SpatialBinding, BindingPosition.Bottom );
                 }
             }
@@ -133,8 +132,7 @@ namespace CK.WindowManager
                 slave = binding.Bottom.SpatialBinding.Window;
                 if( reference.Height != slave.Height )
                 {
-                    binding.Bottom.SpatialBinding.Window.Resize( binding.Window.Width, binding.Bottom.SpatialBinding.Window.Height );
-                    binding.Bottom.SpatialBinding.Window.Move( reference.Top + reference.Height, reference.Left );
+                    WindowManager.Resize( binding.Bottom.SpatialBinding.Window, binding.Window.Width, binding.Bottom.SpatialBinding.Window.Height );
                     ResizingWindow( binding.Bottom.SpatialBinding, BindingPosition.Top );
                 }
             }
@@ -143,8 +141,7 @@ namespace CK.WindowManager
                 slave = binding.Left.SpatialBinding.Window;
                 if( reference.Width != slave.Width )
                 {
-                    binding.Left.SpatialBinding.Window.Resize( binding.Left.SpatialBinding.Window.Width, binding.Window.Height );
-                    binding.Left.SpatialBinding.Window.Move( reference.Top, reference.Left - slave.Width );
+                    WindowManager.Resize( binding.Left.SpatialBinding.Window, binding.Left.SpatialBinding.Window.Width, binding.Window.Height );
                     ResizingWindow( binding.Left.SpatialBinding, BindingPosition.Right );
                 }
             }
@@ -153,8 +150,7 @@ namespace CK.WindowManager
                 slave = binding.Right.SpatialBinding.Window;
                 if( reference.Width != slave.Width )
                 {
-                    binding.Right.SpatialBinding.Window.Resize( binding.Right.SpatialBinding.Window.Width, binding.Window.Height );
-                    binding.Right.SpatialBinding.Window.Move( reference.Top, reference.Left + reference.Width );
+                    WindowManager.Resize( binding.Right.SpatialBinding.Window, binding.Right.SpatialBinding.Window.Width, binding.Window.Height );
                     ResizingWindow( binding.Right.SpatialBinding, BindingPosition.Left );
                 }
             }
@@ -164,39 +160,27 @@ namespace CK.WindowManager
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
 
-            double top = 0;
-            double height = 0;
-            double width = 0;
-            double left = 0;
-
-            var pos = binding.Window;
-
-            top = pos.Top;
-            height = pos.Height;
-            width = pos.Width;
-            left = pos.Left;
-
             if( masterPosition != BindingPosition.Left && binding.Left != null )
             {
-                binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
+                binding.Left.UnbindButton.Move( binding.Window.Top + binding.Window.Height / 2 - binding.Left.UnbindButton.Window.Height / 2, binding.Window.Left - binding.Left.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Left.SpatialBinding, BindingPosition.Right );
             }
 
             if( masterPosition != BindingPosition.Right && binding.Right != null )
             {
-                binding.Right.UnbindButton.Move( top + height / 2 - binding.Right.UnbindButton.Window.Height / 2, left + width - binding.Right.UnbindButton.Window.Width / 2 );
+                binding.Right.UnbindButton.Move( binding.Window.Top + binding.Window.Height / 2 - binding.Right.UnbindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width - binding.Right.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Right.SpatialBinding, BindingPosition.Left );
             }
 
             if( masterPosition != BindingPosition.Bottom && binding.Bottom != null )
             {
-                binding.Bottom.UnbindButton.Move( top + height - binding.Bottom.UnbindButton.Window.Height / 2, left + width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
+                binding.Bottom.UnbindButton.Move( binding.Window.Top + binding.Window.Height - binding.Bottom.UnbindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Bottom.SpatialBinding, BindingPosition.Top );
             }
 
             if( masterPosition != BindingPosition.Top && binding.Top != null )
             {
-                binding.Top.UnbindButton.Move( top - binding.Top.UnbindButton.Window.Height / 2, left + width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
+                binding.Top.UnbindButton.Move( binding.Window.Top - binding.Top.UnbindButton.Window.Height / 2, binding.Window.Left + binding.Window.Width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
                 PlacingButton( binding.Top.SpatialBinding, BindingPosition.Bottom );
             }
         }

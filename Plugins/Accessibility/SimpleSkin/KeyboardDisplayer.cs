@@ -640,7 +640,6 @@ namespace SimpleSkin
                 _miniViewVm = new MiniViewVM( this );
 
                 _miniView = new MiniView( RestoreSkin ) { DataContext = _miniViewVm };
-                _miniView.Closing += OnWindowClosing;
                 _miniView.Show();
 
                 if( !ScreenHelper.IsInScreen( new System.Drawing.Point( _miniViewVm.X + (int)_miniView.ActualWidth / 2, _miniViewVm.Y + (int)_miniView.ActualHeight / 2 ) ) ||

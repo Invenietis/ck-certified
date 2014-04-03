@@ -71,7 +71,7 @@ namespace BasicCommandHandlers
             if( PropertyChanged != null ) PropertyChanged( this, new System.ComponentModel.PropertyChangedEventArgs( propertyName ) );
         }
 
-        public bool IsValid { get { return _actions.ContainsKey( SelectedAction ) && !String.IsNullOrWhiteSpace( SelectedMode ); } }
+        public bool IsValid { get { return SelectedAction != null && _actions.ContainsKey( SelectedAction ) && !String.IsNullOrWhiteSpace( SelectedMode ); } }
 
         public string GetParameterString()
         {

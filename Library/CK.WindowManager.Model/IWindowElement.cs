@@ -66,6 +66,7 @@ namespace CK.WindowManager.Model
         /// <param name="top">The top in logical units (1/96")</param>
         /// <param name="left">The left in logical units (1/96")</param>
         void Move( double top, double left );
+        void Move( CallGetWithDelayed cwdg );
 
         /// <summary>
         /// Resizes the window element to the given width and height
@@ -73,6 +74,7 @@ namespace CK.WindowManager.Model
         /// <param name="width"></param>
         /// <param name="height"></param>
         void Resize( double width, double height );
+        void Resize( CallGetWithDelayed cwdg );
 
         void Minimize();
 

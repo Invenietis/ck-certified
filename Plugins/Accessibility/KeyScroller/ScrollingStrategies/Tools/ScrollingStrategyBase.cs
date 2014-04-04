@@ -19,11 +19,55 @@ namespace Scroller
         protected ITreeWalker Walker { get; set; }
         protected Dictionary<string, IHighlightableElement> Elements { get; set; }
 
+        protected int AutoPauseDefaultTick { get; set; }
+        protected bool AutoPauseActived { get; set; }
+
         public ScrollingStrategyBase()
         {
             LastDirective = new ScrollingDirective( ActionType.MoveNext, ActionTime.NextTick );
             Walker = new TreeWalker( this );
+            _highlightTicksCount = new Dictionary<IHighlightableElement, int>();
+            AutoPauseDefaultTick = 5;
         }
+
+        #region AutoPause Methods
+
+        Dictionary<IHighlightableElement,int> _highlightTicksCount;
+        
+        protected virtual void ResetAutoPause()
+        {
+            _highlightTicksCount.Clear();
+        }
+
+        protected virtual void UpdateAutoPauseTicks()
+        {
+            if( Walker.Current.Children.Contains( PreviousElement ) ) ResetAutoPause();
+            // create a collection of all highlighted Elements and increases the tick count if they are already present.
+            _highlightTicksCount[Walker.Current] = ( _highlightTicksCount.ContainsKey(Walker.Current) ) ? _highlightTicksCount[Walker.Current]+1 : 0;
+        }
+
+        protected virtual void ActiveAutoPause()
+        {
+            if( CheckAutoPauseCondition() )
+            {
+                Pause( false );
+                AutoPauseActived = true;
+                ResetAutoPause();
+            }
+        }
+
+        protected virtual void DeactiveAutoPause()
+        {
+            Resume();
+            AutoPauseActived = false;
+        }
+
+        bool CheckAutoPauseCondition()
+        {
+            return _highlightTicksCount.Values.All( i => i >= AutoPauseDefaultTick );
+        }
+
+        #endregion AutoPause Methods
 
         protected virtual void OnInternalBeat( object sender, EventArgs e )
         {
@@ -34,6 +78,9 @@ namespace Scroller
 
             //Move the cursor to the next element
             MoveNext( LastDirective.NextActionType );
+            
+            //update the auto pause tick when the next element is selected
+            UpdateAutoPauseTicks();
 
             //End highlight on the previous element (if different from the current one)
             if( PreviousElement != null )
@@ -42,6 +89,9 @@ namespace Scroller
             //Begin highlight on the current element (even if the previous element is also the current element, we send the beginhighlight to give the component the beat)
             if( Walker.Current != null )
                 FireBeginHighlight();
+
+            //active the auto pause if CheckAutoPauseCondition return true
+            ActiveAutoPause();
         }
 
         protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -267,6 +317,12 @@ namespace Scroller
             get;
             protected set;
         }
+        
+        public bool IsPaused 
+        { 
+            get; 
+            protected set; 
+        }
 
         public virtual void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
         {
@@ -284,6 +340,9 @@ namespace Scroller
 
             //Reset the walker
             Walker.GoToAbsoluteRoot();
+
+            ResetAutoPause();
+
             OnInternalBeat( this, new EventArgs() );
             Timer.Start();
             IsStarted = true;
@@ -319,16 +378,28 @@ namespace Scroller
                     FireEndHighlight( Walker.Current, null );
                 }
                 Timer.Stop();
+                IsPaused = true;
             }
         }
 
         public virtual void Resume()
         {
-            if( !Timer.IsEnabled ) Timer.Start();
+            if( !Timer.IsEnabled )
+            {
+                IsPaused = false;
+                Timer.Start();
+            }
         }
 
         public virtual void OnExternalEvent()
         {
+            // Resume, if AutoPause is actived
+            if( AutoPauseActived )
+            {
+                DeactiveAutoPause();
+                return;
+            }
+
             if( Walker.Current != null )
             {
                 if( Walker.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
@@ -342,6 +413,7 @@ namespace Scroller
 
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
+            ResetAutoPause();
             GoToElement( this );
         }
 

@@ -59,22 +59,6 @@ namespace CK.WindowManager
             return NullResult.Default;
         }
 
-        public virtual IManualInteractionResult Move( IWindowElement window, CallGetWithDelayed cwdg )
-        {
-            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
-
-            WindowElementData data = null;
-            if( _dic.TryGetValue( window, out data ) )
-            {
-                WindowElementData dataSnapshot = (WindowElementData)data.Clone();
-
-                window.Move( cwdg );
-
-                return new MoveResult( this, data, dataSnapshot );
-            }
-            return NullResult.Default;
-        }
-
         public virtual IManualInteractionResult Resize( IWindowElement window, double width, double height )
         {
             if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
@@ -84,21 +68,6 @@ namespace CK.WindowManager
             {
                 WindowElementData cloneData = (WindowElementData)data.Clone();
                 window.Resize( width, height );
-
-                return new ResizeResult( this, data, cloneData );
-            }
-            return NullResult.Default;
-        }
-
-        public virtual IManualInteractionResult Resize( IWindowElement window, CallGetWithDelayed cwdg )
-        {
-            if( Dispatcher.CurrentDispatcher != Application.Current.Dispatcher ) throw new InvalidOperationException( "This method should only be called by the Application Thread." );
-
-            WindowElementData data = null;
-            if( _dic.TryGetValue( window, out data ) )
-            {
-                WindowElementData cloneData = (WindowElementData)data.Clone();
-                window.Resize( cwdg );
 
                 return new ResizeResult( this, data, cloneData );
             }

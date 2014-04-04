@@ -45,7 +45,6 @@ namespace CK.WindowManager.Model
         /// <param name="top"></param>
         /// <param name="left"></param>
         IManualInteractionResult Move( IWindowElement window, double top, double left );
-        IManualInteractionResult Move( IWindowElement window, CallGetWithDelayed cwdg );
 
         /// <summary>
         /// Resizes the given window element to the width and height
@@ -54,7 +53,6 @@ namespace CK.WindowManager.Model
         /// <param name="width"></param>
         /// <param name="height"></param>
         IManualInteractionResult Resize( IWindowElement window, double width, double height );
-        IManualInteractionResult Resize( IWindowElement window, CallGetWithDelayed cwdg );
 
         void MinimizeAllWindows();
 

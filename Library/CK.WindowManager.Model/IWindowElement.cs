@@ -66,7 +66,6 @@ namespace CK.WindowManager.Model
         /// <param name="top">The top in logical units (1/96")</param>
         /// <param name="left">The left in logical units (1/96")</param>
         void Move( double top, double left );
-        void Move( CallGetWithDelayed cwdg );
 
         /// <summary>
         /// Resizes the window element to the given width and height
@@ -74,10 +73,30 @@ namespace CK.WindowManager.Model
         /// <param name="width"></param>
         /// <param name="height"></param>
         void Resize( double width, double height );
-        void Resize( CallGetWithDelayed cwdg );
 
+        /// <summary>
+        /// Hides the window element
+        /// </summary>
+        void Hide();
+
+        /// <summary>
+        /// Shows the window element
+        /// </summary>
+        void Show();
+
+        /// <summary>
+        /// Closes the window element
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// Minimizes the window element
+        /// </summary>
         void Minimize();
 
+        /// <summary>
+        /// Restores the window element
+        /// </summary>
         void Restore();
 
         void ToggleHostMinimized( IHostManipulator manipulator );

@@ -121,18 +121,6 @@ namespace CK.WindowManager.Model
             } );
         }
 
-        void IWindowElement.Move( CallGetWithDelayed cwdg )
-        {
-            DispatchWhenRequired( () =>
-            {
-                using( new DisableElementEvents( () => _w.LocationChanged -= OnWindowLocationChanged, () => _w.LocationChanged += OnWindowLocationChanged ) )
-                {
-                    if( cwdg.a != _w.Top ) _w.Top = cwdg.a;
-                    if( cwdg.b != _w.Left ) _w.Left = cwdg.b;
-                }
-            } );
-        }
-
         void IWindowElement.Resize( double width, double height )
         {
             DispatchWhenRequired( () =>
@@ -145,18 +133,6 @@ namespace CK.WindowManager.Model
             } );
         }
 
-        void IWindowElement.Resize( CallGetWithDelayed cwdg )
-        {
-            DispatchWhenRequired( () =>
-            {
-                using( new DisableElementEvents( () => _w.SizeChanged -= OnWindowSizeChanged, () => _w.SizeChanged += OnWindowSizeChanged ) )
-                {
-                    _w.Width = cwdg.a < 0 ? 0 : cwdg.a;
-                    _w.Height = cwdg.b < 0 ? 0 : cwdg.b;
-                }
-            } );
-        }
-
         public void Minimize()
         {
             DispatchWhenRequired( () => _w.WindowState = WindowState.Minimized, false );
@@ -165,6 +141,21 @@ namespace CK.WindowManager.Model
         public void Restore()
         {
             DispatchWhenRequired( () => _w.WindowState = WindowState.Normal, false );
+        }
+
+        public void Hide()
+        {
+            DispatchWhenRequired( () => _w.Hide(), false );
+        }
+
+        public void Show()
+        {
+            DispatchWhenRequired( () => _w.Show(), false );
+        }
+
+        public void Close()
+        {
+            DispatchWhenRequired( () => _w.Close(), false );
         }
 
         private T DispatchWhenRequired<T>( Func<T> f )
@@ -212,28 +203,6 @@ namespace CK.WindowManager.Model
             IntPtr ptr = IntPtr.Zero;
             Dispatcher.Invoke( (Action)(() => ptr = _w.Hwnd), null );
             NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => manipulator.ToggleMinimize( ptr )), null );
-        }
-    }
-
-    public class CallGetWithDelayed
-    {
-        Func<double> _a;
-        Func<double> _b;
-
-        public double a
-        {
-            get { return _a(); }
-        }
-
-        public double b
-        {
-            get { return _b(); }
-        }
-
-        public CallGetWithDelayed( Func<double> a, Func<double> b )
-        {
-            _a = a;
-            _b = b;
         }
     }
 }

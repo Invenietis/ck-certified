@@ -343,6 +343,7 @@ namespace Scroller
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
             GoToElement( this );
+
         }
 
         #endregion

@@ -453,6 +453,7 @@ namespace Scroller
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            ResetAutoPause();
             return scrollingDirective;
         }
 

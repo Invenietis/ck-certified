@@ -31,7 +31,7 @@
                 <TextBlock x:Uid="target-default" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0">(default key : F11)</TextBlock>
                 </StackPanel>
                 <StackPanel>
-                    <ToggleButton x:Uid="start-reccording" x:Name="StartReccording" IsChecked="{Binding IsRecording}">Start recording</ToggleButton>
+                    <ToggleButton Focusable="False" x:Uid="start-reccording" x:Name="StartReccording" IsChecked="{Binding IsRecording}">Start recording</ToggleButton>
                     <TextBlock x:Uid="select-zone" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SelectedKey}" />
                 </StackPanel>
             </DockPanel>

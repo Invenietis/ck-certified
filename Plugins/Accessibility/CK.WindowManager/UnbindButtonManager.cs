@@ -39,6 +39,10 @@ namespace CK.WindowManager
 
         public void Start()
         {
+            _timer = new DispatcherTimer( DispatcherPriority.Background );
+            _timer.Interval = new TimeSpan( 0, 0, 0, 0, 10 );
+            _timer.Tick += _timer_Tick;
+
             WindowManager.Service.WindowResized += OnWindowManagerWindowResized;
             WindowManager.Service.WindowMoved += OnWindowManagerWindowMoved;
             WindowManager.Service.WindowMinimized += OnWindowMinimized;
@@ -51,6 +55,8 @@ namespace CK.WindowManager
 
         public void Stop()
         {
+            _timer.Tick -= _timer_Tick;
+
             WindowManager.Service.WindowResized -= OnWindowManagerWindowResized;
             WindowManager.Service.WindowMoved -= OnWindowManagerWindowMoved;
             WindowManager.Service.WindowMinimized -= OnWindowMinimized;
@@ -101,6 +107,7 @@ namespace CK.WindowManager
             slaveContainer.SetButton( button, GetOppositePosition( position ) );
 
             button.Show();
+            EnableUnbindButtons();
         }
 
         WindowElement InitializeButton( IWindowElement window, IWindowElement other, BindingPosition position )
@@ -166,6 +173,7 @@ namespace CK.WindowManager
             {
                 WindowBinder.Service.Unbind( window, other, false );
                 move();
+                EnableUnbindButtons();
             } );
         }
 
@@ -204,18 +212,33 @@ namespace CK.WindowManager
 
         #region Remove Methods
 
-        void RemoveButton( IWindowElement master, IWindowElement slave, BindingPosition position )
+        void RemoveButton( IWindowElement master, IWindowElement slave )
         {
-            Debug.Assert( _unbindButtonContainers.ContainsKey( master ) && _unbindButtonContainers.ContainsKey( slave ) );
-            IWindowElement button = _unbindButtonContainers[master].GetUnbindFromPosition( position );
-            button.Close();
-            button = null;
+            if( _unbindButtonContainers.ContainsKey( slave ) && _unbindButtonContainers.ContainsKey( master ) )
+            {
+                BindingPosition position = GetPositionOfCommonButton( master, slave );
+                if( position != BindingPosition.None )
+                {
+                    _unbindButtonContainers[master][position].Close();
+                    _unbindButtonContainers[master][position] = null;
+                    _unbindButtonContainers[slave][GetOppositePosition( position )] = null;
+                }
 
-            Debug.Assert( _unbindButtonContainers[master].GetUnbindFromPosition( position ) == null );
-            Debug.Assert( _unbindButtonContainers[slave].GetUnbindFromPosition( GetOppositePosition( position ) ) == null );
+                CleanUnbindButtonContainers( master );
+                CleanUnbindButtonContainers( slave );
+            }
+        }
 
-            CleanUnbindButtonContainers( master );
-            CleanUnbindButtonContainers( slave );
+        public BindingPosition GetPositionOfCommonButton( IWindowElement master, IWindowElement slave )
+        {
+            UnbindButtonContainer m = _unbindButtonContainers[master];
+            UnbindButtonContainer s = _unbindButtonContainers[slave];
+
+            if( m.TopButton != null && s.BottomButton != null && m.TopButton == s.BottomButton ) return BindingPosition.Top;
+            if( m.RightButton != null && s.LeftButton != null && m.RightButton == s.LeftButton ) return BindingPosition.Right;
+            if( m.LeftButton != null && s.RightButton != null && m.LeftButton == s.RightButton ) return BindingPosition.Left;
+            if( m.BottomButton != null && s.TopButton != null && m.BottomButton == s.TopButton ) return BindingPosition.Bottom;
+            return BindingPosition.None;
         }
 
         void CleanUnbindButtonContainers( IWindowElement window )
@@ -226,7 +249,8 @@ namespace CK.WindowManager
                 if( container.TopButton == null
                     && container.BottomButton == null
                     && container.LeftButton == null
-                    && container.LeftButton == null ) _unbindButtonContainers.Remove( window );
+                    && container.RightButton == null ) 
+                    _unbindButtonContainers.Remove( window );
             }
         }
 
@@ -245,7 +269,7 @@ namespace CK.WindowManager
             }
             else if( e.BindingType == BindingEventType.Detach )
             {
-                RemoveButton( master, slave, position );
+                RemoveButton( master, slave );
             }
         }
 
@@ -262,30 +286,49 @@ namespace CK.WindowManager
         }
 
         bool _windowMoved = false;
+        bool _buttonIsVisible = true;
         private void OnWindowManagerWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
-            UnbindButtonContainer container;
-            if( _unbindButtonContainers.TryGetValue( e.Window, out container ) )
+            _windowMoved = true;
+            if( _buttonIsVisible )
             {
-                _windowMoved = true;
-                container.HideButtons();
-                container.PlacingButton();
+                foreach( var c in _unbindButtonContainers.Values ) c.HideButtons();
             }
         }
 
         private void OnWindowManagerWindowResized( object sender, WindowElementResizeEventArgs e )
         {
-        }
-
-        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
-        {
-            if( _windowMoved )
+            _windowMoved = true;
+            if( _buttonIsVisible )
             {
-                foreach( var c in _unbindButtonContainers.Values ) c.ShowButtons();
-                _windowMoved = false;
+                foreach( var c in _unbindButtonContainers.Values ) c.HideButtons();
             }
         }
 
+        DispatcherTimer _timer;
+        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
+        {
+            if( _windowMoved && !_timer.IsEnabled )
+            {
+                _timer.Start();
+            }
+        }
+
+        void _timer_Tick( object sender, EventArgs e )
+        {
+            _timer.Stop();
+            _windowMoved = false;
+            EnableUnbindButtons();
+        }
+
+        void EnableUnbindButtons()
+        {
+            foreach( var c in _unbindButtonContainers.Values )
+            {
+                c.PlacingButton();
+                c.ShowButtons();
+            }
+        }
 
         #endregion OnXXX
 
@@ -296,7 +339,8 @@ namespace CK.WindowManager
             if( position == BindingPosition.Bottom ) return BindingPosition.Top;
             if( position == BindingPosition.Top ) return BindingPosition.Bottom;
             if( position == BindingPosition.Left ) return BindingPosition.Right;
-            return BindingPosition.Left;
+            if( position == BindingPosition.Right ) return BindingPosition.Left;
+            return BindingPosition.None;
         }
 
         #endregion Helper methods
@@ -314,6 +358,18 @@ namespace CK.WindowManager
             public IWindowElement BottomButton { get; private set; }
             public IWindowElement LeftButton { get; private set; }
             public IWindowElement RightButton { get; private set; }
+
+            public IWindowElement this[BindingPosition p]
+            {
+                get
+                {
+                    return GetUnbindFromPosition( p );
+                }
+                set
+                {
+                    SetButton( value, p );
+                }
+            }
 
             public void PlacingButton()
             {
@@ -341,19 +397,19 @@ namespace CK.WindowManager
 
             public void ShowButtons()
             {
-                if( TopButton != null && !TopButton.Window.IsVisible ) TopButton.Show();
-                if( BottomButton != null && !BottomButton.Window.IsVisible ) BottomButton.Show();
-                if( LeftButton != null && !LeftButton.Window.IsVisible ) LeftButton.Show();
-                if( RightButton != null && !RightButton.Window.IsVisible ) RightButton.Show();
+                if( TopButton != null && TopButton.Window.IsLoaded && !TopButton.Window.IsVisible ) TopButton.Show();
+                if( BottomButton != null && BottomButton.Window.IsLoaded && !BottomButton.Window.IsVisible ) BottomButton.Show();
+                if( LeftButton != null && LeftButton.Window.IsLoaded && !LeftButton.Window.IsVisible ) LeftButton.Show();
+                if( RightButton != null && RightButton.Window.IsLoaded && !RightButton.Window.IsVisible ) RightButton.Show();
             }
 
             public IWindowElement GetUnbindFromPosition( BindingPosition position )
             {
-                Debug.Assert( position != BindingPosition.None );
                 if( position == BindingPosition.Top ) return TopButton;
                 else if( position == BindingPosition.Bottom ) return BottomButton;
                 else if( position == BindingPosition.Left ) return LeftButton;
-                else return RightButton;
+                else if( position == BindingPosition.Right ) return RightButton;
+                return null;
             }
 
             public void SetButton( IWindowElement button, BindingPosition position )

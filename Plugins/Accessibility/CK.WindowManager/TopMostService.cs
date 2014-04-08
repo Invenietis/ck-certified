@@ -111,7 +111,6 @@ namespace CK.WindowManager
                             if( parseInt >= level )
                             {
                                 AddNewIndexAndItem( i, levelName, window );
-
                                 return true;
                             }
                         }
@@ -135,6 +134,8 @@ namespace CK.WindowManager
             _stringToWindows.Add( levelName, list );
 
             window.Activated += window_Activated;
+
+            UpdateTopMostWindows();
         }
 
         bool lockUpdate = false;

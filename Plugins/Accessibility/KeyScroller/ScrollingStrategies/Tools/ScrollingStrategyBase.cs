@@ -33,7 +33,7 @@ namespace Scroller
         #region AutoPause Methods
 
         Dictionary<IHighlightableElement,int> _highlightTicksCount;
-        
+
         protected virtual void ResetAutoPause()
         {
             _highlightTicksCount.Clear();
@@ -43,7 +43,7 @@ namespace Scroller
         {
             if( Walker.Current.Children.Contains( PreviousElement ) ) ResetAutoPause();
             // create a collection of all highlighted Elements and increases the tick count if they are already present.
-            _highlightTicksCount[Walker.Current] = ( _highlightTicksCount.ContainsKey(Walker.Current) ) ? _highlightTicksCount[Walker.Current]+1 : 0;
+            _highlightTicksCount[Walker.Current] = (_highlightTicksCount.ContainsKey( Walker.Current )) ? _highlightTicksCount[Walker.Current] + 1 : 0;
         }
 
         protected virtual void ActiveAutoPause()
@@ -78,7 +78,7 @@ namespace Scroller
 
             //Move the cursor to the next element
             MoveNext( LastDirective.NextActionType );
-            
+
             //update the auto pause tick when the next element is selected
             UpdateAutoPauseTicks();
 
@@ -100,7 +100,7 @@ namespace Scroller
             {
                 if( e.Key == "Speed" )
                 {
-                    Timer.Interval = new TimeSpan(0, 0, 0, 0,  (int) e.Value);
+                    Timer.Interval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                 }
             }
         }
@@ -177,8 +177,8 @@ namespace Scroller
         {
             //False when the current is root or when there is almost one module that have highlightable children
             if( Walker.Current == this && Children.
-                Count( 
-                c =>    c.Skip != SkippingBehavior.Skip || 
+                Count(
+                c => c.Skip != SkippingBehavior.Skip ||
                         c.Skip == SkippingBehavior.EnterChildren && c.Children.Count( e => e.Skip != SkippingBehavior.Skip ) > 0
                     ) == 0 )
                 return false;
@@ -317,11 +317,11 @@ namespace Scroller
             get;
             protected set;
         }
-        
-        public bool IsPaused 
-        { 
-            get; 
-            protected set; 
+
+        public bool IsPaused
+        {
+            get;
+            protected set;
         }
 
         public virtual void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
@@ -414,10 +414,10 @@ namespace Scroller
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
             ResetAutoPause();
-            if( Walker.Current == element || Walker.Parents.Contains(element))
+            if( Walker.Current == element || Walker.Parents.Contains( element ) )
             {
                 GoToElement( this );
-            } 
+            }
         }
 
         #endregion
@@ -456,6 +456,7 @@ namespace Scroller
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            ResetAutoPause();
             return scrollingDirective;
         }
 

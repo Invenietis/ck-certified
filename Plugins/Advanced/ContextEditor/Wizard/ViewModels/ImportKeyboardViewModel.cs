@@ -106,6 +106,7 @@ namespace KeyboardEditor.Wizard.ViewModels
             // Get the selected file name and display in a TextBox
             if( result == true )
             {
+                CleanViewModel();
                 // Open document
                 FilePath = dlg.FileName;
 
@@ -188,6 +189,7 @@ namespace KeyboardEditor.Wizard.ViewModels
             foreach( var cb in _checkBoxs ) cb.PropertyChanged -= checkbox_PropertyChanged;
             CheckBoxs.Clear();
             FilePath = string.Empty;
+            CanExecuteImport = false;
         }
 
         string GenerateWhiteList()

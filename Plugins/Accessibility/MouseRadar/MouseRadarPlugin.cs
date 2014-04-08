@@ -179,6 +179,11 @@ namespace MouseRadar
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            if( _radar._timerRotate.IsEnabled )
+                Debug.Assert( _radar.CurrentStep == RadarStep.Rotating && !_radar._timerTranslate.IsEnabled);
+            else if( _radar._timerTranslate.IsEnabled )
+                Debug.Assert( _radar.CurrentStep == RadarStep.Translating && !_radar._timerRotate.IsEnabled );
+
             //When begin highlight is triggered, we have three cases : 
             // - we are begin scrolled on, because the scroller is scrolling on the module level. In this case we focus the radar to show the user that the radar is currently being scrolled on.
             // - we are already focused (the current action is stayonthesamelocked and beginScrollingInfo.PreviousElement == this). In this case we do nothing but tell the radar to check that its tick is still in sync with the configuration.
@@ -202,6 +207,11 @@ namespace MouseRadar
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
+            if( _radar._timerRotate.IsEnabled )
+                Debug.Assert( _radar.CurrentStep == RadarStep.Rotating && !_radar._timerTranslate.IsEnabled );
+            else if( _radar._timerTranslate.IsEnabled )
+                Debug.Assert( _radar.CurrentStep == RadarStep.Translating && !_radar._timerRotate.IsEnabled );
+
             if( endScrollingInfo.ElementToBeHighlighted != this ) //if the next element to highlight is the element itself, we should not change anything
                 Blur();
 

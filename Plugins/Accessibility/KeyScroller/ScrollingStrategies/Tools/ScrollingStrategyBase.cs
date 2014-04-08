@@ -342,8 +342,8 @@ namespace Scroller
 
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
-            GoToElement( this );
-
+            if( Walker.Current == element || Walker.Parents.Contains(element))
+                GoToElement( this );
         }
 
         #endregion

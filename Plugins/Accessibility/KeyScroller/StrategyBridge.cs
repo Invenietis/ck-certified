@@ -96,6 +96,11 @@ namespace Scroller
             get { return _current.IsStarted; }
         }
 
+        public bool IsPaused
+        {
+            get { return _current.IsPaused; }
+        }
+
         public string Name
         {
             get { return _current.Name; }

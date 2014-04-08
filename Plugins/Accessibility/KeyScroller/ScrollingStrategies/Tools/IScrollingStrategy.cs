@@ -7,7 +7,15 @@ namespace Scroller
 {
     internal interface IScrollingStrategy
     {
+        /// <summary>
+        /// True, when the strategy is setup and have Elements
+        /// </summary>
         bool IsStarted { get; }
+
+        /// <summary>
+        /// Represent the state timer
+        /// </summary>
+        bool IsPaused { get; }
 
         /// <summary>
         /// The displayable unique strategy name

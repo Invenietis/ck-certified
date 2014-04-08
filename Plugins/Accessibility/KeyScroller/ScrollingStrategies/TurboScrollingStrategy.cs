@@ -105,6 +105,13 @@ namespace Scroller
 
         public override void OnExternalEvent()
         {
+            // Resume, if AutoPause is actived
+            if( AutoPauseActived )
+            {
+                DeactiveAutoPause();
+                return;
+            }
+
             if( Walker.Current != null && (!IsTurboMode || Walker.Current.IsHighlightableTreeRoot) )
             {
                 if( Walker.Current.IsHighlightableTreeRoot )

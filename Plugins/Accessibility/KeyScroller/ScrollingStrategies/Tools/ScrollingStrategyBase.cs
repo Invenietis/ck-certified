@@ -50,7 +50,7 @@ namespace Scroller
         {
             if( CheckAutoPauseCondition() )
             {
-                Pause( false );
+                Pause( true );
                 AutoPauseActived = true;
                 ResetAutoPause();
             }

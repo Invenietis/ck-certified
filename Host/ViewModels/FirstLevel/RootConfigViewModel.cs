@@ -70,13 +70,12 @@ namespace Host
             }
 
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
-            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid[]{ _autoclicId }, new Guid[]{ _clickSelectorId } ) { DisplayName = R.AutoClickSectionName };
-            var clickTypeSelector = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid[]{ _clickSelectorId }, new Guid[]{ _basicScrollId } ) { DisplayName = R.ClickTypeSelectorName };
-            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId ) { DisplayName = R.Scrolling };
-            var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId ) { DisplayName = R.Radar };
+            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) { DisplayName = R.AutoClickSectionName };
+            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[]{ _radarId, _screenScrollerId }) { DisplayName = R.Scrolling };
+            var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
 
-            var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId,
-                _basicScrollId ) //The ScreenScroller needs the Scrolling plugin
+            var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{
+                _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
                 { DisplayName = R.ScreenScrolling };
 
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
@@ -94,7 +93,6 @@ namespace Host
             var g = this.AddGroup();
             g.Items.Add( skinStarter );
             g.Items.Add( autoClicStarter );
-            g.Items.Add( clickTypeSelector );
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
             g.Items.Add( mouseRadar );

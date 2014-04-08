@@ -35,8 +35,8 @@ namespace Host.VM
 {
     public class ConfigFeatureStarter : ConfigItem
     {
-        Guid[] _linkedPluginIds;
         Guid[] _startWithPlugin;
+        Guid[] _stopWithPlugin;
         ISimplePluginRunner _runner;
         IUserConfiguration _userConfig;
 
@@ -44,14 +44,14 @@ namespace Host.VM
         public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginId )
             : base( configManager )
         {
-            _linkedPluginIds = pluginId;
-            _startWithPlugin = new Guid[0];
+            _startWithPlugin = pluginId;
+            _stopWithPlugin = pluginId;
             _runner = runner;
             _userConfig = userConfig;
 
             _runner.PluginHost.StatusChanged += ( o, e ) =>
             {
-                if( _linkedPluginIds.Contains( e.PluginProxy.PluginKey.PluginId ) )
+                if( _startWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) || _stopWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) )
                 {
                     NotifyOfPropertyChange( () => Start );
                     NotifyOfPropertyChange( () => Stop );
@@ -64,17 +64,17 @@ namespace Host.VM
             Stop = new SimpleCommand( StopPlugin );
         }
 
-        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, IEnumerable<Guid> linkedPluginIds, IEnumerable<Guid> startWithPlugin )
+        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, Guid pluginId, IEnumerable<Guid> startWithPlugin, IEnumerable<Guid> stopWithPlugin )
             : base( configManager )
         {
-            _linkedPluginIds = linkedPluginIds.ToArray();
-            _startWithPlugin = startWithPlugin.ToArray();
+            _startWithPlugin = new Guid[] { pluginId }.Union( startWithPlugin ).ToArray();
+            _stopWithPlugin = new Guid[] { pluginId }.Union( stopWithPlugin ).ToArray();
             _runner = runner;
             _userConfig = userConfig;
 
             _runner.PluginHost.StatusChanged += ( o, e ) =>
             {
-                if( _linkedPluginIds.Contains( e.PluginProxy.PluginKey.PluginId ) )
+                if( _startWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) || _stopWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) )
                 {
                     NotifyOfPropertyChange( () => Start );
                     NotifyOfPropertyChange( () => Stop );
@@ -89,7 +89,7 @@ namespace Host.VM
 
         bool CanStart()
         {
-            return _linkedPluginIds.All
+            return _startWithPlugin.All
             ( 
                 ( id ) =>
                 {
@@ -101,12 +101,6 @@ namespace Host.VM
 
         void StartPlugin()
         {
-            foreach( var id in _linkedPluginIds )
-            {
-                _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
-                _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Started );
-            }
-
             foreach( var id in _startWithPlugin )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
@@ -121,7 +115,7 @@ namespace Host.VM
 
         void StopPlugin()
         {
-            foreach( var id in _linkedPluginIds )
+            foreach( var id in _stopWithPlugin )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.Manual );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Stopped );
@@ -135,7 +129,7 @@ namespace Host.VM
 
         public bool IsRunning
         {
-            get { return _linkedPluginIds.All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) );}
+            get { return _startWithPlugin.Intersect(_stopWithPlugin).All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) ); }
         }
 
         //Can't find all the info to decide whether a plugin is Disabled or not, yet.

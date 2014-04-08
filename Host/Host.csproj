@@ -303,6 +303,10 @@
       <Name>CK.WPF.ViewModel</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\Services\HelpServices\HelpServices.csproj">
       <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
       <Name>HelpServices</Name>

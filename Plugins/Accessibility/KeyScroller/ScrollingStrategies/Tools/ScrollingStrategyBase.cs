@@ -409,6 +409,8 @@ namespace Scroller
                 }
                 FireSelectElement();
             }
+
+            ResetAutoPause();
         }
 
         public virtual void ElementUnregistered( HighlightModel.IHighlightableElement element )

@@ -235,7 +235,7 @@ namespace SimpleSkin
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            skin.ViewModel.Dispose();
+            
             //Setting the config is done after closing the window because modifying a value in the Config
             //Triggers a Caliburn Micro OnNotifyPropertyChanged, which calls an Invoke on the main UI Thread.
             //generating random locks.
@@ -247,6 +247,8 @@ namespace SimpleSkin
             UnregisterFromHighlighter( skin );
             UnregisterTopMostService( skin );
 
+            skin.ViewModel.Dispose();
+            
             if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
             {
                 if( Highlighter.Status.IsStartingOrStarted )

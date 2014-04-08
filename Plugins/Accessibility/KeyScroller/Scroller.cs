@@ -142,7 +142,7 @@ namespace Scroller
                     } );
 
                     //Warning the strategy that an element has been unregistered
-                    _scrollingStrategy.ElementUnregistered( element );
+                    _scrollingStrategy.ElementUnregistered( ehep == null ? element : ehep );
                 }
             }
         }

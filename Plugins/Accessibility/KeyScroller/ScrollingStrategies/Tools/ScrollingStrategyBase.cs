@@ -80,7 +80,7 @@ namespace Scroller
             MoveNext( LastDirective.NextActionType );
 
             //update the auto pause tick when the next element is selected
-            UpdateAutoPauseTicks();
+            //UpdateAutoPauseTicks();
 
             //End highlight on the previous element (if different from the current one)
             if( PreviousElement != null )
@@ -91,7 +91,7 @@ namespace Scroller
                 FireBeginHighlight();
 
             //active the auto pause if CheckAutoPauseCondition return true
-            ActiveAutoPause();
+            //ActiveAutoPause();
         }
 
         protected virtual void OnConfigChanged( object sender, ConfigChangedEventArgs e )

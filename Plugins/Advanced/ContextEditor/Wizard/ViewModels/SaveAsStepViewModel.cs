@@ -117,6 +117,9 @@ namespace KeyboardEditor.ViewModels
             //Flush the temporary file
             Root.EnsureBackupIsClean();
 
+            //Save
+            Root.Save();
+
             return true;
         }
 

@@ -78,6 +78,7 @@ namespace Host.Services.Helper
             MemoryStream stream = new MemoryStream();
             BmpBitmapEncoder be = new BmpBitmapEncoder();
             
+            //This method throws a NotSupportedException. This is a normal bahavior, since our bitmapSource object does not have bitmap metadata.
             be.Frames.Add( BitmapFrame.Create( (BitmapSource) o ));
             be.Save( stream );
             stream.Flush();

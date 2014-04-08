@@ -82,7 +82,7 @@ namespace KeyboardEditor
 
             _autoSaveContextTimer = new DispatcherTimer( DispatcherPriority.Background );
             _autoSaveContextTimer.Interval = new TimeSpan( 0, 0, 30 );
-            _autoSaveContextTimer.Tick += _autoSaveContextTimer_Tick;
+            _autoSaveContextTimer.Tick += OnTimerTick;
             _autoSaveContextTimer.Start();
 
             _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>();
@@ -91,25 +91,19 @@ namespace KeyboardEditor
         }
 
         /// <summary>
-        /// allows the auto save when the keyboard editor is open to prevent crashes.
+        /// allows the auto save when the keyboard editor is open to prevent losing the changes in case of crash.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void _autoSaveContextTimer_Tick( object sender, EventArgs e )
+        void OnTimerTick( object sender, EventArgs e )
         {
-            _contextSaver.SaveContext();
-            _contextSaver.SaveUserConfig();
+            Save();
         }
 
         public void Stop()
         {
             _stopping = true;
 
-            if( _autoSaveContextTimer.IsEnabled )
-            {
-                _autoSaveContextTimer.Tick -= _autoSaveContextTimer_Tick;
-                _autoSaveContextTimer.Stop();
-            }
+            _autoSaveContextTimer.Tick -= OnTimerTick;
+            if( _autoSaveContextTimer.IsEnabled ) _autoSaveContextTimer.Stop();
 
             if( _mainWindow != null )
                 _mainWindow.Close();
@@ -133,6 +127,7 @@ namespace KeyboardEditor
             _stopping = false;
             _appViewModel = null;
             _windowManager = null;
+            _autoSaveContextTimer = null;
         }
 
         bool _cancelOnStop = false;
@@ -303,7 +298,7 @@ namespace KeyboardEditor
                         if( keyboardToRevertIsCurrent )
                             KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
 
-                        
+
                         keyboardToRevert.Destroy();
                     }
                 }
@@ -315,6 +310,7 @@ namespace KeyboardEditor
 
             //After cancelling modifications, we have no backup left.
             EnsureBackupIsClean();
+            Save();
         }
 
         /// <summary>
@@ -338,6 +334,17 @@ namespace KeyboardEditor
         public Stream GetDefaultHelp()
         {
             return typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" );
+        }
+
+        #endregion
+
+        #region IKeyboardEditorRoot Members
+
+
+        public void Save()
+        {
+            _contextSaver.SaveContext();
+            _contextSaver.SaveUserConfig();
         }
 
         #endregion

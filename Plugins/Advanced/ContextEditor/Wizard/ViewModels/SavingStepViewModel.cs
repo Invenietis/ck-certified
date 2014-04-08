@@ -65,6 +65,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         private void SaveOnEditedKeyboard()
         {
+            Root.Save();
             Next = new EndingStepViewModel( Root, WizardManager );
             WizardManager.GoFurther();
         }

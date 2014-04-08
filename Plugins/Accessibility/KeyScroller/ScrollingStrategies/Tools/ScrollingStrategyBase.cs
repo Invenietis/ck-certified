@@ -64,7 +64,7 @@ namespace Scroller
 
         bool CheckAutoPauseCondition()
         {
-            return _highlightTicksCount.Values.All( i => i >= AutoPauseDefaultTick );
+            return _highlightTicksCount.Count > 0 && _highlightTicksCount.Values.All( i => i >= AutoPauseDefaultTick );
         }
 
         #endregion AutoPause Methods

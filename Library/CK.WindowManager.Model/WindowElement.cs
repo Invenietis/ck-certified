@@ -127,8 +127,8 @@ namespace CK.WindowManager.Model
             {
                 using( new DisableElementEvents( () => _w.SizeChanged -= OnWindowSizeChanged, () => _w.SizeChanged += OnWindowSizeChanged ) )
                 {
-                    _w.Width = width < 0 ? 0 : width;
-                    _w.Height = height < 0 ? 0 : height;
+                    if( _w.Width != width ) _w.Width = width < 0 ? 0 : width;
+                    if( _w.Height !=height ) _w.Height = height < 0 ? 0 : height;
                 }
             } );
         }
@@ -141,6 +141,21 @@ namespace CK.WindowManager.Model
         public void Restore()
         {
             DispatchWhenRequired( () => _w.WindowState = WindowState.Normal, false );
+        }
+
+        public void Hide()
+        {
+            DispatchWhenRequired( () => _w.Hide(), false );
+        }
+
+        public void Show()
+        {
+            DispatchWhenRequired( () => _w.Show(), false );
+        }
+
+        public void Close()
+        {
+            DispatchWhenRequired( () => _w.Close(), false );
         }
 
         private T DispatchWhenRequired<T>( Func<T> f )

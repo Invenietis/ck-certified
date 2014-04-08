@@ -51,7 +51,6 @@ namespace CK.WindowManager
             if( _dic.TryGetValue( window, out data ) )
             {
                 WindowElementData dataSnapshot = (WindowElementData)data.Clone();
-                Rect newRect = Rect.Empty;
 
                 window.Move( top, left );
 

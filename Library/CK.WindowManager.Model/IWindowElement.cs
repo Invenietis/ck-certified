@@ -74,8 +74,29 @@ namespace CK.WindowManager.Model
         /// <param name="height"></param>
         void Resize( double width, double height );
 
+        /// <summary>
+        /// Hides the window element
+        /// </summary>
+        void Hide();
+
+        /// <summary>
+        /// Shows the window element
+        /// </summary>
+        void Show();
+
+        /// <summary>
+        /// Closes the window element
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// Minimizes the window element
+        /// </summary>
         void Minimize();
 
+        /// <summary>
+        /// Restores the window element
+        /// </summary>
         void Restore();
 
         void ToggleHostMinimized( IHostManipulator manipulator );

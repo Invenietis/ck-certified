@@ -37,10 +37,11 @@ namespace CK.WindowManager
             // Gets all windows attached to the given window
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
 
-            if( binding != null && binding.AllDescendants().Count() != 0 )
+            if( binding != null )
             {
-                PlacingWindow( binding, binding.Window );
-                PlacingButton( binding, binding );
+                //temporary
+                ResizingWindow( binding );
+                PlacingWindow( binding );
             }
         }
 
@@ -53,160 +54,93 @@ namespace CK.WindowManager
             ISpatialBinding binding = WindowBinder.GetBinding( triggerHolder );
             if( binding != null )
             {
-                if( e.DeltaHeight != 0 )
+                if(  e.DeltaHeight != 0 || e.DeltaWidth != 0 )
                 {
-                    if( binding.Left != null ) ResizeVertically( e, binding.Left.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Top );
-                    if( binding.Right != null ) ResizeVertically( e, binding.Right.SpatialBinding, BindingPosition.Top | BindingPosition.Bottom | BindingPosition.Left );
-                    SpecialMoveBottom( e, binding );
-                }
-                if( e.DeltaWidth != 0 )
-                {
-                    if( binding.Top != null ) ResizeHorizontally( e, binding.Top.SpatialBinding, BindingPosition.Bottom | BindingPosition.Right | BindingPosition.Left );
-                    if( binding.Bottom != null ) ResizeHorizontally( e, binding.Bottom.SpatialBinding, BindingPosition.Top | BindingPosition.Right | BindingPosition.Left );
-                    SpecialMoveRight( e, binding );
-                }
-
-                if( e.DeltaHeight != 0 || e.DeltaWidth != 0 )
-                {
-                    PlacingButton( binding, binding );
+                    ResizingWindow( binding );
+                    PlacingWindow( binding );
                 }
             }
         }
 
-        void PlacingWindow( ISpatialBinding binding, IWindowElement master )
+        void PlacingWindow( ISpatialBinding binding, BindingPosition masterPosition = BindingPosition.None )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
 
-            Rect reference = WindowManager.GetClientArea( binding.Window );
-            Rect slave = Rect.Empty;
+            IWindowElement reference = binding.Window;
+            IWindowElement slave = null;
 
-            if( binding.Top != null && binding.Top.SpatialBinding.Window != master )
+            if( masterPosition != BindingPosition.Top && binding.Top != null )
             {
-                slave = WindowManager.GetClientArea( binding.Top.SpatialBinding.Window );
-                WindowManager.Move( binding.Top.SpatialBinding.Window, reference.Top - slave.Height, reference.Left );
-                PlacingWindow( binding.Top.SpatialBinding, binding.Window );
+                slave = binding.Top.Window;
+                WindowManager.Move( binding.Top.Window, reference.Top - slave.Height, reference.Left );
+                PlacingWindow( binding.Top, BindingPosition.Bottom );
             }
-            if( binding.Bottom != null && binding.Bottom.SpatialBinding.Window != master )
+            if( masterPosition != BindingPosition.Bottom && binding.Bottom != null )
             {
-                slave = WindowManager.GetClientArea( binding.Bottom.SpatialBinding.Window );
-                WindowManager.Move( binding.Bottom.SpatialBinding.Window, reference.Top + reference.Height, reference.Left );
-                PlacingWindow( binding.Bottom.SpatialBinding, binding.Window );
+                slave = binding.Bottom.Window;
+                WindowManager.Move( binding.Bottom.Window, reference.Top + reference.Height, reference.Left );
+                PlacingWindow( binding.Bottom, BindingPosition.Top );
             }
-            if( binding.Left != null && binding.Left.SpatialBinding.Window != master )
+            if( masterPosition != BindingPosition.Left && binding.Left != null )
             {
-                slave = WindowManager.GetClientArea( binding.Left.SpatialBinding.Window );
-                WindowManager.Move( binding.Left.SpatialBinding.Window, reference.Top, reference.Left - slave.Width );
-                PlacingWindow( binding.Left.SpatialBinding, binding.Window );
+                slave = binding.Left.Window;
+                WindowManager.Move( binding.Left.Window, reference.Top, reference.Left - slave.Width );
+                PlacingWindow( binding.Left, BindingPosition.Right );
             }
-            if( binding.Right != null && binding.Right.SpatialBinding.Window != master )
+            if( masterPosition != BindingPosition.Right && binding.Right != null )
             {
-                slave = WindowManager.GetClientArea( binding.Right.SpatialBinding.Window );
-                WindowManager.Move( binding.Right.SpatialBinding.Window, reference.Top, reference.Left + reference.Width );
-                PlacingWindow( binding.Right.SpatialBinding, binding.Window );
-            }
-        }
-
-        void PlacingButton( ISpatialBinding binding, ISpatialBinding master )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
-
-            double top = 0;
-            double height = 0;
-            double width = 0;
-            double left = 0;
-
-            var pos = WindowManager.GetClientArea( binding.Window );
-
-            top = pos.Top;
-            height = pos.Height;
-            width = pos.Width;
-            left = pos.Left;
-
-            if( binding.Left != null && binding.Left.SpatialBinding != master )
-            {
-                binding.Left.UnbindButton.Move( top + height / 2 - binding.Left.UnbindButton.Window.Height / 2, left - binding.Left.UnbindButton.Window.Width / 2 );
-                PlacingButton( binding.Left.SpatialBinding, binding );
-            }
-
-            if( binding.Right != null && binding.Right.SpatialBinding != master )
-            {
-                binding.Right.UnbindButton.Move( top + height / 2 - binding.Right.UnbindButton.Window.Height / 2, left + width - binding.Right.UnbindButton.Window.Width / 2 );
-                PlacingButton( binding.Right.SpatialBinding, binding );
-            }
-
-            if( binding.Bottom != null && binding.Bottom.SpatialBinding != master )
-            {
-                binding.Bottom.UnbindButton.Move( top + height - binding.Bottom.UnbindButton.Window.Height / 2, left + width / 2 - binding.Bottom.UnbindButton.Window.Width / 2 );
-                PlacingButton( binding.Bottom.SpatialBinding, binding );
-            }
-
-            if( binding.Top != null && binding.Top.SpatialBinding != master )
-            {
-                binding.Top.UnbindButton.Move( top - binding.Top.UnbindButton.Window.Height / 2, left + width / 2 - binding.Top.UnbindButton.Window.Width / 2 );
-                PlacingButton( binding.Top.SpatialBinding, binding );
+                slave = binding.Right.Window;
+                WindowManager.Move( binding.Right.Window, reference.Top, reference.Left + reference.Width );
+                PlacingWindow( binding.Right, BindingPosition.Left );
             }
         }
 
-        void ResizeHorizontally( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
+        void ResizingWindow( ISpatialBinding binding, BindingPosition masterPosition = BindingPosition.None )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
 
-            if( spatial != null )
+            IWindowElement reference = binding.Window;
+            IWindowElement slave = null;
+
+            if( masterPosition != BindingPosition.Top && binding.Top != null )
             {
-                var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial } );
-                foreach( var window in windows )
+                slave = binding.Top.Window;
+                if( reference.Height != slave.Height )
                 {
-                    double newWidth = window.Window.Width + e.DeltaWidth;
-                    WindowManager.Resize( window.Window, newWidth, window.Window.Height );
-                    SpecialMoveRight( e, window );
+                    WindowManager.Resize( slave, reference.Width, slave.Height );
+                    ResizingWindow( binding.Top, BindingPosition.Bottom );
                 }
+                WindowManager.Move( slave, reference.Top - slave.Height, reference.Left );
             }
-        }
-
-        /// <summary>
-        /// Special case for windows attached to the right during a resizing
-        /// </summary>
-        private void SpecialMoveRight( WindowElementResizeEventArgs e, ISpatialBinding spatial )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
-            if( spatial != null )
+            if( masterPosition != BindingPosition.Bottom && binding.Bottom != null )
             {
-                foreach( var windowDesc in spatial.SubTree( BindingPosition.Right ) )
+                slave = binding.Bottom.Window;
+                if( reference.Height != slave.Height )
                 {
-                    WindowManager.Move( windowDesc, windowDesc.Top, windowDesc.Left + e.DeltaWidth ).Silent();
+                    WindowManager.Resize( slave, reference.Width, slave.Height );
+                    ResizingWindow( binding.Bottom, BindingPosition.Top );
                 }
+                WindowManager.Move( slave, reference.Top + reference.Height, reference.Left );
             }
-        }
-
-        void ResizeVertically( WindowElementResizeEventArgs e, ISpatialBinding spatial, BindingPosition excludePos )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the ExternalThread." );
-
-            if( spatial != null )
+            if( masterPosition != BindingPosition.Left && binding.Left != null )
             {
-                var windows = spatial.AllDescendants( excludes: excludePos ).Union( new[] { spatial } );
-                foreach( var window in windows )
+                slave = binding.Left.Window;
+                if( reference.Width != slave.Width )
                 {
-                    double newHeight = window.Window.Height + e.DeltaHeight;
-                    WindowManager.Resize( window.Window, window.Window.Width, newHeight );
-                    SpecialMoveBottom( e, spatial );
+                    WindowManager.Resize( slave, slave.Width, reference.Height );
+                    ResizingWindow( binding.Left, BindingPosition.Right );
                 }
+                WindowManager.Move( slave, reference.Top, reference.Left - slave.Width );
             }
-        }
-
-        /// <summary>
-        /// Special case for windows attached to the bottom during a resizing
-        /// </summary>
-        private void SpecialMoveBottom( WindowElementResizeEventArgs e, ISpatialBinding spatial )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            if( spatial != null )
+            if( masterPosition != BindingPosition.Right && binding.Right != null )
             {
-                //var window = binding.Bottom.Window;
-                var windows = spatial.SubTree( BindingPosition.Bottom );
-                foreach( var window in windows )
-                    WindowManager.Move( window, window.Top + e.DeltaHeight, window.Left ).Silent();
+                slave = binding.Right.Window;
+                if( reference.Width != slave.Width )
+                {
+                    WindowManager.Resize( slave, slave.Width, reference.Height );
+                    ResizingWindow( binding.Right, BindingPosition.Left );
+                }
+                WindowManager.Move( slave, reference.Top, reference.Left + reference.Width );
             }
         }
 
@@ -255,10 +189,6 @@ namespace CK.WindowManager
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Restore();
-                    if( descendant.Top != null && !descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Show();
-                    if( descendant.Bottom != null && !descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Show();
-                    if( descendant.Right != null && !descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Show();
-                    if( descendant.Left != null && !descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Show();
                 }
             }
         }
@@ -273,10 +203,6 @@ namespace CK.WindowManager
                 foreach( ISpatialBinding descendant in binding.AllDescendants() )
                 {
                     descendant.Window.Minimize();
-                    if( descendant.Top != null && descendant.Top.UnbindButton.Window.IsVisible ) descendant.Top.UnbindButton.Window.Hide();
-                    if( descendant.Bottom != null && descendant.Bottom.UnbindButton.Window.IsVisible ) descendant.Bottom.UnbindButton.Window.Hide();
-                    if( descendant.Right != null && descendant.Right.UnbindButton.Window.IsVisible ) descendant.Right.UnbindButton.Window.Hide();
-                    if( descendant.Left != null && descendant.Left.UnbindButton.Window.IsVisible ) descendant.Left.UnbindButton.Window.Hide();
                 }
             }
         }

@@ -18,18 +18,5 @@ namespace Scroller
         {
             get { return StrategyName; }
         }
-
-        public override void OnExternalEvent()
-        {
-            if( Walker.Current != null )
-            {
-                if( Walker.Current.Children.Count > 0 ) LastDirective.NextActionType = ActionType.EnterChild;
-                else
-                {
-                    LastDirective.NextActionType = ActionType.StayOnTheSameOnce;
-                }
-                FireSelectElement();
-            }
-        }
     }
 }

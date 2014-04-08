@@ -113,6 +113,7 @@
     <Compile Include="Advanced\ILogService.cs" />
     <Compile Include="Advanced\IUpdateChecker.cs" />
     <Compile Include="Accessibility\IFileLauncherService.cs" />
+    <Compile Include="Advanced\IContextSaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Accessibility\ICommonTimer.cs">
       <SubType>Code</SubType>

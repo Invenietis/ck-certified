@@ -9,8 +9,5 @@ namespace CK.WindowManager
 {
     public interface IUnbindButtonManager : IDynamicService
     {
-        WindowElement CreateButton( ISpatialBinding spatialBinding, ISpatialBinding slaveSpatialBinding, BindingPosition position );
-
-        void RemoveButton( IWindowElement button );
     }
 }

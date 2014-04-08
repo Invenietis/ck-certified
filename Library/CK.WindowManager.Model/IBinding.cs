@@ -53,36 +53,36 @@ namespace CK.WindowManager.Model
         IWindowElement Window { get; }
 
         /// <summary>
-        /// Gets the left binding of the reference window and the unbind button
+        /// Gets the left binding of the reference window
         /// </summary>
-        ISpatialBindingWithButtonElement Left { get; }
+        ISpatialBinding Left { get; }
 
         /// <summary>
-        /// Gets the right binding of the reference window and the unbind button
+        /// Gets the right binding of the reference window
         /// </summary>
-        ISpatialBindingWithButtonElement Right { get; }
+        ISpatialBinding Right { get; }
 
         /// <summary>
-        /// Gets the bottom binding of the reference window and the unbind button
+        /// Gets the bottom binding of the reference window
         /// </summary>
-        ISpatialBindingWithButtonElement Bottom { get; }
+        ISpatialBinding Bottom { get; }
 
         /// <summary>
-        /// Gets the top binding of the reference window and the unbind button
+        /// Gets the top binding of the reference window
         /// </summary>
-        ISpatialBindingWithButtonElement Top { get; }
+        ISpatialBinding Top { get; }
     }
 
-    public interface ISpatialBindingWithButtonElement
-    {
-        /// <summary>
-        /// Gets the ISpatialBinding
-        /// </summary>
-        ISpatialBinding SpatialBinding { get; }
+    //public interface ISpatialBindingWithButtonElement
+    //{
+    //    /// <summary>
+    //    /// Gets the ISpatialBinding
+    //    /// </summary>
+    //    ISpatialBinding SpatialBinding { get; }
 
-        /// <summary>
-        /// Gets the associated UnbindButton
-        /// </summary>
-        IWindowElement UnbindButton { get; }
-    }
+    //    /// <summary>
+    //    /// Gets the associated UnbindButton
+    //    /// </summary>
+    //    IWindowElement UnbindButton { get; }
+    //}
 }

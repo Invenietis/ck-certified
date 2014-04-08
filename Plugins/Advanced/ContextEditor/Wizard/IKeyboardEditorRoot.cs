@@ -57,5 +57,10 @@ namespace KeyboardEditor
         VMContextEditable EditedContext { get; set; }
 
         void ShowHelp();
+
+        /// <summary>
+        /// Saves the Context and the UserConfiguration
+        /// </summary>
+        void Save();
     }
 }

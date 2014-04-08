@@ -60,22 +60,22 @@ namespace CK.WindowManager
                 {
                     if( position == BindingPosition.Top && targetSpatialBinding.Top != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Top.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Top.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Left && targetSpatialBinding.Left != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Left.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Left.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Bottom && targetSpatialBinding.Bottom != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Bottom.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Bottom.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Right && targetSpatialBinding.Right != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Right.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Right.Window.Name, target.Name, position );
                         return false;
                     }
                     else _logger.Trace( "{0} already exists in bindings but no window attached at position {1}.", target.Name, position );
@@ -92,22 +92,22 @@ namespace CK.WindowManager
                 {
                     if( position == BindingPosition.Top && originSpatialBinding.Bottom != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Bottom.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Bottom.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Left && originSpatialBinding.Right != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Right.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Right.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Bottom && originSpatialBinding.Top != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Top.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Top.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Right && originSpatialBinding.Left != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Left.SpatialBinding.Window.Name, target.Name, position );
+                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Left.Window.Name, target.Name, position );
                         return false;
                     }
                     else _logger.Trace( "{0} already exists in bindings but no window attached at position {1}.", origin.Name, position );
@@ -233,27 +233,26 @@ namespace CK.WindowManager
                         Debug.Assert( slaveSpatialBinding != null );
 
                         //TODO : FIXWITHDOCKING
-                        WindowElement button = UnbindButtonManager.Service.CreateButton( spatialBinding, slaveSpatialBinding, position );
 
                         if( position == BindingPosition.Top )
                         {
-                            spatialBinding.Top = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                            slaveSpatialBinding.Bottom = new SpatialBindingWithButtonElement( spatialBinding, button );
+                            spatialBinding.Top = slaveSpatialBinding;
+                            slaveSpatialBinding.Bottom = spatialBinding;
                         }
                         if( position == BindingPosition.Left )
                         {
-                            spatialBinding.Left = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                            slaveSpatialBinding.Right = new SpatialBindingWithButtonElement( spatialBinding, button );
+                            spatialBinding.Left = slaveSpatialBinding;
+                            slaveSpatialBinding.Right = spatialBinding;
                         }
                         if( position == BindingPosition.Bottom )
                         {
-                            spatialBinding.Bottom = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                            slaveSpatialBinding.Top = new SpatialBindingWithButtonElement( spatialBinding, button );
+                            spatialBinding.Bottom = slaveSpatialBinding;
+                            slaveSpatialBinding.Top = spatialBinding;
                         }
                         if( position == BindingPosition.Right )
                         {
-                            spatialBinding.Right = new SpatialBindingWithButtonElement( slaveSpatialBinding, button );
-                            slaveSpatialBinding.Left = new SpatialBindingWithButtonElement( spatialBinding, button );
+                            spatialBinding.Right = slaveSpatialBinding;
+                            slaveSpatialBinding.Left = spatialBinding;
                         }
 
                         if( saveBinding )
@@ -264,8 +263,6 @@ namespace CK.WindowManager
                             Binding = binding,
                             BindingType = BindingEventType.Attach
                         };
-
-                        button.Window.Show();
 
                         _logger.Trace( "After binding..." );
                         if( AfterBinding != null )
@@ -297,27 +294,27 @@ namespace CK.WindowManager
                 {
                     Debug.Assert( me == spatialBinding.Window );
 
-                    if( spatialBinding.Bottom != null && spatialBinding.Bottom.SpatialBinding.Window == other )
+                    if( spatialBinding.Bottom != null && spatialBinding.Bottom.Window == other )
                     {
-                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Bottom.UnbindButton );
+                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Bottom.UnbindButton );
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
-                    if( spatialBinding.Left != null && spatialBinding.Left.SpatialBinding.Window == other )
+                    if( spatialBinding.Left != null && spatialBinding.Left.Window == other )
                     {
-                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Left.UnbindButton );
+                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Left.UnbindButton );
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
-                    if( spatialBinding.Top != null && spatialBinding.Top.SpatialBinding.Window == other )
+                    if( spatialBinding.Top != null && spatialBinding.Top.Window == other )
                     {
-                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Top.UnbindButton );
+                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Top.UnbindButton );
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
-                    if( spatialBinding.Right != null && spatialBinding.Right.SpatialBinding.Window == other )
+                    if( spatialBinding.Right != null && spatialBinding.Right.Window == other )
                     {
-                        UnbindButtonManager.Service.RemoveButton( spatialBinding.Right.UnbindButton );
+                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Right.UnbindButton );
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );
                     }
@@ -369,13 +366,13 @@ namespace CK.WindowManager
 
             public IWindowElement Window { get; private set; }
 
-            public ISpatialBindingWithButtonElement Left { get; set; }
+            public ISpatialBinding Left { get; set; }
 
-            public ISpatialBindingWithButtonElement Right { get; set; }
+            public ISpatialBinding Right { get; set; }
 
-            public ISpatialBindingWithButtonElement Bottom { get; set; }
+            public ISpatialBinding Bottom { get; set; }
 
-            public ISpatialBindingWithButtonElement Top { get; set; }
+            public ISpatialBinding Top { get; set; }
 
             public bool IsAlone
             {
@@ -383,17 +380,17 @@ namespace CK.WindowManager
             }
         }
 
-        class SpatialBindingWithButtonElement : ISpatialBindingWithButtonElement
-        {
-            public SpatialBindingWithButtonElement( ISpatialBinding binding, IWindowElement button )
-            {
-                SpatialBinding = binding;
-                UnbindButton = button;
-            }
+        //class SpatialBindingWithButtonElement : ISpatialBindingWithButtonElement
+        //{
+        //    public SpatialBindingWithButtonElement( ISpatialBinding binding, IWindowElement button )
+        //    {
+        //        SpatialBinding = binding;
+        //        UnbindButton = button;
+        //    }
 
-            public ISpatialBinding SpatialBinding { get; private set; }
-            public IWindowElement UnbindButton { get; private set; }
-        }
+        //    public ISpatialBinding SpatialBinding { get; private set; }
+        //    public IWindowElement UnbindButton { get; private set; }
+        //}
 
         class SerializableBindings : IStructuredSerializable
         {
@@ -553,10 +550,10 @@ namespace CK.WindowManager
         void WindowManager_Unregistered( object sender, WindowElementEventArgs e )
         {
             var binding = GetBinding( e.Window );
-            if( binding.Bottom != null ) Unbind( binding.Window, binding.Bottom.SpatialBinding.Window );
-            if( binding.Top != null ) Unbind( binding.Window, binding.Top.SpatialBinding.Window );
-            if( binding.Left != null ) Unbind( binding.Window, binding.Left.SpatialBinding.Window );
-            if( binding.Right != null ) Unbind( binding.Window, binding.Right.SpatialBinding.Window );
+            if( binding.Bottom != null ) Unbind( binding.Window, binding.Bottom.Window );
+            if( binding.Top != null ) Unbind( binding.Window, binding.Top.Window );
+            if( binding.Left != null ) Unbind( binding.Window, binding.Left.Window );
+            if( binding.Right != null ) Unbind( binding.Window, binding.Right.Window );
         }
 
         public void Stop()

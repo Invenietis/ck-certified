@@ -39,9 +39,9 @@ namespace Scroller
             _highlightTicksCount.Clear();
         }
 
-        protected virtual void UpdateAutoPauseTicks()
+        protected virtual void UpdateAutoPauseTicks( ActionType LastActionType )
         {
-            if( Walker.Current.Children.Contains( PreviousElement ) ) ResetAutoPause();
+            if( Walker.Current.Children.Contains( PreviousElement ) || LastActionType == ActionType.StayOnTheSame ) ResetAutoPause();
             // create a collection of all highlighted Elements and increases the tick count if they are already present.
             _highlightTicksCount[Walker.Current] = (_highlightTicksCount.ContainsKey( Walker.Current )) ? _highlightTicksCount[Walker.Current] + 1 : 0;
         }
@@ -80,7 +80,7 @@ namespace Scroller
             MoveNext( LastDirective.NextActionType );
 
             //update the auto pause tick when the next element is selected
-            UpdateAutoPauseTicks();
+            UpdateAutoPauseTicks( LastDirective.NextActionType );
 
             //End highlight on the previous element (if different from the current one)
             if( PreviousElement != null )

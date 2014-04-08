@@ -33,8 +33,8 @@ namespace MouseRadar
         Stopwatch _watch;
 
         ScreenBound _previousCollision = ScreenBound.None;
-        DispatcherTimer _timerRotate;
-        DispatcherTimer _timerTranslate;
+        internal DispatcherTimer _timerRotate;
+        internal DispatcherTimer _timerTranslate;
         internal double Radian { get; private set; }
 
         /// <summary>

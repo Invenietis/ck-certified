@@ -132,8 +132,6 @@ namespace MouseRadar
                     else _angle = value;
                 }
 
-                Console.WriteLine( "Angle : " + _angle );
-
                 FirePropertyChanged( "Angle" );
             }
         }

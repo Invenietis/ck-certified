@@ -249,7 +249,7 @@ namespace CK.WindowManager
                 if( container.TopButton == null
                     && container.BottomButton == null
                     && container.LeftButton == null
-                    && container.RightButton == null ) 
+                    && container.RightButton == null )
                     _unbindButtonContainers.Remove( window );
             }
         }
@@ -286,22 +286,23 @@ namespace CK.WindowManager
         }
 
         bool _windowMoved = false;
-        bool _buttonIsVisible = true;
         private void OnWindowManagerWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
-            _windowMoved = true;
-            if( _buttonIsVisible )
-            {
-                foreach( var c in _unbindButtonContainers.Values ) c.HideButtons();
-            }
+            HideButtons( e.Window );
         }
 
         private void OnWindowManagerWindowResized( object sender, WindowElementResizeEventArgs e )
         {
-            _windowMoved = true;
-            if( _buttonIsVisible )
+            HideButtons( e.Window );
+        }
+
+        void HideButtons( IWindowElement window )
+        {
+            if( _unbindButtonContainers.ContainsKey( window ) )
             {
-                foreach( var c in _unbindButtonContainers.Values ) c.HideButtons();
+                _windowMoved = true;
+                ISpatialBinding binding = WindowBinder.Service.GetBinding( window );
+                foreach( var b in binding.AllDescendants() ) _unbindButtonContainers[b.Window].HideButtons();
             }
         }
 

@@ -120,7 +120,7 @@ namespace CK.WordPredictor.Engines
 
         void OnWordPredictionFeaturePropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
-            if( e.PropertyName == "FilterAlreadyShownWords" )
+            if( e.PropertyName == "FilterAlreadyShownWords" && _sybille != null )
             {
                 _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
             }

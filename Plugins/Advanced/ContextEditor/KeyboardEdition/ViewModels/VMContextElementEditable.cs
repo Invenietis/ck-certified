@@ -208,6 +208,12 @@ namespace KeyboardEditor.ViewModels
             set { _context.SkinConfiguration[LayoutElement]["HighlightBackground"] = value; }
         }
 
+        public Color HighlightFontColor
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HighlightFontColor", Colors.Black ); }
+            set { _context.SkinConfiguration[LayoutElement]["HighlightFontColor"] = value; }
+        }
+
         public Color PressedBackground
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "PressedBackground", HoverBackground ); }

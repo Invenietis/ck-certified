@@ -72,6 +72,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateFontWeight();
             SafeUpdateHeight();
             SafeUpdateHighlightBackground();
+            SafeUpdateHighlightFontColor();
             SafeUpdateHoverBackground();
             SafeUpdateImage();
             SafeUpdateIndex();
@@ -206,6 +207,7 @@ namespace SimpleSkin.ViewModels
                 SafeUpdateTextDecorations();
                 SafeUpdatePressedBackground();
                 SafeUpdateHighlightBackground();
+                SafeUpdateHighlightFontColor();
 
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "Opacity" );
@@ -220,6 +222,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "TextDecorations" );
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "HighlightBackground" );
+                OnPropertyChanged( "HighlightFontColor" );
             }
             else
             {
@@ -268,6 +271,10 @@ namespace SimpleSkin.ViewModels
                     case "HighlightBackground":
                         SafeUpdateHighlightBackground();
                         OnPropertyChanged( "HighlightBackground" );
+                        break;
+                    case "HighlightFontColor":
+                        SafeUpdateHighlightFontColor();
+                        OnPropertyChanged( "HighlightFontColor" );
                         break;
                     default:
                         break;
@@ -416,6 +423,11 @@ namespace SimpleSkin.ViewModels
         private void SafeUpdateHighlightBackground()
         {
             SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ), ( v ) => _highlightBackground = v );
+        }
+
+        private void SafeUpdateHighlightFontColor()
+        {
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightFontColor", Background ), ( v ) => _highlightFontColor = v );
         }
 
         private void SafeUpdatePressedBackground()
@@ -615,6 +627,12 @@ namespace SimpleSkin.ViewModels
         public Color HighlightBackground
         {
             get { return _highlightBackground; }
+        }
+
+        Color _highlightFontColor;
+        public Color HighlightFontColor
+        {
+            get { return _highlightFontColor; }
         }
 
         Color _pressedBackground;

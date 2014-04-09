@@ -26,6 +26,11 @@
                             <SolidColorBrush Color="{Binding HighlightBackground}"/>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{Binding HighlightFontColor}"/>
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -77,6 +82,11 @@
                     <Setter TargetName="key" Property="Background">
                         <Setter.Value>
                             <SolidColorBrush Color="{Binding HighlightBackground}"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="key" Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{Binding HighlightFontColor}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>

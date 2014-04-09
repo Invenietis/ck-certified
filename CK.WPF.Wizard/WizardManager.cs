@@ -8,7 +8,7 @@ namespace CK.WPF.Wizard
     /// <summary>
     /// This specialization of the StackConductor implements the "GoFurther" (Go to the next view) and "Restart" actions.
     /// </summary>
-    public class WizardManager : StackConductor<WizardPage>
+    public class WizardManager : NavigableConductor<WizardPage>
     {
         ViewAware _parent;
 
@@ -19,34 +19,6 @@ namespace CK.WPF.Wizard
         public WizardManager( ViewAware parent )
         {
             _parent = parent;
-        }
-
-        /// <summary>
-        /// Gets the Next item of the currently active item
-        /// </summary>
-        public WizardPage Next
-        {
-            get { return ActiveItem.Next; }
-        }
-
-        public override bool OnBeforeGoBack()
-        {
-            return ActiveItem.OnBeforeGoBack();
-        }
-
-        /// <summary>
-        /// Activates the next view
-        /// </summary>
-        public void GoFurther()
-        {
-            if( ActiveItem.CheckCanGoFurther() )
-            {
-                if( ActiveItem.OnBeforeNext() && Next != null )
-                {
-                    ActivateItem( Next );
-                    return;
-                }
-            }
         }
 
         /// <summary>
@@ -69,6 +41,19 @@ namespace CK.WPF.Wizard
             {
                 if( _goFurtherCommand == null ) _goFurtherCommand = new SimpleCommand( GoFurther );
                 return _goFurtherCommand;
+            }
+        }
+
+        SimpleCommand _goBackCommand;
+        /// <summary>
+        /// Triggers <see cref="GoBack()", which activates the previous view/>
+        /// </summary>
+        public ICommand GoBackCommand
+        {
+            get
+            {
+                if( _goBackCommand == null ) _goBackCommand = new SimpleCommand( GoBack );
+                return _goBackCommand;
             }
         }
 

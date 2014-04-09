@@ -58,7 +58,6 @@ namespace KeyboardEditor
         AppViewModel _appViewModel;
         Window _mainWindow;
         bool _stopping;
-        DispatcherTimer _autoSaveContextTimer;
         IContextSaver _contextSaver;
 
         #region IPlugin implementation
@@ -80,30 +79,14 @@ namespace KeyboardEditor
 
             _contextSaver = Context.ServiceContainer.GetService<IContextSaver>();
 
-            _autoSaveContextTimer = new DispatcherTimer( DispatcherPriority.Background );
-            _autoSaveContextTimer.Interval = new TimeSpan( 0, 0, 30 );
-            _autoSaveContextTimer.Tick += OnTimerTick;
-            _autoSaveContextTimer.Start();
-
             _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>();
 
             _mainWindow.Closing += OnWindowClosing;
         }
 
-        /// <summary>
-        /// allows the auto save when the keyboard editor is open to prevent losing the changes in case of crash.
-        /// </summary>
-        void OnTimerTick( object sender, EventArgs e )
-        {
-            Save();
-        }
-
         public void Stop()
         {
             _stopping = true;
-
-            _autoSaveContextTimer.Tick -= OnTimerTick;
-            if( _autoSaveContextTimer.IsEnabled ) _autoSaveContextTimer.Stop();
 
             if( _mainWindow != null )
                 _mainWindow.Close();
@@ -127,7 +110,6 @@ namespace KeyboardEditor
             _stopping = false;
             _appViewModel = null;
             _windowManager = null;
-            _autoSaveContextTimer = null;
         }
 
         bool _cancelOnStop = false;

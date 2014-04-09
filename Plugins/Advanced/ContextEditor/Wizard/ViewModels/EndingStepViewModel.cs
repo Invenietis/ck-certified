@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CK.Windows;
+using CK.WPF.Wizard;
 using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels

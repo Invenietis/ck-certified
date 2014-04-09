@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.ComponentModel;
+using Caliburn.Micro;
 
 namespace CK.WPF.Wizard
 {
@@ -6,19 +8,19 @@ namespace CK.WPF.Wizard
     /// This class is used to fill the <see cref="WizardManager"/>'s stack.
     /// It has all the properties needed by the <see cref="WizardManager"/> to display a wizard with next and back actions.
     /// </summary>
-    public abstract class WizardPage : PropertyChangedBase
+    public abstract class WizardPage : PropertyChangedBase, IWizardNavigable
     {
         bool _cantGoFurther;
 
         /// <summary>
         /// Gets the title of the <see cref="WizardPage"/>
         /// </summary>
-        public string Title { get; internal set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets the description of the <see cref="WizardPage"/>
         /// </summary>
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets the WizardManager that holds this step (this WizardPage).
@@ -72,7 +74,7 @@ namespace CK.WPF.Wizard
         /// <param name="next">The next WizardPage</param>
         /// <param name="title">(optional) title of the page</param>
         public WizardPage( WizardManager wizardManager, WizardPage next, string title = "" )
-            : this( wizardManager, next, false )
+            : this( wizardManager, next, false, title )
         {
         }
 
@@ -138,6 +140,47 @@ namespace CK.WPF.Wizard
         public virtual bool OnBeforeGoBack()
         {
             return true;
+        }
+
+        /// <summary>
+        /// Is called before ActivateItem function.
+        /// </summary>
+        public virtual bool OnActivating()
+        {
+            CancelEventArgs e = new CancelEventArgs();
+            RaiseActivating( e );
+            return !e.Cancel;
+        }
+
+        /// <summary>
+        /// Is called after ActivateItem function.
+        /// </summary>
+        public virtual void OnActivated()
+        {
+            RaiseActivated( new WizardNavigableEventArgs( this ) );
+        }
+
+        public event EventHandler<WizardNavigableEventArgs> Activated;
+
+        public event CancelEventHandler Activating;
+
+        void RaiseActivating( CancelEventArgs e )
+        {
+            var h = Activating;
+            if( h != null )
+                h( this, e );
+        }
+
+        void RaiseActivated( WizardNavigableEventArgs e )
+        {
+            var h = Activated;
+            if( h != null )
+                h( this, e );
+        }
+
+        IWizardNavigable IWizardNavigable.Next
+        {
+            get { return Next; }
         }
     }
 }

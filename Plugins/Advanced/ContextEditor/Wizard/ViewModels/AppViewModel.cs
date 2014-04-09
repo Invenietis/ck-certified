@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using CK.WPF.Wizard;
 using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels

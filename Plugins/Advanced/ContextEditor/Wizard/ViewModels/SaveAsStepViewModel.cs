@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CK.Keyboard.Model;
 using CK.Windows.App;
 using CK.WPF.Controls;
+using CK.WPF.Wizard;
 using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels

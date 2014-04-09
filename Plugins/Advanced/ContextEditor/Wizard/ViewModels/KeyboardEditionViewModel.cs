@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using CK.Keyboard.Model;
 using KeyboardEditor.Resources;
 using CK.Plugin;
+using System.Windows.Threading;
+using CK.WPF.Wizard;
 
 namespace KeyboardEditor.ViewModels
 {
     public class KeyboardEditionViewModel : HelpAwareWizardPage
     {
+        DispatcherTimer _autoSaveContextTimer;
+
         public VMContextEditable EditedContext { get { return Root.EditedContext; } }
 
         public KeyboardEditionViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboard editedKeyboard )
@@ -18,10 +22,24 @@ namespace KeyboardEditor.ViewModels
 
             Title = String.Format( R.KeyboardEditionStepTitle, editedKeyboard.Name );
             Description = R.KeyboardEditionStepDesc;
+
+            _autoSaveContextTimer = new DispatcherTimer( DispatcherPriority.Background );
+            _autoSaveContextTimer.Interval = new TimeSpan( 0, 0, 30 );
+        }
+
+        /// <summary>
+        /// allows the auto save when the keyboard editor is open to prevent losing the changes in case of crash.
+        /// </summary>
+        void OnTimerTick( object sender, EventArgs e )
+        {
+            Root.Save();
         }
 
         public override bool OnBeforeNext()
         {
+            _autoSaveContextTimer.Tick -= OnTimerTick;
+            if( _autoSaveContextTimer.IsEnabled ) _autoSaveContextTimer.Stop();
+
             HashSet<string> protocols = new HashSet<string>();
 
             //Parse all the keys of the keyboard ot retrieve the different CommandManagers it needs
@@ -64,7 +82,18 @@ namespace KeyboardEditor.ViewModels
 
         public override bool OnBeforeGoBack()
         {
+            _autoSaveContextTimer.Tick -= OnTimerTick;
+            if( _autoSaveContextTimer.IsEnabled ) _autoSaveContextTimer.Stop();
+
             return base.OnBeforeGoBack();
+        }
+
+        public override bool OnActivating()
+        {
+            _autoSaveContextTimer.Tick += OnTimerTick;
+            _autoSaveContextTimer.Start();
+
+            return base.OnActivating();
         }
 
         object _selectedHolder;

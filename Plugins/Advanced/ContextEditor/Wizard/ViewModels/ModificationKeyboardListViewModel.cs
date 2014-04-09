@@ -1,4 +1,5 @@
 ﻿using CK.Keyboard.Model;
+using CK.WPF.Wizard;
 using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels

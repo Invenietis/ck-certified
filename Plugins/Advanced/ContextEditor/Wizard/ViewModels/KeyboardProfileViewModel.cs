@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CK.Keyboard.Model;
 using CK.Windows.App;
+using CK.WPF.Wizard;
 using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels

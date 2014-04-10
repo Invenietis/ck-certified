@@ -82,6 +82,17 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ConfigImplementationSelectorItem}">
+            <DataTemplate>
+                <DockPanel LastChildFill="False" Margin="3">
+                    <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding IsSelected}" Margin="0 0 3 0"/>
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{Binding DisplayName}"/>
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath, Converter={StaticResource stringemptytounsetconverter}}" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
     </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

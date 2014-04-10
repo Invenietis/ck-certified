@@ -225,6 +225,9 @@
     <Compile Include="ViewModels\ThirdLevel\SkinBasicConfigViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\SkinViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ConfigImplementationSelectorItem.cs" />
+    <Compile Include="ViewModels\Tools\ImplementationSelector.cs" />
+    <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>

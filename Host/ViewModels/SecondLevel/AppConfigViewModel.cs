@@ -69,11 +69,19 @@ namespace Host.VM
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
             this.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
+            this.AddLink( new ImplementationSelector( "Choucroute", _app ) );
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
                 action.ImagePath = "Forward.png";
                 action.DisplayName = R.ScrollConfig;
+                this.Items.Add( action );
+            }
+
+            {
+                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
+                action.ImagePath = "Forward.png";
+                action.DisplayName = R.SkinEditorSectionName;
                 this.Items.Add( action );
             }
 

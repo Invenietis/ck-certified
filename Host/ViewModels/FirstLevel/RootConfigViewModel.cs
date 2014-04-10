@@ -69,16 +69,15 @@ namespace Host
                 _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";
             }
 
-            var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) { DisplayName = R.SkinSectionName };
-            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) { DisplayName = R.AutoClickSectionName };
-            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[]{ _radarId, _screenScrollerId }) { DisplayName = R.Scrolling };
-            var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
+            var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) ){ DisplayName = R.SkinSectionName };
+            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) ) { DisplayName = R.AutoClickSectionName };
+            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[]{ _radarId, _screenScrollerId })) { DisplayName = R.Scrolling };
+            //var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
 
-            var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{
-                _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
-                { DisplayName = R.ScreenScrolling };
+            //var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
+            //    { DisplayName = R.ScreenScrolling };
 
-            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
+            var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
                 new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), //SybilleWordPredictorService
                 new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), //WordPredictedService
@@ -88,15 +87,15 @@ namespace Host
                 new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ), //TextualContextService
                 new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ), //TextualContextCommandHandler
                 new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" )  //PredictionTextAreaBus
-                ) { DisplayName = R.WordPredictionSectionName };
+                ) ) { DisplayName = R.WordPredictionSectionName };
 
             var g = this.AddGroup();
             g.Items.Add( skinStarter );
             g.Items.Add( autoClicStarter );
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
-            g.Items.Add( mouseRadar );
-            g.Items.Add( screenScrollerStarter );
+            //g.Items.Add( mouseRadar );
+            //g.Items.Add( screenScrollerStarter );
 
             this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
 

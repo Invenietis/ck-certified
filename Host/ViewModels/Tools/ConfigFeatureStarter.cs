@@ -35,23 +35,17 @@ namespace Host.VM
 {
     public class ConfigFeatureStarter : ConfigItem
     {
-        Guid[] _startWithPlugin;
-        Guid[] _stopWithPlugin;
         ISimplePluginRunner _runner;
-        IUserConfiguration _userConfig;
+        PluginCluster _pluginCluster;
 
-
-        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginId )
+        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, PluginCluster pluginCluster )
             : base( configManager )
         {
-            _startWithPlugin = pluginId;
-            _stopWithPlugin = pluginId;
+            _pluginCluster = pluginCluster;
             _runner = runner;
-            _userConfig = userConfig;
-
             _runner.PluginHost.StatusChanged += ( o, e ) =>
             {
-                if( _startWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) || _stopWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) )
+                if( _pluginCluster.StartWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) || _pluginCluster.StopWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) )
                 {
                     NotifyOfPropertyChange( () => Start );
                     NotifyOfPropertyChange( () => Stop );
@@ -64,33 +58,24 @@ namespace Host.VM
             Stop = new SimpleCommand( StopPlugin );
         }
 
-        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, IUserConfiguration userConfig, Guid pluginId, IEnumerable<Guid> startWithPlugin, IEnumerable<Guid> stopWithPlugin )
-            : base( configManager )
+        public bool IsRunning
         {
-            _startWithPlugin = new Guid[] { pluginId }.Union( startWithPlugin ).ToArray();
-            _stopWithPlugin = new Guid[] { pluginId }.Union( stopWithPlugin ).ToArray();
-            _runner = runner;
-            _userConfig = userConfig;
+            get { return _pluginCluster.IsRunning; }
+        }
 
-            _runner.PluginHost.StatusChanged += ( o, e ) =>
+        //Can't find all the info to decide whether a plugin is Disabled or not, yet.
+        public bool IsRunnable
+        {
+            get
             {
-                if( _startWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) || _stopWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) )
-                {
-                    NotifyOfPropertyChange( () => Start );
-                    NotifyOfPropertyChange( () => Stop );
-                    NotifyOfPropertyChange( () => IsRunning );
-                    NotifyOfPropertyChange( () => IsRunnable );
-                }
-            };
-
-            Start = new SimpleCommand( StartPlugin, CanStart );
-            Stop = new SimpleCommand( StopPlugin );
+                return _pluginCluster.IsRunnable;
+            }
         }
 
         bool CanStart()
         {
-            return _startWithPlugin.All
-            ( 
+            return _pluginCluster.StartWithPlugin.All
+            (
                 ( id ) =>
                 {
                     var p = _runner.Discoverer.FindPlugin( id );
@@ -101,13 +86,7 @@ namespace Host.VM
 
         void StartPlugin()
         {
-            foreach( var id in _startWithPlugin )
-            {
-                _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
-                _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Started );
-            }
-            
-            _runner.Apply();
+            _pluginCluster.StartPlugin();
 
             NotifyOfPropertyChange( () => IsRunning );
             NotifyOfPropertyChange( () => IsRunnable );
@@ -115,33 +94,11 @@ namespace Host.VM
 
         void StopPlugin()
         {
-            foreach( var id in _stopWithPlugin )
-            {
-                _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.Manual );
-                _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Stopped );
-            }
-
-            _runner.Apply();
+            _pluginCluster.StopPlugin();
 
             NotifyOfPropertyChange( () => IsRunning );
             NotifyOfPropertyChange( () => IsRunnable );
         }
-
-        public bool IsRunning
-        {
-            get { return _startWithPlugin.Intersect(_stopWithPlugin).All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) ); }
-        }
-
-        //Can't find all the info to decide whether a plugin is Disabled or not, yet.
-        public bool IsRunnable
-        {
-            get 
-            {
-                //TODO
-                return true;
-            }
-        }        
-
 
         public ICommand Start { get; private set; }
 

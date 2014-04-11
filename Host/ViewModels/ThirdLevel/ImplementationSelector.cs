@@ -14,7 +14,6 @@ namespace Host.VM
     public class ImplementationSelector : ConfigPage
     {
         readonly AppViewModel _app;
-        List<Guid> _plugins;
         readonly ISimplePluginRunner _runner;
         readonly IUserConfiguration _userConf;
 
@@ -41,30 +40,29 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            var profiles = this.AddCurrentItem( R.Profile, "", _app.CivikeyHost.Context.ConfigManager.SystemConfiguration, a => a.CurrentUserProfile, a => a.UserProfiles, false, "" );
 
-            _app.CivikeyHost.Context.ConfigManager.SystemConfiguration.UserProfiles.CollectionChanged += ( s, e ) =>
-            {
-                profiles.RefreshValues( s, e );
-            };
+            Guid defaultPlugin = GetDefaultItem( _screenScrollerId, _radarId );
 
-            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]));
+            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]), "CursorPointing");
             scroll.DisplayName = R.ScreenScrolling;
+            if( defaultPlugin == _screenScrollerId ) scroll.IsDefaultItem = true;
             Items.Add( scroll );
             _items.Add( scroll );
 
-            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _radarId, new Guid[] { _basicScrollId }, new Guid[0] ) );
+            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _radarId, new Guid[] { _basicScrollId }, new Guid[0] ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), "CursorPointing" );
             radar.DisplayName = R.Radar;
+            if( defaultPlugin == _radarId ) radar.IsDefaultItem = true;
             Items.Add( radar );
             _items.Add( radar );
 
-            var empty = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ) );
-            empty.DisplayName = "DEMERDE TOI";
+            var empty = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), "CursorPointing" );
+            empty.DisplayName = "Aucun ";
+            if( defaultPlugin == Guid.Empty ) empty.IsDefaultItem = true;
             Items.Add( empty );
             _items.Add( empty );
 
-            var apply = new ConfigItemAction( _app.ConfigManager, new VMCommand( Apply ) );
-            apply.DisplayName = "APPLY";
+            var apply = new ConfigItemApply( _app.ConfigManager, new VMCommand( Apply ) );
+            apply.DisplayName = "Appliquer";
             Items.Add( apply );
 
             base.OnInitialize();
@@ -72,11 +70,12 @@ namespace Host.VM
 
         private void Apply()
         {
-            ApplyStop();
-            ApplyStart();
+            SetConfigStopped();
+            SetConfigStarted();
+            _runner.Apply();
         }
 
-        private void ApplyStop()
+        private void SetConfigStopped()
         {
             foreach( var i in _items )
             {
@@ -87,7 +86,7 @@ namespace Host.VM
             }
         }
 
-        private void ApplyStart()
+        private void SetConfigStarted()
         {
             foreach( var i in _items )
             {
@@ -96,6 +95,12 @@ namespace Host.VM
                     i.PluginCluster.StartPlugin();
                 }
             }
+        }
+
+        private Guid GetDefaultItem( params Guid[] ids )
+        {
+            if( ids.Count( i => _runner.PluginHost.IsPluginRunning( i ) ) > 1 ) return Guid.Empty;
+            return ids.First( i => _runner.PluginHost.IsPluginRunning( i ) );
         }
     }
 }

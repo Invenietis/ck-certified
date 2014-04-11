@@ -41,6 +41,10 @@ namespace Host.VM
             _userConfig = userConfig;
         }
 
+        public ISimplePluginRunner Runner { get { return _runner; } }
+
+        public IUserConfiguration UserConfig { get { return _userConfig; } }
+
         public IReadOnlyList<Guid> StartWithPlugin { get { return _startWithPlugin.ToReadOnlyList(); } }
 
         public IReadOnlyList<Guid> StopWithPlugin { get { return _stopWithPlugin.ToReadOnlyList(); } }
@@ -62,28 +66,56 @@ namespace Host.VM
             }
         }
 
+        /// <summary>
+        /// Set and applies the configuration with started status.
+        /// Applies even for plugins outside the cluster, if his configuration has changed.
+        /// </summary>
         public void StartPlugin()
+        {
+            SetStartConfigStatus();
+            _runner.Apply();
+        }
+
+        /// <summary>
+        /// Set and applies the configuration with stopped status.
+        /// Applies even for plugins outside the cluster, if his configuration has changed.
+        /// </summary>
+        public void StopPlugin()
+        {
+            SetStopConfigStatus();
+            _runner.Apply();
+        }
+
+        /// <summary>
+        /// Just set the configuration with started status.
+        /// </summary>
+        public void SetStartConfigStatus()
         {
             foreach( var id in _startWithPlugin )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Started );
             }
-
-            _runner.Apply();
         }
 
-        public void StopPlugin()
+        /// <summary>
+        /// Just set the configuration with stopped status.
+        /// </summary>
+        public void SetStopConfigStatus()
         {
             foreach( var id in _stopWithPlugin )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.Manual );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Stopped );
             }
-
-            _runner.Apply();
         }
 
-
+        /// <summary>
+        /// Applies all configuration changes, even for plugins outside the cluster if his configuration has changed.
+        /// </summary>
+        public void ApplyNewConfig()
+        {
+            _runner.Apply();
+        }
     }
 }

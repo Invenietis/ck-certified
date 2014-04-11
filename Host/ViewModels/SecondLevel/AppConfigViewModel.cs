@@ -57,8 +57,6 @@ namespace Host.VM
                 profiles.RefreshValues( s, e );
             };
 
-            this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
-
             //JL : this feature has been removed.
             //this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
 
@@ -66,11 +64,11 @@ namespace Host.VM
             //For now, I'll let this plugin without configuration, we'll ask the ergotherapist whether the configuration panel is necessary before spending time on it.
             //this.AddLink( _ssVm ?? ( _ssVm = new ScreenScrollerViewModel( _app ) ) );  
 
+            this.AddLink( new ImplementationSelector( "Selection du dispositif de pointage", _app ) );
+
+            this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
-            this.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
-            this.AddLink( new ImplementationSelector( "Choucroute", _app ) );
-
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
                 action.ImagePath = "Forward.png";
@@ -78,12 +76,7 @@ namespace Host.VM
                 this.Items.Add( action );
             }
 
-            {
-                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
-                action.ImagePath = "Forward.png";
-                action.DisplayName = R.SkinEditorSectionName;
-                this.Items.Add( action );
-            }
+            this.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
@@ -92,12 +85,12 @@ namespace Host.VM
                 this.Items.Add( action );
             }
 
-            {
-                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartRadarEditor ) );
-                action.ImagePath = "Forward.png";
-                action.DisplayName = R.RadarConfiguration;
-                this.Items.Add( action );
-            }
+            //{
+            //    var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartRadarEditor ) );
+            //    action.ImagePath = "Forward.png";
+            //    action.DisplayName = R.RadarConfiguration;
+            //    this.Items.Add( action );
+            //}
 
             //{
             //    var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScreenScrollerEditor ) );

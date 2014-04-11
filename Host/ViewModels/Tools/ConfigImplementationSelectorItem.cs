@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Input;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Windows.App;
 using CK.Windows.Config;
 
 namespace Host.VM
@@ -15,21 +16,33 @@ namespace Host.VM
     public class ConfigImplementationSelectorItem : ConfigItem, INotifyPropertyChanged
     {
         PluginCluster _cluster;
-        Guid _pluginEditor;
-        string _groupName;
-        AppViewModel _app;
+        Guid _pluginEditor = Guid.Empty;
+        string _groupName = string.Empty;
 
         public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster )
             : base( configManager )
         {
-            _pluginEditor = Guid.Empty;
             _cluster = pluginCluster;
+            SelectItem = new VMCommand( OnSelectItem, CanSelectItem );
+            OpenEditor = new VMCommand( StartPluginEditor, () => CanOpenEditor );
+        }
+
+        public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster, string groupName )
+            : this( configManager, pluginCluster )
+        {
+            _groupName = groupName;
         }
 
         public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster, Guid pluginEditor )
             : this( configManager, pluginCluster )
         {
             _pluginEditor = pluginEditor;
+        }
+
+        public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster, Guid pluginEditor, string groupName )
+            : this( configManager, pluginCluster, pluginEditor )
+        {
+            _groupName = groupName;
         }
 
         public Action SelectAction { get; set; }
@@ -49,11 +62,34 @@ namespace Host.VM
                 if( _isSelected != value )
                 {
                     CallActions( value );
-                    CloseEditor( value );
                     _isSelected = value;
                     OnPropertyChanged();
                 }
             }
+        }
+
+        bool _isDefaultItem;
+        public bool IsDefaultItem 
+        {
+            get { return _isDefaultItem; }
+            set
+            {
+                if( _isDefaultItem != value )
+                {
+                    _isDefaultItem = value;
+                    _isSelected = value;
+                }
+            }
+        }
+
+        public bool IsRadioButton
+        {
+            get { return !string.IsNullOrEmpty( _groupName ); }
+        }
+
+        public string GroupName
+        {
+            get { return _groupName; }
         }
 
         private void CallActions(bool newValue)
@@ -70,9 +106,9 @@ namespace Host.VM
             internal set;
         }
 
-        bool CanOpenEditor()
+        public bool CanOpenEditor
         {
-            return _pluginEditor != Guid.Empty && IsSelected && _app != null && !_editorIsOpen;
+            get { return _pluginEditor != Guid.Empty && !_editorIsOpen; }
         }
 
         bool _editorIsOpen;
@@ -91,15 +127,16 @@ namespace Host.VM
 
         private void StartPluginEditor()
         {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Started );
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.Changed += LiveUserConfiguration_Changed;
-            _app.CivikeyHost.Context.PluginRunner.Apply();
+            _cluster.UserConfig.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Started );
+            _cluster.UserConfig.LiveUserConfiguration.Changed += LiveUserConfiguration_Changed;
+            _cluster.Runner.Apply();
         }
 
         private void StopPluginEditor()
         {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Stopped );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
+            _cluster.UserConfig.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Stopped );
+            _cluster.Runner.Apply();
+            _cluster.UserConfig.LiveUserConfiguration.Changed -= LiveUserConfiguration_Changed;
         }
 
         private void LiveUserConfiguration_Changed( object sender, LiveUserConfigurationChangedEventArgs e )
@@ -113,6 +150,24 @@ namespace Host.VM
         }
 
         #endregion PluginEditor Members
+
+        public ICommand SelectItem
+        {
+            get;
+            private set;
+        }
+
+        private bool CanSelectItem()
+        {
+            return true;
+        }
+
+        private void OnSelectItem()
+        {
+            if( IsRadioButton && IsSelected ) return;
+            IsSelected = !_isSelected;
+        }
+
 
         #region INotifyPropertyChanged Members
 

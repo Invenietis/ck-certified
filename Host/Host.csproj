@@ -226,7 +226,8 @@
     <Compile Include="ViewModels\ThirdLevel\SkinViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
     <Compile Include="ViewModels\Tools\ConfigImplementationSelectorItem.cs" />
-    <Compile Include="ViewModels\Tools\ImplementationSelector.cs" />
+    <Compile Include="ViewModels\Tools\ConfigItemApply.cs" />
+    <Compile Include="ViewModels\ThirdLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
@@ -280,6 +281,10 @@
     <EmbeddedResource Include="Resources\hosthelpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AppView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

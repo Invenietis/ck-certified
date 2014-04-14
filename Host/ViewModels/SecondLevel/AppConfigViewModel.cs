@@ -64,8 +64,6 @@ namespace Host.VM
             //For now, I'll let this plugin without configuration, we'll ask the ergotherapist whether the configuration panel is necessary before spending time on it.
             //this.AddLink( _ssVm ?? ( _ssVm = new ScreenScrollerViewModel( _app ) ) );  
 
-            this.AddLink( new ImplementationSelector( "Selection du dispositif de pointage", _app ) );
-
             this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );

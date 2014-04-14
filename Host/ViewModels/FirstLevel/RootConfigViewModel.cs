@@ -97,6 +97,8 @@ namespace Host
             //g.Items.Add( mouseRadar );
             //g.Items.Add( screenScrollerStarter );
 
+            this.AddLink( new ImplementationSelector( "Selection du dispositif de pointage", _app ) );
+
             this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
 
             base.OnInitialize();

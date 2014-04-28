@@ -13,7 +13,7 @@ using CK.Windows.Config;
 
 namespace Host.VM
 {
-    public class ConfigImplementationSelectorItem : ConfigItem, INotifyPropertyChanged
+    public class ConfigImplementationSelectorItem : ConfigItem, INotifySelectionChanged
     {
         PluginCluster _cluster;
         Guid _pluginEditor = Guid.Empty;

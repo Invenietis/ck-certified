@@ -30,7 +30,7 @@ namespace Host.VM
         /// The first one is considered the "main" (note this has no impact on the way start/stop are handled)</param>
         public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginIds )
         {
-            if( pluginIds == null || pluginIds.Length == 0 ) throw new ArgumentException( "A PluginCluster cannot be created without pluginIds" );
+            if( pluginIds.Length == 0 ) throw new ArgumentException( "A PluginCluster cannot be created without pluginIds. It need at least one" );
             _mainPluginId = pluginIds[0];
             List<Guid> plugins = pluginIds.ToList();
             _startWithPlugin = plugins;

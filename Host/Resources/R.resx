@@ -351,6 +351,21 @@
   <data name="Scrolling" xml:space="preserve">
     <value>General Scrolling</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="NoPointingDevice" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NoPointingDeviceDescription" xml:space="preserve">
+    <value>Stop all pointing mecanisms</value>
+  </data>
+  <data name="RadarDescription" xml:space="preserve">
+    <value>Move the pointer thanks to the "radar" mecanism</value>
+  </data>
+  <data name="ScreenScrollingDescription" xml:space="preserve">
+    <value>Create a grid on the screen to move the mouse pointer</value>
+  </data>
   <data name="ShowEditor" xml:space="preserve">
     <value>Show the editor panel</value>
   </data>

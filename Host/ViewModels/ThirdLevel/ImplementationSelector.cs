@@ -38,44 +38,59 @@ namespace Host.VM
             _items = new List<ConfigImplementationSelectorItem>();
         }
 
+        const string groupName = "CursorPointing";
+
         protected override void OnInitialize()
         {
-
             Guid defaultPlugin = GetDefaultItem( _screenScrollerId, _radarId );
+            _previous = defaultPlugin;
+            _current = defaultPlugin;
 
-            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[] { _basicScrollId }, new Guid[0] ), "CursorPointing" );
+            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[] { _basicScrollId }, new Guid[0] ), groupName );
             scroll.DisplayName = R.ScreenScrolling;
-            scroll.Description = "Créé un quadrillage sur l'écran pour déplacer la souris";
+            scroll.Description = R.ScreenScrollingDescription;
             if( defaultPlugin == _screenScrollerId ) scroll.IsDefaultItem = true;
             Items.Add( scroll );
             _items.Add( scroll );
 
-            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _radarId, new Guid[] { _basicScrollId }, new Guid[0] ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), "CursorPointing" );
+            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _radarId, new Guid[] { _basicScrollId }, new Guid[0] ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), groupName );
             radar.DisplayName = R.Radar;
-            radar.Description = "Déplacer la souris grâce au mécanisme de 'radar'";
+            radar.Description = R.RadarDescription;
             if( defaultPlugin == _radarId ) radar.IsDefaultItem = true;
             Items.Add( radar );
             _items.Add( radar );
 
-            var empty = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), "CursorPointing" );
-            empty.DisplayName = "Aucun";
-            empty.Description = "Stoppe tous les dispositifs de pointage";
+            var empty = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), groupName );
+            empty.DisplayName = R.NoPointingDevice;
+            empty.Description = R.NoPointingDeviceDescription;
             if( defaultPlugin == Guid.Empty ) empty.IsDefaultItem = true;
             Items.Add( empty );
             _items.Add( empty );
 
-            var apply = new ConfigItemApply( _app.ConfigManager, new VMCommand( Apply ) );
-            apply.DisplayName = "Appliquer";
+            var apply = new ConfigItemApply( _app.ConfigManager, new VMCommand( Apply ), scroll, radar, empty );
+            apply.DisplayName = R.Apply;
             Items.Add( apply );
 
             base.OnInitialize();
         }
 
+        Guid _previous;
+        Guid _current;
+
+        internal bool IsDirty
+        {
+            get { return _previous != _current; }
+        }
+
         private void Apply()
         {
+            _previous = _current;
+
             SetConfigStopped();
             SetConfigStarted();
             _runner.Apply();
+
+            _items.Single( ( i ) => i.IsSelected );
         }
 
         private void SetConfigStopped()

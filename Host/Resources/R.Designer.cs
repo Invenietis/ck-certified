@@ -97,6 +97,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto clic feature configuration.
         /// </summary>
         public static string AutoClickConfig {
@@ -448,6 +457,24 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string NoPointingDevice {
+            get {
+                return ResourceManager.GetString("NoPointingDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop all pointing mecanisms.
+        /// </summary>
+        public static string NoPointingDeviceDescription {
+            get {
+                return ResourceManager.GetString("NoPointingDeviceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Objects Explorer.
         /// </summary>
         public static string ObjectExplorer {
@@ -529,6 +556,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move the pointer thanks to the &quot;radar&quot; mecanism.
+        /// </summary>
+        public static string RadarDescription {
+            get {
+                return ResourceManager.GetString("RadarDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remind me when new updates are available.
         /// </summary>
         public static string RemindMeOfNewUpdates {
@@ -552,6 +588,15 @@ namespace Host.Resources {
         public static string ScreenScrolling {
             get {
                 return ResourceManager.GetString("ScreenScrolling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a grid on the screen to move the mouse pointer.
+        /// </summary>
+        public static string ScreenScrollingDescription {
+            get {
+                return ResourceManager.GetString("ScreenScrollingDescription", resourceCulture);
             }
         }
         

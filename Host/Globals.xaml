@@ -18,6 +18,10 @@
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
+    <Style x:Key="ConfigImplementationSelectorItemStyle" TargetType="Button" BasedOn="{StaticResource CK.Config.Link}">
+        <Setter Property="Height" Value="Auto"></Setter>
+    </Style>
+
     <ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
         <!--<ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(pluginConfig:IUriHistoryCollection)}" >
             <DataTemplate>                                 
@@ -87,13 +91,20 @@
 
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ConfigImplementationSelectorItem}">
             <DataTemplate DataType="{x:Type local:ConfigImplementationSelectorItem}">
-                <Button VerticalContentAlignment="Center" Margin="3 3 3 0" Command="{Binding SelectItem}" Style="{StaticResource CK.Config.Link}">
-                    <DockPanel>
-                        <Button DockPanel.Dock="Right" Command="{Binding OpenEditor}" ContentTemplate="{StaticResource EditorButton}" Style="{StaticResource EditorButtonStyle}"></Button>
-                        <ContentControl VerticalAlignment="Center" DockPanel.Dock="Left" Style="{StaticResource ConfigImplementationSelectorItem}" Content="{Binding }"/>
-                        <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}" Margin="2 0 0 0"/>
-                    </DockPanel>
-                </Button>
+                <DockPanel>
+                    <Button VerticalContentAlignment="Center" Margin="3 3 3 0" Command="{Binding SelectItem}" Style="{StaticResource ConfigImplementationSelectorItemStyle}">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Command="{Binding OpenEditor}" ContentTemplate="{StaticResource EditorButton}" ToolTip="{x:Static res:R.ShowEditor}" Style="{StaticResource EditorButtonStyle}" />
+                            <StackPanel>
+                                <DockPanel>
+                                    <ContentControl VerticalAlignment="Center" DockPanel.Dock="Left" Style="{StaticResource ConfigImplementationSelectorItem}" Content="{Binding}" />
+                                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}" Margin="5 0 0 0" />
+                                </DockPanel>
+                                <TextBlock Text="{Binding Description}" Foreground="Gray" FontStyle="Italic" />
+                            </StackPanel>
+                        </DockPanel>
+                    </Button>
+                </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 

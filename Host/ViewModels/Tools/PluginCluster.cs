@@ -8,48 +8,88 @@ using CK.Core;
 
 namespace Host.VM
 {
+    /// <summary>
+    /// This object wraps a number of plugins that work together to create a functionnality.
+    /// These plugins form a bundle that are started and stopped togther in order to make sure the system stays stable.
+    /// Handles setting explicitely the plugins to start and those to stop.
+    /// </summary>
     public class PluginCluster
     {
         List<Guid> _startWithPlugin;
         List<Guid> _stopWithPlugin;
-        Guid _pluginId;
+        Guid _mainPluginId;
         ISimplePluginRunner _runner;
         IUserConfiguration _userConfig;
 
-        public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginId )
+        /// <summary>
+        /// Ctor to use in simple cases
+        /// </summary>
+        /// <param name="runner">The runner</param>
+        /// <param name="userConfig">The user configuration</param>
+        /// <param name="pluginIds">The pluginIds of those that should be started and stopped when the cluster is started or stopped. 
+        /// The first one is considered the "main" (note this has no impact on the way start/stop are handled)</param>
+        public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginIds )
         {
-            _pluginId = pluginId[0];
-            List<Guid> plugins = pluginId.ToList();
+            if( pluginIds == null || pluginIds.Length == 0 ) throw new ArgumentException( "A PluginCluster cannot be created without pluginIds" );
+            _mainPluginId = pluginIds[0];
+            List<Guid> plugins = pluginIds.ToList();
             _startWithPlugin = plugins;
             _stopWithPlugin = plugins;
             _runner = runner;
             _userConfig = userConfig;
         }
 
-        public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, Guid pluginId, IEnumerable<Guid> startWithPlugin, IEnumerable<Guid> stopWithPlugin )
+        /// <summary>
+        /// Ctor to use when the plugins that should be started together with the main plugin are different from those that should be stopped together with the main plugin.
+        /// </summary>
+        /// <param name="runner">The runner</param>
+        /// <param name="userConfig">The user configuration</param>
+        /// <param name="mainPluginId">The Guid of the main plugin</param>
+        /// <param name="startWithPlugin">The plugins to start together with the main plugin</param>
+        /// <param name="stopWithPlugin">The plugins to stop together with the main plugin</param>
+        public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, Guid mainPluginId, IEnumerable<Guid> startWithPlugin, IEnumerable<Guid> stopWithPlugin )
         {
-            _pluginId = pluginId;
+            _mainPluginId = mainPluginId;
+
             _startWithPlugin = new List<Guid>();
-            _startWithPlugin.Add( pluginId );
+            _startWithPlugin.Add( mainPluginId );
             _startWithPlugin.AddRange( startWithPlugin );
 
             _stopWithPlugin = new List<Guid>();
-            _stopWithPlugin.Add( pluginId );
+            _stopWithPlugin.Add( mainPluginId );
             _stopWithPlugin.AddRange( stopWithPlugin );
 
             _runner = runner;
             _userConfig = userConfig;
         }
 
-        public ISimplePluginRunner Runner { get { return _runner; } }
-
         public IUserConfiguration UserConfig { get { return _userConfig; } }
 
-        public IReadOnlyList<Guid> StartWithPlugin { get { return _startWithPlugin.ToReadOnlyList(); } }
+        IReadOnlyList<Guid> _startWithPluginRO;
+        public IReadOnlyList<Guid> StartWithPlugin
+        {
+            get
+            {
+                if( _startWithPluginRO == null ) _startWithPluginRO = _startWithPlugin.ToReadOnlyList();
+                return _startWithPluginRO;
+            }
+        }
 
-        public IReadOnlyList<Guid> StopWithPlugin { get { return _stopWithPlugin.ToReadOnlyList(); } }
+        IReadOnlyList<Guid> _stopWithPluginRO;
+        public IReadOnlyList<Guid> StopWithPlugin
+        {
+            get
+            {
+                if( _stopWithPluginRO == null ) _stopWithPluginRO = _stopWithPlugin.ToReadOnlyList();
+                return _stopWithPluginRO;
+            }
+        }
 
-        public Guid MainPluginId { get { return _pluginId; } }
+        /// <summary>
+        /// The Guid of the main plugin.
+        /// If the simple constructor has been used to create this object, the first of the list is considered the main plugin.
+        /// </summary>
+        public Guid MainPluginId { get { return _mainPluginId; } }
 
         public bool IsRunning
         {

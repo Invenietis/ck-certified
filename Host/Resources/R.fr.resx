@@ -351,4 +351,7 @@
   <data name="Scrolling" xml:space="preserve">
     <value>Défilement général</value>
   </data>
+  <data name="ShowEditor" xml:space="preserve">
+    <value>Ouvrir la fenêtre de configuration</value>
+  </data>
 </root>

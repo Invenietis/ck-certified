@@ -351,4 +351,7 @@
   <data name="Scrolling" xml:space="preserve">
     <value>General Scrolling</value>
   </data>
+  <data name="ShowEditor" xml:space="preserve">
+    <value>Show the editor panel</value>
+  </data>
 </root>

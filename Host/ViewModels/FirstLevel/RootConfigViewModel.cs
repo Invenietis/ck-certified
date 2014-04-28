@@ -72,8 +72,8 @@ namespace Host
             var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) ){ DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) ) { DisplayName = R.AutoClickSectionName };
             var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[]{ _radarId, _screenScrollerId })) { DisplayName = R.Scrolling };
+           
             //var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
-
             //var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
             //    { DisplayName = R.ScreenScrolling };
 

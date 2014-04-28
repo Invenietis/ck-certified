@@ -10,13 +10,18 @@
     <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
 
     <DataTemplate x:Key="EditorButton">
-        <Image Source="Resources\Images\config.png"></Image>
+        <Image Source="Resources\Images\config.png" Stretch="None"></Image>
     </DataTemplate>
-    
+
     <Style x:Key="EditorButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="White" />
         <Setter Property="BorderBrush" Value="#EEEEEE" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Width">
+            <Setter.Value>
+                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"></Binding>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Visibility" Value="{Binding CanOpenEditor, Converter={StaticResource converter} }"/>
         <Setter Property="Template">
             <Setter.Value>

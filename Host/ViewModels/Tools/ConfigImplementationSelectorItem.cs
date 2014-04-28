@@ -129,13 +129,13 @@ namespace Host.VM
         {
             _cluster.UserConfig.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Started );
             _cluster.UserConfig.LiveUserConfiguration.Changed += LiveUserConfiguration_Changed;
-            _cluster.Runner.Apply();
+            _cluster.ApplyNewConfig();
         }
 
         private void StopPluginEditor()
         {
             _cluster.UserConfig.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Stopped );
-            _cluster.Runner.Apply();
+            _cluster.ApplyNewConfig();
             _cluster.UserConfig.LiveUserConfiguration.Changed -= LiveUserConfiguration_Changed;
         }
 

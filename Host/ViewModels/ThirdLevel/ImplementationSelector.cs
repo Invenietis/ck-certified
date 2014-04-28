@@ -43,20 +43,23 @@ namespace Host.VM
 
             Guid defaultPlugin = GetDefaultItem( _screenScrollerId, _radarId );
 
-            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]), "CursorPointing");
+            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[] { _basicScrollId }, new Guid[0] ), "CursorPointing" );
             scroll.DisplayName = R.ScreenScrolling;
+            scroll.Description = "Créé un quadrillage sur l'écran pour déplacer la souris";
             if( defaultPlugin == _screenScrollerId ) scroll.IsDefaultItem = true;
             Items.Add( scroll );
             _items.Add( scroll );
 
             var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _radarId, new Guid[] { _basicScrollId }, new Guid[0] ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), "CursorPointing" );
             radar.DisplayName = R.Radar;
+            radar.Description = "Déplacer la souris grâce au mécanisme de 'radar'";
             if( defaultPlugin == _radarId ) radar.IsDefaultItem = true;
             Items.Add( radar );
             _items.Add( radar );
 
             var empty = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), "CursorPointing" );
-            empty.DisplayName = "Aucun ";
+            empty.DisplayName = "Aucun";
+            empty.Description = "Stoppe tous les dispositifs de pointage";
             if( defaultPlugin == Guid.Empty ) empty.IsDefaultItem = true;
             Items.Add( empty );
             _items.Add( empty );
@@ -99,8 +102,8 @@ namespace Host.VM
 
         private Guid GetDefaultItem( params Guid[] ids )
         {
-            if( ids.Count( i => _runner.PluginHost.IsPluginRunning( i ) ) > 1 ) return Guid.Empty;
-            return ids.First( i => _runner.PluginHost.IsPluginRunning( i ) );
+            if( ids.Count( i => _runner.PluginHost.IsPluginRunning( i ) ) == 1 ) return ids.First( i => _runner.PluginHost.IsPluginRunning( i ) );
+            return Guid.Empty;
         }
     }
 }

@@ -570,6 +570,7 @@ namespace KeyboardEditor.ViewModels
                     OnPropertyChanged( "TextDecorations" );
                     OnPropertyChanged( "PressedBackground" );
                     OnPropertyChanged( "HighlightBackground" );
+                    OnPropertyChanged( "HighlightFontColor" );
                 }
                 else
                 {
@@ -608,6 +609,9 @@ namespace KeyboardEditor.ViewModels
                             break;
                         case "HighlightBackground":
                             OnPropertyChanged( "HighlightBackground" );
+                            break;
+                        case "HighlightFontColor":
+                            OnPropertyChanged( "HighlightFontColor" );
                             break;
                         default:
                             break;
@@ -676,6 +680,7 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
                 DispatchPropertyChanged( "HighlightBackground", "LayoutKeyMode" );
+                DispatchPropertyChanged( "HighlightFontColor", "LayoutKeyMode" );
                 DispatchPropertyChanged( "PressedBackground", "LayoutKeyMode" );
                 DispatchPropertyChanged( "HoverBackground", "LayoutKeyMode" );
                 DispatchPropertyChanged( "TextDecorations", "LayoutKeyMode" );

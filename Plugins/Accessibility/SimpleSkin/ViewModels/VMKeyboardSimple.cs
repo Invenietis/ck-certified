@@ -84,7 +84,8 @@ namespace SimpleSkin.ViewModels
             UpdateW();
             UpdateH();
             SafeUpdateInsideBorderColor();
-            UpdateHighlightBackground();
+            UpdateHighlightBackground(); 
+            UpdateHighlightFontColor();
             UpdateLoopCount();
             UpdateBackgroundPath();
 
@@ -237,6 +238,13 @@ namespace SimpleSkin.ViewModels
                             OnPropertyChanged( "HighlightBackground" );
                         }) );
                         break;
+                    case "HighlightFontColor":
+                        UpdateHighlightFontColor();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "HighlightFontColor" );
+                        }) );
+                        break;
                     case "LoopCount":
                         UpdateLoopCount();
                         Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
@@ -362,6 +370,12 @@ namespace SimpleSkin.ViewModels
             get { return _highlightBackground; }
         }
 
+        Color _highlightFontColor;
+        public Color HighlightFontColor
+        {
+            get { return _highlightFontColor; }
+        }
+
         private void UpdateHighlightBackground()
         {
             Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightBackground", (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" ) );
@@ -369,6 +383,16 @@ namespace SimpleSkin.ViewModels
             {
                 if( v == null ) _highlightBackground = (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" );
                 else _highlightBackground = v;
+            } );
+        }
+
+        private void UpdateHighlightFontColor()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightFontColor", (Color)ColorConverter.ConvertFromString( "#000000" ) );
+            SafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _highlightFontColor = (Color)ColorConverter.ConvertFromString( "#000000" );
+                else _highlightFontColor = v;
             } );
         }
 

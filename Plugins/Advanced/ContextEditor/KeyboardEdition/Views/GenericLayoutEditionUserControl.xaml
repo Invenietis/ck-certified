@@ -52,8 +52,18 @@
                         <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="LetterColor"/>
                     </DockPanel>
                 </Border>
+                <Border Style="{StaticResource Splitter}" BorderThickness="0" Padding="5" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding HighlightFontColor}"/>
+                            <TextBlock x:Uid="highlight-font-color" VerticalAlignment="Center">Highlighted Font color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="HighlightFontColor"/>
+                    </DockPanel>
+                </Border>
             </StackPanel>
         </Border>
+        
         <Border Margin="5">
             <StackPanel Orientation="Vertical">
                 <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="BACKGROUND COLORS : "/>

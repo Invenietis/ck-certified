@@ -62,7 +62,10 @@ namespace Host.ViewModels
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
-            _keyboards.Add( new KeyboardModel( e.Keyboard ) );
+            if( e.Keyboard.Name != "Prediction" )
+            {
+                _keyboards.Add( new KeyboardModel( e.Keyboard ) );
+            }
         }
 
         private void RegisterEvents()

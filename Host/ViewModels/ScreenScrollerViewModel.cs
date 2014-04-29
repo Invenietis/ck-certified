@@ -36,10 +36,10 @@ namespace Host.VM
 
         protected override void NotifyOfPropertiesChange()
         {
-            OnPropertyChanged( "ClickDepth" );
-            OnPropertyChanged( "BackgroundColor" );
-            OnPropertyChanged( "SquareSize" );
-            OnPropertyChanged( "MaxLapCount" );
+            NotifyOfPropertyChange( () => ClickDepth );
+            NotifyOfPropertyChange( () => BackgroundColor );
+            NotifyOfPropertyChange( () => SquareSize );
+            NotifyOfPropertyChange( () => MaxLapCount );
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )

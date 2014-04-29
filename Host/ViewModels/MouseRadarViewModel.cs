@@ -36,10 +36,10 @@ namespace Host.VM
 
         protected override void NotifyOfPropertiesChange()
         {
-            OnPropertyChanged( "RadarSize" );
-            OnPropertyChanged( "Opacity" );
-            OnPropertyChanged( "RadarColor" );
-            OnPropertyChanged( "ArrowColor" );
+            NotifyOfPropertyChange( () => RadarSize );
+            NotifyOfPropertyChange( () => Opacity );
+            NotifyOfPropertyChange( () => RadarColor );
+            NotifyOfPropertyChange( () => ArrowColor );
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -105,7 +105,7 @@ namespace Host.VM
         {
             base.OnInitialize();
 
-            var g = this.AddGroup( );
+            var g = this.AddGroup();
 
             g.AddProperty( "Taille du radar (rayon)", this, h => RadarSize );
 

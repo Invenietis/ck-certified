@@ -37,17 +37,17 @@ namespace Host.VM
 
         protected override void NotifyOfPropertiesChange()
         {
-            OnPropertyChanged( "ActivatePlugin" );
-            OnPropertyChanged( "CountDownDuration" );
-            OnPropertyChanged( "TimeBeforeCountDownStarts" );
-            OnPropertyChanged( "ShowMouseIndicatorOption" );
+            NotifyOfPropertyChange( () => ActivatePlugin );
+            NotifyOfPropertyChange( () => CountDownDuration );
+            NotifyOfPropertyChange( () => TimeBeforeCountDownStarts );
+            NotifyOfPropertyChange( () => ShowMouseIndicatorOption );
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            OnPropertyChanged( "CountDownDuration" );
-            OnPropertyChanged( "TimeBeforeCountDownStarts" );
-            OnPropertyChanged( "ShowMouseIndicatorOption" );
+            NotifyOfPropertyChange( () => CountDownDuration );
+            NotifyOfPropertyChange( () => TimeBeforeCountDownStarts );
+            NotifyOfPropertyChange( () => ShowMouseIndicatorOption );
         }
 
         public int CountDownDuration

@@ -38,7 +38,7 @@ namespace BasicCommandHandlers
     {
         const string PROTOCOL_BASE = "help";
         const string PROTOCOL = PROTOCOL_BASE + ":";
-        IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", new Version( "1.5.0" ) );
+        IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36c4764a-111c-45e4-83d6-e38fc1df5979}", new Version( "1.6.0" ) );
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHelpViewerService> HelpService { get; set; }

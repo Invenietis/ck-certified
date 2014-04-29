@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Windows.Config;
@@ -145,10 +146,9 @@ namespace Host.VM
                 {
                     if( value )
                     {
-                        if( _wordPredictionPlugins.Count == 0 ) GetPlugins();
-                        foreach( var plugin in _wordPredictionPlugins )
+                        foreach( var pluginId in _wordPredictionPluginIds )
                         {
-                            _app.StartPlugin( plugin.PluginKey.PluginId );
+                            _app.StartPlugin( pluginId );
                         }
                     }
                     else

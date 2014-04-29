@@ -127,6 +127,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoClick\AutoClick.cs" />
+    <Compile Include="Res\R.fr.Designer.cs">
+      <DependentUpon>R.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Res\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Behaviors\SelectionBehavior.cs" />
     <Compile Include="Tools\Converters\PathToImageConverter.cs" />
     <Compile Include="Tools\Converters\InstructionToImageConverter.cs" />
@@ -251,6 +261,14 @@
     <Resource Include="Res\Images\DragDrop.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Res\R.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Res\R.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <EmbeddedResource Include="Res\helpcontent.zip" />
   </ItemGroup>

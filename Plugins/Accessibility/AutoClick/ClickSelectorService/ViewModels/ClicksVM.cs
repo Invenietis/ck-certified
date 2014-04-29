@@ -30,6 +30,7 @@ using System.Diagnostics;
 using CK.Plugins.AutoClick.Model;
 using HighlightModel;
 using CK.Core;
+using AutoClick.Res;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
@@ -84,7 +85,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             ClickEmbedderVM clickEmbedderVM;
             IList<ClickVM> _clickList = new List<ClickVM>();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Clic Gauche", "/Res/Images/LeftClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.LeftClick, "/Res/Images/LeftClick.png", _clickList );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Gauche", new List<ClickInstruction>()
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
@@ -92,7 +93,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             Add( clickEmbedderVM );
             _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Clic Droit", "/Res/Images/RightClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.RightClick, "/Res/Images/RightClick.png", _clickList );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Droit", new List<ClickInstruction>() 
                 { 
                    ClickInstruction.RightButtonDown, ClickInstruction.RightButtonUp
@@ -100,7 +101,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             Add( clickEmbedderVM );
             _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Double Clic", "/Res/Images/DoubleLeftClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.DoubleClick, "/Res/Images/DoubleLeftClick.png", _clickList );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Double Clic", new List<ClickInstruction>() 
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp, ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
@@ -108,12 +109,12 @@ namespace CK.Plugins.AutoClick.ViewModel
             Add( clickEmbedderVM );
             _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, "Glisser-Déposer", "/Res/Images/DragDrop.png", _clickList );
-            clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Presser clic Gauche", new List<ClickInstruction>() 
+            clickEmbedderVM = new ClickEmbedderVM( this, R.DragDrop, "/Res/Images/DragDrop.png", _clickList );
+            clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, R.LeftDown, new List<ClickInstruction>() 
                 { 
                      ClickInstruction.LeftButtonDown
                 } ) );
-            clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Relâcher clic Droit", new List<ClickInstruction>() 
+            clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, R.LeftUp, new List<ClickInstruction>() 
                 { 
                     ClickInstruction.LeftButtonUp
                 } ) );

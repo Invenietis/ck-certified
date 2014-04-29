@@ -231,8 +231,6 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            DoSelect();
-
             //TODO : remove when this is transformed into a clicktype provider
             _holder.Click();
 

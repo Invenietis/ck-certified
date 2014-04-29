@@ -20,7 +20,7 @@
     <StackPanel Orientation="Horizontal">
         <Border Margin="5">
             <StackPanel>
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="FONT : "/>
+                <TextBlock x:Uid="font-header" Style="{StaticResource SectionHeaderStyle}" Text="FONT : "/>
                 <Separator Style="{StaticResource SectionSeperatorStyle}" />
                 
                 <Border Style="{StaticResource Splitter}">
@@ -66,7 +66,7 @@
         
         <Border Margin="5">
             <StackPanel Orientation="Vertical">
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="BACKGROUND COLORS : "/>
+                <TextBlock x:Uid="background-colors-header" Style="{StaticResource SectionHeaderStyle}" Text="BACKGROUND COLORS : "/>
                 <Separator Style="{StaticResource SectionSeperatorStyle}" />
 
                 <Border Style="{StaticResource Splitter}" >

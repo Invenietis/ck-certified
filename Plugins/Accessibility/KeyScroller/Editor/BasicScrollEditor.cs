@@ -17,7 +17,7 @@ namespace Scroller.Editor
         internal const string PluginIdString = "{48D3977C-EC26-48EF-8E47-806E11A1C041}";
         Guid PluginGuid = new Guid( PluginIdString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "BasicScrollEditor";
+        const string PluginPublicName = "Scroller Editor";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         EditorViewModel _editor;

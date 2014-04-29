@@ -290,7 +290,7 @@
                 <DockPanel LastChildFill="True" IsEnabled="{Binding IsFallback, Converter={StaticResource notconverter}}" MaxWidth="300">
                     <Border DockPanel.Dock="Right" Padding="0" Margin="5 5 0 5" >
                         <StackPanel>
-                            <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="TEXT &amp; IMAGE : " />
+                            <TextBlock x:Uid="text-image-header" Style="{StaticResource SectionHeaderStyle}" Text="TEXT &amp; IMAGE : " />
                             <Separator Style="{StaticResource SectionSeperatorStyle}" />
 
                             <Grid Margin="5">
@@ -378,7 +378,7 @@
 
             <Border DockPanel.Dock="Right" Margin="5" Width="150">
                 <StackPanel>
-                    <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : "/>
+                    <TextBlock x:Uid="keymode-actions-header" Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : "/>
                     <Separator Style="{StaticResource SectionSeperatorStyle}"/>
                     <StackPanel Margin="5">
                         <!-- Key : Delete buttons -->
@@ -441,7 +441,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <Button Content="Add an action" HorizontalAlignment="Right" Style="{StaticResource ModernUIButtonStyle}" Command="{Binding InitializeCommandCommand}" ></Button>
+                            <Button x:Uid="keymode-add-action" Content="Add an action" HorizontalAlignment="Right" Style="{StaticResource ModernUIButtonStyle}" Command="{Binding InitializeCommandCommand}" ></Button>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
                             <TextBlock Text="{x:Static r:R.NewCommand}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
@@ -456,8 +456,8 @@
                                 <ContentControl Margin="0 5 0 0" ContentTemplateSelector="{StaticResource addactiondatatemplateselector}" Content="{Binding ProtocolEditor.ParameterManager}" />
                             </StackPanel>
                             <StackPanel Margin="0 5 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding ProtocolEditorsProvider.ProtocolEditor.IsValid}"  Style="{StaticResource ModernUIButtonStyle}" />
-                                <Button Content="Cancel" Command="{Binding CancelChangesCommand}" Style="{StaticResource ModernUIButtonStyle}" />
+                                <Button x:Uid="keymode-save" Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding ProtocolEditorsProvider.ProtocolEditor.IsValid}"  Style="{StaticResource ModernUIButtonStyle}" />
+                                <Button x:Uid="keymode-cancel" Content="Cancel" Command="{Binding CancelChangesCommand}" Style="{StaticResource ModernUIButtonStyle}" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>

@@ -126,8 +126,11 @@
   <data name="LeftClick" xml:space="preserve">
     <value>Clic gauche</value>
   </data>
+  <data name="LeftDown" xml:space="preserve">
+    <value>Enfoncer bouton gauche</value>
+  </data>
   <data name="LeftUp" xml:space="preserve">
-    <value>Relâcher clic droit</value>
+    <value>Relâcher bouton gauche</value>
   </data>
   <data name="RightClick" xml:space="preserve">
     <value>Clic droit</value>

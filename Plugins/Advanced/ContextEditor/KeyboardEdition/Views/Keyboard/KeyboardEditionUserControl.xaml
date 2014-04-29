@@ -23,7 +23,7 @@
     <StackPanel Orientation="Horizontal">
         <Border DockPanel.Dock="Right" Margin="5" MinWidth="150">
             <StackPanel>
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="FONT : "/>
+                <TextBlock x:Uid="keyboard-dimensions-header" Style="{StaticResource SectionHeaderStyle}" Text="DIMENSIONS : "/>
                 <Separator Style="{StaticResource SectionSeperatorStyle}" />
 
                 <StackPanel Margin="5">
@@ -46,7 +46,7 @@
 
         <Border Padding="0" Margin="5" DockPanel.Dock="Right">
             <StackPanel> 
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="FONT : "/>
+                <TextBlock x:Uid="actions-header" Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : "/>
                 <Separator Style="{StaticResource SectionSeperatorStyle}" />
                 <StackPanel Margin="5">
                     <!-- Zone creation -->
@@ -98,12 +98,12 @@
                         </DockPanel>
                     </Border>
                 </StackPanel>
-                
-                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="HIGHLIGHT REPEAT : "/>
+
+                <TextBlock x:Uid="repeat-count-header" Style="{StaticResource SectionHeaderStyle}" Text="HIGHLIGHT REPEAT : "/>
                 <Separator Style="{StaticResource SectionSeperatorStyle}" />
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Repeat number :</TextBlock>
+                    <TextBlock x:Uid="repeat-count" VerticalAlignment="Center" Margin="10 0 10 0">Repeat count :</TextBlock>
                     <ComboBox Margin="0 3" ItemsSource="{Binding LoopCounts}" SelectedValue="{Binding LoopCount}" />
                 </StackPanel>
             </StackPanel>

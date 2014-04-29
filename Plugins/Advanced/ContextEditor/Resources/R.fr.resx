@@ -136,13 +136,13 @@
     <value>Etes-vous sûr de vouloir supprimer cette touche ?</value>
   </data>
   <data name="DeleteKeys" xml:space="preserve">
-    <value>Supprimer les touches</value>
+    <value>Supprimer la zone</value>
   </data>
   <data name="DeleteZone" xml:space="preserve">
     <value>Supprimer une zone</value>
   </data>
   <data name="DeleteZoneConfirmation" xml:space="preserve">
-    <value>Vous êtes sur le point de supprimer une zone. Voulez-vous que les touches contenues dans cette zone soient stockées dans la zone par défaut ? Dans le cas contraire, elles seront détruites.</value>
+    <value>Etes-vous sur de vouloir supprimer cette zone ? Les touches qu'elle contient seront supprimées.</value>
   </data>
   <data name="DesignSection" xml:space="preserve">
     <value>Aspect</value>

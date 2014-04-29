@@ -136,13 +136,13 @@
     <value>Are you sure that you want to delete this key ?</value>
   </data>
   <data name="DeleteKeys" xml:space="preserve">
-    <value>Delete the keys</value>
+    <value>Delete the zone</value>
   </data>
   <data name="DeleteZone" xml:space="preserve">
     <value>Delete a zone</value>
   </data>
   <data name="DeleteZoneConfirmation" xml:space="preserve">
-    <value>Are yout sure that you want to delete this zone ?</value>
+    <value>Are you sure that you want to delete this zone ?</value>
   </data>
   <data name="DesignSection" xml:space="preserve">
     <value>Design</value>

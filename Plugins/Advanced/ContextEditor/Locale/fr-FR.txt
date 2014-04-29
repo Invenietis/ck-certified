@@ -34,6 +34,8 @@ KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Control.Padding	None	False	True		3 2
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de police
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de police en surbrillance
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	normal-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche en état normal
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	normal-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	hover-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche survolée
@@ -167,5 +169,39 @@ KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:KeyboardEditor.ViewModels.ActionControl.ImageSource	None	True	True		pack://application:,,,/KeyboardEditor\;component/Resources/Images/delete.png
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:KeyboardEditor.ViewModels.ActionControl.ActionParameter	None	True	True		KeyMode
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.Text	Text	True	True		Scripts de la touche : 
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.Text	Text	True	True		SCRIPTS DE LA TOUCHE : 
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.FrameworkElement.Margin	None	False	True		5
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	font-size:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-header:System.Windows.Controls.TextBlock.Text	Text	True	True		POLICE DE CARACTERES : 
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	background-colors-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	background-colors-header:System.Windows.Controls.TextBlock.Text	Text	True	True		COULEURS DE FOND : 
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	actions-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	actions-header:System.Windows.Controls.TextBlock.Text	Text	True	True		ACTIONS : 
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count-header:System.Windows.Controls.TextBlock.Text	Text	True	True		DEFILEMENT : 
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count:System.Windows.Controls.TextBlock.$Content	Text	True	True		Nombre de passages :
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count:System.Windows.FrameworkElement.Margin	None	False	True		10 0 10 0
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-dimensions-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-dimensions-header:System.Windows.Controls.TextBlock.Text	Text	True	True		DIMENSIONS : 
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	text-image-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	text-image-header:System.Windows.Controls.TextBlock.Text	Text	True	True		TEXTE &amp; IMAGE : 
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-actions-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-actions-header:System.Windows.Controls.TextBlock.Text	Text	True	True		ACTIONS :
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-add-action:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-add-action:System.Windows.Controls.ContentControl.Content	Button	True	True		Ajouter une action
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-add-action:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Right
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-save:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-save:System.Windows.Controls.ContentControl.Content	Button	True	True		Enregister
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-save:System.Windows.FrameworkElement.Margin	None	False	True		0 0 2 0
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-cancel:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-cancel:System.Windows.Controls.ContentControl.Content	Button	True	True		Annuler
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.Controls.DockPanel.Dock	Button	True	False		Left
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.Controls.ContentControl.Content	Button	True	True		Contenu &amp; actions
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.FrameworkElement.Margin	None	False	True		5
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-1:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-1:System.Windows.Controls.TextBlock.Text	Text	True	True		Aspect
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-2:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-2:System.Windows.Controls.TextBlock.Text	Text	True	True		(Couleurs, Dimensions et Position)

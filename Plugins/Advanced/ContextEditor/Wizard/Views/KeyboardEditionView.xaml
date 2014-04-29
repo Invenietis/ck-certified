@@ -111,9 +111,9 @@
             <DataTemplate x:Key="KeyEditionDataTemplate">
                 <UniformGrid Columns="2">
                     <DockPanel MinHeight="100" LastChildFill="True">
-                        <Button DockPanel.Dock="Left" Command="{Binding SelectKeyModeCommand}" 
+                        <Button x:Uid="mode-selection-content" DockPanel.Dock="Left" Command="{Binding SelectKeyModeCommand}" 
                                 Style="{StaticResource ModernUIButtonStyle}"
-                                Content="Content and Actions" 
+                                Content="Content &amp; actions" 
                                 Margin="5">
                         </Button>
                     </DockPanel>
@@ -122,8 +122,8 @@
                                 Style="{StaticResource ModernUIButtonStyle}"
                                 Margin="5">
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Design" />
-                                <TextBlock Text="(Background, Font, Dimensions and Position)" />
+                                <TextBlock x:Uid="mode-selection-aspect-1" Text="Design" />
+                                <TextBlock x:Uid="mode-selection-aspect-2" Text="(Colors, Dimensions and Position)" />
                             </StackPanel>
                         </Button>
                     </DockPanel>

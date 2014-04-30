@@ -107,8 +107,8 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel  Grid.Row="0">
-                <TextBlock Style="{StaticResource step}" Text="1. Sélectionner les claviers à exporter" />
-                <TextBlock Style="{StaticResource description}" Text="Cochez les claviers CiviKey que vous voulez transférer sur un autre ordinateur."/>
+                <TextBlock x:Uid="export-step-1-title" Style="{StaticResource step}" Text="1. Check the keyboards to export" />
+                <TextBlock x:Uid="export-step-1-description" Style="{StaticResource description}" Text="Check the keyboards you want to export to another computer."/>
             </StackPanel>
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding CheckBoxs}">
@@ -121,10 +121,9 @@
                 </ItemsControl>
             </ScrollViewer>
             <DockPanel Grid.Row="2">
-                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="2. Sauvegarder les claviers dans un fichier"/>
-                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="En cliquant sur le bouton 'Exporter' un fichier nommé keyboards.xml sera créé. Il contiendra les claviers cochés ci-dessus. Transférez ensuite ce fichier sur un autre ordinateur et utilisez la fonctionnalité d'import pour utiliser ces claviers depuis un CiviKey situé sur une autre machine."/>
-                <Button IsEnabled="{Binding CanExecute}" Margin="3 3 3 3" Width="60" Command="{Binding SaveCommand}" Content="Export"/>
-                <!--<ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"/>-->
+                <TextBlock x:Uid="export-step-2-title" Style="{StaticResource step}" DockPanel.Dock="Top" Text="2. Write the keyboards in a file"/>
+                <TextBlock x:Uid="export-step-2-description" Style="{StaticResource description}" DockPanel.Dock="Top" Text="Once the 'Export' is pressed, a file named keyboards.xml will be created. It will contain all the keyboards selected in the previous step. You may then send this file to another computer and use the 'Import' module on this other computer to use these keyboards on a CiviKey installed on another computer."/>
+                <Button x:Uid="export-step-2-btn" IsEnabled="{Binding CanExecute}" Margin="3 3 3 3" Command="{Binding SaveCommand}" Content="Export"/>
             </DockPanel>
         </Grid>
         <Grid Style="{StaticResource overlay}" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}"></Grid>

@@ -90,7 +90,7 @@
                 <Button Margin="3 3 3 0" Command="{Binding CheckCommand}" Style="{StaticResource CK.Config.Link}">
                     <DockPanel>
                         <CheckBox DockPanel.Dock="Right" IsChecked="{Binding IsSelected}"/>
-                        <Path ToolTip="This keyboard already exists !" Visibility="{Binding AlreadyExist, Converter={StaticResource converter}}" DockPanel.Dock="Right"  Data="F1M874.094,289.369L854.3,254.63C854.028,254.151 853.515,253.856 852.958,253.856 852.403,253.856 851.89,254.151 851.617,254.63L831.824,289.369C831.555,289.84 831.559,290.416 831.835,290.883 832.111,291.348 832.618,291.634 833.165,291.634L872.752,291.634C873.299,291.634 873.805,291.348 874.081,290.883 874.357,290.416 874.361,289.84 874.094,289.369 M855.653,287.189L850.264,287.189 850.264,282.745 855.653,282.745 855.653,287.189z M855.653,279.41L850.264,279.41 850.264,266.077 855.653,266.077 855.653,279.41z" Stretch="Uniform" Fill="#000000" Width="16" Height="16" Margin="0,0,10,0" RenderTransformOrigin="0.5,0.5"></Path>
+                        <Path x:Uid="import-keyboard-exists-tooltip" ToolTip="This keyboard already exists, importing it will erase the one already in your CiviKey." Visibility="{Binding AlreadyExist, Converter={StaticResource converter}}" DockPanel.Dock="Right"  Data="F1M874.094,289.369L854.3,254.63C854.028,254.151 853.515,253.856 852.958,253.856 852.403,253.856 851.89,254.151 851.617,254.63L831.824,289.369C831.555,289.84 831.559,290.416 831.835,290.883 832.111,291.348 832.618,291.634 833.165,291.634L872.752,291.634C873.299,291.634 873.805,291.348 874.081,290.883 874.357,290.416 874.361,289.84 874.094,289.369 M855.653,287.189L850.264,287.189 850.264,282.745 855.653,282.745 855.653,287.189z M855.653,279.41L850.264,279.41 850.264,266.077 855.653,266.077 855.653,279.41z" Stretch="Uniform" Fill="#000000" Width="16" Height="16" Margin="0,0,10,0" RenderTransformOrigin="0.5,0.5"></Path>
                         <TextBlock DockPanel.Dock="Left" Text="{Binding KeyboardName}" Margin="2 0 0 0"/>
                     </DockPanel>
                 </Button>
@@ -107,15 +107,15 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0">
-                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Sélectionner un fichier"/>
-                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Utilisez le bouton Parcourir pour sélectionner un fichier .xml contenant le ou les claviers CiviKey à importer."/>
-                <Button IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70"></Button>
+                <TextBlock x:Uid="import-step-1-title" Style="{StaticResource step}" DockPanel.Dock="Top" Text="1. Select a file"/>
+                <TextBlock x:Uid="import-step-1-description" Style="{StaticResource description}" DockPanel.Dock="Top" Text="Use the 'Browse' button to select a .xml file containing the CiviKey keyboards you want to import into your CiviKey."/>
+                <Button x:Uid="import-step-1-btn" IsEnabled="{Binding CanExecute}" DockPanel.Dock="Right" Margin="3 3 3 3" Command="{Binding OpenCommand}" Content="Browse" Height="28" HorizontalAlignment="Left" VerticalAlignment="Top"></Button>
                 <TextBox ToolTip="{Binding FilePath}" IsReadOnly="True" DockPanel.Dock="Left" Margin="3 3 0 3" Text="{Binding FilePath}"></TextBox>
             </DockPanel>
             <StackPanel Grid.Row="1">
-                <TextBlock Style="{StaticResource step}" Text="2. Sélectionner les claviers à importer"/>
-                <TextBlock Style="{StaticResource description}" Text="Les claviers CiviKeys trouvés dans le fichier sont listés ci-dessous. Cochez ceux qui vous intéressent pour pouvoir les importer."/>
-                <TextBlock Style="{StaticResource description}" Text="Si vous importez un clavier ayant le même nom que l'un des vôtres, votre clavier sera écrasé et remplacé par le clavier importé."/>
+                <TextBlock x:Uid="import-step-2-title" Style="{StaticResource step}" Text="1. Select the keyboards to import"/>
+                <TextBlock x:Uid="import-step-2-description" Style="{StaticResource description}" Text="The CiviKey keyboards found in the file are listed below. You may check those you want to import."/>
+                <TextBlock x:Uid="import-step-2-description-2" Style="{StaticResource description}" Text="If you import a keyboard that has the same name as one of your keyboards, yours will be erase and replace by the imported one."/>
             </StackPanel>
             <ScrollViewer  Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding CheckBoxs}">
@@ -128,10 +128,9 @@
                 </ItemsControl>
             </ScrollViewer>
             <DockPanel Grid.Row="3">
-                <TextBlock Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Importer les claviers"/>
-                <TextBlock Style="{StaticResource description}" DockPanel.Dock="Top" Text="Cliquez sur le bouton Importer pour effectuer lancer l'import."/>
-                <Button IsEnabled="{Binding CanExecuteImport}" HorizontalAlignment="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" VerticalAlignment="Top" Width="70"></Button>
-                <!--<ProgressBar Visibility="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" DockPanel.Dock="Left" Margin="3 3 0 3" IsIndeterminate="True"></ProgressBar>-->
+                <TextBlock x:Uid="import-step-3-title" Style="{StaticResource step}" DockPanel.Dock="Top" Text="3. Import the keyboards"/>
+                <TextBlock x:Uid="import-step-3-description" Style="{StaticResource description}" DockPanel.Dock="Top" Text="Click the Import button to launch the import."/>
+                <Button x:Uid="import-step-3-btn" IsEnabled="{Binding CanExecuteImport}" HorizontalAlignment="Right" Margin="3 3 3 3" Command="{Binding ImportCommand}" Content="Import" Height="30" VerticalAlignment="Top"></Button>
             </DockPanel>
         </Grid>
         <Grid Style="{StaticResource overlay}" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}"></Grid>

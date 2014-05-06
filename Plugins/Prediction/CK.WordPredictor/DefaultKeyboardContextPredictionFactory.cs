@@ -24,6 +24,25 @@ namespace CK.WordPredictor
         {
             get { return PredictionKeyboard.CurrentLayout.H - KeyMargin * 2; }
         }
+
+        protected override int KeyWidth
+        {
+            get
+            {
+                if( KeyboardContext.Keyboards[PredictionKeyboardAndZoneName] == null ) return base.KeyWidth;
+                //"+1" to keep a free slot for the "Send" button.
+
+                // width of the container container
+                // minus the total space between the keys
+                // divided by the number of keys
+                return (KeyboardContext.Keyboards[PredictionKeyboardAndZoneName].CurrentLayout.W - Feature.MaxSuggestedWords * KeyMargin) / (Feature.MaxSuggestedWords + 1);
+            }
+        }
+
+        protected override int KeyOffset
+        {
+            get { return 5; }
+        }
     }
 
     public class DefaultKeyboardContextPredictionFactory : IKeyboardContextPredictionFactory

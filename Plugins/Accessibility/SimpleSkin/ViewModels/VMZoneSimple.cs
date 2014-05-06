@@ -113,11 +113,17 @@ namespace SimpleSkin.ViewModels
         internal override void Dispose()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Context.Config.ConfigChanged -= OnConfigChanged;
+
+            foreach( var key in _keys )
+            {
+                key.Dispose();
+            }
+
             Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 Keys.Clear();
             }) );
-            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         #region IHighlightable members

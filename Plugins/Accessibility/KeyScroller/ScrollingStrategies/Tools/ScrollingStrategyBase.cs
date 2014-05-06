@@ -260,7 +260,6 @@ namespace Scroller
 
                     Timer.Stop();
                     OnInternalBeat( this, EventArgs.Empty );
-                    //Console.Out.WriteLine( "Immediate !" );
                     Timer.Start();
                 }
             }

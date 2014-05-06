@@ -7,6 +7,7 @@ using System.Linq;
 using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
+using System.Diagnostics;
 
 namespace CK.WordPredictor.UI
 {
@@ -76,10 +77,6 @@ namespace CK.WordPredictor.UI
         WindowManagerSubscriber _subscriber;
         TextualContextAreaViewModel _textArea;
         IDisposable _observersChain;
-        IWindowElement _skin;
-        IWindowElement _me;
-
-        public string SendZoneName { get { return "Envoyer"; } }
 
         void EnableEditor()
         {
@@ -117,28 +114,17 @@ namespace CK.WordPredictor.UI
             //Feature.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
             Feature.AutonomousKeyboardPredictionFactory.PredictionZoneCreated += OnAutonomousZoneCreated;
 
-            if( Context.CurrentKeyboard != null )
-            {
-                Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            CreateSendKeyInSendZone( Context.Keyboards[Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName] );
 
-                if( Context.Keyboards["Prediction"] != null )
-                {
-                    var zone = Context.Keyboards["Prediction"].Zones.Where( z => z.Name == "Prediction" ).SingleOrDefault();
-                    if( zone != null )
-                        CreateSendContextKeyInSendZone( zone );
-                }
-            }
             EnableWindowManagerSubscription();
         }
 
         void DisableEditor()
         {
-            DestroySendContextKey();
+            DestroySendKey();
+
             //Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
             Feature.AutonomousKeyboardPredictionFactory.PredictionZoneCreated -= OnAutonomousZoneCreated;
-
-            if( Context.CurrentKeyboard != null )
-                Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
 
             if( _window != null ) _window.Close();
             if( _observersChain != null ) _observersChain.Dispose();
@@ -151,31 +137,6 @@ namespace CK.WordPredictor.UI
         /// </summary>
         void EnableWindowManagerSubscription()
         {
-            _subscriber.OnBinderStarted = () =>
-            {
-                //if( _skin != null & _me != null )
-                //    WindowBinder.Service.Attach( _skin, _me, BindingPosition.Top );
-            };
-            _subscriber.OnBinderStopped = () =>
-            {
-                //if( _skin != null & _me != null )
-                //    WindowBinder.Service.Detach( _skin, _me );
-            };
-            _subscriber.WindowRegistered = ( e ) =>
-            {
-                //if( e.Window.Name == WindowName )
-                //{
-                //    _me = e.Window;
-                //    _skin = WindowManager.Service.GetByName( "Skin" );
-                //}
-                //if( e.Window.Name == "Skin" ) _skin = e.Window;
-
-                //_subscriber.OnBinderStarted();
-            };
-            _subscriber.WindowUnregistered = ( e ) =>
-            {
-                //if( e.Window.Name == "Skin" ) _subscriber.OnBinderStopped();
-            };
             _subscriber.Subscribe( WindowName, _window );
         }
 
@@ -200,57 +161,45 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        void CreateSendContextKeyInPredictionZone( IZone zone )
+        void CreateSendKeyInSendZone( IKeyboard keyboard )
         {
-            if( zone != null )
+            if( keyboard != null )
             {
-                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords );
-
-                _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyDownCommands.Commands.Add( "sendPredictionAreaContent" );
-                _sendContextKey.CurrentLayout.Current.Visible = true;
-            }
-        }
-
-        void CreateSendContextKeyInSendZone( IZone zone )
-        {
-            if( zone != null )
-            {
-                IZone sendZone = zone.Keyboard.Zones[SendZoneName];
+                //If the prediction zone doesn't exist yet, we create it
+                IZone sendZone = keyboard.Zones[Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName];
                 if( sendZone == null )
                 {
-                    sendZone = zone.Keyboard.Zones.Create( SendZoneName );
+                    sendZone = keyboard.Zones.Create( Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName );
                 }
 
-                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( sendZone, 0 );
-
-                _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyDownCommands.Commands.Add( "sendPredictionAreaContent" );
-                _sendContextKey.CurrentLayout.Current.Visible = true;
+                _sendContextKey = Feature.AutonomousKeyboardPredictionFactory.CreatePredictionKey( sendZone, Feature.MaxSuggestedWords );
+                InitializeSendKey( sendZone );
             }
         }
 
-        void DestroySendContextKey()
+        void InitializeSendKey( IZone predictionZone )
         {
-            if( _sendContextKey != null ) _sendContextKey.Destroy();
+            Debug.Assert( !_sendContextKey.CurrentLayout.Current.Visible );
+
+            _sendContextKey.Current.UpLabel = "Envoyer";
+            _sendContextKey.Current.OnKeyDownCommands.Commands.Add( "sendPredictionAreaContent" );
+            _sendContextKey.CurrentLayout.Current.Visible = true;
+        }
+
+        void DestroySendKey()
+        {
+            if( _sendContextKey != null )
+            {
+                //If we destroy the key, a null reference in thrown. (the holding KeyboardVM is disposed beforehand, so the KeyDestroyed event is not handled -> the key is still bound to ConfigChanged but _zone == null)
+                if( _sendContextKey.Zone != null && _sendContextKey.Context != null && _sendContextKey.Keyboard != null ) _sendContextKey.Destroy();
+                _sendContextKey = null;
+            }
         }
 
         void OnAutonomousZoneCreated( object sender, ZoneEventArgs e )
         {
-            CreateSendContextKeyInSendZone( e.Zone );
-        }
-
-        //void OnZoneCreated( object sender, ZoneEventArgs e )
-        //{
-        //    CreateSendContextKeyInPredictionZone( e.Zone );
-        //}
-
-        void OnZoneDestroyed( object sender, ZoneEventArgs e )
-        {
-            if( e.Zone.Name == Feature.PredictionContextFactory.PredictionZoneName )
-            {
-                DestroySendContextKey();
-            }
+            DestroySendKey();
+            CreateSendKeyInSendZone( e.Zone.Keyboard );
         }
 
         void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )

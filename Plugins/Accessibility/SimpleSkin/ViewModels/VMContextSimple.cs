@@ -134,9 +134,7 @@ namespace SimpleSkin.ViewModels
                 if( _keyboard == null )
                 {
                     IKeyboard k = null;
-                    //NoFocusManager.ExternalDispatcher.Invoke( (Action)(() => 
                     k = KeyboardSelector();
-                    //) );
                     _keyboard = Obtain( k );
                 }
 
@@ -157,7 +155,7 @@ namespace SimpleSkin.ViewModels
         {
             _noFocusManager = noFocusManager;
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-            
+
             _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();
             _config = config;
@@ -288,10 +286,13 @@ namespace SimpleSkin.ViewModels
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            
+            VMKeyboardSimple vmKeyboard = Obtain( e.Keyboard );
+            vmKeyboard.Dispose();
 
             NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
-                _keyboards.Remove( Obtain( e.Keyboard ) );
+                _keyboards.Remove( vmKeyboard );
             }) );
 
             OnModelDestroy( e.Keyboard );

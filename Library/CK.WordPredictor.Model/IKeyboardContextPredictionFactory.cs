@@ -8,7 +8,7 @@ namespace CK.WordPredictor.Model
         /// <summary>
         /// Gets the name of the underlying prediction zone
         /// </summary>
-        string PredictionZoneName { get; }
+        string PredictionKeyboardAndZoneName { get; }
 
         /// <summary>
         /// Creates the prediction zone with the number of keys. Pass 0 to create an empty zone.

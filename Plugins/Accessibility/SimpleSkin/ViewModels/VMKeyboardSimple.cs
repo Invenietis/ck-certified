@@ -84,7 +84,7 @@ namespace SimpleSkin.ViewModels
             UpdateW();
             UpdateH();
             SafeUpdateInsideBorderColor();
-            UpdateHighlightBackground(); 
+            UpdateHighlightBackground();
             UpdateHighlightFontColor();
             UpdateLoopCount();
             UpdateBackgroundPath();
@@ -95,12 +95,18 @@ namespace SimpleSkin.ViewModels
         internal override void Dispose()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            UnregisterEvents();
+
+            foreach( var zone in _zones )
+            {
+                zone.Dispose();
+            }
+
             Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 _zones.Clear();
                 _keys.Clear();
             }), null );
-            UnregisterEvents();
         }
 
         public void TriggerPropertyChanged()

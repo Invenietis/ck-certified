@@ -230,12 +230,12 @@ namespace SimpleSkin
             RegisterSkinEvents( skinInfo );
         }
 
-        // when we call this function, we must remove the skin in dictionary 
+        // when we call this function, we must remove the skin from the dictionary 
         void UninitializeActiveWindows( SkinInfo skin )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            
+
             //Setting the config is done after closing the window because modifying a value in the Config
             //Triggers a Caliburn Micro OnNotifyPropertyChanged, which calls an Invoke on the main UI Thread.
             //generating random locks.
@@ -248,7 +248,7 @@ namespace SimpleSkin
             UnregisterTopMostService( skin );
 
             skin.ViewModel.Dispose();
-            
+
             if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
             {
                 if( Highlighter.Status.IsStartingOrStarted )
@@ -444,7 +444,7 @@ namespace SimpleSkin
                     Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = ColorConverter.ConvertFromString( "#FFBDCFF4" );
                     VMKeyboardSimple elem = _skins[PredictionKeyboardName].ViewModel.KeyboardVM;
                     elem.IsHighlightableTreeRoot = false;
-          
+
                     Highlighter.Service.RegisterTree( PredictionKeyboardName, elem );
                 }
             }

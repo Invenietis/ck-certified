@@ -11,8 +11,8 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - In Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version = "1.0" )]
-    public class InKeyboardWordPredictor : IPlugin
+    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - Autonomous Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version = "1.0" )]
+    public class AutonomousKeyboardWordPredictor : IPlugin
     {
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
@@ -74,19 +74,23 @@ namespace CK.WordPredictor.UI
             }
         }
 
-        //Create a Prédiction Keyboard in a new window
+        //Create a Prediction Keyboard in a new window
         private void EnsurePredictionKeyboard()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( PredictionKeyboard == null )
             {
                 // Also Create an new keyboard and makes it active
-                PredictionKeyboard = Context.Keyboards["Prediction"];
-                if( PredictionKeyboard == null ) PredictionKeyboard = Context.Keyboards.Create( "Prediction" );
+                PredictionKeyboard = Context.Keyboards[Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName];
+                if( PredictionKeyboard == null )
+                {
+                    PredictionKeyboard = Context.Keyboards.Create( Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName );
+                }
             }
             PredictionKeyboard.CurrentLayout.H = 50;
-            PredictionKeyboard.CurrentLayout.W = 800;
+            PredictionKeyboard.CurrentLayout.W = 815;
             PredictionKeyboard.IsActive = true;
+
             Feature.AutonomousKeyboardPredictionFactory.RemovePredictionZone( PredictionKeyboard );
             Feature.AutonomousKeyboardPredictionFactory.CreatePredictionZone( PredictionKeyboard, Feature.MaxSuggestedWords );
         }
@@ -100,7 +104,7 @@ namespace CK.WordPredictor.UI
             }
             if( Context != null )
             {
-                Feature.PredictionContextFactory.RemovePredictionZone( Context.CurrentKeyboard );
+                Feature.PredictionContextFactory.RemovePredictionZone( Context.Keyboards[Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName] );
                 Context.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
             }
             if( PredictionKeyboard != null )
@@ -138,12 +142,12 @@ namespace CK.WordPredictor.UI
             //Manipulation of the Context is done through the main thread.
             NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
             {
-                var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
+                var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionKeyboardAndZoneName];
                 //If there is a prediction zone in the current keyboard, that's the one we are going ot fill
                 if( zone != null )
                     SetupPredictionZone( e, zone );
                 else if( PredictionKeyboard != null ) //otherwise we check whether we have a prediction keyboard
-                    SetupPredictionZone( e, PredictionKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName] );
+                    SetupPredictionZone( e, PredictionKeyboard.Zones[Feature.PredictionContextFactory.PredictionKeyboardAndZoneName] );
             }) );
         }
 

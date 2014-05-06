@@ -130,7 +130,7 @@ namespace CK.Keyboard
             if( _keyboards.Count > 0 )
             {
                 // To remove them, first captures the whole collection 
-                // in an array to avoid iterating and removing in the 
+                // in an array to avoid iterating and removing at the 
                 // same time.
                 Keyboard[] kbs = new Keyboard[_keyboards.Count];
                 _keyboards.Values.CopyTo( kbs, 0 );

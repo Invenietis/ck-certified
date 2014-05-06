@@ -22,7 +22,7 @@ namespace CK.WordPredictor
 
         protected override int KeyHeight
         {
-            get { return PredictionKeyboard.CurrentLayout.H - KeySpace * 2; }
+            get { return PredictionKeyboard.CurrentLayout.H - KeyMargin * 2; }
         }
     }
 
@@ -49,7 +49,7 @@ namespace CK.WordPredictor
             _feature = feature;
         }
 
-        public virtual string PredictionZoneName
+        public virtual string PredictionKeyboardAndZoneName
         {
             get { return "Prediction"; }
         }
@@ -58,8 +58,12 @@ namespace CK.WordPredictor
         {
             get
             {
-                //"+1" is now "+2" to keep a free slot for the "Send" button.
-                return _keyboardContext.CurrentKeyboard.CurrentLayout.W / (_feature.MaxSuggestedWords + 2) - KeySpace;
+                //"+1" to keep a free slot for the "Send" button.
+
+                // width of the container container
+                // minus the total space between the keys
+                // divided by the number of keys
+                return (_keyboardContext.CurrentKeyboard.CurrentLayout.W - _feature.MaxSuggestedWords * KeyMargin) / (_feature.MaxSuggestedWords + 1);
             }
         }
 
@@ -70,10 +74,13 @@ namespace CK.WordPredictor
 
         protected virtual int KeyOffset
         {
-            get { return 2; }
+            get { return 10; }
         }
 
-        protected virtual int KeySpace
+        /// <summary>
+        /// The margin around the keys
+        /// </summary>
+        protected virtual int KeyMargin
         {
             get { return 5; }
         }
@@ -82,10 +89,13 @@ namespace CK.WordPredictor
         {
             if( keyboard == null ) throw new ArgumentNullException( "keyboard" );
 
-            IZone predictionZone = keyboard.Zones[PredictionZoneName];
-            if( predictionZone != null ) predictionZone.Destroy();
+            IZone predictionZone = keyboard.Zones[PredictionKeyboardAndZoneName];
+            if( predictionZone != null )
+            {
+                predictionZone.Destroy();
+            }
 
-            predictionZone = keyboard.Zones.Create( PredictionZoneName );
+            predictionZone = keyboard.Zones.Create( PredictionKeyboardAndZoneName );
 
             for( int i = 0; i < count; ++i )
             {
@@ -103,14 +113,13 @@ namespace CK.WordPredictor
         {
             if( keyboard == null ) throw new ArgumentNullException( "keyboard" );
 
-            IZone zone = keyboard.Zones[PredictionZoneName];
+            IZone zone = keyboard.Zones[PredictionKeyboardAndZoneName];
             if( zone != null )
             {
                 for( int i = zone.Keys.Count - 1; i >= 0; i-- )
                 {
                     zone.Keys[i].Destroy();
                 }
-
                 zone.Destroy();
             }
         }
@@ -130,19 +139,18 @@ namespace CK.WordPredictor
         /// </summary>
         /// <param name="key">The key to place & size</param>
         /// <param name="virtualIndex">The index at which the key should be put. In most cases, the virtual index is the key's index. 
-        /// If some keys are in zones that are not placed linearly, you might want to handle index yourself.</param>
+        /// If some keys are in zones that are not placed linearly, you might want to handle indexes yourself.</param>
         protected virtual void CustomizePredictionKey( IKey key, int virtualIndex )
         {
             if( key == null ) throw new ArgumentNullException( "key" );
 
             ILayoutKeyMode layoutKeyMode = key.CurrentLayout.Current;
 
-            layoutKeyMode.X = virtualIndex * (KeyWidth + KeySpace) + KeyOffset;
-            layoutKeyMode.Y = KeySpace;
+            layoutKeyMode.X = virtualIndex * (KeyWidth + KeyMargin) + KeyOffset;
+            layoutKeyMode.Y = KeyMargin;
             layoutKeyMode.Width = KeyWidth;
             layoutKeyMode.Height = KeyHeight;
 
-            Console.WriteLine( "New dimensions : X{0} Y{1} W{2} H{3}", layoutKeyMode.X, layoutKeyMode.Y, layoutKeyMode.Width, layoutKeyMode.Height );
         }
 
         /// <summary>

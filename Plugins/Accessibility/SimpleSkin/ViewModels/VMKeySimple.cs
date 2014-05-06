@@ -88,7 +88,6 @@ namespace SimpleSkin.ViewModels
             SafeUpdateWidth();
             SafeUpdateX();
             SafeUpdateY();
-
         }
 
         #region OnXXX
@@ -148,18 +147,18 @@ namespace SimpleSkin.ViewModels
             SetActionOnPropertyChanged( "DownLabel", () => { SafeUpdateDownLabel(); OnPropertyChanged( "DownLabel" ); } );
             SetActionOnPropertyChanged( "CurrentLayout", () => LayoutPropertyChangedTriggers() );
 
-            _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _key.KeyPropertyChanged += OnKeyPropertyChanged;
+            _key.Keyboard.CurrentModeChanged += OnCurrentModeChanged;
+            Context.Config.ConfigChanged += OnConfigChanged;
         }
 
         private void UnregisterEvents()
         {
             _actionsOnPropertiesChanged.Clear();
 
-            _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _key.KeyPropertyChanged -= OnKeyPropertyChanged;
+            _key.Keyboard.CurrentModeChanged -= OnCurrentModeChanged;
+            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         private void PropertyChangedTriggers( string propertyName = "" )

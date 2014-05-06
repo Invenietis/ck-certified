@@ -5,9 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonServices;
-using System.Net.Http;
-using System.Drawing;
-using System.Windows.Media.Imaging;
 
 namespace FileLauncher
 {

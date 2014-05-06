@@ -118,12 +118,12 @@ namespace KeyboardEditor.ViewModels
 
         private void RegisterEvents()
         {
-            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyMoved += new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            _keyboard.KeyCreated += OnKeyCreated;
+            _keyboard.KeyMoved += OnKeyMoved;
+            _keyboard.KeyDestroyed += OnKeyDestroyed;
+            _keyboard.Zones.ZoneCreated += OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged += OnLayoutSizeChanged;
 
             Context.Config.ConfigChanged += OnConfigChanged;
             Model.AvailableModeChanged += OnModeChanged;
@@ -137,25 +137,25 @@ namespace KeyboardEditor.ViewModels
             zoneVM.IndexChanged();
 
             ObservableCollection<VMZoneEditable> temp = new ObservableCollection<VMZoneEditable>();
-            
+
             foreach( var item in Zones.OrderBy<VMZoneEditable, int>( z => z.Index ).ToList() )
             {
                 temp.Add( item );
             }
             Zones.Clear();
-            Zones = temp;  
+            Zones = temp;
 
             OnPropertyChanged( "Zones" );
         }
 
         private void UnregisterEvents()
         {
-            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyMoved -= new EventHandler<KeyMovedEventArgs>( OnKeyMoved );
-            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
+            _keyboard.KeyCreated -= OnKeyCreated;
+            _keyboard.KeyMoved -= OnKeyMoved;
+            _keyboard.KeyDestroyed -= OnKeyDestroyed;
+            _keyboard.Zones.ZoneCreated -= OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged -= OnLayoutSizeChanged;
 
             Context.Config.ConfigChanged -= OnConfigChanged;
             Model.AvailableModeChanged -= OnModeChanged;
@@ -181,7 +181,7 @@ namespace KeyboardEditor.ViewModels
             //When the user is looking at the configuration of a key and that the mode changes, we need to get the current Selected Element to the VMKeyMode corresponding to the new mode
             if( Context.SelectedElement is VMKeyModeBase )
             {
-                var obj = ( (VMKeyEditable)( (VMKeyModeBase)Context.SelectedElement ).Parent );
+                var obj = ((VMKeyEditable)((VMKeyModeBase)Context.SelectedElement).Parent);
 
                 if( Context.SelectedElement is VMKeyModeEditable )
                     Context.SelectedElement = obj.KeyModeVM;

@@ -9,6 +9,7 @@
     WindowStartupLocation="Manual"
     Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
+    MinHeight="40" MinWidth="40"
     ShowActivated="False" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <ctrls:NotNullConverter x:Key="notnull"/>

@@ -8,6 +8,7 @@
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:vm="clr-namespace:CK.WordPredictor.UI.ViewModels"
     xmlns:h="clr-namespace:CK.WordPredictor.UI.Helpers"
+    ShowInTaskbar="False"
     mc:Ignorable="d" Height="208" Width="539">
     <Grid>
         <TextBox Focusable="True"  x:Name="buffer" Text="{Binding TextualContext, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinLines="3" FontSize="15" FlowDirection="LeftToRight" Margin="10" AcceptsReturn="True" AcceptsTab="True" >

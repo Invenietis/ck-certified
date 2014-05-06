@@ -216,7 +216,6 @@ namespace KeyboardEditor.ViewModels
                     _selectedElement = value;
                     _selectedElement.IsSelected = true;
                     OnPropertyChanged( "SelectedElement" );
-                    //Console.Out.WriteLine( "select elemnt CHANGED ! ------------------------" );
                 }
             }
         }

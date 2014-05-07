@@ -66,7 +66,7 @@ namespace CiviKeyPostInstallScript
         {
             OnError( "Unhandled exception.\n\r" + e.ExceptionObject.ToString() );
         }
-        
+
 
         /// <summary>
         /// 
@@ -167,16 +167,56 @@ namespace CiviKeyPostInstallScript
 
             if( File.Exists( systemConfPath ) )
             {
+                Version previousVersion = null;
                 XmlDocument xPathDoc = new XmlDocument();
                 xPathDoc.Load( systemConfPath );
                 XPathNavigator xPathNav = xPathDoc.CreateNavigator();
+
+                string xPathExp = "//p[@guid='" + hostGuid.ToLower() + "']";
+                XPathNodeIterator iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
+                if( iterator.Count == 1 )
+                {
+                    iterator.MoveNext();
+                    string retrievedVersion = iterator.Current.Value;
+                    if( !String.IsNullOrWhiteSpace( retrievedVersion ) )
+                    {
+                        Version.TryParse( retrievedVersion, out previousVersion );
+                    }
+                }
 
                 AddEntryToSystemConf( "UpdateServerUrl", updateServerUrl, updaterGuid, "Update Checker", xPathNav );
                 AddEntryToSystemConf( "DistributionName", _distributionName, updaterGuid, "Update Checker", xPathNav );
                 AddEntryToSystemConf( "Version", version, hostGuid, "Host", xPathNav );
 
+                if( previousVersion != null )
+                {
+                    Console.Out.WriteLine( "previous version is : " + previousVersion.ToString() );
+
+                    if( previousVersion <= new Version( 2, 7, 0 ) )
+                    {
+                        Console.Out.WriteLine( "Migration 0.0.0 -> 2.7.0 may be necessary" );
+                        Version currentVersion = null;
+                        if( Version.TryParse( version, out currentVersion ) )
+                        {
+                            Console.Out.WriteLine( "current version is : " + currentVersion.ToString() );
+                            if( currentVersion >= new Version( 2, 7, 0 ) )
+                            {
+                                Console.Out.WriteLine( "0.0.0 -> 2.7.0 necessary, starting migration..." );
+                                Upgrade26xTov270( xPathNav );
+                                Console.Out.WriteLine( "0.0.0 -> 2.7.0 migration done !" );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.Out.WriteLine( "Migration 0.0.0 > 2.7.0 is not necessary" );
+                    }
+                }
+
+
                 xPathDoc.Save( systemConfPath );
 
+                Console.Out.WriteLine( "Checking if .NET 3.5 -> .NET 4.0 migration is necessary" );
                 UpgradeUser35To40( xPathNav );
 
                 if( removeExistingCtx )
@@ -212,10 +252,15 @@ namespace CiviKeyPostInstallScript
                 }
                 appConf.Save( ConfigurationSaveMode.Full );
             }
-            else 
+            else
             {
                 OnError( "Problem while reading the system configuration. Path : " + systemConfPath );
             }
+
+            Console.Out.WriteLine( "Installation complete." );
+#if DEBUG
+            Console.Read();
+#endif
         }
 
         /// <summary>
@@ -231,7 +276,7 @@ namespace CiviKeyPostInstallScript
             string xPathExp = "//UserProfile";
             XmlDocument xPathDoc;
             XPathNavigator xPathUserNav;
-            
+
             string userConfPath = String.Empty;
             string contextPath = String.Empty;
 
@@ -240,14 +285,15 @@ namespace CiviKeyPostInstallScript
             {
                 iterator.MoveNext();
 
-                if(iterator.Count > 1) //if there are more than one userProfile, find the last one.
+                if( iterator.Count > 1 ) //if there are more than one userProfile, find the last one.
                 {
                     while( iterator.Current.GetAttribute( "IsLast", "" ) != "True" ) iterator.MoveNext();
                 }
 
                 userConfPath = iterator.Current.GetAttribute( "Address", "" );
-                if(!String.IsNullOrEmpty(userConfPath) && File.Exists(userConfPath)) //and it exists
+                if( !String.IsNullOrEmpty( userConfPath ) && File.Exists( userConfPath ) ) //and it exists
                 {
+                    Console.Out.WriteLine( "Migrating from .NET 3.5 version to .NET 4.0 version..." );
                     xPathDoc = new XmlDocument();
                     xPathDoc.Load( userConfPath );
                     xPathUserNav = xPathDoc.CreateNavigator();
@@ -259,7 +305,7 @@ namespace CiviKeyPostInstallScript
 
                         string contextPathTemp = userConfIterator.Current.Value;
                         Uri uri = new Uri( contextPathTemp );
-                        
+
                         if( !String.IsNullOrEmpty( contextPathTemp ) && File.Exists( contextPathTemp ) ) //and that lastContextPath is reachable
                         {
                             contextPath = contextPathTemp; //Return the contextPath.
@@ -270,19 +316,28 @@ namespace CiviKeyPostInstallScript
                             xPathUserNav = xPathDoc.CreateNavigator();
                             xPathExp = "//PluginStatusCollection";
                             userConfIterator = xPathUserNav.Select( xPathUserNav.Compile( xPathExp ) );
-                            
+
                             userConfIterator.MoveNext();
 
-                            userConfIterator.Current.InsertElementAfter("", "ContextProfileCollection","","" );
+                            userConfIterator.Current.InsertElementAfter( "", "ContextProfileCollection", "", "" );
                             userConfIterator.Current.MoveToFollowing( "ContextProfileCollection", "" );
                             userConfIterator.Current.AppendChildElement( "", "ContextProfile", "", "" );
                             userConfIterator.Current.MoveToChild( "ContextProfile", "" );
                             userConfIterator.Current.CreateAttribute( "", "DisplayName", "", "Context" );
-                            userConfIterator.Current.CreateAttribute( "", "Uri", "", @"file://" + contextPath.Replace("\\","/") );
+                            userConfIterator.Current.CreateAttribute( "", "Uri", "", @"file://" + contextPath.Replace( "\\", "/" ) );
 
                             xPathDoc.Save( userConfPath );
+                            Console.Out.WriteLine( "Migration from .NET 3.5 version to .NET 4.0 version done" );
                         }
                     }
+                    else
+                    {
+                        Console.Out.WriteLine( "Migration from .NET 3.5 version to .NET 4.0 version isn't necessary" );
+                    }
+                }
+                else
+                {
+                    Console.Out.WriteLine( "Migration from .NET 3.5 version to .NET 4.0 version isn't necessary" );
                 }
             }
             return contextPath;
@@ -298,17 +353,93 @@ namespace CiviKeyPostInstallScript
             return;
         }
 
+        public static void Upgrade26xTov270( XPathNavigator xPathNav )
+        {
+            //Using the new updating API : http://api.civikey.invenietis.com
+            AddEntryToSystemConf( "UpdateServerUrl", "http://api.civikey.invenietis.com/", "11C83441-6818-4A8B-97A0-1761E1A54251", "Update Checker", xPathNav );
 
+            //ADD :
+            //<PluginStatus Guid="11C83441-6818-4A8B-97A0-1761E1A54251" Status="AutomaticStart"></PluginStatus>
+            string xPathExp = "//System/PluginStatusCollection";
+            XPathNodeIterator iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
+
+            iterator.MoveNext();
+
+            iterator.Current.PrependChildElement( String.Empty, "PluginStatus", String.Empty, String.Empty );
+
+            iterator.Current.MoveToFirstChild();
+
+            //we are on the first PluginStatus, which we have just created
+            iterator.Current.CreateAttribute( String.Empty, "Guid", String.Empty, "11C83441-6818-4A8B-97A0-1761E1A54251" );
+            iterator.Current.CreateAttribute( String.Empty, "Status", String.Empty, "AutomaticStart" );
+
+
+            //ADD : 
+            //<Plugins>
+            //  <p guid="f6b5d818-3c04-4a46-ad65-afc5458a394c" version="1.0.0" name="CK.WindowManager.WindowElementBinder">
+            //    <data key="SerializableBindings" type="Structured" typeName="CK.WindowManager.WindowElementBinder+SerializableBindings, CK.WindowManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            //      <Bindings>
+            //        <Bind Master="Azerty" Slave="Prediction" Position="Top" />
+            //        <Bind Master="Ergonomique" Slave="Prediction" Position="Top" />
+            //        <Bind Master="ClickSelector" Slave="AutoClick" Position="Top" />
+            //      </Bindings>
+            //    </data>
+            //  </p>
+            //</Plugins>
+
+            xPathExp = "//System/Plugins";
+            iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
+
+            iterator.MoveNext();
+
+            iterator.Current.PrependChildElement( String.Empty, "p", String.Empty, String.Empty );
+
+            iterator.Current.MoveToFirstChild();
+            //We are on the <p> element
+            iterator.Current.CreateAttribute( null, "guid", null, "f6b5d818-3c04-4a46-ad65-afc5458a394c" );
+            iterator.Current.CreateAttribute( null, "version", null, "1.0.0" );
+            iterator.Current.CreateAttribute( null, "name", null, "CK.WindowManager.WindowElementBinder" );
+
+            iterator.Current.PrependChildElement( String.Empty, "data", String.Empty, String.Empty );
+            iterator.Current.MoveToFirstChild();
+            //We are on the <data> element
+            iterator.Current.CreateAttribute( null, "key", null, "SerializableBindings" );
+            iterator.Current.CreateAttribute( null, "type", null, "Structured" );
+            iterator.Current.CreateAttribute( null, "typeName", null, "CK.WindowManager.WindowElementBinder+SerializableBindings, CK.WindowManager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" );
+
+            iterator.Current.PrependChildElement( String.Empty, "Bindings", String.Empty, String.Empty );
+            iterator.Current.MoveToFirstChild();
+            //We are on the <Bindings> element
+
+            iterator.Current.PrependChildElement( String.Empty, "Bind", String.Empty, String.Empty );
+            iterator.Current.MoveToFirstChild();
+            //We are on the <Bind> element
+            iterator.Current.CreateAttribute( null, "Master", null, "Azerty" );
+            iterator.Current.CreateAttribute( null, "Slave", null, "Prediction" );
+            iterator.Current.CreateAttribute( null, "Position", null, "Top" );
+
+            iterator.Current.InsertElementAfter( String.Empty, "Bind", String.Empty, String.Empty );
+            iterator.Current.MoveToFollowing( "Bind", String.Empty );
+            iterator.Current.CreateAttribute( null, "Master", null, "Ergonomique" );
+            iterator.Current.CreateAttribute( null, "Slave", null, "Prediction" );
+            iterator.Current.CreateAttribute( null, "Position", null, "Top" );
+
+            iterator.Current.InsertElementAfter( String.Empty, "Bind", String.Empty, String.Empty );
+            iterator.Current.MoveToFollowing( "Bind", String.Empty );
+            iterator.Current.CreateAttribute( null, "Master", null, "ClickSelector" );
+            iterator.Current.CreateAttribute( null, "Slave", null, "AutoClick" );
+            iterator.Current.CreateAttribute( null, "Position", null, "Top" );
+        }
 
         private static void AddEntryToSystemConf( string key, string value, string pluginId, string pluginName, XPathNavigator xPathNav )
         {
-            bool updateServerUrlSet = false;
+            bool entrySet = false;
 
             string xPathExp = "//p[@guid='" + pluginId.ToUpper() + "']";
             XPathNodeIterator iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
             if( iterator.Count == 1 )
             {
-                updateServerUrlSet = DoUpdateEntryToSystemConf( key, value, updateServerUrlSet, iterator );
+                entrySet = DoUpdateEntryToSystemConf( key, value, entrySet, iterator );
             }//At the end of this if statement, we are either on the right data element, or a the end of the pluginsdata
             else
             {
@@ -316,7 +447,7 @@ namespace CiviKeyPostInstallScript
                 iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
                 if( iterator.Count == 1 )
                 {
-                    updateServerUrlSet = DoUpdateEntryToSystemConf( key, value, updateServerUrlSet, iterator );
+                    entrySet = DoUpdateEntryToSystemConf( key, value, entrySet, iterator );
                 }
                 else //if the updater entry does not exist, create it
                 {
@@ -395,7 +526,7 @@ namespace CiviKeyPostInstallScript
             }
         }
 
-        private static bool DoUpdateEntryToSystemConf( string key, string value, bool updateServerUrlSet, XPathNodeIterator iterator )
+        private static bool DoUpdateEntryToSystemConf( string key, string value, bool entrySet, XPathNodeIterator iterator )
         {
             iterator.MoveNext();
 
@@ -410,17 +541,17 @@ namespace CiviKeyPostInstallScript
                     if( iterator.Current.GetAttribute( "key", String.Empty ) == key )
                     {
                         iterator.Current.SetValue( value );
-                        updateServerUrlSet = true;
+                        entrySet = true;
                         break;
                     }
                 } while( iterator.Current.MoveToNext() );
 
-                if( !updateServerUrlSet )
+                if( !entrySet )
                 {
                     InsertUpdateElementAfter( iterator, value, key );
                 }
             }
-            return updateServerUrlSet;
+            return entrySet;
         }
 
         static void InsertUpdateElementAfter( XPathNodeIterator iterator, string value, string key )

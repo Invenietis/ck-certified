@@ -83,8 +83,8 @@ namespace MouseRadar
             _radar.ViewModel.ArrowColor = new SolidColorBrush( Configuration.User.GetOrSet( "ArrowColor", Color.FromRgb( 0, 0, 0 ) ) );
             _radar.ViewModel.CircleColor = new SolidColorBrush( Configuration.User.GetOrSet( "CircleColor", Color.FromRgb( 0, 0, 0 ) ) );
 
-            _radar.RotationSpeed = Configuration.User.GetOrSet( "RotationSpeed", 1 );
-            _radar.TranslationSpeed = Configuration.User.GetOrSet( "TranslationSpeed", 1 );
+            _radar.RotationSpeed = Configuration.User.GetOrSet( "RotationSpeed", 3 );
+            _radar.TranslationSpeed = Configuration.User.GetOrSet( "TranslationSpeed", 6 );
 
             ActionType = HighlightModel.ActionType.StayOnTheSame;
 

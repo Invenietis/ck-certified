@@ -39,6 +39,7 @@ using CK.Windows.App;
 using CK.Context.SemVer;
 using Common.Logging;
 using UpdateChecker.View;
+using System.Windows;
 
 namespace UpdateChecker
 {
@@ -241,10 +242,13 @@ namespace UpdateChecker
                         string rn = null;
                         if( e.Error == null )
                         {
-                            rn = Encoding.UTF8.GetString( e.Result );
+                            rn = Encoding.UTF7.GetString( e.Result );
                         }
                         // Ask the user to download it.
-                        OnNewerVersionAvailable( rn );
+                        Application.Current.Dispatcher.BeginInvoke( (Action)(() =>
+                        {
+                            OnNewerVersionAvailable( rn );
+                        }) );
                     }
                 }
                 catch( Exception ex )

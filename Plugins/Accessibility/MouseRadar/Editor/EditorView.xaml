@@ -83,7 +83,7 @@
                 <DockPanel>
                     <TextBlock  x:Uid="turbo-speed"  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0"  Text="{x:Static r:R.RadarTranslationSpeed}" />
                     <StackPanel Width="170" HorizontalAlignment="Right">
-                        <Slider Minimum="1" Maximum="10" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding TranslationSpeed}"/>
+                        <Slider Minimum="1" Maximum="11" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding TranslationSpeed}"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{Binding FormatedTranslationSpeed}" />
                     </StackPanel>
                 </DockPanel>

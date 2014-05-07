@@ -40,8 +40,10 @@ Source: "..\..\Output\Release\*"; DestDir: "{app}\binaries"; Excludes: "*.pdb, *
 Source: "Resources/CiviKey.ico"; DestDir: "{app}\resources"; Permissions: users-modify;
 Source: "Resources/CiviKeyPostInstallScript.exe"; DestDir: "{tmp}"; Flags: ignoreversion ; Permissions: users-modify;
 Source: "Resources/dotNetFx40_Client_setup.exe"; DestDir: "{tmp}";
-Source: "Resources/System.config.ck"; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Flags: onlyifdoesntexist; Permissions: users-modify; 
+Source: "Resources/System.config.ck"; DestDir: {code:GetOutputDir|{#IsStandAloneInstance}}; Permissions: users-modify;  Flags: onlyifdoesntexist;
+; Flags: onlyifdoesntexist; <- replace ignoreversion with that FOR THE NEXT RELEASE (after 2.7.0)
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
 
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\binaries\*"

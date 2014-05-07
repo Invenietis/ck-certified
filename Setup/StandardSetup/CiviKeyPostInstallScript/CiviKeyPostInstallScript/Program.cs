@@ -358,8 +358,8 @@ namespace CiviKeyPostInstallScript
             //Using the new updating API : http://api.civikey.invenietis.com
             AddEntryToSystemConf( "UpdateServerUrl", "http://api.civikey.invenietis.com/", "11C83441-6818-4A8B-97A0-1761E1A54251", "Update Checker", xPathNav );
 
-            //ADD :
-            //<PluginStatus Guid="11C83441-6818-4A8B-97A0-1761E1A54251" Status="AutomaticStart"></PluginStatus>
+            //ADD : AutoBinder
+            //<PluginStatus Guid="b63bb144-1c13-4a3b-93bd-ac5233f4f18e" Status="AutomaticStart"></PluginStatus>
             string xPathExp = "//System/PluginStatusCollection";
             XPathNodeIterator iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
 
@@ -370,7 +370,7 @@ namespace CiviKeyPostInstallScript
             iterator.Current.MoveToFirstChild();
 
             //we are on the first PluginStatus, which we have just created
-            iterator.Current.CreateAttribute( String.Empty, "Guid", String.Empty, "11C83441-6818-4A8B-97A0-1761E1A54251" );
+            iterator.Current.CreateAttribute( String.Empty, "Guid", String.Empty, "b63bb144-1c13-4a3b-93bd-ac5233f4f18e" );
             iterator.Current.CreateAttribute( String.Empty, "Status", String.Empty, "AutomaticStart" );
 
 

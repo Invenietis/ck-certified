@@ -50,7 +50,7 @@ namespace FileLauncher
             {
                 Process.Start( f.Path );
             }
-            catch( Win32Exception e ) { } //Exception can be thrown just by clicking on the cancel button of an install wizard
+            catch { } //Exception can be thrown just by clicking on the cancel button of an install wizard
         }
 
         #region IFileLauncherService Members

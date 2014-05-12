@@ -80,7 +80,7 @@ namespace ScreenScroller.Editor
         }
 
         IContext _context;
-        bool _isClosing;
+        bool _isClosing = false;
 
         public void Close()
         {

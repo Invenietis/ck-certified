@@ -126,6 +126,7 @@ namespace Help
                     tempDir.Delete( true );
                 }
             }
+        
         }
 
         #endregion

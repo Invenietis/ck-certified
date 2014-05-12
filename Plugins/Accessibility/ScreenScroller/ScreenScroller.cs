@@ -384,12 +384,12 @@ namespace ScreenScroller
             get { return 0; }
         }
 
-        public int Width
+        public new int Width
         {
             get { return 0; }
         }
 
-        public int Height
+        public new int Height
         {
             get { return 0; }
         }

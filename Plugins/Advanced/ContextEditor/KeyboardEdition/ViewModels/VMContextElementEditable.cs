@@ -144,6 +144,8 @@ namespace KeyboardEditor.ViewModels
                     case "TextDecorations":
                     case "FontColor":
                     case "LetterColor":
+                    case "HighlightBackground":
+                    case "HighlightFontColor":
                         OnPropertyChanged( "TextDecorationsAsBool" );
                         OnPropertyChanged( "PressedBackground" );
                         OnPropertyChanged( "FontWeightAsBool" );
@@ -158,6 +160,8 @@ namespace KeyboardEditor.ViewModels
                         OnPropertyChanged( "FontSizes" );
                         OnPropertyChanged( "FontStyle" );
                         OnPropertyChanged( "FontSize" );
+                        OnPropertyChanged( "HighlightBackground" );
+                        OnPropertyChanged( "HighlightFontColor" );
                         break;
                     default:
                         break;
@@ -247,15 +251,6 @@ namespace KeyboardEditor.ViewModels
             set
             {
                 _context.SkinConfiguration[LayoutElement]["FontSize"] = value;
-            }
-        }
-
-        public int LoopCount
-        {
-            get { return LayoutElement.Keyboard.GetPropertyValue<int>( _context.SkinConfiguration, "LoopCount", 1 ); }
-            set
-            {
-                _context.SkinConfiguration[LayoutElement.Keyboard]["LoopCount"] = value;
             }
         }
 

@@ -50,6 +50,17 @@
                             </Button.ToolTip>
                         </Button>
                     </DockPanel>
+
+                    <TextBlock x:Uid="repeat-count-header" Style="{StaticResource SectionHeaderStyle}" Text="HIGHLIGHT REPEAT : "/>
+                    <Separator Style="{StaticResource SectionSeperatorStyle}" />
+
+                    <DockPanel HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" DockPanel.Dock="left">
+                            <TextBlock x:Uid="repeat-count" VerticalAlignment="Center" Margin="10 0 10 0">Repeat count :</TextBlock>
+                            <ComboBox Margin="0 3" ItemsSource="{Binding LoopCounts}" SelectedValue="{Binding LoopCount}" />
+                        </StackPanel>
+                        <ctrls:ImageButton Command="{Binding ZoneClearPropertyCmd}" DockPanel.Dock="Right" CommandParameter="LoopCount"/>
+                    </DockPanel>
                 </StackPanel>
             </StackPanel>
         </Border>

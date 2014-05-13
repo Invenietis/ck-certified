@@ -369,4 +369,7 @@
   <data name="ShowEditor" xml:space="preserve">
     <value>Show the editor panel</value>
   </data>
+  <data name="ExportConf" xml:space="preserve">
+    <value>Export your configuration</value>
+  </data>
 </root>

@@ -180,13 +180,13 @@
 
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:TitleItem}">
             <DataTemplate>
-                <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding Text}"></TextBlock>
+                <TextBlock FontSize="{Binding FontSize}" FontWeight="Bold" Text="{Binding Text}"></TextBlock>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:TextItem}">
             <DataTemplate>
-                <TextBlock Text="{Binding Text}"></TextBlock>
+                <TextBlock FontSize="{Binding FontSize}" Text="{Binding Text}"></TextBlock>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 

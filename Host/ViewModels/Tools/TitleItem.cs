@@ -8,8 +8,8 @@ namespace Host.VM
 {
     public class TitleItem : TextItem
     {
-        public TitleItem( ConfigManager configManager, string text )
-            : base( configManager, text )
+        public TitleItem( ConfigManager configManager, string text, int fontSize = 18 )
+            : base( configManager, text, fontSize )
         {
         }
     }

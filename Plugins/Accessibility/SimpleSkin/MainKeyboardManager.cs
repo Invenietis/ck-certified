@@ -22,25 +22,14 @@
 #endregion
 
 using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Threading;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using Host.Services;
-using SimpleSkin.ViewModels;
-using CK.Windows;
-using CK.Windows.Helpers;
-using System.Linq;
-using CommonServices.Accessibility;
-using System.Diagnostics;
-using CK.Plugins.SendInputDriver;
 using System.IO;
 using Help.Services;
-using HighlightModel;
 
 namespace SimpleSkin
 {

@@ -117,19 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HighSpeed" xml:space="preserve">
-    <value>High</value>
-  </data>
-  <data name="LowSpeed" xml:space="preserve">
-    <value>Low</value>
-  </data>
-  <data name="MediumSpeed" xml:space="preserve">
-    <value>Normal</value>
-  </data>
-  <data name="ScreenScrollerConfiguration" xml:space="preserve">
-    <value>Screen scroller configuration</value>
-  </data>
-  <data name="ScreenScrollerName" xml:space="preserve">
-    <value>Screen scroller</value>
+  <data name="MiniViewName" xml:space="preserve">
+    <value>Minimized Civikey</value>
   </data>
 </root>

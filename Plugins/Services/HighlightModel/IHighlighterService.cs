@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using CK.Core;
 using CK.Plugin;
 using HighlightModel;
 
@@ -28,7 +30,7 @@ namespace CommonServices.Accessibility
         /// </summary>
         /// <param name="elementID"></param>
         /// <param name="root"></param>
-        void RegisterTree( string elementID, IHighlightableElement root, bool HighlightDirectly = false );
+        void RegisterTree( string elementID, string elementDisplayName, IHighlightableElement root, bool HighlightDirectly = false );
 
         /// <summary>
         /// Remove an tree that have been registered before. It can be a subtree of any highlightable element.
@@ -69,20 +71,9 @@ namespace CommonServices.Accessibility
         /// </summary>
         void Resume();
 
-        ///// <summary>
-        ///// Event fired to trigger the highlightment of a particular element (or tree).
-        ///// </summary>
-        //event EventHandler<HighlightEventArgs> BeginHighlight;
+        IDictionary<string, string> RegisteredElements { get; }
 
-        ///// <summary>
-        ///// Event fired to end the highlightment of a particular element (or tree).
-        ///// </summary>
-        //event EventHandler<HighlightEventArgs> EndHighlight;
-
-        ///// <summary>
-        ///// Event fired when an element has been spotted by the highlighter to be selected.
-        ///// </summary>
-        //event EventHandler<HighlightEventArgs> SelectElement;
+        event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
     }
 
     public class HighlightEventArgs : EventArgs
@@ -93,5 +84,21 @@ namespace CommonServices.Accessibility
         }
 
         public IHighlightableElement Element { get; private set; }
+    }
+
+    public class HighlightElementRegisterEventArgs : EventArgs
+    {
+        public HighlightElementRegisterEventArgs( IHighlightableElement element, string internalName, bool hasRegistered, bool isRoot )
+        {
+            Element = element;
+            InternalName = internalName;
+            HasRegistered = hasRegistered;
+            IsRoot = isRoot;
+        }
+
+        public readonly IHighlightableElement Element;
+        public readonly string InternalName;
+        public readonly bool HasRegistered;
+        public readonly bool IsRoot;
     }
 }

@@ -380,18 +380,6 @@ namespace CK.WindowManager
             }
         }
 
-        //class SpatialBindingWithButtonElement : ISpatialBindingWithButtonElement
-        //{
-        //    public SpatialBindingWithButtonElement( ISpatialBinding binding, IWindowElement button )
-        //    {
-        //        SpatialBinding = binding;
-        //        UnbindButton = button;
-        //    }
-
-        //    public ISpatialBinding SpatialBinding { get; private set; }
-        //    public IWindowElement UnbindButton { get; private set; }
-        //}
-
         class SerializableBindings : IStructuredSerializable
         {
             public class SerializableBinding : IStructuredSerializable

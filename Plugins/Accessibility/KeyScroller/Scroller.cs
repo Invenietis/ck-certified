@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
+using System.Xml;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Storage;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
@@ -31,25 +33,70 @@ namespace Scroller
 
         public IPluginConfigAccessor Configuration { get; set; }
 
-        public IReadOnlyList<IHighlightableElement> RegisteredElements
-        {
-            get { return _registeredElements.Values.ToReadOnlyList(); }
-        }
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> InputTrigger { get; set; }
 
+        public event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
+
+        IDictionary<string, string> IHighlighterService.RegisteredElements
+        {
+            get
+            {
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                foreach( var item in _registeredElements )
+                {
+                    dic.Add( item.Key, _displayNames[item.Key] );
+                }
+
+                return dic;
+            }
+        }
+
+        /// <summary>
+        /// Gets all the elements that are registered into the scroller. also shows the ones that have been disabled through the configuration.
+        /// </summary>
+        public ICKReadOnlyList<IHighlightableElement> RegisteredElements
+        {
+            get
+            {
+                return _registeredElements.Values.ToReadOnlyList();
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="RegisteredElements"/> , minus the <see cref="DisabledElements"/> 
+        /// </summary>
+        public ICKReadOnlyList<IHighlightableElement> ScrollableElements
+        {
+            get
+            {
+                return _registeredElements.Where( kvp => !DisabledElements.Contains( kvp.Key ) )
+                                          .Select( kvp => kvp.Value )
+                                          .ToReadOnlyList();
+            }
+        }
+
+        IEnumerable<string> _disabledElements;
+        /// <summary>
+        /// Gets the Elements that are registered into the scroller but have been disabled through the configuration.
+        /// </summary>
+        public IEnumerable<string> DisabledElements
+        {
+            get { return _disabledElements; }
+        }
 
         public bool Setup( IPluginSetupInfo info )
         {
             _timer = new DispatcherTimer();
 
-            _timer.Interval = new TimeSpan(0, 0, 0, 0, Configuration.User.GetOrSet( "Speed", 1000 ));
+            _timer.Interval = new TimeSpan( 0, 0, 0, 0, Configuration.User.GetOrSet( "Speed", 1000 ) );
 
             _registeredElements = new Dictionary<string, IHighlightableElement>();
+            var conf = Configuration.User.GetOrSet<ScrollingElementConfiguration>( "ScrollableModules", new ScrollingElementConfiguration() );
+            _disabledElements = conf.Select( m => m.InternalName ).ToList();
 
-            _scrollingStrategy = new StrategyBridge( _timer, _registeredElements, Configuration );
-            
+            _scrollingStrategy = new StrategyBridge( _timer, () => ScrollableElements, Configuration );
+
             return true;
         }
 
@@ -60,25 +107,41 @@ namespace Scroller
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
             InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
-            
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if ( e.MultiPluginId.Any( u => u.UniqueId == ScrollerPlugin.PluginId.UniqueId ) )
+            if( e.MultiPluginId.Any( u => u.UniqueId == ScrollerPlugin.PluginId.UniqueId ) )
             {
-                if ( e.Key == "Strategy" )
+                if( e.Key == "Strategy" )
                 {
                     _scrollingStrategy.SwitchTo( e.Value.ToString() );
                 }
-                if ( e.Key == "Trigger" )
+                else if( e.Key == "Trigger" )
                 {
-                    if ( _currentTrigger != null )
+                    if( _currentTrigger != null )
                     {
                         InputTrigger.Service.Unregister( _currentTrigger, OnInputTriggered );
                         _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
                         InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
                     }
+                }
+                else if( e.Key == "ScrollableModules" )
+                {
+                    Console.Out.WriteLine( "Scrollable changed" );
+                    ScrollingElementConfiguration conf = (ScrollingElementConfiguration)e.Value;
+                    var disabledElements = conf.Select( m => m.InternalName ).ToList();
+
+                    //Getting the removed items and propagating the fact that they have been removed
+                    var removed = disabledElements.Except( _disabledElements );
+
+                    foreach( var removedItem in removed )
+                    {
+                        if( _registeredElements.ContainsKey( removedItem ) )
+                            _scrollingStrategy.ElementUnregistered( _registeredElements[removedItem] );
+                    }
+
+                    _disabledElements = disabledElements;
                 }
             }
         }
@@ -109,27 +172,35 @@ namespace Scroller
 
         public bool IsHighlighting { get { return _timer.IsEnabled; } }
 
-        public void RegisterTree( string targetModuleName, IHighlightableElement element, bool HighlightDirectly = false )
+        Dictionary<string, string> _displayNames = new Dictionary<string, string>();
+
+        public void RegisterTree( string targetModuleName, string targetDisplayName, IHighlightableElement element, bool HighlightDirectly = false )
         {
             if( !_registeredElements.ContainsKey( targetModuleName ) )
             {
+                if( _displayNames.ContainsKey( targetModuleName ) )
+                    _displayNames[targetModuleName] = targetDisplayName;
+                else
+                    _displayNames.Add( targetModuleName, targetDisplayName );
+
                 _registeredElements.Add( targetModuleName, element );
                 if( !_scrollingStrategy.IsStarted ) _scrollingStrategy.Start();
                 if( HighlightDirectly ) _scrollingStrategy.GoToElement( element );
-            }
 
+                if( ElementRegisteredOrUnregistered != null ) ElementRegisteredOrUnregistered( this, new HighlightElementRegisterEventArgs( element, targetModuleName, true, element.IsHighlightableTreeRoot ) );
+            }
         }
 
         public void UnregisterTree( string targetModuleName, IHighlightableElement element )
         {
             IHighlightableElement foundElement;
-            if ( _registeredElements.TryGetValue( targetModuleName, out foundElement ) )
+            if( _registeredElements.TryGetValue( targetModuleName, out foundElement ) )
             {
                 //If the element we're scrolling on is a proxy, we retrieve the actual element behind it.
                 var ehep = foundElement as ExtensibleHighlightableElementProxy;
-                if ( ehep != null && ehep != element ) foundElement = ehep.HighlightableElement;
+                if( ehep != null && ehep != element ) foundElement = ehep.HighlightableElement;
 
-                if ( foundElement == element )
+                if( foundElement == element )
                 {
                     //Actually removing the module from the registered elements.
                     _registeredElements.Remove( targetModuleName );
@@ -137,13 +208,15 @@ namespace Scroller
                     BrowseTree( element, e =>
                     {
                         var iheus = e as IHighlightableElementController;
-                        if ( iheus != null ) iheus.OnUnregisterTree();
+                        if( iheus != null ) iheus.OnUnregisterTree();
                         return false;
                     } );
 
                     //Warning the strategy that an element has been unregistered
                     _scrollingStrategy.ElementUnregistered( ehep == null ? element : ehep );
                 }
+
+                if( ElementRegisteredOrUnregistered != null ) ElementRegisteredOrUnregistered( this, new HighlightElementRegisterEventArgs( element, targetModuleName, false, element.IsHighlightableTreeRoot ) );
             }
         }
 
@@ -159,12 +232,12 @@ namespace Scroller
         public bool RegisterInRegisteredElementAt( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element )
         {
             IHighlightableElement registeredElement;
-            if ( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
+            if( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
             {
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
-                    if ( extensibleElement != null && extensibleElement.Name == extensibleElementName )
+                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName )
                         return extensibleElement.RegisterElementAt( position, element );
                     else return false;
                 } );
@@ -183,18 +256,18 @@ namespace Scroller
         public bool UnregisterInRegisteredElement( string targetModuleName, string extensibleElementName, ChildPosition position, IHighlightableElement element )
         {
             IHighlightableElement registeredElement;
-            if ( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
+            if( _registeredElements.TryGetValue( targetModuleName, out registeredElement ) )
             {
                 _scrollingStrategy.ElementUnregistered( element );
 
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
-                    if ( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
+                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
                     else return false;
-                } );   
+                } );
             }
-            
+
             return false;
         }
 
@@ -207,15 +280,15 @@ namespace Scroller
         /// <returns>true fi the browing has been stopped at any point</returns>
         bool BrowseTree( IHighlightableElement element, Func<IHighlightableElement, bool> doing )
         {
-            if ( doing( element ) ) return true;
+            if( doing( element ) ) return true;
 
-            foreach ( var child in element.Children )
+            foreach( var child in element.Children )
             {
-                if ( child.Children != null && child.Children.Count > 0 )
+                if( child.Children != null && child.Children.Count > 0 )
                 {
-                    if ( BrowseTree( child, doing ) ) return true;
+                    if( BrowseTree( child, doing ) ) return true;
                 }
-                if ( doing( child ) ) return true;
+                if( doing( child ) ) return true;
             }
             return false;
         }
@@ -237,4 +310,85 @@ namespace Scroller
             _scrollingStrategy.OnExternalEvent();
         }
     }
+
+
+    //class NamedHighlightableElement : IHighlightableElement
+    //{
+    //    IHighlightableElement _element;
+    //    public string DisplayName { get; private set; }
+    //    public NamedHighlightableElement( string displayName, IHighlightableElement element )
+    //    {
+    //        DisplayName = displayName;
+    //        _element = element;
+    //    }
+
+    //    public override int GetHashCode()
+    //    {
+    //        return _element.GetHashCode();
+    //    }
+
+    //    public override string ToString()
+    //    {
+    //        return _element.ToString();
+    //    }
+
+    //    public override bool Equals( object obj )
+    //    {
+    //        return _element.Equals( obj );
+    //    }
+
+    //    #region IHighlightableElement Members
+
+    //    public ICKReadOnlyList<IHighlightableElement> Children
+    //    {
+    //        get { return _element.Children; }
+    //    }
+
+    //    public int X
+    //    {
+    //        get { return _element.X; }
+    //    }
+
+    //    public int Y
+    //    {
+    //        get { return _element.Y; }
+    //    }
+
+    //    public int Width
+    //    {
+    //        get { return _element.Width; }
+    //    }
+
+    //    public int Height
+    //    {
+    //        get { return _element.Height; }
+    //    }
+
+    //    public SkippingBehavior Skip
+    //    {
+    //        get { return _element.Skip; }
+    //    }
+
+    //    public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+    //    {
+    //        return _element.BeginHighlight( beginScrollingInfo, scrollingDirective );
+    //    }
+
+    //    public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+    //    {
+    //        return _element.EndHighlight( endScrollingInfo, scrollingDirective );
+    //    }
+
+    //    public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+    //    {
+    //        return _element.SelectElement( scrollingDirective );
+    //    }
+
+    //    public bool IsHighlightableTreeRoot
+    //    {
+    //        get { return _element.IsHighlightableTreeRoot; }
+    //    }
+
+    //    #endregion
+    //}
 }

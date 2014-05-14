@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AutoClick.Res {
+namespace SimpleSkin.Res {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AutoClick.Res {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoClick.Res.R", typeof(R).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SimpleSkin.Res.R", typeof(R).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,65 +61,11 @@ namespace AutoClick.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click panel.
+        ///   Looks up a localized string similar to Minimized Civikey.
         /// </summary>
-        internal static string ClickPanel {
+        internal static string MiniViewName {
             get {
-                return ResourceManager.GetString("ClickPanel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Double click.
-        /// </summary>
-        internal static string DoubleClick {
-            get {
-                return ResourceManager.GetString("DoubleClick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Drag and drop.
-        /// </summary>
-        internal static string DragDrop {
-            get {
-                return ResourceManager.GetString("DragDrop", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Left click.
-        /// </summary>
-        internal static string LeftClick {
-            get {
-                return ResourceManager.GetString("LeftClick", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Push left button.
-        /// </summary>
-        internal static string LeftDown {
-            get {
-                return ResourceManager.GetString("LeftDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Release left button.
-        /// </summary>
-        internal static string LeftUp {
-            get {
-                return ResourceManager.GetString("LeftUp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Right click.
-        /// </summary>
-        internal static string RightClick {
-            get {
-                return ResourceManager.GetString("RightClick", resourceCulture);
+                return ResourceManager.GetString("MiniViewName", resourceCulture);
             }
         }
     }

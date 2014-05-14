@@ -218,6 +218,8 @@
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\ScrollingViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\ScrollingModulesConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
@@ -226,7 +228,9 @@
     <Compile Include="ViewModels\ThirdLevel\SkinViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
     <Compile Include="ViewModels\Tools\ConfigImplementationSelectorItem.cs" />
-    <Compile Include="ViewModels\Tools\ConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\CheckboxConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
     <Compile Include="ViewModels\ThirdLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="Views\AppView.xaml.cs">
@@ -319,6 +323,10 @@
       <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
       <Name>HelpServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\Services\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Contexts\ContextCiviKey.xml">
@@ -385,6 +393,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Contexts\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

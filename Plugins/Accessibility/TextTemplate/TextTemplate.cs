@@ -6,6 +6,7 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using System;
 using System.Linq;
+using TextTemplate.Resource;
 
 namespace TextTemplate
 {
@@ -24,6 +25,7 @@ namespace TextTemplate
         TemplateEditorViewModel _viewModel;
 
         const string HIGHLIGH_REGISTER_ID = "TextTemplate";
+        string HIGHLIGH_REGISTER_DISPLAY_NAME = R.TextTemplate;
 
         ICKReadOnlyList<IHighlightableElement> _children;
 
@@ -58,14 +60,14 @@ namespace TextTemplate
 
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, this );
+                Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, HIGHLIGH_REGISTER_DISPLAY_NAME, this );
             }
 
             Highlighter.ServiceStatusChanged += ( o, e ) =>
             {
                 if( e.Current == InternalRunningStatus.Started )
                 {
-                    Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, this );
+                    Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, HIGHLIGH_REGISTER_DISPLAY_NAME, this );
                 }
                 else if( e.Current == InternalRunningStatus.Stopping )
                 {
@@ -157,7 +159,7 @@ namespace TextTemplate
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             _viewModel.IsWindowHighlighted = true;
-            
+
             return scrollingDirective;
         }
 
@@ -188,7 +190,7 @@ namespace TextTemplate
         }
 
         public void Teardown()
-        {            
+        {
         }
 
         #endregion

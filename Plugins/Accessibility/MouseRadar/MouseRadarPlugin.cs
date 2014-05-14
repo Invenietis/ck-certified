@@ -8,6 +8,7 @@ using HighlightModel;
 using CK.Core;
 using System.Diagnostics;
 using CK.WindowManager.Model;
+using MouseRadar.Resources;
 
 namespace MouseRadar
 {
@@ -74,7 +75,7 @@ namespace MouseRadar
         {
             _radar = new Radar( MouseDriver.Service );
 
-            _focusedOpacity = (float)( Configuration.User.GetOrSet( "Opacity", 100 ) ) / 100f;
+            _focusedOpacity = (float)(Configuration.User.GetOrSet( "Opacity", 100 )) / 100f;
             _blurredOpacity = .1f;
 
             _radar.ViewModel.Opacity = _blurredOpacity;
@@ -88,7 +89,7 @@ namespace MouseRadar
 
             ActionType = HighlightModel.ActionType.StayOnTheSame;
 
-            Highlighter.Service.RegisterTree( "MouseRadarPlugin", this );
+            Highlighter.Service.RegisterTree( "MouseRadarPlugin", R.RadarDisplayName, this );
 
             _radar.Show();
             _radar.Initialize();
@@ -180,7 +181,7 @@ namespace MouseRadar
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
             if( _radar._timerRotate.IsEnabled )
-                Debug.Assert( _radar.CurrentStep == RadarStep.Rotating && !_radar._timerTranslate.IsEnabled);
+                Debug.Assert( _radar.CurrentStep == RadarStep.Rotating && !_radar._timerTranslate.IsEnabled );
             else if( _radar._timerTranslate.IsEnabled )
                 Debug.Assert( _radar.CurrentStep == RadarStep.Translating && !_radar._timerRotate.IsEnabled );
 
@@ -188,7 +189,7 @@ namespace MouseRadar
             // - we are begin scrolled on, because the scroller is scrolling on the module level. In this case we focus the radar to show the user that the radar is currently being scrolled on.
             // - we are already focused (the current action is stayonthesamelocked and beginScrollingInfo.PreviousElement == this). In this case we do nothing but tell the radar to check that its tick is still in sync with the configuration.
             // - we are paused and the radar is the only element in the scrolling tree (the current action is Normal and beginScrollingInfo.PreviousElement == this) : we do the same as the previous case. 
-            
+
             Focus();
 
             //The scroller is actually scrolling on this element, and hooked by the StayOnTheSameLocked, or we are the only element in the scrolling tree : we relay the scroller's tick to the radar.

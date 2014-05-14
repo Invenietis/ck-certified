@@ -70,6 +70,15 @@ namespace TextTemplate.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Text Template.
+        /// </summary>
+        public static string TextTemplate {
+            get {
+                return ResourceManager.GetString("TextTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete the text then clic on the &quot;Write&quot; button..
         /// </summary>
         public static string TextTemplateDesc {

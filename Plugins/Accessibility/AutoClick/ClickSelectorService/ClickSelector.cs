@@ -31,6 +31,7 @@ using HighlightModel;
 using CK.Plugin.Config;
 using CK.Windows;
 using CK.WindowManager.Model;
+using AutoClick.Res;
 
 namespace CK.Plugins.AutoClick
 {
@@ -76,7 +77,7 @@ namespace CK.Plugins.AutoClick
         public void Start()
         {
 
-            int defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 4;
+            int defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 4;
             int defaultWidth = defaultHeight / 4;
 
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
@@ -202,7 +203,7 @@ namespace CK.Plugins.AutoClick
         {
             if( Highlighter.Status.IsStartingOrStarted )
             {
-                Highlighter.Service.RegisterTree( "ClickSelector", this );
+                Highlighter.Service.RegisterTree( "ClickSelector", R.ClickPanel, this );
             }
         }
 

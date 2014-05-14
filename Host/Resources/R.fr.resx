@@ -349,7 +349,7 @@
     <value>Défilement écrans</value>
   </data>
   <data name="Scrolling" xml:space="preserve">
-    <value>Défilement général</value>
+    <value>Défilement</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>Appliquer</value>
@@ -368,5 +368,14 @@
   </data>
   <data name="ShowEditor" xml:space="preserve">
     <value>Ouvrir la fenêtre de configuration</value>
+  </data>
+  <data name="EnableScrolling" xml:space="preserve">
+    <value>Permettre le défilement sur cet élément</value>
+  </data>
+  <data name="ForbidScrolling" xml:space="preserve">
+    <value>Empêcher le défilement sur cet élément</value>
+  </data>
+  <data name="OtherScrollConfig" xml:space="preserve">
+    <value>Configuration avancée</value>
   </data>
 </root>

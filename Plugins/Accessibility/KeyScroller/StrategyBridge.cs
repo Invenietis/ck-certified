@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Threading;
+using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
 
@@ -51,21 +52,21 @@ namespace Scroller
             AvailableStrategies = GetStrategyNames().ToList();
         }
 
-        public StrategyBridge( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public StrategyBridge( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> getElements, IPluginConfigAccessor config )
         {
             Implementations = new Dictionary<string, IScrollingStrategy>();
 
-            foreach(Type t in  GetStrategyTypes())
+            foreach( Type t in GetStrategyTypes() )
             {
                 //Ignore some types
                 if( t == typeof( IScrollingStrategy ) || t == typeof( StrategyBridge ) || t == typeof( ScrollingStrategyBase ) )
                     continue;
 
-                IScrollingStrategy instance = (IScrollingStrategy) Activator.CreateInstance( t );
-                instance.Setup( timer, elements, config );
-                
+                IScrollingStrategy instance = (IScrollingStrategy)Activator.CreateInstance( t );
+                instance.Setup( timer, getElements, config );
+
                 if( Implementations.ContainsKey( instance.Name ) )
-                    throw new InvalidOperationException("Cannot register the duplicate strategy name : " + instance.Name );
+                    throw new InvalidOperationException( "Cannot register the duplicate strategy name : " + instance.Name );
 
                 Implementations[instance.Name] = instance;
             }
@@ -79,10 +80,10 @@ namespace Scroller
         /// Switch to the specified strategy
         /// </summary>
         /// <param name="strategyName">The name of the strategy to switch to</param>
-        public void SwitchTo(string strategyName)
+        public void SwitchTo( string strategyName )
         {
-            if( !Implementations.ContainsKey( strategyName ) ) 
-                throw new InvalidOperationException("Cannot switch to the unknown strategy : " + strategyName);
+            if( !Implementations.ContainsKey( strategyName ) )
+                throw new InvalidOperationException( "Cannot switch to the unknown strategy : " + strategyName );
 
             _current.Stop();
             _current = Implementations[strategyName];
@@ -106,9 +107,9 @@ namespace Scroller
             get { return _current.Name; }
         }
 
-        public void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public void Setup( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> getElements, IPluginConfigAccessor config )
         {
-            _current.Setup( timer, elements, config );
+            _current.Setup( timer, getElements, config );
         }
 
         public void Start()

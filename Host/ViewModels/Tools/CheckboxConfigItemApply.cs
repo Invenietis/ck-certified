@@ -17,11 +17,11 @@ namespace Host.VM
     /// When the selected changes, the button is enabled. otherwise it is disabled.
     /// Note : if no objects are linked, works as a simple button triggering the action set as parameter of the constructor.
     /// </summary>
-    public class ConfigItemApply : ConfigItemAction
+    public class CheckboxConfigItemApply : ConfigItemAction
     {
         readonly INotifySelectionChanged[] _linkedItems;
 
-        public ConfigItemApply( ConfigManager configManager, ICommand cmd, params INotifySelectionChanged[] linkedItems )
+        public CheckboxConfigItemApply( ConfigManager configManager, ICommand cmd, params INotifySelectionChanged[] linkedItems )
             : base( configManager, cmd )
         {
             if( linkedItems.Length > 0 )
@@ -91,10 +91,5 @@ namespace Host.VM
                 return _linkedItems.Length == 0 || (_current != null && _current != _previous);
             }
         }
-    }
-
-    public interface INotifySelectionChanged : INotifyPropertyChanged
-    {
-        bool IsSelected { get; }
     }
 }

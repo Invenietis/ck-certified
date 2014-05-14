@@ -39,6 +39,7 @@ namespace Host.VM
         WordPredictionViewModel _wpVm;
         ShareKeyboardViewModel _skVm;
         AppAdvancedConfigViewModel _appAdvcVm;
+        ScrollingViewModel _scVm;
 
         public AppConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -67,13 +68,7 @@ namespace Host.VM
             this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
             this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
-            {
-                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
-                action.ImagePath = "Forward.png";
-                action.DisplayName = R.ScrollConfig;
-                this.Items.Add( action );
-            }
-
+            this.AddLink( _scVm ?? (_scVm = new ScrollingViewModel( R.ScrollConfig, _app )) );
             this.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
 
             {
@@ -114,15 +109,9 @@ namespace Host.VM
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
 
-        public void StartScrollEditor()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{48D3977C-EC26-48EF-8E47-806E11A1C041}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
-        }
-
+       
         public void StartRadarEditor()
         {
-
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }

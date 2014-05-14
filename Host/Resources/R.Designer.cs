@@ -277,6 +277,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable scrolling on the element.
+        /// </summary>
+        public static string EnableScrolling {
+            get {
+                return ResourceManager.GetString("EnableScrolling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occured during the plugin startup, or given requirements cannot be fullfilled. We cannot give you more informations yet, we&apos;re working on it..
         /// </summary>
         public static string ErrorApplyingConfiguration {
@@ -354,6 +363,15 @@ namespace Host.Resources {
         public static string ForbiddenActionTitle {
             get {
                 return ResourceManager.GetString("ForbiddenActionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forbid scrolling on this element.
+        /// </summary>
+        public static string ForbidScrolling {
+            get {
+                return ResourceManager.GetString("ForbidScrolling", resourceCulture);
             }
         }
         
@@ -498,6 +516,15 @@ namespace Host.Resources {
         public static string Options {
             get {
                 return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced configurations.
+        /// </summary>
+        public static string OtherScrollConfig {
+            get {
+                return ResourceManager.GetString("OtherScrollConfig", resourceCulture);
             }
         }
         

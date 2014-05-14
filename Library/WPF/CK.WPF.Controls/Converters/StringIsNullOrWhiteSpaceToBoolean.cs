@@ -1,4 +1,4 @@
-﻿        #region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (CK.Windows.Core\Converter\StringIsNullOrWhiteSpaceToBoolean.cs) is part of CiviKey. 
 *  
@@ -19,7 +19,7 @@
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
-        #endregion
+#endregion
 
 using System;
 using System.Windows;
@@ -40,8 +40,9 @@ namespace CK.WPF.Controls
         /// <returns></returns>
         public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
         {
+            if( value == null ) return true;
             string stringValue = value.ToString();
-            return String.IsNullOrWhiteSpace(stringValue);
+            return String.IsNullOrWhiteSpace( stringValue );
         }
 
 

@@ -17,7 +17,7 @@ namespace Scroller
         protected ScrollingDirective LastDirective { get; set; }
         protected IHighlightableElement PreviousElement { get; set; }
         protected ITreeWalker Walker { get; set; }
-        protected Dictionary<string, IHighlightableElement> Elements { get; set; }
+        protected Func<ICKReadOnlyList<IHighlightableElement>> GetElements { get; set; }
 
         protected int AutoPauseDefaultTick { get; set; }
         protected bool AutoPauseActived { get; set; }
@@ -183,7 +183,7 @@ namespace Scroller
                     ) == 0 )
                 return false;
 
-            if( Elements.Values.All( e => e.Children.Count > 0 && e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
+            if( GetElements().All( e => e.Children.Count > 0 && e.Children.All( c => c.Skip == SkippingBehavior.Skip ) ) )
                 return false;
 
             return true;
@@ -323,10 +323,10 @@ namespace Scroller
             protected set;
         }
 
-        public virtual void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public virtual void Setup( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> getElements, IPluginConfigAccessor config )
         {
             Timer = timer;
-            Elements = elements;
+            GetElements = getElements;
             Configuration = config;
         }
 
@@ -427,7 +427,7 @@ namespace Scroller
 
         public ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { return new CKReadOnlyListOnIList<IHighlightableElement>( Elements.Values.ToList() ); }
+            get { return GetElements(); }
         }
 
         public int X

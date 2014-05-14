@@ -9,6 +9,7 @@ using CommonServices.Accessibility;
 using HighlightModel;
 using CommonServices;
 using CK.WindowManager.Model;
+using ScreenScroller.Resources;
 
 namespace ScreenScroller
 {
@@ -366,7 +367,7 @@ namespace ScreenScroller
 
         private void RegisterHighlighter()
         {
-            Highlighter.Service.RegisterTree( "ScreenScroller", this );
+            Highlighter.Service.RegisterTree( "ScreenScroller", R.ScreenScrollerName, this );
         }
 
         public ICKReadOnlyList<IHighlightableElement> Children

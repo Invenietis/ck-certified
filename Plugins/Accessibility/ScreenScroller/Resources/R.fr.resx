@@ -129,4 +129,7 @@
   <data name="ScreenScrollerConfiguration" xml:space="preserve">
     <value>Configuration du défilement d'écrans</value>
   </data>
+  <data name="ScreenScrollerName" xml:space="preserve">
+    <value>Défilement d'écrans</value>
+  </data>
 </root>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
+using CK.Core;
 using CK.Plugin.Config;
 using HighlightModel;
 
@@ -50,7 +51,7 @@ namespace Scroller
             get { return StrategyName; }
         }
 
-        public override void Setup( DispatcherTimer timer, Dictionary<string, IHighlightableElement> elements, IPluginConfigAccessor config )
+        public override void Setup( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> elements, IPluginConfigAccessor config )
         {
             base.Setup( timer, elements, config );
 

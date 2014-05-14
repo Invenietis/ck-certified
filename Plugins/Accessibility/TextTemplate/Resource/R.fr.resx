@@ -120,6 +120,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
+  <data name="TextTemplate" xml:space="preserve">
+    <value>Template de texte</value>
+  </data>
   <data name="TextTemplateDesc" xml:space="preserve">
     <value>Completez le texte ci-dessous et cliquez sur le bouton "Ecrire" pour envoyer le texte.</value>
   </data>

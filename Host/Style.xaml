@@ -6,6 +6,7 @@
 
     <core:BooleanToVisibilityConverter x:Key="converter"/>
 
+    
     <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
     <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
 

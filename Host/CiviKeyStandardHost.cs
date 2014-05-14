@@ -96,7 +96,7 @@ namespace Host
             //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
             //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.
             //If a system conf is found and loaded at this point, plugin will be set as disabled (because the plugins are not yet discovered). If there is a userconf, the requirements will be parsed again later, and everything will work fine.
-            //The problem occurs when there is no user conf. (this happens when CiviKey is first launched)
+            //The problem occurs when there is no user conf. (this happens when CiviKey is launched for the first time)
 
 
             IContext ctx = base.CreateContext();

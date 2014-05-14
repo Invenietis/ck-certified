@@ -141,6 +141,9 @@
   <data name="RadarConfiguration" xml:space="preserve">
     <value>Configuration du radar</value>
   </data>
+  <data name="RadarDisplayName" xml:space="preserve">
+    <value>Radar</value>
+  </data>
   <data name="RadarRadius" xml:space="preserve">
     <value>Rayon du radar</value>
   </data>

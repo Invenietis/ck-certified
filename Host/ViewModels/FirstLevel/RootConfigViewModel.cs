@@ -69,10 +69,10 @@ namespace Host
                 _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";
             }
 
-            var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) ){ DisplayName = R.SkinSectionName };
+            var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) ) { DisplayName = R.SkinSectionName };
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) ) { DisplayName = R.AutoClickSectionName };
-            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[]{ _radarId, _screenScrollerId })) { DisplayName = R.Scrolling };
-           
+            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ) ) { DisplayName = R.Scrolling };
+
             //var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
             //var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
             //    { DisplayName = R.ScreenScrolling };
@@ -98,8 +98,7 @@ namespace Host
             //g.Items.Add( screenScrollerStarter );
 
             this.AddLink( new ImplementationSelector( "Selection du dispositif de pointage", _app ) );
-
-            this.AddLink( _appConfigVm ?? ( _appConfigVm = new AppConfigViewModel( _app ) ) );
+            this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
 
             base.OnInitialize();
         }

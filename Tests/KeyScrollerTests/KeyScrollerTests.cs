@@ -23,13 +23,13 @@ namespace KeyScrollerTests
 
             var mock = TestHelper.MockHighlightableFactory001();
 
-            scroller.RegisterTree( "Keyboard", mock );
-            Assert.That( scroller.RegisteredElements.Contains( mock ), Is.True );
-            Assert.That( scroller.RegisteredElements.Count, Is.EqualTo( 1 ) );
+            scroller.RegisterTree( "Keyboard", "Keyboard", mock );
+            Assert.That( scroller.ScrollableElements.Contains( mock ), Is.True );
+            Assert.That( scroller.ScrollableElements.Count, Is.EqualTo( 1 ) );
 
-            scroller.RegisterTree( "Keyboard", mock );
-            Assert.That( scroller.RegisteredElements.Contains( mock ) );
-            Assert.That( scroller.RegisteredElements.Count, Is.EqualTo( 1 ) );
+            scroller.RegisterTree( "Keyboard", "Keyboard", mock );
+            Assert.That( scroller.ScrollableElements.Contains( mock ) );
+            Assert.That( scroller.ScrollableElements.Count, Is.EqualTo( 1 ) );
 
             var preroot = TestHelper.CreateElement( "PreRoot" );
             Assert.That( scroller.RegisterInRegisteredElementAt( "Keyboard", "Root", ChildPosition.Pre, preroot ), Is.True );

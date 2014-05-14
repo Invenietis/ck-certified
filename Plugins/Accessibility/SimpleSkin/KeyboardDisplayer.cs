@@ -18,6 +18,7 @@ using System.Diagnostics;
 using Host.Services;
 using System.Windows.Media;
 using CK.Windows.Helpers;
+using SimpleSkin.Res;
 
 namespace SimpleSkin
 {
@@ -369,7 +370,7 @@ namespace SimpleSkin
                 {
                     if( Highlighter.Status == InternalRunningStatus.Started )
                     {
-                        Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
+                        Highlighter.Service.RegisterTree( _miniViewVm.Name, R.MiniViewName, _miniViewVm );
                     }
                 }
                 else
@@ -411,7 +412,7 @@ namespace SimpleSkin
 
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( skinInfo.NameKeyboard,
+                Highlighter.Service.RegisterTree( skinInfo.NameKeyboard, skinInfo.NameKeyboard,
                     new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM, true ) );
             }
         }
@@ -445,7 +446,7 @@ namespace SimpleSkin
                     VMKeyboardSimple elem = _skins[PredictionKeyboardName].ViewModel.KeyboardVM;
                     elem.IsHighlightableTreeRoot = false;
 
-                    Highlighter.Service.RegisterTree( PredictionKeyboardName, elem );
+                    Highlighter.Service.RegisterTree( PredictionKeyboardName, PredictionKeyboardName, elem );
                 }
             }
         }
@@ -615,7 +616,7 @@ namespace SimpleSkin
 
                             if( Highlighter.Status == InternalRunningStatus.Started )
                             {
-                                Highlighter.Service.RegisterTree( _miniViewVm.Name, _miniViewVm );
+                                Highlighter.Service.RegisterTree( _miniViewVm.Name, R.MiniViewName, _miniViewVm );
                                 ForEachSkin( UnregisterFromHighlighter );
                             }
                         }

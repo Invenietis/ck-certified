@@ -67,7 +67,7 @@ namespace Host.VM
             Items.Add( empty );
             _items.Add( empty );
 
-            var apply = new ConfigItemApply( _app.ConfigManager, new VMCommand( Apply ), scroll, radar, empty );
+            var apply = new RadioConfigItemApply( _app.ConfigManager, new VMCommand( Apply ), scroll, radar, empty );
             apply.DisplayName = R.Apply;
             Items.Add( apply );
 

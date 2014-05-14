@@ -378,4 +378,7 @@
   <data name="OtherScrollConfig" xml:space="preserve">
     <value>Configuration avancée</value>
   </data>
+  <data name="Credits" xml:space="preserve">
+    <value>Crédits</value>
+  </data>
 </root>

@@ -371,6 +371,9 @@
   </data>
   <data name="EnableScrolling" xml:space="preserve">
     <value>Enable scrolling on the element</value>
+    </data>
+  <data name="Credits" xml:space="preserve">
+    <value>Credits</value>
   </data>
   <data name="ForbidScrolling" xml:space="preserve">
     <value>Forbid scrolling on this element</value>

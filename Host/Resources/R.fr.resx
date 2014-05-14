@@ -369,4 +369,7 @@
   <data name="ShowEditor" xml:space="preserve">
     <value>Ouvrir la fenêtre de configuration</value>
   </data>
+  <data name="Credits" xml:space="preserve">
+    <value>Crédits</value>
+  </data>
 </root>

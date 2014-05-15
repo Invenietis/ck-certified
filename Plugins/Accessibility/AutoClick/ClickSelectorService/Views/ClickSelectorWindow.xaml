@@ -8,7 +8,10 @@
     WindowStyle="None"     
     ShowInTaskbar="False"
     ShowActivated="False"
-    Background="Transparent">
+    AllowsTransparency="True">
+    <ckwincore:CKWindow.Background>
+        <SolidColorBrush Color="#dddddd" Opacity="0.5" />
+    </ckwincore:CKWindow.Background>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

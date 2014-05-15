@@ -11,8 +11,27 @@
     Topmost="True" WindowStyle="None"
     MinHeight="40" MinWidth="40"
     ShowInTaskbar="False"
-    ShowActivated="False" ResizeMode="CanResizeWithGrip">
+    ShowActivated="False"
+    AllowsTransparency="True">
+    <ckwincore:CKWindow.Background>
+        <SolidColorBrush Color="#dddddd" Opacity="0.5" />
+    </ckwincore:CKWindow.Background>
     <Window.Resources>
+
+        <LinearGradientBrush x:Key="ContentBack">
+
+            <LinearGradientBrush.GradientStops>
+
+                <GradientStop Color="#121212" Offset="0"/>
+
+                <GradientStop Color="Gray" Offset=".5"/>
+
+                <GradientStop Color="#181818" Offset="1.2"/>
+
+            </LinearGradientBrush.GradientStops>
+
+        </LinearGradientBrush>
+
         <ctrls:NotNullConverter x:Key="notnull"/>
         <Style TargetType="{x:Type view:StdKeyboardView}">
             <Setter Property="Width" Value="{Binding W}" />
@@ -96,10 +115,32 @@
         </DataTemplate>
 
     </Window.Resources>
-    <Grid>
-        <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
-        <Viewbox Stretch="Fill" >
-            <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
-        </Viewbox>
-    </Grid>
+
+    <Border BorderThickness="5" BorderBrush="#4B4CA6">
+
+        <Grid>
+            <!--Content Section-->
+
+            <Grid Grid.Row="1">
+
+                <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
+                <Viewbox Stretch="Fill" >
+                    <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
+                </Viewbox>
+            </Grid>
+            
+            <Rectangle Name="bottom" Height="10" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+            <Rectangle Name="top" Height="10" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+
+            <Rectangle Name="left" Width="10" Margin="0,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Stretch" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+            <Rectangle Name="right" Width="10" Margin="0,10,0,10" HorizontalAlignment="Right"  VerticalAlignment="Stretch" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+
+            <Rectangle Name="topLeft" Height="15" Width="15" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+            <Rectangle Name="bottomLeft" Height="15" Width="15" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+            <Rectangle Name="bottomRight" Height="15" Width="15" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+            <Rectangle Name="topRight" Height="15" Width="15" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+
+        </Grid>
+
+    </Border>
 </ckwincore:CKNoFocusWindow>

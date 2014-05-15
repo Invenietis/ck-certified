@@ -6,9 +6,14 @@
     WindowStyle="None"     
     ShowInTaskbar="False"
     ShowActivated="False"
-    Background="Transparent"
+    AllowsTransparency="True"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views">
+    
+    <ckwincore:CKWindow.Background>
+        <SolidColorBrush Color="#dddddd" Opacity="0.5" />
+    </ckwincore:CKWindow.Background>
+    
     <Window.Resources>           
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -18,7 +23,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid> 
+    <Grid>
         <Viewbox Stretch="Fill">
             <Border>
                 <ContentControl Template="{StaticResource AutoClickTemplate}"/>      

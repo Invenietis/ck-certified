@@ -38,7 +38,7 @@ using System.Resources;
 [assembly: AssemblyCopyright( "Copyright ©  2010" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
-[assembly: XmlnsDefinition("http://shemas.civikey.org/SimpleSkin/ViewModels","SimpleSkin.ViewModels")]
+[assembly: XmlnsDefinition("http://schemas.civikey.org/SimpleSkin/ViewModels","SimpleSkin.ViewModels")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
 // aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 

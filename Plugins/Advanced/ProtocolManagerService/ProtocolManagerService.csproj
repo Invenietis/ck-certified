@@ -63,6 +63,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -91,6 +96,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="R.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="R.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>

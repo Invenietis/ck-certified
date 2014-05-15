@@ -98,13 +98,17 @@
     <Compile Include="LayoutZone.cs" />
     <Compile Include="ModeObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Res\R.Designer.cs" />
+    <Compile Include="Res\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Res\R.fr.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="Res\R1.Designer.cs">
+    <Compile Include="Res\R.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
@@ -127,13 +131,17 @@
     <None Include="Res\Context_Layouts_Modes.cd" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Res\R.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Res\R.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Res\R.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>R1.Designer.cs</LastGenOutput>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CK.Keyboard.Res {
+namespace CK.Keyboard {
     using System;
     
     

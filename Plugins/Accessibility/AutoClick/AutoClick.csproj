@@ -127,6 +127,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoClick\AutoClick.cs" />
+    <Compile Include="Res\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Res\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -261,6 +266,10 @@
     <Resource Include="Res\Images\DragDrop.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Res\R.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Res\R.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>

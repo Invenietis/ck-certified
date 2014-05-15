@@ -77,6 +77,11 @@
     <Compile Include="DriverLib\WindowsHook.cs" />
     <Compile Include="MouseDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Res\MouseDriver.en-US.Designer.cs">
+      <DependentUpon>MouseDriver.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Res\MouseDriver.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,6 +97,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Res\MouseDriver.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MouseDriver.en-US.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Res\MouseDriver.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MouseDriver.Designer.cs</LastGenOutput>

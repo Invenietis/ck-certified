@@ -124,6 +124,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KeyboardEdition\Components\Converters\EnsureIntegerConverter.cs" />
+    <Compile Include="Resources\Images.en-US.Designer.cs">
+      <DependentUpon>Images.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Wizard\ExportKeyboard.cs" />
     <Compile Include="KeyboardEdition\Components\TemplateSelectors\AddActionDataTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
@@ -254,6 +264,10 @@
       <SubType>Designer</SubType>
     </None>
     <Compile Include="Wizard\KeyboardEditor.HotKey.cs" />
+    <EmbeddedResource Include="Resources\Images.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Images.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.fr.Designer.cs</LastGenOutput>
@@ -395,6 +409,11 @@
     <EmbeddedResource Include="Resources\Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

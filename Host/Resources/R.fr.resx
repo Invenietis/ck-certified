@@ -130,7 +130,7 @@
     <value>Configuration du clic automatique</value>
   </data>
   <data name="AutoClickCountDownDuration" xml:space="preserve">
-    <value>Durée du décompte</value>
+    <value>Durée du décompte (ms)</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
     <value>le clic automatique</value>
@@ -142,7 +142,7 @@
     <value>Afficher l'indicateur de progression au dessus du pointeur</value>
   </data>
   <data name="AutoClickTimeBeforeCountDownStarts" xml:space="preserve">
-    <value>Temps avant que le décompte ne commence</value>
+    <value>Temps avant que le décompte ne commence (ms)</value>
   </data>
   <data name="CiviKey" xml:space="preserve">
     <value>CiviKey - Standard</value>

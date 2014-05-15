@@ -130,7 +130,7 @@
     <value>Auto clic feature configuration</value>
   </data>
   <data name="AutoClickCountDownDuration" xml:space="preserve">
-    <value>Countdown duration</value>
+    <value>Countdown duration (ms)</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
     <value>Auto click</value>
@@ -142,7 +142,7 @@
     <value>Show a progress indicator above the pointer</value>
   </data>
   <data name="AutoClickTimeBeforeCountDownStarts" xml:space="preserve">
-    <value>Time before the countdown starts</value>
+    <value>Time before the countdown starts (ms)</value>
   </data>
   <data name="CiviKey" xml:space="preserve">
     <value>CiviKey - Standard</value>
@@ -371,7 +371,7 @@
   </data>
   <data name="EnableScrolling" xml:space="preserve">
     <value>Enable scrolling on the element</value>
-    </data>
+  </data>
   <data name="Credits" xml:space="preserve">
     <value>Credits</value>
   </data>

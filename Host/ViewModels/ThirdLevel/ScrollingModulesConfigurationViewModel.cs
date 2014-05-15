@@ -61,14 +61,16 @@ namespace Host.VM
 
                 if( _fromService == null )
                 {
-                    _fromService = s.AddGroup();
+                    _fromService = new ScrollingConfigGroup( _app.ConfigManager );
+                    s.Items.Add( _fromService );
                     _fromService.Description = "Liste des modules actifs : ";
                     _fromService.DisplayName = "Elements défilables";
                 }
 
                 if( _fromConfig == null )
                 {
-                    _fromConfig = s.AddGroup();
+                    _fromConfig = new ScrollingConfigGroup( _app.ConfigManager );
+                    s.Items.Add( _fromConfig );
                     _fromConfig.Description = "Liste des modules interdits au défilement : ";
                     _fromConfig.DisplayName = "Elements non défilables";
                 }
@@ -246,6 +248,15 @@ namespace Host.VM
                     _modulesFromConfig.Add( scrollingElement );
                 }
             }
+        }
+    }
+
+    public class ScrollingConfigGroup : ConfigGroup
+    {
+        public ScrollingConfigGroup( ConfigManager configManager )
+            : base( configManager )
+        {
+
         }
     }
 }

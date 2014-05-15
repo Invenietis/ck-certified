@@ -129,6 +129,66 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
+        <!-- SCROLLING CONFIGURATION TYPES -->
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ScrollingConfigGroup}">
+            <DataTemplate>
+                <StackPanel Margin="0 5">
+                    <TextBlock Text="{Binding DisplayName}" Foreground="Black" FontSize="15" FontWeight="Bold" Margin="0 0 0 3">
+                        <TextBlock.Visibility>
+                            <Binding Path="DisplayName">
+                                <Binding.Converter>
+                                    <ckctrl:ValueConverterGroup>
+                                        <ckctrl:StringIsNullOrWhiteSpaceToBoolean/>
+                                        <ckctrl:NotConverter/>
+                                        <ckwincore:BooleanToVisibilityConverter/>
+                                    </ckctrl:ValueConverterGroup>
+                                </Binding.Converter>
+                            </Binding>
+                        </TextBlock.Visibility>
+                    </TextBlock>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Description}" Foreground="Gray" FontStyle="Italic" FontSize="12" Margin="0 0 0 3">
+                            <TextBlock.Visibility>
+                                <Binding Path="Description">
+                                    <Binding.Converter>
+                                        <ckctrl:ValueConverterGroup>
+                                            <ckctrl:StringIsNullOrWhiteSpaceToBoolean/>
+                                            <ckctrl:NotConverter/>
+                                            <ckwincore:BooleanToVisibilityConverter/>
+                                        </ckctrl:ValueConverterGroup>
+                                    </Binding.Converter>
+                                </Binding>
+                            </TextBlock.Visibility>
+                        </TextBlock>
+                        <ContentControl>
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <ItemsControl ItemsSource="{Binding Items}" ItemTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Items.Count}" Value="0">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <TextBlock Foreground="Gray" FontSize="11" HorizontalAlignment="Center" FontWeight="Bold">No elements to display</TextBlock>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
         <ckwincore:TypeDataTemplateSelector Type="{x:Type ckwinconf:ConfigGroup}">
             <DataTemplate>
                 <StackPanel>
@@ -177,6 +237,8 @@
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
+
+        <!-- ENDOF : SCROLLING CONFIGURATION TYPES -->
 
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:TitleItem}">
             <DataTemplate>

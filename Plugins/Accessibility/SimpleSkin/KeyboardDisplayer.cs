@@ -10,7 +10,6 @@ using CK.WindowManager.Model;
 using CommonServices.Accessibility;
 using HighlightModel;
 using SimpleSkin.ViewModels;
-using System.Linq;
 using CK.Windows;
 using System.Windows;
 using System.ComponentModel;
@@ -20,6 +19,7 @@ using System.Windows.Media;
 using CK.Windows.Helpers;
 using SimpleSkin.Res;
 using CK.Windows.App;
+using System.Globalization;
 
 namespace SimpleSkin
 {

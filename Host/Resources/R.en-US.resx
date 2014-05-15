@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvancedUserNotice" xml:space="preserve">
+    <value>(Advanced user)</value>
+  </data>
+  <data name="AppConfig" xml:space="preserve">
+    <value>Application Configuration</value>
+  </data>
+  <data name="AppFeature" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="AutoClickConfig" xml:space="preserve">
+    <value>Auto clic feature configuration</value>
+  </data>
+  <data name="AutoClickCountDownDuration" xml:space="preserve">
+    <value>Countdown duration</value>
+  </data>
+  <data name="AutoClickSectionName" xml:space="preserve">
+    <value>Auto click</value>
+  </data>
+  <data name="ClickTypeSelectorName" xml:space="preserve">
+    <value>Scroll to click</value>
+  </data>
+  <data name="AutoClickShowMousePanelOption" xml:space="preserve">
+    <value>Show a progress indicator above the pointer</value>
+  </data>
+  <data name="AutoClickTimeBeforeCountDownStarts" xml:space="preserve">
+    <value>Time before the countdown starts</value>
+  </data>
+  <data name="CiviKey" xml:space="preserve">
+    <value>CiviKey - Standard</value>
+  </data>
+  <data name="CKIsRunning" xml:space="preserve">
+    <value>CiviKey is running</value>
+  </data>
+  <data name="ComingSoon" xml:space="preserve">
+    <value>Coming soon !</value>
+  </data>
+  <data name="ComingSoonContent" xml:space="preserve">
+    <value>This feature is not implemented yet. We're working on it ! </value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ConfirmExitApp" xml:space="preserve">
+    <value>Are you sure you want to quit CiviKey?</value>
+  </data>
+  <data name="ContextIsEmpty" xml:space="preserve">
+    <value>The current context doesn't contain any keyboard definition. Please click on the picture to load another one.</value>
+  </data>
+  <data name="ContextLoadedContent" xml:space="preserve">
+    <value>You can now select a keyboard and start using CiviKey !</value>
+  </data>
+  <data name="ContextLoadedTitle" xml:space="preserve">
+    <value>The context has been successfully loaded.</value>
+  </data>
+  <data name="CopyError" xml:space="preserve">
+    <value>Copy the call stack</value>
+  </data>
+  <data name="EditConfig" xml:space="preserve">
+    <value>Click on the picture or on the new system tray icon to edit the configuration.</value>
+  </data>
+  <data name="EditSkin" xml:space="preserve">
+    <value>Start keyboard skin editor</value>
+  </data>
+  <data name="ErrorApplyingConfiguration" xml:space="preserve">
+    <value>An error occured during the plugin startup, or given requirements cannot be fullfilled. We cannot give you more informations yet, we're working on it.</value>
+  </data>
+  <data name="ExceptionNotificationTitle" xml:space="preserve">
+    <value>An exception has been raised !</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Keyboard" xml:space="preserve">
+    <value>Keyboard</value>
+  </data>
+  <data name="KeyboardChanged" xml:space="preserve">
+    <value>Current keyboard has changed</value>
+  </data>
+  <data name="KeyboardChangedContent" xml:space="preserve">
+    <value>The current keyboard has changed. You're now using the keyboard nammed {0}.</value>
+  </data>
+  <data name="Keyboards" xml:space="preserve">
+    <value>Keyboards</value>
+  </data>
+  <data name="LoadContext" xml:space="preserve">
+    <value>Load a context</value>
+  </data>
+  <data name="LoadUserConfig" xml:space="preserve">
+    <value>Load a user configuration</value>
+  </data>
+  <data name="ObjectExplorer" xml:space="preserve">
+    <value>Objects Explorer</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Oups" xml:space="preserve">
+    <value>Oups !</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="ShowSystrayIcon" xml:space="preserve">
+    <value>Show Systray icon</value>
+  </data>
+  <data name="ShowTaskbarIcon" xml:space="preserve">
+    <value>Show Taskbar icon</value>
+  </data>
+  <data name="SkinAutohideFeature" xml:space="preserve">
+    <value>Enable the autohide feature</value>
+  </data>
+  <data name="SkinAutohideTimeout" xml:space="preserve">
+    <value>Timeout until the skin disappear (in ms)</value>
+  </data>
+  <data name="SkinConfig" xml:space="preserve">
+    <value>On screen keyboard configuration</value>
+  </data>
+  <data name="SkinSectionName" xml:space="preserve">
+    <value>on screen keyboard</value>
+  </data>
+  <data name="SkinViewConfig" xml:space="preserve">
+    <value>Edit on screen keyboard visual configuration</value>
+  </data>
+  <data name="UnableToLoadContext" xml:space="preserve">
+    <value>An error occured during the loading. CiviKey cannot load the chosen context.</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>An update is available</value>
+  </data>
+  <data name="UpdateMessage" xml:space="preserve">
+    <value>A new version of CiviKey is available, would you like to launch the upgraded now ?</value>
+  </data>
+  <data name="ForbiddenAction" xml:space="preserve">
+    <value>The System's configuration has been corrupted</value>
+  </data>
+  <data name="ForbiddenActionTitle" xml:space="preserve">
+    <value>Forbidden action</value>
+  </data>
+  <data name="PluginThrewExceptionAtStart" xml:space="preserve">
+    <value>The plugin called {0} can't be launched, would you like to start CiviKey without this plugin ?</value>
+  </data>
+  <data name="PluginThrewExceptionAtStartTitle" xml:space="preserve">
+    <value>Error while launching a plugin</value>
+  </data>
+  <data name="ContextAddressRequired" xml:space="preserve">
+    <value>An address for the context is required.</value>
+  </data>
+  <data name="NewContextDisplayName" xml:space="preserve">
+    <value>Created on {0:D}</value>
+  </data>
+  <data name="FeatureEnable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="LaunchUpdate" xml:space="preserve">
+    <value>Update CiviKey</value>
+  </data>
+  <data name="RemindMeOfNewUpdates" xml:space="preserve">
+    <value>Remind me when new updates are available</value>
+  </data>
+  <data name="ExitConfirmation" xml:space="preserve">
+    <value>Do you really want to exit CiviKey ?</value>
+  </data>
+  <data name="FeatureDisable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="SkinEditorSectionName" xml:space="preserve">
+    <value>Keyboard edition</value>
+  </data>
+  <data name="ShareKeyboard" xml:space="preserve">
+    <value>Import or Export a keyboard</value>
+  </data>
+  <data name="ImportKeyboard" xml:space="preserve">
+    <value>Import a keyboard</value>
+  </data>
+  <data name="ExportKeyboard" xml:space="preserve">
+    <value>Export a keyboard</value>
+  </data>
+  <data name="ScrollConfig" xml:space="preserve">
+    <value>Edit scrolling configuration</value>
+  </data>
+  <data name="WordPredictionConfig" xml:space="preserve">
+    <value>Word Prediction configuration</value>
+  </data>
+  <data name="AdvancedAppConfig" xml:space="preserve">
+    <value>Advanced configuration</value>
+  </data>
+  <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
+    <value>Max suggested words (maximum)</value>
+  </data>
+  <data name="SkinBasicConfig" xml:space="preserve">
+    <value>Basic configuration</value>
+  </data>
+  <data name="WordPredictionInsertSpace" xml:space="preserve">
+    <value>Insert space after predicted words</value>
+  </data>
+  <data name="WordPredictionSectionName" xml:space="preserve">
+    <value>Word Prediction</value>
+  </data>
+  <data name="WordPredictionDisplayPredictionEditorWindow" xml:space="preserve">
+    <value>Afficher la fenêtre de l'éditeur de prédiction</value>
+  </data>
+  <data name="WordPredictionFilterAlreadySuggestedWord" xml:space="preserve">
+    <value>Filters already suggested words</value>
+  </data>
+  <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
+    <value>Uses semantic prediction</value>
+  </data>
+  <data name="Radar" xml:space="preserve">
+    <value>Radar</value>
+  </data>
+  <data name="RadarConfiguration" xml:space="preserve">
+    <value>Radar configuration</value>
+  </data>
+  <data name="ScreenScrollerConfiguration" xml:space="preserve">
+    <value>Screen scroler configuration</value>
+  </data>
+  <data name="ScreenScrolling" xml:space="preserve">
+    <value>Screen scrolling</value>
+  </data>
+  <data name="Scrolling" xml:space="preserve">
+    <value>General Scrolling</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="NoPointingDevice" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NoPointingDeviceDescription" xml:space="preserve">
+    <value>Stop all pointing mecanisms</value>
+  </data>
+  <data name="RadarDescription" xml:space="preserve">
+    <value>Move the pointer thanks to the "radar" mecanism</value>
+  </data>
+  <data name="ScreenScrollingDescription" xml:space="preserve">
+    <value>Create a grid on the screen to move the mouse pointer</value>
+  </data>
+  <data name="ShowEditor" xml:space="preserve">
+    <value>Show the editor panel</value>
+  </data>
+  <data name="EnableScrolling" xml:space="preserve">
+    <value>Enable scrolling on the element</value>
+    </data>
+  <data name="Credits" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="ForbidScrolling" xml:space="preserve">
+    <value>Forbid scrolling on this element</value>
+  </data>
+  <data name="OtherScrollConfig" xml:space="preserve">
+    <value>Advanced configurations</value>
+  </data>
+</root>

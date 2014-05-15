@@ -64,10 +64,6 @@ namespace Host
             //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
 #endif
 
-            CultureInfo ci = new CultureInfo( "fr-FR" );
-            Thread.CurrentThread.CurrentUICulture = ci;
-            Thread.CurrentThread.CurrentCulture = ci;
-
             //Getting the distributionname from AssemblyInfo
             string distributionName = "Std";
             var attribute = Assembly.GetExecutingAssembly()

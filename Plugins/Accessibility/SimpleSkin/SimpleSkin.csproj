@@ -135,6 +135,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
+    <Compile Include="Res\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Res\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -252,6 +257,10 @@
     <Resource Include="Images\retarr.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Res\R.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Res\R.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.fr.Designer.cs</LastGenOutput>

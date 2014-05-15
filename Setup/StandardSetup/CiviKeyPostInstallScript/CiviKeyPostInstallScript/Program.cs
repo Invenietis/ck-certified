@@ -89,7 +89,7 @@ namespace CiviKeyPostInstallScript
                             0 - Version
                             1 - AppName
                             2 - DistributionName
-                            3 - AupdateServerUrl
+                            3 - UpdateServerUrl
                             4 - UpdaterGUID
                             5 - RemoveExistingCtx
                             6 - IsStandAloneInstance
@@ -172,7 +172,9 @@ namespace CiviKeyPostInstallScript
                 xPathDoc.Load( systemConfPath );
                 XPathNavigator xPathNav = xPathDoc.CreateNavigator();
 
-                string xPathExp = "//p[@guid='" + hostGuid.ToLower() + "']";
+                //Console.Read();
+
+                string xPathExp = "//p[@guid='" + hostGuid.ToLower() + "']/data[@key='Version']";
                 XPathNodeIterator iterator = xPathNav.Select( xPathNav.Compile( xPathExp ) );
                 if( iterator.Count == 1 )
                 {

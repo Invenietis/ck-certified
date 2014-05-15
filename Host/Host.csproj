@@ -237,7 +237,7 @@
     <Compile Include="ViewModels\Tools\CheckboxConfigItemApply.cs" />
     <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
-    <Compile Include="ViewModels\ThirdLevel\ImplementationSelector.cs" />
+    <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="ViewModels\Tools\TextItem.cs" />
     <Compile Include="ViewModels\Tools\TitleItem.cs" />

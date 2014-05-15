@@ -115,7 +115,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Countdown duration.
+        ///   Looks up a localized string similar to Countdown duration (ms).
         /// </summary>
         public static string AutoClickCountDownDuration {
             get {
@@ -142,7 +142,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time before the countdown starts.
+        ///   Looks up a localized string similar to Time before the countdown starts (ms).
         /// </summary>
         public static string AutoClickTimeBeforeCountDownStarts {
             get {

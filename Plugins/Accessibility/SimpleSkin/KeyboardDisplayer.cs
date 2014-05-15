@@ -220,6 +220,7 @@ namespace SimpleSkin
             skinInfo.Dispatcher.Invoke( (Action)(() =>
             {
                 skinInfo.Skin.Show();
+                skinInfo.Skin.ShowInTaskbar = false;
             }) );
             SetWindowPlacement( skinInfo );
 
@@ -683,20 +684,11 @@ namespace SimpleSkin
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
-            var mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
-            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
-            mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-            var customMessageBox = new CustomMsgBox( ref mvm );
-            customMessageBox.ShowDialog();
+            SkinWindow sw = sender as SkinWindow;
+            Debug.Assert( sw != null );
 
-            e.Cancel = mvm.ModalResult != ModalResult.Yes;
-            if( !e.Cancel )
-            {
-                NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() =>
-                {
-                    Context.RaiseExitApplication( true );
-                }) );
-            }
+            if( !_skins.Values.Single( s => s.Skin == sw ).IsClosing )
+                e.Cancel = true;
         }
 
         #endregion

@@ -266,7 +266,7 @@ namespace MouseRadar
                     }
                     else
                     {
-                        moveX = 0;
+                        moveX = curScreen.Bounds.Bottom;
                         moveY = (int)p.Y;
                     }
                     break;
@@ -283,7 +283,7 @@ namespace MouseRadar
                     }
                     else
                     {
-                        moveY = 0;
+                        moveY = curScreen.Bounds.Top;
                         moveX = (int)p.X;
                     }
 
@@ -360,11 +360,13 @@ namespace MouseRadar
             Screen current = Screen.FromPoint( new System.Drawing.Point( (int)p.X, (int)p.Y ) );
 
             ScreenBound collision = ScreenBound.None;
-            if( p.X - precision <= current.Bounds.Left ) collision = ScreenBound.Left;
-            if( p.X + precision >= current.Bounds.Right - 1 ) //X can't be equal to current.Bounds.Right (current.Bounds.Right - 1 max)
+            if( p.X - precision <= current.Bounds.Left ) 
+                collision = ScreenBound.Left;
+            if( p.X + precision >= current.Bounds.Right ) //X can't be equal to current.Bounds.Right (current.Bounds.Right - 1 max)
                 collision = ScreenBound.Right;
-            if( p.Y - precision <= current.Bounds.Top ) collision = ScreenBound.Top;
-            if( p.Y + precision >= current.Bounds.Bottom - 1 )
+            if( p.Y - precision <= current.Bounds.Top ) 
+                collision = ScreenBound.Top;
+            if( p.Y + precision >= current.Bounds.Bottom )
                 collision = ScreenBound.Bottom; //Y can't be equal to current.Bounds.Bottom (current.Bounds.Bottom - 1 max)
             return collision;
         }

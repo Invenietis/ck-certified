@@ -130,26 +130,15 @@
     <Compile Include="KeyboardDisplayer.cs" />
     <Compile Include="MainKeyboardManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Res\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
     <Compile Include="Res\R.fr.Designer.cs">
       <DependentUpon>R.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="R.Designer.cs">
-      <DependentUpon>R.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="R.en-US.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>R.resx</DependentUpon>
-      <DependentUpon>R.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="R.fr.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
@@ -272,18 +261,6 @@
       <LastGenOutput>R.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <EmbeddedResource Include="R.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="R.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="R.en-US.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Res\helpcontent.zip" />
   </ItemGroup>
   <ItemGroup>

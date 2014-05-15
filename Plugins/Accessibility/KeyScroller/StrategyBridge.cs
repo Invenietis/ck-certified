@@ -83,7 +83,13 @@ namespace Scroller
         public void SwitchTo( string strategyName )
         {
             if( !Implementations.ContainsKey( strategyName ) )
-                throw new InvalidOperationException( "Cannot switch to the unknown strategy : " + strategyName );
+            {
+                strategyName = ZoneScrollingStrategy.StrategyName;
+                if( !Implementations.ContainsKey( strategyName ) ) throw new InvalidOperationException( "trying to switch ot an unknown strategy (" + strategyName + "). Fallbacking failed (there are no implementations available)" );
+
+                //A previous version of CiviKey has strategies that don't exist anymore. Loosening the process by implementing a fallback.
+                //throw new InvalidOperationException( "Cannot switch to the unknown strategy : " + strategyName );
+            }
 
             _current.Stop();
             _current = Implementations[strategyName];

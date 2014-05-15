@@ -12,7 +12,7 @@ namespace Scroller
     [StrategyAttribute( ZoneScrollingStrategy.StrategyName )]
     internal class ZoneScrollingStrategy : ScrollingStrategyBase
     {
-        const string StrategyName = "ZoneScrollingStrategy";
+        public const string StrategyName = "ZoneScrollingStrategy";
 
         public override string Name
         {

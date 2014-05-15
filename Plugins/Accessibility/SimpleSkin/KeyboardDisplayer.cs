@@ -18,8 +18,6 @@ using Host.Services;
 using System.Windows.Media;
 using CK.Windows.Helpers;
 using SimpleSkin.Res;
-using CK.Windows.App;
-using System.Globalization;
 using System.Linq;
 
 namespace SimpleSkin

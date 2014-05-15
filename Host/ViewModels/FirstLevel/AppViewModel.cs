@@ -229,20 +229,6 @@ namespace Host
             }
         }
 
-        ICommand _exitHostCommand;
-        public ICommand ExitHostCommand
-        {
-            get
-            {
-                if( _exitHostCommand == null )
-                {
-                    _exitHostCommand = new VMCommand( () => CivikeyHost.Context.RaiseExitApplication( true ) );
-                }
-
-                return _exitHostCommand;
-            }
-        }
-
         /// <summary>
         /// Gets whether the window is visible or not.
         /// This boolean is only valid when <see cref="Host.AppViewModel.ShowTaskbarIcon"/> is set to false, otherwise it doesn't track the actual visibility of the window.

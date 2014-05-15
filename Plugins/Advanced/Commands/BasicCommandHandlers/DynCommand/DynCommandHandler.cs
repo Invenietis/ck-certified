@@ -29,6 +29,7 @@ using CK.Context;
 using CK.WindowManager.Model;
 using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using CK.Windows.App;
 
 namespace BasicCommandHandlers
 {
@@ -75,7 +76,16 @@ namespace BasicCommandHandlers
             _actions = new Dictionary<string, Action>
             {
                 {"hideskin", HideSkin},
-                {"shutdown", () => Context.RaiseExitApplication(true)},
+                {"shutdown", () => {
+                      var mvm = new ModalViewModel( R.Exit, R.ConfirmExitApp );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+                    var customMessageBox = new CustomMsgBox( ref mvm );
+                    customMessageBox.ShowDialog();
+
+                    if( mvm.ModalResult == ModalResult.Yes )
+                        Context.RaiseExitApplication( true );
+                }},
                 {"togglehostminimized", ToggleHostMinimized},
                 {
                     "windowskey", () =>

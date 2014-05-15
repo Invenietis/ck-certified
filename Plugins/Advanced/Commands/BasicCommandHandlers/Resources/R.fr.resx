@@ -285,4 +285,16 @@
   <data name="TextTemplateTitle" xml:space="preserve">
     <value>Editer un modèle</value>
   </data>
+  <data name="ConfirmExitApp" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir quitter CiviKey ?</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
 </root>

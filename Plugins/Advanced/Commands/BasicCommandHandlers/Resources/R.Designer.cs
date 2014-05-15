@@ -133,6 +133,15 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to quit CiviKey?.
+        /// </summary>
+        internal static string ConfirmExitApp {
+            get {
+                return ResourceManager.GetString("ConfirmExitApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Double left click.
         /// </summary>
         internal static string DoubleLeftClick {
@@ -192,6 +201,15 @@ namespace BasicCommandHandlers.Resources {
         internal static string DynCommandWindowsKey {
             get {
                 return ResourceManager.GetString("DynCommandWindowsKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
             }
         }
         
@@ -412,6 +430,15 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Push the left button.
         /// </summary>
         internal static string PushLeft {
@@ -579,6 +606,15 @@ namespace BasicCommandHandlers.Resources {
         internal static string UpRight {
             get {
                 return ResourceManager.GetString("UpRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

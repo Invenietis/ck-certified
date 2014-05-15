@@ -19,6 +19,7 @@ using Host.Services;
 using System.Windows.Media;
 using CK.Windows.Helpers;
 using SimpleSkin.Res;
+using CK.Windows.App;
 
 namespace SimpleSkin
 {
@@ -207,10 +208,8 @@ namespace SimpleSkin
             var vm = new VMContextActiveKeyboard( NoFocusManager, keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config );
             var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
 
-            bool sitb = keyboard.Name != "Prediction";
             var skin = NoFocusManager.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )
             {
-                ShowInTaskbar = sitb,
                 DataContext = vm
             } );
 
@@ -248,6 +247,8 @@ namespace SimpleSkin
             UnregisterFromHighlighter( skin );
             UnregisterTopMostService( skin );
 
+            placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
+
             skin.ViewModel.Dispose();
 
             if( _skins.Count == 1 && _miniView != null && _miniView.Visibility != Visibility.Hidden )
@@ -258,8 +259,6 @@ namespace SimpleSkin
                 _miniView.Hide();
                 _viewHidden = false;
             }
-
-            placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
 
             //temporary 03/03/2014
             if( !skin.IsClosing )
@@ -684,22 +683,20 @@ namespace SimpleSkin
 
         void OnWindowClosing( object sender, System.ComponentModel.CancelEventArgs e )
         {
-            NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() =>
+            var mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+            var customMessageBox = new CustomMsgBox( ref mvm );
+            customMessageBox.ShowDialog();
+
+            e.Cancel = mvm.ModalResult != ModalResult.Yes;
+            if( !e.Cancel )
             {
-                SkinWindow sw = sender as SkinWindow;
-
-                Debug.Assert( sw != null );
-                Debug.Assert( _skins.Values.FirstOrDefault( si => si.Skin == sw ) != null );
-
-                SkinInfo skinInfo = _skins.Values.First( si => si.Skin == sw );
-                if( !skinInfo.IsClosing )
+                NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() =>
                 {
-                    skinInfo.IsClosing = true;
-                    skinInfo.ViewModel.KeyboardVM.Keyboard.IsActive = false;
-                }
-
-                DirtyTemporaryPredictionInjectionInCurrentKeyboard();
-            }) );
+                    Context.RaiseExitApplication( true );
+                }) );
+            }
         }
 
         #endregion

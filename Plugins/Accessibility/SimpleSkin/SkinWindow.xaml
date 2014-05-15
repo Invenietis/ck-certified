@@ -10,6 +10,7 @@
     Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
     MinHeight="40" MinWidth="40"
+    ShowInTaskbar="False"
     ShowActivated="False" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <ctrls:NotNullConverter x:Key="notnull"/>

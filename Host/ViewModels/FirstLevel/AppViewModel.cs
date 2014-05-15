@@ -181,22 +181,25 @@ namespace Host
 
             if( !_closing )
             {
-                _closing = true;
-                var thisView = GetView( null ) as Window;
-                var bestParent = App.Current.GetTopWindow();
-
-                var mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
-                mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
-                mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-                var customMessageBox = new CustomMsgBox( ref mvm );
-                customMessageBox.ShowDialog();
-
-                e.Cancel = mvm.ModalResult != ModalResult.Yes;
-
-                _closing = !e.Cancel;
-                if( !_closing && bestParent != thisView )
+                if( !e.HostShouldExit )
                 {
-                    thisView.Activate();
+                    _closing = true;
+                    var thisView = GetView( null ) as Window;
+                    var bestParent = App.Current.GetTopWindow();
+
+                    var mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+                    var customMessageBox = new CustomMsgBox( ref mvm );
+                    customMessageBox.ShowDialog();
+
+                    e.Cancel = mvm.ModalResult != ModalResult.Yes;
+
+                    _closing = !e.Cancel;
+                    if( !_closing && bestParent != thisView )
+                    {
+                        thisView.Activate();
+                    }
                 }
             }
             else

@@ -80,6 +80,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Windows.App, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.App.2.10.1-develop\lib\net40\CK.Windows.App.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Windows.Core, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Windows.Core.2.10.6-develop\lib\net40\CK.Windows.Core.dll</HintPath>
@@ -131,10 +135,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Res\R.Designer.cs">
+    <Compile Include="R.Designer.cs">
+      <DependentUpon>R.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="R.en-US.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
+      <DependentUpon>R.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="R.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="SkinWindow.xaml.cs">
       <DependentUpon>SkinWindow.xaml</DependentUpon>
@@ -257,6 +272,18 @@
       <LastGenOutput>R.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <EmbeddedResource Include="R.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="R.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="R.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Res\helpcontent.zip" />
   </ItemGroup>
   <ItemGroup>

@@ -468,7 +468,6 @@ namespace CK.WindowManager
                     {
                         Bindings.Add( new SerializableBinding( r.GetAttribute( 0 ), r.GetAttribute( 1 ), r.GetAttributeEnum<BindingPosition>( "Position", BindingPosition.None ) ) );
                         r.Read();
-                        r.ReadEndElement( "Bind" );
                     }
                 }
 

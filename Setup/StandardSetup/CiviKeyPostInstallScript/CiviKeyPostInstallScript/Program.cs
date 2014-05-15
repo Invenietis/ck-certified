@@ -413,24 +413,26 @@ namespace CiviKeyPostInstallScript
             iterator.Current.MoveToFirstChild();
             //We are on the <Bindings> element
 
-            iterator.Current.PrependChildElement( String.Empty, "Bind", String.Empty, String.Empty );
-            iterator.Current.MoveToFirstChild();
+            iterator.Current.AppendChild( "<Bind Master=\"Azerty\" Slave=\"Prediction\" Position=\"Top\" />" );
+            iterator.Current.AppendChild( "<Bind Master=\"Ergonomique\" Slave=\"Prediction\" Position=\"Top\" />" );
+            iterator.Current.AppendChild( "<Bind Master=\"ClickSelector\" Slave=\"AutoClick\" Position=\"Top\" />" );
+            //iterator.Current.MoveToFirstChild();
             //We are on the <Bind> element
-            iterator.Current.CreateAttribute( null, "Master", null, "Azerty" );
-            iterator.Current.CreateAttribute( null, "Slave", null, "Prediction" );
-            iterator.Current.CreateAttribute( null, "Position", null, "Top" );
+            //iterator.Current.CreateAttribute( null, "Master", null, "Azerty" );
+            //iterator.Current.CreateAttribute( null, "Slave", null, "Prediction" );
+            //iterator.Current.CreateAttribute( null, "Position", null, "Top" );
 
-            iterator.Current.InsertElementAfter( String.Empty, "Bind", String.Empty, String.Empty );
-            iterator.Current.MoveToFollowing( "Bind", String.Empty );
-            iterator.Current.CreateAttribute( null, "Master", null, "Ergonomique" );
-            iterator.Current.CreateAttribute( null, "Slave", null, "Prediction" );
-            iterator.Current.CreateAttribute( null, "Position", null, "Top" );
+            //iterator.Current.InsertElementAfter( String.Empty, "Bind", String.Empty, String.Empty );
+            //iterator.Current.MoveToFollowing( "Bind", String.Empty );
+            //iterator.Current.CreateAttribute( null, "Master", null, "Ergonomique" );
+            //iterator.Current.CreateAttribute( null, "Slave", null, "Prediction" );
+            //iterator.Current.CreateAttribute( null, "Position", null, "Top" );
 
-            iterator.Current.InsertElementAfter( String.Empty, "Bind", String.Empty, String.Empty );
-            iterator.Current.MoveToFollowing( "Bind", String.Empty );
-            iterator.Current.CreateAttribute( null, "Master", null, "ClickSelector" );
-            iterator.Current.CreateAttribute( null, "Slave", null, "AutoClick" );
-            iterator.Current.CreateAttribute( null, "Position", null, "Top" );
+            //iterator.Current.InsertElementAfter( String.Empty, "Bind", String.Empty, String.Empty );
+            //iterator.Current.MoveToFollowing( "Bind", String.Empty );
+            //iterator.Current.CreateAttribute( null, "Master", null, "ClickSelector" );
+            //iterator.Current.CreateAttribute( null, "Slave", null, "AutoClick" );
+            //iterator.Current.CreateAttribute( null, "Position", null, "Top" );
         }
 
         private static void AddEntryToSystemConf( string key, string value, string pluginId, string pluginName, XPathNavigator xPathNav )

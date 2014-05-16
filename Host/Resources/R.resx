@@ -381,4 +381,16 @@
   <data name="OtherScrollConfig" xml:space="preserve">
     <value>Advanced configurations</value>
   </data>
+  <data name="ActiveModules" xml:space="preserve">
+    <value>List of active modules : </value>
+  </data>
+  <data name="ForbiddenModules" xml:space="preserve">
+    <value>List of modules which cannot be scrolled on : </value>
+  </data>
+  <data name="ScrollableElements" xml:space="preserve">
+    <value>Scrollable modules</value>
+  </data>
+  <data name="UnScrollableElements" xml:space="preserve">
+    <value>Not scrollable modules</value>
+  </data>
 </root>

@@ -57,22 +57,22 @@ namespace Host.VM
         {
             if( _fromService == null && _fromConfig == null )
             {
-                var s = AddActivableSection( "Défilement", "Cette section permet de choisir sur quels éléments utiliser le défilement" );
+                var s = AddActivableSection( R.Scrolling, String.Empty );
 
                 if( _fromService == null )
                 {
                     _fromService = new ScrollingConfigGroup( _app.ConfigManager );
                     s.Items.Add( _fromService );
-                    _fromService.Description = "Liste des modules actifs : ";
-                    _fromService.DisplayName = "Elements défilables";
+                    _fromService.Description = R.ActiveModules;
+                    _fromService.DisplayName = R.ScrollableElements;
                 }
 
                 if( _fromConfig == null )
                 {
                     _fromConfig = new ScrollingConfigGroup( _app.ConfigManager );
                     s.Items.Add( _fromConfig );
-                    _fromConfig.Description = "Liste des modules interdits au défilement : ";
-                    _fromConfig.DisplayName = "Elements non défilables";
+                    _fromConfig.Description = R.ForbiddenModules;
+                    _fromConfig.DisplayName = R.UnScrollableElements;
                 }
 
                 _applyButton = new IsDirtyConfigItemApply( ConfigManager, new VMCommand( Apply ), () => { return IsDirty; } ) { DisplayName = R.Apply };

@@ -381,4 +381,16 @@
   <data name="Credits" xml:space="preserve">
     <value>Crédits</value>
   </data>
+  <data name="ActiveModules" xml:space="preserve">
+    <value>Liste des modules actifs : </value>
+  </data>
+  <data name="ForbiddenModules" xml:space="preserve">
+    <value>Liste des modules interdits au défilement : </value>
+  </data>
+  <data name="ScrollableElements" xml:space="preserve">
+    <value>Modules défilables</value>
+  </data>
+  <data name="UnScrollableElements" xml:space="preserve">
+    <value>Modules non défilables</value>
+  </data>
 </root>

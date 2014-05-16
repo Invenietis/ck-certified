@@ -1,4 +1,5 @@
-﻿#region LGPL License
+﻿
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\Views\CustomControls\ActionOnMouseEnterButton.cs) is part of CiviKey. 
 *  

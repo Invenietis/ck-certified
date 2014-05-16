@@ -30,6 +30,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using CK.Interop;
+using CK.Windows.Interop;
 using System.Diagnostics;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
@@ -62,73 +63,59 @@ namespace SimpleSkin
         // 
         private void Resize(object sender, MouseButtonEventArgs e)
         {
-            ob.resizeWindow(sender);
-        }
-
-        private void DisplayResizeCursor(object sender, MouseEventArgs e)
-        {
-            ob.displayResizeCursor(sender);
-        }
-
-        private void ResetCursor(object sender, MouseEventArgs e)
-        {
-            ob.resetCursor();
-        }
-
-        private void Drag(object sender, MouseButtonEventArgs e)
-        {
-            ob.dragWindow();
+            ob.Resize(sender);
         }
     }
 }
 
-class WindowResizer
+public class WindowResizer
 {
-    private const int WM_SYSCOMMAND = 0x112;
-    private HwndSource hwndSource;
-    Window activeWin;
+    WindowInteropHelper _window;
 
-    public WindowResizer( Window activeW )
+    public WindowResizer( Window window )
     {
-        activeWin = activeW as Window;
-
-        activeWin.SourceInitialized += new EventHandler( InitializeWindowSource );
+        _window = new WindowInteropHelper(window);
     }
 
 
-    public void resetCursor()
+    private void ResizeWindow( ResizeDirection direction )
     {
-        if( Mouse.LeftButton != MouseButtonState.Pressed )
+        Win.Functions.SendMessage( _window.Handle, Win.WM_SYSCOMMAND, (IntPtr)( Win.WMSysCommand.SIZE + (int)direction ), IntPtr.Zero );
+    }
+
+    public void Resize( object sender )
+    {
+        Rectangle clickedRectangle = sender as Rectangle;
+
+        switch( clickedRectangle.Name )
         {
-            activeWin.Cursor = Cursors.Arrow;
+            case "top":
+                ResizeWindow( ResizeDirection.Top );
+                break;
+            case "bottom":
+                ResizeWindow( ResizeDirection.Bottom );
+                break;
+            case "left":
+                ResizeWindow( ResizeDirection.Left );
+                break;
+            case "right":
+                ResizeWindow( ResizeDirection.Right );
+                break;
+            case "topLeft":
+                ResizeWindow( ResizeDirection.TopLeft );
+                break;
+            case "topRight":
+                ResizeWindow( ResizeDirection.TopRight );
+                break;
+            case "bottomLeft":
+                ResizeWindow( ResizeDirection.BottomLeft );
+                break;
+            case "bottomRight":
+                ResizeWindow( ResizeDirection.BottomRight );
+                break;
+            default:
+                break;
         }
-    }
-
-    public void dragWindow()
-    {
-        activeWin.DragMove();
-    }
-
-    private void InitializeWindowSource( object sender, EventArgs e )
-    {
-        hwndSource = PresentationSource.FromVisual( (Visual)sender ) as HwndSource;
-        hwndSource.AddHook( new HwndSourceHook( WndProc ) );
-    }
-
-    IntPtr retInt = IntPtr.Zero;
-
-    private IntPtr WndProc( IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
-    {
-        Debug.WriteLine( "WndProc messages: " + msg.ToString() );
-        //
-        // Check incoming window system messages
-        //
-        if( msg == WM_SYSCOMMAND )
-        {
-            Debug.WriteLine( "WndProc messages: " + msg.ToString() );
-        }
-
-        return IntPtr.Zero;
     }
 
     public enum ResizeDirection
@@ -141,94 +128,5 @@ class WindowResizer
         Bottom = 6,
         BottomLeft = 7,
         BottomRight = 8,
-    }
-
-    [System.Runtime.InteropServices.DllImport( "user32.dll", CharSet = CharSet.Auto )]
-    private static extern IntPtr SendMessage( IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam );
-
-
-    private void ResizeWindow( ResizeDirection direction )
-    {
-        SendMessage( hwndSource.Handle, WM_SYSCOMMAND, (IntPtr)(61440 + direction), IntPtr.Zero );
-    }
-
-
-    public void resizeWindow( object sender )
-    {
-        Rectangle clickedRectangle = sender as Rectangle;
-
-        switch( clickedRectangle.Name )
-        {
-            case "top":
-                activeWin.Cursor = Cursors.SizeNS;
-                ResizeWindow( ResizeDirection.Top );
-                break;
-            case "bottom":
-                activeWin.Cursor = Cursors.SizeNS;
-                ResizeWindow( ResizeDirection.Bottom );
-                break;
-            case "left":
-                activeWin.Cursor = Cursors.SizeWE;
-                ResizeWindow( ResizeDirection.Left );
-                break;
-            case "right":
-                activeWin.Cursor = Cursors.SizeWE;
-                ResizeWindow( ResizeDirection.Right );
-                break;
-            case "topLeft":
-                activeWin.Cursor = Cursors.SizeNWSE;
-                ResizeWindow( ResizeDirection.TopLeft );
-                break;
-            case "topRight":
-                activeWin.Cursor = Cursors.SizeNESW;
-                ResizeWindow( ResizeDirection.TopRight );
-                break;
-            case "bottomLeft":
-                activeWin.Cursor = Cursors.SizeNESW;
-                ResizeWindow( ResizeDirection.BottomLeft );
-                break;
-            case "bottomRight":
-                activeWin.Cursor = Cursors.SizeNWSE;
-                ResizeWindow( ResizeDirection.BottomRight );
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    public void displayResizeCursor( object sender )
-    {
-        Rectangle clickedRectangle = sender as Rectangle;
-
-        switch( clickedRectangle.Name )
-        {
-            case "top":
-                activeWin.Cursor = Cursors.SizeNS;
-                break;
-            case "bottom":
-                activeWin.Cursor = Cursors.SizeNS;
-                break;
-            case "left":
-                activeWin.Cursor = Cursors.SizeWE;
-                break;
-            case "right":
-                activeWin.Cursor = Cursors.SizeWE;
-                break;
-            case "topLeft":
-                activeWin.Cursor = Cursors.SizeNWSE;
-                break;
-            case "topRight":
-                activeWin.Cursor = Cursors.SizeNESW;
-                break;
-            case "bottomLeft":
-                activeWin.Cursor = Cursors.SizeNESW;
-                break;
-            case "bottomRight":
-                activeWin.Cursor = Cursors.SizeNWSE;
-                break;
-            default:
-                break;
-        }
     }
 }

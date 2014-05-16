@@ -1,11 +1,14 @@
 ﻿<ckwincore:CKNoFocusWindow x:Class="SimpleSkin.SkinWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:local="clr-namespace:SimpleSkin"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="http://schemas.civikey.org/StandardViews"
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     xmlns:helpers="clr-namespace:SimpleSkin.Helpers"
+    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"         
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     WindowStartupLocation="Manual"
     Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
@@ -17,20 +20,6 @@
         <SolidColorBrush Color="#dddddd" Opacity="0.5" />
     </ckwincore:CKWindow.Background>
     <Window.Resources>
-
-        <LinearGradientBrush x:Key="ContentBack">
-
-            <LinearGradientBrush.GradientStops>
-
-                <GradientStop Color="#121212" Offset="0"/>
-
-                <GradientStop Color="Gray" Offset=".5"/>
-
-                <GradientStop Color="#181818" Offset="1.2"/>
-
-            </LinearGradientBrush.GradientStops>
-
-        </LinearGradientBrush>
 
         <ctrls:NotNullConverter x:Key="notnull"/>
         <Style TargetType="{x:Type view:StdKeyboardView}">
@@ -114,33 +103,46 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
+        <Style TargetType="{x:Type view:ResizableContainer}">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type view:ResizableContainer}">
+                            <Border BorderThickness="5" BorderBrush="#4B4CA6">
+                                <Grid>
+                                    <!--Content Section-->
+                                    <ContentControl Content="{TemplateBinding Content}"></ContentControl>
+
+                                    <Rectangle Cursor="SizeNS" Name="bottom" Height="7" Margin="10,0,10,-5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent"></Rectangle>
+                                    <Rectangle Cursor="SizeNS" Name="top" Height="7" Margin="10,-5,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
+
+                                    <Rectangle Cursor="SizeWE" Name="left" Width="7" Margin="-5,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Stretch" PreviewMouseDown="Resize" Fill="Transparent" />
+                                    <Rectangle Cursor="SizeWE" Name="right" Width="7" Margin="0,10,-5,10" HorizontalAlignment="Right"  VerticalAlignment="Stretch" PreviewMouseDown="Resize" Fill="Transparent" />
+
+                                    <Rectangle Cursor="SizeNWSE" Name="topLeft" Height="10" Width="10" Margin="-5,-5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
+                                    <Rectangle Cursor="SizeNESW" Name="bottomLeft" Height="10" Width="10" Margin="-5,0,0,-5" HorizontalAlignment="Left" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
+                                    <Rectangle Cursor="SizeNWSE" Name="bottomRight" Height="10" Width="10" Margin="0,0,-5,-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
+                                    <Rectangle Cursor="SizeNESW" Name="topRight" Height="10" Width="10" Margin="0,-5,-5,0" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
+
+                                </Grid>
+
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
     </Window.Resources>
-
-    <Border BorderThickness="5" BorderBrush="#4B4CA6">
-
-        <Grid>
-            <!--Content Section-->
-
+    <view:ResizableContainer>
+        <view:ResizableContainer.Content>
             <Grid Grid.Row="1">
-
                 <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
                 <Viewbox Stretch="Fill" >
                     <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
                 </Viewbox>
             </Grid>
-            
-            <Rectangle Name="bottom" Height="10" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-            <Rectangle Name="top" Height="10" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
+        </view:ResizableContainer.Content>
+    </view:ResizableContainer>
 
-            <Rectangle Name="left" Width="10" Margin="0,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Stretch" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-            <Rectangle Name="right" Width="10" Margin="0,10,0,10" HorizontalAlignment="Right"  VerticalAlignment="Stretch" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-
-            <Rectangle Name="topLeft" Height="15" Width="15" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-            <Rectangle Name="bottomLeft" Height="15" Width="15" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-            <Rectangle Name="bottomRight" Height="15" Width="15" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-            <Rectangle Name="topRight" Height="15" Width="15" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Top" MouseEnter="DisplayResizeCursor" MouseLeave="ResetCursor" PreviewMouseDown="Resize" Fill="Transparent" />
-
-        </Grid>
-
-    </Border>
 </ckwincore:CKNoFocusWindow>

@@ -32,6 +32,7 @@ using CK.Plugin.Config;
 using CK.Windows;
 using CK.WindowManager.Model;
 using AutoClick.Res;
+using System.ComponentModel;
 
 namespace CK.Plugins.AutoClick
 {
@@ -69,6 +70,7 @@ namespace CK.Plugins.AutoClick
 
         public bool Setup( IPluginSetupInfo info )
         {
+            _isClosing = false;
             ClicksVM = new ClicksVM() { Holder = this };
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             return true;
@@ -81,6 +83,7 @@ namespace CK.Plugins.AutoClick
             int defaultWidth = defaultHeight / 4;
 
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
+            _clickSelectorWindow.Closing += OnWindowClosing;
 
             InitializeHighlighter();
             InitializeWindowManager();
@@ -102,6 +105,13 @@ namespace CK.Plugins.AutoClick
             CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
         }
 
+        bool _isClosing;
+        void OnWindowClosing( object sender, CancelEventArgs e )
+        {
+            if( !_isClosing )
+                e.Cancel = true;
+        }
+
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
         {
             _clickSelectorWindow.Top = 100;
@@ -112,6 +122,8 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
+            _isClosing = true;
+
             TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
 
             UninitializeTopMost();

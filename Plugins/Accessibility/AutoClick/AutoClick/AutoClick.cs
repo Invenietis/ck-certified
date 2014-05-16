@@ -81,6 +81,7 @@ namespace CK.Plugins.AutoClick
 
         public bool IsEditorOpened { get { return _editorWindow.IsVisible; } }
 
+        bool _isClosing;
         bool _isPaused;
         public bool IsPaused
         {
@@ -128,8 +129,9 @@ namespace CK.Plugins.AutoClick
         public bool Setup( IPluginSetupInfo info )
         {
             _isPaused = true;
+            _isClosing = false;
 
-            defaultHeight = (int)( System.Windows.SystemParameters.WorkArea.Width ) / 10;
+            defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 10;
             defaultWidth = defaultHeight / 2;
 
             return true;
@@ -138,6 +140,7 @@ namespace CK.Plugins.AutoClick
         public void Start()
         {
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
+            _autoClickWindow.Closing += OnWindowClosing;
 
             if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
@@ -162,7 +165,7 @@ namespace CK.Plugins.AutoClick
 
             //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
             if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_autoClickWindow.Left, (int)_autoClickWindow.Top ) )
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)( _autoClickWindow.Left + _autoClickWindow.ActualWidth ), (int)_autoClickWindow.Top ) ) )
+                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_autoClickWindow.Left + _autoClickWindow.ActualWidth), (int)_autoClickWindow.Top ) ) )
             {
                 SetDefaultWindowPosition( defaultWidth, defaultHeight );
             }
@@ -171,6 +174,12 @@ namespace CK.Plugins.AutoClick
 
             InitializeWindowManager();
             InitializeTopMost();
+        }
+
+        void OnWindowClosing( object sender, CancelEventArgs e )
+        {
+            if( !_isClosing )
+                e.Cancel = true;
         }
 
         private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
@@ -183,6 +192,8 @@ namespace CK.Plugins.AutoClick
 
         public void Stop()
         {
+            _isClosing = true;
+
             UninitializeTopMost();
             UninitializeWindowManager();
 
@@ -522,13 +533,13 @@ namespace CK.Plugins.AutoClick
         {
             get
             {
-                return _showHelpCommand ?? ( _showHelpCommand = new CK.Windows.App.VMCommand( () =>
+                return _showHelpCommand ?? (_showHelpCommand = new CK.Windows.App.VMCommand( () =>
                 {
                     if( HelpService.Status == InternalRunningStatus.Started )
                     {
                         HelpService.Service.ShowHelpFor( PluginId, true );
                     }
-                } ) );
+                } ));
             }
         }
 

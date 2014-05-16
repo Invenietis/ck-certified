@@ -83,7 +83,10 @@ namespace SimpleSkin.ViewModels
 
             UpdateW();
             UpdateH();
-            SafeUpdateInsideBorderColor();
+            SafeUpdateKeyboardOpacity();
+            SafeUpdateKeyboardBackgroundColor();
+            SafeUpdateKeyboardBorderColor();
+            SafeUpdateKeyboardBorderThickness();
             UpdateHighlightBackground();
             UpdateHighlightFontColor();
             UpdateLoopCount();
@@ -230,11 +233,32 @@ namespace SimpleSkin.ViewModels
                             OnPropertyChanged( "BackgroundImagePath" );
                         }) );
                         break;
-                    case "InsideBorderColor":
-                        SafeUpdateInsideBorderColor();
+                    case "KeyboardBackgroundColor":
+                        SafeUpdateKeyboardBackgroundColor();
                         Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                         {
-                            OnPropertyChanged( "InsideBorderColor" );
+                            OnPropertyChanged( "KeyboardBackgroundColor" );
+                        }) );
+                        break;
+                    case "KeyboardOpacity":
+                        SafeUpdateKeyboardOpacity();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "KeyboardOpacity" );
+                        }) );
+                        break;
+                    case "KeyboardBorderThickness":
+                        SafeUpdateKeyboardBorderThickness();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "KeyboardBorderThickness" );
+                        }) );
+                        break;
+                    case "KeyboardBorderColor":
+                        SafeUpdateKeyboardBorderColor();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "KeyboardBorderColor" );
                         }) );
                         break;
                     case "HighlightBackground":
@@ -301,8 +325,17 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int H { get { return _h; } }
 
-        private Brush _insideBorderColor;
-        public Brush InsideBorderColor { get { return _insideBorderColor; } }
+        double _keyboardOpacity;
+        public double KeyboardOpacity { get { return _keyboardOpacity; } }
+
+        Color _keyboardBackgroundColor;
+        public Color KeyboardBackgroundColor { get { return _keyboardBackgroundColor; } }
+
+        int _KeyboardBorderThickness;
+        public int KeyboardBorderThickness { get { return _KeyboardBorderThickness; } }
+
+        private Brush _keyboardBorderColor;
+        public Brush KeyboardBorderColor { get { return _keyboardBorderColor; } }
 
         ImageSourceConverter _imsc;
         ImageSourceConverter Imsc
@@ -478,13 +511,41 @@ namespace SimpleSkin.ViewModels
             } );
         }
 
-        private void SafeUpdateInsideBorderColor()
+        private void SafeUpdateKeyboardOpacity()
         {
-            Color c = Context.Config[Layout].GetOrSet<Color>( "InsideBorderColor", null );
+            double c = Context.Config[Layout].GetOrSet<double>( "KeyboardOpacity", 0.50 );
+            SafeSet<double>( c, ( v ) =>
+            {
+                _keyboardOpacity = v;
+            } );
+        }
+
+        private void SafeUpdateKeyboardBackgroundColor()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "KeyboardBackgroundColor", (Color)ColorConverter.ConvertFromString( "#dddddd" ) );
             SafeSet<Color>( c, ( v ) =>
             {
-                if( v == null ) _insideBorderColor = null;
-                else _insideBorderColor = new SolidColorBrush( v );
+                if( v == null ) _keyboardBackgroundColor = (Color)ColorConverter.ConvertFromString( "#dddddd" );
+                else _keyboardBackgroundColor = v;
+            } );
+        }
+
+        private void SafeUpdateKeyboardBorderThickness()
+        {
+            int c = Context.Config[Layout].GetOrSet<int>( "KeyboardBorderThickness", 5 );
+            SafeSet<int>( c, ( v ) =>
+            {
+                _KeyboardBorderThickness = v;
+            } );
+        }
+
+        private void SafeUpdateKeyboardBorderColor()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "KeyboardBorderColor", (Color)ColorConverter.ConvertFromString( "#4B4CA6" ) );
+            SafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _keyboardBorderColor = new SolidColorBrush( (Color)ColorConverter.ConvertFromString( "#4B4CA6" ) );
+                else _keyboardBorderColor = new SolidColorBrush( v );
             } );
         }
 

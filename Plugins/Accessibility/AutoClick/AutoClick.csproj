@@ -216,6 +216,10 @@
       <Name>CK.WPF.Controls</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.StandardViews\CK.WPF.StandardViews.csproj">
+      <Project>{6f198d3d-39e5-4de6-917e-dfb99af31e3e}</Project>
+      <Name>CK.WPF.StandardViews</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>

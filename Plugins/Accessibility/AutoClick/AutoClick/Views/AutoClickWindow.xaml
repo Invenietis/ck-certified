@@ -1,6 +1,7 @@
 ﻿<ckwincore:CKWindow x:Class="CK.Plugins.AutoClick.Views.AutoClickWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:view="http://schemas.civikey.org/StandardViews"
     Topmost="True"
     Title="Auto click"
     WindowStyle="None"     
@@ -9,25 +10,34 @@
     AllowsTransparency="True"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views">
-    
+
     <ckwincore:CKWindow.Background>
         <SolidColorBrush Color="#dddddd" Opacity="0.5" />
     </ckwincore:CKWindow.Background>
-    
-    <Window.Resources>           
+
+    <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
                   Source="Dictionnaries/AutoClick.xaml">
                 </ResourceDictionary>
+                <ResourceDictionary 
+                  Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml">
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Viewbox Stretch="Fill">
-            <Border>
-                <ContentControl Template="{StaticResource AutoClickTemplate}"/>      
-            </Border>
-        </Viewbox>
-    </Grid>
+
+
+    <view:ResizableContainer BorderBrush="#000" BorderThickness="5">
+        <view:ResizableContainer.Content>
+            <Grid>
+                <Viewbox Stretch="Fill">
+                    <Border>
+                        <ContentControl Template="{StaticResource AutoClickTemplate}"/>
+                    </Border>
+                </Viewbox>
+            </Grid>
+        </view:ResizableContainer.Content>
+    </view:ResizableContainer>
 </ckwincore:CKWindow>

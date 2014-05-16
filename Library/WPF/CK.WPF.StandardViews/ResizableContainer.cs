@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CK.WPF.StandardViews
 {
@@ -15,19 +16,5 @@ namespace CK.WPF.StandardViews
             get { return GetValue( ContentProperty ); }
             set { SetValue( ContentProperty, value ); }
         }
-
-    //    public static readonly DependencyProperty BorderThicknessProperty = DependencyProperty.Register( "BorderThickness", typeof( bool ), typeof( ResizableContainer ) );
-    //    public bool BorderThickness
-    //    {
-    //        get { return (bool)GetValue( BorderThicknessProperty ); }
-    //        set { SetValue( BorderThicknessProperty, value ); }
-    //    }
-
-    //    public static readonly DependencyProperty BorderBrushProperty = DependencyProperty.Register( "BorderBrush", typeof( bool ), typeof( ResizableContainer ) );
-    //    public bool BorderBrush
-    //    {
-    //        get { return (bool)GetValue( BorderBrushProperty ); }
-    //        set { SetValue( BorderBrushProperty, value ); }
-    //    }
     }
 }

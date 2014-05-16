@@ -35,6 +35,9 @@ namespace SimpleSkin
 
         const string PredictionKeyboardName = "Prediction";
 
+        [ConfigurationAccessor( "{00000000-0000-0000-0000-000000000000}" )]
+        public IPluginConfigAccessor SharedConfig { get; set; }
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
@@ -206,7 +209,7 @@ namespace SimpleSkin
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            var vm = new VMContextActiveKeyboard( NoFocusManager, keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config );
+            var vm = new VMContextActiveKeyboard( NoFocusManager, keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, SharedConfig );
             var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
 
             var skin = NoFocusManager.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )

@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Accessibility\IMouseWatcher.cs" />
     <Compile Include="Accessibility\IPointerDeviceDriver.cs" />
+    <Compile Include="SharedConfigPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">

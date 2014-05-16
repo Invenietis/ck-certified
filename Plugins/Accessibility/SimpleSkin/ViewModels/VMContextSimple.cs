@@ -38,8 +38,8 @@ namespace SimpleSkin.ViewModels
 {
     public class VMContextCurrentKeyboardSimple : VMContextSimpleBase
     {
-        public VMContextCurrentKeyboardSimple( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
-            : base( noFocusManager, ctx, kbctx, config )
+        public VMContextCurrentKeyboardSimple( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor sharedConfig )
+            : base( noFocusManager, ctx, kbctx, config, sharedConfig )
         {
         }
 
@@ -58,8 +58,8 @@ namespace SimpleSkin.ViewModels
     {
         string _activeKeyboardName;
 
-        public VMContextActiveKeyboard( NoFocusManager noFocusManager, string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
-            : base( noFocusManager, ctx, kbctx, config )
+        public VMContextActiveKeyboard( NoFocusManager noFocusManager, string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor sharedConfig )
+            : base( noFocusManager, ctx, kbctx, config, sharedConfig )
         {
             _activeKeyboardName = activeKeyboardName;
             kbctx.Keyboards.KeyboardActivated += OnKeyboardActivated;
@@ -122,6 +122,7 @@ namespace SimpleSkin.ViewModels
         ObservableCollection<VMKeyboardSimple> _keyboards;
         VMKeyboardSimple _keyboard;
         IPluginConfigAccessor _config;
+        IPluginConfigAccessor _sharedConfig;
         IKeyboardContext _kbctx;
         IContext _ctx;
 
@@ -144,6 +145,7 @@ namespace SimpleSkin.ViewModels
 
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
         public IPluginConfigAccessor Config { get { return _config; } }
+        public IPluginConfigAccessor SharedConfig { get { return _sharedConfig; } }
         public IContext Context { get { return _ctx; } }
 
         NoFocusManager _noFocusManager;
@@ -151,7 +153,7 @@ namespace SimpleSkin.ViewModels
 
         protected abstract Func<IKeyboard> KeyboardSelector { get; }
 
-        public VMContextSimpleBase( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
+        public VMContextSimpleBase( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, IPluginConfigAccessor sharedConfig )
         {
             _noFocusManager = noFocusManager;
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
@@ -161,6 +163,7 @@ namespace SimpleSkin.ViewModels
             _config = config;
             _kbctx = kbctx;
             _ctx = ctx;
+            _sharedConfig = sharedConfig;
 
             if( _kbctx.Keyboards.Count > 0 )
             {

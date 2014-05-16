@@ -513,7 +513,7 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateKeyboardOpacity()
         {
-            double c = Context.Config[Layout].GetOrSet<double>( "KeyboardOpacity", 0.50 );
+            double c = Context.SharedConfig.User.GetOrSet<double>( "KeyboardOpacity", 0.50 );
             SafeSet<double>( c, ( v ) =>
             {
                 _keyboardOpacity = v;
@@ -522,7 +522,7 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateKeyboardBackgroundColor()
         {
-            Color c = Context.Config[Layout].GetOrSet<Color>( "KeyboardBackgroundColor", (Color)ColorConverter.ConvertFromString( "#dddddd" ) );
+            Color c = Context.SharedConfig.User.GetOrSet<Color>( "KeyboardBackgroundColor", (Color)ColorConverter.ConvertFromString( "#dddddd" ) );
             SafeSet<Color>( c, ( v ) =>
             {
                 if( v == null ) _keyboardBackgroundColor = (Color)ColorConverter.ConvertFromString( "#dddddd" );
@@ -532,7 +532,7 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateKeyboardBorderThickness()
         {
-            int c = Context.Config[Layout].GetOrSet<int>( "KeyboardBorderThickness", 5 );
+            int c = Context.SharedConfig.User.GetOrSet<int>( "KeyboardBorderThickness", 5 );
             SafeSet<int>( c, ( v ) =>
             {
                 _KeyboardBorderThickness = v;
@@ -541,7 +541,7 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateKeyboardBorderColor()
         {
-            Color c = Context.Config[Layout].GetOrSet<Color>( "KeyboardBorderColor", (Color)ColorConverter.ConvertFromString( "#4B4CA6" ) );
+            Color c = Context.SharedConfig.User.GetOrSet<Color>( "KeyboardBorderColor", (Color)ColorConverter.ConvertFromString( "#4B4CA6" ) );
             SafeSet<Color>( c, ( v ) =>
             {
                 if( v == null ) _keyboardBorderColor = new SolidColorBrush( (Color)ColorConverter.ConvertFromString( "#4B4CA6" ) );

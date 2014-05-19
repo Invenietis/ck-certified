@@ -15,9 +15,9 @@
     MinHeight="40" MinWidth="40"
     ShowInTaskbar="False"
     ShowActivated="False"
-    AllowsTransparency="True">
+    AllowsTransparency="True" >
     <ckwincore:CKWindow.Background>
-        <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}" />
+        <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}"/>
     </ckwincore:CKWindow.Background>
 
     <Window.Resources>
@@ -25,7 +25,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <view:ResizableContainer BorderBrush="{Binding KeyboardVM.KeyboardBorderColor}" BorderThickness="{Binding KeyboardVM.KeyboardBorderThickness}">
+    <view:ResizableContainer BorderBrush="{Binding KeyboardVM.KeyboardBorderBrush}" BorderThickness="{Binding KeyboardVM.KeyboardBorderThickness}">
         <view:ResizableContainer.Content>
             <Grid>
                 <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />

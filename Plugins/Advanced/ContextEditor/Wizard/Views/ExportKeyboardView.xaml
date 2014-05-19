@@ -19,8 +19,6 @@
             <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
             <SolidColorBrush Color="#4f4f4f" x:Key="GrayColor"/>
             <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
-            <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
-            <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
             <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
 
             <Style x:Key="description" TargetType="TextBlock">

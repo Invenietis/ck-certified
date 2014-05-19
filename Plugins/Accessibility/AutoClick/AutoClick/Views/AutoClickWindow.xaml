@@ -12,7 +12,7 @@
     xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views">
 
     <ckwincore:CKWindow.Background>
-        <SolidColorBrush Color="#dddddd" Opacity="0.5" />
+        <SolidColorBrush Color="{Binding AutoClickBackgroundColor}" Opacity="{Binding AutoClickOpacity}" />
     </ckwincore:CKWindow.Background>
 
     <Window.Resources>
@@ -29,7 +29,7 @@
     </Window.Resources>
 
 
-    <view:ResizableContainer BorderBrush="#000" BorderThickness="5">
+    <view:ResizableContainer BorderBrush="{Binding AutoClickBorderBrush}" BorderThickness="{Binding AutoClickBorderThickness}">
         <view:ResizableContainer.Content>
             <Grid>
                 <Viewbox Stretch="Fill">

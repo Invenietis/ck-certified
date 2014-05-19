@@ -109,6 +109,7 @@
     <Compile Include="Advanced\Commands\ISendKeyCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\ICommandManagerService.cs" />
     <Compile Include="Advanced\Commands\ITextTemplateCommandHandlerService.cs" />
+    <Compile Include="Advanced\ISharedData.cs" />
     <Compile Include="Advanced\ITriggerService.cs" />
     <Compile Include="Advanced\ILogService.cs" />
     <Compile Include="Advanced\IUpdateChecker.cs" />
@@ -119,7 +120,6 @@
     </Compile>
     <Compile Include="Accessibility\IMouseWatcher.cs" />
     <Compile Include="Accessibility\IPointerDeviceDriver.cs" />
-    <Compile Include="SharedConfigPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">

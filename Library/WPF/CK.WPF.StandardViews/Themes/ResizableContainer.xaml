@@ -21,7 +21,6 @@
                                 <Rectangle Cursor="SizeNESW" Name="bottomLeft" Height="10" Width="10" Margin="-5,0,0,-5" HorizontalAlignment="Left" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
                                 <Rectangle Cursor="SizeNWSE" Name="bottomRight" Height="10" Width="10" Margin="0,0,-5,-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
                                 <Rectangle Cursor="SizeNESW" Name="topRight" Height="10" Width="10" Margin="0,-5,-5,0" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
-
                             </Grid>
 
                         </Border>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
@@ -13,6 +14,7 @@ using CK.WindowManager.Model;
 using CK.Windows;
 using CK.Windows.Helpers;
 using CommonServices.Accessibility;
+using Host;
 using SimpleSkin.Res;
 
 namespace SimpleSkin
@@ -37,7 +39,11 @@ namespace SimpleSkin
 
         public IPluginConfigAccessor Config { get; set; }
 
+        [RequiredService]
+        public IContext Context { get; set; }
+
         bool _viewHidden;
+        bool _stateIsSaved;
         MiniViewVM _miniViewVm;
         MiniView _miniView;
 
@@ -54,10 +60,20 @@ namespace SimpleSkin
         {
             _miniViewVm = new MiniViewVM( this );
             RegisterEvents();
+
+            if( Config.User.GetOrSet<bool>( "WindowState", false ) )
+            {
+                MinimizeWindows();
+            }
         }
 
         public void Stop()
         {
+            if( !_stateIsSaved )
+            {
+                Config.User.Set( "WindowState", _viewHidden );
+            }
+
             UnregisterEvents();
             UninitializeMiniview();
         }
@@ -70,12 +86,20 @@ namespace SimpleSkin
 
         private void RegisterEvents()
         {
+            Context.ApplicationExiting += OnApplicationExiting;
+
             RegisterWindowEvents();
 
             Highlighter.ServiceStatusChanged += OnHighlighterStatusChanged;
 
             KeyboardContext.ServiceStatusChanged += OnKeyboardContextStatusChanged;
             RegisterKeyboardEvents();
+        }
+
+        void OnApplicationExiting( object sender, ApplicationExitingEventArgs e )
+        {
+            Config.User.Set( "WindowState", _viewHidden );
+            _stateIsSaved = true;
         }
 
         private void UnregisterEvents()
@@ -139,9 +163,18 @@ namespace SimpleSkin
         {
             Debug.Assert( WindowManager != null );
 
+            WindowManager.Registered += OnWindowManagerRegistered;
             WindowManager.Unregistered += OnWindowManagerUnregistered;
             WindowManager.WindowMinimized += OnWindowMinimized;
             WindowManager.WindowRestored += OnWindowRestored;
+        }
+
+        void OnWindowManagerRegistered( object sender, WindowElementEventArgs e )
+        {
+            if( _viewHidden )
+            {
+                e.Window.Minimize();
+            }
         }
 
         void OnWindowManagerUnregistered( object sender, WindowElementEventArgs e )
@@ -157,8 +190,10 @@ namespace SimpleSkin
 
         private void UnregisterWindowEvents()
         {
-            WindowManager.WindowMinimized += OnWindowMinimized;
-            WindowManager.WindowRestored += OnWindowRestored;
+            WindowManager.Registered -= OnWindowManagerRegistered;
+            WindowManager.Unregistered -= OnWindowManagerUnregistered;
+            WindowManager.WindowMinimized -= OnWindowMinimized;
+            WindowManager.WindowRestored -= OnWindowRestored;
         }
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )

@@ -41,6 +41,9 @@ using CK.Context.SemVer;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
 using CommonServices;
+using CK.Plugin.Config;
+using System.Threading;
+using System.Globalization;
 
 namespace Host
 {
@@ -93,12 +96,15 @@ namespace Host
 
         public override IContext CreateContext()
         {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo( "fr-FR" );
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo( "fr-FR" );
+
             //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
             //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.
             //If a system conf is found and loaded at this point, plugin will be set as disabled (because the plugins are not yet discovered). If there is a userconf, the requirements will be parsed again later, and everything will work fine.
             //The problem occurs when there is no user conf. (this happens when CiviKey is launched for the first time)
-
-
+            
             IContext ctx = base.CreateContext();
 
             _log.Debug( "LAUNCHING" );

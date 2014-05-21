@@ -70,6 +70,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateFontSize();
             SafeUpdateFontStyle();
             SafeUpdateFontWeight();
+            SafeUpdateFontFamily();
             SafeUpdateHeight();
             SafeUpdateHighlightBackground();
             SafeUpdateHighlightFontColor();
@@ -200,6 +201,7 @@ namespace SimpleSkin.ViewModels
                 SafeUpdateShowLabel();
                 SafeUpdateShowImage();
                 SafeUpdateFontWeight();
+                SafeUpdateFontFamily();
                 SafeUpdateBackground();
                 SafeUpdateLetterColor();
                 SafeUpdateHoverBackground();
@@ -215,6 +217,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "ShowLabel" );
                 OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "FontWeight" );
+                OnPropertyChanged( "FontFamily" );
                 OnPropertyChanged( "Background" );
                 OnPropertyChanged( "LetterColor" );
                 OnPropertyChanged( "HoverBackground" );
@@ -246,6 +249,10 @@ namespace SimpleSkin.ViewModels
                     case "FontWeight":
                         SafeUpdateFontWeight();
                         OnPropertyChanged( "FontWeight" );
+                        break;
+                    case "FontFamily":
+                        SafeUpdateFontFamily();
+                        OnPropertyChanged( "FontFamily" );
                         break;
                     case "Background":
                         SafeUpdateBackground();
@@ -454,6 +461,11 @@ namespace SimpleSkin.ViewModels
             SafeSet<FontWeight>( LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ), ( v ) => _fontWeight = v );
         }
 
+        private void SafeUpdateFontFamily()
+        {
+            SafeSet<System.Windows.Media.FontFamily>( new System.Windows.Media.FontFamily( LayoutKeyMode.GetPropertyValue( Context.Config, "FontFamily", "Arial" ) ), ( v ) => _fontFamily = v );
+        }
+
         private void SafeUpdateShowLabel()
         {
             SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = (v == "Label") );
@@ -656,6 +668,12 @@ namespace SimpleSkin.ViewModels
         public FontWeight FontWeight
         {
             get { return _fontWeight; }
+        }
+
+        System.Windows.Media.FontFamily _fontFamily;
+        public System.Windows.Media.FontFamily FontFamily
+        {
+            get { return _fontFamily; }
         }
 
         double _fontSize;

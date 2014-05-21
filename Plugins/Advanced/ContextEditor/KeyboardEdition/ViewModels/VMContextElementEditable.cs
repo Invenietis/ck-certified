@@ -45,6 +45,11 @@ namespace KeyboardEditor.ViewModels
                 _context.SkinConfiguration.ConfigChanged += OnLayoutConfigChanged;
         }
 
+        public ICollection<FontFamily> FontFamilies
+        {
+            get { return Fonts.SystemFontFamilies; }
+        }
+
         /// <summary>
         /// Gets whether this element is being edited.
         /// An element is being edited if it IsSelected or one of its parents is being edited.
@@ -143,6 +148,7 @@ namespace KeyboardEditor.ViewModels
                     case "FontStyle":
                     case "TextDecorations":
                     case "FontColor":
+                    case "FontFamily":
                     case "LetterColor":
                         OnPropertyChanged( "TextDecorationsAsBool" );
                         OnPropertyChanged( "PressedBackground" );
@@ -158,6 +164,7 @@ namespace KeyboardEditor.ViewModels
                         OnPropertyChanged( "FontSizes" );
                         OnPropertyChanged( "FontStyle" );
                         OnPropertyChanged( "FontSize" );
+                        OnPropertyChanged( "FontFamily" );
                         break;
                     default:
                         break;
@@ -234,6 +241,15 @@ namespace KeyboardEditor.ViewModels
         public FontWeight FontWeight
         {
             get { return LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontWeight", FontWeights.Normal ).Value; }
+        }
+
+        public FontFamily FontFamily
+        {
+            get { return new FontFamily( LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement]["FontFamily"] = value.ToString();
+            }
         }
 
         public TextDecorationCollection TextDecorations

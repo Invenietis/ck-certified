@@ -163,6 +163,7 @@
         <Setter Property="KeyDownCommand" Value="{Binding KeyDownCommand}"/>
         <Setter Property="KeyUpCommand" Value="{Binding KeyUpCommand}"/>
         <Setter Property="FontWeight" Value="{Binding Path=LayoutKeyModeVM.FontWeight}"/>
+        <Setter Property="FontFamily" Value="{Binding Path=LayoutKeyModeVM.FontFamily}"/>
         <Setter Property="DownLabel" Value="{Binding Mode=TwoWay, Path=KeyModeVM.DownLabel}"/>
         <Setter Property="Description" Value="{Binding KeyModeVM.Description}"/>
         <Setter Property="FontStyle" Value="{Binding LayoutKeyModeVM.FontStyle}"/>

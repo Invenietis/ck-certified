@@ -28,6 +28,13 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Font size :</TextBlock>
                             <ComboBox Margin="0 3" ItemsSource="{Binding FontSizes}" SelectedValue="{Binding FontSize}" />
+                            <ComboBox Margin="0 3" ItemsSource="{Binding FontFamilies}" SelectedValue="{Binding FontFamily}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontFamily="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </StackPanel>
                         <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="FontSize"/>
                     </DockPanel>

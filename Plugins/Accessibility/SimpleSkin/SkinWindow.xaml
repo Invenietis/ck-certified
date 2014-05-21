@@ -44,6 +44,7 @@
             <Setter Property="KeyUpCommand" Value="{Binding KeyUpCommand}"/>
             <Setter Property="Description" Value="{Binding Description}"/>
             <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
+            <Setter Property="FontFamily" Value="{Binding FontFamily}"/>
             <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
             <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
             <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>

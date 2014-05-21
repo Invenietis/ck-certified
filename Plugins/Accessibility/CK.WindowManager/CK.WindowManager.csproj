@@ -89,6 +89,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -112,6 +114,8 @@
     <Compile Include="WindowManager.cs" />
     <Compile Include="WindowManagerExecutor.cs" />
     <Compile Include="TopMostService.cs" />
+    <Compile Include="WindowPlacement.cs" />
+    <Compile Include="WindowSaver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Host.Services\Host.Services.csproj">

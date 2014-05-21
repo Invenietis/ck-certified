@@ -90,6 +90,7 @@
     <Compile Include="HitTester.cs" />
     <Compile Include="ITopMostService.cs" />
     <Compile Include="IUnbindButtonManager.cs" />
+    <Compile Include="IWindowSaver.cs" />
     <Compile Include="PreviewBindingInfo.cs" />
     <Compile Include="IManualInteractionResult.cs" />
     <Compile Include="IBinding.cs" />

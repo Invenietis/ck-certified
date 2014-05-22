@@ -111,15 +111,20 @@
     </Compile>
     <Compile Include="Radar\Radar.cs" />
     <Compile Include="Radar\RadarViewModel.cs" />
+    <Compile Include="Resources\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\R.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\R.fr.Designer.cs">
+    <Compile Include="Resources\R.fr-FR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>R.fr.resx</DependentUpon>
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -162,13 +167,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\R.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\R.fr.resx">
+    <EmbeddedResource Include="Resources\R.fr-FR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

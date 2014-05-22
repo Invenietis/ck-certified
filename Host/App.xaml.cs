@@ -60,9 +60,12 @@ namespace Host
 
             //uncomment if you want not to be told when WPF binding fails.
             //Be careful, it will also remove the other binding errors
-#if DEBUG
+//#if DEBUG
             //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
-#endif
+//#endif
+            CultureInfo ci = new CultureInfo( "fr-FR" );
+            Thread.CurrentThread.CurrentUICulture = ci;
+            Thread.CurrentThread.CurrentCulture = ci;
 
             //Getting the distributionname from AssemblyInfo
             string distributionName = "Std";

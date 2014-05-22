@@ -174,8 +174,8 @@
       <DependentUpon>ZoneEditionUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Images.fr.Designer.cs">
-      <DependentUpon>Images.fr.resx</DependentUpon>
+    <Compile Include="Resources\Images.fr-FR.Designer.cs">
+      <DependentUpon>Images.fr-FR.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -189,10 +189,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\R.fr.Designer.cs">
+    <Compile Include="Resources\R.fr-FR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>R.fr.resx</DependentUpon>
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
     </Compile>
     <Compile Include="Tools\HotKeyTools.cs" />
     <Compile Include="Wizard\BackupFeature\IKeyboardBackupAware.cs" />
@@ -268,9 +268,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Images.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Images.fr.resx">
+    <EmbeddedResource Include="Resources\Images.fr-FR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Images.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>Images.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\helpcontent.zip" />
   </ItemGroup>
@@ -415,9 +415,9 @@
       <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\R.fr.resx">
+    <EmbeddedResource Include="Resources\R.fr-FR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

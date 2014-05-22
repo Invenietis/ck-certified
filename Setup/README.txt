@@ -1,0 +1,3 @@
+In order to localize CiviKey you need to add al.exe (Assembly Linker) into your environment variables(Path).
+Reason : Localized BAML and compiled resx use the same name (dllname.resources.dll), so generating the BAML tends to overwrite the compiled resx files.
+the assemly linker enables us to merge the two resources into a single final assembly (see WPFLocalizationGuidance.pdf which can be found in the same folder as this README.txt).

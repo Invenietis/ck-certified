@@ -137,6 +137,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="Resources\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="TextTemplate\TextTemplateCommandHandler.cs" />
     <Compile Include="TextTemplate\TextTemplateCommandParameterManager.cs" />
     <Compile Include="KeySequence\KeySequenceCommandHandler.cs" />
@@ -151,8 +156,8 @@
     <Compile Include="FileLauncher\FileLauncherCommandParameterManager.cs" />
     <Compile Include="Help\HelpCommandParameterManager.cs" />
     <Compile Include="Mode\ModeCommandParameterManager.cs" />
-    <Compile Include="Resources\R.fr.Designer.cs">
-      <DependentUpon>R.fr.resx</DependentUpon>
+    <Compile Include="Resources\R.fr-FR.Designer.cs">
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -219,9 +224,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\R.fr.resx">
+    <EmbeddedResource Include="Resources\R.en-US.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.fr-FR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">

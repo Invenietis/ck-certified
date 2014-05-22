@@ -425,7 +425,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="R.fr.resx" />
+    <EmbeddedResource Include="R.fr-FR.resx" />
     <EmbeddedResource Include="R.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>R.Designer.cs</LastGenOutput>

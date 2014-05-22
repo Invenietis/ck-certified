@@ -61,47 +61,11 @@ namespace SimpleSkin.Res {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit.
-        /// </summary>
-        internal static string Exit {
-            get {
-                return ResourceManager.GetString("Exit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Do you really want to exit CiviKey ?.
-        /// </summary>
-        internal static string ExitConfirmation {
-            get {
-                return ResourceManager.GetString("ExitConfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Minimized Civikey.
         /// </summary>
         internal static string MiniViewName {
             get {
                 return ResourceManager.GetString("MiniViewName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

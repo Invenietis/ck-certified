@@ -87,10 +87,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MouseDriver.resx</DependentUpon>
     </Compile>
-    <Compile Include="Res\MouseDriver.fr.Designer.cs">
+    <Compile Include="Res\MouseDriver.fr-FR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MouseDriver.fr.resx</DependentUpon>
+      <DependentUpon>MouseDriver.fr-FR.resx</DependentUpon>
     </Compile>
     <Compile Include="SimpleDispatchTimerWrapper.cs">
       <SubType>Code</SubType>
@@ -107,9 +107,9 @@
       <LastGenOutput>MouseDriver.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Res\MouseDriver.fr.resx">
+    <EmbeddedResource Include="Res\MouseDriver.fr-FR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MouseDriver.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>MouseDriver.fr-FR.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

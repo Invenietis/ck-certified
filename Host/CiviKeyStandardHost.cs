@@ -97,8 +97,6 @@ namespace Host
         public override IContext CreateContext()
         {
 
-            Thread.CurrentThread.CurrentCulture = new CultureInfo( "fr-FR" );
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo( "fr-FR" );
 
             //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
             //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.

@@ -67,8 +67,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resource\R.fr.Designer.cs">
-      <DependentUpon>R.fr.resx</DependentUpon>
+    <Compile Include="Resource\R.fr-FR.Designer.cs">
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -126,9 +126,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resource\R.fr.resx">
+    <EmbeddedResource Include="Resource\R.fr-FR.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resource\R.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

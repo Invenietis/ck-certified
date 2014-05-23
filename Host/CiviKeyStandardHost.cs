@@ -133,7 +133,7 @@ namespace Host
             // ToDoJL
             //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
             hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
-            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+            //hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
             ctx.PluginRunner.Add( hostRequirements );
 

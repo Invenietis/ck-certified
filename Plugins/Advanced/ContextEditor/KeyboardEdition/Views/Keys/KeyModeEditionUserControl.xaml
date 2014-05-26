@@ -299,15 +299,31 @@
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal" Grid.Row="0">
-                                    <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="{Binding Parent.ShowImage, Mode=TwoWay, Converter={StaticResource notconverter} }" Margin="5">
-                                        <TextBlock x:Uid="keyboard-editor-key-mode-display-text" Text="Display some text" />
+                                    <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="{Binding Parent.ShowLabel, Mode=TwoWay }" Margin="5">
+                                        <TextBlock x:Uid="keyboard-editor-key-mode-display-text" Text="Text" />
                                     </RadioButton>
-                                    <RadioButton IsChecked="True" GroupName="keyUplabel" x:Name="imagecheckbox" Margin="5">
-                                        <TextBlock x:Uid="keyboard-editor-key-mode-image-text" Text="Display an image"/>
+                                    <RadioButton IsChecked="{Binding Parent.ShowIcon, Mode=TwoWay }" GroupName="keyUplabel" x:Name="iconcheckbox" Margin="5">
+                                        <TextBlock x:Uid="keyboard-editor-key-mode-icon-text" Text="Icon"/>
+                                    </RadioButton>
+                                    <RadioButton IsChecked="{Binding Parent.ShowImage, Mode=TwoWay }" GroupName="keyUplabel" x:Name="imagecheckbox" Margin="5">
+                                        <TextBlock x:Uid="keyboard-editor-key-mode-image-text" Text="Image"/>
                                     </RadioButton>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
                                     <TextBox Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=textcheckbox, Converter={StaticResource booltovisibilityconverter}}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=iconcheckbox, Converter={StaticResource booltovisibilityconverter}}">
+                                        <DockPanel Grid.Row="1" LastChildFill="True">
+                                            <ComboBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ItemsSource="{x:Static vm:VMContextEditable.FontAwesomeLetters}" SelectedItem="{Binding Icon}" FontSize="32" FontFamily="pack://application:,,,/CK.WPF.Controls;component/Resources/#FontAwesome" DockPanel.Dock="Left" Margin="2" >
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <TextBlock Text='{Binding}'></TextBlock>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DockPanel>
+                                    </Grid>
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -318,7 +334,7 @@
                                         </Grid.RowDefinitions>
                                         <Image Height="36" Width="80" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/picture.png" Grid.Row="0">
                                             <Image.Visibility>
-                                                <Binding Path="Parent.ImageSource">
+                                                <Binding Path="Image.Source">
                                                     <Binding.Converter>
                                                         <ckc:ValueConverterGroup>
                                                             <ckc:NotNullConverter/>
@@ -330,9 +346,9 @@
                                             </Image.Visibility>
                                         </Image>
                                         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Height="36">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Parent.Image}" />
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Image}" />
                                             <Border.Visibility>
-                                                <Binding Path="Parent.ImageSource">
+                                                <Binding Path="Image.Source">
                                                     <Binding.Converter>
                                                         <ckc:ValueConverterGroup>
                                                             <ckc:NotNullConverter/>
@@ -349,7 +365,7 @@
                                             <Button Grid.Row="1" Command="{Binding BrowseCommand}" Margin="2" DockPanel.Dock="Right">
                                                 <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/browse.png" />
                                             </Button>
-                                            <ComboBox ItemsSource="{Binding Context.DefaultImages}" SelectedItem="{Binding SelectedImage}" DockPanel.Dock="Left" Margin="2" >
+                                            <ComboBox ItemsSource="{Binding Context.DefaultImages}" SelectedItem="{Binding SelectedImage}" SelectedValue="{Binding SelectedText}" DockPanel.Dock="Left" Margin="2" >
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackPanel>
@@ -371,6 +387,9 @@
                                 </TextBlock>
                                 <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" />
                             </StackPanel>
+                            <DockPanel LastChildFill="False">
+                                <Button Content="Save" Command="{Binding SaveContentCommand}" Margin="0 0 5 0" IsEnabled="{Binding IsDirty}"  Style="{StaticResource ModernUIButtonStyle}" DockPanel.Dock="Right"/>
+                            </DockPanel>
                         </StackPanel>
                     </Border>
                 </DockPanel>

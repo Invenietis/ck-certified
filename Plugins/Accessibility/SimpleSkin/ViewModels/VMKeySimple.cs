@@ -82,8 +82,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateLetterColor();
             SafeUpdateOpacity();
             SafeUpdatePressedBackground();
-            SafeUpdateShowImage();
-            SafeUpdateShowLabel();
+            SafeUpdateDisplayType();
             SafeUpdateUpLabel();
             SafeUpdateVisible();
             SafeUpdateWidth();
@@ -172,10 +171,10 @@ namespace SimpleSkin.ViewModels
                     OnPropertyChanged( "Image" );
                     break;
                 case "DisplayType":
-                    SafeUpdateShowLabel();
-                    SafeUpdateShowImage();
+                    SafeUpdateDisplayType();
                     OnPropertyChanged( "ShowLabel" );
                     OnPropertyChanged( "ShowImage" );
+                    OnPropertyChanged( "ShowIcon" );
                     break;
             }
         }
@@ -198,8 +197,7 @@ namespace SimpleSkin.ViewModels
                 SafeUpdateOpacity();
                 SafeUpdateFontSize();
                 SafeUpdateFontStyle();
-                SafeUpdateShowLabel();
-                SafeUpdateShowImage();
+                SafeUpdateDisplayType();
                 SafeUpdateFontWeight();
                 SafeUpdateFontFamily();
                 SafeUpdateBackground();
@@ -214,8 +212,6 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "ShowLabel" );
-                OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "FontWeight" );
                 OnPropertyChanged( "FontFamily" );
                 OnPropertyChanged( "Background" );
@@ -225,6 +221,11 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "HighlightFontColor" );
+
+                //DisplayType
+                OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
+                OnPropertyChanged( "ShowIcon" );
             }
             else
             {
@@ -466,14 +467,9 @@ namespace SimpleSkin.ViewModels
             SafeSet<System.Windows.Media.FontFamily>( new System.Windows.Media.FontFamily( LayoutKeyMode.GetPropertyValue( Context.Config, "FontFamily", "Arial" ) ), ( v ) => _fontFamily = v );
         }
 
-        private void SafeUpdateShowLabel()
+        private void SafeUpdateDisplayType()
         {
-            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = (v == "Label") );
-        }
-
-        private void SafeUpdateShowImage()
-        {
-            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = (v == "Image") );
+            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", "Label" ), ( v ) => _displayType = v );
         }
 
         private void SafeUpdateOpacity()
@@ -688,16 +684,28 @@ namespace SimpleSkin.ViewModels
             get { return _textDecorations; }
         }
 
-        bool _showLabel;
+        string _displayType;
         public bool ShowLabel
         {
-            get { return _showLabel; }
+            get 
+            {
+                //second condition is a fallback
+                return _displayType == "Label" && Context.Config[LayoutKeyMode]["Image"] == null; 
+            }
         }
 
-        bool _showImage;
         public bool ShowImage
         {
-            get { return _showImage; }
+            get 
+            {
+                //second condition is a fallback
+                return _displayType == "Image" || Context.Config[LayoutKeyMode]["Image"] != null; 
+            }
+        }
+
+        public bool ShowIcon
+        {
+            get { return _displayType == "Icon"; }
         }
 
         double _opacity;

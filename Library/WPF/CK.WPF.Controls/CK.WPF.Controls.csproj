@@ -92,6 +92,7 @@
     <Compile Include="Core\UIElementAdorner.cs" />
     <Compile Include="Core\Utilities\ColorUtilities.cs" />
     <Compile Include="Core\Utilities\ContextMenuUtilities.cs" />
+    <Compile Include="ImageFromFont.cs" />
     <Compile Include="NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
@@ -148,6 +149,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">

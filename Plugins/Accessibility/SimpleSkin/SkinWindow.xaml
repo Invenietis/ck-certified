@@ -49,6 +49,7 @@
             <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
             <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
             <Setter Property="ShowImage" Value="{Binding ShowImage}"/>
+            <Setter Property="ShowIcon" Value="{Binding ShowIcon}"/>
             <Setter Property="Visibility" Value="{Binding Visible}"/>
             <Setter Property="FontSize" Value="{Binding FontSize}"/>
             <Setter Property="UpLabel" Value="{Binding UpLabel}"/>

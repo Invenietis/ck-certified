@@ -248,6 +248,7 @@ namespace KeyboardEditor.ViewModels
         ImageSource _imageSource;
         public ImageSource ImageSource { get { return _imageSource; } }
 
+        Image _image;
         /// <summary>
         /// Gets the image associated with the underlying <see cref="ILayoutKeyMode"/>, for the current <see cref="IKeyboardMode"/>
         /// </summary>
@@ -255,14 +256,31 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                Image image = new Image();
-                image.Source = _imageSource;
-                return image;
+                if( _image == null )
+                {
+                    Image image = new Image();
+                    GetImageSourceCache();
+                    image.Source = _imageSource;
+                    return image;
+                }
+                else
+                {
+                    Image image = new Image();
+                    image.Source = _image.Source;
+                    return image;
+                }
             }
             set
             {
-                _context.Config[_key.Current]["Image"] = value;
-                GetImageSourceCache();
+                if( value != _image )
+                {
+                    _image = value;
+                    _imageSource = (_image == null) ? null : _image.Source;
+                    OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "ImageSource" );
+                }
+                //_context.Config[_key.Current]["Image"] = value;
+                //GetImageSourceCache();
             }
         }
 
@@ -373,21 +391,6 @@ namespace KeyboardEditor.ViewModels
         public bool Enabled { get { return _key.Current.Enabled; } }
 
         /// <summary>
-        /// Gets or sets the label that must be used when the key is up, for the current <see cref="IKeyMode"/>.
-        /// </summary>
-        public string UpLabel
-        {
-            get { return _key.Current.UpLabel; }
-            set
-            {
-                _key.Current.UpLabel = value;
-                _key.Current.DownLabel = value;
-                OnPropertyChanged( "UpLabel" );
-                OnPropertyChanged( "DownLabel" );
-            }
-        }
-
-        /// <summary>
         /// Makes sure there is a KeyMode on this key for the current mode.
         /// </summary>
         private void EnsureKeyMode()
@@ -397,15 +400,6 @@ namespace KeyboardEditor.ViewModels
             {
                 _key.KeyModes.Create( _key.Keyboard.CurrentMode );
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the label that must be used when the key is down, for the current <see cref="IKeyMode"/>.
-        /// </summary>
-        public string DownLabel
-        {
-            get { return _key.Current.DownLabel; }
-            set { _key.Current.DownLabel = value; }
         }
 
         /// <summary>
@@ -536,6 +530,7 @@ namespace KeyboardEditor.ViewModels
                     OnPropertyChanged( "ImageSource" );
                     OnPropertyChanged( "ShowLabel" );
                     OnPropertyChanged( "ShowImage" );
+                    OnPropertyChanged( "ShowIcon" );
                 }
                 else
                 {
@@ -549,6 +544,7 @@ namespace KeyboardEditor.ViewModels
                         case "DisplayType":
                             OnPropertyChanged( "ShowImage" );
                             OnPropertyChanged( "ShowLabel" );
+                            OnPropertyChanged( "ShowIcon" );
                             LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
                             break;
                     }

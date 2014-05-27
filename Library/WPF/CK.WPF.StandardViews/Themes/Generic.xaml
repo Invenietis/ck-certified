@@ -104,7 +104,7 @@
                                TextTrimming="CharacterEllipsis" >
                         </TextBlock>
 
-                        <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>
+                        <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Margin="1.5"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="gridTooltip" Property="Content" Value="">

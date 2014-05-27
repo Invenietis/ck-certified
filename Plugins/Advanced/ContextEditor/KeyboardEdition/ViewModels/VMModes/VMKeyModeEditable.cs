@@ -124,7 +124,7 @@ namespace KeyboardEditor.ViewModels
         char _icon;
         public char Icon
         {
-            get { return ActualParent.ShowIcon && _icon == char.MinValue ? Convert.ToChar(Model.UpLabel) : _icon ; }
+            get { return ActualParent.ShowIcon && _icon == char.MinValue ? Model.UpLabel[0] : _icon ; }
             set 
             {
                 if( value != _icon )

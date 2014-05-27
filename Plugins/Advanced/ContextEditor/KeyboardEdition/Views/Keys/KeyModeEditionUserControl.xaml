@@ -11,11 +11,13 @@
              xmlns:r="clr-namespace:KeyboardEditor.Resources"
              xmlns:bch="clr-namespace:BasicCommandHandlers"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:cce="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CK.WPF.Controls;component/IconPicker/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!--<ckwincore:BooleanToVisibilityConverter x:Key="booltovisibilityconverter"/>
             <ckc:AndMultiValueConverter x:Key="andmultivalueconverter"/>
@@ -310,19 +312,11 @@
                                     </RadioButton>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
+                                    <!-- Text editing -->
                                     <TextBox Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=textcheckbox, Converter={StaticResource booltovisibilityconverter}}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
+                                    
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=iconcheckbox, Converter={StaticResource booltovisibilityconverter}}">
-                                        <DockPanel Grid.Row="1" LastChildFill="True">
-                                            <ComboBox VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ItemsSource="{x:Static vm:VMContextEditable.FontAwesomeLetters}" SelectedItem="{Binding Icon}" FontSize="32" FontFamily="pack://application:,,,/CK.WPF.Controls;component/Resources/#FontAwesome" DockPanel.Dock="Left" Margin="2" >
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel>
-                                                            <TextBlock Text='{Binding}'></TextBlock>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                        </DockPanel>
+                                            <cce:IconPicker SelectedIcon="{Binding Icon}" />
                                     </Grid>
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>

@@ -92,7 +92,6 @@
     <Compile Include="Core\UIElementAdorner.cs" />
     <Compile Include="Core\Utilities\ColorUtilities.cs" />
     <Compile Include="Core\Utilities\ContextMenuUtilities.cs" />
-    <Compile Include="IconPicker\IconItem.cs" />
     <Compile Include="IconPicker\IconPicker.cs" />
     <Compile Include="ImageFromFont.cs" />
     <Compile Include="NumericUpDown.xaml.cs">

@@ -131,7 +131,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _icon = value;
                     OnPropertyChanged( "UpLabel" );
-                    OnPropertyChanged( "icon" );
+                    OnPropertyChanged( "Icon" );
                     OnPropertyChanged( "IsDirty" );
                 }
             }

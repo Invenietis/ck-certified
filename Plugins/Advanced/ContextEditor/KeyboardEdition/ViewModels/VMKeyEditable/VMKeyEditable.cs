@@ -695,8 +695,6 @@ namespace KeyboardEditor.ViewModels
 
             SetActionOnPropertyChanged( "Current", () =>
             {
-                DispatchPropertyChanged( "UpLabel", "KeyMode" );
-                DispatchPropertyChanged( "DownLabel", "KeyMode" );
                 DispatchPropertyChanged( "Enabled", "KeyMode" );
                 DispatchPropertyChanged( "Description", "KeyMode" );
             } );
@@ -708,8 +706,6 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "Width", () => DispatchPropertyChanged( "Width", "LayoutKeyMode" ) );
             SetActionOnPropertyChanged( "Height", () => DispatchPropertyChanged( "Height", "LayoutKeyMode" ) );
             SetActionOnPropertyChanged( "Enabled", () => DispatchPropertyChanged( "Enabled", "KeyMode" ) );
-            SetActionOnPropertyChanged( "UpLabel", () => DispatchPropertyChanged( "UpLabel", "KeyMode" ) );
-            SetActionOnPropertyChanged( "DownLabel", () => DispatchPropertyChanged( "DownLabel", "KeyMode" ) );
             SetActionOnPropertyChanged( "Description", () => DispatchPropertyChanged( "Description", "KeyMode" ) );
 
             SetActionOnPropertyChanged( "Visible", () =>

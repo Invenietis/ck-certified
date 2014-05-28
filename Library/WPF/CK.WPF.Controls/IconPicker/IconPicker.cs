@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace CK.WPF.Controls
 {
@@ -12,6 +13,12 @@ namespace CK.WPF.Controls
         public IconPicker()
             : base()
         {
+            Mouse.AddPreviewMouseDownOutsideCapturedElementHandler( this, OnMouseDownOutsideCapturedElement );
+        }
+
+        private void OnMouseDownOutsideCapturedElement( object sender, MouseButtonEventArgs e )
+        {
+            CloseIconPicker();
         }
 
         public override void OnApplyTemplate()

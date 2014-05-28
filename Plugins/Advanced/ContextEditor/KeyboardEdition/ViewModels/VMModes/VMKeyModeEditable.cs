@@ -570,7 +570,7 @@ namespace KeyboardEditor.ViewModels
             {
                 return _upLabel != null
                     || _downLabel != null
-                    || (_selectedImage.Key != null && _selectedImage.Value != null)
+                    || _imageString != null
                     || _icon != char.MinValue
                     || _description != null;
             }

@@ -4,6 +4,8 @@
                     xmlns:coreConverters="clr-namespace:Microsoft.Windows.Controls.Core.Converters"
                     xmlns:chrome="clr-namespace:Microsoft.Windows.Controls.Chromes">
 
+    <coreConverters:InverseBoolConverter x:Key="InverseBoolConverter" />
+
     <LinearGradientBrush x:Key="ColorPickerDarkBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
         <GradientStop Color="#FFA3AEB9" Offset="0"/>
         <GradientStop Color="#FF8399A9" Offset="0.375"/>
@@ -59,32 +61,35 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:IconPicker}">
                     <Grid>
-                        <ToggleButton HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="PART_IconPickerToggleButton" IsTabStop="True" IsChecked="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
-                                <DockPanel LastChildFill="True">
-                                    <Path DockPanel.Dock="Right" Data="F1M181.297,177.841L181.205,177.746 181.385,177.563 202.804,156.146 202.804,135.07 178.497,159.373 170.847,167.026 170.666,167.205 163.107,159.653 138.804,135.345 138.804,156.42 160.219,177.841 170.76,188.379 181.297,177.841z" Stretch="Uniform" Fill="#FF000000" Height="10" Margin="5 2" />
-                                    <TextBlock HorizontalAlignment="Center" Margin="5" FontSize="36" Text="{Binding SelectedIcon, RelativeSource={RelativeSource TemplatedParent}}" FontFamily="pack://application:,,,/CK.WPF.Controls;component/Resources/#FontAwesome" />
-                                </DockPanel>
+                        <ToggleButton HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="PART_IconPickerToggleButton" IsHitTestVisible="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource InverseBoolConverter}}" IsTabStop="True" IsChecked="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                            <DockPanel LastChildFill="True">
+                                <Path DockPanel.Dock="Right" Data="F1M181.297,177.841L181.205,177.746 181.385,177.563 202.804,156.146 202.804,135.07 178.497,159.373 170.847,167.026 170.666,167.205 163.107,159.653 138.804,135.345 138.804,156.42 160.219,177.841 170.76,188.379 181.297,177.841z" Stretch="Uniform" Fill="#FF000000" Height="10" Margin="5 2" />
+                                <TextBlock HorizontalAlignment="Center" Margin="5" FontSize="36" Text="{Binding SelectedIcon, RelativeSource={RelativeSource TemplatedParent}}" FontFamily="pack://application:,,,/CK.WPF.Controls;component/Resources/#FontAwesome" />
+                            </DockPanel>
                         </ToggleButton>
 
-                        <Popup VerticalAlignment="Bottom" IsOpen="{Binding ElementName=PART_IconPickerToggleButton, Path=IsChecked}" StaysOpen="False" AllowsTransparency="True" Focusable="False"  HorizontalOffset="1" VerticalOffset="1"  >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Uid="available-icons" Text="Available Icons" Background="AliceBlue" Padding="2" Margin="0,0,0,1" />
-                                <ListBox VirtualizingStackPanel.IsVirtualizing="True" x:Name="PART_Icons" Grid.Row="1" Background="White" Height="400" BorderThickness="0" SelectionMode="Single"
+                        <Popup VerticalAlignment="Bottom" IsOpen="{TemplateBinding IsOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" HorizontalOffset="-1" >
+
+                            <Border BorderThickness="1" BorderBrush="#888888">
+                                <Grid  Width="{Binding ElementName=PART_IconPickerToggleButton,Path=ActualWidth}" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Uid="available-icons" Text="Available Icons" Background="AliceBlue" Padding="2" Margin="0,0,0,1" />
+                                    <ListBox VirtualizingStackPanel.IsVirtualizing="True" x:Name="PART_Icons" Grid.Row="1" Background="White" Height="400" BorderThickness="0" SelectionMode="Single"
                                                          ItemsSource="{x:Static local:IconPicker.FontAwesomeLetters}"                                                      
                                                          ItemTemplate="{StaticResource IconItemTemplate}"
                                                          ItemContainerStyle="{StaticResource IconPaletteLisBoxStyle}"
                                                          Style="{x:Null}">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <local:VirtualizingWrapPanel Width="176" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                </ListBox>
-                            </Grid>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <local:VirtualizingWrapPanel HorizontalAlignment="Center"/>
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </Grid>
+                            </Border>
                         </Popup>
                     </Grid>
                 </ControlTemplate>

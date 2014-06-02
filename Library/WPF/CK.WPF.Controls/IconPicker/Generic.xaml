@@ -23,11 +23,11 @@
     </LinearGradientBrush>
 
     <Style x:Key="IconPaletteLisBoxStyle" TargetType="{x:Type ListBoxItem}">
-        <Setter Property="ToolTip" Value="{Binding Name}" />
+        <Setter Property="ToolTip" Value="{Binding}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Grid ToolTip="{Binding Name}">
+                    <Grid ToolTip="{Binding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <Border BorderThickness="1" Background="Transparent" BorderBrush="Transparent" x:Name="_outerBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                             <Border Background="Transparent" BorderThickness="1" BorderBrush="Transparent" x:Name="_innerBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
@@ -50,7 +50,7 @@
 
     <DataTemplate x:Key="IconItemTemplate">
         <Border DockPanel.Dock="Left" Margin="2" Width="40" Height="40">
-            <TextBlock FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}" FontFamily="pack://application:,,,/CK.WPF.Controls;component/Resources/#FontAwesome" />
+            <TextBlock FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}" FontFamily="{Binding SelectedFontFamily, RelativeSource={RelativeSource AncestorType={x:Type local:IconPicker}}}" />
         </Border>
     </DataTemplate>
 
@@ -61,15 +61,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:IconPicker}">
                     <Grid>
-                        <ToggleButton HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="PART_IconPickerToggleButton" IsHitTestVisible="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource InverseBoolConverter}}" IsTabStop="True" IsChecked="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                        <ToggleButton HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="PART_IconPickerToggleButton" IsTabStop="True" IsChecked="{Binding IsOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
                             <DockPanel LastChildFill="True">
                                 <Path DockPanel.Dock="Right" Data="F1M181.297,177.841L181.205,177.746 181.385,177.563 202.804,156.146 202.804,135.07 178.497,159.373 170.847,167.026 170.666,167.205 163.107,159.653 138.804,135.345 138.804,156.42 160.219,177.841 170.76,188.379 181.297,177.841z" Stretch="Uniform" Fill="#FF000000" Height="10" Margin="5 2" />
-                                <TextBlock HorizontalAlignment="Center" Margin="5" FontSize="36" Text="{Binding SelectedIcon, RelativeSource={RelativeSource TemplatedParent}}" FontFamily="pack://application:,,,/CK.WPF.Controls;component/Resources/#FontAwesome" />
+                                <TextBlock Name="toggleButton" HorizontalAlignment="Center" Margin="5" FontSize="36" Text="{Binding SelectedIcon, RelativeSource={RelativeSource TemplatedParent}}" FontFamily="{Binding SelectedFontFamily, RelativeSource={RelativeSource AncestorType={x:Type local:IconPicker}}}" />
                             </DockPanel>
                         </ToggleButton>
 
                         <Popup VerticalAlignment="Bottom" IsOpen="{TemplateBinding IsOpen}" StaysOpen="False" AllowsTransparency="True" Focusable="False" HorizontalOffset="-1" >
-
                             <Border BorderThickness="1" BorderBrush="#888888">
                                 <Grid  Width="{Binding ElementName=PART_IconPickerToggleButton,Path=ActualWidth}" >
                                     <Grid.RowDefinitions>
@@ -77,8 +76,9 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <TextBlock x:Uid="available-icons" Text="Available Icons" Background="AliceBlue" Padding="2" Margin="0,0,0,1" />
-                                    <ListBox VirtualizingStackPanel.IsVirtualizing="True" x:Name="PART_Icons" Grid.Row="1" Background="White" Height="400" BorderThickness="0" SelectionMode="Single"
-                                                         ItemsSource="{x:Static local:IconPicker.FontAwesomeLetters}"                                                      
+                                    <ComboBox x:Name="PART_IconFontFamilies" ItemsSource="{Binding FontFamilies, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding SelectedFontFamily, RelativeSource={RelativeSource TemplatedParent}}" ></ComboBox>
+                                    <ListBox x:Name="PART_Icons" Grid.Row="1" Background="White" Height="400" BorderThickness="0" SelectionMode="Single"
+                                                         ItemsSource="{Binding SelectedLetters, RelativeSource={RelativeSource TemplatedParent}}"                                                      
                                                          ItemTemplate="{StaticResource IconItemTemplate}"
                                                          ItemContainerStyle="{StaticResource IconPaletteLisBoxStyle}"
                                                          Style="{x:Null}">

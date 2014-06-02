@@ -464,7 +464,15 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateFontFamily()
         {
-            SafeSet<System.Windows.Media.FontFamily>( new System.Windows.Media.FontFamily( LayoutKeyMode.GetPropertyValue( Context.Config, "FontFamily", "Arial" ) ), ( v ) => _fontFamily = v );
+            SafeSet<string>( LayoutKeyMode.GetPropertyValue( Context.Config, "FontFamily", "Arial" ), ( v ) =>
+                {
+                    if( v.Contains( "pack://" ) )
+                    {
+                        string[] split = v.Split( '|' );
+                        _fontFamily = new System.Windows.Media.FontFamily( new Uri( split[0] ), split[1] );
+                    }
+                    else _fontFamily = new System.Windows.Media.FontFamily( v );
+                });
         }
 
         private void SafeUpdateDisplayType()

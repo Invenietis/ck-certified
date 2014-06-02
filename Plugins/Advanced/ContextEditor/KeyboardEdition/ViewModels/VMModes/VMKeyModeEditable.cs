@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
@@ -95,6 +96,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _upLabel = value;
                     OnPropertyChanged( "UpLabel" );
+                    OnPropertyChanged( "FontFamily" );
                     OnPropertyChanged( "IsDirty" );
                 }
             }
@@ -132,6 +134,22 @@ namespace KeyboardEditor.ViewModels
                     _icon = value;
                     OnPropertyChanged( "UpLabel" );
                     OnPropertyChanged( "Icon" );
+                    OnPropertyChanged( "FontFamily" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
+        }
+
+        FontFamily _iconFontFamily;
+        public FontFamily FontFamily
+        {
+            get { return (ActualParent.ShowIcon && _icon != char.MinValue) ? _iconFontFamily : ActualParent.FontFamily; }
+            set
+            {
+                if( _iconFontFamily != value )
+                {
+                    _iconFontFamily = value;
+                    OnPropertyChanged( "FontFamily" );
                     OnPropertyChanged( "IsDirty" );
                 }
             }
@@ -209,6 +227,7 @@ namespace KeyboardEditor.ViewModels
             ActualParent.DisplayType = Context.SkinConfiguration[Model.Key.Current].GetOrSet( "DisplayType", "Label" );
 
             OnPropertyChanged( "Icon" );
+            OnPropertyChanged( "FontFamily" );
             OnPropertyChanged( "Image" );
             OnPropertyChanged( "DownLabel" );
             OnPropertyChanged( "UpLabel" );
@@ -549,6 +568,7 @@ namespace KeyboardEditor.ViewModels
                         else if( ActualParent.ShowIcon )
                         {
                             if( Model.UpLabel != Icon.ToString() ) Model.UpLabel = Model.DownLabel = Icon.ToString();
+                            ActualParent.FontFamily = _iconFontFamily; 
                         }
                         else if( ActualParent.ShowImage )
                         {

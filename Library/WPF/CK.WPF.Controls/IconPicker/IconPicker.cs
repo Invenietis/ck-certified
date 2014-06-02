@@ -1,19 +1,34 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CK.WPF.Controls
 {
     public class IconPicker : Control
     {
+        public static ICollection<FontFamily> FontFamilyCollection = Fonts.GetFontFamilies( new Uri( "pack://application:,,,/CK.WPF.Controls;Component/resources/" ) );
+        public List<FontFamily> FontFamilies { get; set; }
+
         private ListBox _icons;
+        private ComboBox _fontFamiliesComboBox;
 
         public IconPicker()
             : base()
         {
+            FontFamilies = new List<FontFamily>();
+            FontFamilies.AddRange( FontFamilyCollection );
+            var ade = new FontFamily( new Uri( "pack://application:,,,/CK.WPF.Controls;Component/resources/" ), "./#GLYPHICONS Halflings");
+
+            //GlyphiconHalflingLetters = new List<char>();
+            //for( int i = 57344; i < 61100; i++ )
+            //    GlyphiconHalflingLetters.Add( (char)i );
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler( this, OnMouseDownOutsideCapturedElement );
+            SelectedFontFamily = FontFamilies[0];
+            SelectedLetters = IconPicker.FontAwesomeLetters;
         }
 
         private void OnMouseDownOutsideCapturedElement( object sender, MouseButtonEventArgs e )
@@ -27,6 +42,18 @@ namespace CK.WPF.Controls
 
             _icons = (ListBox)GetTemplateChild( "PART_Icons" );
             _icons.SelectionChanged += Icon_SelectionChanged;
+
+            _fontFamiliesComboBox = (ComboBox)GetTemplateChild( "PART_IconFontFamilies" );
+            _fontFamiliesComboBox.SelectionChanged += _fontFamiliesComboBox_SelectionChanged;
+        }
+
+        void _fontFamiliesComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e )
+        {
+            if( e.AddedItems.Count > 0 )
+            {
+                SelectedFontFamily = (FontFamily)e.AddedItems[0];
+                UpdateSelectedLetters();
+            }
         }
 
         private void Icon_SelectionChanged( object sender, SelectionChangedEventArgs e )
@@ -77,17 +104,87 @@ namespace CK.WPF.Controls
             RaiseEvent( args );
         }
 
+        public static readonly DependencyProperty SelectedFontFamilyProperty = DependencyProperty.Register( "SelectedFontFamily", typeof( FontFamily ), typeof( IconPicker ), new FrameworkPropertyMetadata( IconPicker.FontFamilyCollection.First(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnSelectedFontFamilyPropertyChanged ) ) );
+        public FontFamily SelectedFontFamily
+        {
+            get { return (FontFamily)GetValue( SelectedFontFamilyProperty ); }
+            set { SetValue( SelectedFontFamilyProperty, value ); }
+        }
+
+        private static void OnSelectedFontFamilyPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+        {
+            IconPicker iconPicker = (IconPicker)d;
+            if( iconPicker != null )
+                iconPicker.OnSelectedFontFamilyChanged( (FontFamily)e.OldValue, (FontFamily)e.NewValue );
+        }
+
+        private void OnSelectedFontFamilyChanged( FontFamily oldValue, FontFamily newValue )
+        {
+            RoutedPropertyChangedEventArgs<FontFamily> args = new RoutedPropertyChangedEventArgs<FontFamily>( oldValue, newValue );
+            args.RoutedEvent = IconPicker.SelectedFontFamilyChangedEvent;
+            RaiseEvent( args );
+        }
+
+        public static readonly DependencyProperty SelectedLettersProperty = DependencyProperty.Register( "SelectedLetters", typeof( List<char> ), typeof( IconPicker ), new FrameworkPropertyMetadata( FontAwesomeLetters, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback( OnSelectedLettersPropertyChanged ) ) );
+        public List<char> SelectedLetters
+        {
+            get { return (List<char>)GetValue( SelectedLettersProperty ); }
+            set { SetValue( SelectedLettersProperty, value ); }
+        }
+
+        private static void OnSelectedLettersPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+        {
+            IconPicker iconPicker = (IconPicker)d;
+            if( iconPicker != null )
+                iconPicker.OnSelectedLettersChanged( (List<char>)e.OldValue, (List<char>)e.NewValue );
+        }
+
+        private void OnSelectedLettersChanged( List<char> oldValue, List<char>newValue )
+        {
+            RoutedPropertyChangedEventArgs<List<char>> args = new RoutedPropertyChangedEventArgs<List<char>>( oldValue, newValue );
+            args.RoutedEvent = IconPicker.SelectedLettersChangedEvent;
+            RaiseEvent( args );
+        }
+
         #region Events
 
-        public static readonly RoutedEvent SelectedIconChangedEvent = EventManager.RegisterRoutedEvent("SelectedIconChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<char>), typeof(IconPicker));
+        public static readonly RoutedEvent SelectedLettersChangedEvent = EventManager.RegisterRoutedEvent( "SelectedLettersChanged", RoutingStrategy.Bubble, typeof( RoutedPropertyChangedEventHandler<List<char>> ), typeof( IconPicker ) );
+        public event RoutedPropertyChangedEventHandler<List<char>> SelectedLettersChanged
+        {
+            add { AddHandler( SelectedLettersChangedEvent, value ); }
+            remove { RemoveHandler( SelectedLettersChangedEvent, value ); }
+        }
+
+        public static readonly RoutedEvent SelectedFontFamilyChangedEvent = EventManager.RegisterRoutedEvent( "SelectedFontFamilyChanged", RoutingStrategy.Bubble, typeof( RoutedPropertyChangedEventHandler<FontFamily> ), typeof( IconPicker ) );
+        public event RoutedPropertyChangedEventHandler<FontFamily> SelectedFontFamilyChanged
+        {
+            add { AddHandler( SelectedFontFamilyChangedEvent, value ); }
+            remove { RemoveHandler( SelectedFontFamilyChangedEvent, value ); }
+        }
+
+        public static readonly RoutedEvent SelectedIconChangedEvent = EventManager.RegisterRoutedEvent( "SelectedIconChanged", RoutingStrategy.Bubble, typeof( RoutedPropertyChangedEventHandler<char> ), typeof( IconPicker ) );
         public event RoutedPropertyChangedEventHandler<char> SelectedIconChanged
         {
-            add { AddHandler(SelectedIconChangedEvent, value); }
-            remove { RemoveHandler(SelectedIconChangedEvent, value); }
+            add { AddHandler( SelectedIconChangedEvent, value ); }
+            remove { RemoveHandler( SelectedIconChangedEvent, value ); }
         }
 
         #endregion //Events
-        
+
+        private void UpdateSelectedLetters()
+        {
+            if( SelectedFontFamily.ToString() == FontFamilies[0].ToString() )
+            {
+                SelectedLetters = FontAwesomeLetters;
+            }
+            else
+            {
+                SelectedLetters = GlyphiconHalflingLetters;
+            }
+        }
+
+        #region FontAwesone char table
+
         public static readonly List<char> FontAwesomeLetters = new List<char>() {
                 '\xf042', 
                 '\xf170', 
@@ -592,5 +689,213 @@ namespace CK.WPF.Controls
                 '\xf167', 
                 '\xf16a', 
                 '\xf166' };
+        #endregion
+
+        #region Glyphicon char table
+
+        public static List<char> GlyphiconHalflingLetters = new List<char>() {
+            'a',
+'\ue001',
+'\ue002',
+'\ue003',
+'\ue004',
+'\ue005',
+'\ue006',
+'\ue007',
+'\ue008',
+'\ue009',
+'\ue010',
+'\ue011',
+'\ue012',
+'\ue013',
+'\ue014',
+'\ue015',
+'\ue016',
+'\ue017',
+'\ue018',
+'\ue019',
+'\ue020',
+'\ue021',
+'\ue022',
+'\ue023',
+'\ue024',
+'\ue025',
+'\ue026',
+'\ue027',
+'\ue028',
+'\ue029',
+'\ue030',
+'\ue031',
+'\ue032',
+'\ue033',
+'\ue034',
+'\ue035',
+'\ue036',
+'\ue037',
+'\ue038',
+'\ue039',
+'\ue040',
+'\ue041',
+'\ue042',
+'\ue043',
+'\ue044',
+'\ue045',
+'\ue046',
+'\ue047',
+'\ue048',
+'\ue049',
+'\ue050',
+'\ue051',
+'\ue052',
+'\ue053',
+'\ue054',
+'\ue055',
+'\ue056',
+'\ue057',
+'\ue058',
+'\ue059',
+'\ue060',
+'\ue061',
+'\ue062',
+'\ue063',
+'\ue064',
+'\ue065',
+'\ue066',
+'\ue067',
+'\ue068',
+'\ue069',
+'\ue070',
+'\ue071',
+'\ue072',
+'\ue073',
+'\ue074',
+'\ue075',
+'\ue076',
+'\ue077',
+'\ue078',
+'\ue079',
+'\ue080',
+'\ue081',
+'\ue082',
+'\ue083',
+'\ue084',
+'\ue085',
+'\ue086',
+'\ue087',
+'\ue088',
+'\ue089',
+'\ue090',
+'\ue091',
+'\ue092',
+'\ue093',
+'\ue094',
+'\ue095',
+'\ue096',
+'\ue097',
+'\ue098',
+'\ue099',
+'\ue100',
+'\ue101',
+'\ue102',
+'\ue103',
+'\ue104',
+'\ue105',
+'\ue106',
+'\ue107',
+'\ue108',
+'\ue109',
+'\ue110',
+'\ue111',
+'\ue112',
+'\ue113',
+'\ue114',
+'\ue115',
+'\ue116',
+'\ue117',
+'\ue118',
+'\ue119',
+'\ue120',
+'\ue121',
+'\ue122',
+'\ue123',
+'\ue124',
+'\ue125',
+'\ue126',
+'\ue127',
+'\ue128',
+'\ue129',
+'\ue130',
+'\ue131',
+'\ue132',
+'\ue133',
+'\ue134',
+'\ue135',
+'\ue136',
+'\ue137',
+'\ue138',
+'\ue139',
+'\ue140',
+'\ue141',
+'\ue142',
+'\ue143',
+'\ue144',
+'\ue145',
+'\ue146',
+'\ue147',
+'\ue148',
+'\ue149',
+'\ue150',
+'\ue151',
+'\ue152',
+'\ue153',
+'\ue154',
+'\ue155',
+'\ue156',
+'\ue157',
+'\ue158',
+'\ue159',
+'\ue160',
+'\ue161',
+'\ue162',
+'\ue163',
+'\ue164',
+'\ue165',
+'\ue166',
+'\ue167',
+'\ue168',
+'\ue169',
+'\ue170',
+'\ue171',
+'\ue172',
+'\ue173',
+'\ue174',
+'\ue175',
+'\ue176',
+'\ue177',
+'\ue178',
+'\ue179',
+'\ue180',
+'\ue181',
+'\ue182',
+'\ue183',
+'\ue184',
+'\ue185',
+'\ue186',
+'\ue187',
+'\ue188',
+'\ue189',
+'\ue190',
+'\ue191',
+'\ue192',
+'\ue193',
+'\ue194',
+'\ue195',
+'\ue196',
+'\ue197',
+'\ue198',
+'\ue199',
+'\ue200'
+};
+        #endregion
     }
 }

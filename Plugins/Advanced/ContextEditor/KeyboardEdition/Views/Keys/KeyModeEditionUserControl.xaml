@@ -316,7 +316,7 @@
                                     <TextBox Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=textcheckbox, Converter={StaticResource booltovisibilityconverter}}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
                                     
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=iconcheckbox, Converter={StaticResource booltovisibilityconverter}}">
-                                            <cce:IconPicker SelectedIcon="{Binding Icon}" />
+                                            <cce:IconPicker SelectedIcon="{Binding Icon}" SelectedFontFamily="{Binding FontFamily, Mode=OneWayToSource}" />
                                     </Grid>
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>

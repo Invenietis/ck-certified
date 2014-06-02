@@ -245,10 +245,28 @@ namespace KeyboardEditor.ViewModels
 
         public FontFamily FontFamily
         {
-            get { return new FontFamily( LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value ); }
+            get 
+            { 
+                if( LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value.Contains( "pack://" ) )
+                {
+                    string[] split = LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value.Split( '|' );
+                    return new FontFamily( new Uri( split[0] ), split[1] );
+                }
+                else
+                {
+                    return new FontFamily( LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value );
+                }
+            }
             set
             {
-                _context.SkinConfiguration[LayoutElement]["FontFamily"] = value.ToString();
+                if( value.BaseUri == null )
+                {
+                    _context.SkinConfiguration[LayoutElement]["FontFamily"] = value.ToString();
+                }
+                else
+                {
+                    _context.SkinConfiguration[LayoutElement]["FontFamily"] = value.BaseUri.OriginalString + "|" + value.ToString();
+                }
             }
         }
 

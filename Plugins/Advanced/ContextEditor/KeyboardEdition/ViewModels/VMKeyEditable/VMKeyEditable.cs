@@ -560,6 +560,7 @@ namespace KeyboardEditor.ViewModels
                     OnPropertyChanged( "FontSize" );
                     OnPropertyChanged( "FontStyle" );
                     OnPropertyChanged( "FontWeight" );
+                    OnPropertyChanged( "FontFamily" );
                     OnPropertyChanged( "Background" );
                     OnPropertyChanged( "LetterColor" );
                     OnPropertyChanged( "HoverBackground" );
@@ -587,6 +588,9 @@ namespace KeyboardEditor.ViewModels
                             break;
                         case "FontWeight":
                             OnPropertyChanged( "FontWeight" );
+                            break;
+                        case "FontFamily":
+                            OnPropertyChanged( "FontFamily" );
                             break;
                         case "Background":
                             OnPropertyChanged( "Background" );
@@ -682,6 +686,7 @@ namespace KeyboardEditor.ViewModels
                 DispatchPropertyChanged( "TextDecorations", "LayoutKeyMode" );
                 DispatchPropertyChanged( "LetterColor", "LayoutKeyMode" );
                 DispatchPropertyChanged( "FontWeight", "LayoutKeyMode" );
+                DispatchPropertyChanged( "FontFamily", "LayoutKeyMode" );
                 DispatchPropertyChanged( "Background", "LayoutKeyMode" );
                 DispatchPropertyChanged( "FontStyle", "LayoutKeyMode" );
                 DispatchPropertyChanged( "ShowLabel", "LayoutKeyMode" );

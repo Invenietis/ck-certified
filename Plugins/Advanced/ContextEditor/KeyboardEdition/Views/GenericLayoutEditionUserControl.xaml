@@ -35,6 +35,11 @@
                                             <TextBlock Text="{Binding}" FontFamily="{Binding}"></TextBlock>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
                             </ComboBox>
                         </DockPanel>
                     </DockPanel>

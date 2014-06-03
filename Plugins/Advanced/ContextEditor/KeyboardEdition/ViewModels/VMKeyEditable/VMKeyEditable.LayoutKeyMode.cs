@@ -76,6 +76,7 @@ namespace KeyboardEditor.ViewModels
                 if( value ) _displayType = "Icon";
                 OnPropertyChanged();
                 OnPropertyChanged( "DisplayType" );
+                KeyModeVM.TriggerPropertyChanged( "FontFamily" );
             }
         }
 

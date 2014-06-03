@@ -545,7 +545,10 @@ namespace KeyboardEditor.ViewModels
                             OnPropertyChanged( "ShowImage" );
                             OnPropertyChanged( "ShowLabel" );
                             OnPropertyChanged( "ShowIcon" );
+                            OnPropertyChanged( "FontFamily" );
                             LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
+                            KeyModeVM.TriggerPropertyChanged( "FontFamily" );
+                            KeyModeVM.TriggerPropertyChanged( "Icon" );
                             break;
                     }
                 }

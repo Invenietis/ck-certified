@@ -134,20 +134,32 @@ namespace KeyboardEditor.ViewModels
                     _icon = value;
                     OnPropertyChanged( "UpLabel" );
                     OnPropertyChanged( "Icon" );
-                    OnPropertyChanged( "FontFamily" );
+                    //OnPropertyChanged( "FontFamily" );
                     OnPropertyChanged( "IsDirty" );
                 }
             }
         }
 
-        FontFamily _iconFontFamily;
+        //set a default value, because the DependencyProperty
+        FontFamily _iconFontFamily = new FontFamily( new Uri( "pack://application:,,,/CK.WPF.Controls;Component/resources/" ), "./#FontAwesome" );
         public FontFamily FontFamily
         {
-            get { return (ActualParent.ShowIcon && _icon != char.MinValue) ? _iconFontFamily : ActualParent.FontFamily; }
+            get 
+            {
+                if( ActualParent.ShowIcon )
+                {
+                    return _iconFontFamily;
+                }
+                else
+                {
+                    return ActualParent.FontFamily;
+                }
+            }
             set
             {
                 if( _iconFontFamily != value )
                 {
+                    Console.WriteLine( "set " + UpLabel + " " + value );
                     _iconFontFamily = value;
                     OnPropertyChanged( "FontFamily" );
                     OnPropertyChanged( "IsDirty" );
@@ -205,6 +217,7 @@ namespace KeyboardEditor.ViewModels
 
                 _isSelected = value;
                 OnPropertyChanged( "IsSelected" );
+                OnPropertyChanged( "FontFamily" );
 
                 ActualParent.TriggerOnPropertyChanged( "IsSelected" );
                 ActualParent.TriggerOnPropertyChanged( "IsBeingEdited" );

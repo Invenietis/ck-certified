@@ -147,11 +147,6 @@ namespace CK.Plugins.AutoClick
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
             _autoClickWindow.Closing += OnWindowClosing;
 
-            if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
-                SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            else
-                _autoClickWindow.Width = _autoClickWindow.Height = 0;
-
             _mouseIndicatorWindow = new MouseDecoratorWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
 
@@ -163,17 +158,6 @@ namespace CK.Plugins.AutoClick
 
             _mouseIndicatorWindow.Show();
             _autoClickWindow.Show();
-
-            //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
-            if( !Config.User.Contains( "AutoClickWindowPlacement" ) ) Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
-            CKWindowTools.SetPlacement( _autoClickWindow.Hwnd, (WINDOWPLACEMENT)Config.User["AutoClickWindowPlacement"] );
-
-            //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
-            if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_autoClickWindow.Left, (int)_autoClickWindow.Top ) )
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_autoClickWindow.Left + _autoClickWindow.ActualWidth), (int)_autoClickWindow.Top ) ) )
-            {
-                SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            }
 
             OnPause( this, EventArgs.Empty );
 
@@ -187,14 +171,6 @@ namespace CK.Plugins.AutoClick
                 e.Cancel = true;
         }
 
-        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
-        {
-            _autoClickWindow.Top = 0;
-            _autoClickWindow.Left = (int)System.Windows.SystemParameters.WorkArea.Width - defaultWidth;
-            _autoClickWindow.Width = defaultWidth;
-            _autoClickWindow.Height = defaultHeight;
-        }
-
         public void Stop()
         {
             _isClosing = true;
@@ -205,7 +181,6 @@ namespace CK.Plugins.AutoClick
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
 
             UnregisterEvents();
-            Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
         }
 
         public void Teardown()

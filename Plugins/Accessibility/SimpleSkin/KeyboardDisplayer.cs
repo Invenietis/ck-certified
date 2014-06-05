@@ -214,13 +214,11 @@ namespace SimpleSkin
             SkinInfo skinInfo = new SkinInfo( skin, vm, NoFocusManager.NoFocusDispatcher, subscriber );
             _skins.Add( keyboard.Name, skinInfo );
 
-            InitializeWindowLayout( skinInfo );
             skinInfo.Dispatcher.Invoke( (Action)(() =>
             {
                 skinInfo.Skin.Show();
                 skinInfo.Skin.ShowInTaskbar = false;
             }) );
-            SetWindowPlacement( skinInfo );
 
             Subscribe( skinInfo );
             RegisterHighlighter( skinInfo );
@@ -234,19 +232,10 @@ namespace SimpleSkin
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-
-            //Setting the config is done after closing the window because modifying a value in the Config
-            //Triggers a Caliburn Micro OnNotifyPropertyChanged, which calls an Invoke on the main UI Thread.
-            //generating random locks.
-            //Once the LayoutManager is ready, we won't need this anymore.
-            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
-
             UnregisterSkinEvents( skin );
             Unsubscribe( skin );
             UnregisterFromHighlighter( skin );
             UnregisterTopMostService( skin );
-
-            placement = CKWindowTools.GetPlacement( skin.Skin.Hwnd );
 
             skin.ViewModel.Dispose();
 
@@ -259,76 +248,8 @@ namespace SimpleSkin
                     skin.Skin.Close();
                 }) );
             }
-
-            Config.User.Set( PlacementString( skin ), placement );
         }
 
-        string PlacementString( SkinInfo skinInfo )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            if( skinInfo.ViewModel.KeyboardVM != null && skinInfo.ViewModel.KeyboardVM.Keyboard != null )
-                return skinInfo.ViewModel.KeyboardVM.Keyboard.Name + ".WindowPlacement";
-
-            return String.Empty;
-        }
-
-        /// <summary>
-        /// Must be called from the skin thread
-        /// </summary>
-        private void InitializeWindowLayout( SkinInfo skinInfo )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            int defaultWidth = skinInfo.ViewModel.KeyboardVM.W;
-            int defaultHeight = skinInfo.ViewModel.KeyboardVM.H;
-
-            if( !Config.User.Contains( PlacementString( skinInfo ) ) )
-            {
-                var viewPortSize = Config[skinInfo.ViewModel.KeyboardVM.Layout]["ViewPortSize"];
-
-                skinInfo.Skin.Dispatcher.Invoke( (Action)(() =>
-                {
-                    if( viewPortSize != null )
-                    {
-                        Size size = (Size)viewPortSize;
-                        SetDefaultWindowPosition( skinInfo, (int)size.Width, (int)size.Height );
-                    }
-                    else
-                        SetDefaultWindowPosition( skinInfo, defaultWidth, defaultHeight ); //first launch : places the skin in the default position
-                }) );
-            }
-            else
-            {
-                skinInfo.Skin.Dispatcher.Invoke( (Action)(() =>
-                {
-                    skinInfo.Skin.Width = skinInfo.Skin.Height = 0; //After the first launch : hiding the window to get its last placement from the user conf.
-                }) );
-            }
-        }
-
-        /// <summary>
-        /// Must be called from the skin thread
-        /// </summary>
-        private void SetDefaultWindowPosition( SkinInfo skinInfo, int defaultWidth, int defaultHeight )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == skinInfo.Dispatcher, "This method should only be called by the window's dispatcher." );
-
-            skinInfo.Skin.Top = 0;
-            skinInfo.Skin.Left = 0;
-            skinInfo.Skin.Width = defaultWidth;
-            skinInfo.Skin.Height = defaultHeight;
-        }
-
-        private void SetWindowPlacement( SkinInfo skinInfo )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            var defaultPlacement = new WINDOWPLACEMENT();
-            defaultPlacement = CKWindowTools.GetPlacement( skinInfo.Skin.Hwnd );
-            WINDOWPLACEMENT actualPlacement = Config.User.GetOrSet( PlacementString( skinInfo ), defaultPlacement );
-
-            skinInfo.Dispatcher.Invoke( (Action)(() => CKWindowTools.SetPlacement( skinInfo.Skin.Hwnd, actualPlacement )), null );
         }
 
         #endregion Windows Initialization

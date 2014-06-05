@@ -82,10 +82,6 @@ namespace CK.Plugins.AutoClick
         {
             ClicksVM = new ClicksVM( this );
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
-
-            int defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 4;
-            int defaultWidth = defaultHeight / 4;
-
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
             _clickSelectorWindow.Closing += OnWindowClosing;
 
@@ -93,20 +89,7 @@ namespace CK.Plugins.AutoClick
             InitializeWindowManager();
             InitializeTopMost();
 
-            if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) )
-            {
-                SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            }
-            else
-            {
-                _clickSelectorWindow.Width = _clickSelectorWindow.Height = 0;
-            }
-
             _clickSelectorWindow.Show();
-
-            //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
-            if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) ) Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
-            CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
         }
 
         bool _isClosing;
@@ -114,14 +97,6 @@ namespace CK.Plugins.AutoClick
         {
             if( !_isClosing )
                 e.Cancel = true;
-        }
-
-        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
-        {
-            _clickSelectorWindow.Top = 100;
-            _clickSelectorWindow.Left = (int)System.Windows.SystemParameters.WorkArea.Width - defaultWidth;
-            _clickSelectorWindow.Width = defaultWidth;
-            _clickSelectorWindow.Height = defaultHeight;
         }
 
         public void Stop()
@@ -133,8 +108,6 @@ namespace CK.Plugins.AutoClick
             UninitializeTopMost();
             UninitializeWindowManager();
             UninitializeHighlighter();
-
-            Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
 
             _clickSelectorWindow.Close();
             _clickSelectorWindow = null;

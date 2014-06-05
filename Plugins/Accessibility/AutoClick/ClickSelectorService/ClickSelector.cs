@@ -33,6 +33,7 @@ using CK.Windows;
 using CK.WindowManager.Model;
 using AutoClick.Res;
 using System.ComponentModel;
+using CommonServices;
 
 namespace CK.Plugins.AutoClick
 {
@@ -46,6 +47,9 @@ namespace CK.Plugins.AutoClick
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
         #region Variables & Properties
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISharedData SharedData { get; set; }
 
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
@@ -71,13 +75,13 @@ namespace CK.Plugins.AutoClick
         public bool Setup( IPluginSetupInfo info )
         {
             _isClosing = false;
-            ClicksVM = new ClicksVM() { Holder = this };
-            _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             return true;
         }
 
         public void Start()
         {
+            ClicksVM = new ClicksVM( this );
+            _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
 
             int defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 4;
             int defaultWidth = defaultHeight / 4;

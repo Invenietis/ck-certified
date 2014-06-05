@@ -19,6 +19,7 @@ using System.Windows.Media;
 using CK.Windows.Helpers;
 using SimpleSkin.Res;
 using System.Linq;
+using CommonServices;
 
 namespace SimpleSkin
 {
@@ -32,6 +33,12 @@ namespace SimpleSkin
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
         const string PredictionKeyboardName = "Prediction";
+
+        [ConfigurationAccessor( "{00000000-0000-0000-0000-000000000000}" )]
+        public IPluginConfigAccessor SharedConfig { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISharedData SharedData { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -204,7 +211,7 @@ namespace SimpleSkin
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            var vm = new VMContextActiveKeyboard( NoFocusManager, keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config );
+            var vm = new VMContextActiveKeyboard( NoFocusManager, keyboard.Name, Context, KeyboardContext.Service.Keyboards.Context, Config, SharedData );
             var subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
 
             var skin = NoFocusManager.CreateNoFocusWindow<SkinWindow>( nfm => new SkinWindow( nfm )

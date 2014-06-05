@@ -96,6 +96,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -205,6 +209,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Resources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MiniView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

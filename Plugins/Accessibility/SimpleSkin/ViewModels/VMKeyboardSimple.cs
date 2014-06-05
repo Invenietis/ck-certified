@@ -83,7 +83,10 @@ namespace SimpleSkin.ViewModels
 
             UpdateW();
             UpdateH();
-            SafeUpdateInsideBorderColor();
+            SafeUpdateKeyboardOpacity();
+            SafeUpdateKeyboardBackgroundColor();
+            SafeUpdateKeyboardBorderBrush();
+            SafeUpdateKeyboardBorderThickness();
             UpdateHighlightBackground();
             UpdateHighlightFontColor();
             UpdateLoopCount();
@@ -225,35 +228,28 @@ namespace SimpleSkin.ViewModels
                 {
                     case "KeyboardBackground":
                         UpdateBackgroundPath();
-                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                         {
                             OnPropertyChanged( "BackgroundImagePath" );
                         }) );
                         break;
-                    case "InsideBorderColor":
-                        SafeUpdateInsideBorderColor();
-                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
-                        {
-                            OnPropertyChanged( "InsideBorderColor" );
-                        }) );
-                        break;
                     case "HighlightBackground":
                         UpdateHighlightBackground();
-                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                         {
                             OnPropertyChanged( "HighlightBackground" );
                         }) );
                         break;
                     case "HighlightFontColor":
                         UpdateHighlightFontColor();
-                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                         {
                             OnPropertyChanged( "HighlightFontColor" );
                         }) );
                         break;
                     case "LoopCount":
                         UpdateLoopCount();
-                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                         {
                             OnPropertyChanged( "LoopCount" );
                         }) );
@@ -271,6 +267,26 @@ namespace SimpleSkin.ViewModels
             _keyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
             _keyboard.Layouts.LayoutSizeChanged += OnLayoutSizeChanged;
             Context.Config.ConfigChanged += OnConfigChanged;
+            Context.SharedData.SharedPropertyChanged += OnSharedPropertyChanged;
+        }
+
+        void OnSharedPropertyChanged( object sender, CommonServices.SharedPropertyChangedEventArgs e )
+        {
+            switch( e.PropertyName )
+            {
+                case "WindowOpacity":
+                    SafeUpdateKeyboardOpacity();
+                    break;
+                case "WindowBorderThickness":
+                    SafeUpdateKeyboardBorderThickness();
+                    break;
+                case "WindowBorderBrush":
+                    SafeUpdateKeyboardBorderBrush();
+                    break;
+                case "WindowBackgroundColor":
+                    SafeUpdateKeyboardBackgroundColor();
+                    break;
+            }
         }
 
         private void UnregisterEvents()
@@ -301,8 +317,17 @@ namespace SimpleSkin.ViewModels
         /// </summary>
         public int H { get { return _h; } }
 
-        private Brush _insideBorderColor;
-        public Brush InsideBorderColor { get { return _insideBorderColor; } }
+        double _keyboardOpacity;
+        public double KeyboardOpacity { get { return _keyboardOpacity; } }
+
+        Color _keyboardBackgroundColor;
+        public Color KeyboardBackgroundColor { get { return _keyboardBackgroundColor; } }
+
+        int _keyboardBorderThickness;
+        public int KeyboardBorderThickness { get { return _keyboardBorderThickness; } }
+
+        private Brush _keyboardBorderBrush;
+        public Brush KeyboardBorderBrush { get { return _keyboardBorderBrush; } }
 
         ImageSourceConverter _imsc;
         ImageSourceConverter Imsc
@@ -478,13 +503,43 @@ namespace SimpleSkin.ViewModels
             } );
         }
 
-        private void SafeUpdateInsideBorderColor()
+        private void SafeUpdateKeyboardOpacity()
         {
-            Color c = Context.Config[Layout].GetOrSet<Color>( "InsideBorderColor", null );
+            var c = Context.SharedData.WindowOpacity;
+            SafeSet<double>( c, ( v ) =>
+            {
+                _keyboardOpacity = v;
+                OnPropertyChanged( "KeyboardOpacity" );
+            } );
+        }
+
+        private void SafeUpdateKeyboardBackgroundColor()
+        {
+            Color c = Context.SharedData.WindowBackgroundColor;
             SafeSet<Color>( c, ( v ) =>
             {
-                if( v == null ) _insideBorderColor = null;
-                else _insideBorderColor = new SolidColorBrush( v );
+                _keyboardBackgroundColor = v;
+                OnPropertyChanged( "KeyboardBackgroundColor" );
+            } );
+        }
+
+        private void SafeUpdateKeyboardBorderThickness()
+        {
+            int c = Context.SharedData.WindowBorderThickness;
+            SafeSet<int>( c, ( v ) =>
+            {
+                _keyboardBorderThickness = v;
+                OnPropertyChanged( "KeyboardBorderThickness" );
+            } );
+        }
+
+        private void SafeUpdateKeyboardBorderBrush()
+        {
+            Color c = Context.SharedData.WindowBorderBrush;
+            SafeSet<Color>( c, ( v ) =>
+            {
+                _keyboardBorderBrush = new SolidColorBrush( v );
+                OnPropertyChanged( "KeyboardBorderBrush" );
             } );
         }
 

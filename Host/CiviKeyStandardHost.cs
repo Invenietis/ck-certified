@@ -122,6 +122,8 @@ namespace Host
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{D173E013-2491-4491-BF3E-CA2F8552B5EB}" ), RunningRequirement.MustExistAndRun );//KeyboardDisplayer
 
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{55A95F2F-2D67-4AE1-B5CF-4880337F739F}" ), RunningRequirement.MustExistAndRun );//WindowSaver
+
             //Command handlers. These plugins register their protocols onto the keyboard editor.
             //Therefor, we need them started in order to be able to create any type of Key Command.
             hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler

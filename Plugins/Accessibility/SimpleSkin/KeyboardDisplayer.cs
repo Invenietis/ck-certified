@@ -34,9 +34,6 @@ namespace SimpleSkin
 
         const string PredictionKeyboardName = "Prediction";
 
-        [ConfigurationAccessor( "{00000000-0000-0000-0000-000000000000}" )]
-        public IPluginConfigAccessor SharedConfig { get; set; }
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ISharedData SharedData { get; set; }
 

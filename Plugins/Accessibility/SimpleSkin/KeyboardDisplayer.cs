@@ -250,8 +250,6 @@ namespace SimpleSkin
             }
         }
 
-        }
-
         #endregion Windows Initialization
 
         #region Hightlight Methods

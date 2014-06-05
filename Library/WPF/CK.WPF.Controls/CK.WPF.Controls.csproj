@@ -92,11 +92,14 @@
     <Compile Include="Core\UIElementAdorner.cs" />
     <Compile Include="Core\Utilities\ColorUtilities.cs" />
     <Compile Include="Core\Utilities\ContextMenuUtilities.cs" />
+    <Compile Include="IconPicker\IconPicker.cs" />
+    <Compile Include="ImageFromFont.cs" />
     <Compile Include="NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimpleCommand.cs" />
     <Compile Include="TextBlockService.cs" />
+    <Compile Include="VirtualizingWrapPanel.cs" />
     <Compile Include="VMBase.cs" />
     <Page Include="Chromes\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +110,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ColorPicker\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="IconPicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -148,6 +155,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\glyphicons-halflings-regular.ttf" />
+    <Resource Include="Resources\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">

@@ -58,6 +58,8 @@
         <Setter Property="Opacity" Value="{Binding Opacity}"/>
         <Setter Property="Height" Value="{Binding Height}"/>
         <Setter Property="Width" Value="{Binding Width}"/>
+        <Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+        <Setter Property="ShowIcon" Value="{Binding ShowIcon}"/>
     </Style>
 
     <DataTemplate DataType="{x:Type vm:VMKeySimple}">

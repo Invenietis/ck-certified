@@ -189,10 +189,6 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get { return _root.PointerDeviceDriver; } }
 
-        /// <summary>
-        /// Gets the keyboard driver, can be used to hook events
-        /// </summary>
-        //public IService<IKeyboardDriver> KeyboardDriver { get { return _root.KeyboardDriver; } }
         public VMContextElementEditable SelectedElement
         {
             get
@@ -505,8 +501,6 @@ namespace KeyboardEditor.ViewModels
             _dic.TryGetValue( m, out vm );
             return (T)vm;
         }
-
-
         #endregion
     }
 }

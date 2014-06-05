@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;
 using KeyboardEditor.Resources;
@@ -79,25 +80,111 @@ namespace KeyboardEditor.ViewModels
 
         #region Properties
 
+        string _upLabel;
         ///Gets the UpLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public string UpLabel
         {
-            get { return Model.UpLabel; }
-            set { Model.UpLabel = value; }
+            get 
+            {
+                if( ActualParent.ShowIcon && Icon != char.MinValue ) return Icon.ToString();
+                else return _upLabel ?? Model.UpLabel;
+            }
+            set 
+            {
+                //Model.UpLabel = value;
+                if( value != _upLabel )
+                {
+                    _upLabel = value;
+                    OnPropertyChanged( "UpLabel" );
+                    OnPropertyChanged( "FontFamily" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
         }
 
+        string _downLabel;
         ///Gets the DownLabel of the underling <see cref="IKey"/> if fallback is enabled or if the <see cref="IKeyMode"/> if not a fallback
         public string DownLabel
         {
-            get { return Model.DownLabel; }
-            set { Model.DownLabel = value; }
+            get 
+            {
+                //return Model.DownLabel; 
+                return _downLabel ?? Model.UpLabel;
+            }
+            set 
+            {
+                //Model.DownLabel = value; 
+                if( value != _downLabel )
+                {
+                    _downLabel = value;
+                    OnPropertyChanged( "DownLabel" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
         }
 
+        char _icon;
+        public char Icon
+        {
+            get { return ActualParent.ShowIcon && _icon == char.MinValue ? Model.UpLabel[0] : _icon ; }
+            set 
+            {
+                if( value != _icon )
+                {
+                    _icon = value;
+                    OnPropertyChanged( "UpLabel" );
+                    OnPropertyChanged( "Icon" );
+                    //OnPropertyChanged( "FontFamily" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
+        }
+
+        //set a default value, because the DependencyProperty
+        FontFamily _iconFontFamily = new FontFamily( new Uri( "pack://application:,,,/CK.WPF.Controls;Component/resources/" ), "./#FontAwesome" );
+        public FontFamily FontFamily
+        {
+            get 
+            {
+                if( ActualParent.ShowIcon )
+                {
+                    return _iconFontFamily;
+                }
+                else
+                {
+                    return ActualParent.FontFamily;
+                }
+            }
+            set
+            {
+                if( _iconFontFamily != value )
+                {
+                    Console.WriteLine( "set " + UpLabel + " " + value );
+                    _iconFontFamily = value;
+                    OnPropertyChanged( "FontFamily" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
+        }
+
+        string _description;
         ///Gets the Description of the underling <see cref="IKeyMode"/>
         public string Description
         {
-            get { return Model.Description; }
-            set { Model.Description = value; }
+            get 
+            { 
+                //return Model.Description;
+                return _description ?? Model.Description;
+            }
+            set 
+            { 
+                if( value != _description )
+                {
+                    _description = value;
+                    OnPropertyChanged( "Description" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
         }
 
         /// <summary>
@@ -123,9 +210,14 @@ namespace KeyboardEditor.ViewModels
                         Context.CurrentlyDisplayedModeType = ModeTypes.Mode;
                     }
                 }
+                else
+                {
+                    ResetCacheValue();
+                }
 
                 _isSelected = value;
                 OnPropertyChanged( "IsSelected" );
+                OnPropertyChanged( "FontFamily" );
 
                 ActualParent.TriggerOnPropertyChanged( "IsSelected" );
                 ActualParent.TriggerOnPropertyChanged( "IsBeingEdited" );
@@ -135,6 +227,31 @@ namespace KeyboardEditor.ViewModels
 
         public string SectionName { get { return _sectionName; } }
         public string ModeName { get { return _modeName; } }
+
+        private void ResetCacheValue()
+        {
+            _icon = char.MinValue;
+            _imageString = null;
+            _downLabel = null;
+            _description = null;
+            _upLabel = null;
+            _selectedImage = new KeyValuePair<string,string>();
+            ActualParent.Image = null;
+            ActualParent.DisplayType = Context.SkinConfiguration[Model.Key.Current].GetOrSet( "DisplayType", "Label" );
+
+            OnPropertyChanged( "Icon" );
+            OnPropertyChanged( "FontFamily" );
+            OnPropertyChanged( "Image" );
+            OnPropertyChanged( "DownLabel" );
+            OnPropertyChanged( "UpLabel" );
+            OnPropertyChanged( "Description" );
+            OnPropertyChanged( "SelectedImage" );
+            ActualParent.TriggerOnPropertyChanged( "ShowIcon" );
+            ActualParent.TriggerOnPropertyChanged( "ShowImage" );
+            ActualParent.TriggerOnPropertyChanged( "ShowLabel" );
+
+            OnPropertyChanged( "IsDirty" );
+        }
 
         #endregion
 
@@ -447,13 +564,65 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        ICommand _saveContentCommand;
+        public ICommand SaveContentCommand
+        {
+            get
+            {
+                if( _saveContentCommand == null )
+                {
+                    _saveContentCommand = new VMCommand<VMKeyEditable>( ( k ) =>
+                    {
+                        if( ActualParent.ShowLabel )
+                        {
+                            if( Model.UpLabel != UpLabel ) Model.UpLabel = UpLabel;
+                            if( Model.DownLabel != DownLabel ) Model.DownLabel = DownLabel;
+                        }
+                        else if( ActualParent.ShowIcon )
+                        {
+                            if( Model.UpLabel != Icon.ToString() ) Model.UpLabel = Model.DownLabel = Icon.ToString();
+                            ActualParent.FontFamily = _iconFontFamily; 
+                        }
+                        else if( ActualParent.ShowImage )
+                        {
+                            Context.SkinConfiguration[Model.Key.Current]["Image"] = _imageString;
+                        }
+                        if( Model.Description != Description ) Model.Description = Description;
+
+                        Context.SkinConfiguration[Model.Key.Current]["DisplayType"] = ActualParent.DisplayType;
+
+                        ResetCacheValue();
+                    }, k => IsDirty );
+                }
+                return _saveContentCommand;
+            }
+        }
+        public bool IsDirty
+        {
+            get
+            {
+                return _upLabel != null
+                    || _downLabel != null
+                    || _imageString != null
+                    || _icon != char.MinValue
+                    || _description != null;
+            }
+        }
+
         private void ProcessImageStream( Stream str )
         {
             byte[] bytes = new byte[str.Length];
             str.Read( bytes, 0, Convert.ToInt32( str.Length ) );
             string encodedImage = Convert.ToBase64String( bytes, Base64FormattingOptions.None );
 
-            Context.SkinConfiguration[Model.Key.Current]["Image"] = encodedImage;
+            Image image = new Image();
+            image.Source = WPFImageProcessingHelper.ProcessImage( encodedImage ).Source;
+            ActualParent.Image = image;
+
+            _imageString = encodedImage;
+            _selectedImage = new KeyValuePair<string, string>();
+            _selectedText = "";
+            OnPropertyChanged( "SelectedText" );
         }
 
         private bool EnsureIsImage( string extension )
@@ -462,6 +631,12 @@ namespace KeyboardEditor.ViewModels
                 || String.Compare( extension, ".jpg", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".png", StringComparison.CurrentCultureIgnoreCase ) == 0
                 || String.Compare( extension, ".bmp", StringComparison.CurrentCultureIgnoreCase ) == 0;
+        }
+
+        string _imageString;
+        public Image Image
+        {
+            get { return ActualParent.Image; }
         }
 
         KeyValuePair<string, string> _selectedImage;
@@ -486,11 +661,28 @@ namespace KeyboardEditor.ViewModels
                     }
                     else
                     {
-                        //The value is the "pack" path to an internal image
-                        Context.SkinConfiguration[Model.Key.Current]["Image"] = value.Value;
+                        Image image = new Image();
+                        image.Source = WPFImageProcessingHelper.ProcessImage( value.Value ).Source;
+                        ActualParent.Image = image;
+                        _imageString = value.Value;
                     }
 
                     OnPropertyChanged( "SelectedImage" );
+                    OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "IsDirty" );
+                }
+            }
+        }
+
+        string _selectedText;
+        public string SelectedText
+        {
+            get { return _selectedText; }
+            set
+            {
+                if( value != _selectedText )
+                {
+                    _selectedText = value;
                 }
             }
         }

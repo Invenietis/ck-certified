@@ -138,7 +138,7 @@ namespace CK.WordPredictor.Engines
                 //_currentlyRunningTask.Wait( cancellationSource.Token );
                 cancellationSource.Dispose();
                 cancellationSource = new CancellationTokenSource();
-                PredictionLogger.Instance.Trace( "Prediction Canceled" );
+                PredictionLogger.Instance.Trace().Send( "Prediction Canceled" );
             }
 
             if( cancellationSource == null )
@@ -170,18 +170,18 @@ namespace CK.WordPredictor.Engines
                     .Select( t => new WeightlessWordPredicted( t ) )
                     .ToReadOnlyList();
 
-                PredictionLogger.Instance.Trace( "Predicted < {0} > from < {1} >", String.Join( ", ", predicted.Select( w => w.Word ) ), rawContext.Replace( ' ', '_' ) );
+                PredictionLogger.Instance.Trace().Send( "Predicted < {0} > from < {1} >", String.Join( ", ", predicted.Select( w => w.Word ) ), rawContext.Replace( ' ', '_' ) );
 
                 return predicted;
             }
             catch( ArgumentException ex )
             {
-                PredictionLogger.Instance.Error( ex.Message );
+                PredictionLogger.Instance.Error().Send( ex.Message );
                 return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
             catch( IndexOutOfRangeException outOfRangeEx )
             {
-                PredictionLogger.Instance.Error( outOfRangeEx.Message );
+                PredictionLogger.Instance.Error().Send( outOfRangeEx.Message );
                 return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
         }
@@ -191,7 +191,7 @@ namespace CK.WordPredictor.Engines
             if( retryCount > 0 )
             {
                 retryCount--;
-                PredictionLogger.Instance.Trace( "Attempt n°{0}", MaxPredictRetryCount - retryCount );
+                PredictionLogger.Instance.Trace().Send( "Attempt n°{0}", MaxPredictRetryCount - retryCount );
                 return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
             return CKReadOnlyListEmpty<IWordPredicted>.Empty;
@@ -215,7 +215,7 @@ namespace CK.WordPredictor.Engines
                 }
                 catch( Exception ex )
                 {
-                    PredictionLogger.Instance.Error( ex, "While saving user predictor" );
+                    PredictionLogger.Instance.Error().Send( ex, "While saving user predictor" );
                 }
             }
         }

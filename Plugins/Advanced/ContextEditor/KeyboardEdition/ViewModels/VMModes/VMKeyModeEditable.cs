@@ -140,20 +140,13 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        //set a default value, because the DependencyProperty
+        //set a default value
         FontFamily _iconFontFamily = new FontFamily( new Uri( "pack://application:,,,/CK.WPF.Controls;Component/resources/" ), "./#FontAwesome" );
         public FontFamily FontFamily
         {
             get 
             {
-                if( ActualParent.ShowIcon )
-                {
-                    return _iconFontFamily;
-                }
-                else
-                {
-                    return ActualParent.FontFamily;
-                }
+                return ActualParent.ShowIcon ? _iconFontFamily : ActualParent.FontFamily;
             }
             set
             {

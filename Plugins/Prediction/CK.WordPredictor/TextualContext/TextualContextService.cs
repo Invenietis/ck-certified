@@ -159,12 +159,12 @@ namespace CK.WordPredictor
 
         protected virtual void OnStringSent( object sender, StringSentEventArgs e )
         {
-            using( PredictionLogger.Instance.OpenGroup( LogLevel.Trace, "OnStringSent" ) )
+            using( PredictionLogger.Instance.OpenTrace().Send( "OnStringSent" ) )
             {
                 string val = e.StringVal;
                 if( val != null )
                 {
-                    PredictionLogger.Instance.Trace( val );
+                    PredictionLogger.Instance.Trace().Send( val );
                     SetToken( e.StringVal );
                 }
             }
@@ -179,7 +179,7 @@ namespace CK.WordPredictor
         {
             using( new ChangeWrapper( this ) )
             {
-                PredictionLogger.Instance.Trace( "CaretIndex {0}", e.CaretIndex );
+                PredictionLogger.Instance.Trace().Send( "CaretIndex {0}", e.CaretIndex );
 
                 _caretIndex = e.CaretIndex;
 

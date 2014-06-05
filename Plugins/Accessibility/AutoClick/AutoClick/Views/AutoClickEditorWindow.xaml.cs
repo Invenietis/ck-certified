@@ -27,6 +27,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Interop;
 using CK.Windows.Interop;
+using CK.Windows.Core;
 
 namespace CK.Plugins.AutoClick.Views
 {
@@ -57,7 +58,7 @@ namespace CK.Plugins.AutoClick.Views
             mainWindowSrc.CompositionTarget.BackgroundColor = Color.FromArgb( 0, 0, 0, 0 );
             mainWindowSrc.CompositionTarget.RenderMode = RenderMode.Default;
 
-            if( CK.Core.OSVersionInfo.OSLevel >= CK.Core.OSVersionInfo.SimpleOSLevel.WindowsVista && Dwm.Functions.IsCompositionEnabled() )
+            if( OSVersionInfo.OSLevel >= OSVersionInfo.SimpleOSLevel.WindowsVista && Dwm.Functions.IsCompositionEnabled() )
             {
                 Win.Margins m = new Win.Margins() { LeftWidth = -1, RightWidth = -1, TopHeight = -1, BottomHeight = -1 };
                 Dwm.Functions.ExtendFrameIntoClientArea( _interopHelper.Handle, ref m );

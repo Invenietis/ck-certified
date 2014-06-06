@@ -166,7 +166,6 @@ namespace SimpleSkin
             WindowManager.Registered += OnWindowManagerRegistered;
             WindowManager.Unregistered += OnWindowManagerUnregistered;
             WindowManager.WindowMinimized += OnWindowMinimized;
-            WindowManager.WindowRestored += OnWindowRestored;
         }
 
         void OnWindowManagerRegistered( object sender, WindowElementEventArgs e )
@@ -259,16 +258,22 @@ namespace SimpleSkin
 
         public void RestoreWindows()
         {
-            if( _miniView != null && _miniView.Visibility != Visibility.Hidden )
+            if( _viewHidden )
             {
-                UnregisterFromHighlighter();
-                _miniView.Hide();
+                if( _miniView != null && _miniView.Visibility != Visibility.Hidden )
+                {
+                    UnregisterFromHighlighter();
+                    _miniView.Hide();
+                }
+
+                WindowManager.WindowMinimized += OnWindowMinimized;
+                WindowManager.WindowRestored -= OnWindowRestored;
+
+                //Dispatched afterwards
+                WindowManager.RestoreAllWindows();
+
+                _viewHidden = false;
             }
-
-            //Dispatched afterwards
-            WindowManager.RestoreAllWindows();
-
-            _viewHidden = false;
         }
 
         public void MinimizeWindows()
@@ -278,6 +283,9 @@ namespace SimpleSkin
                 _viewHidden = true;
 
                 ShowMiniView();
+
+                WindowManager.WindowMinimized -= OnWindowMinimized;
+                WindowManager.WindowRestored += OnWindowRestored;
 
                 WindowManager.MinimizeAllWindows();
             }

@@ -37,7 +37,6 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using CK.Windows.App;
 using CK.Context.SemVer;
-using Common.Logging;
 using UpdateChecker.View;
 using System.Windows;
 
@@ -53,7 +52,7 @@ namespace UpdateChecker
         const string PluginIdentifier = "{11C83441-6818-4A8B-97A0-1761E1A54251}";
         const string PluginVersion = "2.0.0";
 
-        static ILog _log = LogManager.GetLogger<UpdateChecker>();
+        IActivityMonitor _log;
 
         UpdateVersionState _versionState;
         DownloadState _downloadState;
@@ -215,7 +214,7 @@ namespace UpdateChecker
                     {
                         if( e.Error != null )
                         {
-                            _log.Error( "Error while checking version", e.Error );
+                            _log.Error().Send( e.Error, "Error while checking version" );
                             VersionState = UpdateVersionState.ErrorWhileCheckingVersion;
                             return;
                         }
@@ -253,7 +252,7 @@ namespace UpdateChecker
                 }
                 catch( Exception ex )
                 {
-                    _log.Error( "Error while checking version", ex );
+                    _log.Error().Send( ex, "Error while checking version" );
                     VersionState = UpdateVersionState.ErrorWhileCheckingVersion;
                 }
             }
@@ -283,7 +282,7 @@ namespace UpdateChecker
             }
             else if( e.Error != null )
             {
-                _log.Error( "Error while downloading", e.Error );
+                _log.Error().Send( e.Error, "Error while downloading" );
                 DownloadState = DownloadState.ErrorWhileDownloading;
             }
             else
@@ -316,7 +315,7 @@ namespace UpdateChecker
                 }
                 catch( Exception ex )
                 {
-                    _log.Error( "Error while downloading", ex );
+                    _log.Error().Send( ex, "Error while downloading" );
                     DownloadState = DownloadState.ErrorWhileDownloading;
                 }
             }

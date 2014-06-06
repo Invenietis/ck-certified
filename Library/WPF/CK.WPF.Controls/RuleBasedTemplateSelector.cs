@@ -69,8 +69,6 @@ namespace CK.WPF.Controls
     [ContentProperty( "Rules" )]
     public class RuleBasedTemplateSelector : DataTemplateSelector
     {
-        static readonly internal Common.Logging.ILog Log = Common.Logging.LogManager.GetLogger<RuleBasedTemplateSelector>();
-
         public RuleBasedTemplateSelector()
         {
             Rules = new List<RuleBasedTemplateSelectorRule>();

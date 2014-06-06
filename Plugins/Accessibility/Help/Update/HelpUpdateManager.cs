@@ -11,7 +11,6 @@ using CK.Context;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using Common.Logging;
 using Help.Services;
 using Help.Update.ManualUpdate;
 using Host.Services;
@@ -29,7 +28,7 @@ namespace Help.Update
         Queue<IPluginProxy> _checked;
         Queue<IPluginProxy> _pending;
 
-        static ILog _log = LogManager.GetLogger( typeof( HelpUpdateManager ) );
+        IActivityMonitor _log;
 
         string _helpServerUrl;
         HttpClient _http;
@@ -60,6 +59,8 @@ namespace Help.Update
 
         public void Start()
         {
+            _log = Context.ServiceContainer.GetService<IActivityMonitor>();
+
             _helpServerUrl = Configuration.System.GetOrSet( "HelpServerUrl", "http://api.civikey.invenietis.com/" );
             if( !_helpServerUrl.EndsWith( "/" ) ) _helpServerUrl += "/";
 

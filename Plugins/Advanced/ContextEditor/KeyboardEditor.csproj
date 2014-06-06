@@ -91,10 +91,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Windows.Interop.2.11.0-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ThirdParty\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>

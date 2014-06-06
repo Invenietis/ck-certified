@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using CK.Core;
-using Common.Logging;
 using Help.Services;
 using Ionic.Zip;
 
@@ -19,7 +18,7 @@ namespace Help.Update
 
         public string Version { get { return Manifest.Version; } }
 
-        public DownloadResult( ILog logger, Stream zipContent )
+        public DownloadResult( IActivityMonitor logger, Stream zipContent )
         {
             File = new TemporaryFile( ".zip" );
             using( zipContent )
@@ -42,7 +41,7 @@ namespace Help.Update
                         }
                         catch( Exception ex )
                         {
-                            logger.Error( "Unable to parse manifest", ex );
+                            logger.Error().Send(ex, "Unable to parse manifest" );
                             throw;
                         }
                     }
@@ -50,7 +49,7 @@ namespace Help.Update
             }
             catch( Exception ex )
             {
-                logger.Error( "Unable to read downloaded help content as a zip file", ex );
+                logger.Error().Send( ex, "Unable to read downloaded help content as a zip file" );
                 throw;
             }
         }

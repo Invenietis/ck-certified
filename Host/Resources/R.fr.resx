@@ -393,4 +393,7 @@
   <data name="UnScrollableElements" xml:space="preserve">
     <value>Modules non défilables</value>
   </data>
+  <data name="ExportConf" xml:space="preserve">
+    <value>Exporter votre configuration</value>
+  </data>
 </root>

@@ -24,8 +24,13 @@
 using Host.Resources;
 using CK.Windows.Config;
 using System.IO;
+using System.IO.Compression;
 using System.Security.Principal;
 using System.Security.AccessControl;
+using CK.Windows;
+using CK.Plugin.Config;
+using System;
+using Ionic.Zip;
 
 namespace Host.VM
 {
@@ -53,6 +58,13 @@ namespace Host.VM
             g.AddProperty( R.ShowTaskbarIcon, _app, a => a.ShowTaskbarIcon );
             g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
 
+            {
+                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( ExportConf ) );
+                action.ImagePath = "Forward.png";
+                action.DisplayName = R.ExportConf;
+                this.Items.Add( action );
+            }
+
             // v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
             //g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
 
@@ -65,6 +77,36 @@ namespace Host.VM
             _remindMeOfNewUpdates = !File.Exists( _stopReminderPath );
 
             base.OnInitialize();
+        }
+
+        public void ExportConf()
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            DateTime now = DateTime.Now;
+            dlg.FileName = string.Format( "Configuration - {0:ddMMyy}", now ); // Default file name
+            dlg.DefaultExt = ".zip"; // Default file extension
+            dlg.Filter = "Configuration CiviKey (.zip)|*.zip"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if( result == true )
+            {
+                ZipMultiFiles( dlg.FileName, CivikeyStandardHost.Instance.ApplicationDataPath + "Context.xml", 
+                                             CivikeyStandardHost.Instance.ApplicationDataPath + "User.config.ck", 
+                                             CivikeyStandardHost.Instance.CommonApplicationDataPath + "System.config.ck" );
+            }
+        }
+
+        public static void ZipMultiFiles( string destPath, params string[] filePaths )
+        {
+            using( ZipFile z = new ZipFile() )
+            {
+                z.AddFiles( filePaths, string.Empty );
+                z.Save( destPath );
+            }
+            
         }
 
         bool _remindMeOfNewUpdates;

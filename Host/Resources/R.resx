@@ -393,4 +393,7 @@
   <data name="UnScrollableElements" xml:space="preserve">
     <value>Not scrollable modules</value>
   </data>
+  <data name="ExportConf" xml:space="preserve">
+    <value>Export your configuration</value>
+  </data>
 </root>

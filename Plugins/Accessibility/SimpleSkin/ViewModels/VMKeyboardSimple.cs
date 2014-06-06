@@ -438,7 +438,8 @@ namespace SimpleSkin.ViewModels
             int i = Context.Config[Keyboard].GetOrSet<int>( "LoopCount", 1 );
             SafeSet<int>( i, ( v ) =>
             {
-                _loopCount = i;
+                if( v != 0 ) _loopCount = 1;
+                else _loopCount = v;
             } );
         }
 

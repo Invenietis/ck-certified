@@ -284,6 +284,14 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public IKeyboard Model { get; private set; }
 
+        public int LoopCount
+        {
+            get { return LayoutElement.Keyboard.GetPropertyValue<int>( _holder.SkinConfiguration, "LoopCount", 1 ); }
+            set
+            {
+                _holder.SkinConfiguration[LayoutElement.Keyboard]["LoopCount"] = value;
+            }
+        }
 
         /// <summary>
         /// Gets whether this element is being edited. 

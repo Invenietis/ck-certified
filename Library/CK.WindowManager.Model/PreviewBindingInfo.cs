@@ -53,6 +53,7 @@ namespace CK.WindowManager.Model
                     Window.Top = r.Top;
                     Window.Width = r.Width;
                     Window.Height = r.Height;
+                    Window.Topmost = true;
                 } ) );
             }
         }

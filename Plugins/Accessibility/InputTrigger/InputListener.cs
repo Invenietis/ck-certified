@@ -13,7 +13,7 @@ namespace InputTrigger
 
         public bool IsRecording { get; private set; }
 
-        public InputListener(IService<IKeyboardDriver> kb, IService<IPointerDeviceDriver> pd)
+        public InputListener( IService<IKeyboardDriver> kb, IService<IPointerDeviceDriver> pd )
         {
             _keboardDriver = kb;
             _mouseDriver = pd;
@@ -34,6 +34,7 @@ namespace InputTrigger
         {
             if( IsRecording )
             {
+                Console.WriteLine( "Key down recorded" );
                 _recordCallback( new Trigger( e.KeyCode, e.InputSource == InputSource.CiviKey ? TriggerDevice.Civikey : TriggerDevice.Keyboard ) );
                 IsRecording = false;
             }
@@ -47,16 +48,17 @@ namespace InputTrigger
         {
             if( IsRecording )
             {
-                _recordCallback(new Trigger( MouseCodeFromButtonInfo( e.ButtonInfo, e.ExtraInfo ), TriggerDevice.Pointer ));
+                Console.WriteLine( "Mouse down recorded" );
+                _recordCallback( new Trigger( MouseCodeFromButtonInfo( e.ButtonInfo, e.ExtraInfo ), TriggerDevice.Pointer ) );
                 IsRecording = false;
             }
             else
             {
-                FireKeyDown( MouseCodeFromButtonInfo( e.ButtonInfo, e.ExtraInfo ), TriggerDevice.Pointer );
+                FireKeyDown( MouseCodeFromButtonInfo( e.ButtonInfo, e.ExtraInfo ), e.Source == InputSource.CiviKey ? TriggerDevice.Civikey : TriggerDevice.Pointer );
             }
         }
 
-        void FireKeyDown(int keyCode, TriggerDevice device)
+        void FireKeyDown( int keyCode, TriggerDevice device )
         {
             if( KeyDown != null ) KeyDown( this, new KeyDownEventArgs( keyCode, device ) );
         }

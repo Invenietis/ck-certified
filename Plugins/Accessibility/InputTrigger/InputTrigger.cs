@@ -99,7 +99,13 @@ namespace InputTrigger
         {
             if( !_listeners.ContainsKey( key ) ) throw new InvalidOperationException( "The given trigger must exist!" );
 
-            foreach( var action in _listeners[key] ) action( key );
+            Console.WriteLine( "Action bundle about to be launched..." );
+            foreach( var action in _listeners[key] )
+            {
+                Console.WriteLine( "Action triggered" );
+                action( key );
+            }
+            Console.WriteLine( "Action bundle launched" );
         }
 
         #region ITriggerService Members

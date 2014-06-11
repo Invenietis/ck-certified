@@ -124,8 +124,6 @@ namespace CK.Plugins.AutoClick
         {
             _isClosing = true;
 
-            TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
-
             UninitializeTopMost();
             UninitializeWindowManager();
             UninitializeHighlighter();
@@ -280,23 +278,25 @@ namespace CK.Plugins.AutoClick
         {
             RegisterWindowManager();
 
-            //Register WindowsManager events
-            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
             if( WindowManager.Status.IsStartingOrStarted )
             {
                 WindowManager.Service.WindowMinimized += OnWindowMinimized;
                 WindowManager.Service.WindowRestored += OnWindowRestored;
             }
+
+            //Register WindowsManager events
+            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
         }
 
         void UninitializeWindowManager()
         {
+            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
+
             if( WindowManager.Status.IsStartingOrStarted )
             {
                 WindowManager.Service.WindowMinimized -= OnWindowMinimized;
                 WindowManager.Service.WindowRestored -= OnWindowRestored;
             }
-            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
 
             UnregisterWindowManager();
         }
@@ -370,7 +370,6 @@ namespace CK.Plugins.AutoClick
             if( e.Current == InternalRunningStatus.Started ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
             else if( e.Current == InternalRunningStatus.Stopping ) TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
         }
-
 
         #endregion
 

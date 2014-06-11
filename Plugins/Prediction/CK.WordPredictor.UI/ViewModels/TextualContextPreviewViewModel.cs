@@ -17,7 +17,7 @@ namespace CK.WordPredictor.UI.ViewModels
         public TextualContextPreviewViewModel( IService<ITextualContextService> textualContext )
         {
             _textualContext = textualContext;
-            _textualContext.Service.TextualContextChanged += TextualContext_PropertyChanged;
+            if( _textualContext.Status.IsStartingOrStarted ) _textualContext.Service.TextualContextChanged += TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged += TextualContextService_ServiceStatusChanged;
         }
 
@@ -30,6 +30,8 @@ namespace CK.WordPredictor.UI.ViewModels
 
         private void TextualContextService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
+            if( e.Current == InternalRunningStatus.Started ) _textualContext.Service.TextualContextChanged += TextualContext_PropertyChanged;
+            else if( e.Current == InternalRunningStatus.Stopping ) _textualContext.Service.TextualContextChanged -= TextualContext_PropertyChanged;
             OnPropertyChanged( "IsTextualContextServiceAvailable" );
         }
 
@@ -77,7 +79,7 @@ namespace CK.WordPredictor.UI.ViewModels
 
         public void Dispose()
         {
-            _textualContext.Service.TextualContextChanged -= TextualContext_PropertyChanged;
+            if( _textualContext.Status.IsStartingOrStarted ) _textualContext.Service.TextualContextChanged -= TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged -= TextualContextService_ServiceStatusChanged;
         }
 

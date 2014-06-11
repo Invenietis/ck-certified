@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -505,6 +506,24 @@ namespace KeyboardEditor.ViewModels
             Model.OnKeyDownCommands.CommandsCleared += OnKeyDownCommands_CommandsCleared;
             Model.OnKeyDownCommands.CommandDeleted += OnKeyDownCommands_CommandDeleted;
             Model.OnKeyDownCommands.CommandUpdated += OnKeyDownCommands_CommandUpdated;
+
+            Context.SelectedElementChanging += Context_SelectedElementChanging;
+        }
+
+        void Context_SelectedElementChanging( object sender, SelectedElementChangingEventArgs e )
+        {
+            if( e.CurrentElement == this && IsDirty )
+            {
+                if( ConfirmUnsavedItem() )
+                {
+                    SaveContentCommand.Execute( null );
+                }
+            }
+        }
+
+        bool ConfirmUnsavedItem()
+        {
+             return MessageBox.Show( "Les dernières modifications n'ont pas été sauvegardées, voulez-vous les sauvegardez ?", "Confirmation", System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
         }
 
         private void UnregisterEvents()

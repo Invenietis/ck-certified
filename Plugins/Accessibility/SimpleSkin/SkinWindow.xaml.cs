@@ -34,6 +34,7 @@ using CK.Windows.Interop;
 using System.Diagnostics;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
+using CK.Windows.Core;
 
 namespace SimpleSkin
 {
@@ -58,6 +59,22 @@ namespace SimpleSkin
             if( DraggableVisualAttachedProperty.GetDraggableVisual( visualElement ) ) return true;
             var parent = VisualTreeHelper.GetParent( visualElement );
             return parent is SkinWindow || base.IsDraggableVisual( visualElement );
+        }
+
+        protected override bool EnableSpecialElementHitTest( DependencyObject visualElement, Point p, int currentHTCode, out DependencyObject specialElement )
+        {
+            if( visualElement is Rectangle )
+            {
+                var parent = visualElement.FindParent( d => d is ISpecialElementHitTest );
+                if( parent != null ) specialElement = parent;
+                else specialElement = visualElement;
+                return true;
+            }
+            else
+            {
+                specialElement = visualElement;
+                return false;
+            }
         }
     }
 }

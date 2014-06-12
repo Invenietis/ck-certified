@@ -26,6 +26,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using CK.Windows.Core;
 
 namespace CK.Plugins.AutoClick.Views
 {
@@ -44,6 +45,22 @@ namespace CK.Plugins.AutoClick.Views
         {
             var parent = VisualTreeHelper.GetParent( visualElement );
             return parent is ClickSelectorWindow || visualElement is Path || (visualElement is Border && !(parent is ActionOnMouseEnterButton));
+        }
+
+        protected override bool EnableSpecialElementHitTest( DependencyObject visualElement, Point p, int currentHTCode, out DependencyObject specialElement )
+        {
+            if( visualElement is Rectangle )
+            {
+                var parent = visualElement.FindParent( d => d is ISpecialElementHitTest );
+                if( parent != null ) specialElement = parent;
+                else specialElement = visualElement;
+                return true;
+            }
+            else
+            {
+                specialElement = visualElement;
+                return false;
+            }
         }
     }
 }

@@ -200,19 +200,22 @@ namespace Host
             //If the user has changed, we need to load the corresponding user configuration
             if( e.PropertyName == "CurrentUserProfile" )
             {
+                using( _log.OpenInfo().Send( "OnSystemConfigurationPropertyChanged" ) )
+                {
+                    Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
 
-                Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
+                    SaveContext();
 
-                SaveContext();
+                    SaveUserConfig( Context.ConfigManager.SystemConfiguration.PreviousUserProfile.Address, false );
+                    Context.ConfigManager.Extended.HostUserConfig.Clear();
+                    LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
 
-                SaveUserConfig( Context.ConfigManager.SystemConfiguration.PreviousUserProfile.Address, false );
-                Context.ConfigManager.Extended.HostUserConfig.Clear();
-                LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
+                    Context.ConfigManager.Extended.Container.Clear( Context );
+                    LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
 
-                Context.ConfigManager.Extended.Container.Clear( Context );
-                LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
+                    Context.PluginRunner.Apply( true );
 
-                Context.PluginRunner.Apply( true );
+                }
             }
         }
 

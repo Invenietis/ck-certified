@@ -46,20 +46,10 @@ namespace CK.Plugins.AutoClick.Views
             return parent is AutoClickWindow;
         }
 
-        protected override bool EnableSpecialElementHitTest( DependencyObject visualElement, Point p, int currentHTCode, out DependencyObject specialElement )
+        protected override bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
         {
-            if( visualElement is Rectangle )
-            {
-                var parent = visualElement.FindParent( d => d is ISpecialElementHitTest );
-                if( parent != null ) specialElement = parent;
-                else specialElement = visualElement;
-                return true;
-            }
-            else
-            {
-                specialElement = visualElement;
-                return false;
-            }
+            specialElement = visualElement as IHitTestElementController;
+            return specialElement != null;
         }
     }
 }

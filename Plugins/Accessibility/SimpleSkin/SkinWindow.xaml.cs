@@ -35,6 +35,7 @@ using System.Diagnostics;
 using System.Windows.Interop;
 using System.Runtime.InteropServices;
 using CK.Windows.Core;
+using CK.WPF.StandardViews;
 
 namespace SimpleSkin
 {
@@ -61,20 +62,10 @@ namespace SimpleSkin
             return parent is SkinWindow || base.IsDraggableVisual( visualElement );
         }
 
-        protected override bool EnableSpecialElementHitTest( DependencyObject visualElement, Point p, int currentHTCode, out DependencyObject specialElement )
+        protected override bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
         {
-            if( visualElement is Rectangle )
-            {
-                var parent = visualElement.FindParent( d => d is ISpecialElementHitTest );
-                if( parent != null ) specialElement = parent;
-                else specialElement = visualElement;
-                return true;
-            }
-            else
-            {
-                specialElement = visualElement;
-                return false;
-            }
+            specialElement = visualElement as IHitTestElementController;
+            return specialElement != null;
         }
     }
 }

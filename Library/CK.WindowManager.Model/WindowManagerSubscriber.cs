@@ -47,10 +47,10 @@ namespace CK.WindowManager.Model
 
         public virtual void Unsubscribe()
         {
-            UnregisterWindowManager();
+            if( WindowManager.Status.IsStartingOrStarted ) UnregisterWindowManager();
             WindowManager.ServiceStatusChanged -= WindowManager_ServiceStatusChanged;
             
-            UnregisterWindowBinder();
+            if( WindowBinder.Status.IsStartingOrStarted ) UnregisterWindowBinder();
             WindowBinder.ServiceStatusChanged -= WindowBinder_ServiceStatusChanged;
         }
 
@@ -88,6 +88,10 @@ namespace CK.WindowManager.Model
             {
                 UnregisterWindowBinder();
             }
+            else if( e.Current == InternalRunningStatus.Stopped )
+            {
+                if( OnBinderStopped != null ) OnBinderStopped();
+            }
         }
 
         protected void RegisterWindowManager()
@@ -112,14 +116,14 @@ namespace CK.WindowManager.Model
         {
             WindowBinder.Service.BeforeBinding += Service_BeforeBinding;
             WindowBinder.Service.AfterBinding += Service_AfterBinding;
-            if( OnBinderStarted != null ) OnBinderStarted();
+            if( OnBinderStarted != null && WindowBinder.Status == InternalRunningStatus.Started ) OnBinderStarted();
         }
 
         protected void UnregisterWindowBinder()
         {
-            if( OnBinderStopped != null ) OnBinderStopped();
             WindowBinder.Service.BeforeBinding -= Service_BeforeBinding;
             WindowBinder.Service.AfterBinding -= Service_AfterBinding;
+            if( OnBinderStopped != null && WindowBinder.Status == InternalRunningStatus.Stopped ) OnBinderStopped();
         }
 
         protected void Service_Registered( object sender, WindowElementEventArgs e )

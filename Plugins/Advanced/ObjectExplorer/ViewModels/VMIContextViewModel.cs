@@ -261,7 +261,7 @@ namespace CK.Plugins.ObjectExplorer
             ShowHelp = new CK.Windows.App.VMCommand(
                 () =>
                 {
-                    HelpService.ShowHelpFor( ObjectExplorer.PluginId );
+                    if( HelpService != null ) HelpService.ShowHelpFor( ObjectExplorer.PluginId );
                 } );
 
         }

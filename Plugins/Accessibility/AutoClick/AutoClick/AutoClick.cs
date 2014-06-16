@@ -68,9 +68,6 @@ namespace CK.Plugins.AutoClick
         public IService<IWindowManager> WindowManager { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowBinder> WindowBinder { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ITopMostService> TopMostService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }

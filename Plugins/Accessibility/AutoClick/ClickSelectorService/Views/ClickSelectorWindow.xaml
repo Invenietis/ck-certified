@@ -5,6 +5,8 @@
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"
     Topmost="True"
+    Height="350"
+    Width="120"
     Title="Auto click"
     WindowStyle="None"     
     ShowInTaskbar="False"

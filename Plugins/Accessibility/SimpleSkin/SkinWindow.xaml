@@ -13,6 +13,8 @@
     Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
     MinHeight="40" MinWidth="40"
+    Height="250"
+    Width="600"
     ShowInTaskbar="False"
     ShowActivated="False"
     AllowsTransparency="True" >

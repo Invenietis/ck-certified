@@ -8,6 +8,8 @@
     ShowInTaskbar="False"
     ShowActivated="False"
     AllowsTransparency="True"
+    Height="160"
+    Width="120"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views">
 

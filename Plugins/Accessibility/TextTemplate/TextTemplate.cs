@@ -67,12 +67,10 @@ namespace TextTemplate
             {
                 if( e.Current == InternalRunningStatus.Started )
                 {
-                    Console.WriteLine( "dzeidkzpoekdpozekpo" );
                     Highlighter.Service.RegisterTree( HIGHLIGH_REGISTER_ID, HIGHLIGH_REGISTER_DISPLAY_NAME, this );
                 }
                 else if( e.Current == InternalRunningStatus.Stopping )
                 {
-                    Console.WriteLine( "tagada fuck" );
                     Highlighter.Service.UnregisterTree( HIGHLIGH_REGISTER_ID, this );
                 }
             };

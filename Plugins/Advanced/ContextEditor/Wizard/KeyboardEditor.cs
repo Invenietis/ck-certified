@@ -165,15 +165,6 @@ namespace KeyboardEditor
             }
         }
 
-        void OnHookInvoqued( object sender, HookInvokedEventArgs e )
-        {
-            //Console.Out.WriteLine( String.Format( "Hook invoked ! msg = {0}, lParam = {1}, wParam = {2}", e.Message, e.LParam, e.WParam ) );
-            //if( HookInvoqued != null ) HookInvoqued( this, e );
-        }
-
-        public event HookInvokedEventHandler HookInvoqued;
-        public delegate void HookInvokedEventHandler( object sender, HookInvokedEventArgs e );
-
         #region Keyboard backup
 
         /// <summary>

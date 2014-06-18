@@ -23,13 +23,6 @@ namespace KeyboardEditor
         IService<IProtocolEditorsManager> ProtocolManagerService { get; }
 
         /// <summary>
-        /// Gets a service that enables hooking windows' low level keyboard inputs
-        /// </summary>
-        //IService<IKeyboardDriver> KeyboardDriver { get; }
-
-        event KeyboardEditor.HookInvokedEventHandler HookInvoqued;
-
-        /// <summary>
         /// Gets the Context.
         /// Gives access to the application's inner management
         /// </summary>

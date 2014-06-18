@@ -30,6 +30,9 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Input;
+using CK.Windows.App;
+using System.Windows;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -277,7 +280,16 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// Gets the name of the underlying <see cref="IKeyboard"/>
         /// </summary>
-        public string Name { get { return Model.Name; } }
+        public string Name
+        {
+            get { return Model.Name; }
+            set
+            {
+                if( !String.IsNullOrWhiteSpace( value ) )
+                    Model.Rename( value );
+                IsBeingRenamed = false;
+            }
+        }
 
         /// <summary>
         /// Gets the model linked to this ViewModel
@@ -343,7 +355,7 @@ namespace KeyboardEditor.ViewModels
 
         #region OnXXX
 
-        void OnKeyCreated( object sender, KeyEventArgs e )
+        void OnKeyCreated( object sender, CK.Keyboard.Model.KeyEventArgs e )
         {
             VMKeyEditable kvm = Context.Obtain( e.Key );
             Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
@@ -355,7 +367,7 @@ namespace KeyboardEditor.ViewModels
             Context.Obtain( e.Key ).PositionChanged();
         }
 
-        void OnKeyDestroyed( object sender, KeyEventArgs e )
+        void OnKeyDestroyed( object sender, CK.Keyboard.Model.KeyEventArgs e )
         {
             Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
             _keys.Remove( Context.Obtain( e.Key ) );
@@ -364,7 +376,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            //TODO
+            //TODO : Prediction
             var vmz = Context.Obtain( e.Zone );
             if( e.Zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
             else Zones.Add( vmz );
@@ -406,54 +418,35 @@ namespace KeyboardEditor.ViewModels
         {
         }
 
-        public override void OnKeyDownAction( int keyCode, int delta )
-        {
-            switch( keyCode )
-            {
-                case VMContextEditable.left:
-                    MoveLeft( delta );
-                    break;
-                case VMContextEditable.up:
-                    MoveUp( delta );
-                    break;
-                case VMContextEditable.right:
-                    MoveRight( delta );
-                    break;
-                case VMContextEditable.down:
-                    MoveDown( delta );
-                    break;
-            }
-        }
-
-        void MoveUp( int pixels )
+        internal override void OnMoveUp( int pixels )
         {
             foreach( VMZoneEditable zone in Zones )
             {
-                zone.MoveUp( pixels );
+                zone.OnMoveUp( pixels );
             }
         }
 
-        void MoveLeft( int pixels )
+        internal override void OnMoveLeft( int pixels )
         {
             foreach( VMZoneEditable zone in Zones )
             {
-                zone.MoveLeft( pixels );
+                zone.OnMoveLeft( pixels );
             }
         }
 
-        void MoveDown( int pixels )
+        internal override void OnMoveDown( int pixels )
         {
             foreach( VMZoneEditable zone in Zones )
             {
-                zone.MoveDown( pixels );
+                zone.OnMoveDown( pixels );
             }
         }
 
-        void MoveRight( int pixels )
+        internal override void OnMoveRight( int pixels )
         {
             foreach( VMZoneEditable zone in Zones )
             {
-                zone.MoveRight( pixels );
+                zone.OnMoveRight( pixels );
             }
         }
 
@@ -518,21 +511,43 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        VMCommand<string> _createZoneCommand;
-        public VMCommand<string> CreateZoneCommand
+        CK.Windows.App.VMCommand _createZoneCommand;
+        public CK.Windows.App.VMCommand CreateZoneCommand
         {
             get
             {
                 if( _createZoneCommand == null )
                 {
-                    _createZoneCommand = new VMCommand<string>( ( name ) =>
+                    _createZoneCommand = new CK.Windows.App.VMCommand( () =>
                     {
-                        Model.Zones.Create( name );
+                        string name = String.Empty;
+                        ModalViewModel mvm = new ModalViewModel( "Add a zone", "Type the name of the zone to add : " );
+                        mvm.Buttons.Add( new ModalButton( mvm, "Create", ModalResult.Ok ) );
+                        
+                        mvm.Content = new NameModel();
+                        ResourceDictionary res = Application.LoadComponent(
+                             new Uri( "/KeyboardEditor;component/KeyboardEdition/Views/Modals/Modals.xaml",
+                             UriKind.RelativeOrAbsolute ) ) as ResourceDictionary;
+
+                        if( res != null && res.Contains( "CreateZoneDataTemplate" ) )
+                        {
+                            mvm.ContentTemplate = res["CreateZoneDataTemplate"] as DataTemplate;
+                        }
+
+                        CustomMsgBox box = new CustomMsgBox( ref mvm );
+                        box.ShowDialog();
+
+                        Model.Zones.Create( (mvm.Content as NameModel).Name );
                     } );
                 }
 
                 return _createZoneCommand;
             }
+        }
+
+        public class NameModel
+        {
+            public string Name { get; set; }
         }
 
         #endregion

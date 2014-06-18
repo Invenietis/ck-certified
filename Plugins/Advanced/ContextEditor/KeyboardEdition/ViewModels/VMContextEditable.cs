@@ -274,14 +274,6 @@ namespace KeyboardEditor.ViewModels
             OnModelDestroy( e.Keyboard );
         }
 
-        private void OnKeyDown( object sender, HookInvokedEventArgs e )
-        {
-            Keys key = (Keys)(((int)e.LParam >> 16) & 0xFFFF);
-            int modifier = (int)e.LParam & 0xFFFF;
-            int delta = modifier == Constants.SHIFT ? 10 : 1;
-            SelectedElement.OnKeyDownAction( (int)key, delta );
-        }
-
         private void OnMouseEventTriggered( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
         {
             if( SelectedElement as VMKeyEditable != null ) (SelectedElement as VMKeyEditable).TriggerMouseEvent( eventType, args );
@@ -334,28 +326,15 @@ namespace KeyboardEditor.ViewModels
                 PointerDeviceDriver.Service.PointerButtonUp += OnPointerButtonUp;
             }
 
-            _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
             _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-            _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
             _evUserConfigurationChanged = new PropertyChangedEventHandler( OnUserConfigurationChanged );
+            _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
+            _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
 
-            _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
-            _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
             _ctx.ConfigManager.UserConfiguration.PropertyChanged += _evUserConfigurationChanged;
-
-            //KL
-            //if( KeyboardDriver.Status == InternalRunningStatus.Started )
-            //{
-            //    KeyboardDriver.Service.KeyDown += OnKeyDown;
-            //    KeyboardDriver.Service.RegisterCancellableKey( suppr );
-            //    KeyboardDriver.Service.RegisterCancellableKey( up );
-            //    KeyboardDriver.Service.RegisterCancellableKey( down );
-            //    KeyboardDriver.Service.RegisterCancellableKey( left );
-            //    KeyboardDriver.Service.RegisterCancellableKey( right );
-            //}
-
-            _root.HookInvoqued += OnKeyDown;
+            _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
+            _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
         }
 
         void UnregisterEvents()
@@ -370,19 +349,6 @@ namespace KeyboardEditor.ViewModels
             _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
             _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
             _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
-
-            //KL
-            //if( KeyboardDriver != null && KeyboardDriver.Status != InternalRunningStatus.Stopped )
-            //{
-            //    KeyboardDriver.Service.KeyDown -= OnKeyDown;
-            //    KeyboardDriver.Service.UnregisterCancellableKey( suppr );
-            //    KeyboardDriver.Service.UnregisterCancellableKey( up );
-            //    KeyboardDriver.Service.UnregisterCancellableKey( down );
-            //    KeyboardDriver.Service.UnregisterCancellableKey( left );
-            //    KeyboardDriver.Service.UnregisterCancellableKey( right );
-            //}
-
-            _root.HookInvoqued -= OnKeyDown;
         }
         #endregion
 

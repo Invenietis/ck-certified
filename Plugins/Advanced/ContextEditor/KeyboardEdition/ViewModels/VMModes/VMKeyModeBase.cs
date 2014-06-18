@@ -115,5 +115,30 @@ namespace KeyboardEditor.ViewModels
                     yield return elem;
             }
         }
+
+        internal override void OnMoveUp( int pixels )
+        {
+            ActualParent.OnMoveUp( pixels );
+        }
+
+        internal override void OnMoveLeft( int pixels )
+        {
+            ActualParent.OnMoveLeft( pixels );
+        }
+
+        internal override void OnMoveDown( int pixels )
+        {
+            ActualParent.OnMoveDown( pixels );
+        }
+
+        internal override void OnMoveRight( int pixels )
+        {
+            ActualParent.OnMoveRight( pixels );
+        }
+
+        internal override void OnSuppr()
+        {
+            ActualParent.DeleteKey();
+        }
     }
 }

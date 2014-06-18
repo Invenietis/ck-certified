@@ -26,17 +26,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using CK.WPF.ViewModel;
 namespace KeyboardEditor.ViewModels
 {
-    /// <summary>
-    /// </summary>
+    public enum KeyActions
+    {
+        Up = 1,
+        Down = 2,
+        Left = 3,
+        Right = 4,
+        Return = 5,
+        Escape = 6,
+        Suppr = 7
+    }
+
     public abstract class VMContextElementEditable : VMBase
     {
         VMContextEditable _context;
+
+        protected const int fast = 10;
+        protected const int slow = 1;
 
         protected VMContextElementEditable( VMContextEditable context )
         {
@@ -84,13 +97,19 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        bool _isBeingRenamed;
         /// <summary>
-        /// Override this method to trigger certain actions when the user presses keys while this ContextElement is selected
+        /// Gets whether the element is begin renamed
         /// </summary>
-        /// <param name="keyCode">The keycode of the key that has been pressed and retrieved from the message pump</param>
-        /// <param name="multiplier">optional integer</param>
-        public virtual void OnKeyDownAction( int keyCode, int multiplier )
+        public bool IsBeingRenamed
         {
+            get { return _isBeingRenamed; }
+            set
+            {
+                _isBeingRenamed = value;
+                //Console.Out.WriteLine( "BeginRenamed : " + _isBeingRenamed );
+                OnPropertyChanged( "IsBeingRenamed" );
+            }
         }
 
         private IEnumerable<VMContextElementEditable> GetParents()
@@ -184,7 +203,7 @@ namespace KeyboardEditor.ViewModels
         #region Layout Edition elements
 
         VMCommand<string> _clearCmd;
-        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd ?? ( _clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty ) ); } }
+        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd ?? (_clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty )); } }
 
         void ClearProperty( string propertyName )
         {
@@ -249,8 +268,8 @@ namespace KeyboardEditor.ViewModels
 
         public FontFamily FontFamily
         {
-            get 
-            { 
+            get
+            {
                 if( LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value.Contains( "pack://" ) )
                 {
                     string[] split = LayoutElement.GetWrappedPropertyValue( _context.SkinConfiguration, "FontFamily", "Arial" ).Value.Split( '|' );
@@ -356,6 +375,142 @@ namespace KeyboardEditor.ViewModels
         #endregion
 
         #endregion
+
+        #region Bindings
+        ICommand _upCommand;
+        ICommand _downCommand;
+        ICommand _leftCommand;
+        ICommand _rightCommand;
+
+        public ICommand UpCommand
+        {
+            get
+            {
+                if( _upCommand == null )
+                    _upCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveUp( fast ); else OnMoveUp( slow ); } );
+                return _upCommand;
+            }
+        }
+        public ICommand DownCommand
+        {
+            get
+            {
+                if( _downCommand == null )
+                    _downCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveDown( fast ); else OnMoveDown( slow ); } );
+                return _downCommand;
+            }
+        }
+        public ICommand LeftCommand
+        {
+            get
+            {
+                if( _leftCommand == null )
+                    _leftCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveLeft( fast ); else OnMoveLeft( slow ); } );
+                return _leftCommand;
+            }
+        }
+        public ICommand RightCommand
+        {
+            get
+            {
+                if( _rightCommand == null )
+                    _rightCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveRight( fast ); else OnMoveRight( slow ); } );
+                return _rightCommand;
+            }
+        }
+
+        ICommand _espaceCommand;
+        ICommand _returnCommand;
+        ICommand _supprCommand;
+        ICommand _copyCommand;
+        ICommand _pasteCommand;
+
+        public ICommand EscapeCommand
+        {
+            get
+            {
+                if( _espaceCommand == null )
+                    _espaceCommand = new VMCommand( () => { OnEscape(); } );
+                return _espaceCommand;
+            }
+        }
+
+        public ICommand ReturnCommand
+        {
+            get
+            {
+                if( _returnCommand == null )
+                    _returnCommand = new VMCommand( () => { OnReturn(); } );
+                return _returnCommand;
+            }
+        }
+
+        public ICommand SupprCommand
+        {
+            get
+            {
+                if( _supprCommand == null )
+                    _supprCommand = new VMCommand( () => { OnSuppr(); } );
+                return _supprCommand;
+            }
+        }
+
+        public ICommand CopyCommand
+        {
+            get
+            {
+                if( _copyCommand == null )
+                    _copyCommand = new VMCommand( () => { OnCopy(); } );
+                return _copyCommand;
+            }
+        }
+
+        public ICommand PasteCommand
+        {
+            get
+            {
+                if( _pasteCommand == null )
+                    _pasteCommand = new VMCommand( () => { OnPaste(); } );
+                return _pasteCommand;
+            }
+        }
+
+
+        ICommand _renameCommand;
+        public ICommand RenameCommand
+        {
+            get
+            {
+                if( _renameCommand == null )
+                    _renameCommand = new VMCommand( () => { OnRename(); } );
+                return _renameCommand;
+            }
+        }
+
+        #endregion
+
+        internal virtual void OnMoveUp( int pixels ) { }
+        internal virtual void OnMoveLeft( int pixels ) { }
+        internal virtual void OnMoveDown( int pixels ) { }
+        internal virtual void OnMoveRight( int pixels ) { }
+        internal virtual void OnEscape()
+        {
+            IsBeingRenamed = false;
+            OnPropertyChanged( "Name" );
+        }
+
+        internal virtual void OnSuppr() { }
+        internal virtual void OnReturn()
+        {
+            IsExpanded = !IsExpanded;
+        }
+        internal virtual void OnRename()
+        {
+            IsBeingRenamed = true;
+            _context.SelectedElement = this;
+        }
+        internal virtual void OnCopy() { }
+        internal virtual void OnPaste() { }
 
     }
 }

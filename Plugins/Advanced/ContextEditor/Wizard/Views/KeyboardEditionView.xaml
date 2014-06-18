@@ -1,15 +1,4 @@
-﻿<UserControl x:Class="KeyboardEditor.s.KeyboardEditionView"
-             xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews"
-             xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-             xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
-             xmlns:local="clr-namespace:KeyboardEditor.s"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
-             mc:Ignorable="d" Width="Auto" Height="Auto">
+﻿<UserControl Focusable="False" x:Class="KeyboardEditor.s.KeyboardEditionView" xmlns:view="clr-namespace:CK.WPF.StandardViews;assembly=CK.WPF.StandardViews" xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls" xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core" xmlns:local="clr-namespace:KeyboardEditor.s" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:KeyboardEditor.ViewModels" mc:Ignorable="d" Width="Auto" Height="Auto">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,19 +9,19 @@
             <Style TargetType="ToggleButton" x:Key="ModernUIToggleButtonStyle">
                 <Style.Triggers>
                     <Trigger Property="IsChecked" Value="True">
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Background" Value="{StaticResource EditorLightColor}"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}"/>
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Background" Value="{StaticResource EditorLightColor}" />
+                        <Setter Property="BorderBrush" Value="{StaticResource EditorMainColor}" />
                     </Trigger>
                 </Style.Triggers>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="Foreground" Value="{StaticResource EditorLightColor}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource EditorLightColor}"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="10"/>
-                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="Background" Value="White" />
+                <Setter Property="Foreground" Value="{StaticResource EditorLightColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource EditorLightColor}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="FontFamily" Value="Calibri" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ToggleButton">
@@ -42,14 +31,14 @@
                                         <VisualState x:Name="Normal" />
                                         <VisualState x:Name="MouseOver">
                                             <Storyboard>
-                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF4D87B0"/>
-                                                <ColorAnimation Duration="0" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="White"/>
+                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF4D87B0" />
+                                                <ColorAnimation Duration="0" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="White" />
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
-                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF065AA0"/>
-                                                <ColorAnimation Duration="0" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="White"/>
+                                                <ColorAnimation Duration="0" Storyboard.TargetName="BackgroundGradient" Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)" To="#FF065AA0" />
+                                                <ColorAnimation Duration="0" Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)" To="White" />
                                             </Storyboard>
                                         </VisualState>
                                     </VisualStateGroup>
@@ -60,11 +49,7 @@
                                         </Rectangle>
                                     </Grid>
                                 </Border>
-                                <TextBlock Text="{TemplateBinding Content}" x:Name="contentPresenter"
-                                  Foreground="{TemplateBinding Foreground}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  Margin="{TemplateBinding Padding}">
+                                <TextBlock Text="{TemplateBinding Content}" x:Name="contentPresenter" Foreground="{TemplateBinding Foreground}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}">
                                 </TextBlock>
                                 <Rectangle x:Name="DisabledVisualElement" RadiusX="3" RadiusY="3" Fill="#FFFFFFFF" Opacity="0" IsHitTestVisible="false" />
                                 <Rectangle x:Name="FocusVisualElement" RadiusX="2" RadiusY="2" Margin="1" Stroke="#FF6DBDD1" StrokeThickness="1" Opacity="0" IsHitTestVisible="false" />
@@ -74,16 +59,14 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="VerticalSeparatorStyle" 
-       TargetType="{x:Type Separator}"
-       BasedOn="{StaticResource {x:Type Separator}}">
-                <Setter Property="Margin" Value="6,0,6,0"/>
+            <Style x:Key="VerticalSeparatorStyle" TargetType="{x:Type Separator}" BasedOn="{StaticResource {x:Type Separator}}">
+                <Setter Property="Margin" Value="6,0,6,0" />
                 <Setter Property="LayoutTransform">
                     <Setter.Value>
                         <TransformGroup>
                             <TransformGroup.Children>
                                 <TransformCollection>
-                                    <RotateTransform Angle="90"/>
+                                    <RotateTransform Angle="90" />
                                 </TransformCollection>
                             </TransformGroup.Children>
                         </TransformGroup>
@@ -99,28 +82,23 @@
                 <Button Style="{StaticResource StandardButtonStyle}" IsEnabled="False" VerticalAlignment="Center" Content="{Binding SectionName}" />
             </DataTemplate>
 
-            <ctrls:FolderConverter x:Key="folderConverter"/>
-            <vm:ModeTypeToSelectedConverter x:Key="modeTypeToSelectedConverter"/>
-            <vm:BreadcrumbTemplateSelector x:Key="breadcrumbTemplateSelector" KeyModeBaseTemplate="{StaticResource KeyModeBaseTemplate}" OtherTemplate="{StaticResource OtherTemplate}"/>
+            <ctrls:FolderConverter x:Key="folderConverter" />
+            <vm:ModeTypeToSelectedConverter x:Key="modeTypeToSelectedConverter" />
+            <vm:BreadcrumbTemplateSelector x:Key="breadcrumbTemplateSelector" KeyModeBaseTemplate="{StaticResource KeyModeBaseTemplate}" OtherTemplate="{StaticResource OtherTemplate}" />
 
             <Style TargetType="{x:Type TabControl}" x:Key="KeyEditionUCStyle">
-                <Setter Property="Background" Value="White"/>
+                <Setter Property="Background" Value="White" />
             </Style>
 
             <!-- When editing a key -->
             <DataTemplate x:Key="KeyEditionDataTemplate">
                 <UniformGrid Columns="2">
                     <DockPanel MinHeight="100" LastChildFill="True">
-                        <Button x:Uid="mode-selection-content" DockPanel.Dock="Left" Command="{Binding SelectKeyModeCommand}" 
-                                Style="{StaticResource ModernUIButtonStyle}"
-                                Content="Content &amp; actions" 
-                                Margin="5">
+                        <Button x:Uid="mode-selection-content" DockPanel.Dock="Left" Command="{Binding SelectKeyModeCommand}" Style="{StaticResource ModernUIButtonStyle}" Content="Content &amp; actions" Margin="5">
                         </Button>
                     </DockPanel>
                     <DockPanel MinHeight="100" LastChildFill="True">
-                        <Button DockPanel.Dock="Right" Command="{Binding SelectLayoutKeyModeCommand}" 
-                                Style="{StaticResource ModernUIButtonStyle}"
-                                Margin="5">
+                        <Button DockPanel.Dock="Right" Command="{Binding SelectLayoutKeyModeCommand}" Style="{StaticResource ModernUIButtonStyle}" Margin="5">
                             <StackPanel Orientation="Vertical">
                                 <TextBlock x:Uid="mode-selection-aspect-1" Text="Design" />
                                 <TextBlock x:Uid="mode-selection-aspect-2" Text="(Colors, Dimensions and Position)" />
@@ -132,17 +110,17 @@
 
             <!-- When editing a KeyMode -->
             <DataTemplate x:Key="KeyModeEditionDataTemplate">
-                <local:KeyModeEditionUserControl DataContext="{Binding}"/>
+                <local:KeyModeEditionUserControl DataContext="{Binding}" />
             </DataTemplate>
 
             <!-- When editing a LayoutKeyMode -->
             <DataTemplate x:Key="LayoutKeyModeEditionDataTemplate">
-                <local:LayoutKeyEditionUserControl DataContext="{Binding}"  />
+                <local:LayoutKeyEditionUserControl DataContext="{Binding}" />
             </DataTemplate>
 
             <!-- When editing a keyboard -->
             <DataTemplate x:Key="KeyboardEditionDataTemplate">
-                <local:KeyboardEditionUserControl DataContext="{Binding}"/>
+                <local:KeyboardEditionUserControl DataContext="{Binding}" />
             </DataTemplate>
 
             <!-- When editing a zone -->
@@ -151,12 +129,7 @@
             </DataTemplate>
 
             <!-- Used to display the edition panel corresponding to the selected element's type -->
-            <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" 
-                                                LayoutKeyModeEditionTemplate="{StaticResource LayoutKeyModeEditionDataTemplate}"
-                                                KeyModeEditionTemplate="{StaticResource KeyModeEditionDataTemplate}"
-                                                KeyEditionTemplate="{StaticResource KeyEditionDataTemplate}" 
-                                                ZoneEditionTemplate="{StaticResource ZoneEditionDataTemplate}" 
-                                                KeyboardEditionTemplate="{StaticResource KeyboardEditionDataTemplate}" />
+            <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" LayoutKeyModeEditionTemplate="{StaticResource LayoutKeyModeEditionDataTemplate}" KeyModeEditionTemplate="{StaticResource KeyModeEditionDataTemplate}" KeyEditionTemplate="{StaticResource KeyEditionDataTemplate}" ZoneEditionTemplate="{StaticResource ZoneEditionDataTemplate}" KeyboardEditionTemplate="{StaticResource KeyboardEditionDataTemplate}" />
 
             <!-- Style for the treeviewitem of a mode -->
             <Style x:Key="ActualModeKeyTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
@@ -172,7 +145,7 @@
             <!-- Style for the treeviewitem of a mode folder-->
             <Style x:Key="ModefolderTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
                 <Setter Property="ItemContainerStyle" Value="{StaticResource ActualModeKeyTreeViewStyle}"></Setter>
-                <Setter Property="ItemsSource" Value="{Binding Items}"/>
+                <Setter Property="ItemsSource" Value="{Binding Items}" />
                 <Setter Property="vm:CustomContent.Content" Value="{DynamicResource GridPath}"></Setter>
                 <Setter Property="Header" Value="{Binding Name}"></Setter>
             </Style>
@@ -211,53 +184,51 @@
 
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border DataContext="{Binding EditedContext}" BorderThickness="0 1" BorderBrush="{StaticResource EditorMainColor}">
+    <Border Focusable="False" DataContext="{Binding EditedContext}" BorderThickness="0 1" BorderBrush="{StaticResource EditorMainColor}">
         <Border.Resources>
             <!-- Override tree view items "selected" style -->
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray"/>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
         </Border.Resources>
-        <Grid>
+        <Grid Focusable="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="1"></ColumnDefinition>
                 <ColumnDefinition Width="8*"></ColumnDefinition>
+                
             </Grid.ColumnDefinitions>
             <!-- TreeView -->
-            <TreeView Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
-                <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}"/>
+            <TreeView IsTabStop="True" Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
+                <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}" />
             </TreeView>
 
-            <Separator Grid.Column="1" Style="{DynamicResource VerticalSeparatorStyle}" Margin="0" BorderBrush="{StaticResource EditorMainColor}" Background="{StaticResource EditorMainColor}"/>
-            
-            <Grid Grid.Column="2" Margin="8 0 8 8 ">
+            <Separator Focusable="False" Grid.Column="1" Style="{DynamicResource VerticalSeparatorStyle}" Margin="0" BorderBrush="{StaticResource EditorMainColor}" Background="{StaticResource EditorMainColor}" />
+
+            <Grid Focusable="False" Grid.Column="2" Margin="8 0 8 8 ">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="2*"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="1.5*"></RowDefinition>
                 </Grid.RowDefinitions>
-                
+
                 <!-- Modes -->
-                <StackPanel Orientation="Horizontal" Margin="8" Grid.Row="0">
-                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="MODE : " Margin="5 0" FontSize="15" Foreground="{StaticResource EditorMainColor}" FontFamily="Malgun Gothic"/>
-                    <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
+                <StackPanel Focusable="False" Orientation="Horizontal" Margin="8" Grid.Row="0">
+                    <TextBlock Focusable="False" VerticalAlignment="Center" FontWeight="Bold" Text="MODE : " Margin="5 0" FontSize="15" Foreground="{StaticResource EditorMainColor}" FontFamily="Malgun Gothic" />
+                    <ItemsControl Focusable="False" Grid.IsSharedSizeScope="True" ItemsSource="{Binding KeyboardVM.KeyboardModes}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" />
+                                <StackPanel Focusable="False" Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid Focusable="False">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition SharedSizeGroup="ModeColumn" />
                                     </Grid.ColumnDefinitions>
-                                    <Grid Margin="2">
-                                        <ToggleButton Style="{StaticResource ModernUIToggleButtonStyle}" 
-                                        Grid.Row="0"
-                                        IsChecked="{Binding IsChecked}" 
-                                        Content="{Binding ModeName, Mode=OneWay}" FontWeight="ExtraBold"/>
+                                    <Grid Focusable="False" Margin="2">
+                                        <ToggleButton IsTabStop="False" Style="{StaticResource ModernUIToggleButtonStyle}" Grid.Row="0" IsChecked="{Binding IsChecked}" Content="{Binding ModeName, Mode=OneWay}" FontWeight="ExtraBold" />
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
@@ -273,28 +244,28 @@
                 </Grid>
 
                 <!-- Breadcrumb -->
-                <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0 5">
-                    <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">
+                <StackPanel Focusable="False" Orientation="Horizontal" Grid.Row="2" Margin="0 5">
+                    <ItemsControl Focusable="False" ItemsSource="{Binding SelectedElement.Parents}" Height="50">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="5" />
+                                <StackPanel Focusable="False" Orientation="Horizontal" Margin="5" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource StandardButtonStyle}" VerticalAlignment="Center" Content="{Binding Name}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.SelectCommand}" CommandParameter="{Binding}" />
-                                    <TextBlock Text=">" VerticalAlignment="Center" Margin="5 0" />
+                                <StackPanel Focusable="False" Orientation="Horizontal">
+                                    <Button Focusable="False" Style="{StaticResource StandardButtonStyle}" VerticalAlignment="Center" Content="{Binding Name}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.SelectCommand}" CommandParameter="{Binding}" />
+                                    <TextBlock Focusable="False" Text=">" VerticalAlignment="Center" Margin="5 0" />
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <ContentControl Margin="0 10 0 0" ContentTemplateSelector="{StaticResource breadcrumbTemplateSelector}" DataContext="{Binding SelectedElement}" Content="{Binding}"/>
+                    <ContentControl Focusable="False" Margin="0 10 0 0" ContentTemplateSelector="{StaticResource breadcrumbTemplateSelector}" DataContext="{Binding SelectedElement}" Content="{Binding}" />
                 </StackPanel>
 
                 <!-- Edition panel -->
-                <ScrollViewer  Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <ContentControl DockPanel.Dock="Bottom" ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}" />
+                <ScrollViewer Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ContentControl Focusable="False" DockPanel.Dock="Bottom" ContentTemplateSelector="{StaticResource KeyboardEditionTemplateSelector}" Content="{Binding SelectedElement}" />
                 </ScrollViewer>
 
             </Grid>

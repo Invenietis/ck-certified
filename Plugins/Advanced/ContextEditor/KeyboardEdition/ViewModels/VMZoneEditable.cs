@@ -132,19 +132,21 @@ namespace KeyboardEditor.ViewModels
                     _createKeyCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         IKey key = Model.Keys.Create();
-                        key.KeyModes.First().UpLabel = "New key";
+                        key.KeyModes.First().UpLabel = String.Empty;
                         key.CurrentLayout.Current.X = X;
                         key.CurrentLayout.Current.Y = Y;
                         key.CurrentLayout.Current.Width = 40;
                         key.CurrentLayout.Current.Height = 40;
                         key.CurrentLayout.Current.Visible = true;
                         OnPropertyChanged( "Keys" );
+
+                        var vm = Keys.Single( k => k.Model == key );
+                        Context.SelectedElement = vm.LayoutKeyModeVM;
                     } );
                 }
                 return _createKeyCommand;
             }
         }
-
 
         ICommand _deleteZoneCommand;
         public ICommand DeleteZoneCommand
@@ -153,7 +155,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _deleteZoneCommand == null )
                 {
-                    DeleteZone();
+                    _deleteZoneCommand = new CK.Windows.App.VMCommand( DeleteZone );
                 }
                 return _deleteZoneCommand;
             }
@@ -161,65 +163,61 @@ namespace KeyboardEditor.ViewModels
 
         private void DeleteZone()
         {
-            _deleteZoneCommand = new CK.Windows.App.VMCommand( () =>
+            ModalViewModel mvm = new ModalViewModel( R.DeleteZone, R.DeleteZoneConfirmation );
+            //mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.DeleteKeys, ModalResult.No ) );
+            mvm.Buttons.Add( new ModalButton( mvm, R.Cancel, ModalResult.Cancel ) );
+            CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
+            msgBox.ShowDialog();
+
+            if( mvm.ModalResult == ModalResult.Cancel ) return;
+
+            for( int i = Keys.Count - 1; i >= 0; i-- )
             {
-                ModalViewModel mvm = new ModalViewModel( R.DeleteZone, R.DeleteZoneConfirmation );
-                //mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
-                mvm.Buttons.Add( new ModalButton( mvm, R.DeleteKeys, ModalResult.No ) );
-                mvm.Buttons.Add( new ModalButton( mvm, R.Cancel, ModalResult.Cancel ) );
-                CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
-                msgBox.ShowDialog();
+                Keys[i].Model.Destroy();
+            }
 
-                if( mvm.ModalResult == ModalResult.Cancel ) return;
+            Context.SelectedElement = Parent;
+            Model.Destroy();
 
-                for( int i = Keys.Count - 1; i >= 0; i-- )
-                {
-                    Keys[i].Model.Destroy();
-                }
+            #region key saving commented
 
-                Context.SelectedElement = Parent;
-                Model.Destroy();
+            ////
+            ////Putting the keys of the zone into the default zone, with visible = false
+            ////
+            //if( mvm.ModalResult == ModalResult.Yes ) //Saving the keys
+            //{
+            //    for( int i = Model.Keys.Count - 1; i >= 0; i-- )
+            //    {
+            //        Console.Out.WriteLine( "Touches dans previous Zone avant transfert : " + Model.Keys.Count );
+            //        Console.Out.WriteLine( "Touches dans previous zone VM avant transfert : " + Keys.Count );
 
-                #region key saving commented
+            //        Console.Out.WriteLine( "Touches dans target zone avant transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
+            //        Console.Out.WriteLine( "Touches dans target zone VM avant transfert : " + Context.Obtain(Context.KeyboardVM.Model.Zones[""]).Keys.Count );
 
-                ////
-                ////Putting the keys of the zone into the default zone, with visible = false
-                ////
-                //if( mvm.ModalResult == ModalResult.Yes ) //Saving the keys
-                //{
-                //    for( int i = Model.Keys.Count - 1; i >= 0; i-- )
-                //    {
-                //        Console.Out.WriteLine( "Touches dans previous Zone avant transfert : " + Model.Keys.Count );
-                //        Console.Out.WriteLine( "Touches dans previous zone VM avant transfert : " + Keys.Count );
+            //        IKey transferred = Model.Keys[i];
+            //        Console.Out.WriteLine( "Zone de la touche : " + transferred.Current.UpLabel + ", avant transfert : " + transferred.Zone.Name );
 
-                //        Console.Out.WriteLine( "Touches dans target zone avant transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
-                //        Console.Out.WriteLine( "Touches dans target zone VM avant transfert : " + Context.Obtain(Context.KeyboardVM.Model.Zones[""]).Keys.Count );
+            //        Model.Keys[i].SwapZones( Context.KeyboardVM.Model.Zones[""] );
+            //        Console.Out.WriteLine( "Touches dans previous Zone avant transfert : " + Model.Keys.Count );
+            //        Console.Out.WriteLine( "Touches dans previous zone VM avant transfert : " + Keys.Count );
 
-                //        IKey transferred = Model.Keys[i];
-                //        Console.Out.WriteLine( "Zone de la touche : " + transferred.Current.UpLabel + ", avant transfert : " + transferred.Zone.Name );
+            //        Console.Out.WriteLine( "Touches dans target zone avant transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
+            //        Console.Out.WriteLine( "Touches dans target zone VM avant transfert : " + Context.Obtain( Context.KeyboardVM.Model.Zones[""] ).Keys.Count );
 
-                //        Model.Keys[i].SwapZones( Context.KeyboardVM.Model.Zones[""] );
-                //        Console.Out.WriteLine( "Touches dans previous Zone avant transfert : " + Model.Keys.Count );
-                //        Console.Out.WriteLine( "Touches dans previous zone VM avant transfert : " + Keys.Count );
+            //        Console.Out.WriteLine( "Zone de la touche : " + transferred.Current.UpLabel + ", après transfert : " + transferred.Zone.Name );
+            //        Console.Out.WriteLine( "Transfert " + i + " done" );
+            //    }
 
-                //        Console.Out.WriteLine( "Touches dans target zone avant transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
-                //        Console.Out.WriteLine( "Touches dans target zone VM avant transfert : " + Context.Obtain( Context.KeyboardVM.Model.Zones[""] ).Keys.Count );
+            //    Console.Out.WriteLine( "Fin" );
 
-                //        Console.Out.WriteLine( "Zone de la touche : " + transferred.Current.UpLabel + ", après transfert : " + transferred.Zone.Name );
-                //        Console.Out.WriteLine( "Transfert " + i + " done" );
-                //    }
+            //    Console.Out.WriteLine( "Touches dans target zone après transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
+            //    Console.Out.WriteLine( "Touches dans target zone VM après transfert : " + Context.Obtain( Context.KeyboardVM.Model.Zones[""] ).Keys.Count );
+            //    Console.Out.WriteLine( "Touches dans previous Zone après transfert : " + Model.Keys.Count );
+            //    Console.Out.WriteLine( "Touches dans previous zone VM après transfert : " + Keys.Count );
+            //}
 
-                //    Console.Out.WriteLine( "Fin" );
-
-                //    Console.Out.WriteLine( "Touches dans target zone après transfert : " + Context.KeyboardVM.Model.Zones[""].Keys.Count );
-                //    Console.Out.WriteLine( "Touches dans target zone VM après transfert : " + Context.Obtain( Context.KeyboardVM.Model.Zones[""] ).Keys.Count );
-                //    Console.Out.WriteLine( "Touches dans previous Zone après transfert : " + Model.Keys.Count );
-                //    Console.Out.WriteLine( "Touches dans previous zone VM après transfert : " + Keys.Count );
-                //}
-
-                #endregion
-
-            } );
+            #endregion
         }
 
         private IKey InsertKeyMode( IKeyMode keyMode, IKey newKey )
@@ -324,7 +322,7 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                return new CK.Windows.App.VMCommand( (Action)( () => Context.KeyboardVM.IncreaseZoneIndex( this )) );
+                return new CK.Windows.App.VMCommand( (Action)(() => Context.KeyboardVM.IncreaseZoneIndex( this )) );
             }
         }
 
@@ -332,7 +330,7 @@ namespace KeyboardEditor.ViewModels
         {
             get
             {
-                return new CK.Windows.App.VMCommand( (Action)( () => Context.KeyboardVM.DecreaseZoneIndex( this )) );
+                return new CK.Windows.App.VMCommand( (Action)(() => Context.KeyboardVM.DecreaseZoneIndex( this )) );
             }
         }
 
@@ -343,7 +341,12 @@ namespace KeyboardEditor.ViewModels
         public string Name
         {
             get { return IsDefaultZone ? R.DefaultZone : Model.Name; }
-            set { Model.Rename( value ); }
+            set
+            {
+                if( !String.IsNullOrWhiteSpace( value ) )
+                    Model.Rename( value );
+                IsBeingRenamed = false;
+            }
         }
 
         public bool IsDefaultZone
@@ -385,58 +388,39 @@ namespace KeyboardEditor.ViewModels
 
         #region move through arrows
 
-        public override void OnKeyDownAction( int keyCode, int delta )
-        {
-            switch( keyCode )
-            {
-                case VMContextEditable.suppr:
-                    DeleteZone();
-                    break;
-                case VMContextEditable.left:
-                    MoveLeft( delta );
-                    break;
-                case VMContextEditable.up:
-                    MoveUp( delta );
-                    break;
-                case VMContextEditable.right:
-                    MoveRight( delta );
-                    break;
-                case VMContextEditable.down:
-                    MoveDown( delta );
-                    break;
-            }
-        }
-
-        public void MoveUp( int pixels )
+        internal override void OnMoveDown( int pixels )
         {
             foreach( VMKeyEditable key in Keys )
             {
-                key.MoveUp( pixels );
+                key.OnMoveDown( pixels );
             }
         }
-
-        public void MoveLeft( int pixels )
+        internal override void OnMoveUp( int pixels )
         {
             foreach( VMKeyEditable key in Keys )
             {
-                key.MoveLeft( pixels );
+                key.OnMoveUp( pixels );
             }
         }
-
-        public void MoveDown( int pixels )
+        internal override void OnMoveLeft( int pixels )
         {
             foreach( VMKeyEditable key in Keys )
             {
-                key.MoveDown( pixels );
+                key.OnMoveLeft( pixels );
             }
         }
 
-        public void MoveRight( int pixels )
+        internal override void OnMoveRight( int pixels )
         {
             foreach( VMKeyEditable key in Keys )
             {
-                key.MoveRight( pixels );
+                key.OnMoveRight( pixels );
             }
+        }
+
+        internal override void OnSuppr()
+        {
+            DeleteZone();
         }
 
         #endregion

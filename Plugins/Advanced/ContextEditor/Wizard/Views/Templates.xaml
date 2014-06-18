@@ -77,9 +77,9 @@
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
         </DataTemplate.Resources>
 
-        <DockPanel LastChildFill="True">
+        <DockPanel LastChildFill="True" Focusable="False">
 
-            <StackPanel DockPanel.Dock="Top" Width="500" Height="100" HorizontalAlignment="Center" Margin="10">
+            <StackPanel Focusable="False" DockPanel.Dock="Top" Width="500" Height="100" HorizontalAlignment="Center" Margin="10">
                 <StackPanel.Visibility>
                     <Binding Path="ActiveItem.Title">
                         <Binding.Converter>
@@ -91,8 +91,8 @@
                         </Binding.Converter>
                     </Binding>
                 </StackPanel.Visibility>
-                <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                <TextBlock Focusable="False" Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+                <TextBlock Focusable="False" Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
             </StackPanel>
 
             <DockPanel Height="70" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 10 0 0">
@@ -113,7 +113,7 @@
                 </Button>
             </DockPanel>
             
-            <ContentControl DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
+            <ContentControl Focusable="False" DockPanel.Dock="Top" Content="{Binding ActiveItem}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultPageSelector}"/>
         </DockPanel>
         
     </DataTemplate>

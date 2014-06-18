@@ -139,7 +139,19 @@ namespace KeyboardEditor.ViewModels
             get { return Context.Obtain( Model.Zone ); }
         }
 
-        public string Name { get { return KeyModeVM.UpLabel; } }
+        public string Name
+        {
+            get
+            {
+                return KeyModeVM.UpLabel;
+            }
+            set
+            {
+                if( !String.IsNullOrWhiteSpace( value ) )
+                    KeyModeVM.UpLabel = value;
+                IsBeingRenamed = false;
+            }
+        }
 
         /// <summary>
         /// Gets whether this element is selected.
@@ -474,52 +486,6 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        #region Key hooks
-
-        public override void OnKeyDownAction( int keyCode, int delta )
-        {
-            switch( keyCode )
-            {
-                case VMContextEditable.suppr:
-                    DeleteKey();
-                    break;
-                case VMContextEditable.left:
-                    MoveLeft( delta );
-                    break;
-                case VMContextEditable.up:
-                    MoveUp( delta );
-                    break;
-                case VMContextEditable.right:
-                    MoveRight( delta );
-                    break;
-                case VMContextEditable.down:
-                    MoveDown( delta );
-                    break;
-            }
-        }
-
-        public void MoveUp( int pixels )
-        {
-            Y -= pixels;
-        }
-
-        public void MoveLeft( int pixels )
-        {
-            X -= pixels;
-        }
-
-        public void MoveDown( int pixels )
-        {
-            Y += pixels;
-        }
-
-        public void MoveRight( int pixels )
-        {
-            X += pixels;
-        }
-
-        #endregion
-
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             if( _key.Current.GetPropertyLookupPath().Contains( e.Obj ) )
@@ -811,7 +777,7 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        private void DeleteKey()
+        internal void DeleteKey()
         {
             ModalViewModel mvm = new ModalViewModel( R.DeleteKey, R.DeleteKeyConfirmation, false, String.Empty, CustomMsgBoxIcon.Warning, 1 );
             mvm.Buttons.Add( new ModalButton( mvm, R.Yes, ModalResult.Yes ) );

@@ -31,6 +31,7 @@ using KeyboardEditor.Resources;
 using CK.WPF.ViewModel;
 using CK.Plugin.Config;
 using KeyboardEditor.Model;
+using System.Collections;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -50,11 +51,18 @@ namespace KeyboardEditor.ViewModels
             _zone = zone;
             _keys = new CKObservableSortedArrayKeyList<VMKeyEditable, int>( k => k.Index );
 
+            VMKeyEditable[] keys = new VMKeyEditable[_zone.Keys.Count];
             foreach( IKey key in _zone.Keys )
             {
                 VMKeyEditable k = Context.Obtain( key );
-                Keys.Add( k );
+                keys[k.Index] = k;
             }
+
+            for( int i = 0; i < keys.Length; i++ )
+            {
+                Keys.Add( keys[i] );
+            }
+
 
             if( _ctx.SkinConfiguration != null )
                 _ctx.SkinConfiguration.ConfigChanged += OnLayoutConfigChanged;
@@ -230,7 +238,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _insertKeyCommand = new VMCommand<VMKeyEditable>( vmKey =>
                     {
-                        MoveKey( vmKey, this );
+                        TransfertKey( vmKey, this );
                     } );
                 }
 
@@ -238,7 +246,7 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        void MoveKey( VMKeyEditable key, VMZoneEditable targetZone )
+        void TransfertKey( VMKeyEditable key, VMZoneEditable targetZone )
         {
             if( key.Parent != targetZone )
             {
@@ -345,6 +353,11 @@ namespace KeyboardEditor.ViewModels
             //OnPropertyChanged( "Index" );
         }
 
+        internal void KeyIndexChanged( int previousIndex )
+        {
+            _keys.CheckPosition( previousIndex );
+        }
+
         public ICommand UpIndexCommand
         {
             get
@@ -360,7 +373,6 @@ namespace KeyboardEditor.ViewModels
                 return new CK.Windows.App.VMCommand( (Action)(() => Context.KeyboardVM.DecreaseZoneIndex( this )) );
             }
         }
-
 
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>
@@ -413,7 +425,7 @@ namespace KeyboardEditor.ViewModels
             get { return Keys.Max( k => k.Y + k.Height ) - Y; }
         }
 
-        #region move through arrows
+        #region KeyBinding
 
         internal override void OnMoveDown( int pixels )
         {
@@ -483,9 +495,9 @@ namespace KeyboardEditor.ViewModels
             if( actualDroppedItem != null )
             {
                 //If the target Zone is already the key's zone, then we put the key at the index 0.
-                if(actualDroppedItem.Model.Zone == Model)
+                if( actualDroppedItem.Model.Zone == Model )
                 {
-                    actualDroppedItem.Model.Index = 0;
+                    actualDroppedItem.Index = 0;
                 }
                 else
                 {

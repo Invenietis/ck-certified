@@ -364,7 +364,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnKeyMoved( object sender, KeyMovedEventArgs e )
         {
-            Context.Obtain( e.Key ).PositionChanged();
+            Context.Obtain( e.Key ).IndexChanged(e.PreviousIndex);
         }
 
         void OnKeyDestroyed( object sender, CK.Keyboard.Model.KeyEventArgs e )
@@ -545,7 +545,7 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        
+
 
         public class NameModel
         {

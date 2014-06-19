@@ -128,6 +128,7 @@ namespace KeyboardEditor.ViewModels
         {
             get { return Context.Obtain( Model.Zone ); }
         }
+        private VMZoneEditable ActualParent { get { return Parent as VMZoneEditable; } }
 
         public string Name
         {
@@ -232,17 +233,14 @@ namespace KeyboardEditor.ViewModels
             get { return _key.CurrentLayout; }
         }
 
+        int _index = -1;
         /// <summary>
         /// Gets the logical position of the <see cref="IKey"/> in the zone.
         /// </summary>
         public int Index
         {
             get { return _key.Index; }
-            set
-            {
-                _key.Index = value;
-                OnPropertyChanged( "Index" );
-            }
+            set { _key.Index = value; }
         }
 
         #region Layout Properties
@@ -532,47 +530,12 @@ namespace KeyboardEditor.ViewModels
                 {
                     switch( e.Key )
                     {
-                        case "Opacity":
-                            OnPropertyChanged( "Opacity" );
-                            break;
                         case "Visible":
                             OnPropertyChanged( "Visible" );
                             LayoutKeyModeVM.TriggerPropertyChanged( "Visible" );
                             break;
-                        case "FontSize":
-                            OnPropertyChanged( "FontSize" );
-                            break;
-                        case "FontStyle":
-                            OnPropertyChanged( "FontStyle" );
-                            break;
-                        case "FontWeight":
-                            OnPropertyChanged( "FontWeight" );
-                            break;
-                        case "FontFamily":
-                            OnPropertyChanged( "FontFamily" );
-                            break;
-                        case "Background":
-                            OnPropertyChanged( "Background" );
-                            break;
-                        case "LetterColor":
-                            OnPropertyChanged( "LetterColor" );
-                            break;
-                        case "HoverBackground":
-                            OnPropertyChanged( "HoverBackground" );
-                            break;
-                        case "TextDecorations":
-                            OnPropertyChanged( "TextDecorations" );
-                            break;
-                        case "PressedBackground":
-                            OnPropertyChanged( "PressedBackground" );
-                            break;
-                        case "HighlightBackground":
-                            OnPropertyChanged( "HighlightBackground" );
-                            break;
-                        case "HighlightFontColor":
-                            OnPropertyChanged( "HighlightFontColor" );
-                            break;
                         default:
+                            OnPropertyChanged( e.Key );
                             break;
                     }
                 }
@@ -653,8 +616,6 @@ namespace KeyboardEditor.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "ImageSource" );
-
-                PositionChanged();
             } );
 
             SetActionOnPropertyChanged( "Current", () =>
@@ -738,10 +699,10 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        internal void PositionChanged()
+        internal void IndexChanged( int previousIndex )
         {
-            DispatchPropertyChanged( "X", "LayoutKeyMode" );
-            DispatchPropertyChanged( "Y", "LayoutKeyMode" );
+            ActualParent.KeyIndexChanged( previousIndex );
+            OnPropertyChanged( "Index" );
         }
 
         void SetCommands()

@@ -352,7 +352,7 @@
                 <ColumnDefinition Width="1"></ColumnDefinition>
                 <ColumnDefinition Width="8*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-
+            
             <!-- TreeView -->
             <TreeView Name="EditorTreeView" AllowDrop="True" IsTabStop="True" Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
                 <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}" />

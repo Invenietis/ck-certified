@@ -49,6 +49,14 @@ namespace CK.Keyboard.Model
         /// <returns>The newly created key.</returns>
         IKey Create( int index );
 
+          /// <summary>
+        /// Creates a copy of the specified <see cref="IKey"/>.
+        /// The copy is copied in the same <see cref="IZone"/> as the source.
+        /// </summary>
+        /// <param name="key">The key to copy</param>
+        /// <returns>A deep copy of the key set as parameter</returns>
+        IKey CreateCopy( IKey key );
+
         /// <summary>
         /// Fires whenever a new <see cref="IKey"/> has been created.
         /// </summary>

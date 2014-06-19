@@ -131,6 +131,162 @@
             <!-- Used to display the edition panel corresponding to the selected element's type -->
             <vm:KeyboardEditionTemplateSelector x:Key="KeyboardEditionTemplateSelector" LayoutKeyModeEditionTemplate="{StaticResource LayoutKeyModeEditionDataTemplate}" KeyModeEditionTemplate="{StaticResource KeyModeEditionDataTemplate}" KeyEditionTemplate="{StaticResource KeyEditionDataTemplate}" ZoneEditionTemplate="{StaticResource ZoneEditionDataTemplate}" KeyboardEditionTemplate="{StaticResource KeyboardEditionDataTemplate}" />
 
+            <!-- HeaderedSelectableTVI -->
+            <Style TargetType="TreeViewItem" x:Key="HeaderedSelectableTVI">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                <Setter Property="Padding" Value="1,0,0,0" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+                <Setter Property="IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay}" />
+                <Setter Property="ctrls:InputBindingAttachedProperty.InputBindings" Value="{StaticResource InputBindings}"></Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                            <Grid x:Name="PART_Holder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MinWidth="19" Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <ToggleButton x:Name="Expander" Style="{StaticResource ExpandCollapseToggleStyle}" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Border x:Name="Bd" SnapsToDevicePixels="true" Grid.Column="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                    <StackPanel Orientation="Horizontal" Margin="3">
+                                        <ContentControl Focusable="False" VerticalAlignment="Stretch" Width="16" Height="16" Margin="0 0 3 0" Content="{Binding Path=(vm:CustomContent.Content), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Control} }}" />
+                                        <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{Binding}">
+                                            <ContentPresenter.Style>
+                                                <Style TargetType="ContentPresenter">
+
+                                                    <Setter Property="ContentTemplate" Value="{StaticResource treeviewcontentnormaltemplate}"></Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsBeingRenamed}" Value="True">
+                                                            <Setter Property="ContentTemplate" Value="{StaticResource treeviewcontenteditabletemplate}"></Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentPresenter.Style>
+                                        </ContentPresenter>
+
+                                        <!-- Panel that show the arrows needed to change the index of an element -->
+                                        <ContentControl Focusable="False" Content="{Binding}">
+                                            <ContentControl.Resources>
+                                                <vm:HasOrderToBooleanConverter x:Key="hasordertobooleanconverter" />
+                                            </ContentControl.Resources>
+                                            <ContentControl.Style>
+                                                <Style TargetType="ContentControl">
+                                                    <Setter Property="ContentTemplate">
+                                                        <Setter.Value>
+                                                            <DataTemplate>
+                                                                <TextBlock Focusable="False" Text="" />
+                                                            </DataTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Converter={StaticResource hasordertobooleanconverter}}" Value="True">
+                                                            <Setter Property="ContentTemplate">
+                                                                <Setter.Value>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Focusable="False" Orientation="Horizontal">
+                                                                            <Button Focusable="False" Command="{Binding DownIndexCommand}" Margin="2 0 0 0" Style="{StaticResource IndexArrowStyle}">
+                                                                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/Top.png" />
+                                                                            </Button>
+                                                                            <Button Focusable="False" Command="{Binding UpIndexCommand}" Style="{StaticResource IndexArrowStyle}">
+                                                                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/bottom.png" />
+                                                                            </Button>
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ContentControl.Style>
+                                        </ContentControl>
+                                    </StackPanel>
+                                </Border>
+                                <ItemsPresenter x:Name="ItemsHost" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" SourceName="Bd" Value="True">
+                                    <Setter Property="Background" TargetName="Bd" Value="LightBlue"></Setter>
+                                </Trigger>
+                                <Trigger Property="IsExpanded" Value="false">
+                                    <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed" />
+                                </Trigger>
+                                <Trigger Property="HasItems" Value="false">
+                                    <Setter Property="Visibility" TargetName="Expander" Value="Hidden" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <EventSetter Event="DragOver" Handler="DnDDragOver" />
+                <EventSetter Event="Drop" Handler="DnDDrop" />
+                <EventSetter Event="MouseMove" Handler="DnDMouseMove" />
+                <EventSetter Event="MouseDown" Handler="DnDMouseDown" />
+                <Style.Triggers>
+                    <Trigger Property="IsFocused" Value="True">
+                        <Setter Property="FontWeight" Value="Bold"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True">
+                        <Setter Property="FontWeight" Value="Bold"></Setter>
+                    </Trigger>
+                    <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="true">
+                        <Setter Property="ItemsPanel">
+                            <Setter.Value>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                    <DataTrigger Binding="{Binding Converter={StaticResource typeconverter}}" Value="{x:Type vm:VMKeyEditable}">
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="Delete" Command="{Binding SupprCommand}" />
+                                    <MenuItem Header="Rename" Command="{Binding RenameCommand}" />
+                                    <MenuItem Header="Duplicate" Command="{Binding DuplicateKeyCommand}" />
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Converter={StaticResource typeconverter}}" Value="{x:Type vm:VMZoneEditable}">
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="Delete" Command="{Binding SupprCommand}" />
+                                    <MenuItem Header="Rename" Command="{Binding RenameCommand}" IsEnabled="{Binding Path=IsDefaultZone, Converter={StaticResource notconverter}}" />
+                                    <MenuItem Header="Add a key" Command="{Binding CreateKeyCommand}" />
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Converter={StaticResource typeconverter}}" Value="{x:Type vm:VMKeyboardEditable}">
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="Rename" Command="{Binding RenameCommand}" />
+                                    <MenuItem Header="Add zone" Command="{Binding CreateZoneCommand}" />
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
             <!-- Style for the treeviewitem of a mode -->
             <Style x:Key="ActualModeKeyTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
                 <Setter Property="vm:CustomContent.Content" Value="{DynamicResource CloudPath}"></Setter>
@@ -195,10 +351,10 @@
                 <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="1"></ColumnDefinition>
                 <ColumnDefinition Width="8*"></ColumnDefinition>
-                
             </Grid.ColumnDefinitions>
+
             <!-- TreeView -->
-            <TreeView IsTabStop="True" Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
+            <TreeView Name="EditorTreeView" AllowDrop="True" IsTabStop="True" Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
                 <TreeViewItem Style="{StaticResource KeyboardTreeViewStyle}" />
             </TreeView>
 

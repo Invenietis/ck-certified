@@ -27,10 +27,12 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using CommonServices;
+using KeyboardEditor.Model;
 
 namespace KeyboardEditor.ViewModels
 {
-    public partial class VMKeyEditable : VMContextElementEditable
+
+    public partial class VMKeyEditable : VMContextElementEditable, IHandleDragDrop
     {
         internal override void OnMoveUp( int pixels )
         {
@@ -56,5 +58,49 @@ namespace KeyboardEditor.ViewModels
         {
             DeleteKey();
         }
+
+        #region IHandleDragDrop Members
+
+        bool _isDragDropEnabled = true;
+        public bool IsDragDropEnabled
+        {
+            get
+            {
+                return _isDragDropEnabled;
+            }
+            set
+            {
+                _isDragDropEnabled = value;
+            }
+        }
+
+        public bool CanBeDropTarget( IHandleDragDrop draggedItem )
+        {
+            return draggedItem is VMKeyEditable && draggedItem != this;
+        }
+
+        public bool CanBeDropSource( IHandleDragDrop target )
+        {
+            return target is VMKeyEditable || target is VMZoneEditable;
+        }
+
+        public void ExecuteDropAction( IHandleDragDrop droppedItem )
+        {
+
+            if( droppedItem is VMKeyEditable )
+            {
+                VMKeyEditable actualDroppedItem = (VMKeyEditable)droppedItem;
+                if( actualDroppedItem.Model.Zone == Model.Zone )
+                {
+                    actualDroppedItem.Index = Index;
+                }
+                else
+                {
+                    ((VMZoneEditable)Parent).InsertKeyCommand.Execute( actualDroppedItem );
+                }
+            }
+        }
+
+        #endregion
     }
 }

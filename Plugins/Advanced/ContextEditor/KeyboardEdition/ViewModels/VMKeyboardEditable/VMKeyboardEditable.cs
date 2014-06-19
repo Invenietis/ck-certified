@@ -523,7 +523,7 @@ namespace KeyboardEditor.ViewModels
                         string name = String.Empty;
                         ModalViewModel mvm = new ModalViewModel( "Add a zone", "Type the name of the zone to add : " );
                         mvm.Buttons.Add( new ModalButton( mvm, "Create", ModalResult.Ok ) );
-                        
+
                         mvm.Content = new NameModel();
                         ResourceDictionary res = Application.LoadComponent(
                              new Uri( "/KeyboardEditor;component/KeyboardEdition/Views/Modals/Modals.xaml",
@@ -544,6 +544,8 @@ namespace KeyboardEditor.ViewModels
                 return _createZoneCommand;
             }
         }
+
+        
 
         public class NameModel
         {

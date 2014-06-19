@@ -102,7 +102,6 @@ namespace KeyboardEditor.ViewModels
                     _originalTop = Y;
 
                     IsSelected = true;
-                    //Context.SelectedElement = this;
                 } );
             }
         }
@@ -113,7 +112,6 @@ namespace KeyboardEditor.ViewModels
             {
                 return new VMCommand<MouseEventArgs>( ( args ) =>
                 {
-                    //Console.Out.WriteLine( "ButtonUp from control" );
                     StopDragging();
                 } );
             }
@@ -125,7 +123,6 @@ namespace KeyboardEditor.ViewModels
 
         public void OnPointerButtonUp( PointerDeviceEventArgs args )
         {
-            //Console.Out.WriteLine( "ButtonUp from Context" );
             StopDragging();
         }
 
@@ -213,7 +210,6 @@ namespace KeyboardEditor.ViewModels
 
             // Change the size by the amount the user drags the mouse, as long as it's larger 
             // than the width or height of an adorner, respectively.
-            //adornedElement.Width = Math.Max(adornedElement.Width - args.HorizontalChange, thumbWidth);
             Height = (int)Math.Max( args.VerticalChange + Height, thumbHeight );
 
             int width_old = Width;

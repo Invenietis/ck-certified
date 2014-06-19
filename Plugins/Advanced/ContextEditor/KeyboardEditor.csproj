@@ -135,7 +135,11 @@
     <Compile Include="KeyboardEdition\Components\Converters\Specific\TypeConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\Specific\DeletableComponentConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\EnsureIntegerConverter.cs" />
+    <Compile Include="KeyboardEdition\Model\IHandleDragDrop.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.Shortcuts.cs" />
+    <Compile Include="KeyboardEdition\Views\Styles.xaml.cs">
+      <DependentUpon>Styles.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Images.en-US.Designer.cs">
       <DependentUpon>Images.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>

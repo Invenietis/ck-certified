@@ -30,10 +30,11 @@ using CK.Windows.App;
 using KeyboardEditor.Resources;
 using CK.WPF.ViewModel;
 using CK.Plugin.Config;
+using KeyboardEditor.Model;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMZoneEditable : VMContextElementEditable, IHasOrder
+    public class VMZoneEditable : VMContextElementEditable, IHasOrder, IHandleDragDrop
     {
         IZone _zone;
         CKObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
@@ -218,6 +219,32 @@ namespace KeyboardEditor.ViewModels
             //}
 
             #endregion
+        }
+
+        VMCommand<VMKeyEditable> _insertKeyCommand;
+        public VMCommand<VMKeyEditable> InsertKeyCommand
+        {
+            get
+            {
+                if( _insertKeyCommand == null )
+                {
+                    _insertKeyCommand = new VMCommand<VMKeyEditable>( vmKey =>
+                    {
+                        MoveKey( vmKey, this );
+                    } );
+                }
+
+                return _insertKeyCommand;
+            }
+        }
+
+        void MoveKey( VMKeyEditable key, VMZoneEditable targetZone )
+        {
+            if( key.Parent != targetZone )
+            {
+                targetZone.Model.Keys.CreateCopy( key.Model );
+                key.Model.Destroy();
+            }
         }
 
         private IKey InsertKeyMode( IKeyMode keyMode, IKey newKey )
@@ -421,6 +448,51 @@ namespace KeyboardEditor.ViewModels
         internal override void OnSuppr()
         {
             DeleteZone();
+        }
+
+        #endregion
+
+        #region IHandleDragDrop Members
+
+        bool _isEnabled = true;
+        public bool IsDragDropEnabled
+        {
+            get
+            {
+                return _isEnabled;
+            }
+            set
+            {
+                _isEnabled = value;
+            }
+        }
+
+        public bool CanBeDropTarget( IHandleDragDrop draggedItem )
+        {
+            return draggedItem is VMKeyEditable;
+        }
+
+        public bool CanBeDropSource( IHandleDragDrop target )
+        {
+            return false;
+        }
+
+        public void ExecuteDropAction( IHandleDragDrop droppedItem )
+        {
+            VMKeyEditable actualDroppedItem = droppedItem as VMKeyEditable;
+            if( actualDroppedItem != null )
+            {
+                //If the target Zone is already the key's zone, then we put the key at the index 0.
+                if(actualDroppedItem.Model.Zone == Model)
+                {
+                    actualDroppedItem.Model.Index = 0;
+                }
+                else
+                {
+                    //otherwise, we copy the key into this zone's key list and destroy the dropped key.
+                    InsertKeyCommand.Execute( droppedItem );
+                }
+            }
         }
 
         #endregion

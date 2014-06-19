@@ -93,16 +93,6 @@ namespace KeyboardEditor.ViewModels
 
         #region Properties
 
-        ///// <summary>
-        ///// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="IKeyMode"/>
-        ///// </summary>
-        //private IKeyboardMode CurrentKeyModeMode { get { return _key.Current.Mode; } }
-
-        ///// <summary>
-        ///// Gets the current <see cref="IKeyboardMode"/> of the underlying <see cref="ILayoutKeyMode"/>
-        ///// </summary>
-        //private IKeyboardMode CurrentLayoutKeyModeMode { get { return _key.CurrentLayout.Current.Mode; } }
-
         /// <summary>
         /// Gets if the current <see cref="IKeyMode"/> is a fallback or not.
         /// </summary>
@@ -791,6 +781,27 @@ namespace KeyboardEditor.ViewModels
                 Context.SelectedElement = Parent;
                 Model.Destroy();
             }
+        }
+
+        CK.Windows.App.VMCommand _duplicateKeyCommand;
+        public CK.Windows.App.VMCommand DuplicateKeyCommand
+        {
+            get
+            {
+                if( _duplicateKeyCommand == null )
+                {
+                    _duplicateKeyCommand = new CK.Windows.App.VMCommand( () =>
+                    {
+                        DuplicateKey();
+                    } );
+                }
+                return _duplicateKeyCommand;
+            }
+        }
+
+        internal void DuplicateKey()
+        {
+            Model.Zone.Keys.CreateCopy( Model );
         }
     }
 }

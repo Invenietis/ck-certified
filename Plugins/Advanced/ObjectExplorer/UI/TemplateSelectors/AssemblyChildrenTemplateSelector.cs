@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\TemplateSelectors\AssemblyChildrenTemplateSelector.cs) is part of CiviKey. 
 *  

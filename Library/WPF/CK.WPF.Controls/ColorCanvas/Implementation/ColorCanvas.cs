@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.Controls\ColorCanvas\Implementation\ColorCanvas.cs) is part of CiviKey. 
 *  

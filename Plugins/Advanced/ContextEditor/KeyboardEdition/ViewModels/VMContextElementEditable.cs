@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.ViewModel\VMContextElement.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMContextElementEditable.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 

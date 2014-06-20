@@ -1,6 +1,6 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\RootConfigViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\FirstLevel\RootConfigViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 

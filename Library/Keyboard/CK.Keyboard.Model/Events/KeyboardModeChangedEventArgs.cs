@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\Keyboard\CK.Keyboard.Model\Events\KeyboardModeChangedEventArgs.cs) is part of CiviKey. 
 *  

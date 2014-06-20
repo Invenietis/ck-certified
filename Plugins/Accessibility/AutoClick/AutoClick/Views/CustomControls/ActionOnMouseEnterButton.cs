@@ -1,6 +1,6 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\AutoClick\Views\CustomControls\ActionOnMouseEnterButton.cs) is part of CiviKey. 
+* This file (Plugins\Accessibility\AutoClick\AutoClick\Views\CustomControls\ActionOnMouseEnterButton.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 

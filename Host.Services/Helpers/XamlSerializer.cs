@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\Helpers\XamlSerializer.cs) is part of CiviKey. 
 *  

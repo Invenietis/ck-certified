@@ -166,17 +166,17 @@ namespace Help.Update
         /// </summary>
         void AutoUpdateAsync()
         {
-            //IPluginProxy plugin;
+            IPluginProxy plugin;
 
-            //while( _pending.Count > 0 )
-            //{
-            //    plugin = _pending.Dequeue();
-            //    IHaveDefaultHelp helpP = plugin.RealPluginObject as IHaveDefaultHelp;
-            //    _helpContents.FindOrCreateDefaultContent( plugin, helpP.GetDefaultHelp );
+            while( _pending.Count > 0 )
+            {
+                plugin = _pending.Dequeue();
+                IHaveDefaultHelp helpP = plugin.RealPluginObject as IHaveDefaultHelp;
+                _helpContents.FindOrCreateDefaultContent( plugin, helpP.GetDefaultHelp );
 
-            //    AutoUpdateAsync( plugin );
-            //    _checked.Enqueue( plugin );
-            //}
+                AutoUpdateAsync( plugin );
+                _checked.Enqueue( plugin );
+            }
         }
 
         void AutoUpdateAsync( INamedVersionedUniqueId plugin )

@@ -50,7 +50,10 @@ namespace BasicCommandHandlers
         IProtocolEditorRoot _root;
         public IProtocolEditorRoot Root
         {
-            get { return _root; }
+            get
+            {
+                return _root;
+            }
             set
             {
                 _root = value;
@@ -85,13 +88,12 @@ namespace BasicCommandHandlers
         }
 
         public string ActionsTitle { get { return R.ActionToListenTo; } }
-
-        //TODO : CHECK : this step doesn't seem necessary
         public string NameTitle { get { return R.GiveName; } }
         public string Name { get; set; }
 
         private void Initialize()
         {
+            EditedKeyMode = Root.EditedKeyMode;
             _availableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
 
             foreach( var item in Root.AvailableProtocolEditors )

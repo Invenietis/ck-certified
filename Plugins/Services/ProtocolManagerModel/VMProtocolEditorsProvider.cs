@@ -79,7 +79,7 @@ namespace ProtocolManagerModel
 
 
 
-        public IKeyMode EditedKeyMode { get; private set; }
+        public IKeyMode EditedKeyMode { get; protected set; }
         public VMProtocolEditorWrapper SelectedProtocolEditorWrapper
         {
             get { return ProtocolEditor.Wrapper; }

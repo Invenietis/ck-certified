@@ -22,8 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using CK.Core;
 
 namespace CK.Keyboard.Model
@@ -49,6 +47,13 @@ namespace CK.Keyboard.Model
         /// <param name="name">Name of the zone to find.</param>
         /// <returns>The <see cref="IZone"/> object or null if not found.</returns>
         IZone this[string name] { get; }
+
+        /// <summary>
+        /// Gets one of the <see cref="IZone"/> by its index.
+        /// </summary>
+        /// <param name="name">Index of the zone to find.</param>
+        /// <returns>The <see cref="IZone"/> object or throws an exception if not found.</returns>
+        IZone this[int index] { get; }
         
         /// <summary>
         /// This method creates and adds a <see cref="IZone"/> in this collection.
@@ -59,8 +64,23 @@ namespace CK.Keyboard.Model
         /// <remarks>
         /// Note that its <see cref="IZone.Name"/> may be different than <paramref name="name"/> if a zone already exists
         /// with the proposed name.
+        /// The zone will be created with an index equal to the zone list count.
         /// </remarks>
         IZone Create( string name );
+
+        /// <summary>
+        /// This method creates and adds a <see cref="IZone"/> in this collection.
+        /// The <see cref="ZoneCreated"/> event is raised.
+        /// </summary>
+        /// <param name="name">The proposed zone name.</param>
+        /// <param name="index">The proposed index. Set -1 to add at the last index.</param>
+        /// <returns>The new zone.</returns>
+        /// <remarks>
+        /// Note that its <see cref="IZone.Name"/> may be different than <paramref name="name"/> if a zone already exists
+        /// with the proposed name.
+        /// If the index set is superior to the zone count or is equal to -1, the zone will be created at the index right next to the last zone.
+        /// </remarks>
+        IZone Create( string name, int index );
 
         /// <summary>
         /// Gets the default zone: its <see cref="IZone.Name"/> is an empty string and it 
@@ -83,6 +103,12 @@ namespace CK.Keyboard.Model
         /// Fires whenever one of the zone contained in this collection has been renamed.
         /// </summary>
         event EventHandler<ZoneEventArgs> ZoneRenamed;
+
+
+        /// <summary>
+        /// Fires whenever one of the zone contained in this collection has been moved.
+        /// </summary>
+        event EventHandler<ZoneEventArgs> ZoneMoved;
 
 
 

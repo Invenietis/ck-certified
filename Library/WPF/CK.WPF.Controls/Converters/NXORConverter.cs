@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Advanced\ObjectExplorer\UI\Converters\NXORConverter.cs) is part of CiviKey. 
+* This file (Library\WPF\CK.WPF.Controls\Converters\NXORConverter.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -24,7 +24,6 @@
 using System;
 using System.Windows.Data;
 using System.Globalization;
-using System.Diagnostics;
 
 namespace CK.WPF.Controls
 {

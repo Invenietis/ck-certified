@@ -1,12 +1,38 @@
-﻿using System;
-using System.Collections.ObjectModel;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Prediction\CK.WordPredictor\WordPrediction\WordPredictorServiceBase.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using CK.Plugin;
 using CK.WordPredictor.Model;
+using CK.Core;
+using System.Linq;
+using System.Diagnostics;
+
 
 namespace CK.WordPredictor
 {
@@ -14,7 +40,7 @@ namespace CK.WordPredictor
     {
         static Func<string> _resourcePath = () => Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ) );
 
-        ObservableCollection<IWordPredicted> _predictedList;
+        FastObservableCollection<IWordPredicted> _predictedList;
         WordPredictedCollection _wordPredictedCollection;
         IWordPredictorEngine _engine;
         Task _asyncEngineContinuation;
@@ -23,7 +49,7 @@ namespace CK.WordPredictor
         public ITextualContextService TextualContextService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public IWordPredictorFeature Feature { get; set; }
+        public IService<IWordPredictorFeature> Feature { get; set; }
 
         public IWordPredictedCollection Words
         {
@@ -45,24 +71,42 @@ namespace CK.WordPredictor
 
         public virtual bool Setup( IPluginSetupInfo info )
         {
-            _predictedList = new ObservableCollection<IWordPredicted>();
-            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
+
             return true;
         }
 
         public virtual void Start()
         {
+            List<IWordPredicted> internalList = new List<IWordPredicted>( Feature.Service.MaxSuggestedWords );
+            _predictedList = new FastObservableCollection<IWordPredicted>( internalList );
+            _wordPredictedCollection = new WordPredictedCollection( _predictedList );
+
             LoadEngine();
-            TextualContextService.PropertyChanged += OnTextualContextServicePropertyChanged;
-            Feature.PropertyChanged += OnFeaturePropertyChanged;
+            TextualContextService.TextualContextChanged += OnTextualContextServiceChanged;
+            Feature.Service.PropertyChanged += OnFeaturePropertyChanged;
+        }
+
+        public virtual void Stop()
+        {
+            TextualContextService.TextualContextChanged -= OnTextualContextServiceChanged;
+            Feature.Service.PropertyChanged -= OnFeaturePropertyChanged;
+
+            EngineFactory.Release( _engine );
+            _engine = null;
+            _predictedList.Clear();
+        }
+
+        public virtual void Teardown()
+        {
         }
 
         private void LoadEngine()
         {
-            _asyncEngineContinuation = EngineFactory.CreateAsync( Feature.Engine ).ContinueWith( task =>
+            //the engine load can be fail
+            _asyncEngineContinuation = EngineFactory.CreateAsync( Feature.Service.Engine ).ContinueWith( task =>
             {
                 if( _engine == null ) _engine = task.Result;
-            } );
+            }, TaskContinuationOptions.NotOnCanceled );
         }
 
         protected virtual void OnFeaturePropertyChanged( object sender, PropertyChangedEventArgs e )
@@ -75,38 +119,29 @@ namespace CK.WordPredictor
             }
         }
 
-        protected virtual void OnTextualContextServicePropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+        protected virtual void OnTextualContextServiceChanged( object sender, EventArgs e )
         {
-            if( e.PropertyName == "CurrentToken" )
-            {
-                if( _engine == null ) _asyncEngineContinuation.ContinueWith( task => FeedPredictedList() );
-                else FeedPredictedList();
-            }
+            if( _engine == null ) _asyncEngineContinuation.ContinueWith( task => FeedPredictedList() );
+            else FeedPredictedList();
         }
 
         private void FeedPredictedList()
         {
             if( _engine != null )
             {
-                _engine.PredictAsync( TextualContextService, Feature.MaxSuggestedWords ).ContinueWith( words =>
+                string rawContext = TextualContextService.GetTextualContext();
+                PredictionLogger.Instance.Trace( "RawContext: {0}.", rawContext );
+
+                var originTask = _engine.PredictAsync( rawContext, Feature.Service.MaxSuggestedWords );
+                originTask.ContinueWith( task =>
                 {
-                    _predictedList.Clear();
-                    foreach( var w in words.Result ) _predictedList.Add( w );
+                    PredictionLogger.Instance.Trace( "{0} items currently.", _predictedList.Count );
+                    PredictionLogger.Instance.Trace( "{0}: {1}", task.Result.Count, String.Join( " ", task.Result.Select( w => w.Word ) ) );
+
+                    _predictedList.ReplaceItems( task.Result );
                 }, TaskContinuationOptions.OnlyOnRanToCompletion );
             }
         }
 
-        public virtual void Stop()
-        {
-            TextualContextService.PropertyChanged -= OnTextualContextServicePropertyChanged;
-
-            EngineFactory.Release( _engine );
-            _engine = null;
-            _predictedList.Clear();
-        }
-
-        public virtual void Teardown()
-        {
-        }
     }
 }

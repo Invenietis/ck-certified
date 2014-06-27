@@ -23,15 +23,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Plugin;
-using CK.Core;
 using CK.WPF.ViewModel;
-using System.Windows.Input;
-using System.Windows;
-using System.Windows.Controls;
-using CK.Plugins.ObjectExplorer.ViewModels;
 
 namespace CK.Plugins.ObjectExplorer
 {

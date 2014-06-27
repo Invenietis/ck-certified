@@ -22,8 +22,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Reflection;
-using CK.Plugin.Hosting;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;

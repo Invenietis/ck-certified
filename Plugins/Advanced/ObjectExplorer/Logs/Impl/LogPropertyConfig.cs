@@ -21,11 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace CK.Plugins.ObjectExplorer
 {
     internal class LogPropertyConfig : ILogPropertyConfig

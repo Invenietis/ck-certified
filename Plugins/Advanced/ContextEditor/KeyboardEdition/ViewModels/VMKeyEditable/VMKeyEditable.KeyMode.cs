@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\EditableSkin\ViewModels\VMKeyEditable.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,25 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
-using System.Windows.Controls;
-using System.Windows;
-using CK.Plugin.Config;
-using CK.Core;
-using Microsoft.Win32;
 using System.Windows.Input;
-using System.IO;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Windows.Controls.Primitives;
-using CommonServices;
-using System.Collections.ObjectModel;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -51,7 +35,7 @@ namespace KeyboardEditor.ViewModels
         }
 
         internal void RefreshKeyboardModelViewModels()
-        {   
+        {
             _currentLayoutKeyModeModeVM = new VMKeyboardMode( _context, Model.CurrentLayout.Current.Mode );
             _currentKeyModeModeVM = new VMKeyboardMode( _context, Model.Current.Mode );
 
@@ -61,11 +45,13 @@ namespace KeyboardEditor.ViewModels
             foreach( var keyMode in KeyModes )
             {
                 keyMode.TriggerPropertyChanged( "IsSelected" );
+                keyMode.TriggerModeChanged();
             }
 
             foreach( var layoutKeyMode in LayoutKeyModes )
             {
                 layoutKeyMode.TriggerPropertyChanged( "IsSelected" );
+                layoutKeyMode.TriggerModeChanged();
             }
 
             OnPropertyChanged( "IsSelected" );
@@ -75,7 +61,7 @@ namespace KeyboardEditor.ViewModels
 
         /// <summary>
         /// This regions contains overrides to the <see cref="VMKey"/> properties.
-        /// It enables hidding the fallback if necessary.
+        /// It enables hiding the fallback if necessary.
         /// </summary>
         #region KeyMode properties overrides
 
@@ -103,7 +89,7 @@ namespace KeyboardEditor.ViewModels
                 {
                     _createKeyModeCommand = new VMCommand<string>( ( type ) =>
                     {
-                        
+
                         if( type == "KeyMode" )
                         {
                             Model.KeyModes.Create( Model.Keyboard.CurrentMode );
@@ -121,6 +107,7 @@ namespace KeyboardEditor.ViewModels
                             mode.Visible = true;
                         }
 
+                        Context.KeyboardVM.RefreshCurrentKeyMode();
                         RefreshKeyboardModelViewModels();
                     } );
                 }
@@ -128,6 +115,23 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        ICommand _selectKeyMode;
+        public ICommand SelectKeyModeCommand
+        {
+            get
+            {
+                if( _selectKeyMode == null )
+                {
+                    _selectKeyMode = new CK.Windows.App.VMCommand( () => 
+                    {
+                        KeyModeVM.IsSelected = true;
+                    } );
+                }
+                return _selectKeyMode;
+            }
+        }
+
         #endregion
+
     }
 }

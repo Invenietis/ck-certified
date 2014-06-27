@@ -23,13 +23,11 @@
 
 using System;
 using CK.Plugin;
-using System.Reflection;
 using System.Collections.ObjectModel;
 using CK.Core;
 using CK.WPF.ViewModel;
 using System.Windows.Input;
 using System.ComponentModel;
-using System.Collections.Generic;
 using CK.Plugin.Config;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels

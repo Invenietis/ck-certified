@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\PointerDeviceDriver\MouseDriver.cs) is part of CiviKey. 
+* This file (Plugins\Accessibility\PointerDeviceDriver\KeyboardDriver.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CommonServices;
 using CK.Plugin;
-using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Threading;
 
@@ -136,25 +135,22 @@ namespace PointerDeviceDriver
         {
             if( e.Code >= 0 && e.wParam == (IntPtr)WM_KEYDOWN )
             {
-
                 LLKBDHOOKSTRUCT keyboardInfo = (LLKBDHOOKSTRUCT)Marshal.PtrToStructure( e.lParam, typeof( LLKBDHOOKSTRUCT ) );
                 int vkCode = keyboardInfo.wVk;
-                if( _cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 ) )
-                {
+                
                     
-                    InputSource source = InputSource.Other;
-                    if( (int)keyboardInfo.dwExtraInfo == 39229115 ) //CiviKey's footprint
-                    {
-                        source = InputSource.CiviKey;
-                    }
-                    else
-                    {
-                        //We only swallow the event if we are going to do something with it and that it does not come from CiviKey
-                        if( KeyDown != null ) e.Cancel = true;
-                    }
-
-                    Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int, InputSource>)FireEvent, vkCode, source );
+                InputSource source = InputSource.Other;
+                if( (int)keyboardInfo.dwExtraInfo == 39229115 ) //CiviKey's footprint
+                {
+                    source = InputSource.CiviKey;
                 }
+                else
+                {
+                    //We only swallow the event if we are going to do something with it and that it does not come from CiviKey
+                    if( KeyDown != null && (_cancellableKeys.Contains( vkCode ) || _cancellableKeys.Contains( -1 )) ) e.Cancel = true;
+                }
+     
+                Dispatcher.CurrentDispatcher.BeginInvoke( (Action<int, InputSource>)FireEvent, vkCode, source );
             }
         }
 

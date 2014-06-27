@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\SkinViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\ThirdLevel\SkinBasicConfigViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,16 +21,13 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Core;
 //using CK.WPF.Controls;
 using Host.Resources;
 using System;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
-using System.Windows.Input;
 using CK.Windows.Config;
-using CK.Windows;
 
 namespace Host.VM
 {

@@ -1,10 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Prediction\CK.WordPredictor.UI\ViewModels\TextualContextAreaViewModel.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI.ViewModels
@@ -13,57 +30,54 @@ namespace CK.WordPredictor.UI.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        readonly ITextualContextService _textualContext;
         readonly IPredictionTextAreaService _predictionTextArea;
         readonly ICommandTextualContextService _commandTextualContextService;
         string _text;
 
-        public TextualContextAreaViewModel( ITextualContextService textualContext, IPredictionTextAreaService predictionTextArea, ICommandTextualContextService commandTextualContextService )
+        public TextualContextAreaViewModel( IPredictionTextAreaService predictionTextArea, ICommandTextualContextService commandTextualContextService )
         {
-            _textualContext = textualContext;
             _predictionTextArea = predictionTextArea;
-            _predictionTextArea.TextSent += OnPredictionAreaContentSent;
             _commandTextualContextService = commandTextualContextService;
-        }
-
-        void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
-        {
-            _text = _predictionTextArea.Text = String.Empty;
-            if( PropertyChanged != null )
-                PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
         }
 
         bool _isFocused;
         public bool IsFocused
         {
+            get { return _isFocused; }
             set
             {
                 _isFocused = value;
+                _commandTextualContextService.ClearTextualContext();
+
                 if( _isFocused )
                 {
-                    _commandTextualContextService.ClearTextualContext();
-                    _predictionTextArea.Text = _text;
-                }
-                else
-                {
-                    _commandTextualContextService.ClearTextualContext();
+                    _predictionTextArea.ChangePredictionAreaContent( _text, _caretIndex );
                 }
 
                 PropertyChanged( this, new PropertyChangedEventArgs( "IsFocused" ) );
             }
-            get { return _isFocused; }
         }
+
+        int _caretIndex;
 
         public int CaretIndex
         {
-            get { return _predictionTextArea.CaretIndex; }
-            set { _predictionTextArea.CaretIndex = value; }
+            get { return _caretIndex; }
+            set
+            {
+                _caretIndex = value;
+                PropertyChanged( this, new PropertyChangedEventArgs( "CaretIndex" ) );
+            }
         }
 
         public string TextualContext
         {
-            get { return _predictionTextArea.Text; }
-            set { _text = _predictionTextArea.Text = value; }
+            get { return _text; }
+            set
+            {
+                _text = value;
+                PropertyChanged( this, new PropertyChangedEventArgs( "TextualContext" ) );
+            }
         }
     }
 }

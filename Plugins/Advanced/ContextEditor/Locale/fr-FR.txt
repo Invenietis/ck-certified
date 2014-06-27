@@ -34,6 +34,8 @@ KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	underline:System.Windows.Controls.Control.Padding	None	False	True		3 2
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de police
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-font-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de police en surbrillance
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	highlight-font-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	normal-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche en état normal
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	normal-bg-color:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
 KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	hover-bg-color:System.Windows.Controls.TextBlock.$Content	Text	True	True		Couleur de la touche survolée
@@ -167,5 +169,93 @@ KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:KeyboardEditor.ViewModels.ActionControl.ImageSource	None	True	True		pack://application:,,,/KeyboardEditor\;component/Resources/Images/delete.png
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-delete-mode-button:KeyboardEditor.ViewModels.ActionControl.ActionParameter	None	True	True		KeyMode
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.Text	Text	True	True		Scripts de la touche : 
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.Controls.TextBlock.Text	Text	True	True		SCRIPTS DE LA TOUCHE : 
 KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keyboard-editor-key-mode-key-program:System.Windows.FrameworkElement.Margin	None	False	True		5
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	font-size:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	font-header:System.Windows.Controls.TextBlock.Text	Text	True	True		POLICE DE CARACTERES : 
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	background-colors-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:genericlayouteditionusercontrol.baml	background-colors-header:System.Windows.Controls.TextBlock.Text	Text	True	True		COULEURS DE FOND : 
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	actions-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	actions-header:System.Windows.Controls.TextBlock.Text	Text	True	True		ACTIONS : 
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count-header:System.Windows.Controls.TextBlock.Text	Text	True	True		DEFILEMENT : 
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count:System.Windows.Controls.TextBlock.$Content	Text	True	True		Nombre de passages :
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	repeat-count:System.Windows.FrameworkElement.Margin	None	False	True		10 0 10 0
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-dimensions-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionusercontrol.baml	keyboard-dimensions-header:System.Windows.Controls.TextBlock.Text	Text	True	True		DIMENSIONS : 
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	text-image-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	text-image-header:System.Windows.Controls.TextBlock.Text	Text	True	True		TEXTE &amp; IMAGE : 
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-actions-header:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-actions-header:System.Windows.Controls.TextBlock.Text	Text	True	True		ACTIONS :
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-add-action:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-add-action:System.Windows.Controls.ContentControl.Content	Button	True	True		Ajouter une action
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-add-action:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Right
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-save:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-save:System.Windows.Controls.ContentControl.Content	Button	True	True		Enregister
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-save:System.Windows.FrameworkElement.Margin	None	False	True		0 0 2 0
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-cancel:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keymodeeditionusercontrol.baml	keymode-cancel:System.Windows.Controls.ContentControl.Content	Button	True	True		Annuler
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.Controls.DockPanel.Dock	Button	True	False		Left
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.Controls.ContentControl.Content	Button	True	True		Contenu &amp; actions
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-content:System.Windows.FrameworkElement.Margin	None	False	True		5
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-1:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-1:System.Windows.Controls.TextBlock.Text	Text	True	True		Aspect
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-2:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:keyboardeditionview.baml	mode-selection-aspect-2:System.Windows.Controls.TextBlock.Text	Text	True	True		(Couleurs, Dimensions et Position)
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-1-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-1-title:System.Windows.Controls.TextBlock.Text	Text	True	True		1. Sélectionner les claviers à exporter
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-1-description:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-1-description:System.Windows.Controls.TextBlock.Text	Text	True	True		Cochez les claviers CiviKey que vous voulez transférer sur un autre ordinateur.
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-title:System.Windows.Controls.DockPanel.Dock	Text	True	False		Top
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-title:System.Windows.Controls.TextBlock.Text	Text	True	True		2. Sauvegarder les claviers dans un fichier
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-description:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-description:System.Windows.Controls.DockPanel.Dock	Text	True	False		Top
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-description:System.Windows.Controls.TextBlock.Text	Text	True	True		En cliquant sur le bouton 'Exporter' un fichier nommé keyboards.xml sera créé. Il contiendra les claviers cochés ci-dessus. Transférez ensuite ce fichier sur un autre ordinateur et utilisez la fonctionnalité d'import pour utiliser ces claviers depuis un CiviKey situé sur une autre machine.
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-btn:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-btn:System.Windows.FrameworkElement.Margin	None	False	True		3 3 3 3
+KeyboardEditor.g.en-US.resources:exportkeyboardview.baml	export-step-2-btn:System.Windows.Controls.ContentControl.Content	Button	True	True		Exporter
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.Shapes.Path.$Content	None	False	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.FrameworkElement.ToolTip	ToolTip	True	True		Vous disposez déjà de ce clavier, si vous l'importez, celui-ci remplacera l'existant.
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.Controls.DockPanel.Dock	None	True	False		Right
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.Shapes.Path.Data	None	False	True		F1M874.094,289.369L854.3,254.63C854.028,254.151 853.515,253.856 852.958,253.856 852.403,253.856 851.89,254.151 851.617,254.63L831.824,289.369C831.555,289.84 831.559,290.416 831.835,290.883 832.111,291.348 832.618,291.634 833.165,291.634L872.752,291.634C873.299,291.634 873.805,291.348 874.081,290.883 874.357,290.416 874.361,289.84 874.094,289.369 M855.653,287.189L850.264,287.189 850.264,282.745 855.653,282.745 855.653,287.189z M855.653,279.41L850.264,279.41 850.264,266.077 855.653,266.077 855.653,279.41z
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.Shapes.Shape.Stretch	None	True	False		Uniform
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.Shapes.Shape.Fill	None	False	True		\#FF000000
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.FrameworkElement.Width	None	False	True		16
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.FrameworkElement.Height	None	False	True		16
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.FrameworkElement.Margin	None	False	True		0,0,10,0
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-keyboard-exists-tooltip:System.Windows.UIElement.RenderTransformOrigin	None	True	False		0.5,0.5
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-title:System.Windows.Controls.DockPanel.Dock	Text	True	False		Top
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-title:System.Windows.Controls.TextBlock.Text	Text	True	True		1. Sélectionner un fichier
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-description:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-description:System.Windows.Controls.DockPanel.Dock	Text	True	False		Top
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-description:System.Windows.Controls.TextBlock.Text	Text	True	True		Utilisez le bouton Parcourir pour sélectionner un fichier .xml contenant le ou les claviers CiviKey à importer.
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.Controls.DockPanel.Dock	Button	True	False		Right
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.FrameworkElement.Margin	None	False	True		3 3 3 3
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.Controls.ContentControl.Content	Button	True	True		Parcourir
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.FrameworkElement.Height	None	False	True		28
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Left
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-1-btn:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Top
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-2-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-2-title:System.Windows.Controls.TextBlock.Text	Text	True	True		2. Sélectionner les claviers à importer
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-2-description:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-2-description:System.Windows.Controls.TextBlock.Text	Text	True	True		Les claviers CiviKey trouvés dans le fichier sont listés ci-dessous. Cochez ceux qui vous intéressent pour pouvoir les importer.
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-2-description-2:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-2-description-2:System.Windows.Controls.TextBlock.Text	Text	True	True		Si vous importez un clavier ayant le même nom que l'un des vôtres, votre clavier sera écrasé et remplacé par le clavier importé.
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-title:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-title:System.Windows.Controls.DockPanel.Dock	Text	True	False		Top
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-title:System.Windows.Controls.TextBlock.Text	Text	True	True		3. Importer les claviers
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-description:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-description:System.Windows.Controls.DockPanel.Dock	Text	True	False		Top
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-description:System.Windows.Controls.TextBlock.Text	Text	True	True		Cliquez sur le bouton Importer pour lancer l'import.
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-btn:System.Windows.Controls.Button.$Content	Button	True	True		
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-btn:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Right
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-btn:System.Windows.FrameworkElement.Margin	None	False	True		3 3 3 3
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-btn:System.Windows.Controls.ContentControl.Content	Button	True	True		Importer
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-btn:System.Windows.FrameworkElement.Height	None	False	True		30
+KeyboardEditor.g.en-US.resources:importkeyboardview.baml	import-step-3-btn:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Top

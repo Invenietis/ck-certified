@@ -21,8 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Windows.Forms;
 using CK.Plugin;
 using CK.Plugin.Config;
 

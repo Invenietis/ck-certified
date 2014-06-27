@@ -21,14 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
 using CK.WPF.ViewModel;
-using CK.Plugin;
 using CK.Plugins.ObjectExplorer.UI.UserControls;
 using System.ComponentModel;
 
@@ -56,7 +50,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _toggleMaximizedCommand == null )
                 {
-                    _toggleMaximizedCommand = new VMCommand( () =>
+                    _toggleMaximizedCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         if( _consoleWindowIsClosed )
                         {

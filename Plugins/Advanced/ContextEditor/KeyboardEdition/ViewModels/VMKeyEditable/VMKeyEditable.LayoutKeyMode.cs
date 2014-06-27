@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\EditableSkin\ViewModels\VMKeyEditable.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,24 +21,7 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
-using System.Windows.Controls;
-using System.Windows;
-using CK.Plugin.Config;
-using CK.Core;
-using Microsoft.Win32;
-using System.Windows.Input;
-using System.IO;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Windows.Controls.Primitives;
-using CommonServices;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -51,21 +34,21 @@ namespace KeyboardEditor.ViewModels
 
         public bool ShowLabel
         {
-            get { return LayoutKeyMode.GetPropertyValue<string>( Context.SkinConfiguration, "DisplayType", Context.SkinConfiguration[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ) == "Label"; }
-            set 
-            { 
-                if(value) Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Label";
-                else Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Image"; 
+            get { return Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", Context.SkinConfiguration[_key.Current]["Image"] != null ? "Image" : "Label" ) == "Label"; }
+            set
+            {
+                if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
+                else Context.SkinConfiguration[_key.Current]["DisplayType"] = "Image";
             }
         }
 
         public bool ShowImage
         {
-            get { return LayoutKeyMode.GetPropertyValue<string>( Context.SkinConfiguration, "DisplayType", Context.SkinConfiguration[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ) == "Image"; }
-            set 
-            { 
-                if(value) Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Image";
-                else Context.SkinConfiguration[LayoutKeyMode]["DisplayType"] = "Label"; 
+            get { return Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", Context.SkinConfiguration[_key.Current]["Image"] != null ? "Image" : "Label" ) == "Image"; }
+            set
+            {
+                if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Image";
+                else Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
             }
         }
 
@@ -80,13 +63,29 @@ namespace KeyboardEditor.ViewModels
         }
 
         double _zIndex = 50;
-        public double ZIndex 
-        { 
-            get { return _zIndex; } 
-            set 
-            { 
-                _zIndex = value; 
-                OnPropertyChanged( "ZIndex" ); 
+        public double ZIndex
+        {
+            get { return _zIndex; }
+            set
+            {
+                _zIndex = value;
+                OnPropertyChanged( "ZIndex" );
+            }
+        }
+
+        CK.Windows.App.VMCommand _selectLayoutKeyMode;
+        public CK.Windows.App.VMCommand SelectLayoutKeyModeCommand
+        {
+            get
+            {
+                if( _selectLayoutKeyMode == null )
+                {
+                    _selectLayoutKeyMode = new CK.Windows.App.VMCommand( () =>
+                    {
+                        LayoutKeyModeVM.IsSelected = true;
+                    } );
+                }
+                return _selectLayoutKeyMode;
             }
         }
     }

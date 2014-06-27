@@ -8,25 +8,16 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-                <ResourceDictionary Source="Templates.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/KeyboardEditor;component/Wizard/Views/Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/KeyboardEditor;component/Wizard/Views/Templates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Window.Background>
+    <!--<Window.Background>
         <LinearGradientBrush EndPoint="0.99,0.972" StartPoint="0.054,0.088">
             <GradientStop Color="White" Offset="0.039"/>
             <GradientStop Color="#FFC4D7EA" Offset="1"/>
         </LinearGradientBrush>
-    </Window.Background>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <!--<Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="350" Width="500" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/keyboard-background.png" Opacity="0.1"/>-->
-            <ContentControl Grid.Column="0" Width="Auto" Height="Auto" Name="ContentControl" VerticalAlignment="Top" Content="{Binding ActiveItem}"/>
-        </Grid>
-    </ScrollViewer>
+    </Window.Background>-->
+    <ContentControl Name="ContentControl" Content="{Binding ActiveItem}"/>
 </Window>

@@ -39,11 +39,16 @@ namespace CK.Keyboard.Model
         /// Once destroyed, a zone is no more functionnal and no method nor properties should be called.
         /// </remarks>
         void Destroy();
-        
+
         /// <summary>
         /// Gets the zone name.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets the zone's index.
+        /// </summary>
+        int Index { get; set; }
 
         /// <summary>
         /// Renames the keyboard zone. The <see cref="Name"/> is automatically numbered to avoid name clashes.

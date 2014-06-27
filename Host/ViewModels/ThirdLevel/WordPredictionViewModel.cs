@@ -1,7 +1,29 @@
-﻿using System;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Host\ViewModels\ThirdLevel\WordPredictionViewModel.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Windows.Config;
@@ -58,7 +80,7 @@ namespace Host.VM
 
         public bool FilterAlreadyShownWords
         {
-            get { return Config != null ? Config.GetOrSet( "FilterAlreadyShownWords", true ) : true; }
+            get { return Config != null ? Config.GetOrSet( "FilterAlreadyShownWords", false ) : true; }
             set
             {
                 if( Config != null ) Config.Set( "FilterAlreadyShownWords", value );
@@ -94,6 +116,7 @@ namespace Host.VM
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+
             NotifyOfPropertyChange( () => MaxSuggestedWords );
             NotifyOfPropertyChange( () => InsertSpaceAfterPredictedWord );
             NotifyOfPropertyChange( () => UsesSemanticPrediction );
@@ -121,10 +144,9 @@ namespace Host.VM
             filter.DisplayName = R.WordPredictionFilterAlreadySuggestedWord;
             g.Items.Add( filter );
 
-            //Hidden, we'll wait for the feature to have less bugs
-            //var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
-            //contextEditor.DisplayName = R.WordPredictionDisplayPredictionEditorWindow;
-            //g.Items.Add( contextEditor );
+            var contextEditor = new ConfigItemProperty<bool>( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, e => e.DisplayContextEditor ) );
+            contextEditor.DisplayName = R.WordPredictionDisplayPredictionEditorWindow;
+            g.Items.Add( contextEditor );
 
             base.OnInitialize();
         }
@@ -148,10 +170,9 @@ namespace Host.VM
                 {
                     if( value )
                     {
-                        if( _wordPredictionPlugins.Count == 0 ) GetPlugins();
-                        foreach( var plugin in _wordPredictionPlugins )
+                        foreach( var pluginId in _wordPredictionPluginIds )
                         {
-                            _app.StartPlugin( plugin.PluginKey.PluginId );
+                            _app.StartPlugin( pluginId );
                         }
                     }
                     else

@@ -25,9 +25,11 @@
                 <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="MiniViewStoryboard" AutoReverse="True" RepeatBehavior="Forever">
-            <DoubleAnimation From="150" To="160" Duration="0:0:0.25" Storyboard.TargetProperty="Width"/>
-            <DoubleAnimation From="150" To="160" Duration="0:0:0.25" Storyboard.TargetProperty="Height"/>
+        <Storyboard x:Key="MiniViewStoryboard" AutoReverse="True" RepeatBehavior="Forever" DesiredFrameRate="20" FillBehavior="HoldEnd">
+            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
+            </DoubleAnimation>
+            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
+            </DoubleAnimation>
         </Storyboard>
     </Window.Resources>
     <Window.Triggers>
@@ -41,6 +43,9 @@
     </Window.Triggers>
     <Grid>
         <Image x:Name="image" Source="/SimpleSkin;component/Images/logo.png" RenderTransformOrigin="0.5,0.5">
+            <Image.CacheMode>
+                <BitmapCache EnableClearType="False" RenderAtScale="1" SnapsToDevicePixels="False"></BitmapCache>
+            </Image.CacheMode>
             <Image.Style>
                 <Style TargetType="Image">
                     <Style.Triggers>
@@ -49,7 +54,7 @@
                                 <BeginStoryboard Name="BeginMiniViewStoryboard" Storyboard="{StaticResource MiniViewStoryboard}"/>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
-                                <StopStoryboard BeginStoryboardName="BeginMiniViewStoryboard"/>
+                                <PauseStoryboard BeginStoryboardName="BeginMiniViewStoryboard"/>
                             </DataTrigger.ExitActions>
                         </DataTrigger>
                         <Trigger Property="UIElement.IsVisible" Value="True">
@@ -85,7 +90,8 @@
             </Image.Style>
             <Image.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform ScaleY="0" ScaleX="0"/>
+                    <ScaleTransform ScaleX="0" ScaleY="0"/>
+                    <ScaleTransform />
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>

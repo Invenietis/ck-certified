@@ -24,10 +24,9 @@
 using System;
 using System.Windows;
 using CK.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using SimpleSkin.Helpers;
-using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace SimpleSkin
 {
@@ -36,13 +35,17 @@ namespace SimpleSkin
     /// </summary>
     public partial class SkinWindow : CKNoFocusWindow
     {
-        public SkinWindow()
+        public SkinWindow( NoFocusManager noFocusManager )
+            : base( noFocusManager )
         {
             InitializeComponent();
         }
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
         {
+            FrameworkElement border = visualElement as FrameworkElement;
+            //Allows drag and drop when the background is set
+            if( border != null && border.Name == "InsideBorder" ) return true;
             if( DraggableVisualAttachedProperty.GetDraggableVisual( visualElement ) ) return true;
             var parent = VisualTreeHelper.GetParent( visualElement );
             return parent is SkinWindow || base.IsDraggableVisual( visualElement );

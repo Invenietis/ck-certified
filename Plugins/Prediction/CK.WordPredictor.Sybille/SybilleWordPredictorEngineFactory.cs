@@ -1,9 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Prediction\CK.WordPredictor.Sybille\SybilleWordPredictorEngineFactory.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using CK.Plugin;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.Engines
@@ -13,14 +36,14 @@ namespace CK.WordPredictor.Engines
         Func<string> _userPath;
         Func<string> _pluginResourceDirectory;
         const string _sybileDataPath = "Data";
-        IWordPredictorFeature _predictorFeature;
+        IService<IWordPredictorFeature> _predictorFeature;
 
-        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, IWordPredictorFeature predictorFeature )
+        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, IService<IWordPredictorFeature> predictorFeature )
             : this( pluginResourceDirectory, pluginResourceDirectory, predictorFeature )
         {
         }
 
-        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, Func<string> userPath, IWordPredictorFeature predictorFeature )
+        public SybilleWordPredictorEngineFactory( Func<string> pluginResourceDirectory, Func<string> userPath, IService<IWordPredictorFeature> predictorFeature )
         {
             if( pluginResourceDirectory == null ) throw new ArgumentNullException( "pluginResourceDirectory" );
             if( userPath == null ) throw new ArgumentNullException( "userPath" );
@@ -38,17 +61,42 @@ namespace CK.WordPredictor.Engines
             return DoCreate( predictorName, p, userPath, _predictorFeature );
         }
 
+        Task<IWordPredictorEngine> _currentlyRunningTask;
+        CancellationTokenSource cancellationSource = null;
+
         public Task<IWordPredictorEngine> CreateAsync( string predictorName )
         {
+            //if the last is still running 
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status <= TaskStatus.Running )
+            {
+                Debug.Assert( cancellationSource != null );
+                cancellationSource.Cancel();
+                //_currentlyRunningTask.Wait( cancellationSource.Token );
+                cancellationSource.Dispose();
+                cancellationSource = new CancellationTokenSource();
+            }
+
+            if( cancellationSource == null )
+                cancellationSource = new CancellationTokenSource();
+
             string p = _pluginResourceDirectory();
             string userPath = _userPath();
-            return Task.Factory.StartNew<IWordPredictorEngine>( () =>
+
+            _currentlyRunningTask = Task.Factory.StartNew<IWordPredictorEngine>( () =>
             {
-                return DoCreate( predictorName, p, userPath, _predictorFeature );
-            } );
+                if( cancellationSource.IsCancellationRequested )
+                    return null;
+
+                SybilleWordPredictorEngine engine = DoCreate( predictorName, p, userPath, _predictorFeature );
+
+                if( engine.ConstructionSuccess ) return engine;
+                return null;
+            }, cancellationSource.Token );
+
+            return _currentlyRunningTask;
         }
 
-        private static IWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath, string userPath, IWordPredictorFeature predictorFeature )
+        private static SybilleWordPredictorEngine DoCreate( string predictorName, string pluginResourcePath, string userPath, IService<IWordPredictorFeature> predictorFeature )
         {
             string userTextsFilePath = EnsureFileCreation( userPath, "UserTexts_fr.txt" );
             string userPredictorSibFilePath = EnsureFileCopy( Path.Combine( pluginResourcePath, _sybileDataPath ), userPath, "UserPredictor_fr.sib" );

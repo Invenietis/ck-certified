@@ -22,11 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using CK.SharedDic;
-using System.Xml.Serialization;
-using CK.Storage;
 using CK.Plugin;
 
 namespace CK.Keyboard.Model

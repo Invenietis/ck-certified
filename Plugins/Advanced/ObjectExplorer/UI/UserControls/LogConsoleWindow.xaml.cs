@@ -22,10 +22,6 @@
 #endregion
 
 using System.Windows;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System;
-using System.Windows.Interop;
 
 namespace CK.Plugins.ObjectExplorer.UI.UserControls
 {

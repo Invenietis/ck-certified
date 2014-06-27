@@ -22,21 +22,16 @@
 #endregion
 
 using System;
-using CK.WPF.ViewModel;
-using System.Windows;
 using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using CK.Windows.Helpers;
 using HighlightModel;
 using CK.Core;
 using System.Linq;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Linq.Expressions;
+using System.Collections.Generic;
+using CK.Windows;
+using System.Diagnostics;
 using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
@@ -49,7 +44,12 @@ namespace SimpleSkin.ViewModels
         ObservableCollection<VMKeySimple> _keys;
         IKeyboard _keyboard;
 
-        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } }
+        public ObservableCollection<VMZoneSimple> Zones { get { return _zones; } private set { _zones = value; } }
+        public IKeyboard Keyboard
+        {
+            get { return _keyboard; }
+        }
+
         public ObservableCollection<VMKeySimple> Keys { get { return _keys; } }
 
         /// <summary>
@@ -59,9 +59,11 @@ namespace SimpleSkin.ViewModels
 
         #endregion
 
-        internal VMKeyboardSimple( VMContextSimple ctx, IKeyboard kb )
+        internal VMKeyboardSimple( VMContextSimpleBase ctx, IKeyboard kb )
             : base( ctx )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             _zones = new ObservableCollection<VMZoneSimple>();
             _keys = new ObservableCollection<VMKeySimple>();
 
@@ -69,113 +71,192 @@ namespace SimpleSkin.ViewModels
 
             RegisterEvents();
 
-            foreach( IZone zone in _keyboard.Zones )
+            foreach( IZone zone in _keyboard.Zones.ToList() )
             {
-                Zones.Add( Context.Obtain( zone ) );
+                VMZoneSimple zoneVM = Context.Obtain( zone );
+                Zones.Add( zoneVM );
                 foreach( IKey key in zone.Keys )
                 {
                     _keys.Add( Context.Obtain( key ) );
                 }
             }
 
-            SafeUpdateW();
-            SafeUpdateH();
+            UpdateW();
+            UpdateH();
             SafeUpdateInsideBorderColor();
+            UpdateHighlightBackground();
+            UpdateHighlightFontColor();
+            UpdateLoopCount();
             UpdateBackgroundPath();
+
+            IsHighlightableTreeRoot = true;
         }
 
         internal override void Dispose()
         {
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            UnregisterEvents();
+
+            foreach( var zone in _zones )
+            {
+                zone.Dispose();
+            }
+
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 _zones.Clear();
                 _keys.Clear();
-            } ), null );
-            UnregisterEvents();
+            }), null );
         }
 
         public void TriggerPropertyChanged()
         {
-            OnPropertyChanged( "Keys" );
-            OnPropertyChanged( "BackgroundImagePath" );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            {
+                OnPropertyChanged( "Keys" );
+                OnPropertyChanged( "BackgroundImagePath" );
+            }) );
         }
 
         #region OnXXXXX
 
         void OnKeyCreated( object sender, KeyEventArgs e )
         {
-            VMKeySimple kvm = Context.Obtain( e.Key );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+            VMKeySimple kvm = Context.Obtain( e.Key );
+            VMZoneSimple zvm = Context.Obtain( e.Key.Zone );
+
+            Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
             {
-                Context.Obtain( e.Key.Zone ).Keys.Add( kvm );
+                zvm.Keys.Add( kvm );
                 _keys.Add( kvm );
-            } ) );
+            }) );
         }
 
         void OnKeyDestroyed( object sender, KeyEventArgs e )
         {
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 Context.Obtain( e.Key.Zone ).Keys.Remove( Context.Obtain( e.Key ) );
                 _keys.Remove( Context.Obtain( e.Key ) );
-            } ) );
+            }) );
             Context.OnModelDestroy( e.Key );
         }
 
         void OnZoneCreated( object sender, ZoneEventArgs e )
         {
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            var zvm =  Context.Obtain( e.Zone );
+
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
            {
-               Zones.Add( Context.Obtain( e.Zone ) );
-           } ) );
+               Zones.Add( zvm );
+           }) );
+        }
+
+        void OnZoneMoved( object sender, ZoneEventArgs e )
+        {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            VMZoneSimple zoneVM = Zones.Where( z => z.Name == e.Zone.Name ).Single();
+
+            ObservableCollection<VMZoneSimple> temp = new ObservableCollection<VMZoneSimple>();
+            foreach( var item in Zones.OrderBy<VMZoneSimple, int>( z => z.Index ).ToList() )
+            {
+                temp.Add( item );
+            }
+            Zones.Clear();
+
+            Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+           {
+               Zones = temp;
+               OnPropertyChanged( "Zones" );
+           }) );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             foreach( var k in e.Zone.Keys )
             {
                 var mk = Context.Obtain( k );
-                Context.SkinDispatcher.Invoke( (Action)( () =>
+                Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
                 {
                     Keys.Remove( mk );
-                } ) );
+                }) );
                 Context.OnModelDestroy( k );
             }
-            Context.SkinDispatcher.Invoke( (Action)( () =>
+
+            Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
             {
                 Zones.Remove( Context.Obtain( e.Zone ) );
-            } ) );
-            Context.OnModelDestroy( e.Zone );
+            }) );
 
+            Context.OnModelDestroy( e.Zone );
         }
 
         void OnLayoutSizeChanged( object sender, LayoutEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Layout == _keyboard.CurrentLayout )
             {
-                SafeUpdateH();
-                OnPropertyChanged( "H" );
+                UpdateH();
+                UpdateW();
 
-                SafeUpdateW();
-                OnPropertyChanged( "W" );
+                Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "H" );
+                    OnPropertyChanged( "W" );
+                }) );
             }
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Obj == Layout )
             {
                 switch( e.Key )
                 {
                     case "KeyboardBackground":
                         UpdateBackgroundPath();
-                        OnPropertyChanged( "BackgroundImagePath" );
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "BackgroundImagePath" );
+                        }) );
                         break;
                     case "InsideBorderColor":
                         SafeUpdateInsideBorderColor();
-                        OnPropertyChanged( "InsideBorderColor" );
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "InsideBorderColor" );
+                        }) );
+                        break;
+                    case "HighlightBackground":
+                        UpdateHighlightBackground();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "HighlightBackground" );
+                        }) );
+                        break;
+                    case "HighlightFontColor":
+                        UpdateHighlightFontColor();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "HighlightFontColor" );
+                        }) );
+                        break;
+                    case "LoopCount":
+                        UpdateLoopCount();
+                        Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                        {
+                            OnPropertyChanged( "LoopCount" );
+                        }) );
                         break;
                 }
             }
@@ -183,28 +264,29 @@ namespace SimpleSkin.ViewModels
 
         private void RegisterEvents()
         {
-            _keyboard.KeyCreated += new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyDestroyed += new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated += new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed += new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged += new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _keyboard.KeyCreated += OnKeyCreated;
+            _keyboard.KeyDestroyed += OnKeyDestroyed;
+            _keyboard.Zones.ZoneMoved += OnZoneMoved;
+            _keyboard.Zones.ZoneCreated += OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged += OnLayoutSizeChanged;
+            Context.Config.ConfigChanged += OnConfigChanged;
         }
 
         private void UnregisterEvents()
         {
-            _keyboard.KeyCreated -= new EventHandler<KeyEventArgs>( OnKeyCreated );
-            _keyboard.KeyDestroyed -= new EventHandler<KeyEventArgs>( OnKeyDestroyed );
-            _keyboard.Zones.ZoneCreated -= new EventHandler<ZoneEventArgs>( OnZoneCreated );
-            _keyboard.Zones.ZoneDestroyed -= new EventHandler<ZoneEventArgs>( OnZoneDestroyed );
-            _keyboard.Layouts.LayoutSizeChanged -= new EventHandler<LayoutEventArgs>( OnLayoutSizeChanged );
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _keyboard.KeyCreated -= OnKeyCreated;
+            _keyboard.KeyDestroyed -= OnKeyDestroyed;
+            _keyboard.Zones.ZoneMoved -= OnZoneMoved;
+            _keyboard.Zones.ZoneCreated -= OnZoneCreated;
+            _keyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
+            _keyboard.Layouts.LayoutSizeChanged -= OnLayoutSizeChanged;
+            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         #endregion
 
         #region "Design" properties
-
 
         private int _w;
         /// <summary>
@@ -239,6 +321,23 @@ namespace SimpleSkin.ViewModels
 
         #region IHighlightableElement Members
 
+        private bool _isHighlighting;
+        public bool IsHighlighting
+        {
+            get { return _isHighlighting; }
+            set
+            {
+                if( value != _isHighlighting )
+                {
+                    SafeSet<bool>( value, ( v ) => _isHighlighting = v );
+                    Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                    {
+                        OnPropertyChanged( "IsHighlighting" );
+                    }) );
+                }
+            }
+        }
+
         public ICKReadOnlyList<IHighlightableElement> Children
         {
             get
@@ -247,7 +346,7 @@ namespace SimpleSkin.ViewModels
                 {
                     return new CKReadOnlyListOnIList<IHighlightableElement>( Zones.Cast<IHighlightableElement>().ToList() );
                 }
-                return new CKReadOnlyListOnIList<IHighlightableElement>( new List<IHighlightableElement>() );
+                return CKReadOnlyListEmpty<IHighlightableElement>.Empty;
             }
         }
 
@@ -271,14 +370,90 @@ namespace SimpleSkin.ViewModels
             get { return H; }
         }
 
+        Color _highlightBackground;
+        public Color HighlightBackground
+        {
+            get { return _highlightBackground; }
+        }
+
+        Color _highlightFontColor;
+        public Color HighlightFontColor
+        {
+            get { return _highlightFontColor; }
+        }
+
+        private void UpdateHighlightBackground()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightBackground", (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" ) );
+            SafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _highlightBackground = (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" );
+                else _highlightBackground = v;
+            } );
+        }
+
+        private void UpdateHighlightFontColor()
+        {
+            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightFontColor", (Color)ColorConverter.ConvertFromString( "#000000" ) );
+            SafeSet<Color>( c, ( v ) =>
+            {
+                if( v == null ) _highlightFontColor = (Color)ColorConverter.ConvertFromString( "#000000" );
+                else _highlightFontColor = v;
+            } );
+        }
+
+        int _loopCount;
+        public int LoopCount
+        {
+            get { return _loopCount; }
+        }
+
+        private void UpdateLoopCount()
+        {
+            int i = Context.Config[Keyboard].GetOrSet<int>( "LoopCount", 1 );
+            SafeSet<int>( i, ( v ) =>
+            {
+                _loopCount = i;
+            } );
+        }
+
         public SkippingBehavior Skip
         {
             get
             {
-                if( Zones.Count > 0 && Zones.Any( z => z.Skip != SkippingBehavior.Skip ) )
-                    return SkippingBehavior.EnterChildren; //We enter only if there are zones that need to be scrolled through.
+                //TODO : Improve (temporary)
+                if( Keyboard.Name == "Prediction" ) return SkippingBehavior.EnterChildren;
+
+                if( Zones.Count == 0 || Zones.All( z => z.Skip == SkippingBehavior.Skip ) )
+                    return SkippingBehavior.Skip; //If there are no zones or that they are all to be skipped, we skip this root element
                 return SkippingBehavior.None;
             }
+        }
+
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            if( beginScrollingInfo.PreviousElement != this )
+                IsHighlighting = true;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            if( endScrollingInfo.ElementToBeHighlighted != this )
+                IsHighlighting = false;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            scrollingDirective.NextActionType = ActionType.EnterChild;
+            return scrollingDirective;
+        }
+
+        public bool IsHighlightableTreeRoot
+        {
+            get;
+            set;
         }
 
         #endregion
@@ -296,7 +471,7 @@ namespace SimpleSkin.ViewModels
                 Context.Config[Layout].Set( "KeyboardBackground", keyboardBackgroundObject );
             }
 
-            ThreadSafeSet<string>( keyboardBackgroundObject.ToString(), ( v ) =>
+            SafeSet<string>( keyboardBackgroundObject.ToString(), ( v ) =>
             {
                 if( String.IsNullOrWhiteSpace( v ) ) _backgroundImagePath = null;
                 else _backgroundImagePath = Imsc.ConvertFromString( v );
@@ -306,21 +481,21 @@ namespace SimpleSkin.ViewModels
         private void SafeUpdateInsideBorderColor()
         {
             Color c = Context.Config[Layout].GetOrSet<Color>( "InsideBorderColor", null );
-            ThreadSafeSet<Color>( c, ( v ) =>
+            SafeSet<Color>( c, ( v ) =>
             {
                 if( v == null ) _insideBorderColor = null;
                 else _insideBorderColor = new SolidColorBrush( v );
             } );
         }
 
-        private void SafeUpdateH()
+        private void UpdateH()
         {
-            ThreadSafeSet<int>( _keyboard.CurrentLayout.H, ( v ) => _h = v );
+            SafeSet<int>( _keyboard.CurrentLayout.H, ( v ) => _h = v );
         }
 
-        private void SafeUpdateW()
+        private void UpdateW()
         {
-            ThreadSafeSet<int>( _keyboard.CurrentLayout.W, ( v ) => _w = v );
+            SafeSet<int>( _keyboard.CurrentLayout.W, ( v ) => _w = v );
         }
 
         #endregion

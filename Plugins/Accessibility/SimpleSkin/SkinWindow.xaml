@@ -7,8 +7,10 @@
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     xmlns:helpers="clr-namespace:SimpleSkin.Helpers"
     WindowStartupLocation="Manual"
-    Title="Simple skin"
+    Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
+    MinHeight="40" MinWidth="40"
+    ShowInTaskbar="False"
     ShowActivated="False" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <ctrls:NotNullConverter x:Key="notnull"/>
@@ -19,6 +21,18 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
                     <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{Binding HighlightBackground}"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{Binding HighlightFontColor}"/>
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -70,6 +84,11 @@
                     <Setter TargetName="key" Property="Background">
                         <Setter.Value>
                             <SolidColorBrush Color="{Binding HighlightBackground}"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="key" Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="{Binding HighlightFontColor}"/>
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>

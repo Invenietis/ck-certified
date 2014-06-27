@@ -1,0 +1,2 @@
+If I am not mistaken, the SimpleSkin project doesn't have any localized BAML to generate. (since a keyboard's configuration is done via the KeyboardEditor)
+The architecture is kept in case localization becomes necessary once again. Yet we don't need it anymore.

@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Reflection;
 using CK.Plugin;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels

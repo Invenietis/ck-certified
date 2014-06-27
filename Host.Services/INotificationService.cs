@@ -22,9 +22,6 @@
 #endregion
 
 using System;
-using CK.Plugin;
-using System.Windows;
-using CK.Core;
 
 namespace Host.Services
 {

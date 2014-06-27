@@ -23,10 +23,7 @@
 
 using System;
 using System.Windows;
-using CK.Plugin;
-using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
 
 namespace Host.Services
 {

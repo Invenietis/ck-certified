@@ -1,24 +1,24 @@
-﻿KeyScroller.g.en-US.resources:editorview.baml	target:System.Windows.Controls.TextBlock.$Content	Text	True	True		Configurer la touche de déclenchement :
-KeyScroller.g.en-US.resources:editorview.baml	target:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	target:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
-KeyScroller.g.en-US.resources:editorview.baml	target-default:System.Windows.Controls.TextBlock.$Content	Text	True	True		(Touche par défaut : F11)
-KeyScroller.g.en-US.resources:editorview.baml	target-default:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
-KeyScroller.g.en-US.resources:editorview.baml	target-default:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	target-default:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
-KeyScroller.g.en-US.resources:editorview.baml	start-reccording:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Démarrer l'enregistrement
-KeyScroller.g.en-US.resources:editorview.baml	select-zone:System.Windows.Controls.TextBlock.$Content	Text	True	True		
-KeyScroller.g.en-US.resources:editorview.baml	select-zone:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	select-zone:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.Controls.TextBlock.$Content	Text	True	True		Vitesse de défilement :
-KeyScroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
-KeyScroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
-KeyScroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.Controls.TextBlock.$Content	Text	True	True		Vitesse du défilement rapide:
-KeyScroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
-KeyScroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
-KeyScroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.Controls.TextBlock.$Content	Text	True	True		Type de défilement :
-KeyScroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
-KeyScroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
-KeyScroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.FrameworkElement.Margin	None	False	True		10 0 0 0
-KeyScroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.Controls.TextBlock.Text	Text	True	True		
+﻿Scroller.g.en-US.resources:editorview.baml	target:System.Windows.Controls.TextBlock.$Content	Text	True	True		Configurer la touche de déclenchement :
+Scroller.g.en-US.resources:editorview.baml	target:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	target:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+Scroller.g.en-US.resources:editorview.baml	target-default:System.Windows.Controls.TextBlock.$Content	Text	True	True		(Touche par défaut : F11)
+Scroller.g.en-US.resources:editorview.baml	target-default:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+Scroller.g.en-US.resources:editorview.baml	target-default:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	target-default:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+Scroller.g.en-US.resources:editorview.baml	start-reccording:System.Windows.Controls.Primitives.ToggleButton.$Content	Button	True	True		Démarrer l'enregistrement
+Scroller.g.en-US.resources:editorview.baml	select-zone:System.Windows.Controls.TextBlock.$Content	Text	True	True		
+Scroller.g.en-US.resources:editorview.baml	select-zone:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	select-zone:System.Windows.FrameworkElement.HorizontalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.Controls.TextBlock.$Content	Text	True	True		Vitesse de défilement :
+Scroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+Scroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	scroll-speed:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+Scroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.Controls.TextBlock.$Content	Text	True	True		Vitesse du défilement rapide:
+Scroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+Scroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	turbo-speed:System.Windows.FrameworkElement.Margin	None	False	True		0 0 10 0
+Scroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.Controls.TextBlock.$Content	Text	True	True		Type de défilement :
+Scroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.Controls.DockPanel.Dock	Text	True	False		Left
+Scroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.FrameworkElement.VerticalAlignment	None	False	True		Center
+Scroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.FrameworkElement.Margin	None	False	True		10 0 0 0
+Scroller.g.en-US.resources:editorview.baml	scroll-type:System.Windows.Controls.TextBlock.Text	Text	True	True		

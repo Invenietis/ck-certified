@@ -1,18 +1,58 @@
-echo ------------------------ LocBaml to output ------------------------
-copy ..\..\..\..\Setup\LocBaml.exe ..\..\..\..\Output\Debug\LocBaml.exe
+:This .bat gets the en-US BAML resources of the configured Civikey plugin, translates it to the specified culture and merges it with the compiled resx of the same culture.
+:if
 
-echo ------------------------ Plugin contents ------------------------
-copy ..\..\..\..\Output\Debug\Plugins\AutoClick.dll ..\..\..\..\Output\Debug\AutoClick.dll
-mkdir ..\..\..\..\Output\Debug\en-US
-copy ..\..\..\..\Output\Debug\Plugins\en-US\AutoClick.resources.dll ..\..\..\..\Output\Debug\en-US\AutoClick.resources.dll
+:STEP 1 - Configure the variables
+set containsRESX=true
+set compileMode=Debug
+set culture=fr-FR
+set pluginName=AutoClick
+set tempFolderName=TEMP
 
-echo ------------------------ generate with LocBaml ------------------------
-cd ..\..\..\..\Output\Debug\
-mkdir Plugins\fr-FR
-LocBaml /generate Plugins\en-US\AutoClick.resources.dll /trans:..\..\Plugins\Accessibility\AutoClick\Locale\fr-FR.txt /cult:fr-FR /out:Plugins\fr-FR
+:NOTE : These paths are relative to the folder into which this .bat file is located.
+set pluginPath=..\..\Plugins\Accessibility\%pluginName%\
+set outputPath=..\..\..\..\Output\%compileMode%\
+set objPath=..\obj\%compileMode%\
+:Path to the Setup Folder, containg LocBaml.exe
+set setupPath=..\..\..\..\Setup\
 
-echo ------------------------ clean ------------------------
-del en-US\AutoClick.resources.dll
+:LocBaml needs to be copied next to the dlls that are going to be localized
+copy %setupPath%LocBaml.exe %outputPath%LocBaml.exe
+
+mkdir %outputPath%%tempFolderName%
+mkdir %outputPath%en-US
+
+:The dll of the plugin is needed to generate the localized BAML
+copy %outputPath%Plugins\%pluginName%.dll %outputPath%%pluginName%.dll
+
+if %containsRESX% EQU true (
+:STEP 2 : if needed, find the RESX compiled files linked to the plugin and copy them into the temporary folder
+:NOTE : we need the .resources files, not the final assembly in order to merge the BAML file and the RESX files together into one final assembly.
+copy %objPath%%pluginName%.Res.R.%culture%.resources %outputPath%%tempFolderName%\%pluginName%.Res.R.%culture%.resources
+)
+
+:Moving to the release path to simplify the rest of the localization process calls
+cd %outputPath%
+mkdir Plugins\%culture%
+mkdir %tempFolderName%
+
+if %containsRESX% EQU true (
+:Generating the localized BAML file (.resources) into the temporary folder
+LocBaml /generate %pluginPath%obj\%compileMode%\%pluginName%.g.en-US.resources /trans:%pluginPath%Locale\%culture%.txt /cult:%culture% /out:%tempFolderName%
+
+:Linking the BAML file with the RESX file(s)
+:STEP 4 - make sure you embed all the RESX compiled files linked to your plugin.
+al /template:Plugins\%pluginName%.dll /embed:%tempFolderName%\%pluginName%.g.%culture%.resources /embed:%tempFolderName%\%pluginName%.Res.R.%culture%.resources /culture:%culture% /out:Plugins\%culture%\%pluginName%.resources.dll 
+
+) else (
+:There are no resx files, just localize the BAML and output it in the right folder
+LocBaml /generate %pluginPath%obj\%compileMode%\en-US\%pluginName%.resources.dll /trans:%pluginPath%Locale\%culture%.txt /cult:%culture% /out:Plugins\%culture%
+)
+
+:Cleaning the release folder
+pause
+del %pluginName%.dll
 del LocBaml.exe
-del AutoClick.dll
+rmdir %tempFolderName% /s /q 
+echo. & echo. & echo. & echo. & echo. & echo %pluginName% LOCALIZATION PROCESS FINISHED & echo. & echo. & echo. & echo.
+
 pause

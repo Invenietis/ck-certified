@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CK.Keyboard.Model
 {
@@ -33,8 +32,8 @@ namespace CK.Keyboard.Model
     /// </summary>
     /// <remarks>
     /// Since any "program" has to be expressed as texts (at least for serialization purposes), this
-    /// design heaviliy relies on thie "script approach": any language, script, commands can be defined at 
-    /// this level withou any constraint.</remarks>
+    /// design heavily relies on thie "script approach": any language, script, commands can be defined at 
+    /// this level without any constraint.</remarks>
     public interface IKeyProgram
     {
 

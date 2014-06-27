@@ -22,9 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CK.WPF.ViewModel;
 using CK.Plugin;
 

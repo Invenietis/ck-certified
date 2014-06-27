@@ -21,10 +21,15 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
+using System.IO;
+using System.Windows.Interop;
 using System.Windows.Markup;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CK.Storage;
-using System.Windows;
-using System.Xml;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Host.Services.Helper
 {
@@ -39,5 +44,51 @@ namespace Host.Services.Helper
         {
             XamlWriter.Save( o, sw.Xml );
         }
+    }
+
+
+    public class BitmapSourceSerializer<T> : IStructuredSerializer<T> where T : BitmapSource
+    {
+        public object ReadInlineContent( IStructuredReader sr, T o )
+        {
+            byte[] buffer = new byte[256000];
+            int len  = sr.Xml.ReadElementContentAsBase64( buffer, 0, buffer.Length);
+            MemoryStream stream = new MemoryStream( buffer, 0, len );
+
+            BitmapImage bi = new BitmapImage();
+            stream.Seek( 0, SeekOrigin.Begin );
+            
+            //Set the transparency
+            Bitmap i =(Bitmap) Bitmap.FromStream( stream );
+            stream.Seek( 0, SeekOrigin.Begin );
+            i.MakeTransparent(System.Drawing.Color.Black);
+            i.Save( stream, ImageFormat.Png );
+            stream.Seek( 0, SeekOrigin.Begin );
+            
+            //init teh bitmapimage with the stream
+            bi.BeginInit();
+            bi.StreamSource = stream;
+            bi.EndInit();
+                    
+            return (BitmapSource) bi; 
+        }
+
+        public void WriteInlineContent( IStructuredWriter sw, T o )
+        {
+            MemoryStream stream = new MemoryStream();
+            BmpBitmapEncoder be = new BmpBitmapEncoder();
+            
+            //This method throws a NotSupportedException. This is a normal bahavior, since our bitmapSource object does not have bitmap metadata.
+            be.Frames.Add( BitmapFrame.Create( (BitmapSource) o ));
+            be.Save( stream );
+            stream.Flush();
+            byte[] buffer = stream.ToArray();
+            sw.Xml.WriteBase64( buffer, 0, buffer.Length );
+        }
+    }
+
+    public static class BitmapSourceExtension
+    {
+       
     }
 }

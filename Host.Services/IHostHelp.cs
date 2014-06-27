@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host.Services\IHostManipulator.cs) is part of CiviKey. 
+* This file (Host.Services\IHostHelp.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,21 +22,16 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Core;
+using Help.Services;
 
 namespace Host.Services
 {
-    public interface IHostHelp
+    public interface IHostHelp : IHaveDefaultHelp
     {
-        event EventHandler<HostHelpEventArgs> ShowHostHelp;
-    }
+        event EventHandler<EventArgs> ShowHostHelp;
 
-    public class HostHelpEventArgs : EventArgs
-    {
-        public IVersionedUniqueId HostUniqueId { get; set; }
+        INamedVersionedUniqueId FakeHostHelpId { get; }
     }
     
 }

@@ -21,14 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Diagnostics;
 using System.Xml;
 using CK.Keyboard.Model;
-using CK.Context;
 using CK.Storage;
-using CK.Plugin.Config;
-using CK.Core;
 
 namespace CK.Keyboard
 {

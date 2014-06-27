@@ -1,0 +1,93 @@
+﻿<Window x:Class="MouseRadar.Editor.EditorView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:cc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+            xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+            xmlns:r="clr-namespace:MouseRadar.Resources"
+            mc:Ignorable="d" 
+            Background="#FFEFEFEF"
+            Height="340"
+            Width="350"
+            ResizeMode="NoResize"
+            Topmost="True"
+            Title="{x:Static r:R.RadarConfiguration}"
+            d:DesignHeight="340" d:DesignWidth="300">
+    <Window.Resources>
+        <Style TargetType="Border" x:Key="Rounded">
+            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="BorderBrush" Value="Gray"></Setter>
+            <Setter Property="BorderThickness" Value="0.5"></Setter>
+            <Setter Property="CornerRadius" Value="5"></Setter>
+            <Setter Property="Padding" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Border" x:Key="Splitter">
+            <Setter Property="BorderThickness" Value="0 0 0 0.5"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="MinHeight" Value="40"/>
+        </Style>
+        <Style TargetType="{x:Type cce:ColorPicker}">
+            <Setter Property="Width" Value="41"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0 0 10 0"/>
+        </Style>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <StackPanel>
+        <Border Style="{StaticResource Rounded}" Margin="5">
+            <DockPanel Margin="0 5 0 5">
+                <TextBlock VerticalAlignment="Center" Text="{x:Static r:R.RadarRadius}" />
+                <DockPanel HorizontalAlignment="Right">
+                    <TextBox Text="{Binding RadarSize, UpdateSourceTrigger=PropertyChanged}" Width="50" />
+                    <TextBlock Margin="10 0 10 0">pixels</TextBlock>
+                </DockPanel>
+            </DockPanel>
+        </Border>
+        <Border  Style="{StaticResource Rounded}" Margin="5">
+            <StackPanel>
+                <DockPanel Margin="0 5 0 5">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static r:R.RadarColor}" />
+                    <cce:ColorPicker SelectedColor="{Binding CircleColor}"  HorizontalAlignment="Right"/>
+                </DockPanel>
+                <DockPanel  Margin="0 5 0 5">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static r:R.ArrowColor}"  >
+                    </TextBlock>
+                    <cce:ColorPicker SelectedColor="{Binding ArrowColor}"  HorizontalAlignment="Right"/>
+                </DockPanel>
+                <DockPanel>
+
+                    <TextBlock  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0" Text="{x:Static r:R.Opacity}" />
+                    <StackPanel Width="170" HorizontalAlignment="Right">
+                        <Slider   Minimum="10" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding Opacity}"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedOpacity}" />
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Rounded}" Margin="5">
+            <StackPanel>
+
+                <DockPanel>
+                    <TextBlock x:Uid="scroll-speed" DockPanel.Dock="Left" 
+                               Text="{x:Static r:R.RadarRotationSpeed}" 
+                               VerticalAlignment="Center" 
+                               Margin="0 0 10 0" />
+                    <StackPanel Width="170" HorizontalAlignment="Right">
+                        <Slider VerticalAlignment="Center" Minimum="1" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding RotationSpeed}"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormatedRotationSpeed}" />
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock  x:Uid="turbo-speed"  DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0"  Text="{x:Static r:R.RadarTranslationSpeed}" />
+                    <StackPanel Width="170" HorizontalAlignment="Right">
+                        <Slider Minimum="1" Maximum="11" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" TickPlacement="BottomRight" Value="{Binding TranslationSpeed}"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Text="{Binding FormatedTranslationSpeed}" />
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Window>

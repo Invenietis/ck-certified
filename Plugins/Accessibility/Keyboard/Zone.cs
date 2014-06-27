@@ -25,24 +25,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
-using CK.Core;
 using CK.Keyboard.Model;
-using CK.Context;
 using CK.Storage;
-using CK.Plugin.Config;
-using System.ComponentModel.Design;
 
 namespace CK.Keyboard
 {
     sealed partial class Zone : IZone, IStructuredSerializable
     {
-        ZoneCollection  _zones;
-        string          _name;
+        ZoneCollection _zones;
+        string _name;
+        int _index;
 
-        internal Zone( ZoneCollection c, string name )
+        internal Zone( ZoneCollection c, string name, int index )
         {
             _zones = c;
             _name = name;
+            _index = index;
             _keys = new List<Key>();
         }
 
@@ -52,64 +50,75 @@ namespace CK.Keyboard
         }
 
         internal KeyboardContext Context
-         {
-             get { return _zones.Context; }
-         }
+        {
+            get { return _zones.Context; }
+        }
 
-         IKeyboard IKeyboardElement.Keyboard
-         {
-             get { return _zones.Keyboard; }
-         }
+        IKeyboard IKeyboardElement.Keyboard
+        {
+            get { return _zones.Keyboard; }
+        }
 
-         internal Keyboard Keyboard
-         {
-             get { return _zones.Keyboard; }
-         }
+        internal Keyboard Keyboard
+        {
+            get { return _zones.Keyboard; }
+        }
 
-         ILayoutZone IZone.CurrentLayout
-         {
-             get { return CurrentLayout; }
-         }
+        ILayoutZone IZone.CurrentLayout
+        {
+            get { return CurrentLayout; }
+        }
 
-         public LayoutZone CurrentLayout
-         {
-             get { return _zones.Keyboard.CurrentLayout.FindOrCreate( this ); }
-         }
+        public LayoutZone CurrentLayout
+        {
+            get { return _zones.Keyboard.CurrentLayout.FindOrCreate( this ); }
+        }
 
-         public string Name
-         {
-             get { return _name; }
-         }
+        public string Name
+        {
+            get { return _name; }
+        }
 
-         public string Rename( string name )
-         {
-             if( name == null ) throw new ArgumentNullException();
-             name = name.Trim();
-             if( _name != name )
-             {
-                 if( _name.Length == 0 )
-                 {
-                     throw new InvalidOperationException( R.ZoneDefaultRenamed );
-                 }
-                 if( _zones != null )
-                 {
-                     _zones.RenameZone( this, ref _name, name );
-                 }
-                 else _name = name;
-             }
-             return _name;
-         }
+        public int Index
+        {
+            get { return _index; }
+            set { _zones.OnMove( this, value ); }
+        }
 
-         public void Destroy()
-         {
-             if( _name.Length == 0 )
-                 throw new InvalidOperationException( R.ZoneDefaultDestroyed );
-             if( _zones != null )
-             {
-                 _zones.OnDestroy( this );
-                 _zones = null;
-             }
-         }
+        internal void SetIndex( int index )
+        {
+            _index = index;
+        }
+
+        public string Rename( string name )
+        {
+            if( name == null ) throw new ArgumentNullException();
+            name = name.Trim();
+            if( _name != name )
+            {
+                if( _name.Length == 0 )
+                {
+                    throw new InvalidOperationException( R.ZoneDefaultRenamed );
+                }
+                if( _zones != null )
+                {
+                    _zones.RenameZone( this, ref _name, name );
+                }
+                else _name = name;
+            }
+            return _name;
+        }
+
+        public void Destroy()
+        {
+            if( _name.Length == 0 )
+                throw new InvalidOperationException( R.ZoneDefaultDestroyed );
+            if( _zones != null )
+            {
+                _zones.OnDestroy( this );
+                _zones = null;
+            }
+        }
 
         public bool IsDefault
         {
@@ -118,10 +127,10 @@ namespace CK.Keyboard
 
 
         internal void DestroyConfig()
-		{
-			foreach( Key k in _keys ) k.DestroyConfig();
+        {
+            foreach( Key k in _keys ) k.DestroyConfig();
             Context.ConfigContainer.Destroy( this );
-		}
+        }
 
         public override string ToString()
         {
@@ -134,7 +143,7 @@ namespace CK.Keyboard
             Debug.Assert( r.Name == "Zone" );
             if( !r.IsEmptyElement )
             {
-                r.Read();                
+                r.Read();
 
                 if( r.IsStartElement( "Keys" ) )
                 {
@@ -146,20 +155,21 @@ namespace CK.Keyboard
                     }
                     r.Read();
                 }
-            }            
+            }
         }
 
         void IStructuredSerializable.WriteContent( IStructuredWriter sw )
         {
             XmlWriter w = sw.Xml;
-            w.WriteAttributeString( "Name", Name );            
+            w.WriteAttributeString( "Name", Name );
+            w.WriteAttributeString( "Index", Index.ToString() );
 
             if( _keys.Count > 0 )
             {
                 w.WriteStartElement( "Keys" );
                 foreach( Key k in _keys )
                 {
-                    sw.WriteInlineObjectStructuredElement( "Key", k );                    
+                    sw.WriteInlineObjectStructuredElement( "Key", k );
                 }
                 w.WriteFullEndElement();
             }

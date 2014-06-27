@@ -23,14 +23,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.Keyboard.Model;
 using CK.Storage;
 using CK.Plugin.Config;
-using System.Xml;
 using CK.Core;
-using System.Diagnostics;
 using CK.Plugin;
 
 namespace CK.Keyboard
@@ -60,7 +56,11 @@ namespace CK.Keyboard
             _modes.Add( String.Empty, _empty );
 
             if( sp != null ) sp.GetService<ISimpleServiceContainer>( true ).Add<IStructuredSerializer<KeyboardCollection>>( this );
+
+            OnInitialized();
         }
+
+        partial void OnInitialized();
 
         public IPluginConfigAccessor Configuration { get; set; }
 
@@ -78,7 +78,10 @@ namespace CK.Keyboard
         IKeyboard IKeyboardContext.CurrentKeyboard
         {
             get { return _keyboards.Current; }
-            set { _keyboards.Current = (Keyboard)value; }
+            set 
+            {
+                _keyboards.Current = (Keyboard)value;
+            }
         }
 
         internal Keyboard CurrentKeyboard

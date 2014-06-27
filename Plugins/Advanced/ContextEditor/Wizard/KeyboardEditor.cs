@@ -1,12 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Advanced\ContextEditor\Wizard\KeyboardEditor.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using CK.Context;
@@ -16,20 +33,19 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Storage;
 using CK.Windows.App;
-using CK.Windows.Config;
 using CommonServices;
+using Help.Services;
 using KeyboardEditor.Resources;
-using KeyboardEditor.s;
 using KeyboardEditor.Tools;
 using KeyboardEditor.ViewModels;
-using CommonServices.Accessibility;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor
 {
     [Plugin( KeyboardEditor.PluginIdString,
         PublicName = PluginPublicName,
         Version = KeyboardEditor.PluginIdVersion )]
-    public partial class KeyboardEditor : IPlugin, IKeyboardEditorRoot
+    public partial class KeyboardEditor : IPlugin, IKeyboardEditorRoot, IHaveDefaultHelp
     {
         const string PluginIdString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -44,7 +60,7 @@ namespace KeyboardEditor
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IHelpService> HelpService { get; set; }
+        public IService<IHelpViewerService> HelpService { get; set; }
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -54,14 +70,18 @@ namespace KeyboardEditor
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<IProtocolEditorsManager> ProtocolManagerService { get; set; }
+
         public VMContextEditable EditedContext { get; set; }
         internal AppViewModel AppViewModel { get { return _appViewModel; } }
 
-        WindowInteropHelper _interopHelper;
+        //WindowInteropHelper _interopHelper;
         WindowManager _windowManager;
         AppViewModel _appViewModel;
         Window _mainWindow;
         bool _stopping;
+        IContextSaver _contextSaver;
 
         #region IPlugin implementation
 
@@ -80,28 +100,16 @@ namespace KeyboardEditor
             //_interopHelper = new WindowInteropHelper( _mainWindow );
             //RegisterHotKeys();
 
+            _contextSaver = Context.ServiceContainer.GetService<IContextSaver>();
+
+            _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>();
+
             _mainWindow.Closing += OnWindowClosing;
-
-            if( HelpService.Status == InternalRunningStatus.Started )
-            {
-                HelpService.Service.RegisterHelpContent( PluginId, typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" ) );
-            }
-            else if( HelpService.Status.IsStoppedOrDisabled ) HelpService.ServiceStatusChanged += HelpService_ServiceStatusChanged;
-        }
-
-        void HelpService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                HelpService.Service.RegisterHelpContent( PluginId, typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" ) );
-            }
         }
 
         public void Stop()
         {
             _stopping = true;
-
-            HelpService.ServiceStatusChanged -= HelpService_ServiceStatusChanged;
 
             if( _mainWindow != null )
                 _mainWindow.Close();
@@ -198,7 +206,6 @@ namespace KeyboardEditor
         public KeyboardBackup KeyboardBackup { get; set; }
 
         ISharedDictionary _sharedDictionary;
-        private ISharedDictionary SharedDictionary { get { return _sharedDictionary ?? ( _sharedDictionary = Context.ServiceContainer.GetService<ISharedDictionary>() ); } }
 
         /// <summary>
         /// Backs up a keyboard.
@@ -218,7 +225,7 @@ namespace KeyboardEditor
                 {
                     using( IStructuredWriter writer = SimpleStructuredWriter.CreateWriter( str, Context.ServiceContainer ) )
                     {
-                        SharedDictionary.RegisterWriter( writer );
+                        _sharedDictionary.RegisterWriter( writer );
                         writer.Xml.WriteStartElement( "Keyboard" );
                         serializableModel.WriteContent( writer );
                         writer.Xml.WriteEndElement();
@@ -282,7 +289,9 @@ namespace KeyboardEditor
                          */
 
                         string name = keyboardToRevert.Name;
-                        keyboardToRevert.Destroy();
+
+                        //Avoids that the new keyboard have "(1)" in his name.
+                        keyboardToRevert.Rename( keyboardToRevert.GetHashCode().ToString() );
 
                         IStructuredSerializable serializableKeyboard = (IStructuredSerializable)KeyboardContext.Service.Keyboards.Create( name );
                         if( serializableKeyboard == null ) throw new CKException( "The IKeyboard implementation should be IStructuredSerializable" );
@@ -293,6 +302,9 @@ namespace KeyboardEditor
 
                         if( keyboardToRevertIsCurrent )
                             KeyboardContext.Service.CurrentKeyboard = serializableKeyboard as IKeyboard;
+
+
+                        keyboardToRevert.Destroy();
                     }
                 }
             }
@@ -303,6 +315,7 @@ namespace KeyboardEditor
 
             //After cancelling modifications, we have no backup left.
             EnsureBackupIsClean();
+            Save();
         }
 
         /// <summary>
@@ -317,6 +330,26 @@ namespace KeyboardEditor
             }
 
             KeyboardBackup = null;
+        }
+
+        #endregion
+
+        #region IHaveDefaultHelp Members
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( KeyboardEditor ).Assembly.GetManifestResourceStream( "KeyboardEditor.Resources.helpcontent.zip" );
+        }
+
+        #endregion
+
+        #region IKeyboardEditorRoot Members
+
+
+        public void Save()
+        {
+            _contextSaver.SaveContext();
+            _contextSaver.SaveUserConfig();
         }
 
         #endregion

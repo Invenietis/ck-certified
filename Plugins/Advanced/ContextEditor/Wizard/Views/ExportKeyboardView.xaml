@@ -1,0 +1,132 @@
+﻿<Window x:Class="KeyboardEditor.s.ExportKeyboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:KeyboardEditor.Wizard.ViewModels"
+             xmlns:core="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Width="450" Height="550" Padding="5 5 5 5" Topmost="True" Title="Exporter des claviers">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CK.Windows.Config;component/Views/CK.Config.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <core:BooleanToVisibilityConverter x:Key="converter"/>
+
+            <SolidColorBrush Color="#509be4" x:Key="DefaultColor"/>
+            <SolidColorBrush Color="#366897" x:Key="DarkerDefaultColor"/>
+            <SolidColorBrush Color="#4f4f4f" x:Key="GrayColor"/>
+            <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
+            <SolidColorBrush x:Key="HighlightColor" Color="{Binding Path=HighlightColor}" />
+            <SolidColorBrush x:Key="HighlightBackgroundColor" Color="{Binding Path=HighlightBackgroundColor}" />
+            <SolidColorBrush x:Key="PlaceholderColor" Color="{Binding Path=PlaceholderColor}" />
+
+            <Style x:Key="description" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 0 5 0"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+
+            <Style x:Key="step" TargetType="TextBlock">
+                <Setter Property="Margin" Value="5 0 5 0"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+
+            <Style x:Key="overlay" TargetType="Grid">
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Visibility" Value="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}"></Setter>
+                <Setter Property="Opacity" Value="0"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanExecute}" Value="False">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.2" Duration="0:0:0.5" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{StaticResource DefaultColor}" />
+                <Setter Property="Foreground" Value="#FFFFFF" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Margin" Value="10 0 10 0" />
+                <Setter Property="BorderBrush" Value="#295884" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Padding" Value="12 6 12 6" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="3" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#FFF"></Setter>
+                        <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="BorderBrush" Value="Gray"></Setter>
+                        <Setter Property="Background" Value="#81b9ee"></Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <DataTemplate DataType="{x:Type vm:CheckBoxExportKeyboardViewModel}">
+                <Button Margin="3 3 3 0" Command="{Binding CheckCommand}" Style="{StaticResource CK.Config.Link}">
+                    <DockPanel>
+                        <CheckBox DockPanel.Dock="Right" IsChecked="{Binding IsSelected}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Keyboard.Name}" Margin="2 0 0 0" />
+                    </DockPanel>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid Margin="12">
+            <Grid.Resources>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel  Grid.Row="0">
+                <TextBlock x:Uid="export-step-1-title" Style="{StaticResource step}" Text="1. Check the keyboards to export" />
+                <TextBlock x:Uid="export-step-1-description" Style="{StaticResource description}" Text="Check the keyboards you want to export to another computer."/>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding CheckBoxs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical">
+                            </StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+            <DockPanel Grid.Row="2">
+                <TextBlock x:Uid="export-step-2-title" Style="{StaticResource step}" DockPanel.Dock="Top" Text="2. Write the keyboards in a file"/>
+                <TextBlock x:Uid="export-step-2-description" Style="{StaticResource description}" DockPanel.Dock="Top" Text="Once the 'Export' is pressed, a file named keyboards.xml will be created. It will contain all the keyboards selected in the previous step. You may then send this file to another computer and use the 'Import' module on this other computer to use these keyboards on a CiviKey installed on another computer."/>
+                <Button x:Uid="export-step-2-btn" IsEnabled="{Binding CanExecute}" Margin="3 3 3 3" Command="{Binding SaveCommand}" Content="Export"/>
+            </DockPanel>
+        </Grid>
+        <Grid Style="{StaticResource overlay}" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType=Grid, Mode=FindAncestor}}"></Grid>
+    </Grid>
+    
+</Window>

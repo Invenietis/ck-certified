@@ -22,12 +22,12 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
-using System.Windows.Controls;
 using System.Windows;
 using CK.Plugin.Config;
 using HighlightModel;
@@ -35,10 +35,14 @@ using CK.Core;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Xaml;
-using System.Diagnostics;
 using CK.Storage;
+using Color = System.Windows.Media.Color;
+using FontStyle = System.Windows.FontStyle;
+using Image = System.Windows.Controls.Image;
+using System.Windows.Interop;
+using CK.Windows;
+using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
@@ -50,9 +54,10 @@ namespace SimpleSkin.ViewModels
         ICommand _keyUpCmd;
         IKey _key;
 
-        internal VMKeySimple( VMContextSimple ctx, IKey k )
+        internal VMKeySimple( VMContextSimpleBase ctx, IKey k )
             : base( ctx )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _actionsOnPropertiesChanged = new Dictionary<string, ActionSequence>();
             _key = k;
 
@@ -67,6 +72,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateFontWeight();
             SafeUpdateHeight();
             SafeUpdateHighlightBackground();
+            SafeUpdateHighlightFontColor();
             SafeUpdateHoverBackground();
             SafeUpdateImage();
             SafeUpdateIndex();
@@ -82,30 +88,38 @@ namespace SimpleSkin.ViewModels
             SafeUpdateWidth();
             SafeUpdateX();
             SafeUpdateY();
-
         }
 
         #region OnXXX
 
         public void OnKeyPropertyChanged( object sender, KeyPropertyChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( _actionsOnPropertiesChanged.ContainsKey( e.PropertyName ) )
                 _actionsOnPropertiesChanged[e.PropertyName].Run();
         }
 
         internal override void Dispose()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             UnregisterEvents();
         }
 
         void OnCurrentModeChanged( object sender, KeyboardModeChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             OnPropertyChanged( "IsFallback" );
         }
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                LayoutPropertyChangedTriggers( e.Key );
+            }
+
+            if( _key.Current.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 PropertyChangedTriggers( e.Key );
             }
@@ -115,10 +129,6 @@ namespace SimpleSkin.ViewModels
         {
             SetActionOnPropertyChanged( "Current", () =>
             {
-                //SafeUpdateX();
-                //SafeUpdateY();
-                //SafeUpdateX();
-
                 SafeUpdateUpLabel();
                 SafeUpdateDownLabel();
                 SafeUpdateIsEnabled();
@@ -135,24 +145,42 @@ namespace SimpleSkin.ViewModels
             SetActionOnPropertyChanged( "Enabled", () => { SafeUpdateIsEnabled(); OnPropertyChanged( "Enabled" ); } );
             SetActionOnPropertyChanged( "UpLabel", () => { SafeUpdateUpLabel(); OnPropertyChanged( "UpLabel" ); } );
             SetActionOnPropertyChanged( "DownLabel", () => { SafeUpdateDownLabel(); OnPropertyChanged( "DownLabel" ); } );
-            SetActionOnPropertyChanged( "CurrentLayout", () => { PropertyChangedTriggers(); } );
+            SetActionOnPropertyChanged( "CurrentLayout", () => LayoutPropertyChangedTriggers() );
 
-            _key.KeyPropertyChanged += new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged += new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
-            Context.Config.ConfigChanged += new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _key.KeyPropertyChanged += OnKeyPropertyChanged;
+            _key.Keyboard.CurrentModeChanged += OnCurrentModeChanged;
+            Context.Config.ConfigChanged += OnConfigChanged;
         }
 
         private void UnregisterEvents()
         {
             _actionsOnPropertiesChanged.Clear();
 
-            _key.KeyPropertyChanged -= new EventHandler<KeyPropertyChangedEventArgs>( OnKeyPropertyChanged );
-            _key.Keyboard.CurrentModeChanged -= new EventHandler<KeyboardModeChangedEventArgs>( OnCurrentModeChanged );
-            Context.Config.ConfigChanged -= new EventHandler<CK.Plugin.Config.ConfigChangedEventArgs>( OnConfigChanged );
+            _key.KeyPropertyChanged -= OnKeyPropertyChanged;
+            _key.Keyboard.CurrentModeChanged -= OnCurrentModeChanged;
+            Context.Config.ConfigChanged -= OnConfigChanged;
         }
 
         private void PropertyChangedTriggers( string propertyName = "" )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            switch( propertyName )
+            {
+                case "Image":
+                    SafeUpdateImage();
+                    OnPropertyChanged( "Image" );
+                    break;
+                case "DisplayType":
+                    SafeUpdateShowLabel();
+                    SafeUpdateShowImage();
+                    OnPropertyChanged( "ShowLabel" );
+                    OnPropertyChanged( "ShowImage" );
+                    break;
+            }
+        }
+        private void LayoutPropertyChangedTriggers( string propertyName = "" )
+        {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( String.IsNullOrWhiteSpace( propertyName ) )
             {
                 SafeUpdateX();
@@ -178,6 +206,7 @@ namespace SimpleSkin.ViewModels
                 SafeUpdateTextDecorations();
                 SafeUpdatePressedBackground();
                 SafeUpdateHighlightBackground();
+                SafeUpdateHighlightFontColor();
 
                 OnPropertyChanged( "Image" );
                 OnPropertyChanged( "Opacity" );
@@ -192,6 +221,7 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "TextDecorations" );
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "HighlightBackground" );
+                OnPropertyChanged( "HighlightFontColor" );
             }
             else
             {
@@ -200,10 +230,6 @@ namespace SimpleSkin.ViewModels
                     case "Opacity":
                         SafeUpdateOpacity();
                         OnPropertyChanged( "Opacity" );
-                        break;
-                    case "Image":
-                        SafeUpdateImage();
-                        OnPropertyChanged( "Image" );
                         break;
                     case "Visible":
                         SafeUpdateVisible();
@@ -216,12 +242,6 @@ namespace SimpleSkin.ViewModels
                     case "FontStyle":
                         SafeUpdateFontStyle();
                         OnPropertyChanged( "FontStyle" );
-                        break;
-                    case "DisplayType":
-                        SafeUpdateShowLabel();
-                        SafeUpdateShowImage();
-                        OnPropertyChanged( "ShowLabel" );
-                        OnPropertyChanged( "ShowImage" );
                         break;
                     case "FontWeight":
                         SafeUpdateFontWeight();
@@ -250,6 +270,10 @@ namespace SimpleSkin.ViewModels
                     case "HighlightBackground":
                         SafeUpdateHighlightBackground();
                         OnPropertyChanged( "HighlightBackground" );
+                        break;
+                    case "HighlightFontColor":
+                        SafeUpdateHighlightFontColor();
+                        OnPropertyChanged( "HighlightFontColor" );
                         break;
                     default:
                         break;
@@ -281,97 +305,105 @@ namespace SimpleSkin.ViewModels
 
         void ResetCommands()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher );
             _keyDownCmd = new KeyCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Push() ), null );
+                Context.NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Push()), null );
             } );
 
             _keyUpCmd = new KeyCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Release() ), null );
+                Context.NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Release()), null );
             } );
 
             _keyPressedCmd = new KeyCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)( () => _key.Release( true ) ), null );
+                Context.NoFocusManager.ExternalDispatcher.BeginInvoke( (Action)(() => _key.Release( true )), null );
             } );
         }
 
         private void SafeUpdateX()
         {
-            ThreadSafeSet<int>( _key.CurrentLayout.Current.X, ( v ) => _x = v );
+            SafeSet<int>( _key.CurrentLayout.Current.X, ( v ) => _x = v );
         }
 
         private void SafeUpdateY()
         {
-            ThreadSafeSet<int>( _key.CurrentLayout.Current.Y, ( v ) => _y = v );
+            SafeSet<int>( _key.CurrentLayout.Current.Y, ( v ) => _y = v );
         }
 
         private void SafeUpdateHeight()
         {
-            ThreadSafeSet<int>( _key.CurrentLayout.Current.Height, ( v ) => _height = v );
+            SafeSet<int>( _key.CurrentLayout.Current.Height, ( v ) => _height = v );
         }
 
         private void SafeUpdateWidth()
         {
-            ThreadSafeSet<int>( _key.CurrentLayout.Current.Width, ( v ) => _width = v );
+            SafeSet<int>( _key.CurrentLayout.Current.Width, ( v ) => _width = v );
         }
 
         private void SafeUpdateIsEnabled()
         {
-            ThreadSafeSet<bool>( _key.Current.Enabled, ( v ) => _isEnabled = v );
+            SafeSet<bool>( _key.Current.Enabled, ( v ) => _isEnabled = v );
         }
 
         private void SafeUpdateUpLabel()
         {
-            ThreadSafeSet<string>( _key.Current.UpLabel, ( v ) => _upLabel = v );
+            SafeSet<string>( _key.Current.UpLabel, ( v ) => _upLabel = v );
         }
 
         private void SafeUpdateDownLabel()
         {
-            ThreadSafeSet<string>( _key.Current.DownLabel, ( v ) => _downLabel = v );
+            SafeSet<string>( _key.Current.DownLabel, ( v ) => _downLabel = v );
         }
 
         private void SafeUpdateDescription()
         {
-            ThreadSafeSet<string>( _key.Current.Description, ( v ) => _description = v );
+            SafeSet<string>( _key.Current.Description, ( v ) => _description = v );
         }
 
         private void SafeUpdateIndex()
         {
-            ThreadSafeSet<int>( _key.Index, ( v ) => _index = v );
+            SafeSet<int>( _key.Index, ( v ) => _index = v );
         }
 
         private void SafeUpdateIsFallback()
         {
-            ThreadSafeSet<bool>( _key.Current.IsFallBack, ( v ) => _isFallback = v );
+            SafeSet<bool>( _key.Current.IsFallBack, ( v ) => _isFallback = v );
         }
 
         private void SafeUpdateVisible()
         {
-            ThreadSafeSet<bool>( LayoutKeyMode.Visible, ( v ) => _visible = v );
+            SafeSet<bool>( LayoutKeyMode.Visible, ( v ) => _visible = v );
         }
 
         private void SafeUpdateImage()
         {
-            object o = Context.Config[LayoutKeyMode].GetOrSet<object>( "Image", null );
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            var o = Context.Config[_key.Current].GetOrSet<object>( "Image", null );
 
             if( o != null )
             {
-                string source = String.Empty;
+                object source = String.Empty;
 
-                if( o.GetType() == typeof( Image ) ) //If there is an image in the config, the SkinThread needs to deserialize the image, in order to be its owner.
+                if( o is Image ) //If there is an image in the config, the NoFocus Thread needs to deserialize the image, in order to be its owner.
                 {
-                    source = ( (Image)o ).Source.ToString();
+                    source = ((Image)o).Source.ToString();
+                }
+                else if( o is BitmapSource )
+                {
+                    ((ImageSource)o).Freeze();
+                    source = o;
                 }
                 else //otherwise, the config only holds a string. ProcessImage will therefor work properly.
                 {
                     source = o.ToString();
                 }
 
-                ThreadSafeSet<string>( source, ( v ) =>
+                SafeSet( source, v =>
                 {
                     _image = WPFImageProcessingHelper.ProcessImage( v );
+                    OnPropertyChanged( "Image" );
                 } );
             }
             else _image = null;
@@ -379,57 +411,62 @@ namespace SimpleSkin.ViewModels
 
         private void SafeUpdateBackground()
         {
-            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ), ( v ) => _background = v );
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "Background", Colors.White ), ( v ) => _background = v );
         }
 
         private void SafeUpdateHoverBackground()
         {
-            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ), ( v ) => _hoverBackground = v );
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HoverBackground", Background ), ( v ) => _hoverBackground = v );
         }
 
         private void SafeUpdateHighlightBackground()
         {
-            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ), ( v ) => _highlightBackground = v );
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightBackground", Background ), ( v ) => _highlightBackground = v );
+        }
+
+        private void SafeUpdateHighlightFontColor()
+        {
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "HighlightFontColor", Background ), ( v ) => _highlightFontColor = v );
         }
 
         private void SafeUpdatePressedBackground()
         {
-            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ), ( v ) => _pressedBackground = v );
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "PressedBackground", HoverBackground ), ( v ) => _pressedBackground = v );
         }
 
         private void SafeUpdateLetterColor()
         {
-            ThreadSafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ), ( v ) => _letterColor = v );
+            SafeSet<Color>( LayoutKeyMode.GetPropertyValue( Context.Config, "LetterColor", Colors.Black ), ( v ) => _letterColor = v );
         }
 
         private void SafeUpdateFontSize()
         {
-            ThreadSafeSet<double>( LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ), ( v ) => _fontSize = v );
+            SafeSet<double>( LayoutKeyMode.GetPropertyValue<double>( Context.Config, "FontSize", 15 ), ( v ) => _fontSize = v );
         }
 
         private void SafeUpdateFontStyle()
         {
-            ThreadSafeSet<FontStyle>( LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ), ( v ) => _fontStyle = v );
+            SafeSet<FontStyle>( LayoutKeyMode.GetPropertyValue<FontStyle>( Context.Config, "FontStyle" ), ( v ) => _fontStyle = v );
         }
 
         private void SafeUpdateFontWeight()
         {
-            ThreadSafeSet<FontWeight>( LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ), ( v ) => _fontWeight = v );
+            SafeSet<FontWeight>( LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ), ( v ) => _fontWeight = v );
         }
 
         private void SafeUpdateShowLabel()
         {
-            ThreadSafeSet<string>( LayoutKeyMode.GetPropertyValue<string>( Context.Config, "DisplayType", Context.Config[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = ( v == "Label" ) );
+            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = (v == "Label") );
         }
 
         private void SafeUpdateShowImage()
         {
-            ThreadSafeSet<string>( LayoutKeyMode.GetPropertyValue<string>( Context.Config, "DisplayType", Context.Config[LayoutKeyMode]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = ( v == "Image" ) );
+            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = (v == "Image") );
         }
 
         private void SafeUpdateOpacity()
         {
-            ThreadSafeSet<double>( LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ), ( v ) => _opacity = v );
+            SafeSet<double>( LayoutKeyMode.GetPropertyValue<double>( Context.Config, "Opacity", 1.0 ), ( v ) => _opacity = v );
         }
 
         private void SafeUpdateTextDecorations()
@@ -438,7 +475,7 @@ namespace SimpleSkin.ViewModels
             TextDecorationCollection obj = LayoutKeyMode.GetPropertyValue<TextDecorationCollection>( Context.Config, "TextDecorations" );
             if( obj != null ) System.Windows.Markup.XamlWriter.Save( obj, stream );
             stream.Seek( 0, SeekOrigin.Begin );
-            ThreadSafeSet<Stream>( stream, ( v ) =>
+            SafeSet<Stream>( stream, ( v ) =>
             {
                 if( stream.Length > 0 )
                     _textDecorations = (TextDecorationCollection)System.Windows.Markup.XamlReader.Load( stream );
@@ -555,7 +592,7 @@ namespace SimpleSkin.ViewModels
             get { return _index; }
             set
             {
-                ThreadSafeSet<int>( value, ( v ) => _key.Index = v );
+                SafeSet<int>( value, ( v ) => _key.Index = v );
                 OnPropertyChanged( "Index" );
             }
         }
@@ -589,6 +626,12 @@ namespace SimpleSkin.ViewModels
         public Color HighlightBackground
         {
             get { return _highlightBackground; }
+        }
+
+        Color _highlightFontColor;
+        public Color HighlightFontColor
+        {
+            get { return _highlightFontColor; }
         }
 
         Color _pressedBackground;
@@ -670,9 +713,10 @@ namespace SimpleSkin.ViewModels
             get { return _isHighlighting; }
             set
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( value != _isHighlighting )
                 {
-                    ThreadSafeSet<bool>( value, ( v ) => _isHighlighting = v );
+                    SafeSet<bool>( value, ( v ) => _isHighlighting = v );
                     OnPropertyChanged( "IsHighlighting" );
                 }
             }
@@ -710,6 +754,43 @@ namespace SimpleSkin.ViewModels
             {
                 _del();
             }
+        }
+
+        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            IsHighlighting = true;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
+        {
+            IsHighlighting = false;
+            return scrollingDirective;
+        }
+
+        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
+        {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            scrollingDirective.NextActionType = ActionType.GoToRelativeRoot;
+
+            //allows the repeat of the same key
+            scrollingDirective.ActionTime = ActionTime.Delayed;
+
+            if( KeyDownCommand.CanExecute( null ) )
+            {
+                KeyDownCommand.Execute( null );
+                if( KeyUpCommand.CanExecute( null ) )
+                {
+                    KeyUpCommand.Execute( null );
+                }
+            }
+            return scrollingDirective;
+        }
+
+
+        public bool IsHighlightableTreeRoot
+        {
+            get { return false; }
         }
     }
 }

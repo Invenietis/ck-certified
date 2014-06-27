@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Collections;
 using System.Windows.Media;
 using System.Windows.Documents;

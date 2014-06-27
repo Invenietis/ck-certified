@@ -32,10 +32,10 @@ using CommonServices;
 
 namespace CK.StandardPlugins.CommandManager
 {
-    [Plugin("{7CCD8104-FB8A-4495-8855-3E7B56EE5100}",
-        Categories=new string[]{"Advanced"},
-        Version="1.0.1",
-        PublicName="CommandManager")]
+    [Plugin( "{7CCD8104-FB8A-4495-8855-3E7B56EE5100}",
+        Categories = new string[] { "Advanced" },
+        Version = "1.0.1",
+        PublicName = "CommandManager" )]
     public class CommandManager : IPlugin, ICommandManagerService
     {
         Queue<DictionaryEntry> _runningCommands;
@@ -43,7 +43,7 @@ namespace CK.StandardPlugins.CommandManager
         public event EventHandler<CommandSendingEventArgs>  CommandSending;
         public event EventHandler<CommandSentEventArgs>  CommandSent;
 
-        [DynamicService(Requires=RunningRequirement.MustExistAndRun)]
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext KeyboardContext { get; set; }
 
         [RequiredService]
@@ -55,17 +55,18 @@ namespace CK.StandardPlugins.CommandManager
         }
 
         public void Start()
-        {            
-            KeyboardContext.CurrentKeyboardChanged += new EventHandler<CurrentKeyboardChangedEventArgs>( CurrentKeyboardChanged );
-            if(KeyboardContext.CurrentKeyboard != null)
-                RegistersOnKeyboard( KeyboardContext.CurrentKeyboard );
-        }
+        {
+            KeyboardContext.Keyboards.KeyboardActivated += KeyboardActivated;
+            KeyboardContext.Keyboards.KeyboardDeactivated += KeyboardDeactivated;
 
+            foreach( var k in KeyboardContext.Keyboards.Actives ) RegistersOnKeyboard( k );
+        }
         public void Stop()
         {
-            KeyboardContext.CurrentKeyboardChanged -= new EventHandler<CurrentKeyboardChangedEventArgs>( CurrentKeyboardChanged );
-            if( KeyboardContext.CurrentKeyboard != null )
-                UnRegistersOnKeyboard( KeyboardContext.CurrentKeyboard );
+            foreach( var k in KeyboardContext.Keyboards.Actives ) UnRegistersOnKeyboard( k );
+
+            KeyboardContext.Keyboards.KeyboardActivated -= KeyboardActivated;
+            KeyboardContext.Keyboards.KeyboardDeactivated -= KeyboardDeactivated;
         }
 
         public void Teardown() { }
@@ -115,12 +116,14 @@ namespace CK.StandardPlugins.CommandManager
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void CurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        void KeyboardActivated( object sender, KeyboardEventArgs e )
         {
-            if( e.Previous != null )
-                UnRegistersOnKeyboard( e.Previous );
-            if( e.Current != null )
-                RegistersOnKeyboard( e.Current );
+            RegistersOnKeyboard( e.Keyboard );
+        }
+
+        private void KeyboardDeactivated( object sender, KeyboardEventArgs e )
+        {
+            UnRegistersOnKeyboard( e.Keyboard );
         }
 
         /// <summary>

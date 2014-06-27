@@ -27,6 +27,7 @@ using CK.WPF.ViewModel;
 using System.IO;
 using System.Diagnostics;
 using CK.Context;
+
 namespace CK.Plugins.ObjectExplorer
 {
     public class VMApplicationInfo : VMISelectableElement, IDisposable
@@ -38,7 +39,7 @@ namespace CK.Plugins.ObjectExplorer
         {
             VMIContext.Context.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationChanged );
             VMIContext.Context.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationChanged );
-            _hostInfo = ( (IHostInformation)VMIContext.Context.ServiceContainer.GetService( typeof( IHostInformation ) ) );
+            _hostInfo = ((IHostInformation)VMIContext.Context.ServiceContainer.GetService( typeof( IHostInformation ) ));
         }
 
         VMCommand<string> _openFileCmd;
@@ -53,7 +54,12 @@ namespace CK.Plugins.ObjectExplorer
                         {
                             f = new FileInfo( s );
                             if( f.Exists )
-                                Process.Start( f.FullName );
+                            {
+                                if( f.Directory != null && f.Directory.Exists )
+                                    Process.Start( f.Directory.FullName );
+                                else
+                                    Process.Start( f.FullName );
+                            }
                         } );
                 }
                 return _openFileCmd;
@@ -77,7 +83,7 @@ namespace CK.Plugins.ObjectExplorer
             {
                 if( _forceGCCommand == null )
                 {
-                    _forceGCCommand = new VMCommand( () =>
+                    _forceGCCommand = new CK.Windows.App.VMCommand( () =>
                         {
                             GC.Collect();
                             GC.WaitForPendingFinalizers();
@@ -89,6 +95,10 @@ namespace CK.Plugins.ObjectExplorer
         }
 
         public string DistributionName { get { return _hostInfo.SubAppName; } }
+
+        public string Version { get { return _hostInfo.AppVersion.ToString(); } }
+
+        public string ApplicationId { get { return _hostInfo.ApplicationUniqueId.UniqueId.ToString(); } }
 
         public string SystemConfigurationPath { get { return _hostInfo != null ? _hostInfo.GetSystemConfigAddress().AbsolutePath : ""; } }
 

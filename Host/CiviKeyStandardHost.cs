@@ -36,8 +36,14 @@ using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
 using System.ComponentModel;
-using CK.Plugin.Config;
 using Common.Logging;
+using CK.Context.SemVer;
+using System.Windows.Media.Imaging;
+using System.Windows.Interop;
+using CommonServices;
+using CK.Plugin.Config;
+using System.Threading;
+using System.Globalization;
 
 namespace Host
 {
@@ -45,48 +51,13 @@ namespace Host
     /// Singleton host. Its private constructor is safe (no exceptions can be 
     /// thrown except an out of memory: we can safely ignore this pathological case).
     /// </summary>
-    public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp
+    public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp, IContextSaver
     {
-        static ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
-        Guid _guid;
-        Version _appVersion;
+        static readonly ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
+        SemanticVersion20 _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
-        CKAppParameters applicationParameters;
-        IVersionedUniqueId _fakeUniqueIdForTheHost;
-
-        public event EventHandler<HostHelpEventArgs> ShowHostHelp;
-
-        public void FireShowHostHelp()
-        {
-            if( _fakeUniqueIdForTheHost == null ) _fakeUniqueIdForTheHost = new SimpleVersionedUniqueId( Guid.Empty, AppVersion );
-            if( ShowHostHelp != null )
-                ShowHostHelp( this, new HostHelpEventArgs { HostUniqueId = _fakeUniqueIdForTheHost } );
-        }
-
-        /// <summary>
-        /// Gets a unique identifier for a CiviKey application
-        /// Is mainly used to identify an instance of CiviKey in crashlogs
-        /// TODO : this hsould be put in the CK-Desktop layer in order to be transmitted directly to the crashlog web server, and stored in files corresponding to this GUID
-        /// </summary>
-        private Guid ApplicationGUID
-        {
-            get
-            {
-                if( _guid == Guid.Empty ) _guid = (Guid)SystemConfig.GetOrSet( "Guid", Guid.NewGuid() );
-
-                return _guid;
-            }
-        }
-
-        /// <summary>
-        /// Gets the current version of the Civikey-Standard application.
-        /// It is stored in the system configuration file and updated by the installer.
-        /// </summary>
-        public Version AppVersion
-        {
-            get { return _appVersion ?? ( _appVersion = new Version( (string)SystemConfig.GetOrSet( "Version", "2.5" ) ) ); }
-        }
+        readonly CKAppParameters applicationParameters;
 
         /// <summary>
         /// The SubAppName is the name of the package (Standard, Steria etc...)
@@ -95,6 +66,8 @@ namespace Host
         private CivikeyStandardHost( CKAppParameters parameters )
         {
             applicationParameters = parameters;
+            
+            ApplicationUniqueId = new SimpleUniqueId( App.ApplicationId );
         }
 
         /// <summary>
@@ -102,42 +75,77 @@ namespace Host
         /// </summary>
         static readonly public CivikeyStandardHost Instance = new CivikeyStandardHost( CKApp.CurrentParameters );
 
+        /// <summary>
+        /// Gets a unique identifier for a CiviKey application
+        /// Is mainly used to identify an instance of CiviKey in crashlogs
+        /// </summary>
+        public IUniqueId ApplicationUniqueId
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the current version of the Civikey-Standard application.
+        /// It is stored in the system configuration file and updated by the installer.
+        /// </summary>
+        public SemanticVersion20 AppVersion
+        {
+            get { return _appVersion ?? (_appVersion = SemanticVersion20.Parse( (string)SystemConfig.GetOrSet( "Version", "2.7" ) )); }
+        }
+
         public override IContext CreateContext()
         {
+
+
+            //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
+            //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.
+            //If a system conf is found and loaded at this point, plugin will be set as disabled (because the plugins are not yet discovered). If there is a userconf, the requirements will be parsed again later, and everything will work fine.
+            //The problem occurs when there is no user conf. (this happens when CiviKey is launched for the first time)
+            
             IContext ctx = base.CreateContext();
 
             _log.Debug( "LAUNCHING" );
-            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationGUID ) );
 
             _notificationMngr = new NotificationManager();
-            
+
             // Discover available plugins.
             string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
+            _log.Debug( "Discovering plugins..." );
             if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
+            _log.Debug( "Plugins discovered" );
+            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
 
-            RequirementLayer hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun ); //KeyboardContext
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{1DB78D66-B5EC-43AC-828C-CCAB91FA6210}" ), RunningRequirement.MustExistAndRun ); //HelpService
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun ); //SendString
+            var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SendInput
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{D173E013-2491-4491-BF3E-CA2F8552B5EB}" ), RunningRequirement.MustExistAndRun );//KeyboardDisplayer
 
-            //Making sure that these services are started regardless of the keyboard being opened at launch.
-            //This way, even keyboards created by a user can use the differents key protocols.
-            //We'll be able to remove that once the editor has the capacity to update the edited keyboard's RequirementLayer.
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{04B1B7F5-6CD8-4691-B5FD-2C4401C3AC0C}" ), RunningRequirement.MustExistAndRun ); //IChangeKeyboardCommandHandlerService
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun ); //IClicCommandHandlerService
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4A3F1565-E127-473c-B169-0022A3EDB58D}" ), RunningRequirement.MustExistAndRun ); //IModeCommandHandlerService
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun ); //IMoveMouseCommandHandler
-            
+            //Command handlers. These plugins register their protocols onto the keyboard editor.
+            //Therefor, we need them started in order to be able to create any type of Key Command.
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{418F670B-46E8-4BE2-AF37-95F43040EEA6}" ), RunningRequirement.MustExistAndRun );//KeySequenceCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{78D84978-7A59-4211-BE04-DD25B5E2FDC1}" ), RunningRequirement.MustExistAndRun );//TextTemplateCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun );//ClicCommandHandler
+            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun );//MoveMouseCommandHandler
 
+            // ToDoJL
+            //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
+            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
+            //hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
             ctx.PluginRunner.Add( hostRequirements );
 
             // Load or initialize the ctx.
             LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
+            _log.Debug( "Context loaded successfully." );
+
             // Initializes Services.
             {
                 ctx.ServiceContainer.Add<IHostInformation>( this );
                 ctx.ServiceContainer.Add<IHostHelp>( this );
+                ctx.ServiceContainer.Add<IContextSaver>( this );
                 // inject specific xaml serializers.
                 ctx.ServiceContainer.Add<IStructuredSerializer<Size>>( new XamlSerializer<Size>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<Color>>( new XamlSerializer<Color>() );
@@ -146,15 +154,21 @@ namespace Host
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
                 ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapSource>>( new BitmapSourceSerializer<BitmapSource>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<InteropBitmap>>( new BitmapSourceSerializer<InteropBitmap>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<CachedBitmap>>( new BitmapSourceSerializer<CachedBitmap>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapFrame>>( new BitmapSourceSerializer<BitmapFrame>() );
+                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapImage>>( new BitmapSourceSerializer<BitmapImage>() );
                 //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
             }
 
-            Context.PluginRunner.ApplyDone += new EventHandler<ApplyDoneEventArgs>( OnApplyDone );
+            Context.PluginRunner.ApplyDone += OnApplyDone;
 
+            _log.Debug( "Starting Apply..." );
             _firstApplySucceed = Context.PluginRunner.Apply();
 
-            ctx.ConfigManager.SystemConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnSystemConfigurationPropertyChanged );
-            ctx.ConfigManager.UserConfiguration.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler( OnUserConfigurationPropertyChanged );
+            ctx.ConfigManager.SystemConfiguration.PropertyChanged += OnSystemConfigurationPropertyChanged;
+            ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationPropertyChanged;
 
 
             return ctx;
@@ -187,6 +201,7 @@ namespace Host
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
+            _log.Debug( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
             //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
 
             //    if( e.ExecutionPlanResult != null )
@@ -317,5 +332,30 @@ namespace Host
         {
             get { return applicationParameters.DistribName; }
         }
+
+        #region IHostHelp Members
+
+        public event EventHandler<EventArgs> ShowHostHelp;
+
+        public INamedVersionedUniqueId FakeHostHelpId
+        {
+            get
+            {
+                return new SimpleNamedVersionedUniqueId( Guid.Empty, new Version( AppVersion.Major, AppVersion.Minor, AppVersion.Patch ), "Application" );
+            }
+        }
+
+        public void FireShowHostHelp()
+        {
+            if( ShowHostHelp != null )
+                ShowHostHelp( this, EventArgs.Empty );
+        }
+
+        public Stream GetDefaultHelp()
+        {
+            return typeof( CivikeyStandardHost ).Assembly.GetManifestResourceStream( "Host.Resources.hosthelpcontent.zip" );
+        }
+
+        #endregion
     }
 }

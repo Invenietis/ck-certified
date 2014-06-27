@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\EditableSkin\ViewModels\VMZoneEditable.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMZoneEditable.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,12 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
 using CK.Core;
 using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System;
 using System.Windows.Input;
 using CK.Windows.App;
@@ -34,7 +31,7 @@ using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
-    public class VMZoneEditable : VMContextElementEditable
+    public class VMZoneEditable : VMContextElementEditable, IHasOrder
     {
         IZone _zone;
         CKObservableSortedArrayKeyList<VMKeyEditable, int> _keys;
@@ -127,7 +124,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _createKeyCommand == null )
                 {
-                    _createKeyCommand = new CK.WPF.ViewModel.VMCommand( () =>
+                    _createKeyCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         IKey key = Model.Keys.Create();
                         key.KeyModes.First().UpLabel = "New key";
@@ -159,10 +156,10 @@ namespace KeyboardEditor.ViewModels
 
         private void DeleteZone()
         {
-            _deleteZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
+            _deleteZoneCommand = new CK.Windows.App.VMCommand( () =>
             {
                 ModalViewModel mvm = new ModalViewModel( R.DeleteZone, R.DeleteZoneConfirmation );
-                mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
+                //mvm.Buttons.Add( new ModalButton( mvm, R.SaveKeys, ModalResult.Yes ) );
                 mvm.Buttons.Add( new ModalButton( mvm, R.DeleteKeys, ModalResult.No ) );
                 mvm.Buttons.Add( new ModalButton( mvm, R.Cancel, ModalResult.Cancel ) );
                 CustomMsgBox msgBox = new CustomMsgBox( ref mvm );
@@ -177,6 +174,8 @@ namespace KeyboardEditor.ViewModels
 
                 Context.SelectedElement = Parent;
                 Model.Destroy();
+
+                #region key saving commented
 
                 ////
                 ////Putting the keys of the zone into the default zone, with visible = false
@@ -213,7 +212,7 @@ namespace KeyboardEditor.ViewModels
                 //    Console.Out.WriteLine( "Touches dans previous zone VM après transfert : " + Keys.Count );
                 //}
 
-
+                #endregion
 
             } );
         }
@@ -254,7 +253,7 @@ namespace KeyboardEditor.ViewModels
             {
                 if( _selectZoneCommand == null )
                 {
-                    _selectZoneCommand = new CK.WPF.ViewModel.VMCommand( () =>
+                    _selectZoneCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         _ctx.SelectedElement = this;
                     } );
@@ -262,6 +261,34 @@ namespace KeyboardEditor.ViewModels
                 return _selectZoneCommand;
             }
         }
+
+        public int Index
+        {
+            get { return Model.Index; }
+            set { Model.Index = value; }
+        }
+
+        internal void IndexChanged()
+        {
+            //OnPropertyChanged( "Index" );
+        }
+
+        public ICommand UpIndexCommand
+        {
+            get
+            {
+                return new CK.Windows.App.VMCommand( (Action)( () => Context.KeyboardVM.IncreaseZoneIndex( this )) );
+            }
+        }
+
+        public ICommand DownIndexCommand
+        {
+            get
+            {
+                return new CK.Windows.App.VMCommand( (Action)( () => Context.KeyboardVM.DecreaseZoneIndex( this )) );
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets the Name of the underlying <see cref="IZone"/>
@@ -366,5 +393,11 @@ namespace KeyboardEditor.ViewModels
         }
 
         #endregion
+    }
+
+    public interface IHasOrder
+    {
+        ICommand UpIndexCommand { get; }
+        ICommand DownIndexCommand { get; }
     }
 }

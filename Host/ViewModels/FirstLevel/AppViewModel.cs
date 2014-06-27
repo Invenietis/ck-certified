@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\AppViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\FirstLevel\AppViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -36,6 +36,8 @@ using Host.Resources;
 using CK.Windows.App;
 using System.Windows.Interop;
 using System.Windows.Threading;
+using Help.Services;
+using CK.Windows;
 
 namespace Host
 {
@@ -55,7 +57,7 @@ namespace Host
             IsVisible = true;
             IsMinimized = true;
 
-            CivikeyHost.Context.ApplicationExited += (o, e) => ExitHost( e.HostShouldExit );
+            CivikeyHost.Context.ApplicationExited += ( o, e ) => ExitHost( e.HostShouldExit );
             CivikeyHost.Context.ApplicationExiting += new EventHandler<CK.Context.ApplicationExitingEventArgs>( OnBeforeExitApplication );
 
             CivikeyHost.Context.ServiceContainer.Add<IHostManipulator>( this );
@@ -74,13 +76,15 @@ namespace Host
             }
         }
 
-        //public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
+        public INotificationService NotificationCtx { get { return CivikeyHost.Context.GetService<INotificationService>(); } }
 
         internal IConfigContainer ConfigContainer { get { return CivikeyHost.Context.GetService<IConfigContainer>(); } }
 
         internal ISimplePluginRunner PluginRunner { get { return CivikeyHost.Context.PluginRunner; } }
 
         public ConfigManager ConfigManager { get; private set; }
+
+        public IHelpUpdaterService HelpUpdaterService { get { return CivikeyHost.Context.GetService<IHelpUpdaterService>(); } }
 
         public string AppVersion { get { return CivikeyHost.AppVersion.ToString(); } }
 
@@ -92,34 +96,38 @@ namespace Host
             get { return CivikeyHost.UserConfig.GetOrSet( "ShowTaskbarIcon", true ); }
             set
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
                 if( CivikeyHost.UserConfig.Set( "ShowTaskbarIcon", value ) != ChangeStatus.None )
                 {
-                    if( !value && !ShowSystrayIcon ) ShowSystrayIcon = true;
+                    // v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
+                    //if( !value && !ShowSystrayIcon ) ShowSystrayIcon = true;
                     NotifyOfPropertyChange( "ShowTaskbarIcon" );
                 }
             }
         }
 
         /// <summary>
-        ///  Gets whether the application should be visible in the Systray.
+        /// v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
+        /// Gets whether the application should be visible in the Systray.
         /// </summary>
-        public bool ShowSystrayIcon
-        {
-            get
-            {
-                return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
-            }
-            set
-            {
-                if( CivikeyStandardHost.Instance.UserConfig.Set( "ShowSystrayIcon", value ) != ChangeStatus.None )
-                {
-                    if( !value && !ShowTaskbarIcon ) ShowTaskbarIcon = true;
-                    NotifyOfPropertyChange( "ShowSystrayIcon" );
-                }
-            }
-        }
+        //public bool ShowSystrayIcon
+        //{
+        //    get
+        //    {
+        //        return CivikeyStandardHost.Instance.UserConfig.GetOrSet( "ShowSystrayIcon", true );
+        //    }
+        //    set
+        //    {
+        //        if( CivikeyStandardHost.Instance.UserConfig.Set( "ShowSystrayIcon", value ) != ChangeStatus.None )
+        //        {
+        //            if( !value && !ShowTaskbarIcon ) ShowTaskbarIcon = true;
+        //            NotifyOfPropertyChange( "ShowSystrayIcon" );
+        //        }
+        //    }
+        //}
 
-        protected override void OnViewLoaded(object view)
+        protected override void OnViewLoaded( object view )
         {
             // Ensures that the view is actually the main application window:
             // since the application is configured with ShutdownMode="OnMainWindowClose", 
@@ -128,12 +136,12 @@ namespace Host
             base.OnViewLoaded( view );
         }
 
-        public override void CanClose(Action<bool> callback)
+        public override void CanClose( Action<bool> callback )
         {
             callback( _forceClose || CivikeyHost.Context.RaiseExitApplication( false ) );
         }
 
-        void ExitHost(bool hostShouldExit)
+        void ExitHost( bool hostShouldExit )
         {
             var thisView = GetView( null ) as Window;
             if( hostShouldExit )
@@ -148,6 +156,8 @@ namespace Host
             CivikeyHost.SaveUserConfig();
             CivikeyHost.SaveSystemConfig();
 
+            NoFocusManager.Default.Shutdown();
+
             if( hostShouldExit )
             {
                 _forceClose = true;
@@ -161,31 +171,35 @@ namespace Host
         /// <returns></returns>
         public bool IsOverlayed()
         {
-            Window view = GetView( null ) as Window;
-            bool result = CK.Windows.Helpers.WindowHelper.IsOverLayed( view );
-            return result;
+            var view = GetView( null ) as Window;
+            return CK.Windows.Helpers.WindowHelper.IsOverLayed( view ); ;
         }
 
-        void OnBeforeExitApplication(object sender, CK.Context.ApplicationExitingEventArgs e)
+        void OnBeforeExitApplication( object sender, CK.Context.ApplicationExitingEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
             if( !_closing )
             {
-                _closing = true;
-                Window thisView = GetView( null ) as Window;
-                Window bestParent = App.Current.GetTopWindow();
-
-                ModalViewModel mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
-                mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
-                mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
-                CustomMsgBox customMessageBox = new CustomMsgBox( ref mvm );
-                customMessageBox.ShowDialog();
-
-                e.Cancel = mvm.ModalResult != ModalResult.Yes;
-
-                _closing = !e.Cancel;
-                if( !_closing && bestParent != thisView )
+                if( !e.HostShouldExit )
                 {
-                    thisView.Activate();
+                    _closing = true;
+                    var thisView = GetView( null ) as Window;
+                    var bestParent = App.Current.GetTopWindow();
+
+                    var mvm = new ModalViewModel( R.Exit, R.ExitConfirmation );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.Yes, null, ModalResult.Yes ) );
+                    mvm.Buttons.Add( new ModalButton( mvm, R.No, null, ModalResult.No ) );
+                    var customMessageBox = new CustomMsgBox( ref mvm );
+                    customMessageBox.ShowDialog();
+
+                    e.Cancel = mvm.ModalResult != ModalResult.Yes;
+
+                    _closing = !e.Cancel;
+                    if( !_closing && bestParent != thisView )
+                    {
+                        thisView.Activate();
+                    }
                 }
             }
             else
@@ -198,7 +212,7 @@ namespace Host
             get
             {
                 if( _ensureMainWindowVisibleCommand == null )
-                    _ensureMainWindowVisibleCommand = new CK.WPF.ViewModel.VMCommand( EnsureMainWindowVisible );
+                    _ensureMainWindowVisibleCommand = new VMCommand( EnsureMainWindowVisible );
                 return _ensureMainWindowVisibleCommand;
             }
         }
@@ -208,24 +222,10 @@ namespace Host
         {
             get
             {
-                return _showHelpCommand ?? ( _showHelpCommand = new VMCommand( () =>
+                return _showHelpCommand ?? (_showHelpCommand = new VMCommand( () =>
                 {
                     CivikeyHost.FireShowHostHelp();
-                } ) );
-            }
-        }
-
-        ICommand _exitHostCommand;
-        public ICommand ExitHostCommand
-        {
-            get
-            {
-                if( _exitHostCommand == null )
-                {
-                    _exitHostCommand = new VMCommand( () => CivikeyHost.Context.RaiseExitApplication( true ) );
-                }
-
-                return _exitHostCommand;
+                } ));
             }
         }
 
@@ -255,10 +255,9 @@ namespace Host
         /// This method must be called from the Application's Main Thread
         /// </summary>
         /// <param name="lastFocusedWindowsHandle"></param>
-        public void ToggleMinimize(IntPtr lastFocusedWindowsHandle)
+        public void ToggleMinimize( IntPtr lastFocusedWindowsHandle )
         {
-            IntPtr hostWindowHandle = IntPtr.Zero;
-            hostWindowHandle = new WindowInteropHelper( (Window)this.GetView( null ) ).Handle;
+            IntPtr hostWindowHandle = new WindowInteropHelper( (Window)GetView( null ) ).Handle;
 
             if( !IsMinimized && hostWindowHandle != lastFocusedWindowsHandle )
             {
@@ -278,11 +277,13 @@ namespace Host
             get { return _isMinimized; }
             set
             {
+                Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
+
                 if( !ShowTaskbarIcon ) IsVisible = !value;
 
                 //We have to push this delegate on the dispatcher queue to have the different changes processed correctly
                 Application.Current.Dispatcher.BeginInvoke( DispatcherPriority.Background,
-                    new System.Action( delegate()
+                    new System.Action( () =>
                     {
                         _isMinimized = value;
                         NotifyOfPropertyChange( "IsMinimized" );
@@ -292,21 +293,21 @@ namespace Host
             }
         }
 
-        internal void StartPlugin(Guid pluginId)
+        internal void StartPlugin( Guid pluginId )
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Started );
             runner.Apply();
         }
 
-        internal void StopPlugin(Guid pluginId)
+        internal void StopPlugin( Guid pluginId )
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( pluginId, CK.Plugin.Config.ConfigUserAction.Stopped );
             runner.Apply();
         }
 
-        internal bool IsPluginRunning(IPluginInfo plugin)
+        internal bool IsPluginRunning( IPluginInfo plugin )
         {
             var runner = CivikeyHost.Context.GetService<ISimplePluginRunner>( true );
             return runner.PluginHost.IsPluginRunning( plugin );
@@ -323,7 +324,7 @@ namespace Host
         Window _owner;
         Cursor _previousCursor;
 
-        public WaitHandle(Window owner)
+        public WaitHandle( Window owner )
         {
             Debug.Assert( owner != null );
             _owner = owner;

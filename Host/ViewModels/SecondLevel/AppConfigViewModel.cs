@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\AppConfigViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\SecondLevel\AppConfigViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,22 +22,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 //using CK.WPF.Controls;
 using CK.Plugin.Config;
-using CK.Core;
-using CK.Reflection;
 using Host.Resources;
-using System.ComponentModel;
 using CK.Windows.Config;
 using CK.Windows;
-using System.IO;
-using System.Diagnostics;
-using System.Windows;
-using System.Security.Principal;
-using System.Security.AccessControl;
 
 namespace Host.VM
 {
@@ -45,10 +34,12 @@ namespace Host.VM
     {
         Guid _keyboardEditorId;
         AppViewModel _app;
-        SkinViewModel _sVm;
+        //SkinViewModel _sVm;
         AutoClickViewModel _acVm;
         WordPredictionViewModel _wpVm;
+        ShareKeyboardViewModel _skVm;
         AppAdvancedConfigViewModel _appAdvcVm;
+        ScrollingViewModel _scVm;
 
         public AppConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -67,27 +58,47 @@ namespace Host.VM
                 profiles.RefreshValues( s, e );
             };
 
-            this.AddLink( _appAdvcVm ?? ( _appAdvcVm = new AppAdvancedConfigViewModel( _app ) ) );
-            this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
-            this.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
-            this.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
+            //JL : this feature has been removed.
+            //this.AddLink( _sVm ?? ( _sVm = new SkinViewModel( _app ) ) );
 
-            {
-                var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
-                action.ImagePath = "Forward.png";
-                action.DisplayName = R.ScrollConfig;
-                this.Items.Add( action );
-            }
+            //JL : 13/12/2013 : The screenscroller editor presents performance issues when modifying parameters.
+            //For now, I'll let this plugin without configuration, we'll ask the ergotherapist whether the configuration panel is necessary before spending time on it.
+            //this.AddLink( _ssVm ?? ( _ssVm = new ScreenScrollerViewModel( _app ) ) );  
+
+            var g = this.AddGroup();
+
+            g.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
+            g.AddLink( _scVm ?? (_scVm = new ScrollingViewModel( R.ScrollConfig, _app )) );
+            g.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
+            g.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
+
+            g.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
                 action.ImagePath = "Forward.png";
                 action.DisplayName = R.SkinEditorSectionName;
-                this.Items.Add( action );
+                g.Items.Add( action );
             }
 
+            //{
+            //    var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartRadarEditor ) );
+            //    action.ImagePath = "Forward.png";
+            //    action.DisplayName = R.RadarConfiguration;
+            //    this.Items.Add( action );
+            //}
+
+            //{
+            //    var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScreenScrollerEditor ) );
+            //    action.ImagePath = "Forward.png";
+            //    action.DisplayName = R.ScreenScrollerConfiguration;
+            //    this.Items.Add( action );
+            //}
+
+            g.AddLink( new CreditViewModel( _app ) );
+
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
-            
+
             base.OnInitialize();
         }
 
@@ -103,10 +114,17 @@ namespace Host.VM
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
 
-        public void StartScrollEditor()
+       
+        public void StartRadarEditor()
         {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{48D3977C-EC26-48EF-8E47-806E11A1C041}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
+
+        //public void StartScreenScrollerEditor()
+        //{
+        //    _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{652CFF65-5CF7-4FE9-8FF5-45C5E2A942E6}" ), ConfigUserAction.Started );
+        //    _app.CivikeyHost.Context.PluginRunner.Apply();
+        //}
     }
 }

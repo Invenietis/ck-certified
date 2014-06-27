@@ -1,11 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (CK.WPF.Wizard\WizardPage.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
+using System.ComponentModel;
 using Caliburn.Micro;
-using CK.Windows;
 
 namespace CK.WPF.Wizard
 {
@@ -13,19 +31,19 @@ namespace CK.WPF.Wizard
     /// This class is used to fill the <see cref="WizardManager"/>'s stack.
     /// It has all the properties needed by the <see cref="WizardManager"/> to display a wizard with next and back actions.
     /// </summary>
-    public abstract class WizardPage : PropertyChangedBase
+    public abstract class WizardPage : PropertyChangedBase, IWizardNavigable
     {
         bool _cantGoFurther;
 
         /// <summary>
         /// Gets the title of the <see cref="WizardPage"/>
         /// </summary>
-        public string Title { get; internal set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets the description of the <see cref="WizardPage"/>
         /// </summary>
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets the WizardManager that holds this step (this WizardPage).
@@ -79,7 +97,7 @@ namespace CK.WPF.Wizard
         /// <param name="next">The next WizardPage</param>
         /// <param name="title">(optional) title of the page</param>
         public WizardPage( WizardManager wizardManager, WizardPage next, string title = "" )
-            : this( wizardManager, next, false )
+            : this( wizardManager, next, false, title )
         {
         }
 
@@ -145,6 +163,47 @@ namespace CK.WPF.Wizard
         public virtual bool OnBeforeGoBack()
         {
             return true;
+        }
+
+        /// <summary>
+        /// Is called before ActivateItem function.
+        /// </summary>
+        public virtual bool OnActivating()
+        {
+            CancelEventArgs e = new CancelEventArgs();
+            RaiseActivating( e );
+            return !e.Cancel;
+        }
+
+        /// <summary>
+        /// Is called after ActivateItem function.
+        /// </summary>
+        public virtual void OnActivated()
+        {
+            RaiseActivated( new WizardNavigableEventArgs( this ) );
+        }
+
+        public event EventHandler<WizardNavigableEventArgs> Activated;
+
+        public event CancelEventHandler Activating;
+
+        void RaiseActivating( CancelEventArgs e )
+        {
+            var h = Activating;
+            if( h != null )
+                h( this, e );
+        }
+
+        void RaiseActivated( WizardNavigableEventArgs e )
+        {
+            var h = Activated;
+            if( h != null )
+                h( this, e );
+        }
+
+        IWizardNavigable IWizardNavigable.Next
+        {
+            get { return Next; }
         }
     }
 }

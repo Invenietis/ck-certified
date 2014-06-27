@@ -26,8 +26,6 @@ using System.Diagnostics;
 using System.Xml;
 using CK.Plugin;
 using CK.Keyboard.Model;
-using CK.Context;
-using CK.Plugin.Config;
 using CK.Storage;
 using CK.Core;
 
@@ -40,17 +38,18 @@ namespace CK.Keyboard
         ZoneCollection      _zones;
         string              _name;
         RequirementLayer    _reqLayer;
-        
+        bool                _isActive;
+
         internal Keyboard( KeyboardCollection holder, string name )
         {
             Debug.Assert( holder != null );
             _keyboards = holder;
-            _zones = new ZoneCollection( this );            
+            _zones = new ZoneCollection( this );
             _layouts = new LayoutCollection( this );
             _name = name;
             _availableMode = _keyboards.Context.EmptyMode;
             _currentMode = _keyboards.Context.EmptyMode;
-
+            _isActive = false;
             _reqLayer = new RequirementLayer( "Keyboard" );
         }
 
@@ -109,6 +108,16 @@ namespace CK.Keyboard
             get { return _name; }
         }
 
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if( _isActive != value )
+                    _keyboards.ChangeActivateState( this, ref _isActive, value );
+            }
+        }
+
         public string Rename( string name )
         {
             if( name == null ) throw new ArgumentNullException( "name" );
@@ -154,7 +163,7 @@ namespace CK.Keyboard
             foreach( Layout l in Layouts ) l.DestroyConfig();
             foreach( Zone z in Zones ) z.DestroyConfig();
             Context.ConfigContainer.Destroy( this );
-        }		
+        }
 
         public override string ToString()
         {
@@ -169,12 +178,14 @@ namespace CK.Keyboard
             Rename( r.GetAttribute( "Name" ) );
             r.ReadStartElement( "Keyboard" );
 
+            _isActive = r.GetAttributeBoolean( "IsActive", false );
+
             sr.ReadInlineObjectStructuredElement( "RequirementLayer", _reqLayer );
 
             if( r.IsStartElement( "Modes" ) )
             {
                 string currentMode = r.GetAttribute( "Current" );
-                if( r.IsEmptyElement )  r.Read();
+                if( r.IsEmptyElement ) r.Read();
                 else
                 {
                     r.Read();
@@ -199,6 +210,7 @@ namespace CK.Keyboard
             w.WriteAttributeString( "Name", Name );
 
             if( _keyboards.Current == this ) w.WriteAttributeString( "IsCurrent", "1" );
+            if( _isActive ) w.WriteAttributeString( "IsActive", Boolean.TrueString );
 
             sw.WriteInlineObjectStructuredElement( "RequirementLayer", _reqLayer );
 

@@ -28,7 +28,6 @@ using System.Xml;
 using System.Collections.Generic;
 using CK.Core;
 using CK.Keyboard.Model;
-using CK.Context;
 using CK.Storage;
 
 namespace CK.Keyboard

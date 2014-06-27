@@ -1,0 +1,28 @@
+﻿<ckwincore:CKWindow x:Class="CK.Plugins.AutoClick.Views.ClickSelectorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+    xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"
+    Topmost="True"
+    Title="Auto click"
+    WindowStyle="None"     
+    ShowInTaskbar="False"
+    ShowActivated="False"
+    Background="Transparent">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary 
+                  Source="Dictionnaries/ClickSelector.xaml">
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Viewbox Stretch="Fill">
+            <Border>
+                <ContentControl Template="{StaticResource ClickTypeSelectorTemplate}"/>
+            </Border>
+        </Viewbox>
+    </Grid>
+</ckwincore:CKWindow>

@@ -18,8 +18,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
-        <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
+        <Border Margin="5">
             <StackPanel>
+                <TextBlock x:Uid="font-header" Style="{StaticResource SectionHeaderStyle}" Text="FONT : "/>
+                <Separator Style="{StaticResource SectionSeperatorStyle}" />
+                
                 <Border Style="{StaticResource Splitter}">
                     <DockPanel>
                         <StackPanel Orientation="Horizontal">
@@ -49,10 +52,23 @@
                         <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="LetterColor"/>
                     </DockPanel>
                 </Border>
+                <Border Style="{StaticResource Splitter}" BorderThickness="0" Padding="5" >
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <cce:ColorPicker SelectedColor="{Binding HighlightFontColor}"/>
+                            <TextBlock x:Uid="highlight-font-color" VerticalAlignment="Center">Highlighted Font color</TextBlock>
+                        </StackPanel>
+                        <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="HighlightFontColor"/>
+                    </DockPanel>
+                </Border>
             </StackPanel>
         </Border>
-        <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
+        
+        <Border Margin="5">
             <StackPanel Orientation="Vertical">
+                <TextBlock x:Uid="background-colors-header" Style="{StaticResource SectionHeaderStyle}" Text="BACKGROUND COLORS : "/>
+                <Separator Style="{StaticResource SectionSeperatorStyle}" />
+
                 <Border Style="{StaticResource Splitter}" >
                     <DockPanel>
                         <StackPanel Orientation="Horizontal">

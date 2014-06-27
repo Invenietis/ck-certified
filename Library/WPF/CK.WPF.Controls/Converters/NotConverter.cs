@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.Controls\Converters\NotNullConverter.cs) is part of CiviKey. 
+* This file (Library\WPF\CK.WPF.Controls\Converters\NotConverter.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 

@@ -21,10 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CK.WPF.ViewModel;
 using System.Windows.Input;
 
@@ -39,7 +35,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             _isVisible = true;
         }
 
-        VMCommand _toggleFilterCommand;
+        CK.Windows.App.VMCommand _toggleFilterCommand;
         VMLogOutputContainer _holder;
         bool _isVisible;
         string _name;
@@ -61,7 +57,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _toggleFilterCommand == null )
                 {
-                    _toggleFilterCommand = new VMCommand( () =>
+                    _toggleFilterCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         if( _isVisible )
                             IsVisible = false;

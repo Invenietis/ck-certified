@@ -21,8 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-
 namespace Microsoft.Windows.Controls.Primitives
 {
     internal struct HsvColor

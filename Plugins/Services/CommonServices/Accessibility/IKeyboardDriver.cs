@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Services\CommonServices\Accessibility\IPointerDeviceDriver.cs) is part of CiviKey. 
+* This file (Plugins\Services\CommonServices\Accessibility\IKeyboardDriver.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -40,7 +40,6 @@ namespace CommonServices
         void RegisterCancellableKey( int keyCode );
 
         void UnregisterCancellableKey( int keyCode );
-
     }
 
     public class KeyboardDriverEventArg : EventArgs

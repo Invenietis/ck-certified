@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
+  <data name="BottomLeft" xml:space="preserve">
+    <value>Bottom-Left</value>
+  </data>
+  <data name="BottomRight" xml:space="preserve">
+    <value>Bottom-Right</value>
+  </data>
+  <data name="ClickProtocolSubtitle" xml:space="preserve">
+    <value>Click type : </value>
+  </data>
+  <data name="ClicProtocolDescription" xml:space="preserve">
+    <value>Enables simulating a mouse clic (left, right double etc...)</value>
+  </data>
+  <data name="ClicProtocolTitle" xml:space="preserve">
+    <value>Mouse clicks</value>
+  </data>
+  <data name="DoubleLeftClick" xml:space="preserve">
+    <value>Double left click</value>
+  </data>
+  <data name="KeyboardProtocolSubtitle" xml:space="preserve">
+    <value>Keyboard : </value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="LeftClick" xml:space="preserve">
+    <value>Left click</value>
+  </data>
+  <data name="MoveMouseProtocolDescription" xml:space="preserve">
+    <value>Starts moving the mouse pointer towards a direction, clicking again the key will stop the motion</value>
+  </data>
+  <data name="MoveMouseProtocolTitle" xml:space="preserve">
+    <value>Move the mouse pointer</value>
+  </data>
+  <data name="PushLeft" xml:space="preserve">
+    <value>Push the left button</value>
+  </data>
+  <data name="ReleaseLeft" xml:space="preserve">
+    <value>Release the left button</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="RightClick" xml:space="preserve">
+    <value>Right click</value>
+  </data>
+  <data name="SendKeyProtocolDescription" xml:space="preserve">
+    <value>Enables sending a special key : Return, F1 to F12, Suppr etc...</value>
+  </data>
+  <data name="SendKeyProtocolSubtitle" xml:space="preserve">
+    <value>Action : </value>
+  </data>
+  <data name="SendKeyProtocolTitle" xml:space="preserve">
+    <value>Special Key (F11, Return, Suppr ...)</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="UpLeft" xml:space="preserve">
+    <value>Up-Left</value>
+  </data>
+  <data name="UpRight" xml:space="preserve">
+    <value>Up-Right</value>
+  </data>
+  <data name="FileLauncherBrowse" xml:space="preserve">
+    <value>A file from your computer</value>
+  </data>
+  <data name="FileLauncherDescription" xml:space="preserve">
+    <value>Open a file or launch an application from your computer</value>
+  </data>
+  <data name="FileLauncherInstalledApps" xml:space="preserve">
+    <value>An installed application</value>
+  </data>
+  <data name="FileLauncherTitle" xml:space="preserve">
+    <value>Open...</value>
+  </data>
+  <data name="AddMode" xml:space="preserve">
+    <value>Activate a mode</value>
+  </data>
+  <data name="DynCommandProtocolDescription" xml:space="preserve">
+    <value>Enables triggering other actions (close CiviKey, minimize the keyboard...)</value>
+  </data>
+  <data name="DynCommandProtocolTitle" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
+  <data name="HelpProtocolDescription" xml:space="preserve">
+    <value>Enables showing the keyboard's help panel</value>
+  </data>
+  <data name="HelpProtocolTitle" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ModeProtocolActionsSubtitle" xml:space="preserve">
+    <value>Action : </value>
+  </data>
+  <data name="ModeProtocolDescription" xml:space="preserve">
+    <value>Enables interacting with modes : removing, adding or setting one</value>
+  </data>
+  <data name="ModeProtocolModesSubtitle" xml:space="preserve">
+    <value>Applied to : </value>
+  </data>
+  <data name="ModeProtocolTitle" xml:space="preserve">
+    <value>Modes (ctrl, shift, alt...)</value>
+  </data>
+  <data name="RemoveMode" xml:space="preserve">
+    <value>Desactivate a mode</value>
+  </data>
+  <data name="SetMode" xml:space="preserve">
+    <value>Set a mode as the current (and only) one</value>
+  </data>
+  <data name="ToggleMode" xml:space="preserve">
+    <value>Toggle a mode</value>
+  </data>
+  <data name="MonitorOnceProtocolDescription" xml:space="preserve">
+    <value>Enables triggering an action right after another (change the mode after the next click on a key)</value>
+  </data>
+  <data name="MonitorOnceProtocolTitle" xml:space="preserve">
+    <value>Chain actions</value>
+  </data>
+  <data name="MonitorOnceInnerActionTitle" xml:space="preserve">
+    <value>Define the command sent when the action above is triggered</value>
+  </data>
+  <data name="ActionToListenTo" xml:space="preserve">
+    <value>Action to listen to : </value>
+  </data>
+  <data name="GiveName" xml:space="preserve">
+    <value>Give a name to this action :</value>
+  </data>
+  <data name="KeySent" xml:space="preserve">
+    <value>A "classic" key has been pressed (a, z, b, t etc...)</value>
+  </data>
+  <data name="ShowHelpAction" xml:space="preserve">
+    <value>Show the keyboard's help panel</value>
+  </data>
+  <data name="DynCommandClose" xml:space="preserve">
+    <value>Close CiviKey</value>
+  </data>
+  <data name="DynCommandHide" xml:space="preserve">
+    <value>Hide CiviKey's configuration panel</value>
+  </data>
+  <data name="DynCommandMinimize" xml:space="preserve">
+    <value>Minimize the keyboard</value>
+  </data>
+  <data name="DynCommandWindowsKey" xml:space="preserve">
+    <value>Push the 'Windows' key</value>
+  </data>
+  <data name="IsRecordingText" xml:space="preserve">
+    <value>Recording...</value>
+  </data>
+  <data name="KeySequenceNameTitle" xml:space="preserve">
+    <value>Name of the sequence : </value>
+  </data>
+  <data name="KeySequenceProtocolDescription" xml:space="preserve">
+    <value>Enables recording a key combination</value>
+  </data>
+  <data name="KeySequenceProtocolTitle" xml:space="preserve">
+    <value>Key sequences</value>
+  </data>
+  <data name="StartRecordingTitle" xml:space="preserve">
+    <value>Start recording</value>
+  </data>
+  <data name="StopRecordingTitle" xml:space="preserve">
+    <value>Stop recording</value>
+  </data>
+  <data name="TextTemplateAdd" xml:space="preserve">
+    <value>Add a placeholder</value>
+  </data>
+  <data name="TextTemplateDescription" xml:space="preserve">
+    <value>Edit a template</value>
+  </data>
+  <data name="TextTemplateTitle" xml:space="preserve">
+    <value>Edit a template</value>
+  </data>
+  <data name="ConfirmExitApp" xml:space="preserve">
+    <value>Are you sure you want to quit CiviKey?</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+</root>

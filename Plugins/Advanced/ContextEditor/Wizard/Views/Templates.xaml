@@ -9,6 +9,7 @@
              xmlns:views="clr-namespace:KeyboardEditor.s"
              xmlns:viewmodels="clr-namespace:KeyboardEditor.ViewModels"
              xmlns:local="clr-namespace:KeyboardEditor"
+             xmlns:wizard="clr-namespace:CK.WPF.Wizard;assembly=CK.WPF.Wizard"
              xmlns:s="clr-namespace:System;assembly=mscorlib" 
              xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
              mc:Ignorable="d">
@@ -70,7 +71,7 @@
         </ckcore:TypeDataTemplateSelector>
     </ckcore:CompositeDataTemplateSelector>
 
-    <DataTemplate DataType="{x:Type local:WizardManager}">
+    <DataTemplate DataType="{x:Type wizard:WizardManager}">
         <DataTemplate.Resources>
             <ckcore:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
             <ckcontrols:AndMultiValueConverter x:Key="AndMultiValueConverter"/>
@@ -93,8 +94,6 @@
                 <TextBlock Text="{Binding ActiveItem.Title}" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"/>
                 <TextBlock Text="{Binding ActiveItem.Description}" FontSize="15" Foreground="Gray" HorizontalAlignment="Center" TextWrapping="Wrap"/>
             </StackPanel>
-
-            
 
             <DockPanel Height="70" DockPanel.Dock="Bottom" LastChildFill="False" Margin="0 10 0 0">
                 <!--Back button-->

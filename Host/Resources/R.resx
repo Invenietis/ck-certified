@@ -130,16 +130,19 @@
     <value>Auto clic feature configuration</value>
   </data>
   <data name="AutoClickCountDownDuration" xml:space="preserve">
-    <value>Countdown duration</value>
+    <value>Countdown duration (ms)</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
-    <value>auto click</value>
+    <value>Auto click</value>
+  </data>
+  <data name="ClickTypeSelectorName" xml:space="preserve">
+    <value>Scroll to click</value>
   </data>
   <data name="AutoClickShowMousePanelOption" xml:space="preserve">
     <value>Show a progress indicator above the pointer</value>
   </data>
   <data name="AutoClickTimeBeforeCountDownStarts" xml:space="preserve">
-    <value>Time before the countdown starts</value>
+    <value>Time before the countdown starts (ms)</value>
   </data>
   <data name="CiviKey" xml:space="preserve">
     <value>CiviKey - Standard</value>
@@ -294,6 +297,15 @@
   <data name="SkinEditorSectionName" xml:space="preserve">
     <value>Keyboard edition</value>
   </data>
+  <data name="ShareKeyboard" xml:space="preserve">
+    <value>Import or Export a keyboard</value>
+  </data>
+  <data name="ImportKeyboard" xml:space="preserve">
+    <value>Import a keyboard</value>
+  </data>
+  <data name="ExportKeyboard" xml:space="preserve">
+    <value>Export a keyboard</value>
+  </data>
   <data name="ScrollConfig" xml:space="preserve">
     <value>Edit scrolling configuration</value>
   </data>
@@ -324,7 +336,64 @@
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
     <value>Uses semantic prediction</value>
   </data>
-  <data name="ScrollingSectionName" xml:space="preserve">
-    <value>Scrolling</value>
+  <data name="Radar" xml:space="preserve">
+    <value>Radar</value>
+  </data>
+  <data name="RadarConfiguration" xml:space="preserve">
+    <value>Radar configuration</value>
+  </data>
+  <data name="ScreenScrollerConfiguration" xml:space="preserve">
+    <value>Screen scroler configuration</value>
+  </data>
+  <data name="ScreenScrolling" xml:space="preserve">
+    <value>Screen scrolling</value>
+  </data>
+  <data name="Scrolling" xml:space="preserve">
+    <value>General Scrolling</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="NoPointingDevice" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="NoPointingDeviceDescription" xml:space="preserve">
+    <value>Stop all pointing mecanisms</value>
+  </data>
+  <data name="RadarDescription" xml:space="preserve">
+    <value>Move the pointer thanks to the "radar" mecanism</value>
+  </data>
+  <data name="ScreenScrollingDescription" xml:space="preserve">
+    <value>Create a grid on the screen to move the mouse pointer</value>
+  </data>
+  <data name="ShowEditor" xml:space="preserve">
+    <value>Show the editor panel</value>
+  </data>
+  <data name="EnableScrolling" xml:space="preserve">
+    <value>Enable scrolling on the element</value>
+  </data>
+  <data name="Credits" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="ForbidScrolling" xml:space="preserve">
+    <value>Forbid scrolling on this element</value>
+  </data>
+  <data name="OtherScrollConfig" xml:space="preserve">
+    <value>Advanced configurations</value>
+  </data>
+  <data name="ActiveModules" xml:space="preserve">
+    <value>List of active modules : </value>
+  </data>
+  <data name="ForbiddenModules" xml:space="preserve">
+    <value>List of modules which cannot be scrolled on : </value>
+  </data>
+  <data name="ScrollableElements" xml:space="preserve">
+    <value>Scrollable modules</value>
+  </data>
+  <data name="UnScrollableElements" xml:space="preserve">
+    <value>Not scrollable modules</value>
+  </data>
+  <data name="MouseScrollingSelection" xml:space="preserve">
+    <value>Mouse scrolling type selection</value>
   </data>
 </root>

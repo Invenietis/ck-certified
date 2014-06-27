@@ -22,10 +22,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Reflection;
 using CK.Core;
-using System;
-using CK.Plugin.Hosting;
 using CK.Plugin;
 using CK.Plugin.Config;
 

@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Library\WPF\CK.WPF.ViewModel\VMContextElement.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMContextElementEditable.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
@@ -72,7 +73,7 @@ namespace KeyboardEditor.ViewModels
                 _isExpanded = value;
                 if( value && Parent != null )
                 {
-                    Parent.IsExpanded = value;
+                    Parent.IsExpanded = true;
                 }
                 OnPropertyChanged( "IsExpanded" );
             }
@@ -110,7 +111,7 @@ namespace KeyboardEditor.ViewModels
         public abstract VMContextElementEditable Parent { get; }
 
         /// <summary>
-        /// Gets the <see cref="VMContext"/> to which this element belongs.
+        /// Gets the <see cref="VMContextSimple"/> to which this element belongs.
         /// </summary>
         public VMContextEditable Context { get { return _context; } }
 
@@ -129,7 +130,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnLayoutConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => String.Compare( c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", true ) == 0 ) )
+            if( e.MultiPluginId.Any( ( c ) => String.Compare( c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", StringComparison.InvariantCultureIgnoreCase ) == 0 ) )
             {
                 switch( e.Key )
                 {
@@ -172,7 +173,7 @@ namespace KeyboardEditor.ViewModels
         #region Layout Edition elements
 
         VMCommand<string> _clearCmd;
-        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd == null ? _clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty ) : _clearCmd; } }
+        public VMCommand<string> ClearPropertyCmd { get { return _clearCmd ?? ( _clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty ) ); } }
 
         void ClearProperty( string propertyName )
         {
@@ -205,6 +206,12 @@ namespace KeyboardEditor.ViewModels
         {
             get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HighlightBackground", Background ); }
             set { _context.SkinConfiguration[LayoutElement]["HighlightBackground"] = value; }
+        }
+
+        public Color HighlightFontColor
+        {
+            get { return LayoutElement.GetPropertyValue( _context.SkinConfiguration, "HighlightFontColor", Colors.Black ); }
+            set { _context.SkinConfiguration[LayoutElement]["HighlightFontColor"] = value; }
         }
 
         public Color PressedBackground
@@ -243,6 +250,14 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
+        public int LoopCount
+        {
+            get { return LayoutElement.Keyboard.GetPropertyValue<int>( _context.SkinConfiguration, "LoopCount", 1 ); }
+            set
+            {
+                _context.SkinConfiguration[LayoutElement.Keyboard]["LoopCount"] = value;
+            }
+        }
 
         #region FontPoperties used for edition
         /// <summary>
@@ -299,11 +314,17 @@ namespace KeyboardEditor.ViewModels
         {
             for( int i = from; i <= to; i++ ) yield return i;
         }
-        public IEnumerable<double> FontSizes { get { return _sizes == null ? _sizes = GetSizes( 10, 30 ) : _sizes; } }
+        public IEnumerable<double> FontSizes { get { return _sizes ?? (_sizes = GetSizes( 10, 50 )); } }
+
+        IEnumerable<int> _loopCounts;
+        IEnumerable<int> GetLoopCounts( int from, int to )
+        {
+            for( int i = from; i <= to; i++ ) yield return i;
+        }
+        public IEnumerable<int> LoopCounts { get { return _loopCounts ?? (_loopCounts = GetLoopCounts( 1, 5 )); } }
 
 
         #endregion
-
 
         #endregion
 

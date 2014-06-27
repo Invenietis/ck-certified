@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\SimpleSkin\Helpers\PropertyLookupExtentions.cs) is part of CiviKey. 
+* This file (Library\WPF\CK.WPF.ViewModel\Helpers\PropertyLookupExtentions.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,7 +22,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using CK.Keyboard.Model;
 using System.Collections.Generic;
 using CK.Plugin.Config;

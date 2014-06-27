@@ -21,10 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using CK.WPF.ViewModel;
@@ -115,7 +111,7 @@ namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
             {
                 if( _clearOutputConsoleCommand == null )
                 {
-                    _clearOutputConsoleCommand = new VMCommand( () =>
+                    _clearOutputConsoleCommand = new CK.Windows.App.VMCommand( () =>
                     {
                         Clear();
                     } );

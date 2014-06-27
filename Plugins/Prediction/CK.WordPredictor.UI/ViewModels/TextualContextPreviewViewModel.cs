@@ -1,15 +1,38 @@
-﻿using System;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Prediction\CK.WordPredictor.UI\ViewModels\TextualContextPreviewViewModel.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using CK.Plugin;
 using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI.ViewModels
 {
-    public class TextualContextPreviewViewModel : INotifyPropertyChanged, IDisposable
+    public class TextualContextPreviewViewModel : INotifyPropertyChanging, INotifyPropertyChanged, IDisposable
     {
+        public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
 
         readonly IService<ITextualContextService> _textualContext;
@@ -17,11 +40,11 @@ namespace CK.WordPredictor.UI.ViewModels
         public TextualContextPreviewViewModel( IService<ITextualContextService> textualContext )
         {
             _textualContext = textualContext;
-            _textualContext.Service.PropertyChanged += TextualContext_PropertyChanged;
+            if( _textualContext.Status.IsStartingOrStarted ) _textualContext.Service.TextualContextChanged += TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged += TextualContextService_ServiceStatusChanged;
         }
 
-        private void TextualContext_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+        private void TextualContext_PropertyChanged( object sender, EventArgs e )
         {
             OnPropertyChanged( "TextualContext" );
             OnPropertyChanged( "CurrentToken" );
@@ -30,6 +53,8 @@ namespace CK.WordPredictor.UI.ViewModels
 
         private void TextualContextService_ServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
+            if( e.Current == InternalRunningStatus.Started ) _textualContext.Service.TextualContextChanged += TextualContext_PropertyChanged;
+            else if( e.Current == InternalRunningStatus.Stopping ) _textualContext.Service.TextualContextChanged -= TextualContext_PropertyChanged;
             OnPropertyChanged( "IsTextualContextServiceAvailable" );
         }
 
@@ -77,8 +102,9 @@ namespace CK.WordPredictor.UI.ViewModels
 
         public void Dispose()
         {
-            _textualContext.Service.PropertyChanged -= TextualContext_PropertyChanged;
+            if( _textualContext.Status.IsStartingOrStarted ) _textualContext.Service.TextualContextChanged -= TextualContext_PropertyChanged;
             _textualContext.ServiceStatusChanged -= TextualContextService_ServiceStatusChanged;
         }
+
     }
 }

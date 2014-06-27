@@ -1,8 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (CK.WPF.Wizard\WizardManager.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -13,7 +31,7 @@ namespace CK.WPF.Wizard
     /// <summary>
     /// This specialization of the StackConductor implements the "GoFurther" (Go to the next view) and "Restart" actions.
     /// </summary>
-    public class WizardManager : StackConductor<WizardPage>
+    public class WizardManager : NavigableConductor<WizardPage>
     {
         ViewAware _parent;
 
@@ -24,34 +42,6 @@ namespace CK.WPF.Wizard
         public WizardManager( ViewAware parent )
         {
             _parent = parent;
-        }
-
-        /// <summary>
-        /// Gets the Next item of the currently active item
-        /// </summary>
-        public WizardPage Next
-        {
-            get { return ActiveItem.Next; }
-        }
-
-        public override bool OnBeforeGoBack()
-        {
-            return ActiveItem.OnBeforeGoBack();
-        }
-
-        /// <summary>
-        /// Activates the next view
-        /// </summary>
-        public void GoFurther()
-        {
-            if( ActiveItem.CheckCanGoFurther() )
-            {
-                if( ActiveItem.OnBeforeNext() && Next != null )
-                {
-                    ActivateItem( Next );
-                    return;
-                }
-            }
         }
 
         /// <summary>
@@ -74,6 +64,19 @@ namespace CK.WPF.Wizard
             {
                 if( _goFurtherCommand == null ) _goFurtherCommand = new SimpleCommand( GoFurther );
                 return _goFurtherCommand;
+            }
+        }
+
+        SimpleCommand _goBackCommand;
+        /// <summary>
+        /// Triggers <see cref="GoBack()", which activates the previous view/>
+        /// </summary>
+        public ICommand GoBackCommand
+        {
+            get
+            {
+                if( _goBackCommand == null ) _goBackCommand = new SimpleCommand( GoBack );
+                return _goBackCommand;
             }
         }
 

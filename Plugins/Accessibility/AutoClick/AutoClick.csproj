@@ -37,53 +37,61 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\..\..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Context.2.9.6-develop\lib\net40\CK.Context.dll</HintPath>
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Context, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Core.2.8.9-develop\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Context.2.10.2-develop\lib\net40\CK.Context.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Interop, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Interop.2.8.9-develop\lib\net40\CK.Interop.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.InputDriver, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Plugin.Config.2.9.6-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.InputDriver.0.3.2-develop\lib\net40\CK.InputDriver.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Interop.2.8.14\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Plugin.Config.2.10.1-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Config.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Reflection.2.8.9-develop\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.10.1-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.9.7-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.10.1-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Reflection, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Storage.2.8.9-develop\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Reflection.2.8.14\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.9.12-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.10.3-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Interop.2.9.6-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.App, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.App.2.10.1-develop\lib\net40\CK.Windows.App.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Core, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.10.6-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Interop, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.10.1-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -92,10 +100,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="SendInputDriver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ThirdParty\SendInputDriver.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -107,9 +111,8 @@
     <Reference Include="System.Windows.Forms">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -123,57 +126,91 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoClick.cs" />
-    <Compile Include="Behaviors\SelectionBehavior.cs" />
-    <Compile Include="Converters\PathToImageConverter.cs" />
-    <Compile Include="Converters\InstructionToImageConverter.cs" />
-    <Compile Include="Converters\ValueToIsLargeArcConverter.cs" />
-    <Compile Include="Converters\ValueToPointConverter.cs" />
-    <Compile Include="IClickTypeSelector.cs" />
-    <Compile Include="ViewModels\ClickInstruction.cs">
+    <Compile Include="AutoClick\AutoClick.cs" />
+    <Compile Include="Res\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Res\R.fr-FR.Designer.cs">
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Res\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Behaviors\SelectionBehavior.cs" />
+    <Compile Include="Tools\Converters\PathToImageConverter.cs" />
+    <Compile Include="Tools\Converters\InstructionToImageConverter.cs" />
+    <Compile Include="Tools\Converters\ValueToIsLargeArcConverter.cs" />
+    <Compile Include="Tools\Converters\ValueToPointConverter.cs" />
+    <Compile Include="ClickSelectorService\IClickSelector.cs" />
+    <Compile Include="ClickSelectorService\ViewModels\ClickInstruction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StdClickTypeSelector.cs" />
-    <Compile Include="ViewModels\ClickEmbedderVM.cs" />
-    <Compile Include="ViewModels\ClicksVM.cs" />
-    <Compile Include="ViewModels\ClickVM.cs" />
-    <Compile Include="Views\AutoClickEditorWindow.xaml.cs">
+    <Compile Include="ClickSelectorService\ClickSelector.cs" />
+    <Compile Include="ClickSelectorService\ViewModels\ClickEmbedderVM.cs" />
+    <Compile Include="ClickSelectorService\ViewModels\ClicksVM.cs" />
+    <Compile Include="ClickSelectorService\ViewModels\ClickVM.cs" />
+    <Compile Include="AutoClick\Views\AutoClickEditorWindow.xaml.cs">
       <DependentUpon>AutoClickEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MouseProgressPieWindow.xaml.cs">
-      <DependentUpon>MouseProgressPieWindow.xaml</DependentUpon>
+    <Compile Include="AutoClick\Views\MouseDecoratorWindow.xaml.cs">
+      <DependentUpon>MouseDecoratorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CustomControls\ActionOnOverButton.cs" />
-    <Compile Include="Views\CustomControls\WPFClickTypeWatch.cs" />
-    <Compile Include="Views\CustomControls\ActionOnMouseEnterButton.cs" />
-    <Compile Include="Views\WPFStdClickTypeWindow.xaml.cs">
-      <DependentUpon>WPFStdClickTypeWindow.xaml</DependentUpon>
+    <Compile Include="AutoClick\Views\CustomControls\ActionOnOverButton.cs" />
+    <Compile Include="AutoClick\Views\CustomControls\WPFClickTypeWatch.cs" />
+    <Compile Include="AutoClick\Views\CustomControls\ActionOnMouseEnterButton.cs" />
+    <Compile Include="AutoClick\Views\AutoClickWindow.xaml.cs">
+      <DependentUpon>AutoClickWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClickSelectorService\Views\ClickSelectorWindow.xaml.cs">
+      <DependentUpon>ClickSelectorWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AutoClickEditorWindow.xaml">
+    <Page Include="AutoClick\Views\AutoClickEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MouseProgressPieWindow.xaml">
+    <Page Include="AutoClick\Views\Dictionnaries\AutoClick.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Dictionnaries\AutoClick.xaml">
+    <Page Include="AutoClick\Views\MouseDecoratorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Dictionnaries\Editor.xaml">
+    <Page Include="SharedDictionnaries\Shared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\WPFStdClickTypeWindow.xaml">
+    <Page Include="ClickSelectorService\Views\ClickSelectorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ClickSelectorService\Views\Dictionnaries\ClickSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoClick\Views\Dictionnaries\Editor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AutoClick\Views\AutoClickWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
+      <Project>{fda960f6-d429-4696-9306-b473dae41e5b}</Project>
+      <Name>CK.WindowManager.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
@@ -188,6 +225,14 @@
       <Project>{6C45425E-6768-42E3-B0A5-4D603EB14426}</Project>
       <Name>CommonServices</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\HelpServices\HelpServices.csproj">
+      <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
+      <Name>HelpServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
+      <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
+      <Name>HighlightModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +266,18 @@
     <Resource Include="Res\Images\DragDrop.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Res\R.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Res\R.fr-FR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Res\R.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <EmbeddedResource Include="Res\helpcontent.zip" />
   </ItemGroup>

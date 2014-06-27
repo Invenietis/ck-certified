@@ -21,9 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Windows.Input;
-
 namespace CK.Plugins.ObjectExplorer
 {
     public interface ISelectableElement

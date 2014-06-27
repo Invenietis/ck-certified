@@ -130,16 +130,19 @@
     <value>Configuration du clic automatique</value>
   </data>
   <data name="AutoClickCountDownDuration" xml:space="preserve">
-    <value>Durée du décompte</value>
+    <value>Durée du décompte (ms)</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
     <value>le clic automatique</value>
+  </data>
+  <data name="ClickTypeSelectorName" xml:space="preserve">
+    <value>le clic par défilement</value>
   </data>
   <data name="AutoClickShowMousePanelOption" xml:space="preserve">
     <value>Afficher l'indicateur de progression au dessus du pointeur</value>
   </data>
   <data name="AutoClickTimeBeforeCountDownStarts" xml:space="preserve">
-    <value>Temps avant que le décompte ne commence</value>
+    <value>Temps avant que le décompte ne commence (ms)</value>
   </data>
   <data name="CiviKey" xml:space="preserve">
     <value>CiviKey - Standard</value>
@@ -294,6 +297,15 @@
   <data name="SkinEditorSectionName" xml:space="preserve">
     <value>Modification du clavier</value>
   </data>
+  <data name="ShareKeyboard" xml:space="preserve">
+    <value>Importer ou Exporter un clavier</value>
+  </data>
+  <data name="ImportKeyboard" xml:space="preserve">
+    <value>Importer un clavier</value>
+  </data>
+  <data name="ExportKeyboard" xml:space="preserve">
+    <value>Exporter un clavier</value>
+  </data>
   <data name="ScrollConfig" xml:space="preserve">
     <value>Configuration du défilement</value>
   </data>
@@ -324,7 +336,64 @@
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
     <value>Activer la prédiction sémantique (analyse de la structure de la phrase)</value>
   </data>
-  <data name="ScrollingSectionName" xml:space="preserve">
-    <value>le défilement</value>
+  <data name="Radar" xml:space="preserve">
+    <value>Radar</value>
+  </data>
+  <data name="RadarConfiguration" xml:space="preserve">
+    <value>Configuration du radar</value>
+  </data>
+  <data name="ScreenScrollerConfiguration" xml:space="preserve">
+    <value>Configuration du défilement d'écran</value>
+  </data>
+  <data name="ScreenScrolling" xml:space="preserve">
+    <value>Défilement écrans</value>
+  </data>
+  <data name="Scrolling" xml:space="preserve">
+    <value>Défilement</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="NoPointingDevice" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
+  <data name="NoPointingDeviceDescription" xml:space="preserve">
+    <value>Stoppe tous les dispositifs de pointage</value>
+  </data>
+  <data name="RadarDescription" xml:space="preserve">
+    <value>Déplacer la souris grâce au mécanisme de "radar"</value>
+  </data>
+  <data name="ScreenScrollingDescription" xml:space="preserve">
+    <value>Créér un quadrillage sur l'écran pour déplacer la souris</value>
+  </data>
+  <data name="ShowEditor" xml:space="preserve">
+    <value>Ouvrir la fenêtre de configuration</value>
+  </data>
+  <data name="EnableScrolling" xml:space="preserve">
+    <value>Permettre le défilement sur cet élément</value>
+  </data>
+  <data name="ForbidScrolling" xml:space="preserve">
+    <value>Empêcher le défilement sur cet élément</value>
+  </data>
+  <data name="OtherScrollConfig" xml:space="preserve">
+    <value>Configuration avancée</value>
+  </data>
+  <data name="Credits" xml:space="preserve">
+    <value>Crédits</value>
+  </data>
+  <data name="ActiveModules" xml:space="preserve">
+    <value>Liste des modules actifs : </value>
+  </data>
+  <data name="ForbiddenModules" xml:space="preserve">
+    <value>Liste des modules interdits au défilement : </value>
+  </data>
+  <data name="ScrollableElements" xml:space="preserve">
+    <value>Modules défilables</value>
+  </data>
+  <data name="UnScrollableElements" xml:space="preserve">
+    <value>Modules non défilables</value>
+  </data>
+  <data name="MouseScrollingSelection" xml:space="preserve">
+    <value>Sélection du type de défilement souris</value>
   </data>
 </root>

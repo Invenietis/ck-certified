@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Services\CommonServices\Advanced\Commands\IModeCommandHandlerService.cs) is part of CiviKey. 
+* This file (Plugins\Services\CommonServices\Advanced\Commands\IMoveMouseCommandHandlerService.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,12 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using CK.Plugin;
-using CK.Keyboard.Model;
 
 namespace CommonServices
 {
+
     /// <summary>
     /// Service which allow you to move the mouse.
     /// </summary>
@@ -35,6 +34,6 @@ namespace CommonServices
         /// <summary>
         /// Move the mouse in the given direction for the given distance (step).
         /// </summary>
-        void BeginMouseMotion( string direction, int step );
+        void BeginMouseMotion( string direction, int step, bool snakeMode = false );
     }
 }

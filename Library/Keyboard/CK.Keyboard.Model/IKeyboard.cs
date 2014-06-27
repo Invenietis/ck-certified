@@ -22,8 +22,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using CK.Core;
 using CK.Plugin;
 
@@ -34,6 +32,10 @@ namespace CK.Keyboard.Model
     /// </summary>
     public interface IKeyboard : IKeyboardElement
     {
+        /// <summary>
+        /// Gets whether the keyboard is active or makes this keyboard active.
+        /// </summary>
+        bool IsActive { get; set; }
 
         /// <summary>
         /// Destroys this keyboard.
@@ -116,7 +118,7 @@ namespace CK.Keyboard.Model
         event EventHandler<KeyboardCurrentLayoutChangedEventArgs> CurrentLayoutChanged;
 
         /// <summary>
-        /// Collection of the <see cref="IZone"/> hold by this keyboard.
+        /// Collection of the <see cref="IZone"/> held by this keyboard.
         /// </summary>
         IZoneCollection Zones { get; }
 
@@ -126,20 +128,20 @@ namespace CK.Keyboard.Model
         ICKReadOnlyList<IKey> Keys { get; }
 
         /// <summary>
-        /// Fires when a new <see cref="IKey">key</see> has been created in a one 
-        /// of this keyboard's <see cref="Zones">zone</see>.
+        /// Fires when a new <see cref="IKey">key</see> has been created in one 
+        /// of this keyboard's <see cref="Zones">zones</see>.
         /// </summary>
         event EventHandler<KeyEventArgs> KeyCreated;
 
         /// <summary>
-        /// Fires when a <see cref="IKey">key</see> in a one of this keyboard's <see cref="Zones">zone</see>
+        /// Fires when a <see cref="IKey">key</see> in one of this keyboard's <see cref="Zones">zones</see>
         /// has been <see cref="IKey.Destroy">destroyed</see>.
         /// </summary>
         event EventHandler<KeyEventArgs> KeyDestroyed;
         
         /// <summary>
-        /// Fires when a <see cref="IKey">key</see>.<see cref="IKey.Index">Index</see> has changed in a one 
-        /// of this keyboard's <see cref="Zones">zone</see>.
+        /// Fires when a <see cref="IKey">key</see>.<see cref="IKey.Index">Index</see> has changed in one 
+        /// of this keyboard's <see cref="Zones">zones</see>.
         /// </summary>
         event EventHandler<KeyMovedEventArgs> KeyMoved;
 
@@ -152,7 +154,7 @@ namespace CK.Keyboard.Model
         
         
         /// <summary>
-        /// Fires when a <see cref="IKeyMode">actual key</see> in a one of this keyboard's keys 
+        /// Fires when an <see cref="IKeyMode">actual key</see> in one of this keyboard's keys 
         /// has been <see cref="IKey.Destroy">destroyed</see>.
         /// </summary>
         event EventHandler<KeyModeEventArgs> KeyModeDestroyed;

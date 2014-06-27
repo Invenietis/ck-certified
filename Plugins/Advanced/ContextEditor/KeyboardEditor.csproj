@@ -35,61 +35,61 @@
     <UICulture>en-US</UICulture>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\..\..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="CK.Context, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Context.2.9.6-develop\lib\net40\CK.Context.dll</HintPath>
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Context, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Core.2.8.9-develop\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Context.2.10.2-develop\lib\net40\CK.Context.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Interop, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Interop.2.8.9-develop\lib\net40\CK.Interop.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Interop, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Plugin.Config.2.9.6-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Interop.2.8.14\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Config.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Plugin.Config.2.10.1-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Plugin.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Config.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK-Plugin.2.9.6-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.10.1-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Plugin.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Reflection.2.8.9-develop\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\..\packages\CK-Plugin.2.10.1-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
     </Reference>
-    <Reference Include="CK.SharedDic, Version=0.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Reflection, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.SharedDic.2.9.7-develop\lib\net40\CK.SharedDic.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Reflection.2.8.14\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Storage, Version=2.8.9.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Storage.2.8.9-develop\lib\net40\CK.Storage.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.10.3-develop\lib\net40\CK.SharedDic.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.App, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Storage, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.App.2.9.7-develop\lib\net40\CK.Windows.App.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Storage.2.8.14\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Config, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.App, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Config.2.9.6-develop\lib\net40\CK.Windows.Config.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.App.2.10.1-develop\lib\net40\CK.Windows.App.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Core.2.9.12-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Config.2.10.1-develop\lib\net40\CK.Windows.Config.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Core, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Interop.2.9.6-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.10.6-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Interop, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.10.1-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -111,9 +111,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -124,13 +123,31 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KeyboardEdition\Components\Converters\EnsureIntegerConverter.cs" />
+    <Compile Include="Resources\Images.en-US.Designer.cs">
+      <DependentUpon>Images.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Wizard\ExportKeyboard.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\AddActionDataTemplateSelector.cs" />
     <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\HasOrderToBooleanConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ImageConverter.cs" />
     <Compile Include="KeyboardEdition\Components\Converters\ModeTypeToSelectedConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\FileLauncherTypeSelector.cs" />
     <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
-    <Compile Include="KeyboardEdition\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\BreadcrumbTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\UserControls\CaretIndexBehavior.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\IModeViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeBase.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMModes\VMLayoutKeyModeEditable.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs" />
     <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs" />
@@ -150,9 +167,6 @@
     <Compile Include="KeyboardEdition\Views\Keys\LayoutKeyEditionUserControl.xaml.cs">
       <DependentUpon>LayoutKeyEditionUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="KeyboardEdition\Views\Keys\KeyEditionUserControl.xaml.cs">
-      <DependentUpon>KeyEditionUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml.cs">
       <DependentUpon>KeyboardEditionUserControl.xaml</DependentUpon>
     </Compile>
@@ -160,32 +174,47 @@
       <DependentUpon>ZoneEditionUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Images.fr-FR.Designer.cs">
+      <DependentUpon>Images.fr-FR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Images.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Images.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\R.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>R.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\R.fr.Designer.cs">
+    <Compile Include="Resources\R.fr-FR.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>R.fr.resx</DependentUpon>
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
     </Compile>
     <Compile Include="Tools\HotKeyTools.cs" />
     <Compile Include="Wizard\BackupFeature\IKeyboardBackupAware.cs" />
     <Compile Include="Wizard\BackupFeature\KeyboardBackup.cs" />
     <Compile Include="Wizard\CustomWindowManager.cs" />
+    <Compile Include="Wizard\ImportKeyboard.cs" />
     <Compile Include="Wizard\KeyboardEditorBootstrapper.cs" />
     <Compile Include="Wizard\IKeyboardEditorRoot.cs" />
     <Compile Include="Wizard\KeyboardEditor.cs" />
     <Compile Include="Wizard\ViewModels\AppViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ContextListViewModel.cs" />
     <Compile Include="Wizard\ViewModels\DeletionKeyboardListViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\CheckBoxExportKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\CheckBoxImportKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\ContextViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\KeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\SimpleKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\ElementViewModels\WizardButtonViewModel.cs" />
     <Compile Include="Wizard\ViewModels\EndingStepViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ExportKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\HomeViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ImportKeyboardViewModel.cs" />
     <Compile Include="Wizard\ViewModels\KeyboardEditionViewModel.cs" />
     <Compile Include="Wizard\ViewModels\KeyboardListViewModel.cs" />
     <Compile Include="Wizard\ViewModels\KeyboardProfileViewModel.cs" />
@@ -204,8 +233,14 @@
     <Compile Include="Wizard\Views\EndingStepView.xaml.cs">
       <DependentUpon>EndingStepView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wizard\Views\ExportKeyboardView.xaml.cs">
+      <DependentUpon>ExportKeyboardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wizard\Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\ImportKeyboardView.xaml.cs">
+      <DependentUpon>ImportKeyboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wizard\Views\KeyboardEditionView.xaml.cs">
       <DependentUpon>KeyboardEditionView.xaml</DependentUpon>
@@ -222,12 +257,21 @@
     <Compile Include="Wizard\Views\SavingStepView.xaml.cs">
       <DependentUpon>SavingStepView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wizard\WizardManager.cs" />
-    <Compile Include="Wizard\WizardPage.cs" />
+    <Compile Include="Wizard\HelpAwareWizardPage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Wizard\KeyboardEditor.HotKey.cs" />
+    <EmbeddedResource Include="Resources\Images.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images.fr-FR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.fr-FR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\helpcontent.zip" />
   </ItemGroup>
   <ItemGroup>
@@ -247,10 +291,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="KeyboardEdition\Views\Keys\KeyEditionUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -267,6 +307,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Wizard\Views\ExportKeyboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Wizard\Views\Images.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -282,6 +326,10 @@
     <Page Include="Wizard\Views\HomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\ImportKeyboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Wizard\Views\KeyboardEditionView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -313,6 +361,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CK.WPF.Wizard\CK.WPF.Wizard.csproj">
+      <Project>{dd6f2cff-00e9-4630-aba8-5b58f765abaf}</Project>
+      <Name>CK.WPF.Wizard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
       <Name>CK.Keyboard.Model</Name>
@@ -340,14 +392,35 @@
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Services\HelpServices\HelpServices.csproj">
+      <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
+      <Name>HelpServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\ProtocolManagerModel\ProtocolManagerModel.csproj">
+      <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
+      <Name>ProtocolManagerModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
+      <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
+      <Name>BasicCommandHandlers</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\R.fr.resx">
+    <EmbeddedResource Include="Resources\Images.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+      <LastGenOutput>Images.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.fr-FR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\R.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>R.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -395,6 +468,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\bottom.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

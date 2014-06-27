@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\EditableSkin\ViewModels\VMKeyEditable.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -25,16 +25,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using CK.Storage;
@@ -42,7 +37,6 @@ using CK.Windows.App;
 using CK.WPF.ViewModel;
 using CommonServices;
 using KeyboardEditor.Resources;
-using Microsoft.Win32;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -152,17 +146,35 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public override bool IsSelected
         {
-            get { return _isSelected; }
+            get { return _isSelected || LayoutKeyModeVM.IsSelected || KeyModeVM.IsSelected; }
             set
             {
                 if( _isSelected != value )
                 {
-                    _isSelected = value;
-                    Context.SelectedElement = this;
-                    if( value ) ZIndex = 100;
+                    _isSelected = false;
+
+                    if( value )
+                    {
+                        ZIndex = 100;
+                        Parent.IsExpanded = value;
+
+                        //When selecting the layoutkeymode or the keymode via the KeyEditionTemplate, the key (this element) is selected in the treeview. The two way binding triggers this set.
+                        //We need to avoid setting the current element in this case.
+                        if( Context.SelectedElement != KeyModeVM && Context.SelectedElement != LayoutKeyModeVM )
+                        {
+                            if( Context.CurrentlyDisplayedModeType == ModeTypes.Mode ) Context.SelectedElement = this.KeyModeVM;
+                            else if( Context.CurrentlyDisplayedModeType == ModeTypes.Layout ) Context.SelectedElement = this.LayoutKeyModeVM;
+                            else { _isSelected = true; Context.SelectedElement = this; }
+                        }
+                    }
                     else ZIndex = 1;
 
-                    if( value ) Parent.IsExpanded = value;
+                    if( !value )
+                    {
+                        this.KeyModeVM.IsSelected = false;
+                        this.LayoutKeyModeVM.IsSelected = false;
+                    }
+
                     OnPropertyChanged( "IsSelected" );
                     OnPropertyChanged( "IsBeingEdited" );
                     OnPropertyChanged( "Opacity" );
@@ -198,12 +210,12 @@ namespace KeyboardEditor.ViewModels
         /// <summary>
         /// If there is no <see cref="IKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="IKeyMode"/> should be displayed.
         /// </summary>
-        public bool ShowKeyModeFallback { get { return ( ShowFallback & FallbackVisibility.FallbackOnKeyMode ) == FallbackVisibility.FallbackOnKeyMode; } }
+        public bool ShowKeyModeFallback { get { return (ShowFallback & FallbackVisibility.FallbackOnKeyMode) == FallbackVisibility.FallbackOnKeyMode; } }
 
         /// <summary>
         /// If there is no <see cref="ILayoutKeyMode"/> for the underlying <see cref="IKey"/> on the current <see cref="IKeyboardMode"/>, gets whether propeties of the nearest <see cref="ILayoutKeyMode"/> should be displayed.
         /// </summary>
-        public bool ShowLayoutFallback { get { return ( ShowFallback & FallbackVisibility.FallbackOnLayout ) == FallbackVisibility.FallbackOnLayout; } }
+        public bool ShowLayoutFallback { get { return (ShowFallback & FallbackVisibility.FallbackOnLayout) == FallbackVisibility.FallbackOnLayout; } }
 
         /// <summary>
         /// Gets the current actualKey layout.
@@ -261,10 +273,14 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         private void GetImageSourceCache()
         {
-            object o = _context.SkinConfiguration[_key.CurrentLayout.Current]["Image"];
+            object o = _context.SkinConfiguration[_key.Current]["Image"];
             if( o != null )
             {
-                _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
+                var source = o as ImageSource;
+                if( source != null )
+                    _imageSource = source;
+                else
+                    _imageSource = WPFImageProcessingHelper.ProcessImage( o ).Source;
             }
             else _imageSource = null;
         }
@@ -329,7 +345,7 @@ namespace KeyboardEditor.ViewModels
             get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
             set
             {
-                IsVisible = ( value == Visibility.Visible );
+                IsVisible = (value == Visibility.Visible);
             }
         }
 
@@ -512,19 +528,41 @@ namespace KeyboardEditor.ViewModels
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
+            if( _key.Current.GetPropertyLookupPath().Contains( e.Obj ) )
+            {
+                if( String.IsNullOrWhiteSpace( e.Key ) )
+                {
+                    OnPropertyChanged( "Image" );
+                    OnPropertyChanged( "ImageSource" );
+                    OnPropertyChanged( "ShowLabel" );
+                    OnPropertyChanged( "ShowImage" );
+                }
+                else
+                {
+                    switch( e.Key )
+                    {
+                        case "Image":
+                            GetImageSourceCache();
+                            OnPropertyChanged( "Image" );
+                            OnPropertyChanged( "ImageSource" );
+                            break;
+                        case "DisplayType":
+                            OnPropertyChanged( "ShowImage" );
+                            OnPropertyChanged( "ShowLabel" );
+                            LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
+                            break;
+                    }
+                }
+            }
 
             if( LayoutKeyMode.GetPropertyLookupPath().Contains( e.Obj ) )
             {
                 //Console.Out.WriteLine( e.Key );
                 if( String.IsNullOrWhiteSpace( e.Key ) )
                 {
-                    OnPropertyChanged( "Image" );
-                    OnPropertyChanged( "ImageSource" );
                     OnPropertyChanged( "Opacity" );
                     OnPropertyChanged( "FontSize" );
                     OnPropertyChanged( "FontStyle" );
-                    OnPropertyChanged( "ShowLabel" );
-                    OnPropertyChanged( "ShowImage" );
                     OnPropertyChanged( "FontWeight" );
                     OnPropertyChanged( "Background" );
                     OnPropertyChanged( "LetterColor" );
@@ -532,6 +570,7 @@ namespace KeyboardEditor.ViewModels
                     OnPropertyChanged( "TextDecorations" );
                     OnPropertyChanged( "PressedBackground" );
                     OnPropertyChanged( "HighlightBackground" );
+                    OnPropertyChanged( "HighlightFontColor" );
                 }
                 else
                 {
@@ -539,11 +578,6 @@ namespace KeyboardEditor.ViewModels
                     {
                         case "Opacity":
                             OnPropertyChanged( "Opacity" );
-                            break;
-                        case "Image":
-                            GetImageSourceCache();
-                            OnPropertyChanged( "Image" );
-                            OnPropertyChanged( "ImageSource" );
                             break;
                         case "Visible":
                             OnPropertyChanged( "Visible" );
@@ -554,11 +588,6 @@ namespace KeyboardEditor.ViewModels
                             break;
                         case "FontStyle":
                             OnPropertyChanged( "FontStyle" );
-                            break;
-                        case "DisplayType":
-                            OnPropertyChanged( "ShowImage" );
-                            OnPropertyChanged( "ShowLabel" );
-                            LayoutKeyModeVM.TriggerPropertyChanged( "ShowLabel" );
                             break;
                         case "FontWeight":
                             OnPropertyChanged( "FontWeight" );
@@ -580,6 +609,9 @@ namespace KeyboardEditor.ViewModels
                             break;
                         case "HighlightBackground":
                             OnPropertyChanged( "HighlightBackground" );
+                            break;
+                        case "HighlightFontColor":
+                            OnPropertyChanged( "HighlightFontColor" );
                             break;
                         default:
                             break;
@@ -648,6 +680,7 @@ namespace KeyboardEditor.ViewModels
             SetActionOnPropertyChanged( "CurrentLayout", () =>
             {
                 DispatchPropertyChanged( "HighlightBackground", "LayoutKeyMode" );
+                DispatchPropertyChanged( "HighlightFontColor", "LayoutKeyMode" );
                 DispatchPropertyChanged( "PressedBackground", "LayoutKeyMode" );
                 DispatchPropertyChanged( "HoverBackground", "LayoutKeyMode" );
                 DispatchPropertyChanged( "TextDecorations", "LayoutKeyMode" );
@@ -757,9 +790,9 @@ namespace KeyboardEditor.ViewModels
 
         void SetCommands()
         {
-            _keyDownCmd = new KeyCommand( () => { if( !_key.IsDown )_key.Push(); } );
-            _keyUpCmd = new KeyCommand( () => { if( _key.IsDown ) _key.Release(); } );
-            _keyPressedCmd = new KeyCommand( () => { if( _key.IsDown )_key.Release( true ); } );
+            _keyDownCmd = new CK.Windows.App.VMCommand( () => { if( !_key.IsDown )_key.Push(); } );
+            _keyUpCmd = new CK.Windows.App.VMCommand( () => { if( _key.IsDown ) _key.Release(); } );
+            _keyPressedCmd = new CK.Windows.App.VMCommand( () => { if( _key.IsDown )_key.Release( true ); } );
         }
 
         CK.Windows.App.VMCommand _deleteKeyCommand;
@@ -792,28 +825,6 @@ namespace KeyboardEditor.ViewModels
                 Context.SelectedElement = Parent;
                 Model.Destroy();
             }
-        }
-    }
-
-    internal class KeyCommand : ICommand
-    {
-        Action _del;
-
-        public KeyCommand( Action del )
-        {
-            _del = del;
-        }
-
-        public bool CanExecute( object parameter )
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute( object parameter )
-        {
-            _del();
         }
     }
 }

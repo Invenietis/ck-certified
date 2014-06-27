@@ -24,40 +24,137 @@
 using CK.WPF.ViewModel;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
-using CK.Core;
 using CK.Context;
 using System;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Windows.Threading;
+using SimpleSkin.ViewModels.Versionning;
+using CK.Windows;
+using System.Diagnostics;
 
 namespace SimpleSkin.ViewModels
 {
-    public class VMContextSimple : VMBase
+    public class VMContextCurrentKeyboardSimple : VMContextSimpleBase
+    {
+        public VMContextCurrentKeyboardSimple( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
+            : base( noFocusManager, ctx, kbctx, config )
+        {
+        }
+
+        protected override Func<IKeyboard> KeyboardSelector
+        {
+            get
+            {
+                //Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                return () => KeyboardContext.Keyboards.Context.CurrentKeyboard;
+            }
+        }
+
+    }
+
+    public class VMContextActiveKeyboard : VMContextSimpleBase
+    {
+        string _activeKeyboardName;
+
+        public VMContextActiveKeyboard( NoFocusManager noFocusManager, string activeKeyboardName, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
+            : base( noFocusManager, ctx, kbctx, config )
+        {
+            _activeKeyboardName = activeKeyboardName;
+            kbctx.Keyboards.KeyboardActivated += OnKeyboardActivated;
+            kbctx.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;
+        }
+
+        void OnKeyboardActivated( object sender, KeyboardEventArgs e )
+        {
+            if( _activeKeyboardName == e.Keyboard.Name )
+            {
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
+            }
+        }
+
+        void OnKeyboardDeactivated( object sender, KeyboardEventArgs e )
+        {
+            if( _activeKeyboardName == e.Keyboard.Name )
+            {
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
+            }
+        }
+
+        protected override Func<IKeyboard> KeyboardSelector
+        {
+            get
+            {
+                //Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                return () =>
+                {
+                    var kb = KeyboardContext.Keyboards[_activeKeyboardName];
+                    if( kb != null ) return kb;
+
+                    return null;
+                };
+            }
+        }
+
+        protected override void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        {
+        }
+
+        public override void Dispose()
+        {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            base.Dispose();
+            KeyboardContext.Keyboards.KeyboardActivated -= OnKeyboardActivated;
+            KeyboardContext.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
+        }
+    }
+
+    public abstract class VMContextSimpleBase : VMBase, IDisposable
     {
         Dictionary<object, VMContextElement> _dic;
-        EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
-        PropertyChangedEventHandler _evUserConfigurationChanged;
-        EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
-        EventHandler<KeyboardEventArgs> _evKeyboardCreated;
         ObservableCollection<VMKeyboardSimple> _keyboards;
-        VMKeyboardSimple _currentKeyboard;
+        VMKeyboardSimple _keyboard;
         IPluginConfigAccessor _config;
         IKeyboardContext _kbctx;
         IContext _ctx;
-        
+
         public ObservableCollection<VMKeyboardSimple> Keyboards { get { return _keyboards; } }
-        public VMKeyboardSimple KeyboardVM { get { return _currentKeyboard; } }
+
+        public VMKeyboardSimple KeyboardVM
+        {
+            get
+            {
+                if( _keyboard == null )
+                {
+                    IKeyboard k = null;
+                    k = KeyboardSelector();
+                    _keyboard = Obtain( k );
+                }
+
+                return _keyboard;
+            }
+        }
+
         public IKeyboardContext KeyboardContext { get { return _kbctx; } }
         public IPluginConfigAccessor Config { get { return _config; } }
         public IContext Context { get { return _ctx; } }
 
-        public Dispatcher SkinDispatcher { get; private set; }
+        NoFocusManager _noFocusManager;
+        public NoFocusManager NoFocusManager { get { return _noFocusManager; } }
 
-        public VMContextSimple( IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config, Dispatcher skinDispatcher )
+        protected abstract Func<IKeyboard> KeyboardSelector { get; }
+
+        public VMContextSimpleBase( NoFocusManager noFocusManager, IContext ctx, IKeyboardContext kbctx, IPluginConfigAccessor config )
         {
-            SkinDispatcher = skinDispatcher;
+            _noFocusManager = noFocusManager;
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             _dic = new Dictionary<object, VMContextElement>();
             _keyboards = new ObservableCollection<VMKeyboardSimple>();
@@ -71,9 +168,11 @@ namespace SimpleSkin.ViewModels
                 {
                     VMKeyboardSimple kb = CreateKeyboard( keyboard );
                     _dic.Add( keyboard, kb );
-                    _keyboards.Add( kb );
+                    NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                    {
+                        _keyboards.Add( kb );
+                    }) );
                 }
-                _currentKeyboard = Obtain( _kbctx.CurrentKeyboard );
             }
             else
             {
@@ -85,6 +184,8 @@ namespace SimpleSkin.ViewModels
 
         public VMKeyboardSimple Obtain( IKeyboard keyboard )
         {
+            if( keyboard == null ) throw new ArgumentNullException( "keyboard" );
+
             VMKeyboardSimple k = FindViewModel<VMKeyboardSimple>( keyboard );
             if( k == null ) throw new Exception( "Context mismatch." );
             return k;
@@ -124,17 +225,16 @@ namespace SimpleSkin.ViewModels
             return (T)vm;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             UnregisterEvents();
             foreach( VMContextElement vm in _dic.Values ) vm.Dispose();
             _dic.Clear();
         }
 
-        #region OnXXXXXXXXX
-
         internal void OnModelDestroy( object m )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             VMContextElement vm;
             if( _dic.TryGetValue( m, out vm ) )
             {
@@ -145,73 +245,96 @@ namespace SimpleSkin.ViewModels
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             VMKeyboardSimple k = CreateKeyboard( e.Keyboard );
             _dic.Add( e.Keyboard, k );
-            _keyboards.Add( k );
+            NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+            {
+                _keyboards.Add( k );
+            }) );
         }
 
-        void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        protected virtual void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             if( e.Current != null )
             {
-                _currentKeyboard = Obtain( e.Current );
-                _currentKeyboard.TriggerPropertyChanged();
-                OnPropertyChanged( "KeyboardVM" );
+                _keyboard = Obtain( e.Current );
+                _keyboard.TriggerPropertyChanged();
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
             }
         }
 
         void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
             if( e.PropertyName == "CurrentContextProfile" )
             {
-                OnPropertyChanged( "KeyboardVM" );
+                NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    OnPropertyChanged( "KeyboardVM" );
+                }) );
             }
         }
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
-            _keyboards.Remove( Obtain( e.Keyboard ) );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            
+            VMKeyboardSimple vmKeyboard = Obtain( e.Keyboard );
+            vmKeyboard.Dispose();
+
+            NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+            {
+                _keyboards.Remove( vmKeyboard );
+            }) );
+
             OnModelDestroy( e.Keyboard );
         }
 
         private void RegisterEvents()
         {
-            _evKeyboardCreated = new EventHandler<KeyboardEventArgs>( OnKeyboardCreated );
-            _evCurrentKeyboardChanged = new EventHandler<CurrentKeyboardChangedEventArgs>( OnCurrentKeyboardChanged );
-            _evKeyboardDestroyed = new EventHandler<KeyboardEventArgs>( OnKeyboardDestroyed );
-            _evUserConfigurationChanged = new PropertyChangedEventHandler( OnUserConfigurationChanged );
-
-            _kbctx.Keyboards.KeyboardCreated += _evKeyboardCreated;
-            _kbctx.CurrentKeyboardChanged += _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed += _evKeyboardDestroyed;
-            _ctx.ConfigManager.UserConfiguration.PropertyChanged += _evUserConfigurationChanged;
+            _kbctx.Keyboards.KeyboardCreated += OnKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed += OnKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationChanged;
         }
 
         private void UnregisterEvents()
         {
-            _kbctx.Keyboards.KeyboardCreated -= _evKeyboardCreated;
-            _kbctx.CurrentKeyboardChanged -= _evCurrentKeyboardChanged;
-            _kbctx.Keyboards.KeyboardDestroyed -= _evKeyboardDestroyed;
-            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= _evUserConfigurationChanged;
+            _kbctx.Keyboards.KeyboardCreated -= OnKeyboardCreated;
+            _kbctx.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
+            _kbctx.Keyboards.KeyboardDestroyed -= OnKeyboardDestroyed;
+            _ctx.ConfigManager.UserConfiguration.PropertyChanged -= OnUserConfigurationChanged;
         }
-
-        #endregion
 
         private VMKeyboardSimple CreateKeyboard( IKeyboard kb )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             return new VMKeyboardSimple( this, kb );
         }
 
         private VMZoneSimple CreateZone( IZone z )
         {
-            return new VMZoneSimple( this, z );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            // ToDoJL Check index
+            //we give a Zone a default Index of -1, it means that it has no Index yet.
+            //This index will be used by the editor and the keyscroller
+            return new VMZoneSimple( this, z, Config[z].GetOrSet<int>( "Index", -1 ) );
         }
 
         private VMKeySimple CreateKey( IKey k )
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            V150To160.EnsureKeyVersion( Config, k );
             return new VMKeySimple( this, k );
         }
-
     }
 }

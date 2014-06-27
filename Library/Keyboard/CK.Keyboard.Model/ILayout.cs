@@ -21,9 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using CK.Plugin;
 
 namespace CK.Keyboard.Model

@@ -29,8 +29,6 @@ using System.Xml;
 using CK.Core;
 using CK.Plugin;
 using CK.Keyboard.Model;
-using CK.Context;
-using CK.Plugin.Config;
 using CK.Storage;
 using System.Globalization;
 

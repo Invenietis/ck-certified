@@ -13,12 +13,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <StackPanel Margin="0 20" KeyboardNavigation.IsTabStop="False" >
-        <DockPanel Width="450" Margin="10">
-            <TextBlock x:Uid="keyboard-profile-keyboard-name-textblock" VerticalAlignment="Center" Width="200" DockPanel.Dock="Left" FontWeight="Bold" FontSize="20">Keyboard name :</TextBlock>
-            <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Name}" Style="{StaticResource RoundedTextBox}"/>
-        </DockPanel>
-        <!--<DockPanel Width="450" Margin="10 30 10 10">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0 20" KeyboardNavigation.IsTabStop="False" >
+            <DockPanel Width="450" Margin="10">
+                <TextBlock x:Uid="keyboard-profile-keyboard-name-textblock" VerticalAlignment="Center" Width="200" DockPanel.Dock="Left" FontWeight="Bold" FontSize="20">Keyboard name :</TextBlock>
+                <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Name}" Style="{StaticResource RoundedTextBox}"/>
+            </DockPanel>
+            <!--<DockPanel Width="450" Margin="10 30 10 10">
             <TextBlock x:Uid="keyboard-profile-keyboard-width-textblock" VerticalAlignment="Center" Width="200" DockPanel.Dock="Left" FontWeight="Bold" FontSize="20">Width :</TextBlock>
             <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Width}" Style="{StaticResource RoundedTextBox}"/>
         </DockPanel>
@@ -27,5 +28,6 @@
             <TextBox HorizontalAlignment="Center" DockPanel.Dock="Right" Width="250" Height="40" Text="{Binding Height}" Style="{StaticResource RoundedTextBox}">
             </TextBox>
         </DockPanel>-->
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

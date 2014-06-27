@@ -25,7 +25,6 @@ using CK.Plugin;
 using CK.Plugins.ObjectExplorer.ViewModels.LogViewModels;
 using CK.WPF.ViewModel;
 using CK.Plugin.Hosting;
-using System.Linq;
 using System.Collections.Generic;
 using CK.Core;
 using System;

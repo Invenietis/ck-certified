@@ -1,0 +1,161 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="clr-namespace:CK.Plugins.AutoClick.Views"
+    xmlns:converters="clr-namespace:CK.Plugins.AutoClick.Converters"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:b="clr-namespace:CK.Plugins.AutoClick.Behaviors"
+    xmlns:lib="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+    xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/AutoClick;component/SharedDictionnaries/Shared.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Geometry x:Key="DownArrow">M0,0 L1,0 0.5,1Z</Geometry>
+    <Geometry x:Key="UpArrow">M0,1 L1,1 0.5,0Z</Geometry>
+    <Geometry x:Key="RightArrow">M0,0 L1,0.5 0,1Z</Geometry>
+    <Geometry x:Key="LeftArrow">M0,0.5 L1,1 1,0Z</Geometry>
+    <Geometry x:Key="CloseX">M0,0 L1,1 M0,1 L1,0</Geometry>
+
+    <Geometry x:Key="ButtonGeometry">F1 M 318.939,102L 425,102C 454.271,102 478,125.729 478,155L 478,249C 478,278.271 454.271,302 425,302L 318.939,302C 289.668,302 265.939,278.271 265.939,249L 265.939,155C 265.939,125.729 289.668,102 318.939,102 Z</Geometry>
+
+    <Style x:Key="ScrollIndicatorStyle" TargetType="{x:Type Path}">
+        <Setter Property="Width" Value="8"></Setter>
+        <Setter Property="Height" Value="10"></Setter>
+        <Setter Property="Stretch" Value="Fill"></Setter>
+        <Setter Property="Fill" Value="Black"></Setter>
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Binding Path="IsHighlighted" Converter="{StaticResource BooleanToVisibilityConverter}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ClickTypeSelector :BlackButton -->
+    <DrawingImage x:Key="BlackButtonImage">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Geometry="{StaticResource ButtonGeometry}">
+                <GeometryDrawing.Pen>
+                    <Pen Thickness="15" LineJoin="Round">
+                        <Pen.Brush>
+                            <LinearGradientBrush StartPoint="0.505421,0.0441767" EndPoint="0.505421,1.57843">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="#FF878787" Offset="0"/>
+                                    <GradientStop Color="#FF434343" Offset="0.127854"/>
+                                    <GradientStop Color="#FF000000" Offset="0.995434"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Pen.Brush>
+                    </Pen>
+                </GeometryDrawing.Pen>
+                <GeometryDrawing.Brush>
+                    <LinearGradientBrush StartPoint="0.505804,0.00998992" EndPoint="0.505804,1.65931">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="#FF000000" Offset="0"/>
+                            <GradientStop Color="#FFFFFFFF" Offset="1"/>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </GeometryDrawing.Brush>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- ClickTypeSelector : GrayButton -->
+    <DrawingImage x:Key="GrayButtonImage">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Geometry="{StaticResource ButtonGeometry}">
+                <GeometryDrawing.Pen>
+                    <Pen Thickness="15" LineJoin="Round">
+                        <Pen.Brush>
+                            <LinearGradientBrush StartPoint="0.519639,0.177698" EndPoint="0.519639,1.75947">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="#FFDDDDDD" Offset="0"/>
+                                    <GradientStop Color="#FFA8A8A8" Offset="0.127854"/>
+                                    <GradientStop Color="#FF737373" Offset="0.995434"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Pen.Brush>
+                    </Pen>
+                </GeometryDrawing.Pen>
+                <GeometryDrawing.Brush>
+                    <LinearGradientBrush StartPoint="0.521112,0.153525" EndPoint="0.521112,1.85394">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Color="#FF818181" Offset="0"/>
+                            <GradientStop Color="#FFFFFFFF" Offset="1"/>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </GeometryDrawing.Brush>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <!-- ClickTypeSelector : ClickTypeButton Template -->
+    <ControlTemplate x:Key="ClickTypeButtonTemplate" TargetType="{x:Type views:ActionOnMouseEnterButton}">
+        <Border x:Name="ButtonContainer">
+            <Grid>
+                <Image Name="AutoClickButtonImage" Source="{StaticResource GrayButtonImage}">
+                </Image>
+                <!-- ContentPresenter : The image corresponding to the clickType -->
+                <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Opacity="1" x:Name="ClickImage" Source="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" RenderOptions.BitmapScalingMode="HighQuality">
+                    </Image>
+                </Grid>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Selected" Value="True">
+                <Setter TargetName="AutoClickButtonImage" Property="Source" Value="{StaticResource BlackButtonImage}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- ClickTypeSelector : ClickTypeSelector Template -->
+    <ControlTemplate x:Key="ClickTypeSelectorTemplate">
+        <ItemsControl ItemsSource="{Binding ClicksVM}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Border Opacity="1" CornerRadius="5" Margin="4" BorderBrush="Black" BorderThickness="1">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Visibility">
+                                        <Setter.Value>
+                                            <Binding Path="IsHighlighted" Converter="{StaticResource BooleanToVisibilityConverter}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Border.Style>
+                            <Border CornerRadius="5" Background="White" Opacity="0.3">
+                            </Border>
+                        </Border>
+                        <Viewbox Margin="10">
+                            <views:ActionOnMouseEnterButton Content="{Binding ImagePath, Mode=OneWay, Converter={StaticResource PathToImageConverter}}" 
+                                                        Width="70" Height="70" FontSize="12" Padding="10"
+                                                        Template="{StaticResource ClickTypeButtonTemplate}"                                                        
+                                                        MouseEnterCommand="{Binding ChangeSelectionCommand}"
+                                                        Selected="{Binding Path=IsSelected}">
+                                <views:ActionOnMouseEnterButton.ToolTip>
+                                    <TextBlock Text="{Binding Name}" />
+                                </views:ActionOnMouseEnterButton.ToolTip>
+                            </views:ActionOnMouseEnterButton>
+                        </Viewbox>
+                        <!--These paths are arrows indicating the clicktype that is being highlighted (by the scrolling service) -->
+                        <Path Data="{StaticResource RightArrow}" 
+                              Style="{StaticResource ScrollIndicatorStyle}"
+                              HorizontalAlignment="Left" />
+                        <Path Data="{StaticResource LeftArrow}" 
+                              Style="{StaticResource ScrollIndicatorStyle}" 
+                              HorizontalAlignment="Right" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ControlTemplate>
+
+</ResourceDictionary>

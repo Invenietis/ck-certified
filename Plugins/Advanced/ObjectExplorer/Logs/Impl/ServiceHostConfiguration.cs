@@ -21,11 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Plugin.Hosting;
 using CK.Plugin;
 
 namespace CK.Plugins.ObjectExplorer

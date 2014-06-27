@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\SkinViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\ThirdLevel\SkinViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,39 +21,49 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Core;
-//using CK.WPF.Controls;
 using Host.Resources;
-using System;
-using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
-using System.Windows.Input;
 using CK.Windows.Config;
 using CK.Windows;
+using System;
 
 namespace Host.VM
 {
     public class SkinViewModel : ConfigBase
     {
         AppViewModel _app;
+        Action _action;
 
         public SkinViewModel( AppViewModel app )
             : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
         {
             _app = app;
+
+            _action = () =>
+            {
+                NotifyOfPropertyChange( () => EnableAutoHide );
+                NotifyOfPropertyChange( () => AutoHideTimeOut );
+            };
         }
+
         protected override void NotifyOfPropertiesChange()
         {
             base.NotifyOfPropertiesChange();
-            NotifyOfPropertyChange( () => EnableAutoHide );
-            NotifyOfPropertyChange( () => AutoHideTimeOut );
+            DispatchPropertyChanged();
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            NotifyOfPropertyChange( () => EnableAutoHide );
-            NotifyOfPropertyChange( () => AutoHideTimeOut );
+            DispatchPropertyChanged();
+        }
+
+        void DispatchPropertyChanged()
+        {
+            if( NoFocusManager.Default.NoFocusDispatcher.CheckAccess() )
+                _action();
+            else
+                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( _action );
         }
 
         public bool EnableAutoHide
@@ -88,6 +98,6 @@ namespace Host.VM
             base.OnInitialize();
         }
 
-        
+
     }
 }

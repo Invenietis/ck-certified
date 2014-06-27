@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\EditableSkin\ViewModels\VMKeyEditable.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.DragDrop.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -22,21 +22,9 @@
 #endregion
 
 using System;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using CK.WPF.ViewModel;
-using CK.Keyboard.Model;
-using System.Windows.Controls;
 using System.Windows;
-using CK.Plugin.Config;
-using CK.Core;
-using Microsoft.Win32;
 using System.Windows.Input;
-using System.IO;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using CommonServices;
 
@@ -106,7 +94,6 @@ namespace KeyboardEditor.ViewModels
             {
                 return new VMCommand<MouseEventArgs>( ( args ) =>
                 {
-                    //Console.Out.WriteLine("ButtonDown from control");
                     _isDown = true;
 
                     _startPoint = new Point( _context.PointerDeviceDriver.Service.CurrentPointerXLocation, _context.PointerDeviceDriver.Service.CurrentPointerYLocation );
@@ -114,7 +101,8 @@ namespace KeyboardEditor.ViewModels
                     _originalLeft = X;
                     _originalTop = Y;
 
-                    Context.SelectedElement = this;
+                    IsSelected = true;
+                    //Context.SelectedElement = this;
                 } );
             }
         }

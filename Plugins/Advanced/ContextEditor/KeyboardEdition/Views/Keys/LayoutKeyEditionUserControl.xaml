@@ -19,7 +19,7 @@
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="LayoutKeyModeWarningDisplayStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="False">
+                    <DataTrigger Binding="{Binding IsFallback}" Value="False">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
@@ -27,137 +27,159 @@
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="LayoutKeyModeOKDisplayStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="True">
+                    <DataTrigger Binding="{Binding IsFallback}" Value="True">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="{x:Type Border}" BasedOn="{StaticResource Rounded}" x:Key="LayoutWarningRoundedStyle">
+            <Style TargetType="{x:Type Border}" x:Key="LayoutWarningStyle">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="False">
+                    <DataTrigger Binding="{Binding IsFallback}" Value="False">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-            
+
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border BorderThickness="1" CornerRadius="5" Background="White">
-        <DockPanel LastChildFill="True">
-            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
-                <DockPanel LastChildFill="False" Margin="5 5 0 0">
-                    <Border Style="{StaticResource LayoutWarningRoundedStyle}" Background="#FFFCF8E3">
-                        
-                        <!-- Panel that warns the user that the mode values he is seing are the one of the mode after a fallback -->
-                        <StackPanel Style="{StaticResource LayoutKeyModeWarningDisplayStyle}">
-                            <StackPanel Orientation="Horizontal">
-                            <Image Width="24" Height="24" Margin="5" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/warning.png" />
-                                <StackPanel Margin="0 0 2 0">
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning1" Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center" Text="The properties displayed are those of the key on the following mode :" />
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning2" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="Click on the '+' button to edit the key for the mode selected above" />
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning3" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="or click on the mode button to go back to this mode." />
-                                </StackPanel>
-                                <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding LayoutKeyModeVM.ApplyToCurrentModeCommand}" >
-                                    <ContentControl Content="{Binding LayoutKeyModeVM.Name}" />
-                                </Button>
-                                <Button Height="24" Width="24" Margin="5" Command="{Binding CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
-                                    <Button.ToolTip>
-                                        <ToolTip x:Uid="keyboard-editor-layout-key-mode-new-key-mode-tooltip" ToolTip="Create a new whole set of parameters for this key when in the current mode" />
-                                    </Button.ToolTip>
-                                    <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
-                                </Button>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                    
-                    <!-- Paenl shown when the displayed mode is not a fallback -->
-                    <StackPanel Style="{StaticResource LayoutKeyModeOKDisplayStyle}" VerticalAlignment="Center">
-                        <TextBlock x:Uid="keyboard-editor-layout-key-mode-current-mode" TextWrapping="Wrap" VerticalAlignment="Center" Text="Current mode : " />
-                        <ContentControl Margin="2 0" FontWeight="Bold" 
-                                        DataContext="{Binding LayoutKeyModeVM, Mode=OneWay}" 
-                                        Content="{Binding}" />
-                    </StackPanel>
-                </DockPanel>
-                
-                <!-- panel that wraps together all the layout configuration -->
-                <StackPanel Orientation="Horizontal" IsEnabled="{Binding LayoutKeyModeVM.IsFallback, Converter={StaticResource notconverter}}">
-                    
-                    <!-- panel containing the different layout values : X, Y, Width, Height, IsVisible -->
-                    <Border Style="{StaticResource GrayRounded}" Padding="0" Margin="5">
-                        <StackPanel Margin="5">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
-                                    <ColumnDefinition Width="10"></ColumnDefinition>
-                                    <ColumnDefinition></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0 5">
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-visible-checkbox" Grid.IsSharedSizeScope="True" VerticalAlignment="Center" Text="Visible : " Margin="2" />
-                                    <CheckBox  IsChecked="{Binding IsVisible, Mode=TwoWay}" VerticalAlignment="Center"  Margin="2" Width="50" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-x" Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
-                                    <TextBox Text="{Binding LayoutKeyModeVM.X, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                                </StackPanel>
-                                <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-y" Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
-                                    <TextBox Text="{Binding LayoutKeyModeVM.Y, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                                </StackPanel>
-                                <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
-                                <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-width" Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
-                                    <TextBox Text="{Binding LayoutKeyModeVM.Width, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
-                                    <TextBlock x:Uid="keyboard-editor-layout-key-height" Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
-                                    <TextBox Text="{Binding LayoutKeyModeVM.Height, UpdateSourceTrigger=PropertyChanged}" Margin="2" Width="50"></TextBox>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                    
-                    <!-- Panel that enables color edition -->
-                    <local:GenericLayoutEditionUserControl />
-                    
-                </StackPanel>
-            </StackPanel>
+    <Border>
+        <StackPanel Orientation="Vertical">
             
-            <!-- Delete actions -->
-            <Border DockPanel.Dock="Right" Style="{StaticResource GrayRounded}" Padding="0" Margin="5" Width="200">
-                <StackPanel Margin="5">
- 
-                    <!-- Key : Delete buttons -->
-                    <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-key-button" Action="{Binding DeleteKeyCommand}" Text="Delete this key : " TooltipText="The key will be definitely destroyed"
+            <DockPanel LastChildFill="False">
+                <DockPanel.Style>
+                    <Style TargetType="{x:Type DockPanel}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFallback}" Value="True">
+                                <Setter Property="Background" Value="#FCF8E3"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
+
+                <Border Style="{StaticResource LayoutWarningStyle}">
+
+                    <!-- Panel that warns the user that the mode values he is seing are the one of the mode after a fallback -->
+                    <StackPanel Style="{StaticResource LayoutKeyModeWarningDisplayStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="24" Height="24" Margin="5" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/warning.png" />
+                            <StackPanel Margin="0 0 2 0">
+                                <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning1" Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center" Text="The properties displayed are those of the key on the following mode :" />
+                                <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning2" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="Click on the '+' button to edit the key for the mode selected above" />
+                                <TextBlock x:Uid="keyboard-editor-layout-key-mode-warning3" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="or click on the mode button to go back to this mode." />
+                            </StackPanel>
+                            <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding ApplyToCurrentModeCommand}" >
+                                <ContentControl Content="{Binding ModeName}" />
+                            </Button>
+                            <Button Height="24" Width="24" Margin="5" Command="{Binding Parent.CreateKeyModeCommand}" CommandParameter="LayoutKeyMode">
+                                <Button.ToolTip>
+                                    <ToolTip x:Uid="keyboard-editor-layout-key-mode-new-key-mode-tooltip" ToolTip="Create a new whole set of parameters for this key when in the current mode" />
+                                </Button.ToolTip>
+                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Panel shown when the displayed mode is not a fallback -->
+                <StackPanel Style="{StaticResource LayoutKeyModeOKDisplayStyle}" VerticalAlignment="Center">
+                    <TextBlock x:Uid="keyboard-editor-layout-key-mode-current-mode" TextWrapping="Wrap" VerticalAlignment="Center" Text="Current mode : " />
+                    <ContentControl Margin="2 0" FontWeight="Bold" 
+                                        DataContext="{Binding ModeName}" 
+                                        Content="{Binding}" />
+                </StackPanel>
+            </DockPanel>
+            <DockPanel LastChildFill="True">
+                <DockPanel.Resources>
+                    <vm:EnsureIntegerConverter x:Key="ensureintegerconverter" />
+                </DockPanel.Resources>
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+
+                    <!-- panel that wraps together all the layout configuration -->
+                    <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsFallback, Converter={StaticResource notconverter}}">
+
+                        <!-- panel containing the different layout values : X, Y, Width, Height, IsVisible -->
+                        <Border Margin="5">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="DIMENSIONS &amp; POSITION : "/>
+                                <Separator Style="{StaticResource SectionSeperatorStyle}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="10"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0 5">
+                                        <TextBlock x:Uid="keyboard-editor-layout-key-visible-checkbox" Grid.IsSharedSizeScope="True" VerticalAlignment="Center" Text="Visible : " Margin="2" />
+                                        <CheckBox  IsChecked="{Binding IsVisible, Mode=TwoWay}" VerticalAlignment="Center"  Margin="2" Width="50" />
+                                    </StackPanel>
+                                    <DockPanel Grid.Column="0" Grid.Row="1">
+                                        <TextBlock x:Uid="keyboard-editor-layout-key-x" Grid.IsSharedSizeScope="True" Text="X : " Margin="2" />
+                                        <TextBox Text="{Binding X, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ensureintegerconverter}}" Margin="2" Width="50" HorizontalAlignment="Right" />
+                                    </DockPanel>
+                                    <DockPanel Grid.Column="0" Grid.Row="2">
+                                        <TextBlock x:Uid="keyboard-editor-layout-key-y" Grid.IsSharedSizeScope="True" Text="Y : " Margin="2" />
+                                        <TextBox Text="{Binding Y, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ensureintegerconverter}}" Margin="2" Width="50" HorizontalAlignment="Right" />
+                                    </DockPanel>
+                                    <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" BorderThickness="0.5 0 0 0" BorderBrush="LightGray" HorizontalAlignment="Center" />
+                                    <DockPanel Grid.Column="2" Grid.Row="1">
+                                        <TextBlock x:Uid="keyboard-editor-layout-key-width" Grid.IsSharedSizeScope="True" Text="Width : " Margin="2" />
+                                        <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ensureintegerconverter}}" Margin="2" Width="50" HorizontalAlignment="Right"></TextBox>
+                                    </DockPanel>
+                                    <DockPanel Grid.Column="2" Grid.Row="2">
+                                        <TextBlock x:Uid="keyboard-editor-layout-key-height" Grid.IsSharedSizeScope="True" Text="Height : " Margin="2" />
+                                        <TextBox Text="{Binding Height, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ensureintegerconverter}}" Margin="2" Width="50" HorizontalAlignment="Right"></TextBox>
+                                    </DockPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Panel that enables color edition -->
+                        <local:GenericLayoutEditionUserControl />
+
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Delete actions -->
+                <Border DockPanel.Dock="Right" Margin="5" Width="200">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : "/>
+                        <Separator Style="{StaticResource SectionSeperatorStyle}"/>
+                        <StackPanel Margin="5">
+
+                            <!-- Key : Delete buttons -->
+                            <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-key-button" Action="{Binding Parent.DeleteKeyCommand}" Text="Delete this key : " TooltipText="The key will be definitely destroyed"
                                       ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png" 
                                       Template="{StaticResource SimpleActionControlTemplate}" />
 
-                    <!-- Delete the key mode -->
-                    <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-mode-button"
-                                      Action="{Binding LayoutKeyModeVM.DeleteLayoutKeyModeCommand}" ActionParameter="KeyMode"
+                            <!-- Delete the key mode -->
+                            <vm:ActionControl x:Uid="keyboard-editor-layout-key-mode-delete-mode-button"
+                                      Action="{Binding DeleteLayoutKeyModeCommand}" ActionParameter="KeyMode"
                                       ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"
                                       Template="{StaticResource SimpleActionControlTemplate}"
                                       Text="Delete this mode configuration : " TooltipText="The configurations of the key for the current mode will be deleted. The key itself will not be deleted.">
-                        <vm:ActionControl.Style>
-                            <Style TargetType="{x:Type vm:ActionControl}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding LayoutKeyModeVM.IsFallback}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </vm:ActionControl.Style>
-                    </vm:ActionControl>
-                </StackPanel>
-            </Border>
-        </DockPanel>
+                                <vm:ActionControl.Style>
+                                    <Style TargetType="{x:Type vm:ActionControl}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Parent.CurrentLayoutKeyModeModeVM.Mode.IsEmpty}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsFallback}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </vm:ActionControl.Style>
+                            </vm:ActionControl>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+        </StackPanel>
     </Border>
 </UserControl>

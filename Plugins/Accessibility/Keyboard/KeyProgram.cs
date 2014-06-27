@@ -25,7 +25,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using CK.Keyboard.Model;
-using CK.Context;
 using CK.Storage;
 
 namespace CK.Keyboard

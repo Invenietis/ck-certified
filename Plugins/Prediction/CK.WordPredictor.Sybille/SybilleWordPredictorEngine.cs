@@ -1,9 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Prediction\CK.WordPredictor.Sybille\SybilleWordPredictorEngine.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CK.Core;
+using CK.Plugin;
 using CK.WordPredictor.Model;
 using Sybille = WordPredictor;
 
@@ -11,112 +35,190 @@ namespace CK.WordPredictor.Engines
 {
     public class SybilleWordPredictorEngine : IWordPredictorEngine, IDisposable
     {
+        const int NB_RETRY = 5;
+
         Sybille.WordPredictor _sybille;
-        IWordPredictorFeature _wordPredictionFeature;
+        IService<IWordPredictorFeature> _wordPredictionFeature;
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
+        bool _constructionSuccess;
+        int _currentRetryCount;
+
+        public bool ConstructionSuccess
         {
-            _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
-
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+            get { return _constructionSuccess; }
         }
 
-        public SybilleWordPredictorEngine( IWordPredictorFeature wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
-        {
-            _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
-            _sybille.FilterAlreadyShownWords = wordPredictionFeature.FilterAlreadyShownWords;
+        const int MaxPredictRetryCount = 2;
 
-            _wordPredictionFeature = wordPredictionFeature;
-            _wordPredictionFeature.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+        public SybilleWordPredictorEngine( IService<IWordPredictorFeature> wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName )
+        {
+            _currentRetryCount = NB_RETRY;
+
+            try
+            {
+                //Sybille can throw an exception "Loading error"
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
+
+                //the plugin can be stopped before the construction have finished 
+                if( wordPredictionFeature.Status < InternalRunningStatus.Starting )
+                {
+                    _constructionSuccess = false;
+                }
+                else
+                {
+                    _sybille.FilterAlreadyShownWords = wordPredictionFeature.Service.FilterAlreadyShownWords;
+
+                    _wordPredictionFeature = wordPredictionFeature;
+                    _wordPredictionFeature.Service.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+                    _constructionSuccess = true;
+                }
+            }
+            catch( Exception e ) //Cannot instanciate the engine
+            {
+                _constructionSuccess = false;
+            }
+        }
+
+        public SybilleWordPredictorEngine( IService<IWordPredictorFeature> wordPredictionFeature, string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+        {
+            _currentRetryCount = NB_RETRY;
+
+            try
+            {
+                //Sybille can throw an exception "Loading error"
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
+
+
+                //the plugin can be stopped before the construction have finished 
+                if( wordPredictionFeature.Status < InternalRunningStatus.Starting )
+                {
+                    _constructionSuccess = false;
+                }
+                else
+                {
+                    _wordPredictionFeature = wordPredictionFeature;
+                    _wordPredictionFeature.Service.PropertyChanged += OnWordPredictionFeaturePropertyChanged;
+
+                    _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
+
+                    _constructionSuccess = true;
+                }
+            }
+            catch( Exception e ) //Cannot instanciate the engine
+            {
+                _constructionSuccess = false;
+            }
+        }
+
+        private void LoadSybilleWordPredictor( string languageFileName, string userLanguageFileName, string userTextsFileName, string semMatrix, string semWords, string semLambdas )
+        {
+            //TODO log the loading error
+            if( _currentRetryCount == 0 ) return;
+            try
+            {
+                _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
+            }
+            catch( Exception e )
+            {
+                _currentRetryCount--;
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName, semMatrix, semWords, semLambdas );
+            }
+        }
+
+        private void LoadSybilleWordPredictor( string languageFileName, string userLanguageFileName, string userTextsFileName )
+        {
+            //TODO log the loading error
+            if( _currentRetryCount == 0 ) return;
+            try
+            {
+                _sybille = new Sybille.WordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
+            }
+            catch( Exception e )
+            {
+                _currentRetryCount--;
+                LoadSybilleWordPredictor( languageFileName, userLanguageFileName, userTextsFileName );
+            }
         }
 
 
         void OnWordPredictionFeaturePropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
-            if( e.PropertyName == "FilterAlreadyShownWords" )
+            if( e.PropertyName == "FilterAlreadyShownWords" && _sybille != null )
             {
-                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.FilterAlreadyShownWords;
+                _sybille.FilterAlreadyShownWords = _wordPredictionFeature.Service.FilterAlreadyShownWords;
             }
         }
 
-        Task<IEnumerable<IWordPredicted>> _currentlyRunningTask;
-        CancellationToken _currentlyRunningTaskCancellationToken;
-        CancellationTokenSource _cancellationSource = new CancellationTokenSource();
+        Task<ICKReadOnlyList<IWordPredicted>> _currentlyRunningTask;
+        CancellationTokenSource cancellationSource = null;
 
-        public Task<IEnumerable<IWordPredicted>> PredictAsync( ITextualContextService textualContext, int maxSuggestedWords )
+        public Task<ICKReadOnlyList<IWordPredicted>> PredictAsync( string rawContext, int maxSuggestedWords )
         {
-            if( _currentlyRunningTaskCancellationToken == null )
-                _currentlyRunningTaskCancellationToken = new CancellationToken( false );
+            if( _currentlyRunningTask != null && _currentlyRunningTask.Status <= TaskStatus.Running )
+            {
+                Debug.Assert( cancellationSource != null );
+                cancellationSource.Cancel();
+                //_currentlyRunningTask.Wait( cancellationSource.Token );
+                cancellationSource.Dispose();
+                cancellationSource = new CancellationTokenSource();
+                PredictionLogger.Instance.Trace( "Prediction Canceled" );
+            }
 
-            if( _currentlyRunningTask != null && _currentlyRunningTask.Status == TaskStatus.Running )
+            if( cancellationSource == null )
+                cancellationSource = new CancellationTokenSource();
+
+            _currentlyRunningTask = Task.Factory.StartNew( () =>
             {
-                _cancellationSource.Cancel();
-            }
-            else
-            {
-                _currentlyRunningTask = Task.Factory.StartNew( () => Predict( textualContext, maxSuggestedWords ), _currentlyRunningTaskCancellationToken );
-            }
+                if( cancellationSource.IsCancellationRequested == false )
+                    return Predict( rawContext, maxSuggestedWords );
+
+                return CKReadOnlyListEmpty<IWordPredicted>.Empty;
+            }, cancellationSource.Token );
+
             return _currentlyRunningTask;
         }
 
-        public IEnumerable<IWordPredicted> Predict( ITextualContextService textualService, int maxSuggestedWords )
+        public ICKReadOnlyList<IWordPredicted> Predict( string rawContext, int maxSuggestedWords )
         {
-            //This call can sometimes raise an ArgumentException
-            //TODO : log it and catch it to go on.
-            IEnumerable<WeightlessWordPredicted> result = null;
+            int retryCount = MaxPredictRetryCount;
+            return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
+        }
+
+        private ICKReadOnlyList<IWordPredicted> InternalPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
+        {
             try
             {
-                result = _sybille
-                    .Predict( ObtainSybilleContext( textualService ), maxSuggestedWords )
-                    .Select( t => new WeightlessWordPredicted( t ) );
+                var predicted = _sybille
+                    .Predict( rawContext, maxSuggestedWords )
+                    .Select( t => new WeightlessWordPredicted( t ) )
+                    .ToReadOnlyList();
+
+                PredictionLogger.Instance.Trace( "Predicted < {0} > from < {1} >", String.Join( ", ", predicted.Select( w => w.Word ) ), rawContext.Replace( ' ', '_' ) );
+
+                return predicted;
             }
-            catch( ArgumentException )
+            catch( ArgumentException ex )
             {
-                return Enumerable.Empty<IWordPredicted>();
+                PredictionLogger.Instance.Error( ex.Message );
+                return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
-            return result;
+            catch( IndexOutOfRangeException outOfRangeEx )
+            {
+                PredictionLogger.Instance.Error( outOfRangeEx.Message );
+                return RetryPredict( rawContext, maxSuggestedWords, ref retryCount );
+            }
         }
 
-        /// <summary>
-        /// Calls <see cref="ObtainContext( ITextualContextService textualService )"/> and replaces all occurences of "'" (apostrophe) by "' " (apostrophe + space).
-        /// Done so because Sybille doesn't understand the apostrophe character. therefor, in order to get a prediction for the word that follows this char, we flush Sybille's context thanks to the space char.
-        /// </summary>
-        public virtual string ObtainSybilleContext( ITextualContextService textualService )
+        private ICKReadOnlyList<IWordPredicted> RetryPredict( string rawContext, int maxSuggestedWords, ref int retryCount )
         {
-            return ObtainContext( textualService ).Replace( "'", "' " );
-        }
-
-        /// <summary>
-        /// Gets the prediction context (all the text that has been written since the last "Return")
-        /// </summary>
-        /// <param name="textualService"></param>
-        /// <returns></returns>
-        public string ObtainContext( ITextualContextService textualService )
-        {
-            if( textualService.Tokens.Count > 1 )
+            if( retryCount > 0 )
             {
-                string tokenPhrase = String.Join( " ", textualService.Tokens.Take( textualService.CurrentTokenIndex ).Select( t => t.Value ) );
-                tokenPhrase += " ";
-                if( textualService.Tokens.Count >= textualService.CurrentTokenIndex )
-                {
-                    string value = textualService.Tokens[textualService.CurrentTokenIndex].Value;
-                    if( value.Length >= textualService.CaretOffset )
-                    {
-                        tokenPhrase += ( value.Substring( 0, textualService.CaretOffset ) );
-                    }
-                }
-
-                return tokenPhrase;
+                retryCount--;
+                PredictionLogger.Instance.Trace( "Attempt n°{0}", MaxPredictRetryCount - retryCount );
+                return InternalPredict( rawContext, maxSuggestedWords, ref retryCount );
             }
-            if( textualService.Tokens.Count == 1 )
-            {
-                return textualService.CurrentToken.Value.Substring( 0, textualService.CaretOffset );
-            }
-            return String.Empty;
+            return CKReadOnlyListEmpty<IWordPredicted>.Empty;
         }
-
 
         public bool IsWeightedPrediction
         {
@@ -129,8 +231,15 @@ namespace CK.WordPredictor.Engines
         {
             if( _sybille != null )
             {
-                _sybille.SaveUserPredictor();
-                _sybille = null;
+                try
+                {
+                    _sybille.SaveUserPredictor();
+                    _sybille = null;
+                }
+                catch( Exception ex )
+                {
+                    PredictionLogger.Instance.Error( ex, "While saving user predictor" );
+                }
             }
         }
 

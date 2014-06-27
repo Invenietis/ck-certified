@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\AppConfigViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -21,21 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//using CK.WPF.Controls;
-using CK.Plugin.Config;
-using CK.Core;
-using CK.Reflection;
 using Host.Resources;
-using System.ComponentModel;
 using CK.Windows.Config;
-using CK.Windows;
 using System.IO;
-using System.Diagnostics;
-using System.Windows;
 using System.Security.Principal;
 using System.Security.AccessControl;
 
@@ -63,8 +51,13 @@ namespace Host.VM
 
             var g = this.AddGroup();
             g.AddProperty( R.ShowTaskbarIcon, _app, a => a.ShowTaskbarIcon );
-            g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
             g.AddProperty( R.RemindMeOfNewUpdates, this, a => a.RemindMeOfNewUpdates );
+
+            // v2.7.0 : the notificationmanager has been removed, so we don't have a systray icon anymore. Put this back on together with the notification manager.
+            //g.AddProperty( R.ShowSystrayIcon, _app, a => a.ShowSystrayIcon );
+
+            //TODOJL
+            //this.AddAction( "Check online help contents", _app.HelpUpdaterService.StartManualUpdate );
 
             string stopReminderFolderPath = Path.Combine( _app.CivikeyHost.ApplicationDataPath, "Updates" );
             if( !Directory.Exists( stopReminderFolderPath ) ) Directory.CreateDirectory( stopReminderFolderPath );

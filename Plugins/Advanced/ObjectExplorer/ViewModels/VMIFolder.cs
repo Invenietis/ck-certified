@@ -22,16 +22,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Plugin;
-using CK.Core;
 using CK.WPF.ViewModel;
-using System.Windows.Input;
 using System.Collections;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace CK.Plugins.ObjectExplorer
 {

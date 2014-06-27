@@ -1,23 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Prediction\CK.WordPredictor.UI\TextualContextArea.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
+using System.Reactive.Linq;
 using CK.Keyboard.Model;
 using CK.Plugin;
-using CK.Plugins.SendInputDriver;
+using System.Linq;
+using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
+using System.Diagnostics;
 
 namespace CK.WordPredictor.UI
 {
 
-    [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" }, Version = "1.0" )]
     public class TextualContextArea : IPlugin
     {
+        internal const string WindowName = "TextualContextArea";
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 
@@ -25,13 +47,16 @@ namespace CK.WordPredictor.UI
         public IWordPredictorFeature Feature { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
-        public ITextualContextService TextualContextService { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IPredictionTextAreaService PredictionTextAreaService { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ICommandTextualContextService CommandTextualContextService { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowManager> WindowManager { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<IWindowBinder> WindowBinder { get; set; }
 
         TextualContextAreaWindow _window;
         IKey _sendContextKey;
@@ -43,17 +68,20 @@ namespace CK.WordPredictor.UI
 
         public void Start()
         {
+            _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
+
             Feature.PropertyChanged += OnFeaturePropertyChanged;
+            PredictionTextAreaService.PredictionAreaTextSent += OnPredictionAreaContentSent;
+
             if( Feature.DisplayContextEditor ) EnableEditor();
         }
 
         public void Stop()
         {
             DisableEditor();
-            Feature.PropertyChanged -= OnFeaturePropertyChanged;
 
-            //The textarea can be null if we never enabled the editor
-            if( _textArea != null ) _textArea.PropertyChanged -= OnTextAreaPropertyChanged;
+            Feature.PropertyChanged -= OnFeaturePropertyChanged;
+            PredictionTextAreaService.PredictionAreaTextSent -= OnPredictionAreaContentSent;
         }
 
         public void Teardown()
@@ -69,11 +97,36 @@ namespace CK.WordPredictor.UI
             }
         }
 
+        WindowManagerSubscriber _subscriber;
         TextualContextAreaViewModel _textArea;
+        IDisposable _observersChain;
+
         void EnableEditor()
         {
-            _textArea = new TextualContextAreaViewModel( TextualContextService, PredictionTextAreaService, CommandTextualContextService );
-            _textArea.PropertyChanged += OnTextAreaPropertyChanged;
+            TimeSpan dueTime = TimeSpan.FromMilliseconds( 250 );
+
+            _textArea = new TextualContextAreaViewModel( PredictionTextAreaService, CommandTextualContextService );
+
+            var propertyChangedEvents = Observable.FromEvent<PropertyChangedEventHandler, PropertyChangedEventArgs>(
+              h => new PropertyChangedEventHandler( ( sender, e ) => h( e ) ),
+              h => _textArea.PropertyChanged += h,
+              h => _textArea.PropertyChanged -= h );
+
+            var textualContextChanged = propertyChangedEvents
+                .Where( x => x.PropertyName == "TextualContext" )
+                .Throttle( dueTime );
+
+            var caretIndexChanged = propertyChangedEvents
+                .Where( x => x.PropertyName == "CaretIndex" )
+                .Throttle( dueTime );
+
+            var isFocusedChanged = propertyChangedEvents.Where( x => x.PropertyName == "IsFocused" );
+
+            _observersChain = textualContextChanged
+                .Merge( caretIndexChanged )
+                .Merge( isFocusedChanged )
+                .Subscribe( OnTextAreaPropertyChanged );
+
             _window = new TextualContextAreaWindow( _textArea )
             {
                 Width = 600,
@@ -81,71 +134,107 @@ namespace CK.WordPredictor.UI
             };
             _window.Show();
 
-            Feature.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
-            Context.CurrentKeyboard.Zones.ZoneDestroyed += OnZoneDestroyed;
+            //Feature.PredictionContextFactory.PredictionZoneCreated += OnZoneCreated;
+            Feature.AutonomousKeyboardPredictionFactory.PredictionZoneCreated += OnAutonomousZoneCreated;
 
-            var zone = Context.CurrentKeyboard.Zones[Feature.PredictionContextFactory.PredictionZoneName];
-            CreateSendContextKeyInPredictionZone( zone );
+            CreateSendKeyInSendZone( Context.Keyboards[Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName] );
+
+            EnableWindowManagerSubscription();
         }
 
-        void OnTextAreaPropertyChanged( object sender, PropertyChangedEventArgs e )
+        void DisableEditor()
+        {
+            DestroySendKey();
+
+            //Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
+            Feature.AutonomousKeyboardPredictionFactory.PredictionZoneCreated -= OnAutonomousZoneCreated;
+
+            if( _window != null ) _window.Close();
+            if( _observersChain != null ) _observersChain.Dispose();
+            if( _subscriber != null ) _subscriber.Unsubscribe();
+        }
+
+        /// <summary>
+        /// If the skin is registered when we are launched before it, 
+        /// listen to to its registration and auto-attach
+        /// </summary>
+        void EnableWindowManagerSubscription()
+        {
+            _subscriber.Subscribe( WindowName, _window );
+        }
+
+        void OnPredictionAreaContentSent( object sender, PredictionAreaContentEventArgs e )
+        {
+            _textArea.TextualContext = String.Empty;
+        }
+
+        void OnTextAreaPropertyChanged( PropertyChangedEventArgs e )
         {
             if( e.PropertyName == "IsFocused" )
             {
                 PredictionTextAreaService.IsDriven = _textArea.IsFocused;
             }
-        }
-
-        void DisableEditor()
-        {
-            DestroySendContextKey();
-            Feature.PredictionContextFactory.PredictionZoneCreated -= OnZoneCreated;
-            Context.CurrentKeyboard.Zones.ZoneDestroyed -= OnZoneDestroyed;
-
-            if( _window != null ) _window.Close();
-        }
-
-        void CreateSendContextKeyInPredictionZone( IZone zone )
-        {
-            if( zone != null )
+            if( e.PropertyName == "TextualContext" )
             {
-                _sendContextKey = Feature.PredictionContextFactory.CreatePredictionKey( zone, Feature.MaxSuggestedWords );
-
-                _sendContextKey.Current.UpLabel = "Envoyer";
-                _sendContextKey.Current.OnKeyDownCommands.Commands.Add( "sendPredictionAreaContent" );
-                _sendContextKey.CurrentLayout.Current.Visible = true;
+                PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
+            }
+            if( e.PropertyName == "CaretIndex" )
+            {
+                PredictionTextAreaService.ChangePredictionAreaContent( _textArea.TextualContext, _textArea.CaretIndex );
             }
         }
 
-        void DestroySendContextKey()
+        void CreateSendKeyInSendZone( IKeyboard keyboard )
         {
-            if( _sendContextKey != null ) _sendContextKey.Destroy();
-        }
-
-        void OnZoneCreated( object sender, ZoneEventArgs e )
-        {
-            CreateSendContextKeyInPredictionZone( e.Zone );
-        }
-
-        void OnZoneDestroyed( object sender, ZoneEventArgs e )
-        {
-            if( e.Zone.Name == Feature.PredictionContextFactory.PredictionZoneName )
+            if( keyboard != null )
             {
-                DestroySendContextKey();
+                //If the prediction zone doesn't exist yet, we create it
+                IZone sendZone = keyboard.Zones[Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName];
+                if( sendZone == null )
+                {
+                    sendZone = keyboard.Zones.Create( Feature.AutonomousKeyboardPredictionFactory.PredictionKeyboardAndZoneName );
+                }
+
+                _sendContextKey = Feature.AutonomousKeyboardPredictionFactory.CreatePredictionKey( sendZone, Feature.MaxSuggestedWords );
+                InitializeSendKey( sendZone );
             }
         }
 
-        private void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
+        void InitializeSendKey( IZone predictionZone )
+        {
+            Debug.Assert( !_sendContextKey.CurrentLayout.Current.Visible );
+
+            _sendContextKey.Current.UpLabel = "Envoyer";
+            _sendContextKey.Current.OnKeyDownCommands.Commands.Add( "sendPredictionAreaContent" );
+            _sendContextKey.CurrentLayout.Current.Visible = true;
+        }
+
+        void DestroySendKey()
+        {
+            if( _sendContextKey != null )
+            {
+                //If we destroy the key, a null reference in thrown. (the holding KeyboardVM is disposed beforehand, so the KeyDestroyed event is not handled -> the key is still bound to ConfigChanged but _zone == null)
+                if( _sendContextKey.Zone != null && _sendContextKey.Context != null && _sendContextKey.Keyboard != null ) _sendContextKey.Destroy();
+                _sendContextKey = null;
+            }
+        }
+
+        void OnAutonomousZoneCreated( object sender, ZoneEventArgs e )
+        {
+            DestroySendKey();
+            CreateSendKeyInSendZone( e.Zone.Keyboard );
+        }
+
+        void OnFeatureServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Starting )
             {
                 Feature.PropertyChanged += OnFeaturePropertyChanged;
             }
-            if( e.Current == InternalRunningStatus.Stopping )
+            if( e.Current <= InternalRunningStatus.Stopping )
             {
                 Feature.PropertyChanged -= OnFeaturePropertyChanged;
             }
         }
-
     }
 }

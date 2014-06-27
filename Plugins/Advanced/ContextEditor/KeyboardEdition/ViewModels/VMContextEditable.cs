@@ -1,6 +1,6 @@
 #region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\EditableSkin\ViewModels\VMContextEditable.cs) is part of CiviKey. 
+* This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMContextEditable.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -29,11 +29,12 @@ using System;
 using CK.Plugin;
 using CommonServices;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 using KeyboardEditor.Tools;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using ProtocolManagerModel;
+using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -46,33 +47,31 @@ namespace KeyboardEditor.ViewModels
 
     public enum ModeTypes
     {
+        None = 0,//When displaying the panel to choose between Mode and Layout
         Mode = 1,
         Layout = 2
     }
 
     public class VMContextEditable : VMBase, IDisposable
     {
-        Dictionary<object, VMContextElementEditable> _dic;
-        ModeTypes _currentlyDisplayedModeType = ModeTypes.Mode;
-        IKeyboardEditorRoot _root;
-
-        public const int suppr = 46;
-        public const int up = 38;
         public const int down = 40;
         public const int left = 37;
         public const int right = 39;
-
-        //Base
-        EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
-        EventHandler<CK.Keyboard.Model.KeyboardEventArgs> _evKeyboardDestroyed;
-        EventHandler<CK.Keyboard.Model.KeyboardEventArgs> _evKeyboardCreated;
-        PropertyChangedEventHandler _evUserConfigurationChanged;
-        ObservableCollection<VMKeyboardEditable> _keyboards;
-        VMKeyboardEditable _currentKeyboard;
+        public const int suppr = 46;
+        public const int up = 38;
         IPluginConfigAccessor _config;
-        IKeyboardContext _kbctx;
         IContext _ctx;
+        VMKeyboardEditable _currentKeyboard;
+        ModeTypes _currentlyDisplayedModeType = ModeTypes.None;
+        Dictionary<object, VMContextElementEditable> _dic;
+        EventHandler<CurrentKeyboardChangedEventArgs> _evCurrentKeyboardChanged;
 
+        EventHandler<KeyboardEventArgs> _evKeyboardCreated;
+        EventHandler<KeyboardEventArgs> _evKeyboardDestroyed;
+        PropertyChangedEventHandler _evUserConfigurationChanged;
+        IKeyboardContext _kbctx;
+        ObservableCollection<VMKeyboardEditable> _keyboards;
+        IKeyboardEditorRoot _root;
         public VMContextEditable( IKeyboardEditorRoot root, IKeyboard keyboardToEdit, IPluginConfigAccessor config, IPluginConfigAccessor skinConfiguration )
         {
             if( keyboardToEdit == null ) throw new ArgumentException( "The keyboardToEdit must not be null" );
@@ -85,6 +84,10 @@ namespace KeyboardEditor.ViewModels
             _root = root;
 
             SkinConfiguration = skinConfiguration;
+
+            DefaultImages = new Dictionary<string, string>();
+            GetDefaultImages();
+
             KeyboardVM = CreateKeyboard( keyboardToEdit );
 
             _dic.Add( keyboardToEdit, _currentKeyboard );
@@ -93,16 +96,53 @@ namespace KeyboardEditor.ViewModels
             RegisterEvents();
         }
 
+        internal void AddDefaultImage( string key, string value )
+        {
+            DefaultImages.Add( key, value );
+            OnPropertyChanged( "DefaultImages" );
+        }
+
+        private void GetDefaultImages()
+        {
+            string pathRoot = "pack://application:,,,/SimpleSkin;component/Images";
+            string arrowRoot = pathRoot + "/arrows";
+            string clickRoot = pathRoot + "/clics";
+            DefaultImages.Add( Images.Enter, pathRoot + "/enter.png" );
+            DefaultImages.Add( Images.Exit, pathRoot + "/exit.png" );
+            DefaultImages.Add( Images.Eye, pathRoot + "/eye.png" );
+            DefaultImages.Add( Images.Help, pathRoot + "/help.png" );
+            DefaultImages.Add( Images.Keyboard, pathRoot + "/kb.png" );
+            DefaultImages.Add( Images.Caps, pathRoot + "/maj.png" );
+            DefaultImages.Add( Images.Menu, pathRoot + "/menu.png" );
+            DefaultImages.Add( Images.MouseKeyboard, pathRoot + "/mousekb.png" );
+            DefaultImages.Add( Images.Directions, pathRoot + "/move.png" );
+            DefaultImages.Add( Images.Padlock, pathRoot + "/padlock.png" );
+            DefaultImages.Add( Images.Suppr, pathRoot + "/retarr.png" );
+            DefaultImages.Add( Images.Tab, pathRoot + "/tab.png" );
+            DefaultImages.Add( Images.WindowsLogo, pathRoot + "/windows.png" );
+
+            DefaultImages.Add( Images.BoldDownArrow, arrowRoot + "/bottom.png" );
+            DefaultImages.Add( Images.BoldDownLeftArrow, arrowRoot + "/left-bottom.png" );
+            DefaultImages.Add( Images.BoldLeftArrow, arrowRoot + "/left.png" );
+            DefaultImages.Add( Images.BoldDownRightArrow, arrowRoot + "/right-bottom.png" );
+            DefaultImages.Add( Images.BoldRightArrow, arrowRoot + "/right.png" );
+            DefaultImages.Add( Images.BoldTopLeftArrow, arrowRoot + "/top-left.png" );
+            DefaultImages.Add( Images.BoldTopRightArrow, arrowRoot + "/top-right.png" );
+            DefaultImages.Add( Images.BoldUpArrow, arrowRoot + "/top.png" );
+
+            DefaultImages.Add( Images.DoubleLeftClick, clickRoot + "/doubleleftclick.png" );
+            DefaultImages.Add( Images.DragDrop, clickRoot + "/dragdrop.png" );
+            DefaultImages.Add( Images.LeftClick, clickRoot + "/leftclick.png" );
+            DefaultImages.Add( Images.RightClick, clickRoot + "/rightclick.png" );
+        }
+
         #region Properties
 
-        public ObservableCollection<VMKeyboardEditable> Keyboards { get { return _keyboards; } }
-        public IKeyboardContext KeyboardContext { get { return _kbctx; } }
-        public IPluginConfigAccessor Config { get { return _config; } }
-        public IPluginConfigAccessor SkinConfiguration { get; set; }
-        public IContext Context { get { return _ctx; } }
+        VMContextElementEditable _selectedElement;
 
-        //TODO : check where this is used and remove it
-        public IKeyboardContext Model { get { return KeyboardContext; } }
+        public IPluginConfigAccessor Config { get { return _config; } }
+
+        public IContext Context { get { return _ctx; } }
 
         /// <summary>
         /// The fact that we are displaying the LayoutKeyMode or the KeyMode, on a IKey edition panel must be handled at a higher level.
@@ -117,21 +157,42 @@ namespace KeyboardEditor.ViewModels
                 {
                     _currentlyDisplayedModeType = value;
 
-                    Debug.Assert( SelectedElement is VMKeyEditable, "When modifying the CurrentlyDisplayedModeType, the selected element should always be a VMKeyEditable" );
-                    ( (VMKeyEditable)SelectedElement ).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
-                    ( (VMKeyEditable)SelectedElement ).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                    if( SelectedElement is VMKeyEditable )
+                    {
+                        ((VMKeyEditable)SelectedElement).LayoutKeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                        ((VMKeyEditable)SelectedElement).KeyModeVM.TriggerPropertyChanged( "IsSelected" );
+                    }
+                    else if( SelectedElement is VMKeyModeEditable ) ((VMKeyModeEditable)SelectedElement).TriggerPropertyChanged( "IsSelected" );
+                    else if( SelectedElement is VMLayoutKeyModeEditable ) ((VMLayoutKeyModeEditable)SelectedElement).TriggerPropertyChanged( "IsSelected" );
 
                     OnPropertyChanged( "CurrentlyDisplayedModeType" );
                 }
             }
         }
 
+        public Dictionary<string, string> DefaultImages { get; private set; }
+
+        public IKeyboardContext KeyboardContext { get { return _kbctx; } }
+
+        public ObservableCollection<VMKeyboardEditable> Keyboards { get { return _keyboards; } }
+        public VMKeyboardEditable KeyboardVM
+        {
+            get { return _currentKeyboard; }
+            set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
+        }
+
+        //TODO : check where this is used and remove it
+        public IKeyboardContext Model { get { return KeyboardContext; } }
+
+        /// <summary>
+        /// Gets the pointer device driver, can be used to hook events
+        /// </summary>
+        public IService<IPointerDeviceDriver> PointerDeviceDriver { get { return _root.PointerDeviceDriver; } }
+
         /// <summary>
         /// Gets the keyboard driver, can be used to hook events
         /// </summary>
         //public IService<IKeyboardDriver> KeyboardDriver { get { return _root.KeyboardDriver; } }
-
-        VMContextElementEditable _selectedElement;
         public VMContextElementEditable SelectedElement
         {
             get
@@ -148,7 +209,10 @@ namespace KeyboardEditor.ViewModels
                 if( _selectedElement != value && value != null )
                 {
                     if( _selectedElement != null )
+                    {
+                        _previouslySelectedElement = _selectedElement;
                         _selectedElement.IsSelected = false;
+                    }
                     _selectedElement = value;
                     _selectedElement.IsSelected = true;
                     OnPropertyChanged( "SelectedElement" );
@@ -156,20 +220,116 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the pointer device driver, can be used to hook events
-        /// </summary>
-        public IService<IPointerDeviceDriver> PointerDeviceDriver { get { return _root.PointerDeviceDriver; } }
-
-        public VMKeyboardEditable KeyboardVM
+        VMContextElementEditable _previouslySelectedElement;
+        public VMContextElementEditable PreviouslySelectedElement
         {
-            get { return _currentKeyboard; }
-            set { _currentKeyboard = value; OnPropertyChanged( "KeyboardVM" ); }
+            get { return _previouslySelectedElement; }
+            private set { _previouslySelectedElement = value; }
         }
 
+        public IPluginConfigAccessor SkinConfiguration { get; set; }
+        internal IService<IProtocolEditorsManager> ProtocolManagerService { get { return _root.ProtocolManagerService; } }
         #endregion
 
         #region OnXXX
+        public void Dispose()
+        {
+            foreach( var item in _dic )
+            {
+                item.Value.Dispose();
+            }
+
+            //foreach( var keyboard in _keyboards )
+            //{
+            //    keyboard.Dispose();
+            //}
+
+            _keyboards.Clear();
+            _dic.Clear();
+
+            UnregisterEvents();
+        }
+
+        internal void OnModelDestroy( object m )
+        {
+            VMContextElementEditable vm;
+            if( _dic.TryGetValue( m, out vm ) )
+            {
+                vm.Dispose();
+                _dic.Remove( m );
+            }
+        }
+
+        private void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
+        {
+            //Do nothing, we are not bound to the current keyboard of the keyboard context
+        }
+
+        private void OnKeyboardCreated( object sender, CK.Keyboard.Model.KeyboardEventArgs e )
+        {
+            VMKeyboardEditable k = CreateKeyboard( e.Keyboard );
+            _dic.Add( e.Keyboard, k );
+            _keyboards.Add( k );
+        }
+
+        private void OnKeyboardDestroyed( object sender, CK.Keyboard.Model.KeyboardEventArgs e )
+        {
+            _keyboards.Remove( Obtain( e.Keyboard ) );
+            OnModelDestroy( e.Keyboard );
+        }
+
+        private void OnKeyDown( object sender, HookInvokedEventArgs e )
+        {
+            Keys key = (Keys)(((int)e.LParam >> 16) & 0xFFFF);
+            int modifier = (int)e.LParam & 0xFFFF;
+            int delta = modifier == Constants.SHIFT ? 10 : 1;
+            SelectedElement.OnKeyDownAction( (int)key, delta );
+        }
+
+        private void OnMouseEventTriggered( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
+        {
+            if( SelectedElement as VMKeyEditable != null ) (SelectedElement as VMKeyEditable).TriggerMouseEvent( eventType, args );
+            else if( SelectedElement as VMKeyModeBase != null ) ((SelectedElement as VMKeyModeBase).Parent as VMKeyEditable).TriggerMouseEvent( eventType, args );
+            else if( SelectedElement as VMZoneEditable != null )
+            {
+                foreach( var key in (SelectedElement as VMZoneEditable).Keys )
+                {
+                    key.TriggerMouseEvent( eventType, args );
+                }
+            }
+            else if( SelectedElement as VMKeyboardEditable != null )
+            {
+                foreach( var zone in (SelectedElement as VMKeyboardEditable).Zones )
+                {
+                    foreach( var key in zone.Keys )
+                    {
+                        key.TriggerMouseEvent( eventType, args );
+                    }
+                }
+            }
+        }
+
+        //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
+        private void OnMouseMove( object sender, PointerDeviceEventArgs args )
+        {
+            OnMouseEventTriggered( KeyboardEditorMouseEvent.MouseMove, args );
+        }
+
+        //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
+        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs args )
+        {
+            OnMouseEventTriggered( KeyboardEditorMouseEvent.PointerButtonUp, args );
+        }
+
+        private void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
+        {
+            //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
+            if( e.PropertyName == "CurrentContextProfile" )
+            {
+                OnPropertyChanged( "KeyboardVM" );
+            }
+        }
+
         void RegisterEvents()
         {
             if( PointerDeviceDriver.Status == InternalRunningStatus.Started )
@@ -228,104 +388,6 @@ namespace KeyboardEditor.ViewModels
 
             _root.HookInvoqued -= OnKeyDown;
         }
-
-        private void OnKeyDown( object sender, HookInvokedEventArgs e )
-        {
-            Keys key = (Keys)( ( (int)e.LParam >> 16 ) & 0xFFFF );
-            int modifier = (int)e.LParam & 0xFFFF;
-            int delta = modifier == Constants.SHIFT ? 10 : 1;
-            SelectedElement.OnKeyDownAction( (int)key, delta );
-        }
-
-        //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
-        private void OnMouseMove( object sender, PointerDeviceEventArgs args )
-        {
-            OnMouseEventTriggered( KeyboardEditorMouseEvent.MouseMove, args );
-        }
-
-        //For now, the VMContext is the one handling mouse triggers directly to the ones that need it.
-        private void OnPointerButtonUp( object sender, PointerDeviceEventArgs args )
-        {
-            OnMouseEventTriggered( KeyboardEditorMouseEvent.PointerButtonUp, args );
-        }
-
-        private void OnMouseEventTriggered( KeyboardEditorMouseEvent eventType, PointerDeviceEventArgs args )
-        {
-            if( SelectedElement as VMKeyEditable != null ) ( SelectedElement as VMKeyEditable ).TriggerMouseEvent( eventType, args );
-            else if( SelectedElement as VMZoneEditable != null )
-            {
-                foreach( var key in ( SelectedElement as VMZoneEditable ).Keys )
-                {
-                    key.TriggerMouseEvent( eventType, args );
-                }
-            }
-            else if( SelectedElement as VMKeyboardEditable != null )
-            {
-                foreach( var zone in ( SelectedElement as VMKeyboardEditable ).Zones )
-                {
-                    foreach( var key in zone.Keys )
-                    {
-                        key.TriggerMouseEvent( eventType, args );
-                    }
-                }
-            }
-        }
-
-        private void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
-        {
-            //Do nothing, we are not bound to the current keyboard of the keyboard context
-        }
-
-        public void Dispose()
-        {
-            foreach( var item in _dic )
-            {
-                item.Value.Dispose();
-            }
-
-            //foreach( var keyboard in _keyboards )
-            //{
-            //    keyboard.Dispose();
-            //}
-
-            _keyboards.Clear();
-            _dic.Clear();
-
-            UnregisterEvents();
-        }
-
-        internal void OnModelDestroy( object m )
-        {
-            VMContextElementEditable vm;
-            if( _dic.TryGetValue( m, out vm ) )
-            {
-                vm.Dispose();
-                _dic.Remove( m );
-            }
-        }
-
-        private void OnKeyboardCreated( object sender, CK.Keyboard.Model.KeyboardEventArgs e )
-        {
-            VMKeyboardEditable k = CreateKeyboard( e.Keyboard );
-            _dic.Add( e.Keyboard, k );
-            _keyboards.Add( k );
-        }
-
-        private void OnKeyboardDestroyed( object sender, CK.Keyboard.Model.KeyboardEventArgs e )
-        {
-            _keyboards.Remove( Obtain( e.Keyboard ) );
-            OnModelDestroy( e.Keyboard );
-        }
-
-        private void OnUserConfigurationChanged( object sender, PropertyChangedEventArgs e )
-        {
-            //If the CurrentContext has changed, but not because a new context has been loaded (happens when the userConf if changed but the context is kept the same).
-            if( e.PropertyName == "CurrentContextProfile" )
-            {
-                OnPropertyChanged( "KeyboardVM" );
-            }
-        }
-
         #endregion
 
         #region Components Create & Obtain Methods
@@ -339,41 +401,12 @@ namespace KeyboardEditor.ViewModels
                 {
                     _selectCommand = new CK.WPF.ViewModel.VMCommand<VMContextElementEditable>( ( elem ) =>
                     {
+                        if( elem is VMKeyEditable ) CurrentlyDisplayedModeType = ModeTypes.None;
                         SelectedElement = elem;
                     } );
                 }
                 return _selectCommand;
             }
-        }
-
-        protected VMLayoutKeyModeEditable CreateLayoutKeyMode( ILayoutKeyMode layoutKeyMode )
-        {
-            VMLayoutKeyModeEditable vm = new VMLayoutKeyModeEditable( this, layoutKeyMode );
-            return vm;
-        }
-
-        protected VMKeyModeEditable CreateKeyMode( IKeyMode keyMode )
-        {
-            VMKeyModeEditable vm = new VMKeyModeEditable( this, keyMode );
-            return vm;
-        }
-
-        protected VMKeyEditable CreateKey( IKey k )
-        {
-            VMKeyEditable vmKey = new VMKeyEditable( this, k );
-            return vmKey;
-        }
-
-        protected VMZoneEditable CreateZone( IZone z )
-        {
-            VMZoneEditable vmZone = new VMZoneEditable( this, z );
-            return vmZone;
-        }
-
-        protected VMKeyboardEditable CreateKeyboard( IKeyboard kb )
-        {
-            VMKeyboardEditable vmKeyboard = new VMKeyboardEditable( this, kb );
-            return vmKeyboard;
         }
 
         public VMKeyboardEditable Obtain( IKeyboard keyboard )
@@ -437,6 +470,34 @@ namespace KeyboardEditor.ViewModels
             return lkm;
         }
 
+        protected VMKeyEditable CreateKey( IKey k )
+        {
+            VMKeyEditable vmKey = new VMKeyEditable( this, k );
+            return vmKey;
+        }
+
+        protected VMKeyboardEditable CreateKeyboard( IKeyboard kb )
+        {
+            VMKeyboardEditable vmKeyboard = new VMKeyboardEditable( this, kb );
+            return vmKeyboard;
+        }
+
+        protected VMKeyModeEditable CreateKeyMode( IKeyMode keyMode )
+        {
+            VMKeyModeEditable vm = new VMKeyModeEditable( this, keyMode );
+            return vm;
+        }
+
+        protected VMLayoutKeyModeEditable CreateLayoutKeyMode( ILayoutKeyMode layoutKeyMode )
+        {
+            VMLayoutKeyModeEditable vm = new VMLayoutKeyModeEditable( this, layoutKeyMode );
+            return vm;
+        }
+        protected VMZoneEditable CreateZone( IZone z )
+        {
+            VMZoneEditable vmZone = new VMZoneEditable( this, z );
+            return vmZone;
+        }
         T FindViewModel<T>( object m )
             where T : VMContextElementEditable
         {

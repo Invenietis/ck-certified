@@ -88,7 +88,7 @@ namespace Host.VM
         }
 
         public string GroupName
-        {
+        { 
             get { return _groupName; }
         }
 

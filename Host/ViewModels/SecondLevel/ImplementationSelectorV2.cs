@@ -11,8 +11,8 @@ using Host.Resources;
 
 namespace Host.VM
 {
-    public class ImplementationSelector : ConfigPage
-    { 
+    public class ImplementationSelectorV2 : ConfigPage
+    {
         readonly AppViewModel _app;
         readonly ISimplePluginRunner _runner;
         readonly IUserConfiguration _userConf;
@@ -23,7 +23,7 @@ namespace Host.VM
 
         readonly List<ConfigImplementationSelectorItem> _items;
 
-        public ImplementationSelector( string displayName, AppViewModel app )
+        public ImplementationSelectorV2( string displayName, AppViewModel app )
             : base( app.ConfigManager )
         {
             DisplayName = displayName;
@@ -60,22 +60,22 @@ namespace Host.VM
             Items.Add( radar );
             _items.Add( radar );
 
-            var empty = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), groupName );
-            empty.DisplayName = R.NoPointingDevice;
-            empty.Description = R.NoPointingDeviceDescription;
-            if( defaultPlugin == Guid.Empty ) empty.IsDefaultItem = true;
-            Items.Add( empty );
-            _items.Add( empty );
+            var mouseKeyboard = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), groupName );
+            mouseKeyboard.DisplayName = R.NoPointingDevice;
+            mouseKeyboard.Description = R.NoPointingDeviceDescription;
+            if( defaultPlugin == Guid.Empty ) mouseKeyboard.IsDefaultItem = true;
+            Items.Add( mouseKeyboard );
+            _items.Add( mouseKeyboard );
 
-            var apply = new RadioConfigItemApply( _app.ConfigManager, new VMCommand( Apply ), scroll, radar, empty );
+            var apply = new RadioConfigItemApply( _app.ConfigManager, new VMCommand( Apply ), scroll, radar, mouseKeyboard );
             apply.DisplayName = R.Apply;
             Items.Add( apply );
 
-            base.OnInitialize();
+            base.OnInitialize(); 
         }
 
         Guid _previous;
-        Guid _current;
+        Guid Current { get { return _items.Single( i => i.IsSelected ).; };
 
         internal bool IsDirty
         {
@@ -84,13 +84,15 @@ namespace Host.VM
 
         private void Apply()
         {
-            _previous = _current;
+            if( _runner.PluginHost.IsPluginRunning( _previous ) )
+            {
+                _previous = _current;
 
-            SetConfigStopped();
-            SetConfigStarted();
-            _runner.Apply();
-
-            _items.Single( ( i ) => i.IsSelected );
+                SetConfigStopped();
+                SetConfigStarted();
+                _runner.Apply();
+            }
+            _app.CivikeyHost.UserConfig.Set( "PointerManagerPluginId", _current );
         }
 
         private void SetConfigStopped()

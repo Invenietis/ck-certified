@@ -7,7 +7,7 @@ using CK.WPF.Controls;
 namespace Host.ViewModels
 {
     public class ContextModel : VMBase, IDisposable
-    {
+    { 
         IKeyboardContext _ctx;
         AppViewModel _app;
 

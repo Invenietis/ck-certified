@@ -15,9 +15,8 @@ namespace Host.VM
     /// </summary>
     public class PluginCluster
     {
-        List<Guid> _startWithPlugin;
-        List<Guid> _stopWithPlugin;
-        Guid _mainPluginId;
+        Func<List<Guid>> _startWithPlugin;
+        Func<List<Guid>> _stopWithPlugin;
         ISimplePluginRunner _runner;
         IUserConfiguration _userConfig;
 
@@ -31,10 +30,9 @@ namespace Host.VM
         public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, params Guid[] pluginIds )
         {
             if( pluginIds.Length == 0 ) throw new ArgumentException( "A PluginCluster cannot be created without pluginIds. It need at least one" );
-            _mainPluginId = pluginIds[0];
             List<Guid> plugins = pluginIds.ToList();
-            _startWithPlugin = plugins;
-            _stopWithPlugin = plugins;
+            _startWithPlugin = () => plugins;
+            _stopWithPlugin = () => plugins;
             _runner = runner;
             _userConfig = userConfig;
         }
@@ -49,15 +47,42 @@ namespace Host.VM
         /// <param name="stopWithPlugin">The plugins to stop together with the main plugin</param>
         public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, Guid mainPluginId, IEnumerable<Guid> startWithPlugin, IEnumerable<Guid> stopWithPlugin )
         {
-            _mainPluginId = mainPluginId;
+            var startList = new List<Guid>();
+            startList.Add( mainPluginId );
+            startList.AddRange( startWithPlugin );
 
-            _startWithPlugin = new List<Guid>();
-            _startWithPlugin.Add( mainPluginId );
-            _startWithPlugin.AddRange( startWithPlugin );
+            _startWithPlugin = () => startList;
 
-            _stopWithPlugin = new List<Guid>();
-            _stopWithPlugin.Add( mainPluginId );
-            _stopWithPlugin.AddRange( stopWithPlugin );
+            var stopList = new List<Guid>();
+            stopList.Add( mainPluginId );
+            stopList.AddRange( stopWithPlugin );
+
+            _stopWithPlugin = () => stopList;
+
+            _runner = runner;
+            _userConfig = userConfig;
+        }
+
+        public PluginCluster( ISimplePluginRunner runner, IUserConfiguration userConfig, Func<Guid> selectMainPlugin, Func<IEnumerable<Guid>> selectStartWithPlugin = null, Func<IEnumerable<Guid>> selectStopWithPlugin = null )
+        {
+            Func<List<Guid>> startFunc = () =>
+            {
+                var startList = new List<Guid>();
+                startList.Add( selectMainPlugin() );
+                if( selectStartWithPlugin != null ) startList.AddRange( selectStartWithPlugin() );
+                return startList;
+            };
+
+            _startWithPlugin = startFunc;
+            Func<List<Guid>> stopFunc = () =>
+            {
+                var stopList = new List<Guid>();
+                stopList.Add( selectMainPlugin() );
+                if( selectStopWithPlugin != null ) stopList.AddRange( selectStopWithPlugin() );
+                return stopList;
+            };
+
+            _stopWithPlugin = stopFunc;
 
             _runner = runner;
             _userConfig = userConfig;
@@ -70,7 +95,7 @@ namespace Host.VM
         {
             get
             {
-                if( _startWithPluginRO == null ) _startWithPluginRO = _startWithPlugin.ToReadOnlyList();
+                if( _startWithPluginRO == null ) _startWithPluginRO = _startWithPlugin().ToReadOnlyList();
                 return _startWithPluginRO;
             }
         }
@@ -80,7 +105,7 @@ namespace Host.VM
         {
             get
             {
-                if( _stopWithPluginRO == null ) _stopWithPluginRO = _stopWithPlugin.ToReadOnlyList();
+                if( _stopWithPluginRO == null ) _stopWithPluginRO = _stopWithPlugin().ToReadOnlyList();
                 return _stopWithPluginRO;
             }
         }
@@ -89,11 +114,11 @@ namespace Host.VM
         /// The Guid of the main plugin.
         /// If the simple constructor has been used to create this object, the first of the list is considered the main plugin.
         /// </summary>
-        public Guid MainPluginId { get { return _mainPluginId; } }
+        public Guid MainPluginId { get { return _startWithPlugin().FirstOrDefault(); } }
 
         public bool IsRunning
         {
-            get { return _startWithPlugin.Intersect( _stopWithPlugin ).All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) ); }
+            get { return _startWithPlugin().Intersect( _stopWithPlugin() ).All( ( id ) => _runner.PluginHost.IsPluginRunning( id ) ); }
         }
 
         //Can't find all the info to decide whether a plugin is Disabled or not, yet.
@@ -112,7 +137,7 @@ namespace Host.VM
         /// </summary>
         public void StartPlugin()
         {
-            SetStartConfigStatus();
+            SetStartConfigStatus(); 
             _runner.Apply();
         }
 
@@ -131,7 +156,7 @@ namespace Host.VM
         /// </summary>
         public void SetStartConfigStatus()
         {
-            foreach( var id in _startWithPlugin )
+            foreach( var id in _startWithPlugin() )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.AutomaticStart );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Started );
@@ -143,7 +168,7 @@ namespace Host.VM
         /// </summary>
         public void SetStopConfigStatus()
         {
-            foreach( var id in _stopWithPlugin )
+            foreach( var id in _stopWithPlugin() )
             {
                 _userConfig.PluginsStatus.SetStatus( id, ConfigPluginStatus.Manual );
                 _userConfig.LiveUserConfiguration.SetAction( id, ConfigUserAction.Stopped );

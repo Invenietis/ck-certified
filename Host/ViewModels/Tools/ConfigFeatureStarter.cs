@@ -37,16 +37,18 @@ namespace Host.VM
     {
         ISimplePluginRunner _runner;
         PluginCluster _pluginCluster;
+        ConfigPage _optionPage;
 
-        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, PluginCluster pluginCluster )
+        public ConfigFeatureStarter( ConfigManager configManager, ISimplePluginRunner runner, PluginCluster pluginCluster, ConfigPage optionPage = null )
             : base( configManager )
         {
+            _optionPage = optionPage;
             _pluginCluster = pluginCluster;
             _runner = runner;
             _runner.PluginHost.StatusChanged += ( o, e ) =>
             {
                 if( _pluginCluster.StartWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) || _pluginCluster.StopWithPlugin.Contains( e.PluginProxy.PluginKey.PluginId ) )
-                {
+                { 
                     NotifyOfPropertyChange( () => Start );
                     NotifyOfPropertyChange( () => Stop );
                     NotifyOfPropertyChange( () => IsRunning );
@@ -56,6 +58,7 @@ namespace Host.VM
 
             Start = new SimpleCommand( StartPlugin, CanStart );
             Stop = new SimpleCommand( StopPlugin );
+            OpenEditor = new SimpleCommand( GoTo );
         }
 
         public bool IsRunning
@@ -100,8 +103,15 @@ namespace Host.VM
             NotifyOfPropertyChange( () => IsRunnable );
         }
 
+        void GoTo()
+        {
+            ConfigManager.ActivateItem( _optionPage );
+        }
+
         public ICommand Start { get; private set; }
 
         public ICommand Stop { get; private set; }
+
+        public ICommand OpenEditor { get; private set; }
     }
 }

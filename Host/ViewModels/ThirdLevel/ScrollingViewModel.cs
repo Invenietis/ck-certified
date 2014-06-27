@@ -31,16 +31,16 @@ namespace Host.VM
         }
 
         protected override void OnInitialize()
-        {
+        { 
             base.OnInitialize();
             var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
             action.ImagePath = "Forward.png";
             action.DisplayName = R.ScrollConfig;
-            this.Items.Add( action );
 
-            this.AddLink( _scVm ?? (_scVm = new ScrollingModulesConfigurationViewModel( R.OtherScrollConfig, _app )) );
+            var g = this.AddGroup();
 
-            
+            g.Items.Add( action );
+            g.AddLink( _scVm ?? (_scVm = new ScrollingModulesConfigurationViewModel( R.OtherScrollConfig, _app )) );
         }
 
         public void StartScrollEditor()

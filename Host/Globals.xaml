@@ -65,15 +65,40 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
+
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ConfigFeatureStarter}">
             <DataTemplate>
                 <DockPanel Margin="3" Name="featureContainer" LastChildFill="False">
                     <!--<ToggleButton DockPanel.Dock="Right">
                         <ContentPresenter Name="statename" Margin="5 0" Content="Stopped"/>
                     </ToggleButton>-->
+                    <Button Margin="10 0 3 0" DockPanel.Dock="Right" Command="{Binding OpenEditor}" ContentTemplate="{StaticResource EditorButton}" ToolTip="{x:Static res:R.ShowEditor}" Style="{StaticResource EditorButtonStyle}" />
                     <Button x:Uid="configfeatureselector-disable" Name="disable" Content="{x:Static res:R.FeatureDisable}" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
                     <Button x:Uid="configfeatureselector-enable" Name="enable" Content="{x:Static res:R.FeatureEnable}" DockPanel.Dock="Right" Padding="5 2" Margin="3 0" Command="{Binding Start}" />
-                    <TextBlock x:Uid="configfeatureselector-featurename" DockPanel.Dock="Left" Text="{x:Static res:R.FeatureEnable}" VerticalAlignment="Center"/>
+                    <!--<TextBlock x:Uid="configfeatureselector-featurename" DockPanel.Dock="Left" Text="{x:Static res:R.FeatureEnable}" VerticalAlignment="Center"/>-->
+                    <TextBlock FontWeight="Bold" DockPanel.Dock="Left" Margin="2 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                    <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
+                </DockPanel>
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                        <Setter TargetName="enable" Property="IsEnabled" Value="False"/>
+                        <Setter TargetName="disable" Property="IsEnabled" Value="True"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsRunnable}" Value="False">
+                        <Setter TargetName="featureContainer" Property="IsEnabled" Value="False"/>
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
+        <!--it's a copy and paste because i need the same template-->
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:PointerManagerPluginStarter}">
+            <DataTemplate>
+                <DockPanel Margin="3" Name="featureContainer" LastChildFill="False">
+                    <Button Margin="10 0 3 0" DockPanel.Dock="Right" Command="{Binding OpenEditor}" ContentTemplate="{StaticResource EditorButton}" ToolTip="{x:Static res:R.ShowEditor}" Style="{StaticResource EditorButtonStyle}" />
+                    <Button x:Uid="configfeatureselector-disable" Name="disable" Content="{x:Static res:R.FeatureDisable}" IsEnabled="False" DockPanel.Dock="Right" Padding="5 2" Command="{Binding Stop}" />
+                    <Button x:Uid="configfeatureselector-enable" Name="enable" Content="{x:Static res:R.FeatureEnable}" DockPanel.Dock="Right" Padding="5 2" Margin="3 0" Command="{Binding Start}" />
                     <TextBlock FontWeight="Bold" DockPanel.Dock="Left" Margin="2 0 0 0" Text="{Binding DisplayName}" VerticalAlignment="Center"/>
                     <Image DockPanel.Dock="Left" Stretch="None" Source="{Binding ImagePath}" />
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" FontStyle="Italic" Text="{Binding Description}" Margin="0,0,10,0"/>
@@ -243,6 +268,15 @@
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:TitleItem}">
             <DataTemplate>
                 <TextBlock FontSize="{Binding FontSize}" FontWeight="Bold" Text="{Binding Text}"></TextBlock>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:ComboBoxItem}">
+            <DataTemplate>
+                <DockPanel LastChildFill="True">
+                    <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding Label}"></TextBlock>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Items}" Margin="10 5" SelectedItem="{Binding SelectedItem}"/>
+                </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 

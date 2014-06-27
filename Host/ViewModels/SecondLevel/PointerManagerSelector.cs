@@ -11,7 +11,7 @@ using Host.Resources;
 
 namespace Host.VM
 {
-    public class ImplementationSelectorV2 : ConfigPage
+    public class PointerManagerSelector : ConfigPage
     {
         readonly AppViewModel _app;
         readonly ISimplePluginRunner _runner;
@@ -23,7 +23,7 @@ namespace Host.VM
 
         readonly List<ConfigImplementationSelectorItem> _items;
 
-        public ImplementationSelectorV2( string displayName, AppViewModel app )
+        public PointerManagerSelector( string displayName, AppViewModel app )
             : base( app.ConfigManager )
         {
             DisplayName = displayName;
@@ -44,23 +44,22 @@ namespace Host.VM
         {
             Guid defaultPlugin = GetDefaultItem( _screenScrollerId, _radarId );
             _previous = defaultPlugin;
-            _current = defaultPlugin;
 
-            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _screenScrollerId, new Guid[] { _basicScrollId }, new Guid[0] ), groupName );
+            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _screenScrollerId ), groupName );
             scroll.DisplayName = R.ScreenScrolling;
             scroll.Description = R.ScreenScrollingDescription;
             if( defaultPlugin == _screenScrollerId ) scroll.IsDefaultItem = true;
             Items.Add( scroll );
             _items.Add( scroll );
 
-            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, _radarId, new Guid[] { _basicScrollId }, new Guid[0] ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), groupName );
+            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _radarId ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), groupName );
             radar.DisplayName = R.Radar;
             radar.Description = R.RadarDescription;
             if( defaultPlugin == _radarId ) radar.IsDefaultItem = true;
             Items.Add( radar );
             _items.Add( radar );
 
-            var mouseKeyboard = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), groupName );
+            var mouseKeyboard = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, Guid.Empty ), new KeyboardPointerSelector( _app ), groupName );
             mouseKeyboard.DisplayName = R.NoPointingDevice;
             mouseKeyboard.Description = R.NoPointingDeviceDescription;
             if( defaultPlugin == Guid.Empty ) mouseKeyboard.IsDefaultItem = true;
@@ -71,28 +70,47 @@ namespace Host.VM
             apply.DisplayName = R.Apply;
             Items.Add( apply );
 
-            base.OnInitialize(); 
+            base.OnInitialize();
         }
 
         Guid _previous;
-        Guid Current { get { return _items.Single( i => i.IsSelected ).; };
+        Guid Current { get { return _items.Single( i => i.IsSelected ).PluginCluster.MainPluginId; } }
 
         internal bool IsDirty
         {
-            get { return _previous != _current; }
+            get { return _previous != Current; }
         }
 
         private void Apply()
         {
-            if( _runner.PluginHost.IsPluginRunning( _previous ) )
+            if( Current == Guid.Empty )
             {
-                _previous = _current;
-
-                SetConfigStopped();
-                SetConfigStarted();
-                _runner.Apply();
+                if( IsStart() )
+                {
+                    SetConfigStopped();
+                    _runner.Apply();
+                    _app.KeyboardContext.Keyboards[_app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_KeyboardName", "Clavier-souris" )].IsActive = true;
+                }
+                _app.CivikeyHost.UserConfig.Set( "PointerManager_UseKeyboard", true );
             }
-            _app.CivikeyHost.UserConfig.Set( "PointerManagerPluginId", _current );
+            else
+            {
+                if( IsStart() )
+                {
+                    SetConfigStopped();
+                    SetConfigStarted();
+                    _runner.Apply();
+                }
+                _app.CivikeyHost.UserConfig.Set( "PointerManager_UseKeyboard", false );
+                _app.CivikeyHost.UserConfig.Set( "PointerManager_Plugin", Current );
+            }
+            _previous = Current;
+        }
+
+        private bool IsStart()
+        {
+            return (!(bool)_app.CivikeyHost.UserConfig.GetOrSet("PointerManager_UseKeyboard", false ) && _previous != Guid.Empty && _runner.PluginHost.IsPluginRunning( _previous ))
+                    || ((bool)_app.CivikeyHost.UserConfig.GetOrSet("PointerManager_UseKeyboard", false) && _app.KeyboardContext.Keyboards[_app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_KeyboardName", "Clavier-souris" )].IsActive);
         }
 
         private void SetConfigStopped()

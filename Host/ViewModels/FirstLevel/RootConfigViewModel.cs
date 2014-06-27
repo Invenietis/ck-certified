@@ -87,15 +87,7 @@ namespace Host
                 new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ),
                 new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
 
-            var pointerManager = new ConfigFeatureStarter(
-                ConfigManager,
-                _app.PluginRunner,
-                new PluginCluster( 
-                    _app.PluginRunner, 
-                    _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
-                    () => _app.CivikeyHost.UserConfig.GetOrSet( "PointerManagerPluginId", _radarId ),
-                    () => new Guid[] { _basicScrollId } ),
-                new ImplementationSelectorV2( "Selection du dispositif de pointage", _app ) ) { DisplayName = R.Scrolling };
+            var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( "Selection du dispositif de pointage", _app ) ) { DisplayName = R.Scrolling };
 
             //var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
             //var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin

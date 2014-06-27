@@ -48,7 +48,5 @@ namespace Host.VM
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{48D3977C-EC26-48EF-8E47-806E11A1C041}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
-
-
     }
 }

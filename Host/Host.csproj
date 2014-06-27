@@ -232,13 +232,17 @@
     <Compile Include="ViewModels\MouseRadarViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\SecondLevel\PointerManagerSelector.cs" />
+    <Compile Include="ViewModels\SecondLevel\KeyboardConfigViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\KeyboardPointerSelector.cs" />
     <Compile Include="ViewModels\ThirdLevel\ScrollingViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\CreditViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ScrollingModulesConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ComboBoxItem.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
     <Compile Include="ViewModels\SecondLevel\AppConfigViewModel.cs" />
@@ -248,6 +252,7 @@
     <Compile Include="ViewModels\Tools\ConfigImplementationSelectorItem.cs" />
     <Compile Include="ViewModels\Tools\CheckboxConfigItemApply.cs" />
     <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\PointerManagerPluginStarter.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
     <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />

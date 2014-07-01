@@ -396,4 +396,13 @@
   <data name="ExportConf" xml:space="preserve">
     <value>Exporter votre configuration</value>
   </data>
+  <data name="KeyboardPointer" xml:space="preserve">
+    <value>Clavier de déplacement</value>
+  </data>
+  <data name="KeyboardPointerDescription" xml:space="preserve">
+    <value>Utilise un clavier permettant de déplacer la souris</value>
+  </data>
+  <data name="MoveMouse" xml:space="preserve">
+    <value>Déplacement souris</value>
+  </data>
 </root>

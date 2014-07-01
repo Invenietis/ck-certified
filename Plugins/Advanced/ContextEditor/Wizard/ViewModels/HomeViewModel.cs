@@ -107,7 +107,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public void DestroyKeyboard()
         {
-            Next = new DeletionKeyboardListViewModel( Root, WizardManager, _keyboardCtx.Keyboards );
+            Next = new DeletionKeyboardListViewModel( Root, WizardManager, _keyboardCtx.Keyboards.Where( k => !k.IsActive ) );
             WizardManager.GoFurther();
         }
 

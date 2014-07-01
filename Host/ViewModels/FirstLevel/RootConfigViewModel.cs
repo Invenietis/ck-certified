@@ -87,11 +87,7 @@ namespace Host
                 new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ),
                 new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
 
-            var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( "Selection du dispositif de pointage", _app ) ) { DisplayName = R.Scrolling };
-
-            //var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
-            //var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
-            //    { DisplayName = R.ScreenScrolling };
+            var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };
 
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
@@ -111,10 +107,7 @@ namespace Host
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
             g.Items.Add( pointerManager );
-            //g.Items.Add( mouseRadar );
-            //g.Items.Add( screenScrollerStarter );
 
-            this.AddLink( new ImplementationSelector( "Selection du dispositif de pointage", _app ) );
             this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
 
             base.OnInitialize();

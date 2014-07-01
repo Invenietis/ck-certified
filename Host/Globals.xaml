@@ -280,12 +280,17 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:DescriptionItem}">
+            <DataTemplate DataType="{x:Type local:DescriptionItem}">
+                <TextBlock FontSize="{Binding FontSize}" Text="{Binding Text}" Foreground="Gray" FontStyle="Italic" />
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:TextItem}">
             <DataTemplate>
                 <TextBlock FontSize="{Binding FontSize}" Text="{Binding Text}"></TextBlock>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
-
     </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

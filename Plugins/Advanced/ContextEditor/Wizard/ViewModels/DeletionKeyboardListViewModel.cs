@@ -1,4 +1,5 @@
-﻿using CK.Keyboard.Model;
+﻿using System.Collections.Generic;
+using CK.Keyboard.Model;
 using CK.WPF.Wizard;
 using KeyboardEditor.Resources;
 
@@ -11,7 +12,7 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to create or modify</param>
-        public DeletionKeyboardListViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboardCollection model )
+        public DeletionKeyboardListViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IEnumerable<IKeyboard> model )
             : base( root, wizardManager, model )
         {
             HideNext = false;

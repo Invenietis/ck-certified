@@ -7,6 +7,7 @@ using CK.Windows.Config;
 using CK.Windows;
 using System.Collections.Generic;
 using CK.Keyboard.Model;
+using System.Diagnostics;
 
 namespace Host.VM
 {
@@ -18,8 +19,27 @@ namespace Host.VM
         AppViewModel _app;
         IKeyboard _keyboard;
 
-        Guid _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
-        Guid _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
+        readonly Guid _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
+        readonly Guid _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
+        readonly Guid _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+
+        string KeyboardName
+        {
+            get { return _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_KeyboardName", "Clavier-souris" ); }
+            set { _app.CivikeyHost.UserConfig.Set( "PointerManager_KeyboardName", value ); }
+        }
+
+        bool UseKeyboard
+        {
+            get { return _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_UseKeyboard", false ); }
+            set { _app.CivikeyHost.UserConfig.Set( "PointerManager_UseKeyboard", value ); }
+        }
+
+        Guid Plugin
+        {
+            get { return _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_Plugin", _radarId ); }
+            set { _app.CivikeyHost.UserConfig.Set( "PointerManager_Plugin", value ); }
+        }
 
         public PointerManagerPluginStarter( AppViewModel app, ConfigPage optionPage = null )
             : base( app.ConfigManager )
@@ -54,15 +74,15 @@ namespace Host.VM
 
         void Keyboards_KeyboardRenamed( object sender, KeyboardRenamedEventArgs e )
         {
-            if( e.PreviousName == _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_KeyboardName", "Clavier-souris" ) ) _app.CivikeyHost.UserConfig.Set( "PointerManager_KeyboardName", e.Keyboard.Name );
+            if( e.PreviousName == KeyboardName ) KeyboardName = e.Keyboard.Name;
         }
 
         public bool IsRunning
         {
-            get { return _pluginCluster.IsRunning; }
+            get { return _pluginCluster.IsRunning || ( UseKeyboard && _app.KeyboardContext.Keyboards[KeyboardName].IsActive ); }
         }
 
-        //Can't find all the info to decide whether a plugin is Disabled or not, yet.
+        //Can't find all infos to decide whether a plugin is Disabled or not, yet.
         public bool IsRunnable
         {
             get
@@ -80,18 +100,18 @@ namespace Host.VM
                     var p = _runner.Discoverer.FindPlugin( id );
                     return p != null && !p.HasError;
                 }
-            );
+            ) || (UseKeyboard && _app.KeyboardContext.Keyboards.FirstOrDefault( k => k.Name == KeyboardName ) != null);
         }
 
         void StartPointerManager()
         {
-            if( _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_UseKeyboard", false ) )
+            if( UseKeyboard )
             {
-                string keyboardConfName = _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_KeyboardName", "Clavier-souris" );
-                _keyboard = _app.KeyboardContext.Keyboards.FirstOrDefault( k => keyboardConfName == k.Name );
-                if( _keyboard != null )
+                IKeyboard keyboard = _app.KeyboardContext.Keyboards.FirstOrDefault( k => KeyboardName == k.Name );
+
+                if( keyboard != null )
                 {
-                    _keyboard.IsActive = true;
+                    keyboard.IsActive = true;
 
                     NotifyOfPropertyChange( () => IsRunning );
                     NotifyOfPropertyChange( () => IsRunnable );
@@ -100,8 +120,8 @@ namespace Host.VM
                 }
                 else
                 {
-                    _app.CivikeyHost.UserConfig.Set( "PointerManager_Plugin", _radarId );
-                    _app.CivikeyHost.UserConfig.Set( "PointerManager_UseKeyboard", false );
+                    Plugin = _radarId;
+                    UseKeyboard = false;
                 }
             }
             _pluginCluster.StartPlugin();
@@ -112,10 +132,11 @@ namespace Host.VM
 
         void StopPointerManager()
         {
-            if( _app.CivikeyHost.UserConfig.GetOrSet( "PointerManager_UseKeyboard", false ) )
+            if( UseKeyboard )
             {
-                _keyboard.IsActive = false;
-                _keyboard = null;
+                Debug.Assert( _app.KeyboardContext.Keyboards.FirstOrDefault( k => k.Name == KeyboardName ) != null );
+                Debug.Assert( _app.KeyboardContext.Keyboards.FirstOrDefault( k => k.Name == KeyboardName ) != null );
+                _app.KeyboardContext.Keyboards[KeyboardName].IsActive = false;
             }
             else
             {

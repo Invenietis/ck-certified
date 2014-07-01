@@ -257,6 +257,7 @@
     <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="ViewModels\Tools\TextItem.cs" />
+    <Compile Include="ViewModels\Tools\DescriptionItem.cs" />
     <Compile Include="ViewModels\Tools\TitleItem.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>

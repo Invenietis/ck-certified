@@ -275,7 +275,7 @@
             <DataTemplate>
                 <DockPanel LastChildFill="True">
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding Label}"></TextBlock>
-                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Items}" Margin="10 5" SelectedItem="{Binding SelectedItem}"/>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Items}" Margin="10 5" SelectedItem="{Binding SelectedItem}" />
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
@@ -289,6 +289,18 @@
         <ckwincore:TypeDataTemplateSelector Type="{x:Type local:TextItem}">
             <DataTemplate>
                 <TextBlock FontSize="{Binding FontSize}" Text="{Binding Text}"></TextBlock>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:SliderConfigItem}">
+            <DataTemplate>
+                <DockPanel Visibility="{Binding Visible, Converter={StaticResource converter}}">
+                    <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="80" />
+                    <StackPanel>
+                        <Slider Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" TickFrequency="{Binding Interval}" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Value}"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormattedText}" />
+                    </StackPanel>
+                </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
     </ckwincore:CompositeDataTemplateSelector>

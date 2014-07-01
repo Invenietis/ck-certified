@@ -44,6 +44,8 @@ namespace Host.VM
             }
         }
 
+        public string SelectedIndex { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged( [CallerMemberName] string propertyName = "" )

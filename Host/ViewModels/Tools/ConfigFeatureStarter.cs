@@ -113,5 +113,8 @@ namespace Host.VM
         public ICommand Stop { get; private set; }
 
         public ICommand OpenEditor { get; private set; }
+
+        //need implementation
+        public bool CanOpenEditor { get { return true; } }
     }
 }

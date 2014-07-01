@@ -256,6 +256,7 @@
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
     <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
+    <Compile Include="ViewModels\Tools\SliderConfigItem.cs" />
     <Compile Include="ViewModels\Tools\TextItem.cs" />
     <Compile Include="ViewModels\Tools\DescriptionItem.cs" />
     <Compile Include="ViewModels\Tools\TitleItem.cs" />
@@ -345,6 +346,10 @@
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Accessibility\KeyScroller\Scroller.csproj">
+      <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
+      <Name>Scroller</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>

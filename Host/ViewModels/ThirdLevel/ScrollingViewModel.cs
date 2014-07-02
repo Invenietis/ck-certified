@@ -84,13 +84,13 @@ namespace Host.VM
 
         void comboBox_SelectedItemChanged( object sender, SelectedItemChangedEventArgs e )
         {
-            _scrollConfig["Strategy"] = e.Item;
+            Strategy = e.Item;
             UpdateVisibility();
         }
 
         private void UpdateVisibility()
         {
-            if( _scrollConfig["Strategy"].ToString() == "TurboScrollingStrategy" )
+            if( Strategy == "TurboScrollingStrategy" )
             {
                 _speedSlider.Visible = false;
                 _turboSpeedSlider.Visible = true;
@@ -120,11 +120,20 @@ namespace Host.VM
             }
         }
 
+        public string Strategy
+        {
+            get { return _scrollConfig.GetOrSet( "Strategy", "ZoneScrollingStrategy" ); }
+            set
+            {
+                _scrollConfig["Strategy"] = value;
+            }
+        }
+
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             NotifyOfPropertyChange( () => Speed );
             NotifyOfPropertyChange( () => TurboSpeed );
-            NotifyOfPropertyChange( () => TurboSpeed );
+            NotifyOfPropertyChange( () => Strategy );
         }
     }
 }

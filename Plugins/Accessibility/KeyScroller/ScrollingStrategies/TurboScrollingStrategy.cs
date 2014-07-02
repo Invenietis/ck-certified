@@ -80,7 +80,7 @@ namespace Scroller
                 if( e.Key == "TurboSpeed" )
                 {
                     TurboInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
-                    if( Timer.Interval != _normalInterval ) SetTurboWithCheck();
+                    if( Timer.Interval != TurboInterval ) SetTurboWithCheck();
                 }
             }
         }

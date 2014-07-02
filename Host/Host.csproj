@@ -185,6 +185,7 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.1.1.6\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -260,6 +261,7 @@
     <Compile Include="ViewModels\Tools\TextItem.cs" />
     <Compile Include="ViewModels\Tools\DescriptionItem.cs" />
     <Compile Include="ViewModels\Tools\TitleItem.cs" />
+    <Compile Include="ViewModels\Tools\RecordConfigItem.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>

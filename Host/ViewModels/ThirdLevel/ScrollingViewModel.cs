@@ -8,10 +8,12 @@ using System.Windows.Input;
 using System.Xml;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Reflection;
 using CK.Storage;
 using CK.Windows;
 using CK.Windows.App;
 using CK.Windows.Config;
+using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
 using Host.Resources;
@@ -27,22 +29,35 @@ namespace Host.VM
 
         SliderConfigItem _speedSlider;
         SliderConfigItem _turboSpeedSlider;
+        ComboBoxItem _comboBox;
+        RecordConfigItem _recordItem;
 
         Guid _scrollGuid = Guid.Parse( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
 
+        /// <summary>
+        /// Return the Scrolling user configuration, can return null if the scroller plugin isn't loaded
+        /// </summary>
+        //IObjectPluginConfig ScrollConfig
+        //{
+        //    get
+        //    {
+        //        if( _scrollConfig != null ) return _scrollConfig;
+
+        //        var plugin = _app.PluginRunner.PluginHost.FindLoadedPlugin( _scrollGuid, false );
+        //        if( plugin != null )
+        //        {
+        //            _scrollConfig = _app.ConfigContainer.GetObjectPluginConfig( _app.CivikeyHost.Context.ConfigManager.UserConfiguration, plugin );
+        //            Debug.Assert( _scrollConfig != null );
+        //        }
+        //        return _scrollConfig;
+        //    }
+        //}
 
         public ScrollingViewModel( string displayName, AppViewModel app )
-            : base( "{4E3A3B25-7FD0-406F-A958-ECB50AC6A597}", displayName, app )
+            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", displayName, app )
         {
             _app = app;
             DisplayName = displayName;
-
-            var plugin = _app.PluginRunner.PluginHost.FindLoadedPlugin( _scrollGuid, true );
-            if( plugin != null )
-            {
-                _scrollConfig = _app.ConfigContainer.GetObjectPluginConfig( _app.CivikeyHost.Context.ConfigManager.UserConfiguration, plugin );
-                Debug.Assert( _scrollConfig != null );
-            }
         }
 
         protected override void OnInitialize()
@@ -53,14 +68,19 @@ namespace Host.VM
             //action.ImagePath = "Forward.png";
             //action.DisplayName = R.ScrollConfig;
 
-            var g = this.AddGroup();
+            var a = this.AddActivableSection( R.Scrolling.ToLower(), R.ScrollConfig);
 
-            var comboBox = new ComboBoxItem( _app.ConfigManager, "Scroll type :", StrategyBridge.AvailableStrategies );
-            comboBox.SelectedItem = _scrollConfig.GetOrSet( "Strategy", "TurboScrollingStrategy" );
-            comboBox.SelectedItemChanged += comboBox_SelectedItemChanged;
-            g.Items.Add( comboBox );
+            var g = a.AddGroup();
 
-            _speedSlider = new SliderConfigItem( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, h => h.Speed ) );
+            _recordItem = new RecordConfigItem( _app, this, ReflectionHelper.GetPropertyInfo( this, h => h.SelectedTrigger ) );
+            g.Items.Add( _recordItem );
+
+            _comboBox = new ComboBoxItem( _app.ConfigManager, "Scroll type :", StrategyBridge.AvailableStrategies );
+            if( Config != null ) _comboBox.SelectedItem = Config.GetOrSet( "Strategy", "TurboScrollingStrategy" );
+            _comboBox.SelectedItemChanged += comboBox_SelectedItemChanged;
+            g.Items.Add( _comboBox );
+
+            _speedSlider = new SliderConfigItem( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, h => h.Speed ) );
             _speedSlider.DisplayName = "blabla";
             _speedSlider.SetFormatFunction( i => string.Format( "{0} s", Math.Round( i / 1000.0, 1 ) ) );
             _speedSlider.Minimum = 200;
@@ -68,7 +88,7 @@ namespace Host.VM
             _speedSlider.Interval = 200;
             g.Items.Add( _speedSlider );
 
-            _turboSpeedSlider = new SliderConfigItem( ConfigManager, this, CK.Reflection.ReflectionHelper.GetPropertyInfo( this, h => h.TurboSpeed ) );
+            _turboSpeedSlider = new SliderConfigItem( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, h => h.TurboSpeed ) );
             _turboSpeedSlider.DisplayName = "blabla";
             _turboSpeedSlider.SetFormatFunction( i => string.Format( "{0} ms", i ) );
             _turboSpeedSlider.Minimum = 10;
@@ -90,42 +110,42 @@ namespace Host.VM
 
         private void UpdateVisibility()
         {
-            if( Strategy == "TurboScrollingStrategy" )
-            {
-                _speedSlider.Visible = false;
-                _turboSpeedSlider.Visible = true;
-            }
-            else
-            {
-                _turboSpeedSlider.Visible = false;
-                _speedSlider.Visible = true;
-            }
+            _turboSpeedSlider.Visible = Strategy == "TurboScrollingStrategy";
         }
 
         public int Speed
         {
-            get { return _scrollConfig.GetOrSet( "Speed", 1000 ); }
+            get { return (Config != null) ? Config.GetOrSet( "Speed", 1000 ) : 0; }
             set
             {
-                if( _scrollConfig != null ) _scrollConfig["Speed"] = value;
+                if( Config != null ) Config["Speed"] = value;
             }
         }
 
         public int TurboSpeed
         {
-            get { return _scrollConfig.GetOrSet( "TurboSpeed", 100 ); }
+            get { return (Config != null) ? Config.GetOrSet( "TurboSpeed", 100 ) : 0; }
             set
             {
-                _scrollConfig["TurboSpeed"] = value;
+                if( Config != null ) Config["TurboSpeed"] = value;
             }
         }
 
         public string Strategy
         {
-            get { return _scrollConfig.GetOrSet( "Strategy", "ZoneScrollingStrategy" ); }
+            get { return (Config != null) ? Config.GetOrSet( "Strategy", "ZoneScrollingStrategy" ) : string.Empty; }
             set
             {
-                _scrollConfig["Strategy"] = value;
+                if( Config != null ) Config["Strategy"] = value;
+            }
+        }
+
+        public ITrigger SelectedTrigger
+        {
+            get { return (Config != null) ? Config.GetOrSet( "Trigger", (ITrigger)null ) : (ITrigger)null; }
+            set
+            {
+                if( Config != null ) Config["Trigger"] = value;
             }
         }
 
@@ -134,6 +154,25 @@ namespace Host.VM
             NotifyOfPropertyChange( () => Speed );
             NotifyOfPropertyChange( () => TurboSpeed );
             NotifyOfPropertyChange( () => Strategy );
+            NotifyOfPropertyChange( () => SelectedTrigger );
+        }
+
+
+        protected override void NotifyOfPropertiesChange()
+        {
+            if( ActivatePlugin )
+            {
+                if( Config != null ) _comboBox.SelectedItem = Config.GetOrSet( "Strategy", "TurboScrollingStrategy" );
+                _recordItem.Refresh();
+                _comboBox.Refresh();
+                _speedSlider.Refresh();
+                _turboSpeedSlider.Refresh();
+            }
+            NotifyOfPropertyChange( () => ActivatePlugin );
+            NotifyOfPropertyChange( () => Speed );
+            NotifyOfPropertyChange( () => TurboSpeed );
+            NotifyOfPropertyChange( () => Strategy );
+            NotifyOfPropertyChange( () => SelectedTrigger );
         }
     }
 }

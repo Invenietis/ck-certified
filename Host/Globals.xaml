@@ -303,6 +303,21 @@
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{x:Type local:RecordConfigItem}">
+            <DataTemplate>
+                <DockPanel Visibility="{Binding Visible, Converter={StaticResource converter}}">
+                    <StackPanel  DockPanel.Dock="Left">
+                        <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        <TextBlock Text="{Binding Description}" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <ToggleButton Content="{Binding ToggleContent}" Focusable="False" x:Name="StartReccording" IsChecked="{Binding IsRecording}" />
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SelectedKey}" />
+                    </StackPanel>
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
     </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

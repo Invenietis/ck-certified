@@ -52,15 +52,13 @@ namespace Host.VM
                 profiles.RefreshValues( s, e );
             };
 
-            var g = this.AddGroup();
-
-            g.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
+            this.AddLink( _skVm ?? (_skVm = new ShareKeyboardViewModel( _app )) );
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartKeyboardEditor ) );
                 action.ImagePath = "Forward.png";
                 action.DisplayName = R.SkinEditorSectionName;
-                g.Items.Add( action );
+                this.Items.Add( action );
             }
 
             base.OnInitialize();

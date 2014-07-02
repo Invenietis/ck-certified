@@ -56,7 +56,6 @@ namespace Scroller
             base.Setup( timer, elements, config );
             _normalInterval = Timer.Interval;
             TurboInterval = new TimeSpan( 0, 0, 0, 0, Configuration.User.GetOrSet( "TurboSpeed", 100 ) );
-            Timer.Tick += Timer_Tick;
         }
 
         void Timer_Tick( object sender, EventArgs e )
@@ -99,6 +98,7 @@ namespace Scroller
         {
             base.Start();
             SetTurboWithCheck();
+            Timer.Tick += Timer_Tick;
         }
 
         public override void Pause( bool forceEndHighlight )

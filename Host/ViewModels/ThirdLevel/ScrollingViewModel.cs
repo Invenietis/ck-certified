@@ -68,7 +68,7 @@ namespace Host.VM
             //action.ImagePath = "Forward.png";
             //action.DisplayName = R.ScrollConfig;
 
-            var a = this.AddActivableSection( R.Scrolling.ToLower(), R.ScrollConfig);
+            var a = this.AddActivableSection( R.Scrolling, R.ScrollConfig);
 
             var g = a.AddGroup();
 

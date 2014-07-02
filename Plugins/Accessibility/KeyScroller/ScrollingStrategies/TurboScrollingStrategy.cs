@@ -30,7 +30,7 @@ namespace Scroller
                 return Timer.Interval == TurboInterval;
             }
         }
-        
+
         /// <summary>
         /// Method that sets the turbo if we are not scrolling on the "root" level
         /// </summary>
@@ -55,20 +55,22 @@ namespace Scroller
         {
             base.Setup( timer, elements, config );
             _normalInterval = Timer.Interval;
-            TurboInterval = new TimeSpan(0, 0, 0, 0, Configuration.User.GetOrSet( "TurboSpeed", 100 ));
-            Timer.Tick += ( o, e ) => 
-            { 
-                if( IsTurboMode ) SetTurboWithCheck();
-                else if( Timer.Interval == _normalInterval )
+            TurboInterval = new TimeSpan( 0, 0, 0, 0, Configuration.User.GetOrSet( "TurboSpeed", 100 ) );
+            Timer.Tick += Timer_Tick;
+        }
+
+        void Timer_Tick( object sender, EventArgs e )
+        {
+            if( IsTurboMode ) SetTurboWithCheck();
+            else if( Timer.Interval == _normalInterval )
+            {
+                _tickCount++;
+                if( _tickCount == TOTAL_NORMAL_TICK )
                 {
-                    _tickCount++;
-                    if( _tickCount == TOTAL_NORMAL_TICK )
-                    {
-                        _tickCount = 0;
-                        SetTurboWithCheck();
-                    }
+                    _tickCount = 0;
+                    SetTurboWithCheck();
                 }
-            };
+            }
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -77,7 +79,7 @@ namespace Scroller
             {
                 if( e.Key == "Speed" )
                 {
-                    var newInterval = new TimeSpan(0, 0, 0, 0, (int) e.Value);
+                    var newInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                     if( !IsTurboMode ) _normalInterval = newInterval;
                     else
                     {
@@ -108,6 +110,7 @@ namespace Scroller
         public override void Stop()
         {
             base.Stop();
+            Timer.Tick -= Timer_Tick;
             Timer.Interval = _normalInterval;
         }
 

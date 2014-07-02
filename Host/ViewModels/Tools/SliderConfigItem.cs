@@ -27,30 +27,15 @@ namespace Host.VM
         {
         }
 
-        /// <summary>
-        /// Updates the FormattedText when a new value is set.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <remarks>When overridden in a derived class, only call base when return true</remarks>
-        protected override bool OnSetValue( int value )
+        protected override void OnValueChanged()
         {
-            FormattedText = _func( value );
-            return base.OnSetValue( value );
+            NotifyOfPropertyChange( "FormattedText" );
         }
 
         string _formattedText;
         public string FormattedText
         {
-            get { return _formattedText; }
-            set
-            {
-                if( _formattedText != value )
-                {
-                    _formattedText = value;
-                    NotifyOfPropertyChange( "FormattedText" );
-                }
-            }
+            get { return _func( Value ); }
         }
 
         Func<int,string> _func;
@@ -58,7 +43,7 @@ namespace Host.VM
         {
             if( formatFunc == null ) throw new ArgumentNullException("formatFunc");
             _func = formatFunc;
-            FormattedText = _func( Value );
+            NotifyOfPropertyChange( "FormattedText" );
         }
 
         int _minimum;

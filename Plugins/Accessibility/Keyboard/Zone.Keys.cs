@@ -28,6 +28,7 @@ using System.Diagnostics;
 using CK.Core;
 using CK.Keyboard.Model;
 using System.Linq;
+using CK.Plugin.Config;
 
 namespace CK.Keyboard
 {
@@ -175,12 +176,15 @@ namespace CK.Keyboard
 
         IKey IKeyCollection.CreateCopy( IKey keySource )
         {
-            return Copy( keySource );
+            return CreateCopy( keySource );
         }
 
-        internal IKey Copy( IKey keySource )
+        IKey CreateCopy( IKey keySource )
         {
             Key newKey = Create( _keys.Count );
+
+            var sharedDic = Context.ServiceContainer.GetService<ISharedDictionary>();
+            sharedDic.CopyPluginsData( keySource, newKey );
 
             foreach( var layout in Keyboard.Layouts )
             {
@@ -198,6 +202,8 @@ namespace CK.Keyboard
                     newLayoutKeyMode.Width = layoutKeyModeSource.Width;
                     newLayoutKeyMode.X = layoutKeyModeSource.X;
                     newLayoutKeyMode.Y = layoutKeyModeSource.Y;
+
+                    sharedDic.CopyPluginsData( layoutKeyModeSource, newLayoutKeyMode );
                 }
             }
 
@@ -224,11 +230,11 @@ namespace CK.Keyboard
                     newKeyMode.OnKeyPressedCommands.Commands.Add( cmd );
                 }
 
+                sharedDic.CopyPluginsData( keyModeSource, newKeyMode );
+
                 Debug.Assert( newKeyMode.Keyboard == keyModeSource.Keyboard, "the copy should be in the same keyboard as the source." );
                 Debug.Assert( newKeyMode.Context == keyModeSource.Context, "the copy should be in the same context as the source." );
             }
-
-            //TODO : copy PluginDatas
 
             return newKey;
         }

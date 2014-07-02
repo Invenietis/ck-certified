@@ -239,6 +239,7 @@
                 <Style.Triggers>
                     <Trigger Property="IsFocused" Value="True">
                         <Setter Property="FontWeight" Value="Bold"></Setter>
+                        
                     </Trigger>
                     <Trigger Property="IsKeyboardFocused" Value="True">
                         <Setter Property="FontWeight" Value="Bold"></Setter>
@@ -269,6 +270,7 @@
                                 <ContextMenu>
                                     <MenuItem Header="Delete" Command="{Binding SupprCommand}" />
                                     <MenuItem Header="Rename" Command="{Binding RenameCommand}" IsEnabled="{Binding Path=IsDefaultZone, Converter={StaticResource notconverter}}" />
+                                    <MenuItem Header="Delete all keys" Command="{Binding ClearZoneCommand}" />
                                     <MenuItem Header="Add a key" Command="{Binding CreateKeyCommand}" />
                                 </ContextMenu>
                             </Setter.Value>

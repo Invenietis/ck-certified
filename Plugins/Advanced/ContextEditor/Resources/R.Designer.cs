@@ -61,11 +61,56 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a zone.
+        /// </summary>
+        public static string AddZoneTollboxTitle {
+            get {
+                return ResourceManager.GetString("AddZoneTollboxTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type the name of the zone to add :.
+        /// </summary>
+        public static string AddZoneToolBoxDesc {
+            get {
+                return ResourceManager.GetString("AddZoneToolBoxDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete all keys.
+        /// </summary>
+        public static string ClearZone {
+            get {
+                return ResourceManager.GetString("ClearZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete all the keys of this zone ?.
+        /// </summary>
+        public static string ClearZoneConfirmation {
+            get {
+                return ResourceManager.GetString("ClearZoneConfirmation", resourceCulture);
             }
         }
         
@@ -133,7 +178,8 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure that you want to delete this zone ?.
+        ///   Looks up a localized string similar to Are you sure that you want to delete this zone ? 
+        ///If you click on &quot;Save keys&quot; the zone will be destroyed but its keys will be added to the default zone, but will be configured as invisible..
         /// </summary>
         public static string DeleteZoneConfirmation {
             get {

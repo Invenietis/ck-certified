@@ -142,7 +142,8 @@
     <value>Supprimer une zone</value>
   </data>
   <data name="DeleteZoneConfirmation" xml:space="preserve">
-    <value>Etes-vous sur de vouloir supprimer cette zone ? Les touches qu'elle contient seront supprimées.</value>
+    <value>Etes-vous sur de vouloir supprimer cette zone ? Les touches qu'elle contient seront supprimées.
+Si vous choisissez de "Sauver les touches" celles-ci seront mises - invisibles - dans la zone par défaut.</value>
   </data>
   <data name="DesignSection" xml:space="preserve">
     <value>Aspect</value>
@@ -328,5 +329,20 @@ Etes-vous sur de vouloir faire cela ?</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="AddZoneTollboxTitle" xml:space="preserve">
+    <value>Ajouter une zone</value>
+  </data>
+  <data name="AddZoneToolBoxDesc" xml:space="preserve">
+    <value>Saisissez le nom de la zone à  : </value>
+  </data>
+  <data name="ClearZone" xml:space="preserve">
+    <value>Suppression des touches</value>
+  </data>
+  <data name="ClearZoneConfirmation" xml:space="preserve">
+    <value>Etes-vous sûr de vouloir supprimer toutes les touches de cette zone ?</value>
   </data>
 </root>

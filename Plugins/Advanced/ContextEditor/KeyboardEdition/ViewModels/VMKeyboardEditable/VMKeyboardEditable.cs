@@ -33,6 +33,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using CK.Windows.App;
 using System.Windows;
+using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -364,7 +365,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnKeyMoved( object sender, KeyMovedEventArgs e )
         {
-            Context.Obtain( e.Key ).IndexChanged(e.PreviousIndex);
+            Context.Obtain( e.Key ).IndexChanged( e.PreviousIndex );
         }
 
         void OnKeyDestroyed( object sender, CK.Keyboard.Model.KeyEventArgs e )
@@ -520,24 +521,24 @@ namespace KeyboardEditor.ViewModels
                 {
                     _createZoneCommand = new CK.Windows.App.VMCommand( () =>
                     {
-                        string name = String.Empty;
-                        ModalViewModel mvm = new ModalViewModel( "Add a zone", "Type the name of the zone to add : " );
-                        mvm.Buttons.Add( new ModalButton( mvm, "Create", ModalResult.Ok ) );
+                        //string name = String.Empty;
+                        //ModalViewModel mvm = new ModalViewModel( R.AddZoneTollboxTitle, R.AddZoneToolBoxDesc );
+                        //mvm.Buttons.Add( new ModalButton( mvm, R.Add, ModalResult.Ok ) );
 
-                        mvm.Content = new NameModel();
-                        ResourceDictionary res = Application.LoadComponent(
-                             new Uri( "/KeyboardEditor;component/KeyboardEdition/Views/Modals/Modals.xaml",
-                             UriKind.RelativeOrAbsolute ) ) as ResourceDictionary;
+                        //mvm.Content = new NameModel();
+                        //ResourceDictionary res = Application.LoadComponent(
+                        //     new Uri( "/KeyboardEditor;component/KeyboardEdition/Views/Modals/Modals.xaml",
+                        //     UriKind.RelativeOrAbsolute ) ) as ResourceDictionary;
 
-                        if( res != null && res.Contains( "CreateZoneDataTemplate" ) )
-                        {
-                            mvm.ContentTemplate = res["CreateZoneDataTemplate"] as DataTemplate;
-                        }
+                        //if( res != null && res.Contains( "CreateZoneDataTemplate" ) )
+                        //{
+                        //    mvm.ContentTemplate = res["CreateZoneDataTemplate"] as DataTemplate;
+                        //}
 
-                        CustomMsgBox box = new CustomMsgBox( ref mvm );
-                        box.ShowDialog();
+                        //CustomMsgBox box = new CustomMsgBox( ref mvm );
+                        //box.ShowDialog();
 
-                        Model.Zones.Create( (mvm.Content as NameModel).Name );
+                        //Model.Zones.Create( (mvm.Content as NameModel).Name );
                     } );
                 }
 

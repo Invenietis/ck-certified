@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CK.Plugin.Config;
@@ -30,14 +31,15 @@ namespace Host.VM
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartImport ) );
-                action.ImagePath = "Forward.png";
+                string a = Directory.GetCurrentDirectory();
+                action.ImagePath = "pack://application:,,,/CiviKey;component/Resources/Images/Windows.png";
                 action.DisplayName = R.ImportKeyboard;
                 this.Items.Add( action );
             }
 
             {
                 var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartExport) );
-                action.ImagePath = "Forward.png";
+                action.ImagePath = "pack://application:,,,/CiviKey;component/Resources/Images/Windows.png";
                 action.DisplayName = R.ExportKeyboard;
                 this.Items.Add( action );
             }

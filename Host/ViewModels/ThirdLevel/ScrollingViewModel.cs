@@ -26,6 +26,7 @@ namespace Host.VM
         ScrollingModulesConfigurationViewModel _scVm;
         AppViewModel _app;
         IObjectPluginConfig _scrollConfig;
+        bool _isReady = false;
 
         SliderConfigItem _speedSlider;
         SliderConfigItem _turboSpeedSlider;
@@ -100,6 +101,8 @@ namespace Host.VM
             this.AddLink( _scVm ?? (_scVm = new ScrollingModulesConfigurationViewModel( R.OtherScrollConfig, _app )) );
 
             UpdateVisibility();
+
+            _isReady = true;
         }
 
         void comboBox_SelectedItemChanged( object sender, SelectedItemChangedEventArgs e )
@@ -160,7 +163,7 @@ namespace Host.VM
 
         protected override void NotifyOfPropertiesChange()
         {
-            if( ActivatePlugin )
+            if( _isReady && ActivatePlugin )
             {
                 if( Config != null ) _comboBox.SelectedItem = Config.GetOrSet( "Strategy", "TurboScrollingStrategy" );
                 _recordItem.Refresh();

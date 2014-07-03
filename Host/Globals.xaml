@@ -318,6 +318,20 @@
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type local:CreditConfigItem}" >
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Command="{Binding GotoCommand}" Style="{StaticResource ConfigImplementationSelectorItemStyle}">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}"/>
+                    </Button>
+                </Grid>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
     </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

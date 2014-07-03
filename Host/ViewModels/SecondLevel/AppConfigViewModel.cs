@@ -65,9 +65,9 @@ namespace Host.VM
             //For now, I'll let this plugin without configuration, we'll ask the ergotherapist whether the configuration panel is necessary before spending time on it.
             //this.AddLink( _ssVm ?? ( _ssVm = new ScreenScrollerViewModel( _app ) ) );  
 
-            var g = this.AddGroup();
+            //var g = this.AddGroup();
 
-            g.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
+            this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
             //g.AddLink( _scVm ?? (_scVm = new ScrollingViewModel( R.ScrollConfig, _app )) );
             //g.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             //g.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );
@@ -94,8 +94,6 @@ namespace Host.VM
             //    action.DisplayName = R.ScreenScrollerConfiguration;
             //    this.Items.Add( action );
             //}
-
-            g.AddLink( new CreditViewModel( _app ) );
 
             this.AddAction( R.ObjectExplorer, R.AdvancedUserNotice, StartObjectExplorer );
 

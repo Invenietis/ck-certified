@@ -110,6 +110,8 @@ namespace Host
 
             this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
 
+            this.Items.Add( new CreditConfigItem( _app.ConfigManager, new CreditViewModel( _app ), null ) );
+
             base.OnInitialize();
         }
 

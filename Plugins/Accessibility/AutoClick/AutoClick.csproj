@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoClick\AutoClick.cs" />
+    <Compile Include="ClickSelectorService\ClickSelectorByScroller.cs" />
     <Compile Include="Res\R.en-US.Designer.cs">
       <DependentUpon>R.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -161,7 +162,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ClickSelectorService\ClickSelector.cs" />
+    <Compile Include="ClickSelectorService\ClickSelectorByHover.cs" />
     <Compile Include="ClickSelectorService\ViewModels\ClickEmbedderVM.cs" />
     <Compile Include="ClickSelectorService\ViewModels\ClicksVM.cs" />
     <Compile Include="ClickSelectorService\ViewModels\ClickVM.cs" />

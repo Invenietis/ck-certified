@@ -27,6 +27,9 @@ using System.Collections.ObjectModel;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
+    /// <summary>
+    /// Represente un containeur d'instruction de clique, cela rend posseble m'execution de plusieurs instructions.
+    /// </summary>
     public class ClickVM : ObservableCollection<ClickInstruction>
     {
         private ClickEmbedderVM _holder;

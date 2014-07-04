@@ -43,12 +43,15 @@ namespace CK.Plugins.AutoClick.ViewModel
         private ClickEmbedderVM _selectedClickEmbedderVM;
         public ClickVM NextClick { get { return _selectedClickEmbedderVM.NextClick; } }
 
+        ISharedData _sharedData;
+
         private readonly CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         public ICKReadOnlyList<ClickEmbedderVM> ReadOnlyClicksVM { get { return _clicksVmReadOnlyAdapter.ToReadOnlyList(); } }
 
-        internal ClickVM GetNextClick( bool doIncrement )
+        internal ClickVM GetNextClick( bool doIncrement, ClickEmbedderVM click = null )
         {
-            ClickVM nextClick = _selectedClickEmbedderVM.GetNextClick( doIncrement );
+            var clickEmbedder = click ?? _selectedClickEmbedderVM;
+            ClickVM nextClick = clickEmbedder.GetNextClick( doIncrement );
             if( doIncrement )
                 OnPropertyChanged( "NextClick" );
             return nextClick;
@@ -59,19 +62,21 @@ namespace CK.Plugins.AutoClick.ViewModel
         #region Constructor
 
         //TODO : remove when the clickselector is transformed into a clickselectorprovider
-        public ClickSelector Holder { get; set; }
+        public IClickSelector Holder { get; set; }
 
-        public ClicksVM(ClickSelector holder)
+        public ClicksVM( IClickSelector holder, ISharedData sharedData )
         {
             Holder = holder;
+            _sharedData = sharedData;
             InitializeDefaultClicks();
             InitializeSharedData();
-            Holder.SharedData.SharedPropertyChanged += OnSharedPropertyChanged;
+            _sharedData.SharedPropertyChanged += OnSharedPropertyChanged;
         }
 
-        public ClicksVM(ClickSelector holder, IEnumerable<ClickEmbedderVM> clickEmbeddersVM )
+        public ClicksVM( IClickSelector holder, ISharedData sharedData, IEnumerable<ClickEmbedderVM> clickEmbeddersVM )
         {
             Holder = holder;
+            _sharedData = sharedData;
 
             foreach( ClickEmbedderVM clickEmbedderVM in clickEmbeddersVM )
             {
@@ -80,7 +85,7 @@ namespace CK.Plugins.AutoClick.ViewModel
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( this );
 
             InitializeSharedData();
-            Holder.SharedData.SharedPropertyChanged += OnSharedPropertyChanged;
+            _sharedData.SharedPropertyChanged += OnSharedPropertyChanged;
 
             this.First().ChangeSelectionCommand.Execute( this );
             OnPropertyChanged( "NextClick" );
@@ -151,26 +156,26 @@ namespace CK.Plugins.AutoClick.ViewModel
             switch( e.PropertyName )
             {
                 case "WindowOpacity":
-                    ClickSelectorOpacity = Holder.SharedData.WindowOpacity;
+                    ClickSelectorOpacity = _sharedData.WindowOpacity;
                     break;
                 case "WindowBorderThickness":
-                    ClickSelectorBorderThickness = Holder.SharedData.WindowBorderThickness;
+                    ClickSelectorBorderThickness = _sharedData.WindowBorderThickness;
                     break;
                 case "WindowBorderBrush":
-                    ClickSelectorBorderBrush = new SolidColorBrush( Holder.SharedData.WindowBorderBrush );
+                    ClickSelectorBorderBrush = new SolidColorBrush( _sharedData.WindowBorderBrush );
                     break;
                 case "WindowBackgroundColor":
-                    ClickSelectorBackgroundColor = Holder.SharedData.WindowBackgroundColor;
+                    ClickSelectorBackgroundColor = _sharedData.WindowBackgroundColor;
                     break;
             }
         }
 
         void InitializeSharedData()
         {
-            ClickSelectorOpacity = Holder.SharedData.WindowOpacity;
-            ClickSelectorBackgroundColor = Holder.SharedData.WindowBackgroundColor;
-            ClickSelectorBorderBrush = new SolidColorBrush( Holder.SharedData.WindowBorderBrush );
-            ClickSelectorBorderThickness = Holder.SharedData.WindowBorderThickness;
+            ClickSelectorOpacity = _sharedData.WindowOpacity;
+            ClickSelectorBackgroundColor = _sharedData.WindowBackgroundColor;
+            ClickSelectorBorderBrush = new SolidColorBrush( _sharedData.WindowBorderBrush );
+            ClickSelectorBorderThickness = _sharedData.WindowBorderThickness;
         }
 
         #endregion
@@ -180,33 +185,29 @@ namespace CK.Plugins.AutoClick.ViewModel
         private void InitializeDefaultClicks()
         {
             ClickEmbedderVM clickEmbedderVM;
-            IList<ClickVM> _clickList = new List<ClickVM>();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.LeftClick, "/Res/Images/LeftClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.LeftClick, "/Res/Images/LeftClick.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Gauche", new List<ClickInstruction>()
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
                 } ) );
             Add( clickEmbedderVM );
-            _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.RightClick, "/Res/Images/RightClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.RightClick, "/Res/Images/RightClick.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Droit", new List<ClickInstruction>() 
                 { 
                    ClickInstruction.RightButtonDown, ClickInstruction.RightButtonUp
                 } ) );
             Add( clickEmbedderVM );
-            _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.DoubleClick, "/Res/Images/DoubleLeftClick.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.DoubleClick, "/Res/Images/DoubleLeftClick.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Double Clic", new List<ClickInstruction>() 
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp, ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
                 } ) );
             Add( clickEmbedderVM );
-            _clickList.Clear();
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.DragDrop, "/Res/Images/DragDrop.png", _clickList );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.DragDrop, "/Res/Images/DragDrop.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, R.LeftDown, new List<ClickInstruction>() 
                 { 
                      ClickInstruction.LeftButtonDown
@@ -224,27 +225,18 @@ namespace CK.Plugins.AutoClick.ViewModel
         public void ChangeSelection( ClickEmbedderVM selectedClickEmbedder )
         {
             //If the previous selectedClickEmbedder is different from this one
-            if( !selectedClickEmbedder.IsSelected )
-            {
+            
                 _selectedClickEmbedderVM = selectedClickEmbedder;
                 foreach( ClickEmbedderVM clickEmbedderVM in this )
                 {
-                    if( clickEmbedderVM == selectedClickEmbedder )
-                        clickEmbedderVM.IsSelected = true;
-                    else
-                        clickEmbedderVM.IsSelected = false;
+                    clickEmbedderVM.IsSelected = clickEmbedderVM == selectedClickEmbedder;
                 }
-            }
-            else
-            {
-                selectedClickEmbedder.Index = 0;
-            }
             OnPropertyChanged( "NextClick" );
         }
 
-        public void Click()
+        public void Click(ClickEmbedderVM click = null)
         {
-            Holder.AskClickType();
+            Holder.AskClickType(click);
         }
 
         #endregion

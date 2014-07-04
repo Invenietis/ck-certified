@@ -45,7 +45,19 @@ namespace CK.Plugins.AutoClick.ViewModel
         public string ImagePath { get { return _imagePath; } }
 
         private int _index;
-        public int Index { get { return _index; } set { _index = value; OnPropertyChanged( "Index" ); OnPropertyChanged( "NextClick" ); } }
+        public int Index 
+        { 
+            get { return _index; } 
+            set 
+            {
+                if( _index != value )
+                {
+                    _index = value;
+                    OnPropertyChanged( "Index" );
+                    OnPropertyChanged( "NextClick" );
+                }
+            } 
+        }
 
         private string _name;
         public string Name
@@ -65,7 +77,15 @@ namespace CK.Plugins.AutoClick.ViewModel
         public bool IsSelected
         {
             get { return _isSelected; }
-            set { _isSelected = value; OnPropertyChanged( "IsSelected" ); }
+            set 
+            {
+                if( _isSelected != value )
+                {
+                    Index = 0;
+                    _isSelected = value; 
+                    OnPropertyChanged( "IsSelected" );
+                }
+            }
         }
 
         public ClickVM NextClick
@@ -102,16 +122,12 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         #region Constructor
 
-        public ClickEmbedderVM( ClicksVM holder, string name, string imagePath, IList<ClickVM> clicks )
+        public ClickEmbedderVM( ClicksVM holder, string name, string imagePath )
         {
             _holder = holder;
             _imagePath = imagePath;
             _isSelected = false;
             _name = name;
-            foreach( ClickVM click in clicks )
-            {
-                Add( click );
-            }
 
             _changeSelectionCmd = new CK.Windows.App.VMCommand( DoSelect );
         }
@@ -231,9 +247,7 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            //TODO : remove when this is transformed into a clicktype provider
-            DoSelect();
-            _holder.Click();
+            _holder.Click(this);
 
             scrollingDirective.NextActionType = ActionType.GoToAbsoluteRoot;
             return scrollingDirective;

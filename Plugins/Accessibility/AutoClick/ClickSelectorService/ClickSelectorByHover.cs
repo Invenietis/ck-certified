@@ -38,21 +38,18 @@ using CommonServices;
 namespace CK.Plugins.AutoClick
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class ClickSelector : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin, IHighlightableElement
+    public class ClickSelectorByHover : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin
     {
         const string PluginGuidString = "{F9687F04-7370-4812-9EB4-1320EB282DD8}";
         Guid PluginGuid = new Guid( PluginGuidString );
         const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Click Selector";
+        const string PluginPublicName = "Click Selector by hover";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
         #region Variables & Properties
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ISharedData SharedData { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.Optional )]
-        public IService<IHighlighterService> Highlighter { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowManager> WindowManager { get; set; }
@@ -80,12 +77,11 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
-            ClicksVM = new ClicksVM( this );
+            ClicksVM = new ClicksVM( this, SharedData );
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
             _clickSelectorWindow.Closing += OnWindowClosing;
 
-            InitializeHighlighter();
             InitializeWindowManager();
             InitializeTopMost();
 
@@ -107,7 +103,6 @@ namespace CK.Plugins.AutoClick
 
             UninitializeTopMost();
             UninitializeWindowManager();
-            UninitializeHighlighter();
 
             _clickSelectorWindow.Close();
             _clickSelectorWindow = null;
@@ -128,11 +123,11 @@ namespace CK.Plugins.AutoClick
         /// Part of the IClickTypeSelector Interface, called by the AutoClickPlugin when it needs to launch a click.
         /// This method doesn't return the Click as it may need to be asyncronous (when the PointerClickTypeSelector is enabled)
         /// </summary>
-        public void AskClickType()
+        public void AskClickType(ClickEmbedderVM click = null)
         {
             ClickVM clickToLaunch = null;
 
-            clickToLaunch = ClicksVM.GetNextClick( true );
+            clickToLaunch = ClicksVM.GetNextClick( true, click );
 
             if( ClickChosen != null && clickToLaunch != null )
             {
@@ -163,67 +158,6 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
-        #region IHighlightable Members
-
-        void InitializeHighlighter()
-        {
-            RegisterHighlighterService();
-            Highlighter.ServiceStatusChanged += OnHighlighterStatusChanged;
-        }
-        void UninitializeHighlighter()
-        {
-            Highlighter.ServiceStatusChanged -= OnHighlighterStatusChanged;
-            UnregisterHighlighterService();
-        }
-
-        void OnHighlighterStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                RegisterHighlighterService();
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                UnregisterHighlighterService();
-            }
-        }
-
-        void RegisterHighlighterService()
-        {
-            if( Highlighter.Status.IsStartingOrStarted )
-            {
-                Highlighter.Service.RegisterTree( "ClickSelector", R.ClickPanel, this );
-            }
-        }
-
-        void UnregisterHighlighterService()
-        {
-            if( Highlighter.Status.IsStartingOrStarted )
-            {
-                Highlighter.Service.UnregisterTree( "ClickSelector", this );
-            }
-        }
-
-        bool _isHighlighted;
-        public bool IsHighlighted
-        {
-            get { return _isHighlighted; }
-            set
-            {
-                _isHighlighted = value;
-                OnPropertyChanged( "IsHighlighted" );
-
-                if( ClicksVM == null ) return; //May occur when the scroller triggers the EnnHighlight after the plugin has been stopped
-
-                foreach( var click in ClicksVM )
-                {
-                    click.IsHighlighted = value;
-                }
-            }
-        }
-
-        public ICKReadOnlyList<IHighlightableElement> Children { get { return ReadOnlyClicksVM; } }
-
         public int X
         {
             get { return (int)_clickSelectorWindow.Left; }
@@ -244,13 +178,6 @@ namespace CK.Plugins.AutoClick
             get { return (int)_clickSelectorWindow.Height; }
         }
 
-        public SkippingBehavior Skip
-        {
-            get { return SkippingBehavior.None; }
-        }
-
-        #endregion
-
         #region IWindowManager Members
 
         void InitializeWindowManager()
@@ -259,51 +186,24 @@ namespace CK.Plugins.AutoClick
 
             //Register WindowsManager events
             WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
-            if( WindowManager.Status.IsStartingOrStarted )
-            {
-                WindowManager.Service.WindowMinimized += OnWindowMinimized;
-                WindowManager.Service.WindowRestored += OnWindowRestored;
-            }
         }
 
         void UninitializeWindowManager()
         {
-            if( WindowManager.Status.IsStartingOrStarted )
-            {
-                WindowManager.Service.WindowMinimized -= OnWindowMinimized;
-                WindowManager.Service.WindowRestored -= OnWindowRestored;
-            }
             WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
 
             UnregisterWindowManager();
-        }
-
-        void OnWindowRestored( object sender, WindowElementEventArgs e )
-        {
-            if( e.Window.Window == _clickSelectorWindow ) RegisterHighlighterService();
-        }
-
-        void OnWindowMinimized( object sender, WindowElementEventArgs e )
-        {
-            if( e.Window.Window == _clickSelectorWindow ) UnregisterHighlighterService();
         }
 
         void OnWindowManagerStatusChanged( object sender, ServiceStatusChangedEventArgs e )
         {
             if( e.Current == InternalRunningStatus.Started )
             {
-                WindowManager.Service.WindowMinimized += OnWindowMinimized;
-                WindowManager.Service.WindowRestored += OnWindowRestored;
                 WindowManager.Service.RegisterWindow( "ClickSelector", _clickSelectorWindow );
             }
             else if( e.Current == InternalRunningStatus.Stopping )
             {
                 WindowManager.Service.UnregisterWindow( "ClickSelector" );
-            }
-            else if( e.Current <= InternalRunningStatus.Stopped )
-            {
-                WindowManager.Service.WindowMinimized -= OnWindowMinimized;
-                WindowManager.Service.WindowRestored -= OnWindowRestored;
             }
         }
 
@@ -351,27 +251,5 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
-        public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
-        {
-            IsHighlighted = true;
-            return scrollingDirective;
-        }
-
-        public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
-        {
-            IsHighlighted = false;
-            return scrollingDirective;
-        }
-
-        public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
-        {
-            scrollingDirective.NextActionType = ActionType.EnterChild;
-            return scrollingDirective;
-        }
-
-        public bool IsHighlightableTreeRoot
-        {
-            get { return true; }
-        }
     }
 }

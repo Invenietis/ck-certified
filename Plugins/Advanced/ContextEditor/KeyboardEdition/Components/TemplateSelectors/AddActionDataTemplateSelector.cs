@@ -17,6 +17,7 @@ namespace KeyboardEditor.ViewModels
         public DataTemplate MonitorOnceDataTemplate { get; set; }
         public DataTemplate KeySequenceDataTemplate { get; set; }
         public DataTemplate TextTemplateDataTemplate { get; set; }
+        public DataTemplate IntegerDataTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate( object item, System.Windows.DependencyObject container )
         {
@@ -28,6 +29,8 @@ namespace KeyboardEditor.ViewModels
             if( item is ClickCommandParameterManager ) return ComboBoxDataTemplate;
             if( item is HelpCommandParameterManager ) return ComboBoxDataTemplate;
             if( item is DynCommandParameterManager ) return ComboBoxDataTemplate;
+
+            if( item is PauseCommandParameterManager ) return IntegerDataTemplate;
 
             if( item is SimpleKeyCommandParameterManager ) return SendStringDataTemplate;
             if( item is MoveMouseCommandParameterManager ) return MoveMouseDataTemplate;

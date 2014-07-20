@@ -69,7 +69,7 @@ namespace BasicCommandHandlers
 
         private void Initialize()
         {
-            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
+            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorMetaData>();
 
             foreach( var item in Root.AvailableProtocolEditors )
             {

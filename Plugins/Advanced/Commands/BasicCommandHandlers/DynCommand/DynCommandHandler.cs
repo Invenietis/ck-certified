@@ -118,7 +118,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         "dyncommand",
                                         R.DynCommandProtocolTitle,
                                         R.DynCommandProtocolDescription,

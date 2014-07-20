@@ -1,18 +1,4 @@
-﻿<UserControl x:Class="KeyboardEditor.s.KeyModeEditionUserControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:vm="clr-namespace:KeyboardEditor.ViewModels"
-             xmlns:ckc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-             xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
-             xmlns:editor="clr-namespace:KeyboardEditor"
-             xmlns:r="clr-namespace:KeyboardEditor.Resources"
-             xmlns:bch="clr-namespace:BasicCommandHandlers"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:cce="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-             mc:Ignorable="d">
+﻿<UserControl x:Class="KeyboardEditor.s.KeyModeEditionUserControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:vm="clr-namespace:KeyboardEditor.ViewModels" xmlns:ckc="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls" xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core" xmlns:editor="clr-namespace:KeyboardEditor" xmlns:r="clr-namespace:KeyboardEditor.Resources" xmlns:bch="clr-namespace:BasicCommandHandlers" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:cce="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls" mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -27,15 +13,15 @@
             <DataTemplate x:Key="filelauncherbrowsetemplate">
                 <StackPanel Orientation="Horizontal" Margin="0 10 0 0" HorizontalAlignment="Stretch">
                     <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3">
-                        <StackPanel Orientation="Horizontal"  Margin="8" HorizontalAlignment="Stretch">
-                            <Image Width="32" Height="32" Source="{Binding Manager.SelectedFile.Icon}" Margin="0 0 10 0"/>
+                        <StackPanel Orientation="Horizontal" Margin="8" HorizontalAlignment="Stretch">
+                            <Image Width="32" Height="32" Source="{Binding Manager.SelectedFile.Icon}" Margin="0 0 10 0" />
                             <StackPanel HorizontalAlignment="Stretch" Width="278">
-                                <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding Manager.SelectedFile.FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
-                                <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding Manager.SelectedFile.Path}" FontSize="12" Foreground="#444444"  TextAlignment="Left"  HorizontalAlignment="Stretch"></TextBlock>
+                                <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Manager.SelectedFile.FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
+                                <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Manager.SelectedFile.Path}" FontSize="12" Foreground="#444444" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                    <Button  HorizontalAlignment="Right" Command="{Binding OpenFileDialog}" Margin="10 0 0 0">
+                    <Button HorizontalAlignment="Right" Command="{Binding OpenFileDialog}" Margin="10 0 0 0">
                         <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/browse.png" />
                     </Button>
                 </StackPanel>
@@ -47,22 +33,22 @@
                             <Style TargetType="ComboBoxItem">
                                 <Style.Triggers>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="Background" Value="White" />
                                     </Trigger>
                                     <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                        <Setter Property="Background" Value="#EEEEEE"/>
+                                        <Setter Property="Background" Value="#EEEEEE" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </ComboBox.Resources>
 
-                        <ComboBox.ItemTemplate >
-                            <DataTemplate  >
-                                <VirtualizingStackPanel Orientation="Horizontal"  Margin="5 5 0 5" HorizontalAlignment="Stretch">
-                                    <Image Width="32" Height="32" Source="{Binding Icon}" Margin="0 0 10 0"/>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <VirtualizingStackPanel Orientation="Horizontal" Margin="5 5 0 5" HorizontalAlignment="Stretch">
+                                    <Image Width="32" Height="32" Source="{Binding Icon}" Margin="0 0 10 0" />
                                     <StackPanel HorizontalAlignment="Stretch" Width="308">
-                                        <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
-                                        <TextBlock  TextTrimming="CharacterEllipsis" Text="{Binding Path}" FontSize="12" Foreground="#444444"  TextAlignment="Left"  HorizontalAlignment="Stretch"></TextBlock>
+                                        <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding FileName}" FontWeight="Bold" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
+                                        <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Path}" FontSize="12" Foreground="#444444" TextAlignment="Left" HorizontalAlignment="Stretch"></TextBlock>
                                     </StackPanel>
                                 </VirtualizingStackPanel>
                             </DataTemplate>
@@ -71,17 +57,13 @@
                 </WrapPanel>
             </DataTemplate>
             <DataTemplate x:Key="filelauncherurltemplate">
-                <WrapPanel HorizontalAlignment="Stretch" >
+                <WrapPanel HorizontalAlignment="Stretch">
                     <Label>Url :</Label>
-                    <TextBox Text="{Binding AppPath}" Width="200" HorizontalAlignment="Stretch"/>
+                    <TextBox Text="{Binding AppPath}" Width="200" HorizontalAlignment="Stretch" />
                 </WrapPanel>
             </DataTemplate>
-            <ckc:NotConverter x:Key="notconverter"/>
-            <vm:FileLauncherTypeSelector x:Key="filelaunchertemplateselector" 
-                                         BrowseTemplate="{StaticResource filelauncherbrowsetemplate}"
-                                         RegistryTemplate="{StaticResource filelauncherregistrytemplate}"
-                                         UrlTemplate="{StaticResource filelauncherurltemplate}"
-                                         />
+            <ckc:NotConverter x:Key="notconverter" />
+            <vm:FileLauncherTypeSelector x:Key="filelaunchertemplateselector" BrowseTemplate="{StaticResource filelauncherbrowsetemplate}" RegistryTemplate="{StaticResource filelauncherregistrytemplate}" UrlTemplate="{StaticResource filelauncherurltemplate}" />
             <DataTemplate x:Key="keysequencedatatemplate">
                 <StackPanel>
                     <DockPanel LastChildFill="True">
@@ -95,7 +77,7 @@
 
                         <StackPanel Margin="10 5" DockPanel.Dock="Right" Visibility="{Binding IsRecording, Converter={StaticResource booltovisibilityconverter}}">
                             <TextBlock HorizontalAlignment="Center" Margin="0 0 5 0" DockPanel.Dock="Left" Text="{Binding IsRecordingText, Mode=OneTime}" />
-                            <ProgressBar IsIndeterminate="True"/>
+                            <ProgressBar IsIndeterminate="True" />
                         </StackPanel>
                     </DockPanel>
 
@@ -116,9 +98,16 @@
                 </DockPanel>
             </DataTemplate>
 
+            <DataTemplate x:Key="integerdatatemplate">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding Title, Mode=OneTime}" />
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Value}" />
+                </DockPanel>
+            </DataTemplate>
+
             <DataTemplate x:Key="movemousedatatemplate">
                 <DataTemplate.Resources>
-                    <vm:EnsureIntegerConverter x:Key="ensureintegerconverter"/>
+                    <vm:EnsureIntegerConverter x:Key="ensureintegerconverter" />
                 </DataTemplate.Resources>
                 <StackPanel>
                     <DockPanel LastChildFill="True">
@@ -136,25 +125,25 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="texttemplatedatatemplate">
-                <StackPanel HorizontalAlignment="Stretch" >
-                    <TextBox ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" Focusable="True" MinLines="5" Text="{Binding Template, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"  AcceptsTab="True" >
+                <StackPanel HorizontalAlignment="Stretch">
+                    <TextBox ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" Focusable="True" MinLines="5" Text="{Binding Template, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" AcceptsTab="True">
                         <i:Interaction.Behaviors>
-                            <vm:CaretIndexBehavior CaretPosition="{Binding TemplateCaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                            <vm:CaretIndexBehavior CaretPosition="{Binding TemplateCaretIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <vm:FocusBehavior IsKeyboardFocused="{Binding IsFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </i:Interaction.Behaviors>
                     </TextBox>
-                    <DockPanel  HorizontalAlignment="Stretch" Margin="0 10 0 0 ">
-                        <TextBox Text="{Binding Placeholder, UpdateSourceTrigger=PropertyChanged}" Width="200" DockPanel.Dock="Left"  />
+                    <DockPanel HorizontalAlignment="Stretch" Margin="0 10 0 0 ">
+                        <TextBox Text="{Binding Placeholder, UpdateSourceTrigger=PropertyChanged}" Width="200" DockPanel.Dock="Left" />
                         <Button Focusable="False" DockPanel.Dock="Right" Command="{Binding InsertPlaceholder}" Content="{x:Static r:R.TextTemplateAdd}" HorizontalAlignment="Right" />
                     </DockPanel>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="filelauncherdatatemplate">
-                <StackPanel HorizontalAlignment="Stretch" >
+                <StackPanel HorizontalAlignment="Stretch">
                     <ItemsControl ItemsSource="{Binding TypeSelections}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
+                                <StackPanel Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
@@ -188,12 +177,13 @@
             <vm:AddActionDataTemplateSelector x:Key="inneraddactiondatatemplateselector" 
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
-                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
-                                              FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
-                                              TextTemplateDataTemplate="{StaticResource texttemplatedatatemplate}"
-                                              ModeDataTemplate="{StaticResource modedatatemplate}"
-                                              MonitorOnceDataTemplate="{StaticResource monitoronceerror}"
-                                              KeySequenceDataTemplate ="{StaticResource keysequencedatatemplate}"/>
+                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}" 
+                                              FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}" 
+                                              TextTemplateDataTemplate="{StaticResource texttemplatedatatemplate}" 
+                                              ModeDataTemplate="{StaticResource modedatatemplate}" 
+                                              MonitorOnceDataTemplate="{StaticResource monitoronceerror}" 
+                                              KeySequenceDataTemplate="{StaticResource keysequencedatatemplate}"
+                                              IntegerDataTemplate="{StaticResource integerdatatemplate}"/>
 
             <DataTemplate x:Key="monitoroncedatatemplate">
                 <StackPanel>
@@ -206,7 +196,7 @@
                         <TextBox DockPanel.Dock="Right" Text="{Binding Name}"></TextBox>
                     </DockPanel>
                     <StackPanel DataContext="{Binding}">
-                        <TextBlock Text="{Binding InnerActionTitle, Mode=OneTime}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
+                        <TextBlock Text="{Binding InnerActionTitle, Mode=OneTime}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14" />
                         <StackPanel>
                             <ComboBox ItemsSource="{Binding AvailableProtocolEditors}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
                                 <ComboBox.ItemTemplate>
@@ -224,17 +214,18 @@
             <vm:AddActionDataTemplateSelector x:Key="addactiondatatemplateselector" 
                                               SendStringDataTemplate="{StaticResource sendstringdatatemplate}" 
                                               ComboBoxDataTemplate="{StaticResource comboboxdatatemplate}" 
-                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}"
-                                              FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}"
-                                              TextTemplateDataTemplate="{StaticResource texttemplatedatatemplate}"
-                                              ModeDataTemplate="{StaticResource modedatatemplate}"
-                                              MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}"
-                                              KeySequenceDataTemplate ="{StaticResource keysequencedatatemplate}"/>
+                                              MoveMouseDataTemplate="{StaticResource movemousedatatemplate}" 
+                                              FileLauncherDataTemplate="{StaticResource filelauncherdatatemplate}" 
+                                              TextTemplateDataTemplate="{StaticResource texttemplatedatatemplate}" 
+                                              ModeDataTemplate="{StaticResource modedatatemplate}" 
+                                              MonitorOnceDataTemplate="{StaticResource monitoroncedatatemplate}" 
+                                              KeySequenceDataTemplate="{StaticResource keysequencedatatemplate}" 
+                                              IntegerDataTemplate="{StaticResource integerdatatemplate}" />
 
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeWarningDisplayStyle">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsFallback}" Value="False">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Collapsed" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -242,7 +233,7 @@
             <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource KeyModeDisplayStyle}" x:Key="KeyModeOKDisplayStyle">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsFallback}" Value="True">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Collapsed" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -254,7 +245,7 @@
                 <Style TargetType="{x:Type DockPanel}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsFallback}" Value="True">
-                            <Setter Property="Background" Value="#FCF8E3"/>
+                            <Setter Property="Background" Value="#FCF8E3" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -269,7 +260,7 @@
                         <TextBlock x:Uid="keyboard-editor-key-mode-warning2" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="Click on the '+' button to edit the key for the mode selected above" />
                         <TextBlock x:Uid="keyboard-editor-key-mode-warning3" Foreground="#FFD59853" FontSize="10" TextWrapping="Wrap" VerticalAlignment="Center" Text="or click on the mode button to go back to this mode." />
                     </StackPanel>
-                    <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding ApplyToCurrentModeCommand}" >
+                    <Button VerticalAlignment="Center" Margin="2 0" FontWeight="Bold" Command="{Binding ApplyToCurrentModeCommand}">
                         <ContentControl Content="{Binding ModeName}" />
                     </Button>
                     <Button Height="24" Width="24" Margin="5" Command="{Binding Parent.CreateKeyModeCommand}" CommandParameter="KeyMode">
@@ -290,7 +281,7 @@
         <DockPanel LastChildFill="True">
             <StackPanel Margin="0 0 5 0">
                 <DockPanel LastChildFill="True" IsEnabled="{Binding IsFallback, Converter={StaticResource notconverter}}" MaxWidth="300">
-                    <Border DockPanel.Dock="Right" Padding="0" Margin="5 5 0 5" >
+                    <Border DockPanel.Dock="Right" Padding="0" Margin="5 5 0 5">
                         <StackPanel>
                             <TextBlock x:Uid="text-image-header" Style="{StaticResource SectionHeaderStyle}" Text="TEXT &amp; IMAGE : " />
                             <Separator Style="{StaticResource SectionSeperatorStyle}" />
@@ -305,18 +296,18 @@
                                         <TextBlock x:Uid="keyboard-editor-key-mode-display-text" Text="Text" />
                                     </RadioButton>
                                     <RadioButton IsChecked="{Binding Parent.ShowIcon, Mode=TwoWay }" GroupName="keyUplabel" x:Name="iconcheckbox" Margin="5" Checked="iconcheckbox_Checked">
-                                        <TextBlock x:Uid="keyboard-editor-key-mode-icon-text" Text="Icon"/>
+                                        <TextBlock x:Uid="keyboard-editor-key-mode-icon-text" Text="Icon" />
                                     </RadioButton>
                                     <RadioButton IsChecked="{Binding Parent.ShowImage, Mode=TwoWay }" GroupName="keyUplabel" x:Name="imagecheckbox" Margin="5">
-                                        <TextBlock x:Uid="keyboard-editor-key-mode-image-text" Text="Image"/>
+                                        <TextBlock x:Uid="keyboard-editor-key-mode-image-text" Text="Image" />
                                     </RadioButton>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1">
                                     <!-- Text editing -->
                                     <TextBox Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=textcheckbox, Converter={StaticResource booltovisibilityconverter}}" Text="{Binding UpLabel, UpdateSourceTrigger=PropertyChanged}" />
-                                    
+
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=iconcheckbox, Converter={StaticResource booltovisibilityconverter}}">
-                                            <cce:IconPicker SelectedIcon="{Binding Icon}" SelectedFontFamily="{Binding FontFamily}" />
+                                        <cce:IconPicker SelectedIcon="{Binding Icon}" SelectedFontFamily="{Binding FontFamily}" />
                                     </Grid>
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>
@@ -331,9 +322,9 @@
                                                 <Binding Path="Image.Source">
                                                     <Binding.Converter>
                                                         <ckc:ValueConverterGroup>
-                                                            <ckc:NotNullConverter/>
-                                                            <ckc:NotConverter/>
-                                                            <ckwincore:BooleanToVisibilityConverter/>
+                                                            <ckc:NotNullConverter />
+                                                            <ckc:NotConverter />
+                                                            <ckwincore:BooleanToVisibilityConverter />
                                                         </ckc:ValueConverterGroup>
                                                     </Binding.Converter>
                                                 </Binding>
@@ -345,8 +336,8 @@
                                                 <Binding Path="Image.Source">
                                                     <Binding.Converter>
                                                         <ckc:ValueConverterGroup>
-                                                            <ckc:NotNullConverter/>
-                                                            <ckwincore:BooleanToVisibilityConverter/>
+                                                            <ckc:NotNullConverter />
+                                                            <ckwincore:BooleanToVisibilityConverter />
                                                         </ckc:ValueConverterGroup>
                                                     </Binding.Converter>
                                                 </Binding>
@@ -359,7 +350,7 @@
                                             <Button Grid.Row="1" Command="{Binding BrowseCommand}" Margin="2" DockPanel.Dock="Right">
                                                 <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/browse.png" />
                                             </Button>
-                                            <ComboBox ItemsSource="{Binding Context.DefaultImages}" SelectedItem="{Binding SelectedImage}" SelectedValue="{Binding SelectedText}" DockPanel.Dock="Left" Margin="2" >
+                                            <ComboBox ItemsSource="{Binding Context.DefaultImages}" SelectedItem="{Binding SelectedImage}" SelectedValue="{Binding SelectedText}" DockPanel.Dock="Left" Margin="2">
                                                 <ComboBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackPanel>
@@ -382,7 +373,7 @@
                                 <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" />
                             </StackPanel>
                             <DockPanel LastChildFill="False">
-                                <Button Content="Save" Command="{Binding SaveContentCommand}" Margin="0 0 5 0" IsEnabled="{Binding IsDirty}"  Style="{StaticResource ModernUIButtonStyle}" DockPanel.Dock="Right"/>
+                                <Button Content="Save" Command="{Binding SaveContentCommand}" Margin="0 0 5 0" IsEnabled="{Binding IsDirty}" Style="{StaticResource ModernUIButtonStyle}" DockPanel.Dock="Right" />
                             </DockPanel>
                         </StackPanel>
                     </Border>
@@ -391,29 +382,22 @@
 
             <Border DockPanel.Dock="Right" Margin="5" Width="150">
                 <StackPanel>
-                    <TextBlock x:Uid="keymode-actions-header" Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : "/>
-                    <Separator Style="{StaticResource SectionSeperatorStyle}"/>
+                    <TextBlock x:Uid="keymode-actions-header" Style="{StaticResource SectionHeaderStyle}" Text="ACTIONS : " />
+                    <Separator Style="{StaticResource SectionSeperatorStyle}" />
                     <StackPanel Margin="5">
                         <!-- Key : Delete buttons -->
-                        <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-key-button" Action="{Binding Parent.DeleteKeyCommand}" Text="Delete this key : " 
-                                      TooltipText="The key will be definitely destroyed" 
-                                      ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png" 
-                                      Template="{StaticResource SimpleActionControlTemplate}" />
+                        <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-key-button" Action="{Binding Parent.DeleteKeyCommand}" Text="Delete this key : " TooltipText="The key will be definitely destroyed" ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png" Template="{StaticResource SimpleActionControlTemplate}" />
 
                         <!-- Mode : Delete buttons -->
-                        <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-mode-button" Action="{Binding DeleteKeyModeCommand}" Text="Delete this mode configuration : " 
-                                      TooltipText="The configurations of the key for the current mode will be deleted. The key itself will not be deleted."
-                                      ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"
-                                      Template="{StaticResource SimpleActionControlTemplate}"
-                                      ActionParameter="KeyMode">
+                        <vm:ActionControl x:Uid="keyboard-editor-key-mode-delete-mode-button" Action="{Binding DeleteKeyModeCommand}" Text="Delete this mode configuration : " TooltipText="The configurations of the key for the current mode will be deleted. The key itself will not be deleted." ImageSource="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png" Template="{StaticResource SimpleActionControlTemplate}" ActionParameter="KeyMode">
                             <vm:ActionControl.Style>
                                 <Style TargetType="{x:Type vm:ActionControl}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Parent.CurrentKeyModeModeVM.Mode.IsEmpty}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsFallback}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -428,7 +412,7 @@
                 <!-- Commands -->
                 <StackPanel DockPanel.Dock="Top" DataContext="{Binding}">
                     <TextBlock x:Uid="keyboard-editor-key-mode-key-program" Text="KEY PROGRAM : " Style="{StaticResource SectionHeaderStyle}" />
-                    <Separator Style="{StaticResource SectionSeperatorStyle}"/>
+                    <Separator Style="{StaticResource SectionSeperatorStyle}" />
 
                     <StackPanel Margin="5">
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}, ConverterParameter=Invert}">
@@ -454,10 +438,10 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <Button x:Uid="keymode-add-action" Content="Add an action" HorizontalAlignment="Right" Style="{StaticResource ModernUIButtonStyle}" Command="{Binding InitializeCommandCommand}" ></Button>
+                            <Button x:Uid="keymode-add-action" Content="Add an action" HorizontalAlignment="Right" Style="{StaticResource ModernUIButtonStyle}" Command="{Binding InitializeCommandCommand}"></Button>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ShowKeyCommandCreationPanel, Converter={StaticResource booltovisibilityconverter}}">
-                            <TextBlock Text="{x:Static r:R.NewCommand}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14"/>
+                            <TextBlock Text="{x:Static r:R.NewCommand}" Margin="0 0 0 5" FontFamily="Calibri" FontSize="14" />
                             <StackPanel DataContext="{Binding ProtocolEditorsProvider}">
                                 <ComboBox ItemsSource="{Binding AvailableProtocolEditors}" SelectedItem="{Binding SelectedProtocolEditorWrapper}">
                                     <ComboBox.ItemTemplate>
@@ -469,7 +453,7 @@
                                 <ContentControl Margin="0 5 0 0" ContentTemplateSelector="{StaticResource addactiondatatemplateselector}" Content="{Binding ProtocolEditor.ParameterManager}" />
                             </StackPanel>
                             <StackPanel Margin="0 5 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
-                                <Button x:Uid="keymode-save" Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding ProtocolEditorsProvider.ProtocolEditor.IsValid}"  Style="{StaticResource ModernUIButtonStyle}" />
+                                <Button x:Uid="keymode-save" Content="Save" Command="{Binding SaveCommandCommand}" Margin="0 0 2 0" IsEnabled="{Binding ProtocolEditorsProvider.ProtocolEditor.IsValid}" Style="{StaticResource ModernUIButtonStyle}" />
                                 <Button x:Uid="keymode-cancel" Content="Cancel" Command="{Binding CancelChangesCommand}" Style="{StaticResource ModernUIButtonStyle}" />
                             </StackPanel>
                         </StackPanel>

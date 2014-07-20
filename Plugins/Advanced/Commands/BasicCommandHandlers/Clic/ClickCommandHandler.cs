@@ -74,7 +74,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
+                    new VMProtocolEditorMetaData( PROTOCOL_BASE,
                                                  R.ClicProtocolTitle,
                                                  R.ClicProtocolDescription,
                                                  typeof( ClickCommandParameterManager ) ),

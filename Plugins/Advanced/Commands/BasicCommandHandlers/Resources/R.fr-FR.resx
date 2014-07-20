@@ -297,4 +297,13 @@
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="PauseDescription" xml:space="preserve">
+    <value>Ajouter une pause entre deux actions</value>
+  </data>
+  <data name="PauseSubTitle" xml:space="preserve">
+    <value>temps de pause (ms)</value>
+  </data>
+  <data name="PauseTitle" xml:space="preserve">
+    <value>Pause</value>
+  </data>
 </root>

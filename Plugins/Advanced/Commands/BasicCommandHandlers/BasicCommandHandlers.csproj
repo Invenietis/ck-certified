@@ -146,6 +146,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ChangeKeyboard\ChangeKeyboardCommandParameterManager.cs" />
+    <Compile Include="Pause\PauseCommandParameterManager.cs" />
     <Compile Include="Resources\R.en-US.Designer.cs">
       <DependentUpon>R.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>

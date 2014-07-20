@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Threading;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
@@ -38,7 +39,13 @@ namespace CK.StandardPlugins.CommandManager
         PublicName = "CommandManager" )]
     public class CommandManager : IPlugin, ICommandManagerService
     {
+        const int TIMER_MILLI_SPAN = 20; //in milliseconds
+
         Queue<DictionaryEntry> _runningCommands;
+
+        DispatcherTimer _timer;
+        TimeSpan _timerSpan = new TimeSpan( 0, 0, 0, 0, TIMER_MILLI_SPAN );
+        bool _intervalAltered = false;
 
         public event EventHandler<CommandSendingEventArgs>  CommandSending;
         public event EventHandler<CommandSentEventArgs>  CommandSent;
@@ -60,6 +67,10 @@ namespace CK.StandardPlugins.CommandManager
             KeyboardContext.Keyboards.KeyboardDeactivated += KeyboardDeactivated;
 
             foreach( var k in KeyboardContext.Keyboards.Actives ) RegistersOnKeyboard( k );
+
+            EventHandler d = new EventHandler( TimerMethod );
+            _timer = new DispatcherTimer( _timerSpan, DispatcherPriority.Normal, d, Dispatcher.CurrentDispatcher );
+            _timer.Stop();
         }
         public void Stop()
         {
@@ -67,6 +78,8 @@ namespace CK.StandardPlugins.CommandManager
 
             KeyboardContext.Keyboards.KeyboardActivated -= KeyboardActivated;
             KeyboardContext.Keyboards.KeyboardDeactivated -= KeyboardDeactivated;
+
+            _timer.Stop();
         }
 
         public void Teardown() { }
@@ -78,37 +91,57 @@ namespace CK.StandardPlugins.CommandManager
 
         public void SendCommand( object sender, string command )
         {
-            if( _runningCommands == null ) _runningCommands = new Queue<DictionaryEntry>();
-            bool isRunning = _runningCommands.Count > 0;
-
-            _runningCommands.Enqueue( new DictionaryEntry( sender, command.TrimStart() ) );
-
-            if( !isRunning )
-            {
-                while( _runningCommands.Count > 0 )
-                {
-                    DictionaryEntry e = _runningCommands.Dequeue();
-                    DoSendCommand( e.Key, (string)e.Value );
-                }
-            }
+            SendCommands( sender, new CKReadOnlyListMono<string>( command ) );
         }
 
         public void SendCommands( object sender, ICKReadOnlyList<string> commands )
         {
             if( _runningCommands == null ) _runningCommands = new Queue<DictionaryEntry>();
-            bool isRunning = _runningCommands.Count > 0;
+
+            if( !_timer.IsEnabled ) _timer.Start();
 
             foreach( string cmd in commands )
                 _runningCommands.Enqueue( new DictionaryEntry( sender, cmd ) );
+        }
 
-            if( !isRunning )
+        private void ProcessCommands()
+        {
+            while( _runningCommands.Count > 0 )
             {
-                while( _runningCommands.Count > 0 )
+                DictionaryEntry e = _runningCommands.Dequeue();
+                string value = e.Value.ToString().TrimStart();
+
+                if( value.StartsWith( "pause", StringComparison.InvariantCultureIgnoreCase ) )
                 {
-                    DictionaryEntry e = _runningCommands.Dequeue();
-                    DoSendCommand( e.Key, (string)e.Value );
+                    int milliseconds = 0;
+                    if( Int32.TryParse( value.Split( ':' )[1], out milliseconds ) )
+                    {
+                        _timer.Interval = new TimeSpan( 0, 0, 0, 0, milliseconds );
+                        _intervalAltered = true;
+                        return;
+                    }
+                    else
+                    {
+                        throw new ArgumentException( "A \"pause\" command was called. Its value was not a valid integer : " + e.Value );
+                    }
                 }
+
+                DoSendCommand( e.Key, (string)e.Value );
             }
+
+            _timer.Stop();
+        }
+
+
+        private void TimerMethod( object sender, EventArgs e )
+        {
+            if( _intervalAltered )
+            {
+                _timer.Interval = _timerSpan;
+                _intervalAltered = false;
+            }
+
+            ProcessCommands();
         }
 
         /// <summary>

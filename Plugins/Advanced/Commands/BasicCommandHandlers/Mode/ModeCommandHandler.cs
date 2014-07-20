@@ -50,7 +50,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         "mode",
                                         R.ModeProtocolTitle,
                                         R.ModeProtocolDescription,

@@ -9,11 +9,11 @@ namespace ProtocolManagerModel
     /// </summary>
     public class VMProtocolEditor : INotifyPropertyChanged
     {
-        VMProtocolEditorWrapper _wrapper;
+        VMProtocolEditorMetaData _wrapper;
         /// <summary>
         /// The type of action. Contains a user friendly name, its inner name (used by the command handler) and a short description of what it does.
         /// </summary>
-        public VMProtocolEditorWrapper Wrapper
+        public VMProtocolEditorMetaData Wrapper
         {
             get { return _wrapper; }
             set

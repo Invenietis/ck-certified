@@ -439,6 +439,33 @@ namespace BasicCommandHandlers.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adds a pause between two commands.
+        /// </summary>
+        internal static string PauseDescription {
+            get {
+                return ResourceManager.GetString("PauseDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pausing time (ms).
+        /// </summary>
+        internal static string PauseSubTitle {
+            get {
+                return ResourceManager.GetString("PauseSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        internal static string PauseTitle {
+            get {
+                return ResourceManager.GetString("PauseTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Push the left button.
         /// </summary>
         internal static string PushLeft {

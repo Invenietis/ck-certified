@@ -51,7 +51,7 @@ using System.Windows;
 //l'attribut NeutralResourceLanguage ci-dessous. Mettez à jour "fr-FR" dans
 //la ligne ci-après pour qu'elle corresponde au paramètre UICulture du fichier projet.
 
-[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
+[assembly: NeutralResourcesLanguage( "en-US", UltimateResourceFallbackLocation.Satellite )]
 
 
 [assembly: ThemeInfo(
@@ -79,4 +79,4 @@ using System.Windows;
 
 // Allow CVKTests assembly to acces to Internals of CK.Context.
 // Here to ease the set up of NUnit tests.
-[assembly: InternalsVisibleTo("Certified.Tests")]
+[assembly: InternalsVisibleTo( "Certified.Tests" )]

@@ -76,4 +76,4 @@ using Host.Services.Helpers;
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "1.0.0.0" )]
 
-[assembly: Distribution("Std")]
+[assembly: Distribution( "Std" )]

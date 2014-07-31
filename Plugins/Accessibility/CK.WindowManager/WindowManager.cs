@@ -54,7 +54,7 @@ namespace CK.WindowManager
 
         public IReadOnlyList<IWindowElement> WindowElements
         {
-            get { return _dic.Keys.ToArray(); }
+            get { return _dic.Keys.ToReadOnlyList(); }
         }
 
         public Rect GetClientArea( IWindowElement e )

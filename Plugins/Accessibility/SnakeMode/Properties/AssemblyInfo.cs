@@ -31,9 +31,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SnakeMode")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct("SnakeMode")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

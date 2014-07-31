@@ -31,9 +31,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("IPointerDevideDriver")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct("IPointerDevideDriver")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

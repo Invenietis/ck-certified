@@ -51,6 +51,7 @@ namespace Host.VM
             partner.Items.Add( new TextItem( _app.ConfigManager, "   à l'Hôpital Raymond Poincaré, Garches" ) );
             partner.Items.Add( new TextItem( _app.ConfigManager, "   - INTECH INFO" ) );
             partner.Items.Add( new TextItem( _app.ConfigManager, "   - Fondation Stéria" ) );
+            partner.Items.Add( new TextItem( _app.ConfigManager, "   - Université de Tours" ) );
             partner.Items.Add( new TextItem( _app.ConfigManager, "   - Invenietis" ) );
             partner.Items.Add( new TextItem( _app.ConfigManager, "" ) );
 

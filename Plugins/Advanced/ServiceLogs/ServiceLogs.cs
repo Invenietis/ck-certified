@@ -45,7 +45,7 @@ namespace LogPlugin
         const string PluginPublicName = "ServiceLogs";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
-        static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<ServiceLogs>();
+        IActivityMonitor _log;
 
         EventHandler<LogEventArgs> _hCreating;
         EventHandler<LogEventArgs> _hCreated;
@@ -72,6 +72,7 @@ namespace LogPlugin
 
         public void Start()
         {
+            _log = Context.ServiceContainer.GetService<IActivityMonitor>();
             Context.LogCenter.EventCreating += _hCreating;
             Context.LogCenter.EventCreated += _hCreated;
             _buffer = new StringWriter();
@@ -104,7 +105,7 @@ namespace LogPlugin
         {
             _buffer.GetStringBuilder().Length = 0;
             Process( _buffer, e );
-            Log( e, _buffer.GetStringBuilder().ToString(), Common.Logging.LogLevel.Info );
+            Log( e, _buffer.GetStringBuilder().ToString(), LogLevel.Info );
         }
 
         void OnEventCreated( object sender, LogEventArgs e )
@@ -114,7 +115,7 @@ namespace LogPlugin
             string message = _buffer.GetStringBuilder().ToString();
             if( er != null )
             {
-                Log( e, message, Common.Logging.LogLevel.Error );
+                Log( e, message, LogLevel.Error );
                 bool errorLogCreated;
                 using( var fileLog = CrashLogManager.CreateNew( "errorLog" ) )
                 {
@@ -135,7 +136,7 @@ namespace LogPlugin
                     }
                 }
             }
-            else Log( e, message, Common.Logging.LogLevel.Info );
+            else Log( e, message, LogLevel.Info );
         }
 
         /// <summary>
@@ -239,33 +240,32 @@ namespace LogPlugin
 
         public event LogTriggeredEventHandler LogTriggered;
 
-        private void Log( string message, Common.Logging.LogLevel logLevel )
+        private void Log( string message, LogLevel logLevel )
         {
             Log( null, message, logLevel );
         }
 
-        private void Log( LogEventArgs e, string message, Common.Logging.LogLevel logLevel )
+        private void Log( LogEventArgs e, string message, LogLevel logLevel )
         {
             switch( logLevel )
             {
-                case Common.Logging.LogLevel.Debug:
-                    _log.Debug( message );
+                case LogLevel.Info:
+                    _log.Info().Send( message );
                     break;
-                case Common.Logging.LogLevel.Error:
-                    _log.Error( message );
+                case LogLevel.Error:
+                    _log.Error().Send( message );
                     break;
-                case Common.Logging.LogLevel.Fatal:
-                    _log.Fatal( message );
+                case LogLevel.Fatal:
+                    _log.Fatal().Send( message );
                     break;
-                case Common.Logging.LogLevel.Info:
-                case Common.Logging.LogLevel.Trace:
-                    _log.Info( message );
+                case LogLevel.Trace:
+                    _log.Trace().Send( message );
                     break;
-                case Common.Logging.LogLevel.Warn:
-                    _log.Warn( message );
+                case LogLevel.Warn:
+                    _log.Warn().Send( message );
                     break;
                 default:
-                    _log.Info( message );
+                    _log.Info().Send( message );
                     break;
             }
 

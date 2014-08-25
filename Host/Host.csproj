@@ -97,6 +97,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CK.Interop.3.0.22\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Monitoring">
+      <HintPath>..\packages\CK.Monitoring.3.0.22\lib\net40\CK.Monitoring.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Plugin.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CK.Plugin.Config.2.11.0-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
@@ -153,14 +156,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CK.Windows.Interop.2.11.0-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Log4Net1211, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Common.Logging.Log4Net1211.2.1.2\lib\net40\Common.Logging.Log4Net1211.dll</HintPath>
-    </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
@@ -212,7 +207,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CiviKeyStandardHost.cs" />
-    <Compile Include="CommonLogger.cs" />
     <Compile Include="Resources\R.en-US.Designer.cs">
       <DependentUpon>R.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CommonTimer\CommonTimerUserEditor.cs) is part of CiviKey. 
 *  

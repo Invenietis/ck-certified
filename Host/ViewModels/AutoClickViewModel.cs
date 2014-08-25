@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host\ViewModels\AutoClickViewModel.cs) is part of CiviKey. 
 *  

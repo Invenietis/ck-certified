@@ -1,6 +1,6 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\AutoClick\ClickSelector.cs) is part of CiviKey. 
+* This file (Plugins\Accessibility\AutoClick\ClickSelectorService\ClickSelector.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -102,8 +102,6 @@ namespace CK.Plugins.AutoClick
         public void Stop()
         {
             _isClosing = true;
-
-            TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
 
             UninitializeTopMost();
             UninitializeWindowManager();
@@ -257,23 +255,25 @@ namespace CK.Plugins.AutoClick
         {
             RegisterWindowManager();
 
-            //Register WindowsManager events
-            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
             if( WindowManager.Status.IsStartingOrStarted )
             {
                 WindowManager.Service.WindowMinimized += OnWindowMinimized;
                 WindowManager.Service.WindowRestored += OnWindowRestored;
             }
+
+            //Register WindowsManager events
+            WindowManager.ServiceStatusChanged += OnWindowManagerStatusChanged;
         }
 
         void UninitializeWindowManager()
         {
+            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
+
             if( WindowManager.Status.IsStartingOrStarted )
             {
                 WindowManager.Service.WindowMinimized -= OnWindowMinimized;
                 WindowManager.Service.WindowRestored -= OnWindowRestored;
             }
-            WindowManager.ServiceStatusChanged -= OnWindowManagerStatusChanged;
 
             UnregisterWindowManager();
         }
@@ -347,7 +347,6 @@ namespace CK.Plugins.AutoClick
             if( e.Current == InternalRunningStatus.Started ) TopMostService.Service.RegisterTopMostElement( "10", _clickSelectorWindow );
             else if( e.Current == InternalRunningStatus.Stopping ) TopMostService.Service.UnregisterTopMostElement( _clickSelectorWindow );
         }
-
 
         #endregion
 

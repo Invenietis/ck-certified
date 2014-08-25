@@ -396,4 +396,7 @@
   <data name="ExportConf" xml:space="preserve">
     <value>Exporter votre configuration</value>
   </data>
+  <data name="MouseScrollingSelection" xml:space="preserve">
+    <value>Sélection du type de défilement souris</value>
+  </data>
 </root>

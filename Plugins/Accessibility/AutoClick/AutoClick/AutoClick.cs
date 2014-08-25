@@ -1,6 +1,6 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Plugins\Accessibility\AutoClick\AutoClick.cs) is part of CiviKey. 
+* This file (Plugins\Accessibility\AutoClick\AutoClick\AutoClick.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -70,9 +70,6 @@ namespace CK.Plugins.AutoClick
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IWindowManager> WindowManager { get; set; }
-
-        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
-        public IService<IWindowBinder> WindowBinder { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ITopMostService> TopMostService { get; set; }

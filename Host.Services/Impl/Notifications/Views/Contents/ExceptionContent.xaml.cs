@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\Impl\Notifications\Views\Contents\ExceptionContent.xaml.cs) is part of CiviKey. 
 *  

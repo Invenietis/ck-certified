@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host\CiviKeyStandardHost.cs) is part of CiviKey. 
 *  
@@ -15,6 +15,7 @@
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
 * Copyright © 2007-2012, 
+* Copyright � 2007-2012, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -136,7 +137,7 @@ namespace Host
             // ToDoJL
             //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
             hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
-            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+            //hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
             ctx.PluginRunner.Add( hostRequirements );
 

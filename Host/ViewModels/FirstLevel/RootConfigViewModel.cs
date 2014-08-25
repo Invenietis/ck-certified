@@ -1,6 +1,6 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
-* This file (Host\ViewModels\RootConfigViewModel.cs) is part of CiviKey. 
+* This file (Host\ViewModels\FirstLevel\RootConfigViewModel.cs) is part of CiviKey. 
 *  
 * CiviKey is free software: you can redistribute it and/or modify 
 * it under the terms of the GNU Lesser General Public License as published 
@@ -73,10 +73,6 @@ namespace Host
             var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) ) { DisplayName = R.AutoClickSectionName };
             var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ) ) { DisplayName = R.Scrolling };
 
-            //var mouseRadar = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _radarId, new Guid[]{ _basicScrollId }, new Guid[0]) { DisplayName = R.Radar };
-            //var screenScrollerStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _screenScrollerId, new Guid[]{ _basicScrollId }, new Guid[0]) //The ScreenScroller needs the Scrolling plugin
-            //    { DisplayName = R.ScreenScrolling };
-
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
                 new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), //SybilleWordPredictorService
@@ -94,10 +90,8 @@ namespace Host
             g.Items.Add( autoClicStarter );
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
-            //g.Items.Add( mouseRadar );
-            //g.Items.Add( screenScrollerStarter );
 
-            this.AddLink( new ImplementationSelector( "Selection du dispositif de pointage", _app ) );
+            this.AddLink( new ImplementationSelector( R.MouseScrollingSelection, _app ) );
             this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
 
             base.OnInitialize();
@@ -114,6 +108,5 @@ namespace Host
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
-
     }
 }

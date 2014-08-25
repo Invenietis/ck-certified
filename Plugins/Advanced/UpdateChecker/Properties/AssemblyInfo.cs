@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\UpdateChecker\Properties\AssemblyInfo.cs) is part of CiviKey. 
 *  

@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-
 using CK.Plugin;
 namespace CommonServices
 {

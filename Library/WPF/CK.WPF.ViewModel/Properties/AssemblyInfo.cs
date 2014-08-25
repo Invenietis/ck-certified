@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\WPF\CK.WPF.ViewModel\Properties\AssemblyInfo.cs) is part of CiviKey. 
 *  

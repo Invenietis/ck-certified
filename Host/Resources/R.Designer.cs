@@ -493,6 +493,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mouse scrolling type selection.
+        /// </summary>
+        public static string MouseScrollingSelection {
+            get {
+                return ResourceManager.GetString("MouseScrollingSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created on {0:D}.
         /// </summary>
         public static string NewContextDisplayName {

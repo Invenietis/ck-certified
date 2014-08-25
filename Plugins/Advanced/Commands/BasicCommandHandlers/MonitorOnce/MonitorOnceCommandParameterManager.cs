@@ -1,4 +1,27 @@
-﻿using BasicCommandHandlers.Resources;
+#region LGPL License
+/*----------------------------------------------------------------------------
+* This file (Plugins\Advanced\Commands\BasicCommandHandlers\MonitorOnce\MonitorOnceCommandParameterManager.cs) is part of CiviKey. 
+*  
+* CiviKey is free software: you can redistribute it and/or modify 
+* it under the terms of the GNU Lesser General Public License as published 
+* by the Free Software Foundation, either version 3 of the License, or 
+* (at your option) any later version. 
+*  
+* CiviKey is distributed in the hope that it will be useful, 
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+* GNU Lesser General Public License for more details. 
+* You should have received a copy of the GNU Lesser General Public License 
+* along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
+*  
+* Copyright © 2007-2012, 
+*     Invenietis <http://www.invenietis.com>,
+*     In’Tech INFO <http://www.intechinfo.fr>,
+* All rights reserved. 
+*-----------------------------------------------------------------------------*/
+#endregion
+
+using BasicCommandHandlers.Resources;
 using CK.WPF.ViewModel;
 using ProtocolManagerModel;
 using System;
@@ -27,7 +50,10 @@ namespace BasicCommandHandlers
         IProtocolEditorRoot _root;
         public IProtocolEditorRoot Root
         {
-            get { return _root; }
+            get
+            {
+                return _root;
+            }
             set
             {
                 _root = value;
@@ -62,13 +88,12 @@ namespace BasicCommandHandlers
         }
 
         public string ActionsTitle { get { return R.ActionToListenTo; } }
-
-        //TODO : CHECK : this step doesn't seem necessary
         public string NameTitle { get { return R.GiveName; } }
         public string Name { get; set; }
 
         private void Initialize()
         {
+            EditedKeyMode = Root.EditedKeyMode;
             _availableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
 
             foreach( var item in Root.AvailableProtocolEditors )

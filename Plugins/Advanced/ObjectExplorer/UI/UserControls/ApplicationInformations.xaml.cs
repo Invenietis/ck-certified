@@ -1,4 +1,4 @@
-﻿#region LGPL License
+#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\UserControls\ApplicationInformations.xaml.cs) is part of CiviKey. 
 *  

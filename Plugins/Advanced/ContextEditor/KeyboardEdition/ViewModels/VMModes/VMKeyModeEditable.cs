@@ -546,7 +546,7 @@ namespace KeyboardEditor.ViewModels
 
         bool ConfirmUnsavedItem()
         {
-             return MessageBox.Show( "Les dernières modifications n'ont pas été sauvegardées, voulez-vous les sauvegardez ?", "Confirmation", System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
+            return MessageBox.Show( R.UnsavedChangedConfirmation, R.UnsavedChanged, System.Windows.MessageBoxButton.YesNo ) == MessageBoxResult.Yes;
         }
 
         private void UnregisterEvents()

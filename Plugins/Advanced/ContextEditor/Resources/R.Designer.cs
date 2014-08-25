@@ -651,6 +651,24 @@ namespace KeyboardEditor.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes.
+        /// </summary>
+        public static string UnsavedChanged {
+            get {
+                return ResourceManager.GetString("UnsavedChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your last modifications have not yet been saved, do you want to save them ?.
+        /// </summary>
+        public static string UnsavedChangedConfirmation {
+            get {
+                return ResourceManager.GetString("UnsavedChangedConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboard creation wizard.
         /// </summary>
         public static string WindowTitle {

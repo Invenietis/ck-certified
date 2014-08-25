@@ -329,4 +329,10 @@ Etes-vous sur de vouloir faire cela ?</value>
   <data name="Yes" xml:space="preserve">
     <value>Oui</value>
   </data>
+  <data name="UnsavedChanged" xml:space="preserve">
+    <value>Changements non sauvegardés</value>
+  </data>
+  <data name="UnsavedChangedConfirmation" xml:space="preserve">
+    <value>Les dernières modifications n'ont pas été sauvegardées, voulez-vous les sauvegarder ?</value>
+  </data>
 </root>

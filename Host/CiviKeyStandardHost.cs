@@ -227,33 +227,6 @@ namespace Host
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
             _log.Info().Send( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
-            //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
-
-            //    if( e.ExecutionPlanResult != null )
-            //    {
-            //        if(
-            //            (e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.SetupError
-            //            || e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.StartError) )
-            //        {
-            //            if( System.Windows.MessageBox.Show( String.Format( R.PluginThrewExceptionAtStart, e.ExecutionPlanResult.Culprit.PublicName ), R.PluginThrewExceptionAtStartTitle, MessageBoxButton.YesNo ) == MessageBoxResult.Yes )
-            //            {//if the user wants to try launching CiviKey without the culprit
-            //                Context.PluginRunner.Apply();
-            //            }
-            //            else
-            //            {//otherwise, stop CiviKey
-            //                Context.RaiseExitApplication( true );
-            //            }
-            //        }
-            //    }
-            //    else //e is null means that the plan couldn't be resolved, the system hasn't been changed, but requirements are messy
-            //    {
-            //        if( _notificationMngr != null )
-            //            _notificationMngr.ShowNotification( Guid.Empty, R.ForbiddenActionTitle, R.ForbiddenAction, 5000, NotificationTypes.Warning );
-            //        else
-            //            System.Windows.MessageBox.Show( R.ForbiddenAction );
-
-            //        //TODO : Revert the configuration (if it is possible ?)
-            //    }
         }
 
         /// <summary>

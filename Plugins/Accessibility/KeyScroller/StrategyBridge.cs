@@ -29,6 +29,7 @@ using System.Text;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
+using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace Scroller
@@ -120,6 +121,42 @@ namespace Scroller
         }
 
         #region IScrollingStrategy Members
+
+        public event EventHandler<HighlightEventArgs> BeginHighlightElement
+        {
+            add 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.BeginHighlightElement += value; 
+                }
+            }
+            remove 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.BeginHighlightElement -= value;
+                }
+            }
+        }
+
+        public event EventHandler<HighlightEventArgs> EndHighlightElement
+        {
+            add 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.EndHighlightElement += value; 
+                }
+            }
+            remove 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.EndHighlightElement -= value;
+                }
+            }
+        }
 
         public bool IsStarted
         {

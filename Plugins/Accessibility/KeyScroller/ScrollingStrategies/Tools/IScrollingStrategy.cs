@@ -26,12 +26,23 @@ using System.Collections.Generic;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
+using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace Scroller
 {
     internal interface IScrollingStrategy
     {
+        /// <summary>
+        /// Fired when an element is going to highlight
+        /// </summary>
+        event EventHandler<HighlightEventArgs> BeginHighlightElement;
+
+        /// <summary>
+        /// Fired when an element is going to unhighlight
+        /// </summary>
+        event EventHandler<HighlightEventArgs> EndHighlightElement;
+
         /// <summary>
         /// True, when the strategy is setup and have Elements
         /// </summary>

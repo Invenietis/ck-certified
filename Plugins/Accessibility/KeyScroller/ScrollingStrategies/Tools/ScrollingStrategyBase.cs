@@ -29,12 +29,17 @@ using System.Windows;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
+using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace Scroller
 {
     public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
+        public event EventHandler<HighlightEventArgs> BeginHighlightElement;
+        public event EventHandler<HighlightEventArgs> EndHighlightElement;
+
+
         protected IPluginConfigAccessor Configuration { get; set; }
         protected DispatcherTimer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }
@@ -310,6 +315,7 @@ namespace Scroller
             if( Walker.Current != null )
             {
                 LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval.Ticks, PreviousElement ), LastDirective );
+                FireBeginHighlightElement( Walker.Current );
                 EnsureReactivity();
             }
         }
@@ -323,8 +329,21 @@ namespace Scroller
             if( previousElement != null )
             {
                 LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, previousElement, element ), LastDirective );
+                FireEndHighlightElement( previousElement );
                 EnsureReactivity();
             }
+        }
+
+        private void FireBeginHighlightElement(IHighlightableElement element)
+        {
+            if( BeginHighlightElement != null )
+                BeginHighlightElement( this, new HighlightEventArgs( element ) );
+        }
+
+        private void FireEndHighlightElement( IHighlightableElement element )
+        {
+            if( EndHighlightElement != null )
+                EndHighlightElement( this, new HighlightEventArgs( element ) );
         }
 
         #region IScrollingStrategy Members

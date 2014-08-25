@@ -130,6 +130,15 @@ namespace Scroller
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
             InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
+            BeginHighlight += ( o, e ) =>
+            {
+                Console.WriteLine( "BEGIN H" );
+            };
+
+            EndHighlight += ( o, e ) =>
+            {
+                Console.WriteLine( "END H" );
+            };
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -332,6 +341,23 @@ namespace Scroller
         {
             _scrollingStrategy.OnExternalEvent();
         }
+
+        #region IHighlighterService Members
+
+
+        public event EventHandler<HighlightEventArgs> BeginHighlight
+        {
+            add { _scrollingStrategy.BeginHighlightElement += value; }
+            remove { _scrollingStrategy.BeginHighlightElement -= value; }
+        }
+
+        public event EventHandler<HighlightEventArgs> EndHighlight
+        {
+            add { _scrollingStrategy.EndHighlightElement += value; }
+            remove { _scrollingStrategy.EndHighlightElement -= value; }
+        }
+
+        #endregion
     }
 
 

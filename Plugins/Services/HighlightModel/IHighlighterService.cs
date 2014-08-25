@@ -97,6 +97,11 @@ namespace CommonServices.Accessibility
         IDictionary<string, string> RegisteredElements { get; }
 
         event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
+
+        event EventHandler<HighlightEventArgs> BeginHighlight;
+
+        event EventHandler<HighlightEventArgs> EndHighlight;
+        
     }
 
     public class HighlightEventArgs : EventArgs

@@ -97,7 +97,6 @@ namespace KeyboardEditor.ViewModels
                     _isDown = true;
 
                     _startPoint = new Point( _context.PointerDeviceDriver.Service.CurrentPointerXLocation, _context.PointerDeviceDriver.Service.CurrentPointerYLocation );
-
                     _originalLeft = X;
                     _originalTop = Y;
 
@@ -106,7 +105,7 @@ namespace KeyboardEditor.ViewModels
                 } );
             }
         }
-        
+
         public VMCommand<MouseEventArgs> MouseLeftButtonUpCommand
         {
             get
@@ -131,19 +130,19 @@ namespace KeyboardEditor.ViewModels
 
         void OnMouseMove( PointerDeviceEventArgs e )
         {
-            if( _isDown )
+            if( _isDown && _context.SelectedElement == this )
             {
                 Point position = new Point( _context.PointerDeviceDriver.Service.CurrentPointerXLocation, _context.PointerDeviceDriver.Service.CurrentPointerYLocation );
 
-                if( ( _isDragging == false ) &&
-                    ( ( Math.Abs( position.X - _startPoint.X ) > SystemParameters.MinimumHorizontalDragDistance ) ||
-                    ( Math.Abs( position.Y - _startPoint.Y ) > SystemParameters.MinimumVerticalDragDistance ) ) )
+                if( (_isDragging == false) &&
+                    ((Math.Abs( position.X - _startPoint.X ) > SystemParameters.MinimumHorizontalDragDistance) ||
+                    (Math.Abs( position.Y - _startPoint.Y ) > SystemParameters.MinimumVerticalDragDistance)) )
                     _isDragging = true;
 
                 if( _isDragging )
                 {
-                    X = (int)( position.X - ( _startPoint.X - _originalLeft ) );
-                    Y = (int)( position.Y - ( _startPoint.Y - _originalTop ) );
+                    X = (int)(position.X - (_startPoint.X - _originalLeft));
+                    Y = (int)(position.Y - (_startPoint.Y - _originalTop));
                 }
             }
         }
@@ -184,7 +183,7 @@ namespace KeyboardEditor.ViewModels
 
             Height = (int)height_new;
             int top_old = Y;
-            Y = (int)( top_old - ( height_new - height_old ) );
+            Y = (int)(top_old - (height_new - height_old));
         }
 
         // Handler for resizing from the top-left.
@@ -197,14 +196,14 @@ namespace KeyboardEditor.ViewModels
             Width = (int)width_new;
 
             int left_old = X;
-            X = (int)( left_old - ( width_new - width_old ) );
+            X = (int)(left_old - (width_new - width_old));
 
             int height_old = Height;
             int height_new = (int)Math.Max( Height - args.VerticalChange, thumbHeight );
             Height = (int)height_new;
 
             int top_old = Y;
-            Y = (int)( top_old - ( height_new - height_old ) );
+            Y = (int)(top_old - (height_new - height_old));
         }
 
         // Handler for resizing from the bottom-left.
@@ -221,7 +220,7 @@ namespace KeyboardEditor.ViewModels
             Width = (int)width_new;
 
             int left_old = X;
-            X = (int)( left_old - ( width_new - width_old ) );
+            X = (int)(left_old - (width_new - width_old));
         }
 
         #endregion

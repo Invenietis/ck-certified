@@ -52,9 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Reflection.3.0.30\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Windows.Interop, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Windows.Interop, Version=2.13.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Windows.Interop.2.12.1-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.13.0-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

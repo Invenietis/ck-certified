@@ -34,6 +34,7 @@ namespace CommonServices.Accessibility
     /// </summary>
     public interface IHighlighterService : IDynamicService
     {
+
         /// <summary>
         /// Gets if the highlighter is running or not (maybe stopped, or just paused).
         /// </summary>
@@ -96,6 +97,8 @@ namespace CommonServices.Accessibility
 
         IDictionary<string, string> RegisteredElements { get; }
 
+        IReadOnlyCollection<IHighlightableElement> Elements { get; }
+
         event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
 
         event EventHandler<HighlightEventArgs> BeginHighlight;
@@ -111,6 +114,13 @@ namespace CommonServices.Accessibility
             Element = element;
         }
 
+        public HighlightEventArgs( IHighlightableElement element,  IHighlightableElement root )
+        {
+            Element = element;
+            Root = root;
+        }
+
+        public IHighlightableElement Root { get; private set; }
         public IHighlightableElement Element { get; private set; }
     }
 

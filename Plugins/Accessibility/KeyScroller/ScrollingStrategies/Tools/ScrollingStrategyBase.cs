@@ -315,7 +315,8 @@ namespace Scroller
             if( Walker.Current != null )
             {
                 LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval.Ticks, PreviousElement ), LastDirective );
-                FireBeginHighlightElement( Walker.Current );
+                var root = Walker.Current.IsHighlightableTreeRoot ? Walker.Current : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : this;
+                FireBeginHighlightElement( Walker.Current, root );
                 EnsureReactivity();
             }
         }
@@ -329,21 +330,22 @@ namespace Scroller
             if( previousElement != null )
             {
                 LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, previousElement, element ), LastDirective );
-                FireEndHighlightElement( previousElement );
+                var root = previousElement.IsHighlightableTreeRoot ? previousElement : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : this;
+                FireEndHighlightElement( previousElement, root );
                 EnsureReactivity();
             }
         }
 
-        private void FireBeginHighlightElement(IHighlightableElement element)
+        private void FireBeginHighlightElement(IHighlightableElement element, IHighlightableElement root )
         {
             if( BeginHighlightElement != null )
-                BeginHighlightElement( this, new HighlightEventArgs( element ) );
+                BeginHighlightElement( this, new HighlightEventArgs( element, root ) );
         }
 
-        private void FireEndHighlightElement( IHighlightableElement element )
+        private void FireEndHighlightElement( IHighlightableElement element, IHighlightableElement root )
         {
             if( EndHighlightElement != null )
-                EndHighlightElement( this, new HighlightEventArgs( element ) );
+                EndHighlightElement( this, new HighlightEventArgs( element, root ) );
         }
 
         #region IScrollingStrategy Members

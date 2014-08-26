@@ -7,8 +7,8 @@ namespace HighlightModel
 {
     public interface IVizualizableHighlightableElement : IHighlightableElement
     {
-        string Name { get; }
+        string ElementName { get; }
 
-        string ImageSource { get; }
+        string ImagePath { get; }
     }
 }

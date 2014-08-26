@@ -74,9 +74,20 @@ namespace ScrollerVizualizer
                     OnElementUnregistered( e.Element );
                 }
             };
-            _windowVm = new VizualizationViewModel( Vizualizables, highlighter );
+            _windowVm = new VizualizationViewModel( highlighter );
             _window = new Vizualization( _windowVm );
-            _window.Show();
+            _windowVm.Elements.CollectionChanged += ( o, e ) => 
+            {
+                if( _windowVm.Elements.Count == 0 )
+                {
+                    _window.Hide();
+                }
+                else
+                {
+                    _window.Show();
+                }
+            };
+           
         }
 
         void Close(IHighlighterService highlighter)

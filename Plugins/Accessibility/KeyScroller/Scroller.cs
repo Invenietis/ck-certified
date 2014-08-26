@@ -86,6 +86,11 @@ namespace Scroller
             }
         }
 
+        public IReadOnlyCollection<IHighlightableElement> Elements
+        {
+            get { return _registeredElements.Values.ToArray(); }
+        }
+
         /// <summary>
         /// Gets the <see cref="RegisteredElements"/> , minus the <see cref="DisabledElements"/> 
         /// </summary>
@@ -238,7 +243,6 @@ namespace Scroller
                     //Warning the strategy that an element has been unregistered
                     _scrollingStrategy.ElementUnregistered( ehep == null ? element : ehep );
                 }
-
                 if( ElementRegisteredOrUnregistered != null ) ElementRegisteredOrUnregistered( this, new HighlightElementRegisterEventArgs( element, targetModuleName, false, element.IsHighlightableTreeRoot ) );
             }
         }
@@ -260,7 +264,7 @@ namespace Scroller
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
-                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName )
+                    if( extensibleElement != null && extensibleElement.ElementName == extensibleElementName )
                         return extensibleElement.RegisterElementAt( position, element );
                     else return false;
                 } );
@@ -286,7 +290,7 @@ namespace Scroller
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
-                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
+                    if( extensibleElement != null && extensibleElement.ElementName == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
                     else return false;
                 } );
             }

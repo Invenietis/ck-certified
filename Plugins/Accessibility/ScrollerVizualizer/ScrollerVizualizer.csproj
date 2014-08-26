@@ -106,6 +106,10 @@
       <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
       <Name>HighlightModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimpleSkin\SimpleSkin.csproj">
+      <Project>{6ffe0480-6c42-413b-b59d-78793ac651c7}</Project>
+      <Name>SimpleSkin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

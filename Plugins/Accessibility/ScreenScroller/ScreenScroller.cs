@@ -39,7 +39,7 @@ namespace ScreenScroller
     [Plugin( ScreenScrollerPlugin.PluginIdString,
            PublicName = ScreenScrollerPlugin.PluginPublicName,
            Version = ScreenScrollerPlugin.PluginIdVersion )]
-    public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IHighlightableElement, IRootNode
+    public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IVizualizableHighlightableElement, IRootNode
     {
         internal const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
         readonly Guid PluginGuid = new Guid( PluginIdString );
@@ -429,5 +429,19 @@ namespace ScreenScroller
         {
             get { return true; }
         }
+
+        #region IVizualizableHighlightableElement Members
+
+        public string ElementName
+        {
+            get { return PluginPublicName; }
+        }
+
+        public string ImagePath
+        {
+            get { return "F1M-291.695,57.6518L-283.906,49.558 -312.88,21.6882C-308.319,18.7482,-302.404,16.1439,-294.691,14.278L-347.906,-5.82477 -327.806,48.5737C-327.806,48.5737,-329.177,38.7078,-321.354,29.1245L-291.695,57.6518z"; }
+        }
+
+        #endregion
     }
 }

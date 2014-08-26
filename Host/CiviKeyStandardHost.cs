@@ -180,7 +180,7 @@ namespace Host
                     ctx.ServiceContainer.Add<IStructuredSerializer<CachedBitmap>>( new BitmapSourceSerializer<CachedBitmap>() );
                     ctx.ServiceContainer.Add<IStructuredSerializer<BitmapFrame>>( new BitmapSourceSerializer<BitmapFrame>() );
                     ctx.ServiceContainer.Add<IStructuredSerializer<BitmapImage>>( new BitmapSourceSerializer<BitmapImage>() );
-                    //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
+                    ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
                 }
 
                 Context.PluginRunner.ApplyDone += OnApplyDone;

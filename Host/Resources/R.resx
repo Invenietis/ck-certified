@@ -408,4 +408,13 @@
   <data name="MoveMouse" xml:space="preserve">
     <value>Move mouse</value>
   </data>
+  <data name="ScrollingSpeed" xml:space="preserve">
+    <value>Scrolling speed</value>
+  </data>
+  <data name="ScrollingStrategy" xml:space="preserve">
+    <value>Scrolling strategy :</value>
+  </data>
+  <data name="TurboScrollingSpeed" xml:space="preserve">
+    <value>Turbo scrolling speed</value>
+  </data>
 </root>

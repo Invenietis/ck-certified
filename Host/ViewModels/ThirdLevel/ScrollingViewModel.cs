@@ -88,10 +88,6 @@ namespace Host.VM
         { 
             base.OnInitialize();
 
-            //var action = new ConfigItemAction( this.ConfigManager, new SimpleCommand( StartScrollEditor ) );
-            //action.ImagePath = "Forward.png";
-            //action.DisplayName = R.ScrollConfig;
-
             var a = this.AddActivableSection( R.Scrolling, R.ScrollConfig);
 
             var g = a.AddGroup();
@@ -99,13 +95,13 @@ namespace Host.VM
             _recordItem = new RecordConfigItem( _app, this, ReflectionHelper.GetPropertyInfo( this, h => h.SelectedTrigger ) );
             g.Items.Add( _recordItem );
 
-            _comboBox = new ComboBoxItem( _app.ConfigManager, "Scroll type :", StrategyBridge.AvailableStrategies );
-            if( Config != null ) _comboBox.SelectedItem = Config.GetOrSet( "Strategy", "TurboScrollingStrategy" );
+            _comboBox = new ComboBoxItem( _app.ConfigManager, R.ScrollingStrategy, StrategyBridge.AvailableStrategies );
+            if( Config != null ) _comboBox.SelectedItem = Config.GetOrSet( "Strategy", "ZoneScrollingStrategy" );
             _comboBox.SelectedItemChanged += comboBox_SelectedItemChanged;
             g.Items.Add( _comboBox );
 
             _speedSlider = new SliderConfigItem( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, h => h.Speed ) );
-            _speedSlider.DisplayName = "blabla";
+            _speedSlider.DisplayName = R.ScrollingSpeed;
             _speedSlider.SetFormatFunction( i => string.Format( "{0} s", Math.Round( i / 1000.0, 1 ) ) );
             _speedSlider.Minimum = 200;
             _speedSlider.Maximum = 5000;
@@ -113,14 +109,13 @@ namespace Host.VM
             g.Items.Add( _speedSlider );
 
             _turboSpeedSlider = new SliderConfigItem( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, h => h.TurboSpeed ) );
-            _turboSpeedSlider.DisplayName = "blabla";
+            _turboSpeedSlider.DisplayName = R.TurboScrollingSpeed;
             _turboSpeedSlider.SetFormatFunction( i => string.Format( "{0} ms", i ) );
             _turboSpeedSlider.Minimum = 10;
             _turboSpeedSlider.Maximum = 500;
             _turboSpeedSlider.Interval = 10;
             g.Items.Add( _turboSpeedSlider );
 
-            //g.Items.Add( action );
             this.AddLink( _scVm ?? (_scVm = new ScrollingModulesConfigurationViewModel( R.OtherScrollConfig, _app )) );
 
             UpdateVisibility();

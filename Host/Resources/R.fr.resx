@@ -398,7 +398,7 @@
   </data>
   <data name="MouseScrollingSelection" xml:space="preserve">
     <value>Sélection du type de défilement souris</value>
-    </data>
+  </data>
   <data name="KeyboardPointer" xml:space="preserve">
     <value>Clavier de déplacement</value>
   </data>
@@ -407,5 +407,14 @@
   </data>
   <data name="MoveMouse" xml:space="preserve">
     <value>Déplacement souris</value>
+  </data>
+  <data name="ScrollingSpeed" xml:space="preserve">
+    <value>Vitesse de défilement</value>
+  </data>
+  <data name="ScrollingStrategy" xml:space="preserve">
+    <value>Stratégie de défilement : </value>
+  </data>
+  <data name="TurboScrollingSpeed" xml:space="preserve">
+    <value>Vitesse de défilement "turbo"</value>
   </data>
 </root>

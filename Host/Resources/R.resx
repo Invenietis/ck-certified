@@ -399,4 +399,13 @@
   <data name="MouseScrollingSelection" xml:space="preserve">
     <value>Mouse scrolling type selection</value>
   </data>
+  <data name="KeyboardPointer" xml:space="preserve">
+    <value>Keyboard pointer</value>
+  </data>
+  <data name="KeyboardPointerDescription" xml:space="preserve">
+    <value>Uses a keyboard to move the mouse</value>
+  </data>
+  <data name="MoveMouse" xml:space="preserve">
+    <value>Move mouse</value>
+  </data>
 </root>

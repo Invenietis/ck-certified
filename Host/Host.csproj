@@ -180,6 +180,7 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -226,13 +227,17 @@
     <Compile Include="ViewModels\MouseRadarViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\SecondLevel\PointerManagerSelector.cs" />
+    <Compile Include="ViewModels\SecondLevel\KeyboardConfigViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\KeyboardPointerSelector.cs" />
     <Compile Include="ViewModels\ThirdLevel\ScrollingViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\CreditViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ScrollingModulesConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ComboBoxItem.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
     <Compile Include="ViewModels\SecondLevel\AppConfigViewModel.cs" />
@@ -241,12 +246,17 @@
     <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
     <Compile Include="ViewModels\Tools\ConfigImplementationSelectorItem.cs" />
     <Compile Include="ViewModels\Tools\CheckboxConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\CreditConfigItem.cs" />
     <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\PointerManagerPluginStarter.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
     <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
+    <Compile Include="ViewModels\Tools\SliderConfigItem.cs" />
     <Compile Include="ViewModels\Tools\TextItem.cs" />
+    <Compile Include="ViewModels\Tools\DescriptionItem.cs" />
     <Compile Include="ViewModels\Tools\TitleItem.cs" />
+    <Compile Include="ViewModels\Tools\RecordConfigItem.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
@@ -334,6 +344,10 @@
       <Name>CK.WPF.ViewModel</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\Accessibility\KeyScroller\Scroller.csproj">
+      <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
+      <Name>Scroller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
@@ -415,6 +429,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Windows.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

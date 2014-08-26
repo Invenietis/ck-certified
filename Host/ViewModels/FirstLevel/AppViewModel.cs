@@ -153,7 +153,7 @@ namespace Host
                 }
             }
 
-            CivikeyHost.SaveContext();
+            CivikeyHost.SaveContext(); 
             CivikeyHost.SaveUserConfig();
             CivikeyHost.SaveSystemConfig();
 

@@ -41,6 +41,7 @@ namespace Host.VM
         PluginCluster _cluster;
         Guid _pluginEditor = Guid.Empty;
         string _groupName = string.Empty;
+        ConfigPage _configPage;
 
         public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster )
             : base( configManager )
@@ -62,8 +63,20 @@ namespace Host.VM
             _pluginEditor = pluginEditor;
         }
 
+        public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster, ConfigPage configPage )
+            : this( configManager, pluginCluster )
+        {
+            _configPage = configPage;
+        }
+
         public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster, Guid pluginEditor, string groupName )
             : this( configManager, pluginCluster, pluginEditor )
+        {
+            _groupName = groupName;
+        }
+
+        public ConfigImplementationSelectorItem( ConfigManager configManager, PluginCluster pluginCluster, ConfigPage configPage, string groupName )
+            : this( configManager, pluginCluster, configPage )
         {
             _groupName = groupName;
         }
@@ -111,7 +124,7 @@ namespace Host.VM
         }
 
         public string GroupName
-        {
+        { 
             get { return _groupName; }
         }
 
@@ -131,7 +144,7 @@ namespace Host.VM
 
         public bool CanOpenEditor
         {
-            get { return _pluginEditor != Guid.Empty && !_editorIsOpen; }
+            get { return ( _pluginEditor != Guid.Empty && !_editorIsOpen ) || _configPage != null; }
         }
 
         bool _editorIsOpen;
@@ -150,9 +163,16 @@ namespace Host.VM
 
         private void StartPluginEditor()
         {
-            _cluster.UserConfig.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Started );
-            _cluster.UserConfig.LiveUserConfiguration.Changed += LiveUserConfiguration_Changed;
-            _cluster.ApplyNewConfig();
+            if( _pluginEditor != Guid.Empty )
+            {
+                _cluster.UserConfig.LiveUserConfiguration.SetAction( _pluginEditor, ConfigUserAction.Started );
+                _cluster.UserConfig.LiveUserConfiguration.Changed += LiveUserConfiguration_Changed;
+                _cluster.ApplyNewConfig();
+            }
+            else
+            {
+                ConfigManager.ActivateItem( _configPage );
+            }
         }
 
         private void StopPluginEditor()

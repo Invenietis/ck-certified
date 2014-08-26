@@ -40,8 +40,9 @@ namespace Scroller
     public class TurboScrollingStrategy : OneByOneScrollingStrategy
     {
         const string StrategyName = "TurboScrollingStrategy";
+        const int TOTAL_NORMAL_TICK = 5;
         TimeSpan _normalInterval;
-        DispatcherTimer _normalSpeedTimer;
+        int _tickCount = 0;
 
         public TimeSpan TurboInterval { get; private set; }
 
@@ -52,7 +53,7 @@ namespace Scroller
                 return Timer.Interval == TurboInterval;
             }
         }
-        
+
         /// <summary>
         /// Method that sets the turbo if we are not scrolling on the "root" level
         /// </summary>
@@ -60,12 +61,11 @@ namespace Scroller
         {
             //If we are scrolling on a root element and that the next action is not to enter the children, we explicitely set the interval to the normal one.
             //Because we don't want to scroll too fast on the elements
-            if( Walker.Current.IsHighlightableTreeRoot && LastDirective.NextActionType != ActionType.EnterChild )
+            if( Walker.Current != null && Walker.Current.IsHighlightableTreeRoot && LastDirective.NextActionType != ActionType.EnterChild )
                 Timer.Interval = _normalInterval;
             else
             {
                 Timer.Interval = TurboInterval;
-                _normalSpeedTimer.Stop();
             }
         }
 
@@ -77,13 +77,22 @@ namespace Scroller
         public override void Setup( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> elements, IPluginConfigAccessor config )
         {
             base.Setup( timer, elements, config );
-
             _normalInterval = Timer.Interval;
-            TurboInterval = new TimeSpan(0, 0, 0, 0, Configuration.User.GetOrSet( "TurboSpeed", 100 ));
-            _normalSpeedTimer = new DispatcherTimer();
-            _normalSpeedTimer.Interval = new TimeSpan(0, 0, 0, 5);
-            _normalSpeedTimer.Tick += ( o, e ) => SetTurboWithCheck();
-            Timer.Tick += ( o, e ) => { if( IsTurboMode ) SetTurboWithCheck(); };
+            TurboInterval = new TimeSpan( 0, 0, 0, 0, Configuration.User.GetOrSet( "TurboSpeed", 100 ) );
+        }
+
+        void Timer_Tick( object sender, EventArgs e )
+        {
+            if( IsTurboMode ) SetTurboWithCheck();
+            else if( Timer.Interval == _normalInterval )
+            {
+                _tickCount++;
+                if( _tickCount == TOTAL_NORMAL_TICK )
+                {
+                    _tickCount = 0;
+                    SetTurboWithCheck();
+                }
+            }
         }
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -92,7 +101,7 @@ namespace Scroller
             {
                 if( e.Key == "Speed" )
                 {
-                    var newInterval = new TimeSpan(0, 0, 0, 0, (int) e.Value);
+                    var newInterval = new TimeSpan( 0, 0, 0, 0, (int)e.Value );
                     if( !IsTurboMode ) _normalInterval = newInterval;
                     else
                     {
@@ -112,6 +121,7 @@ namespace Scroller
         {
             base.Start();
             SetTurboWithCheck();
+            Timer.Tick += Timer_Tick;
         }
 
         public override void Pause( bool forceEndHighlight )
@@ -123,8 +133,8 @@ namespace Scroller
         public override void Stop()
         {
             base.Stop();
+            Timer.Tick -= Timer_Tick;
             Timer.Interval = _normalInterval;
-            _normalSpeedTimer.Stop();
         }
 
         public override void OnExternalEvent()
@@ -145,7 +155,7 @@ namespace Scroller
                 }
                 else
                 {
-                    
+                    _tickCount = 0;
                     FireSelectElement();
                     SetTurboWithCheck();
                 }
@@ -153,7 +163,6 @@ namespace Scroller
             else if( IsTurboMode )
             {
                 Timer.Interval = _normalInterval;
-                _normalSpeedTimer.Start();
             }
 
             //State changes of the turbo mode must be taken into account immediately

@@ -457,6 +457,24 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyboard pointer.
+        /// </summary>
+        public static string KeyboardPointer {
+            get {
+                return ResourceManager.GetString("KeyboardPointer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses a keyboard to move the mouse.
+        /// </summary>
+        public static string KeyboardPointerDescription {
+            get {
+                return ResourceManager.GetString("KeyboardPointerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboards.
         /// </summary>
         public static string Keyboards {
@@ -489,6 +507,15 @@ namespace Host.Resources {
         public static string LoadUserConfig {
             get {
                 return ResourceManager.GetString("LoadUserConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move mouse.
+        /// </summary>
+        public static string MoveMouse {
+            get {
+                return ResourceManager.GetString("MoveMouse", resourceCulture);
             }
         }
         

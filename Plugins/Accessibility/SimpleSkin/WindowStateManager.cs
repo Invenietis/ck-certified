@@ -142,14 +142,17 @@ namespace SimpleSkin
         {
             if( Highlighter.Status == InternalRunningStatus.Started )
             {
-                Highlighter.Service.RegisterTree( _miniViewVm.Name, R.MiniViewName, _miniViewVm );
-                Highlighter.Service.HighlightImmediately( _miniViewVm );
+                if( _viewHidden )
+                {
+                    Highlighter.Service.RegisterTree( _miniViewVm.Name, R.MiniViewName, _miniViewVm );
+                    Highlighter.Service.HighlightImmediately( _miniViewVm );
+                }
             }
         }
 
         private void UnregisterFromHighlighter()
         {
-            if( Highlighter.Status == InternalRunningStatus.Stopping )
+            if( Highlighter.Status == InternalRunningStatus.Stopping || Highlighter.Status == InternalRunningStatus.Started )
             {
                 Highlighter.Service.UnregisterTree( _miniViewVm.Name, _miniViewVm );
             }
@@ -295,7 +298,6 @@ namespace SimpleSkin
         {
             if( _miniView == null )
             {
-
                 _miniView = new MiniView( RestoreWindows ) { DataContext = _miniViewVm };
                 _miniView.Show();
 

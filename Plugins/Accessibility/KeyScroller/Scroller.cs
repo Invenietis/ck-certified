@@ -130,15 +130,6 @@ namespace Scroller
 
             _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
             InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
-            BeginHighlight += ( o, e ) =>
-            {
-                Console.WriteLine( "BEGIN H" );
-            };
-
-            EndHighlight += ( o, e ) =>
-            {
-                Console.WriteLine( "END H" );
-            };
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )

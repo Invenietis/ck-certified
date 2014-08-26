@@ -37,7 +37,7 @@ using System.ComponentModel;
 namespace CK.Plugins.AutoClick
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class ClickSelector : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin, IHighlightableElement
+    public class ClickSelector : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin, IVizualizableHighlightableElement
     {
         const string PluginGuidString = "{F9687F04-7370-4812-9EB4-1320EB282DD8}";
         Guid PluginGuid = new Guid( PluginGuidString );
@@ -395,5 +395,19 @@ namespace CK.Plugins.AutoClick
         {
             get { return true; }
         }
+
+        #region IVizualizableHighlightableElement Members
+
+        public string Name
+        {
+            get { return PluginPublicName; }
+        }
+
+        public string ImageSource
+        {
+            get { return "pack://application:,,,/AutoClick;component/Res/Images/DragDrop.png"; }
+        }
+
+        #endregion
     }
 }

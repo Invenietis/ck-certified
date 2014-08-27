@@ -36,9 +36,12 @@ namespace Scroller
 {
     public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
+
         public event EventHandler<HighlightEventArgs> BeginHighlightElement;
         public event EventHandler<HighlightEventArgs> EndHighlightElement;
+        public event EventHandler StatusChanged;
 
+        protected bool _isPaused;
         protected IPluginConfigAccessor Configuration { get; set; }
         protected DispatcherTimer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }
@@ -347,6 +350,11 @@ namespace Scroller
                 EndHighlightElement( this, new HighlightEventArgs( element, root ) );
         }
 
+        void FireStatusChanged()
+        {
+            if( StatusChanged != null ) StatusChanged( this, new EventArgs() );
+        }
+
         #region IScrollingStrategy Members
 
         public abstract string Name
@@ -362,8 +370,13 @@ namespace Scroller
 
         public bool IsPaused
         {
-            get;
-            protected set;
+            get { return _isPaused; }
+            protected set
+            {
+                if( _isPaused == value ) return;
+                _isPaused = value;
+                FireStatusChanged();
+            }
         }
 
         public virtual void Setup( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> getElements, IPluginConfigAccessor config )
@@ -428,8 +441,8 @@ namespace Scroller
         {
             if( !Timer.IsEnabled )
             {
-                IsPaused = false;
                 Timer.Start();
+                IsPaused = false;
             }
         }
 

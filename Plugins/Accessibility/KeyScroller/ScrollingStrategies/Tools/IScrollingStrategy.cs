@@ -44,6 +44,11 @@ namespace Scroller
         event EventHandler<HighlightEventArgs> EndHighlightElement;
 
         /// <summary>
+        /// Fired when the scroller is paused or resumed
+        /// </summary>
+        event EventHandler StatusChanged;
+
+        /// <summary>
         /// True, when the strategy is setup and have Elements
         /// </summary>
         bool IsStarted { get; }

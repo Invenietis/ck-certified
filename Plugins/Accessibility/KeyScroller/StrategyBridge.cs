@@ -158,6 +158,24 @@ namespace Scroller
             }
         }
 
+        public event EventHandler StatusChanged
+        {
+            add
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.StatusChanged += value;
+                }
+            }
+            remove
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.StatusChanged -= value;
+                }
+            }
+        }
+
         public bool IsStarted
         {
             get { return _current.IsStarted; }

@@ -24,7 +24,7 @@ namespace ScrollerVizualizer
             set
             {
                 _isScrollerActive = value;
-                FirePropertyChanged( "IsScrollerACtive" );
+                FirePropertyChanged( "IsScrollerActive" );
             }
         }
 
@@ -44,6 +44,8 @@ namespace ScrollerVizualizer
                 .Where( x => (x as IVizualizableHighlightableElement) != null )
                 .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
                 .ToList() );
+            IsScrollerActive = scroller.IsHighlighting;
+
             if( scroller.Trigger != null )
             {
                 Key = scroller.Trigger.DisplayName;
@@ -72,8 +74,6 @@ namespace ScrollerVizualizer
 
                 if(v != null)
                     v.IsHighlighted = false;
-
-                IsScrollerActive = scroller.IsHighlighting;
             };
 
             scroller.ElementRegisteredOrUnregistered += ( o, e ) =>

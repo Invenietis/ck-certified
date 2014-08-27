@@ -34,6 +34,12 @@ namespace CommonServices.Accessibility
     /// </summary>
     public interface IHighlighterService : IDynamicService
     {
+        /// <summary>
+        /// The ITrigger that wrap the scroller trigger key
+        /// </summary>
+        ITrigger Trigger { get; }
+
+        HighlighterStatus Status { get; }
 
         /// <summary>
         /// Gets if the highlighter is running or not (maybe stopped, or just paused).
@@ -97,14 +103,39 @@ namespace CommonServices.Accessibility
 
         IDictionary<string, string> RegisteredElements { get; }
 
+        /// <summary>
+        /// The colection of the registered highlightable elements
+        /// </summary>
         IReadOnlyCollection<IHighlightableElement> Elements { get; }
 
         event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
 
+        /// <summary>
+        /// Fired when an element is begin highlighted
+        /// </summary>
         event EventHandler<HighlightEventArgs> BeginHighlight;
 
+        /// <summary>
+        /// Fired when an element is being unhighlighted
+        /// </summary>
         event EventHandler<HighlightEventArgs> EndHighlight;
-        
+
+        /// <summary>
+        /// Fired whenever the scroller trigger changed
+        /// </summary>
+        event EventHandler<EventArgs> TriggerChanged;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        event EventHandler<EventArgs> HighliterStatusChanged;
+    }
+
+    public enum HighlighterStatus
+    {
+        None = 0,
+        Paused,
+        Highlighting
     }
 
     public class HighlightEventArgs : EventArgs

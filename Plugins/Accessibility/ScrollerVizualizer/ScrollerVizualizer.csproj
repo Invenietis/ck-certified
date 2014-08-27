@@ -91,6 +91,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ItemControlConverter.cs" />
+    <Compile Include="Resources\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\R.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\VizualHighlightable.cs" />
     <Compile Include="ScrollerVizualizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +113,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services\HighlightModel\HighlightModel.csproj">
       <Project>{bb945194-c1f5-432a-b4af-f9e46b665486}</Project>
       <Name>HighlightModel</Name>
@@ -112,7 +126,16 @@
       <Name>SimpleSkin</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\R.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\Vizualization.xaml">
       <SubType>Designer</SubType>

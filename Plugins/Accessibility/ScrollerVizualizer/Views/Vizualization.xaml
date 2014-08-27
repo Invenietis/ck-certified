@@ -25,7 +25,24 @@
         <Border.Effect>
             <DropShadowEffect BlurRadius="10" Direction="-90" RenderingBias="Quality" ShadowDepth="4" Opacity="0.8"/>
         </Border.Effect>
-        <StackPanel >
+        <StackPanel Orientation="Vertical"  >
+            <DockPanel Height="32" HorizontalAlignment="Stretch" >
+                <Path DockPanel.Dock="Left"  Stretch="Uniform" Fill="{StaticResource defaultColor}" Width="20" Height="20" Margin="10 0" RenderTransformOrigin="0.5,0.5" >
+                    <Path.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsScrollerActive}" Value="True">
+                                    <Setter Property="Path.Data" Value="F1M-224.553,1265L-246.174,1283.52 -267.792,1302.04 -267.792,1265 -267.792,1227.97 -246.174,1246.49 -224.553,1265z" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsScrollerActive}" Value="False">
+                                    <Setter Property="Path.Data" Value="M27.270001,0L44.310001,0 44.310001,48.643002 27.270001,48.643002z M0,0L17.040001,0 17.040001,48.643002 0,48.643002z" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+                <TextBlock DockPanel.Dock="Right"  Text="{Binding Key}" Foreground="{StaticResource defaultColor}" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="15 0"/>
+            </DockPanel>
             <ItemsControl ItemsSource="{Binding Elements}" AlternationCount="2" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -39,10 +56,10 @@
                         <Border BorderBrush="{StaticResource defaultColor}" Height="135" MinWidth="135" >
                             <Border.Style>
                                 <Style>
-                                    <Setter Property="Border.BorderThickness" Value="2,0,0,0" />
+                                    <Setter Property="Border.BorderThickness" Value="2,2,0,0" />
                                     <Style.Triggers>
                                         <DataTrigger  Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                            <Setter Property="Border.BorderThickness" Value="0" />
+                                            <Setter Property="Border.BorderThickness" Value="0,2,0,0" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

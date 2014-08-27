@@ -11,10 +11,9 @@ namespace ScrollerVizualizer
     public class VizualHighlightable : INotifyPropertyChanged
     {
         bool _isHighlighted;
+        
 
-        /// <summary>
-        /// Wheter the element is highlight or not
-        /// </summary>
+
         public bool IsHighlighted 
         {
             get { return _isHighlighted; }
@@ -24,6 +23,7 @@ namespace ScrollerVizualizer
                 FirePropertyChanged( "IsHighlighted" );
             }
         }
+        
 
         public string Name { get { return Element.ElementName; } }
 

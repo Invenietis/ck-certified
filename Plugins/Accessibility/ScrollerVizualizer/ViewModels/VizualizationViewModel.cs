@@ -38,17 +38,13 @@ namespace ScrollerVizualizer
 
             scroller.ElementRegisteredOrUnregistered += ( o, e ) =>
             {
-                IVizualizableHighlightableElement vEl = e.Element as IVizualizableHighlightableElement;
-               
-                if( e.HasRegistered && vEl != null)
-                    Elements.Insert(0, new VizualHighlightable( vEl ) );
-                else if( vEl != null )
+                Elements.Clear();
+                foreach( var ele in scroller.Elements
+                    .Where( x => (x as IVizualizableHighlightableElement) != null )
+                    .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
+                    .ToList() )
                 {
-                   Elements.Remove( Elements.FirstOrDefault( x => x.Element == vEl ) );
-                }
-                else
-                {
-                    Elements.Remove( Elements.Where( x => (x.Element as ExtensibleHighlightableElementProxy) != null && (x.Element as ExtensibleHighlightableElementProxy).HighlightableElement == e.Element ).FirstOrDefault() );
+                    Elements.Add( ele );
                 }
             };
         }

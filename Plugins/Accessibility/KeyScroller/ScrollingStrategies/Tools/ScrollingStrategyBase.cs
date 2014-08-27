@@ -39,7 +39,6 @@ namespace Scroller
         public event EventHandler<HighlightEventArgs> BeginHighlightElement;
         public event EventHandler<HighlightEventArgs> EndHighlightElement;
 
-
         protected IPluginConfigAccessor Configuration { get; set; }
         protected DispatcherTimer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }

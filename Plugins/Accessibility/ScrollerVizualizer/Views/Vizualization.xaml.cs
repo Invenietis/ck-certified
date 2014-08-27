@@ -24,6 +24,8 @@ namespace ScrollerVizualizer
         {
             InitializeComponent();
             DataContext = vm;
+            this.Top = 0;
+            Left = 0;
         }
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )

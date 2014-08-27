@@ -12,16 +12,21 @@
             Background="Transparent"
             Height="Auto"
             SizeToContent="WidthAndHeight"
-            Width="Auto">
+            Topmost="True"
+            Width="Auto"
+             ResizeMode="NoResize">
     <ck:CKWindow.Resources>
         <SolidColorBrush x:Key="highlightedColor" Color="#FFF">
         </SolidColorBrush>
         <SolidColorBrush x:Key="defaultColor" Color="#999">
         </SolidColorBrush>
     </ck:CKWindow.Resources>
-    <Border Background="#4f4f4f" Width="Auto" Height="Auto" CornerRadius="3">
+    <Border Background="#4f4f4f" Width="Auto" Height="Auto" CornerRadius="3" Margin="20" >
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Direction="-90" RenderingBias="Quality" ShadowDepth="4" Opacity="0.8"/>
+        </Border.Effect>
         <StackPanel >
-            <ItemsControl ItemsSource="{Binding Elements}" >
+            <ItemsControl ItemsSource="{Binding Elements}" AlternationCount="2" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -31,19 +36,17 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="0,0,2,0" BorderBrush="{StaticResource defaultColor}" Height="135" MinWidth="135" >
-                            <!--<Border.Style>
+                        <Border BorderBrush="{StaticResource defaultColor}" Height="135" MinWidth="135" >
+                            <Border.Style>
                                 <Style>
+                                    <Setter Property="Border.BorderThickness" Value="2,0,0,0" />
                                     <Style.Triggers>
-                                        <DataTrigger  Binding="{Binding IsHighlighted}" Value="False">
-                                            <Setter Property="Border.BorderBrush" Value="{StaticResource defaultColor}" />
-                                        </DataTrigger>
-                                        <DataTrigger  Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="Border.BorderBrush" Value="{StaticResource highlightedColor}" />
+                                        <DataTrigger  Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <Setter Property="Border.BorderThickness" Value="0" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Border.Style>-->
+                            </Border.Style>
                             <StackPanel Margin="10">
                                 <Path Data="{Binding ImageSource}" Stretch="Uniform" Width="75" Height="75" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
                                     <Path.Style>

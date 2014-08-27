@@ -90,6 +90,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemControlConverter.cs" />
     <Compile Include="ViewModels\VizualHighlightable.cs" />
     <Compile Include="ScrollerVizualizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

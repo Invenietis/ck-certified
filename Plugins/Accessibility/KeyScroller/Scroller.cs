@@ -367,7 +367,14 @@ namespace Scroller
 
         private void OnInputTriggered( ITrigger t )
         {
+            FireOnTrigger();
             _scrollingStrategy.OnExternalEvent();
+        }
+
+        void FireOnTrigger()
+        {
+            if( OnTrigger != null )
+                OnTrigger( this, new HighlightEventArgs( _scrollingStrategy.CurrentElement ) );
         }
 
         void FireTriggerChanged()
@@ -381,6 +388,13 @@ namespace Scroller
             if( HighliterStatusChanged != null )
                 HighliterStatusChanged( this, new EventArgs() );
         }
+
+        #region IHighlighterService Members
+
+
+        public event EventHandler<HighlightEventArgs> OnTrigger;
+
+        #endregion
     }
 
 

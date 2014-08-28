@@ -11,8 +11,21 @@ namespace ScrollerVizualizer
     public class VizualHighlightable : INotifyPropertyChanged
     {
         bool _isHighlighted;
-        
+        bool _isSelected;
+        public VizualHighlightable Parent { get; set; }
+        public List<VizualHighlightable> Children { get; set; }
 
+        public bool HasChildren { get { return Children.Count > 0; } }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                FirePropertyChanged( "IsSelected" );
+            }
+        }
 
         public bool IsHighlighted 
         {
@@ -24,7 +37,6 @@ namespace ScrollerVizualizer
             }
         }
         
-
         public string Name { get { return Element.ElementName; } }
 
         public string ImageSource { get { return Element.ImagePath; } }
@@ -34,9 +46,15 @@ namespace ScrollerVizualizer
         /// </summary>
         public IVizualizableHighlightableElement Element { get; private set; }
 
-        public VizualHighlightable( IVizualizableHighlightableElement element )
+        public VizualHighlightable( IVizualizableHighlightableElement element, VizualHighlightable parent = null )
         {
             Element = element;
+            Children = element.Children
+                .Where( x => (x as IVizualizableHighlightableElement) != null )
+                .Select( x => new VizualHighlightable( x as IVizualizableHighlightableElement, this ) )
+                .ToList();
+
+            Parent = parent;
         }
 
         void FirePropertyChanged(string propertyName)

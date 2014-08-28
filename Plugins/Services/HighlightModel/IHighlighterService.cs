@@ -108,12 +108,18 @@ namespace CommonServices.Accessibility
         /// </summary>
         IReadOnlyCollection<IHighlightableElement> Elements { get; }
 
+
         event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
 
         /// <summary>
         /// Fired when an element is begin highlighted
         /// </summary>
         event EventHandler<HighlightEventArgs> BeginHighlight;
+
+        /// <summary>
+        /// Fired when the trigger key is pressed
+        /// </summary>
+        event EventHandler<HighlightEventArgs> OnTrigger;
 
         /// <summary>
         /// Fired when an element is being unhighlighted

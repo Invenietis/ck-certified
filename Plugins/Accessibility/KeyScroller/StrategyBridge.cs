@@ -231,6 +231,11 @@ namespace Scroller
             _current.ElementUnregistered( element );
         }
 
+        public IHighlightableElement CurrentElement
+        {
+            get { return _current.CurrentElement; }
+        }
+
         #endregion
     }
 }

@@ -332,7 +332,7 @@ namespace Scroller
             if( previousElement != null )
             {
                 LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, previousElement, element ), LastDirective );
-                var root = previousElement.IsHighlightableTreeRoot ? previousElement : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : this;
+                var root = previousElement.IsHighlightableTreeRoot ? previousElement : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : Walker.Current;
                 FireEndHighlightElement( previousElement, root );
                 EnsureReactivity();
             }
@@ -530,6 +530,16 @@ namespace Scroller
         public bool IsHighlightableTreeRoot
         {
             get { return true; }
+        }
+
+        #endregion
+
+        #region IScrollingStrategy Members
+
+
+        public IHighlightableElement CurrentElement
+        {
+            get { return Walker.Current; }
         }
 
         #endregion

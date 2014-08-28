@@ -33,6 +33,7 @@ namespace Scroller
 {
     internal interface IScrollingStrategy
     {
+
         /// <summary>
         /// Fired when an element is going to highlight
         /// </summary>
@@ -47,6 +48,11 @@ namespace Scroller
         /// Fired when the scroller is paused or resumed
         /// </summary>
         event EventHandler StatusChanged;
+
+        /// <summary>
+        /// Get the current scrolled element
+        /// </summary>
+        IHighlightableElement CurrentElement { get; }
 
         /// <summary>
         /// True, when the strategy is setup and have Elements

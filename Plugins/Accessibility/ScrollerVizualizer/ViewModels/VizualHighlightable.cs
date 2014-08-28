@@ -39,7 +39,7 @@ namespace ScrollerVizualizer
         
         public string Name { get { return Element.ElementName; } }
 
-        public string ImageSource { get { return Element.ImagePath; } }
+        public string ImageSource { get { return Element.VectorImagePath; } }
 
         /// <summary>
         /// The wrapped vizualizable elemen

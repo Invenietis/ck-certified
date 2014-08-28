@@ -9,6 +9,6 @@ namespace HighlightModel
     {
         string ElementName { get; }
 
-        string ImagePath { get; }
+        string VectorImagePath { get; }
     }
 }

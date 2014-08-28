@@ -123,6 +123,13 @@ namespace CK.WPF.StandardViews
         public static readonly DependencyProperty ShowImageProperty =
         DependencyProperty.Register( "ShowImage", typeof( bool ), typeof( StdKeyView ), new PropertyMetadata( true ) );
 
+        public bool ShowIcon
+        {
+            get { return (bool)GetValue( ShowIconProperty ); }
+            set { SetValue( ShowIconProperty, value ); }
+        }
+        public static readonly DependencyProperty ShowIconProperty =
+        DependencyProperty.Register( "ShowIcon", typeof( bool ), typeof( StdKeyView ), new PropertyMetadata( true ) );
 
         public string UpLabel
         {

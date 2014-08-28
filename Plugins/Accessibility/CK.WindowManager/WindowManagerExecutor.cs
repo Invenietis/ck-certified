@@ -38,7 +38,7 @@ namespace CK.WindowManager
     public class WindowManagerExecutor : IPlugin
     {
         PreviewBindingInfo _placeholder;
-        DefaultActivityLogger _logger;
+        ActivityMonitor _logger;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWindowManager WindowManager { get; set; }
@@ -49,7 +49,7 @@ namespace CK.WindowManager
         public WindowManagerExecutor()
         {
             _placeholder = new PreviewBindingInfo();
-            _logger = new DefaultActivityLogger();
+            _logger = new ActivityMonitor();
             //_logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
 

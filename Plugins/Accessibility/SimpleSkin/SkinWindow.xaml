@@ -1,105 +1,41 @@
 ﻿<ckwincore:CKNoFocusWindow x:Class="SimpleSkin.SkinWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:local="clr-namespace:SimpleSkin"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="http://schemas.civikey.org/StandardViews"
     xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
     xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
     xmlns:helpers="clr-namespace:SimpleSkin.Helpers"
+    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"         
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     WindowStartupLocation="Manual"
     Title="Clavier Civikey"
     Topmost="True" WindowStyle="None"
     MinHeight="40" MinWidth="40"
+    Height="250"
+    Width="600"
     ShowInTaskbar="False"
-    ShowActivated="False" ResizeMode="CanResizeWithGrip">
+    ShowActivated="False"
+    AllowsTransparency="True" >
+    <ckwincore:CKWindow.Background>
+        <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}"/>
+    </ckwincore:CKWindow.Background>
+
     <Window.Resources>
-        <ctrls:NotNullConverter x:Key="notnull"/>
-        <Style TargetType="{x:Type view:StdKeyboardView}">
-            <Setter Property="Width" Value="{Binding W}" />
-            <Setter Property="Height" Value="{Binding H}" />
-            <Setter Property="Keys" Value="{Binding Keys}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=BackgroundImagePath, Converter={StaticResource notnull}}" Value="true">
-                    <Setter Property="BackgroundImagePath" Value="{Binding BackgroundImagePath}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
-                    <Setter Property="Background">
-                        <Setter.Value>
-                            <SolidColorBrush Color="{Binding HighlightBackground}"/>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Foreground">
-                        <Setter.Value>
-                            <SolidColorBrush Color="{Binding HighlightFontColor}"/>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="{x:Type view:StdKeyView}">
-            <Setter Property="KeyPressedCommand" Value="{Binding KeyPressedCommand}"/>
-            <Setter Property="TextDecorations" Value="{Binding TextDecorations}"/>
-            <Setter Property="KeyDownCommand" Value="{Binding KeyDownCommand}"/>
-            <Setter Property="KeyUpCommand" Value="{Binding KeyUpCommand}"/>
-            <Setter Property="Description" Value="{Binding Description}"/>
-            <Setter Property="FontWeight" Value="{Binding FontWeight}"/>
-            <Setter Property="DownLabel" Value="{Binding DownLabel}"/>
-            <Setter Property="FontStyle" Value="{Binding FontStyle}"/>
-            <Setter Property="ShowLabel" Value="{Binding ShowLabel}"/>
-            <Setter Property="ShowImage" Value="{Binding ShowImage}"/>
-            <Setter Property="Visibility" Value="{Binding Visible}"/>
-            <Setter Property="FontSize" Value="{Binding FontSize}"/>
-            <Setter Property="UpLabel" Value="{Binding UpLabel}"/>
-            <Setter Property="Opacity" Value="{Binding Opacity}"/>
-            <Setter Property="Height" Value="{Binding Height}"/>
-            <Setter Property="Width" Value="{Binding Width}"/>
-        </Style>
-
-        <DataTemplate DataType="{x:Type vm:VMKeySimple}">
-            <view:StdKeyView x:Name="key">
-                <view:StdKeyView.Background>
-                    <SolidColorBrush Color="{Binding Background}"/>
-                </view:StdKeyView.Background>
-                <view:StdKeyView.HoverBackground>
-                    <SolidColorBrush Color="{Binding HoverBackground}"/>
-                </view:StdKeyView.HoverBackground>
-                <view:StdKeyView.PressedBackground>
-                    <SolidColorBrush Color="{Binding PressedBackground}"/>
-                </view:StdKeyView.PressedBackground>
-                <view:StdKeyView.Foreground>
-                    <SolidColorBrush Color="{Binding LetterColor}"/>
-                </view:StdKeyView.Foreground>
-            </view:StdKeyView>
-            <DataTemplate.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
-                        <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
-                    </MultiDataTrigger.Conditions>
-                    <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
-                    <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
-                </MultiDataTrigger>
-                <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">
-                    <Setter TargetName="key" Property="Background">
-                        <Setter.Value>
-                            <SolidColorBrush Color="{Binding HighlightBackground}"/>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter TargetName="key" Property="Foreground">
-                        <Setter.Value>
-                            <SolidColorBrush Color="{Binding HighlightFontColor}"/>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </DataTemplate.Triggers>
-        </DataTemplate>
-
+        <ResourceDictionary Source="Resources.xaml">
+        </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
-        <Viewbox Stretch="Fill" >
-            <view:StdKeyboardView  OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
-        </Viewbox>
-    </Grid>
+
+    <view:ResizableContainer BorderBrush="{Binding KeyboardVM.KeyboardBorderBrush}" BorderThickness="{Binding KeyboardVM.KeyboardBorderThickness}">
+        <view:ResizableContainer.Content>
+            <Grid>
+                <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
+                <Viewbox Stretch="Fill" >
+                    <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
+                </Viewbox>
+            </Grid>
+        </view:ResizableContainer.Content>
+    </view:ResizableContainer>
+
 </ckwincore:CKNoFocusWindow>

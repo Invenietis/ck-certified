@@ -44,7 +44,7 @@ namespace Host
         AppConfigViewModel _appConfigVm;
         ConfigItemCurrent<KeyboardModel> _keyboards;
 
-        public RootConfigViewModel( AppViewModel app )
+        public RootConfigViewModel( AppViewModel app ) 
             : base( app.ConfigManager )
         {
             DisplayName = R.Home;
@@ -69,10 +69,25 @@ namespace Host
                 _keyboards.ImagePath = "pack://application:,,,/CiviKey;component/Views/Images/Keyboard.png";
             }
 
-            var skinStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ) ) { DisplayName = R.SkinSectionName };
-            var autoClicStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ) ) { DisplayName = R.AutoClickSectionName };
-            var basicScrollStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ) ) { DisplayName = R.Scrolling };
+            var skinStarter = new ConfigFeatureStarter( 
+                ConfigManager, 
+                _app.PluginRunner, 
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ),
+                new KeyboardConfigViewModel( _app ) ) { DisplayName = R.SkinSectionName };
 
+            var autoClicStarter = new ConfigFeatureStarter( 
+                ConfigManager, 
+                _app.PluginRunner, 
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ),
+                new AutoClickViewModel( _app ) ) { DisplayName = R.AutoClickSectionName };
+
+            var basicScrollStarter = new ConfigFeatureStarter( 
+                ConfigManager, 
+                _app.PluginRunner, 
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ),
+                new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
+
+            var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
                 new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
                 new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), //SybilleWordPredictorService
@@ -83,16 +98,18 @@ namespace Host
                 new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ), //TextualContextService
                 new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ), //TextualContextCommandHandler
                 new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" )  //PredictionTextAreaBus
-                ) ) { DisplayName = R.WordPredictionSectionName };
+                ), new WordPredictionViewModel( _app ) ) { DisplayName = R.WordPredictionSectionName };
 
             var g = this.AddGroup();
             g.Items.Add( skinStarter );
             g.Items.Add( autoClicStarter );
             g.Items.Add( wordPredictionStarter );
             g.Items.Add( basicScrollStarter );
+            g.Items.Add( pointerManager );
 
-            this.AddLink( new ImplementationSelector( R.MouseScrollingSelection, _app ) );
             this.AddLink( _appConfigVm ?? (_appConfigVm = new AppConfigViewModel( _app )) );
+
+            this.Items.Add( new CreditConfigItem( _app.ConfigManager, new CreditViewModel( _app ), null ) );
 
             base.OnInitialize();
         }

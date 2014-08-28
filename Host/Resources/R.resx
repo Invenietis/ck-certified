@@ -393,7 +393,28 @@
   <data name="UnScrollableElements" xml:space="preserve">
     <value>Not scrollable modules</value>
   </data>
+  <data name="ExportConf" xml:space="preserve">
+    <value>Export your configuration</value>
+  </data>
   <data name="MouseScrollingSelection" xml:space="preserve">
     <value>Mouse scrolling type selection</value>
+  </data>
+  <data name="KeyboardPointer" xml:space="preserve">
+    <value>Keyboard pointer</value>
+  </data>
+  <data name="KeyboardPointerDescription" xml:space="preserve">
+    <value>Uses a keyboard to move the mouse</value>
+  </data>
+  <data name="MoveMouse" xml:space="preserve">
+    <value>Move mouse</value>
+  </data>
+  <data name="ScrollingSpeed" xml:space="preserve">
+    <value>Scrolling speed</value>
+  </data>
+  <data name="ScrollingStrategy" xml:space="preserve">
+    <value>Scrolling strategy :</value>
+  </data>
+  <data name="TurboScrollingSpeed" xml:space="preserve">
+    <value>Turbo scrolling speed</value>
   </data>
 </root>

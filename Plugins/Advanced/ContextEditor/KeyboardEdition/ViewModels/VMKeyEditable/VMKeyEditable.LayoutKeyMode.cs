@@ -32,23 +32,51 @@ namespace KeyboardEditor.ViewModels
             get { return Model.CurrentLayout.Current; }
         }
 
-        public bool ShowLabel
+        string _displayType;
+        public string DisplayType
         {
-            get { return Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", Context.SkinConfiguration[_key.Current]["Image"] != null ? "Image" : "Label" ) == "Label"; }
+            get { return _displayType; }
             set
             {
-                if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
-                else Context.SkinConfiguration[_key.Current]["DisplayType"] = "Image";
+                if( value != _displayType && ( value == "Label" || value == "Icon" || value == "Image" ) )
+                {
+                    _displayType = value;
+                }
+            }
+        }
+
+        public bool ShowLabel
+        {
+            get { return (_displayType != null) ? _displayType == "Label" : Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", "Label" ) == "Label"; }
+            set
+            {
+                //if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
+                if( value ) _displayType = "Label";
+                OnPropertyChanged();
+                OnPropertyChanged( "DisplayType" );
             }
         }
 
         public bool ShowImage
         {
-            get { return Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", Context.SkinConfiguration[_key.Current]["Image"] != null ? "Image" : "Label" ) == "Image"; }
+            get { return (_displayType != null) ? _displayType == "Image" : Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", "Label" ) == "Image"; }
             set
             {
-                if( value ) Context.SkinConfiguration[_key.Current]["DisplayType"] = "Image";
-                else Context.SkinConfiguration[_key.Current]["DisplayType"] = "Label";
+                if( value ) _displayType = "Image";
+                OnPropertyChanged();
+                OnPropertyChanged( "DisplayType" );
+            }
+        }
+
+        public bool ShowIcon
+        {
+            get { return (_displayType != null) ? _displayType == "Icon" : Context.SkinConfiguration[_key.Current].GetOrSet( "DisplayType", "Label" ) == "Icon"; }
+            set
+            {
+                if( value ) _displayType = "Icon";
+                OnPropertyChanged();
+                OnPropertyChanged( "DisplayType" );
+                KeyModeVM.TriggerPropertyChanged( "FontFamily" );
             }
         }
 

@@ -35,6 +35,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using ProtocolManagerModel;
 using KeyboardEditor.Resources;
+using System.Diagnostics;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -189,10 +190,21 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         public IService<IPointerDeviceDriver> PointerDeviceDriver { get { return _root.PointerDeviceDriver; } }
 
-        /// <summary>
-        /// Gets the keyboard driver, can be used to hook events
-        /// </summary>
-        //public IService<IKeyboardDriver> KeyboardDriver { get { return _root.KeyboardDriver; } }
+        public event EventHandler<SelectedElementChangingEventArgs> SelectedElementChanging;
+        public event EventHandler<SelectedElementChangedEventArgs> SelectedElementChanged;
+
+        private void OnSelectedElementChanging( SelectedElementChangingEventArgs e )
+        {
+            var h = SelectedElementChanging;
+            if( h != null ) h( this, e );
+        }
+
+        private void OnSelectedElementChanged( SelectedElementChangedEventArgs e )
+        {
+            var h = SelectedElementChanged;
+            if( h != null ) h( this, e );
+        }
+
         public VMContextElementEditable SelectedElement
         {
             get
@@ -206,16 +218,23 @@ namespace KeyboardEditor.ViewModels
             }
             set
             {
-                if( _selectedElement != value && value != null )
+                if( value != null && _selectedElement != value  )
                 {
-                    if( _selectedElement != null )
+                    var e = new SelectedElementChangingEventArgs( _selectedElement, value );
+                    OnSelectedElementChanging( e );
+                    if( !e.Cancel )
                     {
-                        _previouslySelectedElement = _selectedElement;
-                        _selectedElement.IsSelected = false;
+                        if( _selectedElement != null )
+                        {
+                            _previouslySelectedElement = _selectedElement;
+                            _selectedElement.IsSelected = false;
+                        }
+                        _selectedElement = value;
+                        _selectedElement.IsSelected = true;
+
+                        OnSelectedElementChanged( new SelectedElementChangedEventArgs( _previouslySelectedElement, _selectedElement ) );
+                        OnPropertyChanged( "SelectedElement" );
                     }
-                    _selectedElement = value;
-                    _selectedElement.IsSelected = true;
-                    OnPropertyChanged( "SelectedElement" );
                 }
             }
         }
@@ -505,8 +524,33 @@ namespace KeyboardEditor.ViewModels
             _dic.TryGetValue( m, out vm );
             return (T)vm;
         }
-
-
         #endregion
+    }
+
+
+    public class SelectedElementChangingEventArgs : CancelEventArgs
+    {
+        public VMContextElementEditable CurrentElement { get; private set; }
+        public VMContextElementEditable NextElement { get; private set; }
+
+        internal SelectedElementChangingEventArgs( VMContextElementEditable currentElement, VMContextElementEditable nextElement )
+        {
+            Debug.Assert( nextElement != null );
+            CurrentElement = currentElement;
+            NextElement = nextElement;
+        }
+    }
+
+    public class SelectedElementChangedEventArgs : EventArgs
+    {
+        public VMContextElementEditable PreviousElement { get; private set; }
+        public VMContextElementEditable NewElement { get; private set; }
+
+        internal SelectedElementChangedEventArgs( VMContextElementEditable previousElement, VMContextElementEditable newElement )
+        {
+            Debug.Assert( newElement != null );
+            PreviousElement = previousElement;
+            NewElement = newElement;
+        }
     }
 }

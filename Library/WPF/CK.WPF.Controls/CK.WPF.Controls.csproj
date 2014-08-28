@@ -41,21 +41,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=3.0.30.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Core.2.8.14\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.3.0.30\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection, Version=2.8.14.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Reflection, Version=3.0.30.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Reflection.2.8.14\lib\net40\CK.Reflection.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Reflection.3.0.30\lib\net40\CK.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -92,11 +97,14 @@
     <Compile Include="Core\UIElementAdorner.cs" />
     <Compile Include="Core\Utilities\ColorUtilities.cs" />
     <Compile Include="Core\Utilities\ContextMenuUtilities.cs" />
+    <Compile Include="IconPicker\IconPicker.cs" />
+    <Compile Include="ImageFromFont.cs" />
     <Compile Include="NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimpleCommand.cs" />
     <Compile Include="TextBlockService.cs" />
+    <Compile Include="VirtualizingWrapPanel.cs" />
     <Compile Include="VMBase.cs" />
     <Page Include="Chromes\Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +115,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ColorPicker\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="IconPicker\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -148,6 +160,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\glyphicons-halflings-regular.ttf" />
+    <Resource Include="Resources\fontawesome-webfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
@@ -159,6 +173,11 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

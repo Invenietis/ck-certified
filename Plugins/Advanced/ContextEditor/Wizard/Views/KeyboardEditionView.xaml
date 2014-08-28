@@ -189,7 +189,8 @@
                     </Setter.Value>
                 </Setter>
                 <Setter Property="vm:CustomContent.Content" Value="{DynamicResource LayoutKeyPath}"></Setter>
-                <Setter Property="Header" Value="{Binding UpLabel}"></Setter>
+                <Setter Property="Header" Value="{Binding KeyModeVM.UpLabel}" />
+                <Setter Property="FontFamily" Value="{Binding KeyModeVM.FontFamily}" />
             </Style>
 
             <!-- Style for the treeviewitem of a zone-->

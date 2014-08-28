@@ -24,12 +24,24 @@
                 <Separator Style="{StaticResource SectionSeperatorStyle}" />
                 
                 <Border Style="{StaticResource Splitter}">
-                    <DockPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Font size :</TextBlock>
-                            <ComboBox Margin="0 3" ItemsSource="{Binding FontSizes}" SelectedValue="{Binding FontSize}" />
-                        </StackPanel>
+                    <DockPanel LastChildFill="True">
                         <ctrls:ImageButton DockPanel.Dock="Right" CommandParameter="FontSize"/>
+                        <DockPanel LastChildFill="True" DockPanel.Dock="Left">
+                            <TextBlock DockPanel.Dock="Left" x:Uid="font-size" VerticalAlignment="Center" Margin="0 0 10 0">Font size :</TextBlock>
+                            <ComboBox DockPanel.Dock="Left" Margin="0 3" ItemsSource="{Binding FontSizes}" SelectedValue="{Binding FontSize}" />
+                            <ComboBox DockPanel.Dock="Right" Margin="0 3" ItemsSource="{Binding FontFamilies}" SelectedValue="{Binding FontFamily}" HorizontalAlignment="Stretch">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" FontFamily="{Binding}"></TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+                        </DockPanel>
                     </DockPanel>
                 </Border>
                 <Border Style="{StaticResource Splitter}" >

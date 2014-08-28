@@ -184,7 +184,7 @@ namespace CK.Keyboard
         /// 
         /// This shows that our 4 methods Intersect, Remove, Toggle and Add cover the interesting cases - others are either symetric or useless.
         /// </remarks>
-        static void Process( IKeyboardMode left, IKeyboardMode right, Predicate<IKeyboardMode> onLeft, Predicate<IKeyboardMode> onRight,  Predicate<IKeyboardMode> onBoth )
+        static void Process( IKeyboardMode left, IKeyboardMode right, Func<IKeyboardMode,bool> onLeft, Func<IKeyboardMode,bool> onRight,  Func<IKeyboardMode,bool> onBoth )
         {
             ICKReadOnlyList<IKeyboardMode> l = left.AtomicModes;
             int cL = l.Count;

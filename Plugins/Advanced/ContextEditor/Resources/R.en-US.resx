@@ -331,4 +331,10 @@ Are you sure that you want to do that ? All modifications unsaved will be lost.<
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="UnsavedChanged" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+  <data name="UnsavedChangedConfirmation" xml:space="preserve">
+    <value>Your last modifications have not yet been saved, do you want to save them ?</value>
+  </data>
 </root>

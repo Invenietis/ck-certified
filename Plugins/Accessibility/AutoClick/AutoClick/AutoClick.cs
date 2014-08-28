@@ -40,6 +40,7 @@ using System.IO;
 using Help.Services;
 using CK.InputDriver;
 using CK.InputDriver.Hook;
+using System.Windows.Media;
 
 namespace CK.Plugins.AutoClick
 {
@@ -60,6 +61,9 @@ namespace CK.Plugins.AutoClick
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IClickSelector> Selector { get; set; }
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public IService<ISharedData> SharedData { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<IHelpViewerService> HelpService { get; set; }
@@ -136,13 +140,9 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
+            InitializeSharedData();
             _autoClickWindow = new AutoClickWindow() { DataContext = this };
             _autoClickWindow.Closing += OnWindowClosing;
-
-            if( !Config.User.Contains( "AutoClickWindowPlacement" ) )
-                SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            else
-                _autoClickWindow.Width = _autoClickWindow.Height = 0;
 
             _mouseIndicatorWindow = new MouseDecoratorWindow { DataContext = this };
             _editorWindow = new AutoClickEditorWindow { DataContext = this };
@@ -156,17 +156,6 @@ namespace CK.Plugins.AutoClick
             _mouseIndicatorWindow.Show();
             _autoClickWindow.Show();
 
-            //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
-            if( !Config.User.Contains( "AutoClickWindowPlacement" ) ) Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
-            CKWindowTools.SetPlacement( _autoClickWindow.Hwnd, (WINDOWPLACEMENT)Config.User["AutoClickWindowPlacement"] );
-
-            //Re-positions the window in the screen if it is not in it. Which may happen if the autoclick is saved as being on a secondary screen.
-            if( !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)_autoClickWindow.Left, (int)_autoClickWindow.Top ) )
-                && !ScreenHelper.IsInScreen( new System.Drawing.Point( (int)(_autoClickWindow.Left + _autoClickWindow.ActualWidth), (int)_autoClickWindow.Top ) ) )
-            {
-                SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            }
-
             OnPause( this, EventArgs.Empty );
 
             InitializeWindowManager();
@@ -179,14 +168,6 @@ namespace CK.Plugins.AutoClick
                 e.Cancel = true;
         }
 
-        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
-        {
-            _autoClickWindow.Top = 0;
-            _autoClickWindow.Left = (int)System.Windows.SystemParameters.WorkArea.Width - defaultWidth;
-            _autoClickWindow.Width = defaultWidth;
-            _autoClickWindow.Height = defaultHeight;
-        }
-
         public void Stop()
         {
             _isClosing = true;
@@ -197,7 +178,6 @@ namespace CK.Plugins.AutoClick
             Config.ConfigChanged -= new EventHandler<ConfigChangedEventArgs>( OnConfigChanged );
 
             UnregisterEvents();
-            Config.User.Set( "AutoClickWindowPlacement", CKWindowTools.GetPlacement( _autoClickWindow.Hwnd ) );
         }
 
         public void Teardown()
@@ -393,6 +373,93 @@ namespace CK.Plugins.AutoClick
 
         #endregion
 
+        #region ISharedData
+
+        double _autoClickOpacity;
+        public double AutoClickOpacity 
+        { 
+            get { return _autoClickOpacity; } 
+            set
+            {
+                if( value != _autoClickOpacity )
+                {
+                    _autoClickOpacity = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        Color _autoClickBackgroundColor;
+        public Color AutoClickBackgroundColor 
+        { 
+            get { return _autoClickBackgroundColor; } 
+            set
+            {
+                if( value != _autoClickBackgroundColor )
+                {
+                    _autoClickBackgroundColor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        int _autoClickBorderThickness;
+        public int AutoClickBorderThickness 
+        { 
+            get { return _autoClickBorderThickness; }
+            set
+            {
+                if( value != _autoClickBorderThickness )
+                {
+                    _autoClickBorderThickness = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private Brush _autoClickBorderBrush;
+        public Brush AutoClickBorderBrush 
+        { 
+            get { return _autoClickBorderBrush; }
+            set
+            {
+                if( value != _autoClickBorderBrush )
+                {
+                    _autoClickBorderBrush = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        void OnSharedPropertyChanged( object sender, SharedPropertyChangedEventArgs e )
+        {
+            switch( e.PropertyName )
+            {
+                case "WindowOpacity":
+                    AutoClickOpacity = SharedData.Service.WindowOpacity;
+                    break;
+                case "WindowBorderThickness":
+                    AutoClickBorderThickness = SharedData.Service.WindowBorderThickness;
+                    break;
+                case "WindowBorderBrush":
+                    AutoClickBorderBrush = new SolidColorBrush( SharedData.Service.WindowBorderBrush );
+                    break;
+                case "WindowBackgroundColor":
+                    AutoClickBackgroundColor = SharedData.Service.WindowBackgroundColor;
+                    break;
+            }
+        }
+
+        void InitializeSharedData()
+        {
+            AutoClickOpacity = SharedData.Service.WindowOpacity;
+            AutoClickBackgroundColor = SharedData.Service.WindowBackgroundColor;
+            AutoClickBorderBrush = new SolidColorBrush( SharedData.Service.WindowBorderBrush );
+            AutoClickBorderThickness = SharedData.Service.WindowBorderThickness;
+        }
+
+        #endregion
+
         #region Methods
 
         private void RegisterEvents()
@@ -410,6 +477,8 @@ namespace CK.Plugins.AutoClick
             Selector.Service.StopEvent += OnPause;
 
             MouseDriver.ServiceStatusChanged += OnMouseDriverServiceStatusChanged;
+
+            SharedData.Service.SharedPropertyChanged += OnSharedPropertyChanged;
         }
 
         private void UnregisterEvents()

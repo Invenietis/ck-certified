@@ -35,7 +35,7 @@ using Host.Resources;
 namespace Host.VM
 {
     public class ImplementationSelector : ConfigPage
-    {
+    { 
         readonly AppViewModel _app;
         readonly ISimplePluginRunner _runner;
         readonly IUserConfiguration _userConf;

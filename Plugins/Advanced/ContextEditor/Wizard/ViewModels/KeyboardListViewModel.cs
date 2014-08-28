@@ -34,7 +34,7 @@ namespace KeyboardEditor.ViewModels
     {
         public IList<KeyboardViewModel> KeyboardVms { get; set; }
         internal KeyboardViewModel _selectedKeyboard;
-        IKeyboardCollection _keyboards;
+        List<IKeyboard> _keyboards;
         ICommand _selectionCommand;
 
         /// <summary>
@@ -42,13 +42,13 @@ namespace KeyboardEditor.ViewModels
         /// </summary>
         /// <param name="wizardManager">The wizard manager</param>
         /// <param name="model">The keyboard to create or modify</param>
-        public KeyboardListViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IKeyboardCollection model )
+        public KeyboardListViewModel( IKeyboardEditorRoot root, WizardManager wizardManager, IEnumerable<IKeyboard> model )
             : base( root, wizardManager, false )
         {
-            _keyboards = model;
             KeyboardVms = new List<KeyboardViewModel>();
-            foreach( var keyboard in _keyboards )
+            foreach( var keyboard in model )
             {
+                _keyboards.Add( keyboard );
                                                                                 //temporary
                 if( root.KeyboardContext.Service.CurrentKeyboard != keyboard && keyboard.Name != "Prediction" )
                     KeyboardVms.Add( new KeyboardViewModel( keyboard ) );

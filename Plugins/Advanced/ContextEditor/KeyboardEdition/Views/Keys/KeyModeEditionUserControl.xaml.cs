@@ -34,5 +34,10 @@ namespace KeyboardEditor.s
         {
             InitializeComponent();
         }
+
+        private void iconcheckbox_Checked( object sender, System.Windows.RoutedEventArgs e )
+        {
+
+        }
     }
 }

@@ -31,6 +31,8 @@ using CK.Plugins.AutoClick.Model;
 using HighlightModel;
 using CK.Core;
 using AutoClick.Res;
+using System.Windows.Media;
+using CommonServices;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
@@ -64,21 +66,116 @@ namespace CK.Plugins.AutoClick.ViewModel
         //TODO : remove when the clickselector is transformed into a clickselectorprovider
         public ClickSelector Holder { get; set; }
 
-        public ClicksVM()
+        public ClicksVM(ClickSelector holder)
         {
+            Holder = holder;
             InitializeDefaultClicks();
+            InitializeSharedData();
+            Holder.SharedData.SharedPropertyChanged += OnSharedPropertyChanged;
         }
 
-        public ClicksVM( IEnumerable<ClickEmbedderVM> clickEmbeddersVM )
+        public ClicksVM(ClickSelector holder, IEnumerable<ClickEmbedderVM> clickEmbeddersVM )
         {
+            Holder = holder;
+
             foreach( ClickEmbedderVM clickEmbedderVM in clickEmbeddersVM )
             {
                 Add( clickEmbedderVM );
             }
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( this );
 
+            InitializeSharedData();
+            Holder.SharedData.SharedPropertyChanged += OnSharedPropertyChanged;
+
             this.First().ChangeSelectionCommand.Execute( this );
             OnPropertyChanged( "NextClick" );
+        }
+
+        #endregion
+
+        #region ISharedData
+
+        double _clickSelectorOpacity;
+        public double ClickSelectorOpacity
+        {
+            get { return _clickSelectorOpacity; }
+            set
+            {
+                if( value != _clickSelectorOpacity )
+                {
+                    _clickSelectorOpacity = value;
+                    OnPropertyChanged( "ClickSelectorOpacity" );
+                }
+            }
+        }
+
+        Color _clickSelectorBackgroundColor;
+        public Color ClickSelectorBackgroundColor
+        {
+            get { return _clickSelectorBackgroundColor; }
+            set
+            {
+                if( value != _clickSelectorBackgroundColor )
+                {
+                    _clickSelectorBackgroundColor = value;
+                    OnPropertyChanged( "ClickSelectorBackgroundColor" );
+                }
+            }
+        }
+
+        int _clickSelectorBorderThickness;
+        public int ClickSelectorBorderThickness
+        {
+            get { return _clickSelectorBorderThickness; }
+            set
+            {
+                if( value != _clickSelectorBorderThickness )
+                {
+                    _clickSelectorBorderThickness = value;
+                    OnPropertyChanged( "ClickSelectorBorderThickness" );
+                }
+            }
+        }
+
+        private Brush _clickSelectorBorderBrush;
+        public Brush ClickSelectorBorderBrush
+        {
+            get { return _clickSelectorBorderBrush; }
+            set
+            {
+                if( value != _clickSelectorBorderBrush )
+                {
+                    _clickSelectorBorderBrush = value;
+                    OnPropertyChanged( "ClickSelectorBorderBrush" );
+                }
+            }
+        }
+
+        void OnSharedPropertyChanged( object sender, SharedPropertyChangedEventArgs e )
+        {
+            switch( e.PropertyName )
+            {
+                case "WindowOpacity":
+                    ClickSelectorOpacity = Holder.SharedData.WindowOpacity;
+                    break;
+                case "WindowBorderThickness":
+                    ClickSelectorBorderThickness = Holder.SharedData.WindowBorderThickness;
+                    break;
+                case "WindowBorderBrush":
+                    ClickSelectorBorderBrush = new SolidColorBrush( Holder.SharedData.WindowBorderBrush );
+                    break;
+                case "WindowBackgroundColor":
+                    ClickSelectorBackgroundColor = Holder.SharedData.WindowBackgroundColor;
+                    break;
+            }
+        }
+
+        void InitializeSharedData()
+        {
+            ClickSelectorOpacity = Holder.SharedData.WindowOpacity;
+            ClickSelectorBackgroundColor = Holder.SharedData.WindowBackgroundColor;
+            ClickSelectorBorderBrush = new SolidColorBrush( Holder.SharedData.WindowBorderBrush );
+            ClickSelectorBorderThickness = Holder.SharedData.WindowBorderThickness;
         }
 
         #endregion

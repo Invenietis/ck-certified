@@ -60,11 +60,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLogs", "Plugins\Advanced\ServiceLogs\ServiceLogs.csproj", "{994EA6CD-8E19-4D1E-860B-05CAE5A78862}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{76797FEA-147F-4690-B935-C55680768CE2}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\nuget.exe = .nuget\nuget.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightModel", "Plugins\Services\HighlightModel\HighlightModel.csproj", "{BB945194-C1F5-432A-B4AF-F9E46B665486}"
 EndProject
@@ -88,8 +83,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WordPredictor.Sybille", "Plugins\Prediction\CK.WordPredictor.Sybille\CK.WordPredictor.Sybille.csproj", "{AFC6CE94-4900-45B0-A334-46CF41AEE043}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prediction", "Prediction", "{1E0AA38B-1E88-4CBD-A175-B1D89771F622}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WPF.Wizard", "CK.WPF.Wizard\CK.WPF.Wizard.csproj", "{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Help", "Plugins\Accessibility\Help\Help.csproj", "{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}"
 EndProject
@@ -124,6 +117,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeMode", "Plugins\Accessibility\SnakeMode\SnakeMode.csproj", "{D165040D-00F9-47AA-9883-3843B039A16A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrollerVizualizer", "Plugins\Accessibility\ScrollerVizualizer\ScrollerVizualizer.csproj", "{AA0F79DA-3BAB-4F41-9FF5-77C5809DB60D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "Plugins\Advanced\SharedData\SharedData.csproj", "{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WPF.Wizard", "Library\WPF\CK.WPF.Wizard\CK.WPF.Wizard.csproj", "{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -407,16 +404,6 @@ Global
 		{AFC6CE94-4900-45B0-A334-46CF41AEE043}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AFC6CE94-4900-45B0-A334-46CF41AEE043}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AFC6CE94-4900-45B0-A334-46CF41AEE043}.Release|x86.ActiveCfg = Release|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|x86.ActiveCfg = Release|Any CPU
 		{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7FBC63F-0E23-4560-A00C-21D61B70F2DA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -587,6 +574,26 @@ Global
 		{AA0F79DA-3BAB-4F41-9FF5-77C5809DB60D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AA0F79DA-3BAB-4F41-9FF5-77C5809DB60D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AA0F79DA-3BAB-4F41-9FF5-77C5809DB60D}.Release|x86.ActiveCfg = Release|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}.Release|x86.ActiveCfg = Release|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -606,6 +613,7 @@ Global
 		{30ADB3D6-ED05-403D-BEEC-9862200126B0} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
 		{54388789-C87A-41B0-8633-0800D5777E9B} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
 		{8FCFD0C1-E52B-49AB-BD58-EB134BC69601} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
+		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
 		{B94AF1AE-B71D-4787-B47E-CE4FD6329679} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{052B31FE-C4AF-489F-909D-C3604C9355D6} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 		{9001CBEA-480E-446A-A20E-EEEDDD99845D} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}

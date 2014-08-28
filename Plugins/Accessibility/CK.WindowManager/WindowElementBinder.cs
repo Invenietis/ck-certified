@@ -42,7 +42,7 @@ namespace CK.WindowManager
     public class WindowElementBinder : IWindowBinder, IPlugin
     {
         IDictionary<IWindowElement,List<IBinding>> _bindings;
-        DefaultActivityLogger _logger;
+        ActivityMonitor _logger;
         SerializableBindings _persistantBindings;
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -58,7 +58,7 @@ namespace CK.WindowManager
         public WindowElementBinder()
         {
             _bindings = new Dictionary<IWindowElement, List<IBinding>>();
-            _logger = new DefaultActivityLogger();
+            _logger = new ActivityMonitor();
             _persistantBindings = new SerializableBindings();
             //_logger.Tap.Register( new ActivityLoggerConsoleSink() );
         }
@@ -77,67 +77,67 @@ namespace CK.WindowManager
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
 
             originSpatialBinding = null;
-            using( _logger.OpenGroup( LogLevel.Info, "Master binding..." ) )
+            using( _logger.OpenInfo().Send( "Master binding..." ) )
             {
                 if( _spatialBindings.TryGetValue( target, out targetSpatialBinding ) )
                 {
                     if( position == BindingPosition.Top && targetSpatialBinding.Top != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Top.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Top.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Left && targetSpatialBinding.Left != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Left.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Left.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Bottom && targetSpatialBinding.Bottom != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Bottom.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Bottom.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Right && targetSpatialBinding.Right != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Right.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", targetSpatialBinding.Right.Window.Name, target.Name, position );
                         return false;
                     }
-                    else _logger.Trace( "{0} already exists in bindings but no window attached at position {1}.", target.Name, position );
+                    else _logger.Trace().Send( "{0} already exists in bindings but no window attached at position {1}.", target.Name, position );
                 }
                 else
                 {
-                    _logger.Trace( "Fresh new window" );
+                    _logger.Trace().Send( "Fresh new window" );
                 }
             }
 
-            using( _logger.OpenGroup( LogLevel.Info, "Slave binding..." ) )
+            using( _logger.OpenInfo().Send( "Slave binding..." ) )
             {
                 if( _spatialBindings.TryGetValue( origin, out originSpatialBinding ) )
                 {
                     if( position == BindingPosition.Top && originSpatialBinding.Bottom != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Bottom.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Bottom.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Left && originSpatialBinding.Right != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Right.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Right.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Bottom && originSpatialBinding.Top != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Top.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Top.Window.Name, target.Name, position );
                         return false;
                     }
                     else if( position == BindingPosition.Right && originSpatialBinding.Left != null )
                     {
-                        _logger.Trace( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Left.Window.Name, target.Name, position );
+                        _logger.Trace().Send( "{0} is already bound to {1} at position {2}.", originSpatialBinding.Left.Window.Name, target.Name, position );
                         return false;
                     }
-                    else _logger.Trace( "{0} already exists in bindings but no window attached at position {1}.", origin.Name, position );
+                    else _logger.Trace().Send( "{0} already exists in bindings but no window attached at position {1}.", origin.Name, position );
                 }
                 else
                 {
-                    _logger.Trace( "Fresh new window" );
+                    _logger.Trace().Send( "Fresh new window" );
                     //spatialBinding = new SpatialBinding( slave );
                 }
             }
@@ -210,14 +210,14 @@ namespace CK.WindowManager
             //Console.WriteLine( "BIND thread id: {0} TimeSpan : {1}", Thread.CurrentThread.ManagedThreadId, DateTime.Now.Ticks );
 
             // Spatial binding point of view
-            using( _logger.OpenGroup( LogLevel.Info, "Attaching {0} on {1} at {2}", master.Name, slave.Name, position.ToString() ) )
+            using( _logger.OpenInfo().Send( "Attaching {0} on {1} at {2}", master.Name, slave.Name, position.ToString() ) )
             {
                 SpatialBinding spatialBinding = null;
                 SpatialBinding slaveSpatialBinding = null;
 
                 if( CanBind( master, slave, position, out spatialBinding, out slaveSpatialBinding ) )
                 {
-                    _logger.Trace( "Before binding..." );
+                    _logger.Trace().Send( "Before binding..." );
 
                     var binding = new SimpleBinding
                     {
@@ -237,7 +237,7 @@ namespace CK.WindowManager
 
                     if( evt.Canceled == true )
                     {
-                        _logger.Trace( "...canceled. The reason was {0}.", evt.CancelReason ?? "No Reason" );
+                        _logger.Trace().Send( "...canceled. The reason was {0}.", evt.CancelReason ?? "No Reason" );
                     }
                     else
                     {
@@ -287,7 +287,7 @@ namespace CK.WindowManager
                             BindingType = BindingEventType.Attach
                         };
 
-                        _logger.Trace( "After binding..." );
+                        _logger.Trace().Send( "After binding..." );
                         if( AfterBinding != null )
                             AfterBinding( this, evtAfter );
                     }

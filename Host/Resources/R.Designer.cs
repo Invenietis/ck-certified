@@ -340,6 +340,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export your configuration.
+        /// </summary>
+        public static string ExportConf {
+            get {
+                return ResourceManager.GetString("ExportConf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export a keyboard.
         /// </summary>
         public static string ExportKeyboard {
@@ -448,6 +457,24 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyboard pointer.
+        /// </summary>
+        public static string KeyboardPointer {
+            get {
+                return ResourceManager.GetString("KeyboardPointer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses a keyboard to move the mouse.
+        /// </summary>
+        public static string KeyboardPointerDescription {
+            get {
+                return ResourceManager.GetString("KeyboardPointerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboards.
         /// </summary>
         public static string Keyboards {
@@ -489,6 +516,15 @@ namespace Host.Resources {
         public static string MouseScrollingSelection {
             get {
                 return ResourceManager.GetString("MouseScrollingSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move mouse.
+        /// </summary>
+        public static string MoveMouse {
+            get {
+                return ResourceManager.GetString("MoveMouse", resourceCulture);
             }
         }
         
@@ -691,6 +727,24 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scrolling speed.
+        /// </summary>
+        public static string ScrollingSpeed {
+            get {
+                return ResourceManager.GetString("ScrollingSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scrolling strategy :.
+        /// </summary>
+        public static string ScrollingStrategy {
+            get {
+                return ResourceManager.GetString("ScrollingStrategy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import or Export a keyboard.
         /// </summary>
         public static string ShareKeyboard {
@@ -786,6 +840,15 @@ namespace Host.Resources {
         public static string SkinViewConfig {
             get {
                 return ResourceManager.GetString("SkinViewConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turbo scrolling speed.
+        /// </summary>
+        public static string TurboScrollingSpeed {
+            get {
+                return ResourceManager.GetString("TurboScrollingSpeed", resourceCulture);
             }
         }
         

@@ -27,6 +27,13 @@ using CK.Windows;
 using System.Windows.Media;
 using SimpleSkin.Helpers;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Shapes;
+using CK.Interop;
+using CK.Windows.Interop;
+using System.Diagnostics;
+using System.Windows.Interop;
+using System.Runtime.InteropServices;
 
 namespace SimpleSkin
 {
@@ -35,10 +42,12 @@ namespace SimpleSkin
     /// </summary>
     public partial class SkinWindow : CKNoFocusWindow
     {
+        //WindowResizer ob;
         public SkinWindow( NoFocusManager noFocusManager )
             : base( noFocusManager )
         {
             InitializeComponent();
+            //ob = new WindowResizer(this);
         }
 
         protected override bool IsDraggableVisual( DependencyObject visualElement )
@@ -52,3 +61,66 @@ namespace SimpleSkin
         }
     }
 }
+
+//public class WindowResizer
+//{
+//    WindowInteropHelper _window;
+
+//    public WindowResizer( Window window )
+//    {
+//        _window = new WindowInteropHelper(window);
+//    }
+
+
+//    private void ResizeWindow( ResizeDirection direction )
+//    {
+//        Win.Functions.SendMessage( _window.Handle, Win.WM_SYSCOMMAND, (IntPtr)( Win.WMSysCommand.SIZE + (int)direction ), IntPtr.Zero );
+//    }
+
+//    public void Resize( object sender )
+//    {
+//        Rectangle clickedRectangle = sender as Rectangle;
+
+//        switch( clickedRectangle.Name )
+//        {
+//            case "top":
+//                ResizeWindow( ResizeDirection.Top );
+//                break;
+//            case "bottom":
+//                ResizeWindow( ResizeDirection.Bottom );
+//                break;
+//            case "left":
+//                ResizeWindow( ResizeDirection.Left );
+//                break;
+//            case "right":
+//                ResizeWindow( ResizeDirection.Right );
+//                break;
+//            case "topLeft":
+//                ResizeWindow( ResizeDirection.TopLeft );
+//                break;
+//            case "topRight":
+//                ResizeWindow( ResizeDirection.TopRight );
+//                break;
+//            case "bottomLeft":
+//                ResizeWindow( ResizeDirection.BottomLeft );
+//                break;
+//            case "bottomRight":
+//                ResizeWindow( ResizeDirection.BottomRight );
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+
+//    public enum ResizeDirection
+//    {
+//        Left = 1,
+//        Right = 2,
+//        Top = 3,
+//        TopLeft = 4,
+//        TopRight = 5,
+//        Bottom = 6,
+//        BottomLeft = 7,
+//        BottomRight = 8,
+//    }
+//}

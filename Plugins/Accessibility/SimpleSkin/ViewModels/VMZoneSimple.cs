@@ -54,6 +54,16 @@ namespace SimpleSkin.ViewModels
             SafeSet<int>( _zone.GetPropertyValue( Context.Config, "LoopCount", LoopCount ), ( v ) => _initialLoopCount = _loopCount = v );
         }
 
+        //private void UpdateLoopCount()
+        //{
+        //    int i = Context.Config[_zone].GetOrSet<int>( "LoopCount", 1 );
+        //    SafeSet<int>( i, ( v ) =>
+        //    {
+        //        if( v != 0 ) _loopCount = 1;
+        //        else _loopCount = v;
+        //    } );
+        //}
+
         public int InitialLoopCount
         {
             get { return _initialLoopCount; }
@@ -70,7 +80,10 @@ namespace SimpleSkin.ViewModels
             Debug.Assert( Dispatcher.CurrentDispatcher == Context.NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             _zone = zone;
             _index = index;
-            SafeUpdateLoopCount();
+
+            _initialLoopCount = _loopCount = _zone.GetPropertyValue( Context.Config, "LoopCount", 1 );
+            //SafeUpdateLoopCount();
+
             _keys = new CKObservableSortedArrayKeyList<VMKeySimple, int>( k => k.Index );
 
             foreach( IKey key in _zone.Keys )
@@ -93,9 +106,13 @@ namespace SimpleSkin.ViewModels
                 }) );
                 //TODO : trigger IndexChanged
             }
-            else if( e.Obj == _zone.Keyboard && e.Key == "LoopCount" )
+            if( _zone.CurrentLayout == e.Obj && e.Key == "LoopCount" )
             {
-                _initialLoopCount = _loopCount = (int)e.Value;
+                Context.Config[_zone].Set( "LoopCount", e.Value );
+            }
+            if( e.Key == "LoopCount" )
+            {
+                _initialLoopCount = _loopCount = _zone.GetPropertyValue( Context.Config, "LoopCount", 1 );
                 Context.NoFocusManager.NoFocusDispatcher.BeginInvoke( (Action)(() =>
                 {
                     OnPropertyChanged( "LoopCount" );

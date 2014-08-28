@@ -33,7 +33,7 @@ namespace SimpleSkin
 
     public class MiniViewVM : VMBase, IHighlightableElement, IDisposable
     {
-        public KeyboardDisplayer Parent { get; set; }
+        public WindowStateManager Parent { get; set; }
         IPluginConfigAccessor Config { get { return Parent.Config; } }
 
         bool _isHighlighted;
@@ -47,7 +47,7 @@ namespace SimpleSkin
             }
         }
 
-        public MiniViewVM( KeyboardDisplayer parent )
+        public MiniViewVM( WindowStateManager parent )
         {
             _isHighlighted = false;
             Parent = parent;
@@ -142,7 +142,7 @@ namespace SimpleSkin
         {
             if ( Parent.IsViewHidden )
             {
-                Parent.RestoreSkin();
+                Parent.RestoreWindows();
             }
 
             return scrollingDirective;

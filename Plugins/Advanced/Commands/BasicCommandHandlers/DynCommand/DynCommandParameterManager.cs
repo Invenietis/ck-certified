@@ -41,9 +41,9 @@ namespace BasicCommandHandlers
         {
             _values = new Dictionary<string, string>();
 
-            _values.Add( R.DynCommandHide, "hideskin" );
+            _values.Add( R.DynCommandHide, "togglehostminimized" );
             _values.Add( R.DynCommandClose, "shutdown" );
-            _values.Add( R.DynCommandMinimize, "togglehostminimized" );
+            _values.Add( R.DynCommandMinimize, "hideskin" );
             _values.Add( R.DynCommandWindowsKey, "windowskey" );
         }
 

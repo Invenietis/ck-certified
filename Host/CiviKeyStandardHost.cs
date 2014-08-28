@@ -15,6 +15,7 @@
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
 * Copyright © 2007-2012, 
+* Copyright � 2007-2012, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -36,7 +37,6 @@ using CK.Windows.App;
 using System.Collections.Generic;
 using CK.Core;
 using System.ComponentModel;
-using Common.Logging;
 using CK.Context.SemVer;
 using System.Windows.Media.Imaging;
 using System.Windows.Interop;
@@ -44,6 +44,7 @@ using CommonServices;
 using CK.Plugin.Config;
 using System.Threading;
 using System.Globalization;
+using CK.Monitoring;
 
 namespace Host
 {
@@ -53,7 +54,7 @@ namespace Host
     /// </summary>
     public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp, IContextSaver
     {
-        static readonly ILog _log = LogManager.GetLogger( typeof( CivikeyStandardHost ) );
+        IActivityMonitor _log;
         SemanticVersion20 _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
@@ -96,79 +97,100 @@ namespace Host
 
         public override IContext CreateContext()
         {
+            var goPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" );
+            var logPath = Path.Combine( goPath, @"GrandOutputDefault\" );
+            var goConfigPath = Path.Combine( goPath, "GrandOutput.config" );
+            if( !File.Exists( goConfigPath ) )
+            {
+                File.WriteAllText( goConfigPath, string.Format( @"<GrandOutputConfiguration>
+    <Channel MinimalFilter=""Debug"">
+        <Add Type=""BinaryFile"" Name=""All"" Path=""{0}"" />
+    </Channel>
+</GrandOutputConfiguration>", logPath ) );
+            }
+
+            CK.Core.SystemActivityMonitor.RootLogPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" ); ;
+            CK.Monitoring.GrandOutput.EnsureActiveDefaultWithDefaultSettings();
 
 
             //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
             //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.
             //If a system conf is found and loaded at this point, plugin will be set as disabled (because the plugins are not yet discovered). If there is a userconf, the requirements will be parsed again later, and everything will work fine.
             //The problem occurs when there is no user conf. (this happens when CiviKey is launched for the first time)
-            
+
+            Monitor = new ActivityMonitor( "CiviKey" );
             IContext ctx = base.CreateContext();
 
-            _log.Debug( "LAUNCHING" );
+            _log = Monitor;
 
-            _notificationMngr = new NotificationManager();
+            using( _log.OpenInfo().Send( "LAUNCHING" ) )
+            {
+                _notificationMngr = new NotificationManager();
 
-            // Discover available plugins.
-            string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
-            _log.Debug( "Discovering plugins..." );
-            if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
-            _log.Debug( "Plugins discovered" );
-            _log.Debug( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
+                // Discover available plugins.
+                string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
+                _log.Info().Send( "Discovering plugins..." );
+                if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
+                _log.Info().Send( "Plugins discovered" );
+                _log.Info().Send( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
 
-            var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SendInput
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{D173E013-2491-4491-BF3E-CA2F8552B5EB}" ), RunningRequirement.MustExistAndRun );//KeyboardDisplayer
+                var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{0F740086-85AC-46EB-87ED-12A4CA2D12D9}" ), RunningRequirement.MustExistAndRun );//SendInput
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}" ), RunningRequirement.MustExistAndRun );//Window Executor
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{D173E013-2491-4491-BF3E-CA2F8552B5EB}" ), RunningRequirement.MustExistAndRun );//KeyboardDisplayer
 
-            //Command handlers. These plugins register their protocols onto the keyboard editor.
-            //Therefor, we need them started in order to be able to create any type of Key Command.
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{418F670B-46E8-4BE2-AF37-95F43040EEA6}" ), RunningRequirement.MustExistAndRun );//KeySequenceCommandHandler
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{78D84978-7A59-4211-BE04-DD25B5E2FDC1}" ), RunningRequirement.MustExistAndRun );//TextTemplateCommandHandler
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun );//ClicCommandHandler
-            hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun );//MoveMouseCommandHandler
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{55A95F2F-2D67-4AE1-B5CF-4880337F739F}" ), RunningRequirement.MustExistAndRun );//WindowSaver
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{3F8140F5-AD63-4EF4-AB6C-A9A7EE18078A}" ), RunningRequirement.MustExistAndRun );//WindowStateManager
 
-            // ToDoJL
-            //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
-            hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
+                //Command handlers. These plugins register their protocols onto the keyboard editor.
+                //Therefor, we need them started in order to be able to create any type of Key Command.
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{664AF22C-8C0A-4112-B6AD-FB03CDDF1603}" ), RunningRequirement.MustExistAndRun );//FileLauncherCommandHandler
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{418F670B-46E8-4BE2-AF37-95F43040EEA6}" ), RunningRequirement.MustExistAndRun );//KeySequenceCommandHandler
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{78D84978-7A59-4211-BE04-DD25B5E2FDC1}" ), RunningRequirement.MustExistAndRun );//TextTemplateCommandHandler
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun );//ClicCommandHandler
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun );//MoveMouseCommandHandler
+
+                // ToDoJL
+                //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
+                hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
             //hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
-            ctx.PluginRunner.Add( hostRequirements );
+                ctx.PluginRunner.Add( hostRequirements );
 
-            // Load or initialize the ctx.
-            LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
-            _log.Debug( "Context loaded successfully." );
+                // Load or initialize the ctx.
+                LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
+                _log.Info().Send( "Context loaded successfully." );
 
-            // Initializes Services.
-            {
-                ctx.ServiceContainer.Add<IHostInformation>( this );
-                ctx.ServiceContainer.Add<IHostHelp>( this );
-                ctx.ServiceContainer.Add<IContextSaver>( this );
-                // inject specific xaml serializers.
-                ctx.ServiceContainer.Add<IStructuredSerializer<Size>>( new XamlSerializer<Size>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<Color>>( new XamlSerializer<Color>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<LinearGradientBrush>>( new XamlSerializer<LinearGradientBrush>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<TextDecorationCollection>>( new XamlSerializer<TextDecorationCollection>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapSource>>( new BitmapSourceSerializer<BitmapSource>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<InteropBitmap>>( new BitmapSourceSerializer<InteropBitmap>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<CachedBitmap>>( new BitmapSourceSerializer<CachedBitmap>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapFrame>>( new BitmapSourceSerializer<BitmapFrame>() );
-                ctx.ServiceContainer.Add<IStructuredSerializer<BitmapImage>>( new BitmapSourceSerializer<BitmapImage>() );
-                //ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
+                // Initializes Services.
+                {
+                    ctx.ServiceContainer.Add<IHostInformation>( this );
+                    ctx.ServiceContainer.Add<IHostHelp>( this );
+                    ctx.ServiceContainer.Add<IContextSaver>( this );
+                    // inject specific xaml serializers.
+                    ctx.ServiceContainer.Add<IStructuredSerializer<Size>>( new XamlSerializer<Size>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<Color>>( new XamlSerializer<Color>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<LinearGradientBrush>>( new XamlSerializer<LinearGradientBrush>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<TextDecorationCollection>>( new XamlSerializer<TextDecorationCollection>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<FontWeight>>( new XamlSerializer<FontWeight>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<FontStyle>>( new XamlSerializer<FontStyle>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<Image>>( new XamlSerializer<Image>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<BitmapSource>>( new BitmapSourceSerializer<BitmapSource>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<InteropBitmap>>( new BitmapSourceSerializer<InteropBitmap>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<CachedBitmap>>( new BitmapSourceSerializer<CachedBitmap>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<BitmapFrame>>( new BitmapSourceSerializer<BitmapFrame>() );
+                    ctx.ServiceContainer.Add<IStructuredSerializer<BitmapImage>>( new BitmapSourceSerializer<BitmapImage>() );
+                    ctx.ServiceContainer.Add<INotificationService>( _notificationMngr );
+                }
+
+                Context.PluginRunner.ApplyDone += OnApplyDone;
+
+                _log.Info().Send( "Starting Apply..." );
+                _firstApplySucceed = Context.PluginRunner.Apply();
+
+                ctx.ConfigManager.SystemConfiguration.PropertyChanged += OnSystemConfigurationPropertyChanged;
+                ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationPropertyChanged;
             }
-
-            Context.PluginRunner.ApplyDone += OnApplyDone;
-
-            _log.Debug( "Starting Apply..." );
-            _firstApplySucceed = Context.PluginRunner.Apply();
-
-            ctx.ConfigManager.SystemConfiguration.PropertyChanged += OnSystemConfigurationPropertyChanged;
-            ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationPropertyChanged;
 
 
             return ctx;
@@ -179,19 +201,22 @@ namespace Host
             //If the user has changed, we need to load the corresponding user configuration
             if( e.PropertyName == "CurrentUserProfile" )
             {
+                using( _log.OpenInfo().Send( "OnSystemConfigurationPropertyChanged" ) )
+                {
+                    Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
 
-                Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
+                    SaveContext();
 
-                SaveContext();
+                    SaveUserConfig( Context.ConfigManager.SystemConfiguration.PreviousUserProfile.Address, false );
+                    Context.ConfigManager.Extended.HostUserConfig.Clear();
+                    LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
 
-                SaveUserConfig( Context.ConfigManager.SystemConfiguration.PreviousUserProfile.Address, false );
-                Context.ConfigManager.Extended.HostUserConfig.Clear();
-                LoadUserConfig( Context.ConfigManager.SystemConfiguration.CurrentUserProfile.Address );
+                    Context.ConfigManager.Extended.Container.Clear( Context );
+                    LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
 
-                Context.ConfigManager.Extended.Container.Clear( Context );
-                LoadContext( Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address );
+                    Context.PluginRunner.Apply( true );
 
-                Context.PluginRunner.Apply( true );
+                }
             }
         }
 
@@ -201,34 +226,7 @@ namespace Host
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
-            _log.Debug( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
-            //ExecutionPlanResult dosen't exist anymore in the applydoneEventArg, how should we let the user decide what to do ?
-
-            //    if( e.ExecutionPlanResult != null )
-            //    {
-            //        if(
-            //            (e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.SetupError
-            //            || e.ExecutionPlanResult.Status == ExecutionPlanResultStatus.StartError) )
-            //        {
-            //            if( System.Windows.MessageBox.Show( String.Format( R.PluginThrewExceptionAtStart, e.ExecutionPlanResult.Culprit.PublicName ), R.PluginThrewExceptionAtStartTitle, MessageBoxButton.YesNo ) == MessageBoxResult.Yes )
-            //            {//if the user wants to try launching CiviKey without the culprit
-            //                Context.PluginRunner.Apply();
-            //            }
-            //            else
-            //            {//otherwise, stop CiviKey
-            //                Context.RaiseExitApplication( true );
-            //            }
-            //        }
-            //    }
-            //    else //e is null means that the plan couldn't be resolved, the system hasn't been changed, but requirements are messy
-            //    {
-            //        if( _notificationMngr != null )
-            //            _notificationMngr.ShowNotification( Guid.Empty, R.ForbiddenActionTitle, R.ForbiddenAction, 5000, NotificationTypes.Warning );
-            //        else
-            //            System.Windows.MessageBox.Show( R.ForbiddenAction );
-
-            //        //TODO : Revert the configuration (if it is possible ?)
-            //    }
+            _log.Info().Send( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
         }
 
         /// <summary>

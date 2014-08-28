@@ -23,6 +23,7 @@
 
 using CK.Core;
 using System;
+using CK.Windows.Core;
 
 namespace CK.Plugins.ObjectExplorer
 {

@@ -28,6 +28,8 @@ using System;
 using System.Windows.Input;
 using CK.Windows.App;
 using KeyboardEditor.Resources;
+using CK.WPF.ViewModel;
+using CK.Plugin.Config;
 
 namespace KeyboardEditor.ViewModels
 {
@@ -52,6 +54,9 @@ namespace KeyboardEditor.ViewModels
                 VMKeyEditable k = Context.Obtain( key );
                 Keys.Add( k );
             }
+
+            if( _ctx.SkinConfiguration != null )
+                _ctx.SkinConfiguration.ConfigChanged += OnLayoutConfigChanged;
         }
 
         internal override void Dispose()
@@ -266,6 +271,48 @@ namespace KeyboardEditor.ViewModels
         {
             get { return Model.Index; }
             set { Model.Index = value; }
+        }
+
+        public int LoopCount
+        {
+            get { return _zone.GetPropertyValue( _ctx.SkinConfiguration, "LoopCount", 1 ); }
+            set
+            {
+                _ctx.SkinConfiguration[_zone]["LoopCount"] = value;
+            }
+        }
+
+        VMCommand<string> _clearCmd;
+        public VMCommand<string> ZoneClearPropertyCmd { get { return _clearCmd ?? (_clearCmd = new VMCommand<string>( ClearProperty, CanClearProperty )); } }
+
+        void ClearProperty( string propertyName )
+        {
+            string[] names = propertyName.Split( ',' );
+            foreach( var pname in names ) Context.SkinConfiguration[_zone].Remove( pname );
+        }
+
+        bool CanClearProperty( string propertyName )
+        {
+            string[] names = propertyName.Split( ',' );
+
+            // We can clear property if the property owns directly a value.
+            foreach( var pname in names ) if( Context.SkinConfiguration[_zone][pname] != null ) return true;
+            return false;
+        }
+
+        void OnLayoutConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            if( e.MultiPluginId.Any( ( c ) => String.Compare( c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", StringComparison.InvariantCultureIgnoreCase ) == 0 ) )
+            {
+                switch( e.Key )
+                {
+                    case "LoopCount":
+                        OnPropertyChanged( "LoopCount" );
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         internal void IndexChanged()

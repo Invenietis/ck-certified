@@ -33,6 +33,7 @@ using CK.Windows;
 using CK.WindowManager.Model;
 using AutoClick.Res;
 using System.ComponentModel;
+using CommonServices;
 
 namespace CK.Plugins.AutoClick
 {
@@ -46,6 +47,9 @@ namespace CK.Plugins.AutoClick
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
 
         #region Variables & Properties
+
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ISharedData SharedData { get; set; }
 
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Highlighter { get; set; }
@@ -71,17 +75,13 @@ namespace CK.Plugins.AutoClick
         public bool Setup( IPluginSetupInfo info )
         {
             _isClosing = false;
-            ClicksVM = new ClicksVM() { Holder = this };
-            _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             return true;
         }
 
         public void Start()
         {
-
-            int defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 4;
-            int defaultWidth = defaultHeight / 4;
-
+            ClicksVM = new ClicksVM( this );
+            _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };
             _clickSelectorWindow.Closing += OnWindowClosing;
 
@@ -89,20 +89,7 @@ namespace CK.Plugins.AutoClick
             InitializeWindowManager();
             InitializeTopMost();
 
-            if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) )
-            {
-                SetDefaultWindowPosition( defaultWidth, defaultHeight );
-            }
-            else
-            {
-                _clickSelectorWindow.Width = _clickSelectorWindow.Height = 0;
-            }
-
             _clickSelectorWindow.Show();
-
-            //Executed only at first launch, has to be done once the window is shown, otherwise, it will save a "hidden" state for the window
-            if( !Config.User.Contains( "ClickSelectorWindowPlacement" ) ) Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
-            CKWindowTools.SetPlacement( _clickSelectorWindow.Hwnd, (WINDOWPLACEMENT)Config.User["ClickSelectorWindowPlacement"] );
         }
 
         bool _isClosing;
@@ -112,14 +99,6 @@ namespace CK.Plugins.AutoClick
                 e.Cancel = true;
         }
 
-        private void SetDefaultWindowPosition( int defaultWidth, int defaultHeight )
-        {
-            _clickSelectorWindow.Top = 100;
-            _clickSelectorWindow.Left = (int)System.Windows.SystemParameters.WorkArea.Width - defaultWidth;
-            _clickSelectorWindow.Width = defaultWidth;
-            _clickSelectorWindow.Height = defaultHeight;
-        }
-
         public void Stop()
         {
             _isClosing = true;
@@ -127,8 +106,6 @@ namespace CK.Plugins.AutoClick
             UninitializeTopMost();
             UninitializeWindowManager();
             UninitializeHighlighter();
-
-            Config.User.Set( "ClickSelectorWindowPlacement", CKWindowTools.GetPlacement( _clickSelectorWindow.Hwnd ) );
 
             _clickSelectorWindow.Close();
             _clickSelectorWindow = null;

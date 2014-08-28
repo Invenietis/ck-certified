@@ -38,6 +38,7 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using Help.Services;
 using CK.Windows;
+using CK.Plugin.Config.Model;
 
 namespace Host
 {
@@ -152,7 +153,7 @@ namespace Host
                 }
             }
 
-            CivikeyHost.SaveContext();
+            CivikeyHost.SaveContext(); 
             CivikeyHost.SaveUserConfig();
             CivikeyHost.SaveSystemConfig();
 

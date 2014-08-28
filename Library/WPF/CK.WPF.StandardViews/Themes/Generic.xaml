@@ -91,11 +91,20 @@
                                    Text='{TemplateBinding UpLabel}' 
                                    Focusable="False" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
-                               FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}"
+                               FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}"
                                TextTrimming="CharacterEllipsis" >
                         </TextBlock>
 
-                        <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Width="32"/>
+                        <TextBlock x:Name="Icon"
+                                   Foreground="{TemplateBinding Foreground}" 
+                                   Text='{TemplateBinding UpLabel}' 
+                                   Focusable="False" 
+                               HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
+                               FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}"
+                               TextTrimming="CharacterEllipsis" >
+                        </TextBlock>
+
+                        <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Margin="1.5"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="gridTooltip" Property="Content" Value="">
@@ -122,6 +131,12 @@
                         <!-- Trigger on : ShowLabel -->
                         <Trigger Property="ShowLabel" Value="False">
                             <Setter TargetName="Letter" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="ShowImage" Value="False">
+                            <Setter TargetName="Image" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="ShowIcon" Value="False">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="controls:TextBlockService.IsTextTrimmed" Value="True" SourceName="Letter">
                             <Setter TargetName="buttonGrid" Property="ToolTip" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=UpLabel}" />

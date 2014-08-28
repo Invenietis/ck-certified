@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CK.WPF.StandardViews" x:Class="CK.WPF.StandardViews.ResizableContainerExtension">
+    <Style TargetType="{x:Type local:ResizableContainer}">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:ResizableContainer}">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid>
+                                <!--Content Section-->
+                                <ContentControl Content="{TemplateBinding Content}"></ContentControl>
+
+                                <Rectangle Cursor="SizeNS" Name="bottom" Height="7" Margin="10,0,10,-5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent"></Rectangle>
+                                <Rectangle Cursor="SizeNS" Name="top" Height="7" Margin="10,-5,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
+
+                                <Rectangle Cursor="SizeWE" Name="left" Width="7" Margin="-5,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Stretch" PreviewMouseDown="Resize" Fill="Transparent" />
+                                <Rectangle Cursor="SizeWE" Name="right" Width="7" Margin="0,10,-5,10" HorizontalAlignment="Right"  VerticalAlignment="Stretch" PreviewMouseDown="Resize" Fill="Transparent" />
+
+                                <Rectangle Cursor="SizeNWSE" Name="topLeft" Height="10" Width="10" Margin="-5,-5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
+                                <Rectangle Cursor="SizeNESW" Name="bottomLeft" Height="10" Width="10" Margin="-5,0,0,-5" HorizontalAlignment="Left" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
+                                <Rectangle Cursor="SizeNWSE" Name="bottomRight" Height="10" Width="10" Margin="0,0,-5,-5" HorizontalAlignment="Right" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
+                                <Rectangle Cursor="SizeNESW" Name="topRight" Height="10" Width="10" Margin="0,-5,-5,0" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
+                            </Grid>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>

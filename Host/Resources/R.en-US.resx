@@ -396,4 +396,13 @@
   <data name="MouseScrollingSelection" xml:space="preserve">
     <value>Mouse scrolling type selection</value>
   </data>
+  <data name="ScrollingSpeed" xml:space="preserve">
+    <value>Scrolling speed</value>
+  </data>
+  <data name="ScrollingStrategy" xml:space="preserve">
+    <value>Scrolling strategy :</value>
+  </data>
+  <data name="TurboScrollingSpeed" xml:space="preserve">
+    <value>Turbo scrolling speed</value>
+  </data>
 </root>

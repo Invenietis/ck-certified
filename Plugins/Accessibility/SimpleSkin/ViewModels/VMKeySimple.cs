@@ -70,6 +70,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateFontSize();
             SafeUpdateFontStyle();
             SafeUpdateFontWeight();
+            SafeUpdateFontFamily();
             SafeUpdateHeight();
             SafeUpdateHighlightBackground();
             SafeUpdateHighlightFontColor();
@@ -81,8 +82,7 @@ namespace SimpleSkin.ViewModels
             SafeUpdateLetterColor();
             SafeUpdateOpacity();
             SafeUpdatePressedBackground();
-            SafeUpdateShowImage();
-            SafeUpdateShowLabel();
+            SafeUpdateDisplayType();
             SafeUpdateUpLabel();
             SafeUpdateVisible();
             SafeUpdateWidth();
@@ -171,10 +171,10 @@ namespace SimpleSkin.ViewModels
                     OnPropertyChanged( "Image" );
                     break;
                 case "DisplayType":
-                    SafeUpdateShowLabel();
-                    SafeUpdateShowImage();
+                    SafeUpdateDisplayType();
                     OnPropertyChanged( "ShowLabel" );
                     OnPropertyChanged( "ShowImage" );
+                    OnPropertyChanged( "ShowIcon" );
                     break;
             }
         }
@@ -197,9 +197,9 @@ namespace SimpleSkin.ViewModels
                 SafeUpdateOpacity();
                 SafeUpdateFontSize();
                 SafeUpdateFontStyle();
-                SafeUpdateShowLabel();
-                SafeUpdateShowImage();
+                SafeUpdateDisplayType();
                 SafeUpdateFontWeight();
+                SafeUpdateFontFamily();
                 SafeUpdateBackground();
                 SafeUpdateLetterColor();
                 SafeUpdateHoverBackground();
@@ -212,9 +212,8 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "Opacity" );
                 OnPropertyChanged( "FontSize" );
                 OnPropertyChanged( "FontStyle" );
-                OnPropertyChanged( "ShowLabel" );
-                OnPropertyChanged( "ShowImage" );
                 OnPropertyChanged( "FontWeight" );
+                OnPropertyChanged( "FontFamily" );
                 OnPropertyChanged( "Background" );
                 OnPropertyChanged( "LetterColor" );
                 OnPropertyChanged( "HoverBackground" );
@@ -222,6 +221,11 @@ namespace SimpleSkin.ViewModels
                 OnPropertyChanged( "PressedBackground" );
                 OnPropertyChanged( "HighlightBackground" );
                 OnPropertyChanged( "HighlightFontColor" );
+
+                //DisplayType
+                OnPropertyChanged( "ShowLabel" );
+                OnPropertyChanged( "ShowImage" );
+                OnPropertyChanged( "ShowIcon" );
             }
             else
             {
@@ -246,6 +250,10 @@ namespace SimpleSkin.ViewModels
                     case "FontWeight":
                         SafeUpdateFontWeight();
                         OnPropertyChanged( "FontWeight" );
+                        break;
+                    case "FontFamily":
+                        SafeUpdateFontFamily();
+                        OnPropertyChanged( "FontFamily" );
                         break;
                     case "Background":
                         SafeUpdateBackground();
@@ -454,14 +462,22 @@ namespace SimpleSkin.ViewModels
             SafeSet<FontWeight>( LayoutKeyMode.GetPropertyValue<FontWeight>( Context.Config, "FontWeight", FontWeights.Normal ), ( v ) => _fontWeight = v );
         }
 
-        private void SafeUpdateShowLabel()
+        private void SafeUpdateFontFamily()
         {
-            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showLabel = (v == "Label") );
+            SafeSet<string>( LayoutKeyMode.GetPropertyValue( Context.Config, "FontFamily", "Arial" ), ( v ) =>
+                {
+                    if( v.Contains( "pack://" ) )
+                    {
+                        string[] split = v.Split( '|' );
+                        _fontFamily = new System.Windows.Media.FontFamily( new Uri( split[0] ), split[1] );
+                    }
+                    else _fontFamily = new System.Windows.Media.FontFamily( v );
+                });
         }
 
-        private void SafeUpdateShowImage()
+        private void SafeUpdateDisplayType()
         {
-            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", Context.Config[_key.Current]["Image"] != null ? "Image" : "Label" ), ( v ) => _showImage = (v == "Image") );
+            SafeSet<string>( Context.Config[_key.Current].GetOrSet<string>( "DisplayType", "Label" ), ( v ) => _displayType = v );
         }
 
         private void SafeUpdateOpacity()
@@ -658,6 +674,12 @@ namespace SimpleSkin.ViewModels
             get { return _fontWeight; }
         }
 
+        System.Windows.Media.FontFamily _fontFamily;
+        public System.Windows.Media.FontFamily FontFamily
+        {
+            get { return _fontFamily; }
+        }
+
         double _fontSize;
         public double FontSize
         {
@@ -670,16 +692,28 @@ namespace SimpleSkin.ViewModels
             get { return _textDecorations; }
         }
 
-        bool _showLabel;
+        string _displayType;
         public bool ShowLabel
         {
-            get { return _showLabel; }
+            get 
+            {
+                //second condition is a fallback
+                return _displayType == "Label" && Context.Config[LayoutKeyMode]["Image"] == null; 
+            }
         }
 
-        bool _showImage;
         public bool ShowImage
         {
-            get { return _showImage; }
+            get 
+            {
+                //second condition is a fallback
+                return _displayType == "Image" || Context.Config[LayoutKeyMode]["Image"] != null; 
+            }
+        }
+
+        public bool ShowIcon
+        {
+            get { return _displayType == "Icon"; }
         }
 
         double _opacity;

@@ -63,9 +63,9 @@ namespace Host
 //#if DEBUG
             //System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
 //#endif
-            CultureInfo ci = new CultureInfo( "fr-FR" );
-            Thread.CurrentThread.CurrentUICulture = ci;
-            Thread.CurrentThread.CurrentCulture = ci;
+            //CultureInfo ci = new CultureInfo( "fr-FR" );
+            //Thread.CurrentThread.CurrentUICulture = ci;
+            //Thread.CurrentThread.CurrentCulture = ci;
 
             //Getting the distributionname from AssemblyInfo
             string distributionName = "Std";
@@ -77,10 +77,6 @@ namespace Host
             // Crash logs upload and updater availability is managed during this initialization.
             using( var init = CKApp.Initialize( new CKAppParameters( "CiviKey", distributionName, string.Format( "http://api.civikey.invenietis.com/v2/crash/{0}", ApplicationId ) ) ) )
             {
-                // Common logger is actually bound to log4net.UpdateDone
-
-                // CK-Windows must not depend on log4Net: its initialization must be done here.
-                CommonLogger.Initialize( CKApp.CurrentParameters.ApplicationDataPath + @"AppLogs\", false );
                 if( init != null )
                 {
                     CKApp.Run( () =>

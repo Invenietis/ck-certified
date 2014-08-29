@@ -132,7 +132,7 @@
         <Border.Effect>
             <DropShadowEffect BlurRadius="10" Direction="-90" RenderingBias="Quality" ShadowDepth="4" Opacity="0.8"/>
         </Border.Effect>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" Focusable="False">
             <DockPanel Height="32" Background="#4f4f4f">
                 <DockPanel.Style>
                     <Style>

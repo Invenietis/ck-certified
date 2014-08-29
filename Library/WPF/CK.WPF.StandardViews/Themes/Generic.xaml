@@ -68,12 +68,7 @@
                             <ToolTip x:Name="gridTooltip" Content="{TemplateBinding Description}"/>
                         </Grid.ToolTip>
                         <Border x:Name="Border" CornerRadius="3"
-                                BorderBrush="{TemplateBinding Background}" BorderThickness="0"
-                                Background="{TemplateBinding Background}" >
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="6" Direction="-90" RenderingBias="Quality" ShadowDepth="2" Opacity="0.8" Color="Black"/>
-
-                            </Border.Effect>
+                                Background="{TemplateBinding Background}">
                         </Border>
 
                         <TextBlock x:Name="Letter"
@@ -112,11 +107,6 @@
                             <Setter TargetName="buttonGrid" Property="RenderTransform">
                                 <Setter.Value>
                                     <TranslateTransform Y="1" />
-                                </Setter.Value>
-                            </Setter>
-                            <Setter TargetName="Border" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect BlurRadius="0"  ShadowDepth="0" />
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="Letter" Property="Text" Value="{Binding RelativeSource={RelativeSource TemplatedParent},  Path=UpLabel}"/>

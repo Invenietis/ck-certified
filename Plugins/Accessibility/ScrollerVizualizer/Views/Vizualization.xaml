@@ -20,7 +20,7 @@
         </SolidColorBrush>
         <SolidColorBrush x:Key="defaultColor" Color="#999">
         </SolidColorBrush>
-        <SolidColorBrush x:Key="selectColor" Color="#80bcf6">
+        <SolidColorBrush x:Key="selectColor" Color="#9DC8EB">
         </SolidColorBrush>
         <ControlTemplate x:Key="itemsDataTemplate" >
             <StackPanel x:Name="panel"  IsHitTestVisible="False">

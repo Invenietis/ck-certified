@@ -53,7 +53,7 @@ namespace SharedData
         {
             get
             {
-                return Config.User.GetOrSet<double>( "WindowOpacity", 0.50 );
+                return Config.User.GetOrSet<double>( "WindowOpacity", 0.5 );
             }
             set
             {
@@ -91,7 +91,7 @@ namespace SharedData
         {
             get
             {
-                return Config.User.GetOrSet<Color>( "WindowBorderBrush", (Color)ColorConverter.ConvertFromString( "#4B4CA6" ) );
+                return Config.User.GetOrSet<Color>( "WindowBorderBrush", (Color)ColorConverter.ConvertFromString( "#4F4F4F" ) );
             }
             set
             {
@@ -110,7 +110,7 @@ namespace SharedData
         {
             get
             {
-                return Config.User.GetOrSet<Color>( "WindowBackgroundColor", (Color)ColorConverter.ConvertFromString( "#DDDDDD" ) );
+                return Config.User.GetOrSet<Color>( "WindowBackgroundColor", (Color)ColorConverter.ConvertFromString( "#4F4F4F" ) );
             }
             set
             {

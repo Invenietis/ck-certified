@@ -56,7 +56,7 @@ namespace ScrollerVizualizer
                 .Where( x => (x as IVizualizableHighlightableElement) != null )
                 .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
                 .ToList() );
-
+            FirePropertyChanged( "Elements" );
             IsScrollerActive = scroller.IsHighlighting;
 
             if( scroller.Trigger != null )
@@ -111,6 +111,8 @@ namespace ScrollerVizualizer
             scroller.ElementRegisteredOrUnregistered += ( o, e ) =>
             {
                 Elements.Clear();
+                FirePropertyChanged( "Elements" );
+
                 foreach( var ele in scroller.Elements
                     .Where( x => (x as IVizualizableHighlightableElement) != null )
                     .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )

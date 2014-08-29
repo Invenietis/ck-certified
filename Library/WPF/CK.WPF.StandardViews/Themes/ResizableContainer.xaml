@@ -6,7 +6,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type local:ResizableContainer}">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" >
                             <Grid>
                                 <!--Content Section-->
                                 <ContentControl Content="{TemplateBinding Content}"></ContentControl>

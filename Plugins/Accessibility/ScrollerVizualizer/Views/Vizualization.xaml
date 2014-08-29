@@ -14,7 +14,8 @@
             SizeToContent="WidthAndHeight"
             Topmost="True"
             Width="Auto"
-             ResizeMode="NoResize">
+            ResizeMode="NoResize"
+            Opacity="{Binding Path=Elements.Count}">
     <ck:CKWindow.Resources>
         <SolidColorBrush x:Key="highlightedColor" Color="#FFF">
         </SolidColorBrush>
@@ -23,7 +24,7 @@
         <SolidColorBrush x:Key="selectColor" Color="#9DC8EB">
         </SolidColorBrush>
         <ControlTemplate x:Key="itemsDataTemplate" >
-            <StackPanel x:Name="panel"  IsHitTestVisible="False">
+            <StackPanel x:Name="panel" HorizontalAlignment="Stretch" >
                 <StackPanel.Style>
                     <Style>
                         <Style.Triggers>
@@ -36,65 +37,64 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <Border Background="#4f4f4f" BorderBrush="{StaticResource defaultColor}" HorizontalAlignment="Center"  IsHitTestVisible="False">
+                <Border Background="#4f4f4f" BorderBrush="{StaticResource defaultColor}" HorizontalAlignment="Stretch"  IsHitTestVisible="False">
                     <Border.Style>
                         <Style>
                             <Setter Property="Border.BorderThickness" Value="0,2,0,0" />
                         </Style>
                     </Border.Style>
-                    <StackPanel Margin="5">
-                        <StackPanel Height="120" MinWidth="140">
-                            <Path Data="{Binding ImageSource}" Stretch="Uniform" Width="75" Height="75" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
-                                <Path.Style>
+                    <StackPanel Height="120" MinWidth="155" Margin="0,5,0,5" VerticalAlignment="Stretch" >
+                        <Path Data="{Binding ImageSource}" Stretch="Uniform" Width="75" Height="75" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                            <Path.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger  Binding="{Binding IsHighlighted}" Value="False">
+                                            <Setter Property="Path.Fill" Value="{StaticResource defaultColor}" />
+                                        </DataTrigger>
+                                        <DataTrigger  Binding="{Binding IsHighlighted}" Value="True">
+                                            <Setter Property="Path.Fill" Value="{StaticResource highlightedColor}" />
+                                        </DataTrigger>
+                                        <DataTrigger  Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Path.Fill" Value="{StaticResource selectColor}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="0" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                        <Border HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Bottom" >
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom"  TextAlignment="Center" >
+                                <TextBlock.Style>
                                     <Style>
                                         <Style.Triggers>
                                             <DataTrigger  Binding="{Binding IsHighlighted}" Value="False">
-                                                <Setter Property="Path.Fill" Value="{StaticResource defaultColor}" />
+                                                <Setter Property="TextBlock.Foreground" Value="{StaticResource defaultColor}" />
                                             </DataTrigger>
                                             <DataTrigger  Binding="{Binding IsHighlighted}" Value="True">
-                                                <Setter Property="Path.Fill" Value="{StaticResource highlightedColor}" />
+                                                <Setter Property="TextBlock.Foreground" Value="{StaticResource highlightedColor}" />
                                             </DataTrigger>
                                             <DataTrigger  Binding="{Binding IsSelected}" Value="True">
-                                                <Setter Property="Path.Fill" Value="{StaticResource selectColor}" />
+                                                <Setter Property="TextBlock.Foreground" Value="{StaticResource selectColor}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Path.Style>
-                                <Path.RenderTransform>
-                                    <TransformGroup>
-                                        <TransformGroup.Children>
-                                            <RotateTransform Angle="0" />
-                                            <ScaleTransform ScaleX="1" ScaleY="1" />
-                                        </TransformGroup.Children>
-                                    </TransformGroup>
-                                </Path.RenderTransform>
-                            </Path>
-                            <Border HorizontalAlignment="Stretch" Height="40" BorderThickness="0" VerticalAlignment="Stretch" >
-                                <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" Padding="10 0 10 0" TextAlignment="Center">
-                                    <TextBlock.Style>
-                                        <Style>
-                                            <Style.Triggers>
-                                                <DataTrigger  Binding="{Binding IsHighlighted}" Value="False">
-                                                    <Setter Property="TextBlock.Foreground" Value="{StaticResource defaultColor}" />
-                                                </DataTrigger>
-                                                <DataTrigger  Binding="{Binding IsHighlighted}" Value="True">
-                                                    <Setter Property="TextBlock.Foreground" Value="{StaticResource highlightedColor}" />
-                                                </DataTrigger>
-                                                <DataTrigger  Binding="{Binding IsSelected}" Value="True">
-                                                    <Setter Property="TextBlock.Foreground" Value="{StaticResource selectColor}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Border>
-                        </StackPanel>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
                     </StackPanel>
+
                 </Border>
                 <ItemsControl ItemsSource="{Binding Children}"  >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel  IsHitTestVisible="False" >
+                            <StackPanel>
                                 <StackPanel.Style>
                                     <Style>
                                         <Setter Property="StackPanel.Opacity" Value="0"></Setter>
@@ -128,18 +128,18 @@
             <Setter Property="Template" Value="{StaticResource ResourceKey=itemsDataTemplate}" />
         </Style>
     </ck:CKWindow.Resources>
-    <Border Width="Auto" Height="Auto" CornerRadius="3" Margin="20" >
+    <Border Width="Auto" Height="Auto" CornerRadius="3" Margin="20">
         <Border.Effect>
             <DropShadowEffect BlurRadius="10" Direction="-90" RenderingBias="Quality" ShadowDepth="4" Opacity="0.8"/>
         </Border.Effect>
         <StackPanel Orientation="Vertical">
-            <DockPanel Height="32" MinWidth="150" Background="#4f4f4f">
+            <DockPanel Height="32" Background="#4f4f4f">
                 <DockPanel.Style>
                     <Style>
                         <Setter Property="DockPanel.HorizontalAlignment" Value="Stretch" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding VerticalOrientation}" Value="True">
-                                <Setter Property="DockPanel.Width" Value="130" />
+                                <Setter Property="DockPanel.Width" Value="155" />
                                 <Setter Property="DockPanel.HorizontalAlignment" Value="Left" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -159,9 +159,9 @@
                         </Style>
                     </Path.Style>
                 </Path>
-                <TextBlock DockPanel.Dock="Right"  Text="{Binding Key}" Foreground="{StaticResource defaultColor}" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="15 0"/>
+                <TextBlock DockPanel.Dock="Right"  Text="{Binding Key}" Foreground="{StaticResource defaultColor}" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="10 0"/>
             </DockPanel>
-            <ItemsControl ItemsSource="{Binding Elements}" AlternationCount="2"  >
+            <ItemsControl ItemsSource="{Binding Elements}" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel >

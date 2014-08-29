@@ -51,12 +51,11 @@ namespace ScrollerVizualizer
 
         public VizualizationViewModel(IHighlighterService scroller )
         {
-            VerticalOrientation = false;
+            VerticalOrientation = true;
             Elements = new ObservableCollection<VizualHighlightable>( scroller.Elements
                 .Where( x => (x as IVizualizableHighlightableElement) != null )
                 .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
                 .ToList() );
-            FirePropertyChanged( "Elements" );
             IsScrollerActive = scroller.IsHighlighting;
 
             if( scroller.Trigger != null )
@@ -110,8 +109,7 @@ namespace ScrollerVizualizer
 
             scroller.ElementRegisteredOrUnregistered += ( o, e ) =>
             {
-                Elements.Clear();
-                FirePropertyChanged( "Elements" );
+                if(Elements.Count > 0) Elements.Clear();
 
                 foreach( var ele in scroller.Elements
                     .Where( x => (x as IVizualizableHighlightableElement) != null )

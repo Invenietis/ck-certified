@@ -53,7 +53,7 @@ namespace SharedData
         {
             get
             {
-                return Config.User.GetOrSet<double>( "WindowOpacity", 0.5 );
+                return Config.User.GetOrSet<double>( "WindowOpacity", 1 );
             }
             set
             {

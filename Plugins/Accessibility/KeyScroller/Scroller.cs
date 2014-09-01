@@ -60,6 +60,35 @@ namespace Scroller
         public IService<ITriggerService> InputTrigger { get; set; }
 
         public event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
+        public event EventHandler<EventArgs> TriggerChanged;
+        public event EventHandler<EventArgs> HighliterStatusChanged;
+        public event EventHandler<HighlightEventArgs> BeginHighlight
+        {
+            add { _scrollingStrategy.BeginHighlightElement += value; }
+            remove { _scrollingStrategy.BeginHighlightElement -= value; }
+        }
+
+        public event EventHandler<HighlightEventArgs> EndHighlight
+        {
+            add { _scrollingStrategy.EndHighlightElement += value; }
+            remove { _scrollingStrategy.EndHighlightElement -= value; }
+        }
+
+        public ITrigger Trigger
+        {
+            get { return _currentTrigger; }
+            set
+            {
+                if( _currentTrigger == value ) return;
+                _currentTrigger = value;
+                FireTriggerChanged();
+            }
+        }
+
+        public HighlighterStatus Status
+        {
+            get { return IsHighlighting ? HighlighterStatus.Highlighting : HighlighterStatus.Paused; }
+        }
 
         IDictionary<string, string> IHighlighterService.RegisteredElements
         {
@@ -84,6 +113,11 @@ namespace Scroller
             {
                 return _registeredElements.Values.ToReadOnlyList();
             }
+        }
+
+        public IReadOnlyCollection<IHighlightableElement> Elements
+        {
+            get { return _registeredElements.Values.ToArray(); }
         }
 
         /// <summary>
@@ -113,7 +147,7 @@ namespace Scroller
             _timer = new DispatcherTimer();
 
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, Configuration.User.GetOrSet( "Speed", 1000 ) );
-
+            
             _registeredElements = new Dictionary<string, IHighlightableElement>();
             var conf = Configuration.User.GetOrSet<ScrollingElementConfiguration>( "ScrollableModules", new ScrollingElementConfiguration() );
             _disabledElements = conf.Select( m => m.InternalName ).ToList();
@@ -128,8 +162,12 @@ namespace Scroller
             _scrollingStrategy.SwitchTo( Configuration.User.GetOrSet( "Strategy", "ZoneScrollingStrategy" ) );
             Configuration.ConfigChanged += OnConfigChanged;
 
-            _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
-            InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
+            Trigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
+            InputTrigger.Service.RegisterFor( Trigger, OnInputTriggered );
+            _scrollingStrategy.StatusChanged += ( o, e ) =>
+            {
+                FireHighliterStatusChanged();
+            };
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -142,11 +180,11 @@ namespace Scroller
                 }
                 else if( e.Key == "Trigger" )
                 {
-                    if( _currentTrigger != null )
+                    if( Trigger != null )
                     {
-                        InputTrigger.Service.Unregister( _currentTrigger, OnInputTriggered );
-                        _currentTrigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
-                        InputTrigger.Service.RegisterFor( _currentTrigger, OnInputTriggered );
+                        InputTrigger.Service.Unregister( Trigger, OnInputTriggered );
+                        Trigger = Configuration.User.GetOrSet( "Trigger", InputTrigger.Service.DefaultTrigger );
+                        InputTrigger.Service.RegisterFor( Trigger, OnInputTriggered );
                     }
                 }
                 else if( e.Key == "ScrollableModules" )
@@ -171,7 +209,7 @@ namespace Scroller
 
         public void Stop()
         {
-            InputTrigger.Service.Unregister( _currentTrigger, OnInputTriggered );
+            InputTrigger.Service.Unregister( Trigger, OnInputTriggered );
             _scrollingStrategy.Stop();
         }
 
@@ -238,7 +276,6 @@ namespace Scroller
                     //Warning the strategy that an element has been unregistered
                     _scrollingStrategy.ElementUnregistered( ehep == null ? element : ehep );
                 }
-
                 if( ElementRegisteredOrUnregistered != null ) ElementRegisteredOrUnregistered( this, new HighlightElementRegisterEventArgs( element, targetModuleName, false, element.IsHighlightableTreeRoot ) );
             }
         }
@@ -260,7 +297,7 @@ namespace Scroller
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
-                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName )
+                    if( extensibleElement != null && extensibleElement.ElementName == extensibleElementName )
                         return extensibleElement.RegisterElementAt( position, element );
                     else return false;
                 } );
@@ -286,7 +323,7 @@ namespace Scroller
                 return BrowseTree( registeredElement, e =>
                 {
                     IExtensibleHighlightableElement extensibleElement = e as IExtensibleHighlightableElement;
-                    if( extensibleElement != null && extensibleElement.Name == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
+                    if( extensibleElement != null && extensibleElement.ElementName == extensibleElementName ) return extensibleElement.UnregisterElement( position, element );
                     else return false;
                 } );
             }
@@ -330,8 +367,34 @@ namespace Scroller
 
         private void OnInputTriggered( ITrigger t )
         {
+            FireOnTrigger();
             _scrollingStrategy.OnExternalEvent();
         }
+
+        void FireOnTrigger()
+        {
+            if( OnTrigger != null )
+                OnTrigger( this, new HighlightEventArgs( _scrollingStrategy.CurrentElement ) );
+        }
+
+        void FireTriggerChanged()
+        {
+            if(TriggerChanged != null) 
+                TriggerChanged(this, new EventArgs());
+        }
+
+        void FireHighliterStatusChanged()
+        {
+            if( HighliterStatusChanged != null )
+                HighliterStatusChanged( this, new EventArgs() );
+        }
+
+        #region IHighlighterService Members
+
+
+        public event EventHandler<HighlightEventArgs> OnTrigger;
+
+        #endregion
     }
 
 

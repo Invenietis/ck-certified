@@ -35,6 +35,13 @@ namespace CommonServices.Accessibility
     public interface IHighlighterService : IDynamicService
     {
         /// <summary>
+        /// The ITrigger that wrap the scroller trigger key
+        /// </summary>
+        ITrigger Trigger { get; }
+
+        HighlighterStatus Status { get; }
+
+        /// <summary>
         /// Gets if the highlighter is running or not (maybe stopped, or just paused).
         /// </summary>
         bool IsHighlighting { get; }
@@ -96,7 +103,45 @@ namespace CommonServices.Accessibility
 
         IDictionary<string, string> RegisteredElements { get; }
 
+        /// <summary>
+        /// The colection of the registered highlightable elements
+        /// </summary>
+        IReadOnlyCollection<IHighlightableElement> Elements { get; }
+
+
         event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
+
+        /// <summary>
+        /// Fired when an element is begin highlighted
+        /// </summary>
+        event EventHandler<HighlightEventArgs> BeginHighlight;
+
+        /// <summary>
+        /// Fired when the trigger key is pressed
+        /// </summary>
+        event EventHandler<HighlightEventArgs> OnTrigger;
+
+        /// <summary>
+        /// Fired when an element is being unhighlighted
+        /// </summary>
+        event EventHandler<HighlightEventArgs> EndHighlight;
+
+        /// <summary>
+        /// Fired whenever the scroller trigger changed
+        /// </summary>
+        event EventHandler<EventArgs> TriggerChanged;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        event EventHandler<EventArgs> HighliterStatusChanged;
+    }
+
+    public enum HighlighterStatus
+    {
+        None = 0,
+        Paused,
+        Highlighting
     }
 
     public class HighlightEventArgs : EventArgs
@@ -106,6 +151,13 @@ namespace CommonServices.Accessibility
             Element = element;
         }
 
+        public HighlightEventArgs( IHighlightableElement element,  IHighlightableElement root )
+        {
+            Element = element;
+            Root = root;
+        }
+
+        public IHighlightableElement Root { get; private set; }
         public IHighlightableElement Element { get; private set; }
     }
 

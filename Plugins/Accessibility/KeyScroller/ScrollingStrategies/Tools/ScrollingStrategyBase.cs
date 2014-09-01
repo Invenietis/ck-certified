@@ -29,12 +29,19 @@ using System.Windows;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
+using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace Scroller
 {
     public abstract class ScrollingStrategyBase : IScrollingStrategy, IHighlightableElement
     {
+
+        public event EventHandler<HighlightEventArgs> BeginHighlightElement;
+        public event EventHandler<HighlightEventArgs> EndHighlightElement;
+        public event EventHandler StatusChanged;
+
+        protected bool _isPaused;
         protected IPluginConfigAccessor Configuration { get; set; }
         protected DispatcherTimer Timer { get; set; }
         protected ScrollingDirective LastDirective { get; set; }
@@ -310,6 +317,8 @@ namespace Scroller
             if( Walker.Current != null )
             {
                 LastDirective = Walker.Current.BeginHighlight( new BeginScrollingInfo( Timer.Interval.Ticks, PreviousElement ), LastDirective );
+                var root = Walker.Current.IsHighlightableTreeRoot ? Walker.Current : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : this;
+                FireBeginHighlightElement( Walker.Current, root );
                 EnsureReactivity();
             }
         }
@@ -323,8 +332,27 @@ namespace Scroller
             if( previousElement != null )
             {
                 LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, previousElement, element ), LastDirective );
+                var root = previousElement.IsHighlightableTreeRoot ? previousElement : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : Walker.Current;
+                FireEndHighlightElement( previousElement, root );
                 EnsureReactivity();
             }
+        }
+
+        private void FireBeginHighlightElement(IHighlightableElement element, IHighlightableElement root )
+        {
+            if( BeginHighlightElement != null )
+                BeginHighlightElement( this, new HighlightEventArgs( element, root ) );
+        }
+
+        private void FireEndHighlightElement( IHighlightableElement element, IHighlightableElement root )
+        {
+            if( EndHighlightElement != null )
+                EndHighlightElement( this, new HighlightEventArgs( element, root ) );
+        }
+
+        void FireStatusChanged()
+        {
+            if( StatusChanged != null ) StatusChanged( this, new EventArgs() );
         }
 
         #region IScrollingStrategy Members
@@ -342,8 +370,13 @@ namespace Scroller
 
         public bool IsPaused
         {
-            get;
-            protected set;
+            get { return _isPaused; }
+            protected set
+            {
+                if( _isPaused == value ) return;
+                _isPaused = value;
+                FireStatusChanged();
+            }
         }
 
         public virtual void Setup( DispatcherTimer timer, Func<ICKReadOnlyList<IHighlightableElement>> getElements, IPluginConfigAccessor config )
@@ -408,8 +441,8 @@ namespace Scroller
         {
             if( !Timer.IsEnabled )
             {
-                IsPaused = false;
                 Timer.Start();
+                IsPaused = false;
             }
         }
 
@@ -497,6 +530,16 @@ namespace Scroller
         public bool IsHighlightableTreeRoot
         {
             get { return true; }
+        }
+
+        #endregion
+
+        #region IScrollingStrategy Members
+
+
+        public IHighlightableElement CurrentElement
+        {
+            get { return Walker.Current; }
         }
 
         #endregion

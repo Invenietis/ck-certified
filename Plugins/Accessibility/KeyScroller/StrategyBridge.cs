@@ -29,6 +29,7 @@ using System.Text;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;
+using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace Scroller
@@ -121,6 +122,60 @@ namespace Scroller
 
         #region IScrollingStrategy Members
 
+        public event EventHandler<HighlightEventArgs> BeginHighlightElement
+        {
+            add 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.BeginHighlightElement += value; 
+                }
+            }
+            remove 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.BeginHighlightElement -= value;
+                }
+            }
+        }
+
+        public event EventHandler<HighlightEventArgs> EndHighlightElement
+        {
+            add 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.EndHighlightElement += value; 
+                }
+            }
+            remove 
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.EndHighlightElement -= value;
+                }
+            }
+        }
+
+        public event EventHandler StatusChanged
+        {
+            add
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.StatusChanged += value;
+                }
+            }
+            remove
+            {
+                foreach( var strategy in Implementations.Values )
+                {
+                    strategy.StatusChanged -= value;
+                }
+            }
+        }
+
         public bool IsStarted
         {
             get { return _current.IsStarted; }
@@ -174,6 +229,11 @@ namespace Scroller
         public void ElementUnregistered( HighlightModel.IHighlightableElement element )
         {
             _current.ElementUnregistered( element );
+        }
+
+        public IHighlightableElement CurrentElement
+        {
+            get { return _current.CurrentElement; }
         }
 
         #endregion

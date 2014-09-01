@@ -46,10 +46,10 @@ namespace KeyboardEditor.ViewModels
             : base( root, wizardManager, false )
         {
             KeyboardVms = new List<KeyboardViewModel>();
+            _keyboards = new List<IKeyboard>( model );
             foreach( var keyboard in model )
             {
-                _keyboards.Add( keyboard );
-                                                                                //temporary
+                //temporary
                 if( root.KeyboardContext.Service.CurrentKeyboard != keyboard && keyboard.Name != "Prediction" )
                     KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }

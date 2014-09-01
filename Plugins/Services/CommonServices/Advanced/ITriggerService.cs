@@ -90,6 +90,9 @@ namespace CommonServices
         /// Source device
         /// </summary>
         TriggerDevice Source { get; }
+
+
+        string DisplayName { get; }
     }
 
     public class KeyDownEventArgs : EventArgs

@@ -409,10 +409,10 @@ namespace SimpleSkin.ViewModels
 
         private void UpdateHighlightBackground()
         {
-            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightBackground", (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" ) );
+            Color c = Context.Config[Layout].GetOrSet<Color>( "HighlightBackground", (Color)ColorConverter.ConvertFromString( "#FF9DC8EB" ) );
             SafeSet<Color>( c, ( v ) =>
             {
-                if( v == null ) _highlightBackground = (Color)ColorConverter.ConvertFromString( "#FFA2BDF2" );
+                if( v == null ) _highlightBackground = (Color)ColorConverter.ConvertFromString( "#FF9DC8EB" );
                 else _highlightBackground = v;
             } );
         }

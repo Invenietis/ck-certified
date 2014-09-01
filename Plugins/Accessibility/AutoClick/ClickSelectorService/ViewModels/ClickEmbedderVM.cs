@@ -31,7 +31,7 @@ using HighlightModel;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
-    public class ClickEmbedderVM : ObservableCollection<ClickVM>, INotifyPropertyChanged, IHighlightableElement
+    public class ClickEmbedderVM : ObservableCollection<ClickVM>, INotifyPropertyChanged, IVizualizableHighlightableElement
     {
         #region Variables & Properties
 
@@ -43,6 +43,12 @@ namespace CK.Plugins.AutoClick.ViewModel
 
         private string _imagePath;
         public string ImagePath { get { return _imagePath; } }
+
+        public string VectorImagePath
+        {
+            get;
+            private set;
+        }
 
         private int _index;
         public int Index { get { return _index; } set { _index = value; OnPropertyChanged( "Index" ); OnPropertyChanged( "NextClick" ); } }
@@ -114,6 +120,12 @@ namespace CK.Plugins.AutoClick.ViewModel
             }
 
             _changeSelectionCmd = new CK.Windows.App.VMCommand( DoSelect );
+            VectorImagePath = String.Empty;
+        }
+        public ClickEmbedderVM( ClicksVM holder, string name, string imagePath, string vectorPath, IList<ClickVM> clicks )
+            : this(holder, name, imagePath, clicks)
+        {
+            VectorImagePath = vectorPath;
         }
 
         #endregion
@@ -242,6 +254,15 @@ namespace CK.Plugins.AutoClick.ViewModel
         {
             get { return false; }
         }
+
+        #region IVizualizableHighlightableElement Members
+
+        public string ElementName
+        {
+            get { return Name; }
+        }
+
+        #endregion
     }
 
     #region EventHandlers / EventArgs

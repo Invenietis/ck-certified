@@ -49,7 +49,7 @@ namespace HighlightModel
         /// <summary>
         /// This is the name that identifies the IExtensibleHighlightableElement.
         /// </summary>
-        string Name { get; }
+        string ElementName { get; }
 
         /// <summary>
         /// The list of virtual children with the <see cref="ChildPosition"/>.Pre. In front of the list of Children

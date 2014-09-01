@@ -23,6 +23,7 @@
 
 using System;
 using CommonServices;
+using InputTrigger.Resources;
 
 namespace InputTrigger
 {
@@ -43,6 +44,38 @@ namespace InputTrigger
 
         public TriggerDevice Source { get; set; }
 
+        public string DisplayName 
+        {
+            get
+            {
+                if( Source == TriggerDevice.Keyboard )
+                {
+                    System.Windows.Forms.Keys keyName = (System.Windows.Forms.Keys) KeyCode;
+
+                    return keyName.ToString();
+                }
+                else if( Source == TriggerDevice.Pointer )
+                    return MouseClicFromCode( KeyCode );
+
+                return String.Empty;
+            }
+        }
+
         #endregion
+
+        string MouseClicFromCode( int code )
+        {
+            switch( code )
+            {
+                case 1:
+                    return R.LeftClick;
+                case 2:
+                    return R.RightClick;
+                case 3:
+                    return R.MiddleClick;
+            }
+
+            return String.Empty;
+        }
     }
 }

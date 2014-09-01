@@ -39,7 +39,7 @@ namespace MouseRadar
            PublicName = MouseRadarPlugin.PluginPublicName,
            Version = MouseRadarPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class MouseRadarPlugin : IPlugin, IHighlightableElement
+    public class MouseRadarPlugin : IPlugin, IVizualizableHighlightableElement
     {
         internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
         Guid PluginGuid = new Guid( PluginIdString );
@@ -305,5 +305,24 @@ namespace MouseRadar
 
         #endregion
 
+
+        #region IVizualizableHighlightableElement Members
+
+        public string ElementName
+        {
+            get { return PluginPublicName; }
+        }
+
+        #endregion
+
+        #region IVizualizableHighlightableElement Members
+
+
+        public string VectorImagePath
+        {
+            get { return "F1M-291.695,57.6518L-283.906,49.558 -312.88,21.6882C-308.319,18.7482,-302.404,16.1439,-294.691,14.278L-347.906,-5.82477 -327.806,48.5737C-327.806,48.5737,-329.177,38.7078,-321.354,29.1245L-291.695,57.6518z"; }
+        }
+
+        #endregion
     }
 }

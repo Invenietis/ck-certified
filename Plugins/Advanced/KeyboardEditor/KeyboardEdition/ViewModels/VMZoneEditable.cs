@@ -399,33 +399,18 @@ namespace KeyboardEditor.ViewModels
 
         #region KeyBinding
 
-        internal override void OnMoveDown( int pixels )
+        internal int GetMaximumMovementAmplitude( MoveDirection direction, int pixels )
         {
-            foreach( VMKeyEditable key in Keys )
-            {
-                key.OnMoveDown( pixels );
-            }
-        }
-        internal override void OnMoveUp( int pixels )
-        {
-            foreach( VMKeyEditable key in Keys )
-            {
-                key.OnMoveUp( pixels );
-            }
-        }
-        internal override void OnMoveLeft( int pixels )
-        {
-            foreach( VMKeyEditable key in Keys )
-            {
-                key.OnMoveLeft( pixels );
-            }
+            return Keys.Count > 0 ? Keys.Min( k => k.GetMaximumMovementAmplitude( direction, pixels ) ) : 0;
         }
 
-        internal override void OnMoveRight( int pixels )
+        internal override void OnMove( MoveDirection direction, int pixels, bool arrangeMovementAmplitude = true )
         {
+            if( arrangeMovementAmplitude ) pixels = GetMaximumMovementAmplitude( direction, pixels );
+
             foreach( VMKeyEditable key in Keys )
             {
-                key.OnMoveRight( pixels );
+                key.OnMove( direction, pixels, false );
             }
         }
 

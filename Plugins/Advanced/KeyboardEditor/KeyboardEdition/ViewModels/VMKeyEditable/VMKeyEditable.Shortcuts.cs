@@ -34,24 +34,44 @@ namespace KeyboardEditor.ViewModels
 
     public partial class VMKeyEditable : VMContextElementEditable, IHandleDragDrop
     {
-        internal override void OnMoveUp( int pixels )
+        internal int GetMaximumMovementAmplitude( MoveDirection direction, int pixels )
         {
-            Y -= pixels;
+            switch( direction )
+            {
+                case MoveDirection.Left:
+                    return (X - pixels) > 0 ? pixels : X;
+                case MoveDirection.Right:
+                    return X + Width + pixels < Context.KeyboardVM.W ? pixels : Context.KeyboardVM.W - X - Width;
+                case MoveDirection.Top:
+                    return (Y - pixels) > 0 ? pixels : Y;
+                case MoveDirection.Bottom:
+                    return Y + Height + pixels < Context.KeyboardVM.H ? pixels : Context.KeyboardVM.H - Y - Height;
+            }
+
+            return -1;
         }
 
-        internal override void OnMoveLeft( int pixels )
+        internal override void OnMove( MoveDirection direction, int pixels, bool arrangeMovementAmplitude = true )
         {
-            X -= pixels;
-        }
+            if( arrangeMovementAmplitude ) pixels = GetMaximumMovementAmplitude( direction, pixels );
 
-        internal override void OnMoveDown( int pixels )
-        {
-            Y += pixels;
-        }
-
-        internal override void OnMoveRight( int pixels )
-        {
-            X += pixels;
+            switch( direction )
+            {
+                case MoveDirection.Left:
+                    X -= pixels;
+                    break;
+                case MoveDirection.Right:
+                    X += pixels;
+                    break;
+                case MoveDirection.Top:
+                    Y -= pixels;
+                    break;
+                case MoveDirection.Bottom:
+                    Y += pixels;
+                    break;
+                default:
+                    break;
+            }
         }
 
         internal override void OnSuppr()

@@ -44,6 +44,14 @@ namespace KeyboardEditor.ViewModels
         Suppr = 7
     }
 
+    public enum MoveDirection
+    {
+        Left,
+        Right,
+        Top,
+        Bottom
+    }
+
     public abstract class VMContextElementEditable : VMBase
     {
         VMContextEditable _context;
@@ -107,7 +115,6 @@ namespace KeyboardEditor.ViewModels
             set
             {
                 _isBeingRenamed = value;
-                //Console.Out.WriteLine( "BeginRenamed : " + _isBeingRenamed );
                 OnPropertyChanged( "IsBeingRenamed" );
             }
         }
@@ -387,7 +394,7 @@ namespace KeyboardEditor.ViewModels
             get
             {
                 if( _upCommand == null )
-                    _upCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveUp( fast ); else OnMoveUp( slow ); } );
+                    _upCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMove( MoveDirection.Top, fast ); else OnMove( MoveDirection.Top, slow ); } );
                 return _upCommand;
             }
         }
@@ -396,7 +403,7 @@ namespace KeyboardEditor.ViewModels
             get
             {
                 if( _downCommand == null )
-                    _downCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveDown( fast ); else OnMoveDown( slow ); } );
+                    _downCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMove( MoveDirection.Bottom, fast ); else OnMove( MoveDirection.Bottom, slow ); } );
                 return _downCommand;
             }
         }
@@ -405,7 +412,7 @@ namespace KeyboardEditor.ViewModels
             get
             {
                 if( _leftCommand == null )
-                    _leftCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveLeft( fast ); else OnMoveLeft( slow ); } );
+                    _leftCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMove( MoveDirection.Left, fast ); else OnMove( MoveDirection.Left, slow ); } );
                 return _leftCommand;
             }
         }
@@ -414,7 +421,7 @@ namespace KeyboardEditor.ViewModels
             get
             {
                 if( _rightCommand == null )
-                    _rightCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMoveRight( fast ); else OnMoveRight( slow ); } );
+                    _rightCommand = new VMCommand<string>( s => { if( s == "fast" ) OnMove( MoveDirection.Right, fast ); else OnMove( MoveDirection.Right, slow ); } );
                 return _rightCommand;
             }
         }
@@ -489,10 +496,7 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
-        internal virtual void OnMoveUp( int pixels ) { }
-        internal virtual void OnMoveLeft( int pixels ) { }
-        internal virtual void OnMoveDown( int pixels ) { }
-        internal virtual void OnMoveRight( int pixels ) { }
+        internal virtual void OnMove( MoveDirection direction,  int pixels, bool arrangeMovementAmplitude = true ) { }
         internal virtual void OnEscape()
         {
             IsBeingRenamed = false;

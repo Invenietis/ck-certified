@@ -116,24 +116,9 @@ namespace KeyboardEditor.ViewModels
             }
         }
 
-        internal override void OnMoveUp( int pixels )
+        internal override void OnMove( MoveDirection direction, int pixels, bool checkValidMovement = true )
         {
-            ActualParent.OnMoveUp( pixels );
-        }
-
-        internal override void OnMoveLeft( int pixels )
-        {
-            ActualParent.OnMoveLeft( pixels );
-        }
-
-        internal override void OnMoveDown( int pixels )
-        {
-            ActualParent.OnMoveDown( pixels );
-        }
-
-        internal override void OnMoveRight( int pixels )
-        {
-            ActualParent.OnMoveRight( pixels );
+            ActualParent.OnMove( direction, pixels, checkValidMovement );
         }
 
         internal override void OnSuppr()

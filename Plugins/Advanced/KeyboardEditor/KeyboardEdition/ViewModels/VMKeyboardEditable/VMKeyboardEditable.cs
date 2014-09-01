@@ -419,35 +419,33 @@ namespace KeyboardEditor.ViewModels
         {
         }
 
-        internal override void OnMoveUp( int pixels )
+        internal void OnMoveUp( int pixels, bool checkValidMovement = true )
         {
-            foreach( VMZoneEditable zone in Zones )
-            {
-                zone.OnMoveUp( pixels );
-            }
+            OnMove( MoveDirection.Top, pixels, true );
         }
 
-        internal override void OnMoveLeft( int pixels )
+        internal void OnMoveLeft( int pixels, bool checkValidMovement = true )
         {
-            foreach( VMZoneEditable zone in Zones )
-            {
-                zone.OnMoveLeft( pixels );
-            }
+            OnMove( MoveDirection.Left, pixels, true );
         }
 
-        internal override void OnMoveDown( int pixels )
+        internal void OnMoveDown( int pixels, bool checkValidMovement = true )
         {
-            foreach( VMZoneEditable zone in Zones )
-            {
-                zone.OnMoveDown( pixels );
-            }
+            OnMove( MoveDirection.Bottom, pixels, true );
         }
 
-        internal override void OnMoveRight( int pixels )
+        internal void OnMoveRight( int pixels, bool checkValidMovement = true )
         {
+            OnMove( MoveDirection.Right, pixels, true );
+        }
+
+        internal override void OnMove( MoveDirection direction, int pixels, bool arrangeMovementAmplitude = true )
+        {
+            if( arrangeMovementAmplitude ) pixels = Zones.Where( z => z.Keys.Count > 0 ).Min( z => z.GetMaximumMovementAmplitude( direction, pixels ) );
+
             foreach( VMZoneEditable zone in Zones )
             {
-                zone.OnMoveRight( pixels );
+                zone.OnMove( direction, pixels, false );
             }
         }
 

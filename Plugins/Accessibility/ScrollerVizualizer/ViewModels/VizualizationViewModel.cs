@@ -26,12 +26,15 @@ namespace ScrollerVizualizer
             {
                 _isScrollerActive = value;
                 FirePropertyChanged( "IsScrollerActive" );
+                
+                if( value ) FireToggleIn();
+                else FireToggleOut();
             }
         }
 
         public string Key
         {
-            get { return R.Trigger + _key; }
+            get { return _key; }
             set
             {
                 _key = value;
@@ -51,23 +54,26 @@ namespace ScrollerVizualizer
 
         public VizualizationViewModel(IHighlighterService scroller )
         {
-            VerticalOrientation = true;
+            VerticalOrientation = false;
             Elements = new ObservableCollection<VizualHighlightable>( scroller.Elements
                 .Where( x => (x as IVizualizableHighlightableElement) != null )
                 .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
                 .ToList() );
             IsScrollerActive = scroller.IsHighlighting;
+        }
 
+        public void Init( IHighlighterService scroller )
+        {
             if( scroller.Trigger != null )
             {
                 Key = scroller.Trigger.DisplayName;
             }
-            scroller.HighliterStatusChanged += (o, e) =>
+            scroller.HighliterStatusChanged += ( o, e ) =>
             {
                 IsScrollerActive = scroller.IsHighlighting;
             };
 
-            scroller.TriggerChanged += (o, e) =>
+            scroller.TriggerChanged += ( o, e ) =>
             {
                 Key = scroller.Trigger.DisplayName;
             };
@@ -78,8 +84,8 @@ namespace ScrollerVizualizer
                 if( v != null && scroller.IsHighlighting )
                     v.IsSelected = true;
             };
-            
-            scroller.BeginHighlight += (o, e) => 
+
+            scroller.BeginHighlight += ( o, e ) =>
             {
                 var v = Elements.FirstOrDefault( x => x.Element == e.Root );
 
@@ -91,7 +97,7 @@ namespace ScrollerVizualizer
                     if( e.Element != e.Root ) v.IsSelected = true;
                     else v.IsSelected = false;
                 }
-                
+
             };
 
             scroller.EndHighlight += ( o, e ) =>
@@ -104,12 +110,11 @@ namespace ScrollerVizualizer
                     var c = v.Children.FirstOrDefault( x => x.IsHighlighted );
                     if( c != null ) c.IsHighlighted = false;
                 }
-
             };
 
             scroller.ElementRegisteredOrUnregistered += ( o, e ) =>
             {
-                if(Elements.Count > 0) Elements.Clear();
+                if( Elements.Count > 0 ) Elements.Clear();
 
                 foreach( var ele in scroller.Elements
                     .Where( x => (x as IVizualizableHighlightableElement) != null )
@@ -118,6 +123,8 @@ namespace ScrollerVizualizer
                 {
                     Elements.Add( ele );
                 }
+
+                FireToggleIn();
             };
         }
 
@@ -129,9 +136,22 @@ namespace ScrollerVizualizer
             }
         }
 
+        void FireToggleIn()
+        {
+            if( ToggleIn != null ) ToggleIn( this, new EventArgs() );
+        }
+
+        void FireToggleOut()
+        {
+            if( ToggleOut != null ) ToggleOut( this, new EventArgs() );
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public event EventHandler ToggleIn;
+        public event EventHandler ToggleOut;
 
         #endregion
     }

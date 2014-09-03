@@ -77,6 +77,7 @@ namespace ScrollerVizualizer
             _windowVm = new VizualizationViewModel( highlighter );
             _window = new Vizualization( _windowVm );
             _window.Show();
+            _windowVm.Init( highlighter );
             //_windowVm.Elements.CollectionChanged += ( o, e ) => 
             //{
             //    if( _windowVm.Elements.Count == 0 )

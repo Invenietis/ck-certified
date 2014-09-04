@@ -31,7 +31,7 @@ using HighlightModel;
 
 namespace CK.Plugins.AutoClick.ViewModel
 {
-    public class ClickEmbedderVM : ObservableCollection<ClickVM>, INotifyPropertyChanged, IVizualizableHighlightableElement
+    public class ClickEmbedderVM : ObservableCollection<ClickVM>, INotifyPropertyChanged, IVisualizableHighlightableElement
     {
         #region Variables & Properties
 

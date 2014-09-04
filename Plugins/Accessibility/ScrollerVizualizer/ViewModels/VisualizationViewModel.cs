@@ -7,17 +7,17 @@ using HighlightModel;
 using CommonServices.Accessibility;
 using SimpleSkin.ViewModels;
 using System.ComponentModel;
-using ScrollerVizualizer.Resources;
+using ScrollerVisualizer.Resources;
 
-namespace ScrollerVizualizer
+namespace ScrollerVisualizer
 {
-    public class VizualizationViewModel : INotifyPropertyChanged
+    public class VisualizationViewModel : INotifyPropertyChanged
     {
         bool _isScrollerActive;
         string _key;
         bool _verticalOrientation;
 
-        public ObservableCollection<VizualHighlightable> Elements { get; private set; }
+        public ObservableCollection<VisualHighlightable> Elements { get; private set; }
 
         public bool IsScrollerActive
         {
@@ -52,18 +52,19 @@ namespace ScrollerVizualizer
             }
         }
 
-        public VizualizationViewModel(IHighlighterService scroller )
+        public VisualizationViewModel(IHighlighterService scroller )
         {
-            VerticalOrientation = false;
-            Elements = new ObservableCollection<VizualHighlightable>( scroller.Elements
-                .Where( x => (x as IVizualizableHighlightableElement) != null )
-                .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
+            VerticalOrientation = true;    
+            Elements = new ObservableCollection<VisualHighlightable>( scroller.Elements
+                .Where( x => (x as IVisualizableHighlightableElement) != null )
+                .Select( x => new VisualHighlightable( (IVisualizableHighlightableElement)x ) )
                 .ToList() );
-            IsScrollerActive = scroller.IsHighlighting;
+            _isScrollerActive = true;
         }
 
         public void Init( IHighlighterService scroller )
         {
+
             if( scroller.Trigger != null )
             {
                 Key = scroller.Trigger.DisplayName;
@@ -97,7 +98,6 @@ namespace ScrollerVizualizer
                     if( e.Element != e.Root ) v.IsSelected = true;
                     else v.IsSelected = false;
                 }
-
             };
 
             scroller.EndHighlight += ( o, e ) =>
@@ -117,14 +117,12 @@ namespace ScrollerVizualizer
                 if( Elements.Count > 0 ) Elements.Clear();
 
                 foreach( var ele in scroller.Elements
-                    .Where( x => (x as IVizualizableHighlightableElement) != null )
-                    .Select( x => new VizualHighlightable( (IVizualizableHighlightableElement)x ) )
+                    .Where( x => (x as IVisualizableHighlightableElement) != null )
+                    .Select( x => new VisualHighlightable( (IVisualizableHighlightableElement)x ) )
                     .ToList() )
                 {
                     Elements.Add( ele );
                 }
-
-                FireToggleIn();
             };
         }
 

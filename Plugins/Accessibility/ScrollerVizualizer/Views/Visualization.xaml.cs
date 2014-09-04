@@ -15,14 +15,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CK.Windows;
 
-namespace ScrollerVizualizer
+namespace ScrollerVisualizer
 {
     /// <summary>
     /// Interaction logic for Vizualization.xaml
     /// </summary>
-    public partial class Vizualization : CKWindow
+    public partial class Visualization : CKWindow
     {
-        public Vizualization(VizualizationViewModel vm)
+        public Visualization(VisualizationViewModel vm)
         {
             InitializeComponent();
             DataContext = vm;
@@ -31,9 +31,9 @@ namespace ScrollerVizualizer
             Storyboard tIn = (Storyboard) this.Resources["toggleIn"];
             Storyboard tOut = (Storyboard) this.Resources["toggleOut"];
             StackPanel sp = (StackPanel) FindName( "subPanel" );
-            
-            //vm.ToggleIn += ( o, e ) => tIn.Begin();
-            //vm.ToggleOut += ( o, e ) => tOut.Begin();
+            this.Name = "main";
+            vm.ToggleIn += ( o, e ) => tIn.Begin();
+            vm.ToggleOut += ( o, e ) => tOut.Begin();
         }
 
         protected override void OnChildDesiredSizeChanged( UIElement child )
@@ -44,15 +44,15 @@ namespace ScrollerVizualizer
             Console.WriteLine( child.GetValue(FrameworkElement.NameProperty));       
         }
 
-        protected override bool IsDraggableVisual( DependencyObject visualElement )
-        {
-            if( visualElement is ButtonBase || visualElement.FindParent( x => x is ButtonBase ) != null )
-            {
+        //protected override bool IsDraggableVisual( DependencyObject visualElement )
+        //{
+        //    if( visualElement is ButtonBase || visualElement.FindParent( x => x is ButtonBase ) != null )
+        //    {
 
-                return false;
-            }
-            return true;
-        }
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         private void ToggleButton_Click( object sender, RoutedEventArgs e )
         {

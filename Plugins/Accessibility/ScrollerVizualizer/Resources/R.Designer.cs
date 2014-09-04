@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ScrollerVizualizer.Resources {
+namespace ScrollerVisualizer.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ScrollerVizualizer.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ScrollerVizualizer.Resources.R", typeof(R).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ScrollerVisualizer.Resources.R", typeof(R).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

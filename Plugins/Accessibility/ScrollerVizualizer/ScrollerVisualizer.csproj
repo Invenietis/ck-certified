@@ -7,8 +7,8 @@
     <ProjectGuid>{AA0F79DA-3BAB-4F41-9FF5-77C5809DB60D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScrollerVizualizer</RootNamespace>
-    <AssemblyName>ScrollerVizualizer</AssemblyName>
+    <RootNamespace>ScrollerVisualizer</RootNamespace>
+    <AssemblyName>ScrollerVisualizer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
@@ -120,12 +120,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\VizualHighlightable.cs" />
+    <Compile Include="ViewModels\VisualHighlightable.cs" />
     <Compile Include="ScrollerVizualizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\VizualizationViewModel.cs" />
-    <Compile Include="Views\Vizualization.xaml.cs">
-      <DependentUpon>Vizualization.xaml</DependentUpon>
+    <Compile Include="ViewModels\VisualizationViewModel.cs" />
+    <Compile Include="Views\Visualization.xaml.cs">
+      <DependentUpon>Visualization.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +161,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Vizualization.xaml">
+    <Page Include="Views\Visualization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace ScrollerVizualizer
+namespace ScrollerVisualizer
 {
     public class ItemControlConverter : IMultiValueConverter
     {

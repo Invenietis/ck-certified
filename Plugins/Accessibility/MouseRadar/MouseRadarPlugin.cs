@@ -39,7 +39,7 @@ namespace MouseRadar
            PublicName = MouseRadarPlugin.PluginPublicName,
            Version = MouseRadarPlugin.PluginIdVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
-    public class MouseRadarPlugin : IPlugin, IVizualizableHighlightableElement
+    public class MouseRadarPlugin : IPlugin, IVisualizableHighlightableElement
     {
         internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
         Guid PluginGuid = new Guid( PluginIdString );

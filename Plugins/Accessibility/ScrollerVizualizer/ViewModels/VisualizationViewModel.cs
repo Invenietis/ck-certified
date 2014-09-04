@@ -95,7 +95,7 @@ namespace ScrollerVisualizer
                     v.IsHighlighted = true;
                     var c = v.Children.FirstOrDefault( x => x.Element == e.Element );
                     if( c != null ) c.IsHighlighted = true;
-                    if( e.Element != e.Root ) v.IsSelected = true;
+                    if( e.Element != e.Root ) v.IsSelected = true;          
                     else v.IsSelected = false;
                 }
             };

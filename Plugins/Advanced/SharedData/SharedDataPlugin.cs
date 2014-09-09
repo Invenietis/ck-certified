@@ -24,6 +24,10 @@ namespace SharedData
         const string PluginIdVersion = "1.0.0";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
+
+        /// <summary>
+        /// Never use this property to set a config property, because this shotcut the changing/changed mecanism.
+        /// </summary>
         public IPluginConfigAccessor Config { get; set; }
         
         #region IPlugin Members
@@ -35,6 +39,13 @@ namespace SharedData
 
         public void Start()
         {
+            Config.ConfigChanged += Config_ConfigChanged;
+        }
+
+        void Config_ConfigChanged( object sender, ConfigChangedEventArgs e )
+        {
+            Console.WriteLine( e.Key );
+            OnSharedPropertyChanged( e.Key );
         }
 
         public void Stop()

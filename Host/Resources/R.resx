@@ -417,4 +417,7 @@
   <data name="TurboScrollingSpeed" xml:space="preserve">
     <value>Turbo scrolling speed</value>
   </data>
+  <data name="WindowConfig" xml:space="preserve">
+    <value>Window options</value>
+  </data>
 </root>

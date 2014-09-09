@@ -889,6 +889,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Window options.
+        /// </summary>
+        public static string WindowConfig {
+            get {
+                return ResourceManager.GetString("WindowConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Word Prediction configuration.
         /// </summary>
         public static string WordPredictionConfig {

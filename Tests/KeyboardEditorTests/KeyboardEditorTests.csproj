@@ -48,12 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugins\Advanced\ContextEditor\KeyboardEditor.csproj">
-      <Project>{30adb3d6-ed05-403d-beec-9862200126b0}</Project>
-      <Name>KeyboardEditor</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

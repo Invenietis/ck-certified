@@ -889,11 +889,38 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Window options.
+        ///   Looks up a localized string similar to Change background color.
+        /// </summary>
+        public static string WindowBackgroundColor {
+            get {
+                return ResourceManager.GetString("WindowBackgroundColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change borders color.
+        /// </summary>
+        public static string WindowBorderBrush {
+            get {
+                return ResourceManager.GetString("WindowBorderBrush", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Window Configuration.
         /// </summary>
         public static string WindowConfig {
             get {
                 return ResourceManager.GetString("WindowConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change opacity.
+        /// </summary>
+        public static string WindowOpacity {
+            get {
+                return ResourceManager.GetString("WindowOpacity", resourceCulture);
             }
         }
         

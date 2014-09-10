@@ -7,6 +7,8 @@
                     xmlns:pluginConfig="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config"
                     xmlns:res="clr-namespace:Host.Resources"
                     xmlns:local="clr-namespace:Host.VM"
+                    xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
+                    xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
                     xmlns:highlightModel="clr-namespace:HighlightModel;assembly=HighlightModel">
 
     <ResourceDictionary.MergedDictionaries>
@@ -297,7 +299,7 @@
                 <DockPanel Visibility="{Binding Visible, Converter={StaticResource converter}}">
                     <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 10 0" MinWidth="80" />
                     <StackPanel>
-                        <Slider Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" TickFrequency="{Binding Interval}" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Value}"/>
+                        <Slider IsDirectionReversed="{Binding IsDirectionReversed}" Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" TickFrequency="{Binding Interval}" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Value}"/>
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding FormattedText}" />
                     </StackPanel>
                 </DockPanel>
@@ -315,6 +317,15 @@
                         <ToggleButton Content="{Binding ToggleContent}" Focusable="False" x:Name="StartReccording" IsChecked="{Binding IsRecording}" />
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding SelectedKey}" />
                     </StackPanel>
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(media:Color)}">
+            <DataTemplate>
+                <DockPanel Margin="0 5 0 5">
+                    <TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" />
+                    <cce:ColorPicker Width="40" Margin="5,0" SelectedColor="{Binding Value}"  HorizontalAlignment="Right"/>
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>

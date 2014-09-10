@@ -417,4 +417,16 @@
   <data name="TurboScrollingSpeed" xml:space="preserve">
     <value>Vitesse de défilement "turbo"</value>
   </data>
+  <data name="WindowBackgroundColor" xml:space="preserve">
+    <value>Changer la couleur de fond</value>
+  </data>
+  <data name="WindowBorderBrush" xml:space="preserve">
+    <value>Changer la couleur des bordures</value>
+  </data>
+  <data name="WindowConfig" xml:space="preserve">
+    <value>Configurer l'apparence des fenêtres</value>
+  </data>
+  <data name="WindowOpacity" xml:space="preserve">
+    <value>Changer l'opacité</value>
+  </data>
 </root>

@@ -44,7 +44,6 @@ namespace SharedData
 
         void Config_ConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            Console.WriteLine( e.Key );
             OnSharedPropertyChanged( e.Key );
         }
 

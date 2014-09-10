@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Xml;
 using CK.Plugin;
 using CK.Plugin.Config;
@@ -51,26 +52,37 @@ namespace Host.VM
         bool _isReady = false;
 
         SliderConfigItem _windowOpacitySlider;
+        ConfigItemProperty<Color> _windowBackgroundColor;
+        ConfigItemProperty<Color> _windowBorderBrush;
 
         public WindowConfigViewModel( string displayName, AppViewModel app )
             : base( "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}", displayName, app )
         {
             _app = app;
             DisplayName = displayName;
+
+            //this setiing page always need SharedDataPlugin
+            this.ActivatePlugin = true;
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
 
-            var a = this.AddActivableSection( R.Scrolling, R.ScrollConfig );
+            var g = this.AddGroup();
 
-            var g = a.AddGroup();
+            _windowBackgroundColor = new ConfigItemProperty<Color>( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, e => e.WindowBackgroundColor ) );
+            _windowBackgroundColor.DisplayName = R.WindowBackgroundColor;
+            g.Items.Add( _windowBackgroundColor );
+
+            _windowBorderBrush = new ConfigItemProperty<Color>( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, e => e.WindowBorderBrush ) );
+            _windowBorderBrush.DisplayName = R.WindowBorderBrush;
+            g.Items.Add( _windowBorderBrush );
 
             _windowOpacitySlider = new SliderConfigItem( ConfigManager, this, ReflectionHelper.GetPropertyInfo( this, h => h.WindowOpacity ) );
-            _windowOpacitySlider.DisplayName = R.TurboScrollingSpeed;
+            _windowOpacitySlider.DisplayName = R.WindowOpacity;
             _windowOpacitySlider.SetFormatFunction( i => string.Format( "{0} %", i ) );
-            _windowOpacitySlider.Minimum = 1;
+            _windowOpacitySlider.Minimum = 0;
             _windowOpacitySlider.Maximum = 100;
             _windowOpacitySlider.Interval = 5;
             g.Items.Add( _windowOpacitySlider );
@@ -85,7 +97,41 @@ namespace Host.VM
             get { return (Config != null) ? (int)(Config.GetOrSet<double>( "WindowOpacity", 1 ) * 100) : 100; }
             set
             {
-                if( Config != null ) Config["WindowOpacity"] = ((double)value)/100;
+                if( Config != null )
+                {
+                    if( value == 0 ) Config["WindowOpacity"] = 0.01;
+                    else Config["WindowOpacity"] = ((double)value) / 100;
+                }
+            }
+        }
+
+        public Color WindowBackgroundColor
+        {
+            get 
+            { 
+                return Config != null ? Config.GetOrSet<Color>( "WindowBackgroundColor", (Color)ColorConverter.ConvertFromString( "#4F4F4F" ) ) : (Color)ColorConverter.ConvertFromString( "#4F4F4F" ); 
+            }
+            set
+            {
+                if( Config != null )
+                {
+                    Config["WindowBackgroundColor"] = value;
+                }
+            }
+        }
+
+        public Color WindowBorderBrush
+        {
+            get
+            {
+                return Config != null ? Config.GetOrSet<Color>( "WindowBorderBrush", (Color)ColorConverter.ConvertFromString( "#4F4F4F" ) ) : (Color)ColorConverter.ConvertFromString( "#4F4F4F" );
+            }
+            set
+            {
+                if( Config != null )
+                {
+                    Config["WindowBorderBrush"] = value;
+                }
             }
         }
 

@@ -64,7 +64,10 @@ namespace Scroller
         public event EventHandler<EventArgs> HighliterStatusChanged;
         public event EventHandler<HighlightEventArgs> BeginHighlight
         {
-            add { _scrollingStrategy.BeginHighlightElement += value; }
+            add 
+            { 
+                _scrollingStrategy.BeginHighlightElement += value; 
+            }
             remove { _scrollingStrategy.BeginHighlightElement -= value; }
         }
 

@@ -109,7 +109,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+    <ProjectReference Include="..\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6c0f25a7-6468-4d02-aba4-dc7f1ad209e1}</Project>
       <Name>CK.WPF.Controls</Name>
     </ProjectReference>

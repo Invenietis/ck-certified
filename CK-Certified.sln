@@ -119,6 +119,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyScrollerTests", "Tests\K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeMode", "Plugins\Accessibility\SnakeMode\SnakeMode.csproj", "{D165040D-00F9-47AA-9883-3843B039A16A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrollerVisualizer", "Plugins\Accessibility\ScrollerVizualizer\ScrollerVisualizer.csproj", "{AA0F79DA-3BAB-4F41-9FF5-77C5809DB60D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "Plugins\Advanced\SharedData\SharedData.csproj", "{373C34BF-D8D7-47B1-AB17-6F7FC221E94D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardEditor", "Plugins\Advanced\KeyboardEditor\KeyboardEditor.csproj", "{30ADB3D6-ED05-403D-BEEC-9862200126B0}"

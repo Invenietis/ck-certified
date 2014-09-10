@@ -6,14 +6,14 @@ using System.Text;
 using CommonServices.Accessibility;
 using HighlightModel;
 
-namespace ScrollerVizualizer
+namespace ScrollerVisualizer
 {
-    public class VizualHighlightable : INotifyPropertyChanged
+    public class VisualHighlightable : INotifyPropertyChanged
     {
         bool _isHighlighted;
         bool _isSelected;
-        public VizualHighlightable Parent { get; set; }
-        public List<VizualHighlightable> Children { get; set; }
+        public VisualHighlightable Parent { get; set; }
+        public List<VisualHighlightable> Children { get; set; }
 
         public bool HasChildren { get { return Children.Count > 0; } }
 
@@ -44,14 +44,14 @@ namespace ScrollerVizualizer
         /// <summary>
         /// The wrapped vizualizable elemen
         /// </summary>
-        public IVizualizableHighlightableElement Element { get; private set; }
+        public IVisualizableHighlightableElement Element { get; private set; }
 
-        public VizualHighlightable( IVizualizableHighlightableElement element, VizualHighlightable parent = null )
+        public VisualHighlightable( IVisualizableHighlightableElement element, VisualHighlightable parent = null )
         {
             Element = element;
             Children = element.Children
-                .Where( x => (x as IVizualizableHighlightableElement) != null )
-                .Select( x => new VizualHighlightable( x as IVizualizableHighlightableElement, this ) )
+                .Where( x => (x as IVisualizableHighlightableElement) != null )
+                .Select( x => new VisualHighlightable( x as IVisualizableHighlightableElement, this ) )
                 .ToList();
 
             Parent = parent;

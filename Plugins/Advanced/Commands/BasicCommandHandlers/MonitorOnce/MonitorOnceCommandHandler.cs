@@ -128,7 +128,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         "monitoronce",
                                         R.MonitorOnceProtocolTitle,
                                         R.MonitorOnceProtocolDescription,

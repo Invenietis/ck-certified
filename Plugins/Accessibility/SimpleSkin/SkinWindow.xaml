@@ -1,25 +1,17 @@
-﻿<ckwincore:CKNoFocusWindow x:Class="SimpleSkin.SkinWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:local="clr-namespace:SimpleSkin"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:view="http://schemas.civikey.org/StandardViews"
-    xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
-    xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
-    xmlns:vm="clr-namespace:SimpleSkin.ViewModels"
-    xmlns:helpers="clr-namespace:SimpleSkin.Helpers"
-    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"         
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    WindowStartupLocation="Manual"
-    Title="Clavier Civikey"
-    Topmost="True" WindowStyle="None"
-    MinHeight="40" MinWidth="40"
-    Height="250"
-    Width="600"
-    ShowInTaskbar="False"
-    ShowActivated="False"
-    AllowsTransparency="True" >
+﻿<ckwincore:CKNoFocusWindow x:Class="SimpleSkin.SkinWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:SimpleSkin" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:view="http://schemas.civikey.org/StandardViews" xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls" xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core" xmlns:vm="clr-namespace:SimpleSkin.ViewModels" xmlns:helpers="clr-namespace:SimpleSkin.Helpers" xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+                           WindowStartupLocation="Manual" 
+                           Title="Clavier Civikey" 
+                           Topmost="True" 
+                           WindowStyle="None" 
+                           MinHeight="40" 
+                           MinWidth="40" 
+                           ShowInTaskbar="False" 
+                           ShowActivated="False" 
+                           AllowsTransparency="True" 
+                           Height="250" Width="600">
+    
     <ckwincore:CKWindow.Background>
-        <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}"/>
+        <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}" />
     </ckwincore:CKWindow.Background>
 
     <Window.Resources>
@@ -29,12 +21,12 @@
 
     <view:ResizableContainer BorderBrush="{Binding KeyboardVM.KeyboardBorderBrush}" BorderThickness="{Binding KeyboardVM.KeyboardBorderThickness}">
         <view:ResizableContainer.Content>
-            <Grid>
-                <Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />
-                <Viewbox Stretch="Fill" >
-                    <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
-                </Viewbox>
-            </Grid>
+            <!--<Grid>-->
+            <!--<Image Stretch="None" helpers:DraggableVisualAttachedProperty.DraggableVisual="True" VerticalAlignment="Top" HorizontalAlignment="Right" Source="{Binding KeyboardVM.BackgroundImagePath}" />-->
+            <Viewbox Stretch="Fill">
+                <view:StdKeyboardView OutsideBorderThickness="0" InsideBorderThickness="0" Margin="0" x:Name="keyboardView" DataContext="{Binding KeyboardVM}" />
+            </Viewbox>
+            <!--</Grid>-->
         </view:ResizableContainer.Content>
     </view:ResizableContainer>
 

@@ -26,7 +26,10 @@ using System.ComponentModel;
 
 namespace ProtocolManagerModel
 {
-    public class VMProtocolEditorWrapper : INotifyPropertyChanged
+    /// <summary>
+    /// Contains the description of a protocol
+    /// </summary>
+    public class VMProtocolEditorMetaData : INotifyPropertyChanged
     {
         /// <summary>
         /// Valid Constructor for a KeyCommandType, this object must be capable of creating on the fly its KeyCommandParameterManager.
@@ -37,7 +40,7 @@ namespace ProtocolManagerModel
         /// <param name="description">A description of the protocol that is handled by this object. Must be multilingual.</param>
         /// <param name="keyCommandParameterManagerType">The type of the IKeyCommandParameterMaanger that handles the parameters of this protocol. Must implement IKeyCommandParameter.</param>
         /// <param name="handlingService">The Type of the service that is going to handle the protocol. Wiil be used to add a the commandhandler to the requirement layer of the keyboard.</param>
-        public VMProtocolEditorWrapper( string protocol, string name, string description, Type keyCommandParameterManagerType )
+        public VMProtocolEditorMetaData( string protocol, string name, string description, Type keyCommandParameterManagerType )
         {
             if( !typeof( IProtocolParameterManager ).IsAssignableFrom( keyCommandParameterManagerType ) ) throw new ArgumentException( String.Format( "The keyCommandParameterType ({0}) for the KeyCommandType {1} doesn't implement IKeyCommandParameter", keyCommandParameterManagerType.ToString(), protocol ) );
 
@@ -58,7 +61,7 @@ namespace ProtocolManagerModel
         /// <param name="description">A description of the protocol that is handled by this object. Must be multilingual.</param>
         /// <param name="keyCommandParameterManagerFunc">A Func that returns an instance of an implementation of IKeyCommandParameterManager that handles a protocol. Must not return null.</param>
         /// /// <param name="handlingService">The Type of the service that is going to handle the protocol. Wiil be used to add a the commandhandler to the requirement layer of the keyboard.</param>
-        public VMProtocolEditorWrapper( string protocol, string name, string description, Func<IProtocolParameterManager> keyCommandParameterManagerFunc )
+        public VMProtocolEditorMetaData( string protocol, string name, string description, Func<IProtocolParameterManager> keyCommandParameterManagerFunc )
         {
             Protocol = protocol;
             Name = name;
@@ -69,7 +72,7 @@ namespace ProtocolManagerModel
         /// <summary>
         /// Internal ctor used to create an invalid KeyCommandTypeViewModel
         /// </summary>
-        internal VMProtocolEditorWrapper( string protocol, string name )
+        internal VMProtocolEditorMetaData( string protocol, string name )
         {
             Protocol = protocol;
             Name = name;

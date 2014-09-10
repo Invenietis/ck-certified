@@ -41,13 +41,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Core, Version=3.0.30.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Core, Version=3.0.29.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Core.3.0.30\lib\net40\CK.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Core.3.0.29\lib\net40\CK.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CK.Reflection, Version=3.0.30.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+    <Reference Include="CK.Reflection, Version=3.0.29.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\CK.Reflection.3.0.30\lib\net40\CK.Reflection.dll</HintPath>
+      <HintPath>..\..\..\packages\CK.Reflection.3.0.29\lib\net40\CK.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -81,12 +85,14 @@
     <Compile Include="ColorPicker\Implementation\ColorPicker.cs" />
     <Compile Include="Converters\AndConverter.cs" />
     <Compile Include="Converters\BooleanToIsMinimizedConverter.cs" />
+    <Compile Include="Converters\BindingProxy.cs" />
     <Compile Include="Converters\FolderConverter.cs" />
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NXORConverter.cs" />
     <Compile Include="Converters\OrConverter.cs" />
     <Compile Include="Converters\StringIsNullOrWhiteSpaceToBoolean.cs" />
     <Compile Include="Converters\NotNullConverter.cs" />
+    <Compile Include="Converters\CommandGroup.cs" />
     <Compile Include="Converters\ValueConverterGroup.cs" />
     <Compile Include="Core\Converters\CalculatorMemoryToVisibilityConverter.cs" />
     <Compile Include="Core\Converters\ColorToSolidColorBrushConverter.cs" />
@@ -97,6 +103,7 @@
     <Compile Include="Core\UIElementAdorner.cs" />
     <Compile Include="Core\Utilities\ColorUtilities.cs" />
     <Compile Include="Core\Utilities\ContextMenuUtilities.cs" />
+    <Compile Include="Core\Utilities\InputBindingAttachedProperty.cs" />
     <Compile Include="IconPicker\IconPicker.cs" />
     <Compile Include="ImageFromFont.cs" />
     <Compile Include="NumericUpDown.xaml.cs">

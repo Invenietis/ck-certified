@@ -1,0 +1,517 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{30ADB3D6-ED05-403D-BEEC-9862200126B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KeyboardEditor</RootNamespace>
+    <AssemblyName>KeyboardEditor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Output\Debug\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UICulture>en-US</UICulture>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Output\Release\Plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UICulture>en-US</UICulture>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.5.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Context, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Context.2.12.1-develop\lib\net40\CK.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Core, Version=3.0.29.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Core.3.0.29\lib\net40\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Interop, Version=3.0.29.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Interop.3.0.29\lib\net40\CK.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Plugin.Config.2.12.1-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Config.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Plugin.2.12.1-develop\lib\net40\CK.Plugin.Config.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Plugin.Model, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK-Plugin.2.12.1-develop\lib\net40\CK.Plugin.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Reflection, Version=3.0.29.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Reflection.3.0.29\lib\net40\CK.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.SharedDic, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.SharedDic.2.12.1-develop\lib\net40\CK.SharedDic.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Storage, Version=3.0.29.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Storage.3.0.29\lib\net40\CK.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.App, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.App.2.12.1-develop\lib\net40\CK.Windows.App.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Config, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Config.2.12.1-develop\lib\net40\CK.Windows.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Core, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Core.2.12.1-develop\lib\net40\CK.Windows.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CK.Windows.Interop, Version=2.10.1.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.Interop.2.12.1-develop\lib\net40\CK.Windows.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=1673db7d5906b0ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\GalaSoft.MvvmLight.Extras.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WPF4, Version=4.1.24.16313, Culture=neutral, PublicKeyToken=63eb5c012e0b3c1c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdParty\GalaSoft.MvvmLight.WPF4.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\..\..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="KeyboardEdition\Components\Converters\Specific\TypeConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\Specific\DeletableComponentConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\EnsureIntegerConverter.cs" />
+    <Compile Include="KeyboardEdition\Model\IHandleDragDrop.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.Shortcuts.cs" />
+    <Compile Include="KeyboardEdition\Views\Styles.xaml.cs">
+      <DependentUpon>Styles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Images.en-US.Designer.cs">
+      <DependentUpon>Images.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\R.en-US.Designer.cs">
+      <DependentUpon>R.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Wizard\ExportKeyboard.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\AddActionDataTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\AttachedProperties\CustomContent.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\Specific\HasOrderToBooleanConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\ImageConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\Converters\Specific\ModeTypeToSelectedConverter.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\FileLauncherTypeSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\UserControls\ActionControl.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\BreadcrumbTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\TemplateSelectors\KeyboardEditionTemplateSelector.cs" />
+    <Compile Include="KeyboardEdition\Components\UserControls\CaretIndexBehavior.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMContextElementEditable.cs" />
+    <Compile Include="KeyboardEdition\Model\IModeViewModel.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeBase.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMLayoutKeyModeEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.LayoutKeyMode.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.DragDrop.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMContextEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable\VMKeyboardEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyboardEditable\VMKeyboardMode.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMModes\VMKeyModeEditable.cs" />
+    <Compile Include="KeyboardEdition\ViewModels\VMZoneEditable.cs" />
+    <Compile Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml.cs">
+      <DependentUpon>KeyModeEditionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardEdition\Views\GenericLayoutEditionUserControl.xaml.cs">
+      <DependentUpon>GenericLayoutEditionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardEdition\Views\Keys\LayoutKeyEditionUserControl.xaml.cs">
+      <DependentUpon>LayoutKeyEditionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml.cs">
+      <DependentUpon>KeyboardEditionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardEdition\Views\Zone\ZoneEditionUserControl.xaml.cs">
+      <DependentUpon>ZoneEditionUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Images.fr-FR.Designer.cs">
+      <DependentUpon>Images.fr-FR.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Images.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Images.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\R.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\R.fr-FR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>R.fr-FR.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\HotKeyTools.cs" />
+    <Compile Include="Wizard\BackupFeature\IKeyboardBackupAware.cs" />
+    <Compile Include="Wizard\BackupFeature\KeyboardBackup.cs" />
+    <Compile Include="Wizard\CustomWindowManager.cs" />
+    <Compile Include="Wizard\ImportKeyboard.cs" />
+    <Compile Include="Wizard\KeyboardEditorBootstrapper.cs" />
+    <Compile Include="Wizard\IKeyboardEditorRoot.cs" />
+    <Compile Include="Wizard\KeyboardEditor.cs" />
+    <Compile Include="Wizard\ViewModels\AppViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ContextListViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\DeletionKeyboardListViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\CheckBoxExportKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\CheckBoxImportKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\ContextViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\KeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\SimpleKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ElementViewModels\WizardButtonViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\EndingStepViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ExportKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\HomeViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ImportKeyboardViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\KeyboardEditionViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\KeyboardListViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\KeyboardProfileViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\ModificationKeyboardListViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\SaveAsStepViewModel.cs" />
+    <Compile Include="Wizard\ViewModels\SavingStepViewModel.cs" />
+    <Compile Include="Wizard\Views\AppView.xaml.cs">
+      <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\ContextListView.xaml.cs">
+      <DependentUpon>ContextListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\DeletionKeyboardListView.xaml.cs">
+      <DependentUpon>DeletionKeyboardListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\EndingStepView.xaml.cs">
+      <DependentUpon>EndingStepView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\ExportKeyboardView.xaml.cs">
+      <DependentUpon>ExportKeyboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\ImportKeyboardView.xaml.cs">
+      <DependentUpon>ImportKeyboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\KeyboardEditionView.xaml.cs">
+      <DependentUpon>KeyboardEditionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\KeyboardProfileView.xaml.cs">
+      <DependentUpon>KeyboardProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\ModificationKeyboardListView.xaml.cs">
+      <DependentUpon>ModificationKeyboardListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\SaveAsView.xaml.cs">
+      <DependentUpon>SaveAsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Views\SavingStepView.xaml.cs">
+      <DependentUpon>SavingStepView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\HelpAwareWizardPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Compile Include="Wizard\KeyboardEditor.HotKey.cs" />
+    <EmbeddedResource Include="Resources\Images.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images.fr-FR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.fr-FR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\helpcontent.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="KeyboardEdition\Views\Keys\KeyModeEditionUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyboardEdition\Views\Modals\Modals.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyboardEdition\Views\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyboardEdition\Views\GenericLayoutEditionUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyboardEdition\Views\Keys\LayoutKeyEditionUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyboardEdition\Views\Keyboard\KeyboardEditionUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeyboardEdition\Views\Zone\ZoneEditionUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\AppView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\ContextListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\ExportKeyboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wizard\Views\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\DeletionKeyboardListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\EndingStepView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\HomeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\ImportKeyboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Wizard\Views\KeyboardEditionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\KeyboardProfileView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\ModificationKeyboardListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\SaveAsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\SavingStepView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Views\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CK.WPF.Wizard\CK.WPF.Wizard.csproj">
+      <Project>{dd6f2cff-00e9-4630-aba8-5b58f765abaf}</Project>
+      <Name>CK.WPF.Wizard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
+      <Project>{b2e36713-7cdb-4304-b274-2ad75bc142c4}</Project>
+      <Name>CK.Keyboard.Model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
+      <Project>{6c0f25a7-6468-4d02-aba4-dc7f1ad209e1}</Project>
+      <Name>CK.WPF.Controls</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.StandardViews\CK.WPF.StandardViews.csproj">
+      <Project>{6f198d3d-39e5-4de6-917e-dfb99af31e3e}</Project>
+      <Name>CK.WPF.StandardViews</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
+      <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
+      <Name>CK.WPF.ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Accessibility\Keyboard\CK.Keyboard.csproj">
+      <Project>{99bb5255-dea7-4548-a402-9db077d195b7}</Project>
+      <Name>CK.Keyboard</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\CommonServices\CommonServices.csproj">
+      <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
+      <Name>CommonServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\HelpServices\HelpServices.csproj">
+      <Project>{c8cf5699-c4db-4c83-9a50-e3132d5304c2}</Project>
+      <Name>HelpServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Services\ProtocolManagerModel\ProtocolManagerModel.csproj">
+      <Project>{f33b4c9f-d4eb-41ec-a0b7-a919612b6a03}</Project>
+      <Name>ProtocolManagerModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Commands\BasicCommandHandlers\BasicCommandHandlers.csproj">
+      <Project>{d0b46798-1a2e-420d-8b1d-1fcb3537e468}</Project>
+      <Name>BasicCommandHandlers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Images.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.en-US.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.fr-FR.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.fr-FR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\R.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>R.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\cancel-quit.png" />
+    <Resource Include="Resources\Images\cancel-restart.png" />
+    <Resource Include="Resources\Images\create-keyboard.png" />
+    <Resource Include="Resources\Images\edit-keyboard.png" />
+    <Resource Include="Resources\Images\edit-other-keyboard.png" />
+    <Resource Include="Resources\Images\save-as.png" />
+    <Resource Include="Resources\Images\save-keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\exit.png" />
+    <Resource Include="Resources\Images\restart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Information.png" />
+    <Resource Include="Resources\Images\keyboard-background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\destroy-keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\browse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\picture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\bottom.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

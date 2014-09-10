@@ -61,7 +61,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         PROTOCOL_BASE,
                                         R.TextTemplateTitle,
                                         R.TextTemplateDescription,

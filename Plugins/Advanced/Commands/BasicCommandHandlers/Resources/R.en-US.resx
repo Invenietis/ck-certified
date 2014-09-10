@@ -303,4 +303,13 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="PauseDescription" xml:space="preserve">
+    <value>Adds a pause between two commands</value>
+  </data>
+  <data name="PauseSubTitle" xml:space="preserve">
+    <value>pausing time (ms)</value>
+  </data>
+  <data name="PauseTitle" xml:space="preserve">
+    <value>Pause</value>
+  </data>
 </root>

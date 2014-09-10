@@ -55,12 +55,15 @@ namespace CK.Keyboard
             _modes = new Dictionary<string, KeyboardMode>( StringComparer.Ordinal );
             _modes.Add( String.Empty, _empty );
 
-            if( sp != null ) sp.GetService<ISimpleServiceContainer>( true ).Add<IStructuredSerializer<KeyboardCollection>>( this );
+            ServiceContainer = sp;
+            if( sp != null ) ServiceContainer.GetService<ISimpleServiceContainer>( true ).Add<IStructuredSerializer<KeyboardCollection>>( this );
 
             OnInitialized();
         }
 
         partial void OnInitialized();
+
+        public IServiceProvider ServiceContainer { get; private set; }
 
         public IPluginConfigAccessor Configuration { get; set; }
 
@@ -78,7 +81,7 @@ namespace CK.Keyboard
         IKeyboard IKeyboardContext.CurrentKeyboard
         {
             get { return _keyboards.Current; }
-            set 
+            set
             {
                 _keyboards.Current = (Keyboard)value;
             }

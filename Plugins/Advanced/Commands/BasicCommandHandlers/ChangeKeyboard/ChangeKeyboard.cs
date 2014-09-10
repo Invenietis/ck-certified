@@ -68,7 +68,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
+                    new VMProtocolEditorMetaData( PROTOCOL_BASE,
                                                  "Changer de clavier",
                                                  "Permet de changer de clavier",
                                                  () => { return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() ); } ), 

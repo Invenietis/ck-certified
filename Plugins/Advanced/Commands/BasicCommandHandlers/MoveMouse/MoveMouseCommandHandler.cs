@@ -219,7 +219,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                    new VMProtocolEditorWrapper( PROTOCOL_BASE,
+                    new VMProtocolEditorMetaData( PROTOCOL_BASE,
                                                  R.MoveMouseProtocolTitle,
                                                  R.MoveMouseProtocolDescription,
                                                  typeof( MoveMouseCommandParameterManager ) ),

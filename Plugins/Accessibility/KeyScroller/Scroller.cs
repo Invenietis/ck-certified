@@ -189,7 +189,7 @@ namespace Scroller
                 }
                 else if( e.Key == "ScrollableModules" )
                 {
-                    Console.Out.WriteLine( "Scrollable changed" );
+                    //Console.Out.WriteLine( "Scrollable changed" );
                     ScrollingElementConfiguration conf = (ScrollingElementConfiguration)e.Value;
                     var disabledElements = conf.Select( m => m.InternalName ).ToList();
 

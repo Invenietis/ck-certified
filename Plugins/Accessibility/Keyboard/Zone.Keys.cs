@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CK.Core;
 using CK.Keyboard.Model;
+using System.Linq;
+using CK.Plugin.Config;
 
 namespace CK.Keyboard
 {
@@ -69,7 +71,7 @@ namespace CK.Keyboard
         {
             if( index < 0 ) index = 0;
             else if( index > _keys.Count ) index = _keys.Count;
-            
+
             var k =  new Key( this, index );
 
             _keys.Insert( index, k );
@@ -172,5 +174,69 @@ namespace CK.Keyboard
             Context.SetKeyboardContextDirty();
         }
 
+        IKey IKeyCollection.CreateCopy( IKey keySource )
+        {
+            return CreateCopy( keySource );
+        }
+
+        IKey CreateCopy( IKey keySource )
+        {
+            Key newKey = Create( _keys.Count );
+
+            var sharedDic = Context.ServiceContainer.GetService<ISharedDictionary>();
+            sharedDic.CopyPluginsData( keySource, newKey );
+
+            foreach( var layout in Keyboard.Layouts )
+            {
+                var layoutZoneSource = layout.LayoutZones.Where( z => z.Zone.Name == keySource.Zone.Name ).Single();
+                var layoutKeySource = layoutZoneSource.LayoutKeys.Where( lz => lz.Key == keySource ).Single();
+
+                var newLayoutZone = layout.LayoutZones.Where( z => z.Zone.Name == newKey.Zone.Name ).Single();
+                var newLayoutKey = newLayoutZone.LayoutKeys.Where( lz => lz.Key == newKey ).Single();
+
+                foreach( var layoutKeyModeSource in layoutKeySource.LayoutKeyModes )
+                {
+                    var newLayoutKeyMode = newLayoutKey.LayoutKeyModes.Create( layoutKeyModeSource.Mode );
+                    newLayoutKeyMode.Height = layoutKeyModeSource.Height;
+                    newLayoutKeyMode.Visible = layoutKeyModeSource.Visible;
+                    newLayoutKeyMode.Width = layoutKeyModeSource.Width;
+                    newLayoutKeyMode.X = layoutKeyModeSource.X;
+                    newLayoutKeyMode.Y = layoutKeyModeSource.Y;
+
+                    sharedDic.CopyPluginsData( layoutKeyModeSource, newLayoutKeyMode );
+                }
+            }
+
+            foreach( var keyModeSource in keySource.KeyModes )
+            {
+                var newKeyMode = newKey.FindOrCreate( keyModeSource.Mode );
+                newKeyMode.Description = keyModeSource.Description;
+                newKeyMode.DownLabel = keyModeSource.DownLabel;
+                newKeyMode.Enabled = keyModeSource.Enabled;
+                newKeyMode.UpLabel = keyModeSource.UpLabel;
+
+                foreach( var cmd in keyModeSource.OnKeyDownCommands.Commands )
+                {
+                    newKeyMode.OnKeyDownCommands.Commands.Add( cmd );
+                }
+
+                foreach( var cmd in keyModeSource.OnKeyUpCommands.Commands )
+                {
+                    newKeyMode.OnKeyUpCommands.Commands.Add( cmd );
+                }
+
+                foreach( var cmd in keyModeSource.OnKeyPressedCommands.Commands )
+                {
+                    newKeyMode.OnKeyPressedCommands.Commands.Add( cmd );
+                }
+
+                sharedDic.CopyPluginsData( keyModeSource, newKeyMode );
+
+                Debug.Assert( newKeyMode.Keyboard == keyModeSource.Keyboard, "the copy should be in the same keyboard as the source." );
+                Debug.Assert( newKeyMode.Context == keyModeSource.Context, "the copy should be in the same context as the source." );
+            }
+
+            return newKey;
+        }
     }
 }

@@ -30,20 +30,20 @@ namespace ProtocolManagerModel
 {
     public interface IProtocolEditorRoot
     {
-        IEnumerable<VMProtocolEditorWrapper> AvailableProtocolEditors { get; }
+        IEnumerable<VMProtocolEditorMetaData> AvailableProtocolEditors { get; }
         IKeyMode EditedKeyMode { get; }
     }
 
     public class VMProtocolEditorsProvider : INotifyPropertyChanged, IProtocolEditorRoot
     {
-        public IEnumerable<VMProtocolEditorWrapper> AvailableProtocolEditors { get { return _availableProtocolEditors.Values; } }
+        public IEnumerable<VMProtocolEditorMetaData> AvailableProtocolEditors { get { return _availableProtocolEditors.Values; } }
 
-        protected Dictionary<string, VMProtocolEditorWrapper> _availableProtocolEditors { get; set; }
+        protected Dictionary<string, VMProtocolEditorMetaData> _availableProtocolEditors { get; set; }
         protected Dictionary<string, Type> _availableProtocolHandlers { get; set; }
 
         public VMProtocolEditorsProvider()
         {
-            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
+            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorMetaData>();
             _availableProtocolHandlers = new Dictionary<string, Type>();
             ProtocolEditor = new VMProtocolEditor();
         }
@@ -60,10 +60,15 @@ namespace ProtocolManagerModel
             return handlingService;
         }
 
-        public void AddEditor( string protocol, VMProtocolEditorWrapper wrapper, Type handlingService )
+        public void AddEditor( string protocol, VMProtocolEditorMetaData wrapper, Type handlingService )
         {
             _availableProtocolEditors.Add( protocol, wrapper );
-            _availableProtocolHandlers.Add( protocol, handlingService );
+
+            //in the case of the "pause" feature, there is no linked service
+            if( handlingService != null )
+                _availableProtocolHandlers.Add( protocol, handlingService );
+            
+            
             OnPropertyChanged( "AvailableProtocolEditors" );
         }
 
@@ -79,8 +84,8 @@ namespace ProtocolManagerModel
 
 
 
-        public IKeyMode EditedKeyMode { get; protected set; }
-        public VMProtocolEditorWrapper SelectedProtocolEditorWrapper
+        public IKeyMode EditedKeyMode { get; private set; }
+        public VMProtocolEditorMetaData SelectedProtocolEditorWrapper
         {
             get { return ProtocolEditor.Wrapper; }
             set
@@ -161,20 +166,20 @@ namespace ProtocolManagerModel
         }
 
         /// <summary>
-        /// Gets the <see cref="VMProtocolEditorWrapper"/> for the specified protocol.
-        /// If the protocol is not handled, returns an empty <see cref="VMProtocolEditorWrapper"/>, with a IsValid property returning false
+        /// Gets the <see cref="VMProtocolEditorMetaData"/> for the specified protocol.
+        /// If the protocol is not handled, returns an empty <see cref="VMProtocolEditorMetaData"/>, with a IsValid property returning false
         /// </summary>
         /// <param name="protocol">The protocol (ex : sendString, sendKey, keyboardswitch...)</param>
-        /// <returns>The <see cref="VMProtocolEditorWrapper"/> corresponding to the protocol set as parameter. if the returned object's IsValid property returns false, the protocol is not handled</returns>
-        public VMProtocolEditorWrapper GetProtocolEditorWrapper( string protocol )
+        /// <returns>The <see cref="VMProtocolEditorMetaData"/> corresponding to the protocol set as parameter. if the returned object's IsValid property returns false, the protocol is not handled</returns>
+        public VMProtocolEditorMetaData GetProtocolEditorWrapper( string protocol )
         {
             //If the protocol is not recognized, we'll add an Invalid KeyCommandType.
-            VMProtocolEditorWrapper editorWrapper = new VMProtocolEditorWrapper( protocol, protocol );
+            VMProtocolEditorMetaData editorWrapper = new VMProtocolEditorMetaData( protocol, protocol );
             if( _availableProtocolEditors.TryGetValue( protocol, out editorWrapper ) )
             {
                 return editorWrapper;
             }
-            return new VMProtocolEditorWrapper( protocol, protocol );
+            return new VMProtocolEditorMetaData( protocol, protocol );
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

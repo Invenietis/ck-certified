@@ -136,7 +136,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         "sendKey",
                                         R.SendKeyProtocolTitle,
                                         R.SendKeyProtocolDescription,

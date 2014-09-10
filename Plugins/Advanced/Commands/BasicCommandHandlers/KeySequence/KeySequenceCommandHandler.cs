@@ -54,12 +54,19 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         "keysequence",
                                         R.KeySequenceProtocolTitle,
                                         R.KeySequenceProtocolDescription,
                                         typeof( KeySequenceCommandParameterManager ) ),
                                         typeof( IKeySequenceCommandHandlerService ) );
+
+            ProtocolManagerService.Service.Register(
+                             new VMProtocolEditorMetaData(
+                             "pause",
+                             R.PauseTitle,
+                             R.PauseDescription,
+                             typeof( PauseCommandParameterManager ) ) );
         }
 
         public override void Stop()

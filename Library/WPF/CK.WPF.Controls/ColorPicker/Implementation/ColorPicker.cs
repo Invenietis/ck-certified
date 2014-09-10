@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -29,6 +30,7 @@ using System.Windows.Controls.Primitives;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Windows.Controls.Core.Utilities;
+using System.Collections.Generic;
 
 namespace Microsoft.Windows.Controls
 {
@@ -320,21 +322,177 @@ namespace Microsoft.Windows.Controls
 
         private static ObservableCollection<ColorItem> CreateAvailableColors()
         {
-            ObservableCollection<ColorItem> _standardColors = new ObservableCollection<ColorItem>();
-
-            foreach (var item in ColorUtilities.KnownColors)
+            var _colorList = new List<ColorItem>();
+            foreach( var item in ColorUtilities.KnownColors )
             {
-                if (!String.Equals(item.Key, "Transparent"))
+                if( !String.Equals( item.Key, "Transparent" ) )
                 {
-                    var colorItem = new ColorItem(item.Value, item.Key);
-                    if (!_standardColors.Contains(colorItem))
-                        _standardColors.Add(colorItem);
+                    var colorItem = new ColorItem( item.Value, item.Key );
+                    if( !_colorList.Contains( colorItem ) )
+                        _colorList.Add( colorItem );
                 }
             }
-
+            var _sortedColors = _colorList.OrderBy( item => item.Color, new ColorSorter() );
+            var _standardColors = new ObservableCollection<ColorItem>( _sortedColors );
             return _standardColors;
         }
 
         #endregion //Methods
+
+        private class ColorSorter : IComparer<Color>
+        {
+            public int Compare( Color x, Color y )
+            {
+                // local variables
+                float hx, hy, sx, sy, bx, by;
+
+                // get Color values
+                // get saturation values
+                sx = x.GetSaturation();
+                sy = y.GetSaturation();
+                // get hue values
+                hx = x.GetHue();
+                hy = y.GetHue();
+                // get brightness values
+                bx = x.GetBrightness();
+                by = y.GetBrightness();
+
+                // determine order
+                // 1 : hue       
+                if( hx < hy ) return -1;
+                else if( hx > hy ) return 1;
+                else
+                {
+                    // 2 : saturation
+                    if( sx < sy ) return -1;
+                    else if( sx > sy ) return 1;
+                    else
+                    {
+                        // 3 : brightness
+                        if( bx < by ) return -1;
+                        else if( bx > by ) return 1;
+                        else return 0;
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Copied from System.Drawing.Color
+    /// </summary>
+    internal static class ColorExtensions
+    {
+        public static float GetSaturation( this Color color )
+        {
+            float num = ((float)color.R) / 255f;
+            float num2 = ((float)color.G) / 255f;
+            float num3 = ((float)color.B) / 255f;
+            float num7 = 0f;
+            float num4 = num;
+            float num5 = num;
+            if( num2 > num4 )
+            {
+                num4 = num2;
+            }
+            if( num3 > num4 )
+            {
+                num4 = num3;
+            }
+            if( num2 < num5 )
+            {
+                num5 = num2;
+            }
+            if( num3 < num5 )
+            {
+                num5 = num3;
+            }
+            if( num4 == num5 )
+            {
+                return num7;
+            }
+            float num6 = (num4 + num5) / 2f;
+            if( num6 <= 0.5 )
+            {
+                return ((num4 - num5) / (num4 + num5));
+            }
+            return ((num4 - num5) / ((2f - num4) - num5));
+        }
+
+        public static float GetHue( this Color color )
+        {
+            if( (color.R == color.G) && (color.G == color.B) )
+            {
+                return 0f;
+            }
+            float num = ((float)color.R) / 255f;
+            float num2 = ((float)color.G) / 255f;
+            float num3 = ((float)color.B) / 255f;
+            float num7 = 0f;
+            float num4 = num;
+            float num5 = num;
+            if( num2 > num4 )
+            {
+                num4 = num2;
+            }
+            if( num3 > num4 )
+            {
+                num4 = num3;
+            }
+            if( num2 < num5 )
+            {
+                num5 = num2;
+            }
+            if( num3 < num5 )
+            {
+                num5 = num3;
+            }
+            float num6 = num4 - num5;
+            if( num == num4 )
+            {
+                num7 = (num2 - num3) / num6;
+            }
+            else if( num2 == num4 )
+            {
+                num7 = 2f + ((num3 - num) / num6);
+            }
+            else if( num3 == num4 )
+            {
+                num7 = 4f + ((num - num2) / num6);
+            }
+            num7 *= 60f;
+            if( num7 < 0f )
+            {
+                num7 += 360f;
+            }
+            return num7;
+        }
+
+
+        public static float GetBrightness( this Color color )
+        {
+            float num = ((float)color.R) / 255f;
+            float num2 = ((float)color.G) / 255f;
+            float num3 = ((float)color.B) / 255f;
+            float num4 = num;
+            float num5 = num;
+            if( num2 > num4 )
+            {
+                num4 = num2;
+            }
+            if( num3 > num4 )
+            {
+                num4 = num3;
+            }
+            if( num2 < num5 )
+            {
+                num5 = num2;
+            }
+            if( num3 < num5 )
+            {
+                num5 = num3;
+            }
+            return ((num4 + num5) / 2f);
+        }
     }
 }

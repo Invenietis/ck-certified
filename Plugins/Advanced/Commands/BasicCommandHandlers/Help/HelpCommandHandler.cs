@@ -60,7 +60,7 @@ namespace BasicCommandHandlers
         {
             base.Start();
             ProtocolManagerService.Service.Register(
-                                        new VMProtocolEditorWrapper(
+                                        new VMProtocolEditorMetaData(
                                         "help",
                                         R.HelpProtocolTitle,
                                         R.HelpProtocolDescription,

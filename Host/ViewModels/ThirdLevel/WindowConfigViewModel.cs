@@ -61,7 +61,7 @@ namespace Host.VM
             _app = app;
             DisplayName = displayName;
 
-            //this setiing page always need SharedDataPlugin
+            //this setting page always need SharedDataPlugin
             this.ActivatePlugin = true;
         }
 
@@ -137,18 +137,12 @@ namespace Host.VM
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            NotifyOfPropertyChange( () => WindowOpacity );
-        }
-
-
-        protected override void NotifyOfPropertiesChange()
-        {
-            if( _isReady && ActivatePlugin )
+            if( e != null )
             {
-                _windowOpacitySlider.Refresh();
+                if( e.Key == "WindowOpacity" ) NotifyOfPropertyChange( "WindowOpacity" );
+                else if( e.Key == "WindowBackgroundColor" ) NotifyOfPropertyChange( "WindowBackgroundColor" );
+                else if( e.Key == "WindowBorderBrush" ) NotifyOfPropertyChange( "WindowBorderBrush" );
             }
-            NotifyOfPropertyChange( () => ActivatePlugin );
-            NotifyOfPropertyChange( () => WindowOpacity );
         }
     }
 }

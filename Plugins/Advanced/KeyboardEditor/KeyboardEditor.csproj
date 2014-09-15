@@ -400,6 +400,10 @@
       <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
       <Name>CK.WPF.ViewModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Wizard\CK.WPF.Wizard.csproj">
+      <Project>{dd6f2cff-00e9-4630-aba8-5b58f765abaf}</Project>
+      <Name>CK.WPF.Wizard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Accessibility\Keyboard\CK.Keyboard.csproj">
       <Project>{99bb5255-dea7-4548-a402-9db077d195b7}</Project>
       <Name>CK.Keyboard</Name>

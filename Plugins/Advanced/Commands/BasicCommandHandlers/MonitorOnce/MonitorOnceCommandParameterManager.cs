@@ -94,7 +94,7 @@ namespace BasicCommandHandlers
         private void Initialize()
         {
             EditedKeyMode = Root.EditedKeyMode;
-            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorWrapper>();
+            _availableProtocolEditors = new Dictionary<string, VMProtocolEditorMetaData>();
 
             foreach( var item in Root.AvailableProtocolEditors )
             {

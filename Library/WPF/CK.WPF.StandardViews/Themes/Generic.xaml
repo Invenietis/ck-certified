@@ -68,6 +68,8 @@
                             <ToolTip x:Name="gridTooltip" Content="{TemplateBinding Description}"/>
                         </Grid.ToolTip>
                         <Border x:Name="Border" CornerRadius="3"
+                                BorderThickness="0.3"
+                                BorderBrush="Black"
                                 Background="{TemplateBinding Background}">
                         </Border>
 

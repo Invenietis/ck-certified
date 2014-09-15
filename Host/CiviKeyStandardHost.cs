@@ -103,10 +103,10 @@ namespace Host
             if( !File.Exists( goConfigPath ) )
             {
                 File.WriteAllText( goConfigPath, string.Format( @"<GrandOutputConfiguration>
-    <Channel MinimalFilter=""Debug"">
-        <Add Type=""BinaryFile"" Name=""All"" Path=""{0}"" />
-    </Channel>
-</GrandOutputConfiguration>", logPath ) );
+                                                                    <Channel MinimalFilter=""Debug"">
+                                                                        <Add Type=""BinaryFile"" Name=""All"" Path=""{0}"" />
+                                                                    </Channel>
+                                                                </GrandOutputConfiguration>", logPath ) );
             }
 
             CK.Core.SystemActivityMonitor.RootLogPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" ); ;

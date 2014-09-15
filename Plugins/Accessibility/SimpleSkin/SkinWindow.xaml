@@ -6,10 +6,9 @@
                            MinHeight="40" 
                            MinWidth="40" 
                            ShowInTaskbar="False" 
-                           ShowActivated="False" 
-    AllowsTransparency="True">
-                           Height="250" Width="600">
-    
+                           ShowActivated="False" AllowsTransparency="True" Height="250" Width="600">
+
+
     <ckwincore:CKWindow.Background>
         <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}" />
     </ckwincore:CKWindow.Background>

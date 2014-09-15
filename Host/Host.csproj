@@ -97,6 +97,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CK.Interop.3.0.30\lib\net40\CK.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Monitoring">
+      <HintPath>..\packages\CK.Monitoring.3.0.30\lib\net40\CK.Monitoring.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Plugin.Config, Version=2.13.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CK.Plugin.Config.2.13.0-develop\lib\net40\CK.Plugin.Config.dll</HintPath>
@@ -185,6 +188,7 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\net40\System.Threading.Tasks.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.5.2\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -212,7 +216,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CiviKeyStandardHost.cs" />
-    <Compile Include="CommonLogger.cs" />
     <Compile Include="Resources\R.en-US.Designer.cs">
       <DependentUpon>R.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -232,13 +235,17 @@
     <Compile Include="ViewModels\MouseRadarViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\SecondLevel\KeyboardConfigViewModel.cs" />
+    <Compile Include="ViewModels\SecondLevel\PointerManagerSelector.cs" />
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\AppViewModel.cs" />
     <Compile Include="ViewModels\AutoClickViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\KeyboardPointerSelector.cs" />
     <Compile Include="ViewModels\ThirdLevel\ScrollingViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\CreditViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ScrollingModulesConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
+    <Compile Include="ViewModels\Tools\ComboBoxItem.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
     <Compile Include="ViewModels\SecondLevel\AppConfigViewModel.cs" />
@@ -247,10 +254,15 @@
     <Compile Include="ViewModels\ThirdLevel\WordPredictionViewModel.cs" />
     <Compile Include="ViewModels\Tools\ConfigImplementationSelectorItem.cs" />
     <Compile Include="ViewModels\Tools\CheckboxConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\CreditConfigItem.cs" />
+    <Compile Include="ViewModels\Tools\DescriptionItem.cs" />
     <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
+    <Compile Include="ViewModels\Tools\PointerManagerPluginStarter.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
     <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
+    <Compile Include="ViewModels\Tools\RecordConfigItem.cs" />
+    <Compile Include="ViewModels\Tools\SliderConfigItem.cs" />
     <Compile Include="ViewModels\Tools\TextItem.cs" />
     <Compile Include="ViewModels\Tools\TitleItem.cs" />
     <Compile Include="Views\AppView.xaml.cs">
@@ -339,6 +351,10 @@
       <Project>{B0336C23-51F9-4EEB-A49B-93543F3CD1BB}</Project>
       <Name>CK.WPF.ViewModel</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Accessibility\KeyScroller\Scroller.csproj">
+      <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
+      <Name>Scroller</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>

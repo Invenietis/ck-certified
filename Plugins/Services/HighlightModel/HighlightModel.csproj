@@ -74,6 +74,7 @@
     <Compile Include="IHighlightableElementController.cs" />
     <Compile Include="IExtensionHighlightableElement.cs" />
     <Compile Include="IHighlighterService.cs" />
+    <Compile Include="IVizualizableHighlightableElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkippingBehavior.cs" />
     <Compile Include="ScrollingElementModels.cs" />

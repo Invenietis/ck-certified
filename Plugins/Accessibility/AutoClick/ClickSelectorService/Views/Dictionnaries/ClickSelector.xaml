@@ -25,11 +25,11 @@
         <Setter Property="Height" Value="10"></Setter>
         <Setter Property="Stretch" Value="Fill"></Setter>
         <Setter Property="Fill" Value="Black"></Setter>
-        <Setter Property="Visibility">
+        <!--<Setter Property="Visibility">
             <Setter.Value>
                 <Binding Path="IsHighlighted" Converter="{StaticResource BooleanToVisibilityConverter}"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 
     <!-- ClickTypeSelector :BlackButton -->
@@ -121,7 +121,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Border Opacity="1" CornerRadius="5" Margin="4" BorderBrush="Black" BorderThickness="1">
+                        <!--<Border Opacity="1" CornerRadius="5" Margin="4" BorderBrush="Black" BorderThickness="1">
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="Visibility">
@@ -133,7 +133,7 @@
                             </Border.Style>
                             <Border CornerRadius="5" Background="White" Opacity="0.3">
                             </Border>
-                        </Border>
+                        </Border>-->
                         <Viewbox Margin="10">
                             <views:ActionOnMouseEnterButton Content="{Binding ImagePath, Mode=OneWay, Converter={StaticResource PathToImageConverter}}" 
                                                         Width="70" Height="70" FontSize="12" Padding="10"
@@ -146,12 +146,12 @@
                             </views:ActionOnMouseEnterButton>
                         </Viewbox>
                         <!--These paths are arrows indicating the clicktype that is being highlighted (by the scrolling service) -->
-                        <Path Data="{StaticResource RightArrow}" 
+                        <!--<Path Data="{StaticResource RightArrow}" 
                               Style="{StaticResource ScrollIndicatorStyle}"
                               HorizontalAlignment="Left" />
                         <Path Data="{StaticResource LeftArrow}" 
                               Style="{StaticResource ScrollIndicatorStyle}" 
-                              HorizontalAlignment="Right" />
+                              HorizontalAlignment="Right" />-->
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

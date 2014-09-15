@@ -355,10 +355,10 @@ namespace SimpleSkin.ViewModels
                 if( value != _isHighlighting )
                 {
                     SafeSet<bool>( value, ( v ) => _isHighlighting = v );
-                    Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
-                    {
-                        OnPropertyChanged( "IsHighlighting" );
-                    }) );
+                    //Context.NoFocusManager.NoFocusDispatcher.Invoke( (Action)(() =>
+                    //{
+                    //    OnPropertyChanged( "IsHighlighting" );
+                    //}) );
                 }
             }
         }

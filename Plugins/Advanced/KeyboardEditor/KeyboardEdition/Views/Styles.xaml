@@ -384,7 +384,6 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </view:StdKeyView>
-
             <!-- Resizing thumbs -->
             <DockPanel LastChildFill="False">
                 <Grid DockPanel.Dock="Top">

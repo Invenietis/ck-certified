@@ -54,7 +54,6 @@ namespace Host
     /// </summary>
     public class CivikeyStandardHost : AbstractContextHost, IHostInformation, IHostHelp, IContextSaver
     {
-        IActivityMonitor _log;
         SemanticVersion20 _appVersion;
         bool _firstApplySucceed;
         NotificationManager _notificationMngr;
@@ -97,42 +96,25 @@ namespace Host
 
         public override IContext CreateContext()
         {
-            var goPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" );
-            var logPath = Path.Combine( goPath, @"GrandOutputDefault\" );
-            var goConfigPath = Path.Combine( goPath, "GrandOutput.config" );
-            if( !File.Exists( goConfigPath ) )
-            {
-                File.WriteAllText( goConfigPath, string.Format( @"<GrandOutputConfiguration>
-                                                                    <Channel MinimalFilter=""Debug"">
-                                                                        <Add Type=""BinaryFile"" Name=""All"" Path=""{0}"" />
-                                                                    </Channel>
-                                                                </GrandOutputConfiguration>", logPath ) );
-            }
-
-            CK.Core.SystemActivityMonitor.RootLogPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" ); ;
-            CK.Monitoring.GrandOutput.EnsureActiveDefaultWithDefaultSettings();
-
+            InitializeActivityMonitor();
 
             //WARNING : DO NOT get information from the system configuration or the user configuration before discovering.
             //Getting info from these conf will trigger the LoadSystemConf or LoadUserConf, which will parse configurations set in the corresponding files.
             //If a system conf is found and loaded at this point, plugin will be set as disabled (because the plugins are not yet discovered). If there is a userconf, the requirements will be parsed again later, and everything will work fine.
             //The problem occurs when there is no user conf. (this happens when CiviKey is launched for the first time)
 
-            Monitor = new ActivityMonitor( "CiviKey" );
             IContext ctx = base.CreateContext();
 
-            _log = Monitor;
-
-            using( _log.OpenInfo().Send( "LAUNCHING" ) )
+            using( Monitor.OpenInfo().Send( "LAUNCHING" ) )
             {
                 _notificationMngr = new NotificationManager();
 
                 // Discover available plugins.
                 string pluginPath = Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), "Plugins" );
-                _log.Info().Send( "Discovering plugins..." );
+                Monitor.Info().Send( "Discovering plugins..." );
                 if( Directory.Exists( pluginPath ) ) ctx.PluginRunner.Discoverer.Discover( new DirectoryInfo( pluginPath ), true );
-                _log.Info().Send( "Plugins discovered" );
-                _log.Info().Send( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
+                Monitor.Info().Send( "Plugins discovered" );
+                Monitor.Info().Send( String.Format( "Launching {0} > Distribution : {1} > Version : {2}, GUID : {3}", CKApp.CurrentParameters.AppName, CKApp.CurrentParameters.DistribName, AppVersion, ApplicationUniqueId.UniqueId ) );
 
                 var hostRequirements = new RequirementLayer( "CivikeyStandardHost" );
                 hostRequirements.PluginRequirements.AddOrSet( new Guid( "{2ed1562f-2416-45cb-9fc8-eef941e3edbc}" ), RunningRequirement.MustExistAndRun );//KeyboardContext
@@ -160,7 +142,7 @@ namespace Host
 
                 // Load or initialize the ctx.
                 LoadResult res = Instance.LoadContext( Assembly.GetExecutingAssembly(), "Host.Resources.Contexts.ContextCiviKey.xml" );
-                _log.Info().Send( "Context loaded successfully." );
+                Monitor.Info().Send( "Context loaded successfully." );
 
                 // Initializes Services.
                 {
@@ -185,15 +167,36 @@ namespace Host
 
                 Context.PluginRunner.ApplyDone += OnApplyDone;
 
-                _log.Info().Send( "Starting Apply..." );
+                Monitor.Info().Send( "Starting Apply..." );
                 _firstApplySucceed = Context.PluginRunner.Apply();
 
                 ctx.ConfigManager.SystemConfiguration.PropertyChanged += OnSystemConfigurationPropertyChanged;
                 ctx.ConfigManager.UserConfiguration.PropertyChanged += OnUserConfigurationPropertyChanged;
             }
 
-
             return ctx;
+        }
+
+        private void InitializeActivityMonitor()
+        {
+            var goPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" );
+            if( !Directory.Exists( goPath ) ) Directory.CreateDirectory( goPath );
+
+            var logPath = Path.Combine( goPath, @"GrandOutputDefault\" );
+            var goConfigPath = Path.Combine( goPath, "GrandOutput.config" );
+            if( !File.Exists( goConfigPath ) )
+            {
+                File.WriteAllText( goConfigPath, string.Format( @"<GrandOutputConfiguration>
+    <Channel MinimalFilter=""Debug"">
+        <Add Type=""BinaryFile"" Name=""All"" Path=""{0}"" />
+    </Channel>
+</GrandOutputConfiguration>", logPath ) );
+            }
+
+            CK.Core.SystemActivityMonitor.RootLogPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" ); ;
+            CK.Monitoring.GrandOutput.EnsureActiveDefaultWithDefaultSettings();
+
+            Monitor = new ActivityMonitor( "CiviKey" );
         }
 
         void OnSystemConfigurationPropertyChanged( object sender, PropertyChangedEventArgs e )
@@ -201,7 +204,7 @@ namespace Host
             //If the user has changed, we need to load the corresponding user configuration
             if( e.PropertyName == "CurrentUserProfile" )
             {
-                using( _log.OpenInfo().Send( "OnSystemConfigurationPropertyChanged" ) )
+                using( Monitor.OpenInfo().Send( "OnSystemConfigurationPropertyChanged" ) )
                 {
                     Uri previousContextAdress = Context.ConfigManager.UserConfiguration.CurrentContextProfile.Address;
 
@@ -226,7 +229,7 @@ namespace Host
 
         private void OnApplyDone( object sender, ApplyDoneEventArgs e )
         {
-            _log.Info().Send( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
+            Monitor.Info().Send( String.Format( "Apply Done. (Success : {0}).", e.Success ) );
         }
 
         /// <summary>

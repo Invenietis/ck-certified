@@ -117,6 +117,8 @@ namespace UpdateChecker
 
         public bool Setup( IPluginSetupInfo info )
         {
+            _log = new ActivityMonitor( "UpdateChecker" );
+
             _versionState = UpdateVersionState.Unknown;
             _downloadState = DownloadState.None;
             _webClient = new WebClient();

@@ -73,7 +73,6 @@ namespace InputTrigger
 
         public void Teardown()
         {
-
         }
 
         public void RegisterFor(ITrigger trigger, Action<ITrigger> action, bool preventDefault = true)

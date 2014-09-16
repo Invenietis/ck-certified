@@ -471,8 +471,8 @@ namespace CK.WindowManager
             public void Remove( CK.WindowManager.WindowElementBinder.SimpleBinding binding )
             {
                 //TODO performance
-                var serBind = Bindings.Where( sb => (sb.Origin == binding.Origin.Name && sb.Target == binding.Target.Name)
-                                      || (sb.Target == binding.Origin.Name && sb.Origin == binding.Target.Name) ).FirstOrDefault();
+                var serBind = Bindings.FirstOrDefault( sb => (sb.Origin == binding.Origin.Name && sb.Target == binding.Target.Name)
+                                      || (sb.Target == binding.Origin.Name && sb.Origin == binding.Target.Name) );
                 if( serBind != null ) Bindings.Remove( serBind );
             }
 

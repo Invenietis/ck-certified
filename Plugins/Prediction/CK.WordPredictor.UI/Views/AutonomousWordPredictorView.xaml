@@ -1,0 +1,43 @@
+﻿<ckwincore:CKNoFocusWindow x:Class="CK.WordPredictor.UI.Views.AutonomousWordPredictorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:ctrls="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
+            xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
+            xmlns:vm="clr-namespace:CK.WordPredictor.UI.ViewModels"
+            xmlns:view="http://schemas.civikey.org/StandardViews"
+             mc:Ignorable="d" 
+            Topmost="True" 
+            WindowStyle="None" 
+            MinHeight="40" 
+            MinWidth="40" 
+            ShowInTaskbar="False" 
+            ShowActivated="False" AllowsTransparency="True" Height="50" Width="600">
+
+    <ckwincore:CKWindow.Background>
+        <SolidColorBrush Color="{Binding KeyboardBackgroundColor}" Opacity="{Binding KeyboardOpacity}" />
+    </ckwincore:CKWindow.Background>
+    <ckwincore:CKNoFocusWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml"/>
+                <ResourceDictionary Source="Style.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ckwincore:CKNoFocusWindow.Resources>
+
+    <view:ResizableContainer BorderBrush="{Binding KeyboardBorderBrush}" BorderThickness="{Binding KeyboardBorderThickness}">
+        <view:ResizableContainer.Content>
+            <Viewbox Stretch="Fill" StretchDirection="Both" MouseEnter="Viewbox_MouseEnter">
+                <ItemsControl ItemsSource="{Binding VMWords}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Viewbox>
+        </view:ResizableContainer.Content>
+    </view:ResizableContainer>
+</ckwincore:CKNoFocusWindow>

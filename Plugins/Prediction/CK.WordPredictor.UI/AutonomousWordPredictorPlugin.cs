@@ -81,6 +81,8 @@ namespace CK.WordPredictor.UI
                 }) );
 
             _predictorViewModel.OnCurrentKeyboardChanged( _currentKeyboard.CurrentLayout );
+
+            KeyboardContext.Service.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
         }
 
         public void Stop()
@@ -93,47 +95,12 @@ namespace CK.WordPredictor.UI
 
         #endregion
 
-        //private void InitializeKeyboardContext()
-        //{
-        //    KeyboardContext.ServiceStatusChanged += OnKeyboardContextServiceStatusChanged;
-        //    if( KeyboardContext.Status == InternalRunningStatus.Started )
-        //    {
-        //        KeyboardContext.Service.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
-        //        _currentKeyboard = KeyboardContext.Service.CurrentKeyboard ?? KeyboardContext.Service.Keyboards.First();
-        //        _predictorViewModel.OnCurrentKeyboardChanged( _currentKeyboard.CurrentLayout );
-        //    }
-        //    else
-        //    {
-        //        _currentKeyboard = KeyboardContext.Service.CurrentKeyboard ?? KeyboardContext.Service.Keyboards.First();
-        //    }
-        //}
-
-        //private void UninitializeKeyboardContext()
-        //{
-        //    if( KeyboardContext.Status >= InternalRunningStatus.Stopping )
-        //    {
-        //        KeyboardContext.Service.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
-        //    }
-        //    KeyboardContext.ServiceStatusChanged -= OnKeyboardContextServiceStatusChanged;
-        //}
-
-        void OnKeyboardContextServiceStatusChanged( object sender, ServiceStatusChangedEventArgs e )
-        {
-            if( e.Current == InternalRunningStatus.Started )
-            {
-                KeyboardContext.Service.CurrentKeyboardChanged += OnCurrentKeyboardChanged;
-            }
-            else if( e.Current == InternalRunningStatus.Stopping )
-            {
-                KeyboardContext.Service.CurrentKeyboardChanged -= OnCurrentKeyboardChanged;
-            }
-        }
-
         void OnCurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
             if( e.Current != null )
             {
                 _currentKeyboard = KeyboardContext.Service.CurrentKeyboard;
+                _predictorViewModel.OnCurrentKeyboardChanged( _currentKeyboard.CurrentLayout );
             }
         }
     }

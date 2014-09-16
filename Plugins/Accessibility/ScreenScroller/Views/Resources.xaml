@@ -14,14 +14,14 @@
     <Geometry x:Key="CircledArrowData">M44.436129,25.256006L54.222273,25.256006 75.259996,46.29286 70.368799,51.187792 54.094614,67.462006 44.561911,67.462006 44.436129,67.337162 62.016504,49.752106 15.633995,49.752106 15.633995,42.837337 62.016504,42.837337z M45,5.6100006C23.245507,5.6100006 5.6100006,23.245506 5.6100006,45 5.6100006,66.754498 23.245507,84.389999 45,84.389999 66.754499,84.389999 84.389997,66.754498 84.389997,45 84.389997,23.245506 66.754499,5.6100006 45,5.6100006z M45,0C69.852816,0 89.999998,20.147187 89.999998,45 89.999998,69.852814 69.852816,90.000004 45,90.000004 20.147188,90.000004 9.5367432E-07,69.852814 0,45 9.5367432E-07,20.147187 20.147188,0 45,0z</Geometry>
 
     <Style x:Key="PathStyle" TargetType="{x:Type Path}">
-        <Setter Property="Stretch" Value="Uniform"></Setter>
-        <Setter Property="Fill" Value="#AAA"></Setter>
-        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"></Setter>
-        <Setter Property="Data" Value="{StaticResource ArrowData}"></Setter>
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Fill" Value="#AAA" />
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+        <Setter Property="Data" Value="{StaticResource ArrowData}" />
     </Style>
 
     <Style x:Key="ScreenScrollerPathStyle" TargetType="{x:Type Path}" BasedOn="{StaticResource PathStyle}">
-        <Setter Property="Stretch" Value="Fill"></Setter>
+        <Setter Property="Stretch" Value="Fill" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsHighlighted}" Value="False">
                 <Setter Property="Fill" Value="Black"/>
@@ -30,7 +30,7 @@
     </Style>
 
     <Style x:Key="ArrowPathStyle" TargetType="{x:Type Path}" BasedOn="{StaticResource PathStyle}">
-        <Setter Property="Data" Value="{StaticResource ArrowData}"></Setter>
+        <Setter Property="Data" Value="{StaticResource ArrowData}" />
     </Style>
 
     <Path x:Shared="False" x:Key="RightArrow" Style="{StaticResource ArrowPathStyle}">
@@ -130,8 +130,8 @@
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsStart}" Value="True"></Condition>
-                    <Condition Binding="{Binding IsParentTheCurrentNode}" Value="True"></Condition>
+                    <Condition Binding="{Binding IsStart}" Value="True" />
+                    <Condition Binding="{Binding IsParentTheCurrentNode}" Value="True" />
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Visibility" Value="Visible" />
             </MultiDataTrigger>
@@ -173,7 +173,7 @@
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                 <Setter Property="Background" Value="Black" />
-                <Setter Property="Opacity" Value="0.5"></Setter>
+                <Setter Property="Opacity" Value="0.5" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsVisible}" Value="True">
                 <Setter Property="Visibility" Value="Visible" />

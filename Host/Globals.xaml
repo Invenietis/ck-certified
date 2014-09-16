@@ -22,7 +22,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ConfigImplementationSelectorItemStyle" TargetType="Button" BasedOn="{StaticResource CK.Config.Link}">
-        <Setter Property="Height" Value="Auto"></Setter>
+        <Setter Property="Height" Value="Auto" />
     </Style>
 
     <ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
@@ -55,11 +55,11 @@
             <DataTemplate>
                 <DockPanel>
                     <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}"/>
-                    <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem.DisplayName}"></Label>
+                    <Label DockPanel.Dock="Left" FontWeight="DemiBold" Visibility="{Binding ShowOne}" Content="{Binding Values.CurrentItem.DisplayName}" />
                     <ComboBox Visibility="{Binding ShowMultiple}" FontSize="12" Margin="3" ItemsSource="{Binding Values}" IsSynchronizedWithCurrentItem="True">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding DisplayName}"></Label>
+                                <Label Content="{Binding DisplayName}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -258,7 +258,7 @@
             <DataTemplate>
                 <DockPanel LastChildFill="True" Margin="2">
                     <Button Command="{Binding Command}" DockPanel.Dock="Right" Height="16" Width="16" ToolTip="{Binding CommandDescription}">
-                        <Image Source="pack://application:,,,/CiviKey;component/Resources/Images/delete.png" Stretch="Fill"></Image>
+                        <Image Source="pack://application:,,,/CiviKey;component/Resources/Images/delete.png" Stretch="Fill" />
                     </Button>
                     <TextBlock DockPanel.Dock="Left" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="0 2 0 0" />
                 </DockPanel>

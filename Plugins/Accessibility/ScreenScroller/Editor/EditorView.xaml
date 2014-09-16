@@ -15,11 +15,11 @@
             d:DesignHeight="340" d:DesignWidth="300">
     <Window.Resources>
         <Style TargetType="Border" x:Key="Rounded">
-            <Setter Property="Background" Value="White"></Setter>
-            <Setter Property="BorderBrush" Value="Gray"></Setter>
-            <Setter Property="BorderThickness" Value="0.5"></Setter>
-            <Setter Property="CornerRadius" Value="5"></Setter>
-            <Setter Property="Padding" Value="5"></Setter>
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="5" />
         </Style>
         <Style TargetType="Border" x:Key="Splitter">
             <Setter Property="BorderThickness" Value="0 0 0 0.5"/>

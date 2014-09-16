@@ -24,14 +24,14 @@
                     <Button HorizontalAlignment="Center" Command="{Binding DataContext.ButtonCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Width="400" Height="80" Margin="10" Style="{StaticResource NoFocusSelectableButtonStyle}">
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
                             <StackPanel HorizontalAlignment="Left" Grid.Column="0" Margin="5 0">
                                 <TextBlock HorizontalAlignment="Left" Text="{Binding Label}" FontSize="20" FontWeight="Bold"/>
                                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Description}"/>
                             </StackPanel>
-                            <Image HorizontalAlignment="Right" Margin="20 0 0 0" Grid.Column="1" Source="{Binding ImagePath}"></Image>
+                            <Image HorizontalAlignment="Right" Margin="20 0 0 0" Grid.Column="1" Source="{Binding ImagePath}" />
                         </Grid>
                     </Button>
                 </DataTemplate>

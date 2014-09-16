@@ -134,13 +134,13 @@
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="7">
                                     <Button Margin="5" Command="{Binding StartCommand}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24" Source="/ObjectExplorer;component/UI/Resources/DetailsImages/greenIndicator.png"></Image>
+                                            <Image Width="24" Height="24" Source="/ObjectExplorer;component/UI/Resources/DetailsImages/greenIndicator.png" />
                                             <Label x:Uid="plugin-status-liveconfig-start"  VerticalAlignment="Center">Start</Label>
                                         </StackPanel>
                                     </Button>
                                     <Button Margin="5" Command="{Binding StopCommand}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24" Source="/ObjectExplorer;component/UI/Resources/DetailsImages/redIndicator.png"></Image>
+                                            <Image Width="24" Height="24" Source="/ObjectExplorer;component/UI/Resources/DetailsImages/redIndicator.png" />
                                             <Label x:Uid="plugin-status-liveconfig-stop" VerticalAlignment="Center">Stop</Label>
                                         </StackPanel>
                                     </Button>

@@ -195,9 +195,9 @@
             <GroupBox x:Name="LogConfigurationGroupBox" ClipToBounds="True" Background="{StaticResource RedGradientBrush}">
                 <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="100*"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="100*" />
+                        <RowDefinition Height="30" />
                     </Grid.RowDefinitions>
 
                     <!-- Log activation - Top -->
@@ -416,8 +416,8 @@
         </ControlTemplate.Resources>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="35" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" LastChildFill="False" Margin="0 0 0 5">
                 <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding Categories}">
@@ -642,8 +642,8 @@
                             </DockPanel>
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding DoLog}" Value="True">
-                                    <Setter x:Uid="log-configuration-service-status-logsActivated" TargetName="LogStatus" Property="Text" Value="Logs Activated"></Setter>
-                                    <Setter TargetName="LogIcon" Property="Source" Value="../LogImages/ActivatedLogIcon.png"></Setter>
+                                    <Setter x:Uid="log-configuration-service-status-logsActivated" TargetName="LogStatus" Property="Text" Value="Logs Activated" />
+                                    <Setter TargetName="LogIcon" Property="Source" Value="../LogImages/ActivatedLogIcon.png" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsBound}" Value="False">
                                     <Setter TargetName="UnboundNotifier" Property="Visibility" Value="Visible"/>

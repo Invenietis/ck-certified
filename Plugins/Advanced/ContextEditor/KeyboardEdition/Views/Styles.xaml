@@ -26,11 +26,11 @@
     <SolidColorBrush Color="#FF4D87B0" x:Key="EditorLightColor"/>
 
     <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="Calibri"></Setter>
+        <Setter Property="FontFamily" Value="Calibri" />
     </Style>
 
     <Style x:Key="SectionSeperatorStyle" TargetType="{x:Type Separator}">
-        <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
+        <Setter Property="Background" Value="{StaticResource EditorMainColor}" />
     </Style>
 
     <Style TargetType="{x:Type Button}" x:Key="ModernUIButtonStyle">
@@ -51,38 +51,38 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource EditorLightColor}"></Setter>
-                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="Background" Value="{StaticResource EditorLightColor}" />
+                <Setter Property="Foreground" Value="White" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource EditorMainColor}"></Setter>
+                <Setter Property="Background" Value="{StaticResource EditorMainColor}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="Gray"></Setter>
-                <Setter Property="Foreground" Value="Gray"></Setter>
-                <Setter Property="Background" Value="White"></Setter>
+                <Setter Property="BorderBrush" Value="Gray" />
+                <Setter Property="Foreground" Value="Gray" />
+                <Setter Property="Background" Value="White" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style TargetType="{x:Type TextBlock}" x:Key="SectionHeaderStyle">
-        <Setter Property="Margin" Value="5 5 5 2"></Setter>
-        <Setter Property="FontSize" Value="10"></Setter>
-        <Setter Property="FontFamily" Value="Malgun Gothic"></Setter>
-        <Setter Property="Foreground" Value="#FF065AA0"></Setter>
-        <Setter Property="FontWeight" Value="Bold"></Setter>
+        <Setter Property="Margin" Value="5 5 5 2" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontFamily" Value="Malgun Gothic" />
+        <Setter Property="Foreground" Value="#FF065AA0" />
+        <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
     <Style TargetType="Border" x:Key="Rounded">
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="BorderBrush" Value="Gray"></Setter>
-        <Setter Property="BorderThickness" Value="0.5"></Setter>
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="Padding" Value="5"></Setter>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderThickness" Value="0.5" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="5" />
     </Style>
 
     <Style TargetType="Border" x:Key="GrayRounded" BasedOn="{StaticResource Rounded}">
-        <Setter Property="Background" Value="#FFF9F9F9"></Setter>
+        <Setter Property="Background" Value="#FFF9F9F9" />
     </Style>
 
     <Style TargetType="Border" x:Key="Splitter">
@@ -140,10 +140,10 @@
     </Style>
 
     <Style TargetType="{x:Type StackPanel}" x:Key="KeyModeDisplayStyle">
-        <Setter Property="Control.Margin" Value="5"></Setter>
-        <Setter Property="Orientation" Value="Horizontal"></Setter>
-        <Setter Property="DockPanel.Dock" Value="Left"></Setter>
-        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Control.Margin" Value="5" />
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="DockPanel.Dock" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
     <Style TargetType="{x:Type view:StdKeyboardView}">
@@ -180,10 +180,10 @@
     </Style>
 
     <Style TargetType="{x:Type Thumb}">
-        <Setter Property="Background" Value="Black"></Setter>
-        <Setter Property="Opacity" Value="0.4"></Setter>
-        <Setter Property="Width" Value="10"></Setter>
-        <Setter Property="Height" Value="10"></Setter>
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="Opacity" Value="0.4" />
+        <Setter Property="Width" Value="10" />
+        <Setter Property="Height" Value="10" />
     </Style>
 
     <DataTemplate DataType="{x:Type vm:VMKeyEditable}">
@@ -261,8 +261,8 @@
         <DataTemplate.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
-                    <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
+                    <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true" />
+                    <Condition Binding="{Binding Path=ShowImage}" Value="true" />
                 </MultiDataTrigger.Conditions>
                 <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />
             </MultiDataTrigger>

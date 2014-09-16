@@ -11,8 +11,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary 
-                  Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml">
-        </ResourceDictionary>
+                  Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="Control" BasedOn="{StaticResource {x:Type Control}}" />
@@ -80,8 +79,8 @@
         <DataTemplate.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true"></Condition>
-                    <Condition Binding="{Binding Path=ShowImage}" Value="true"></Condition>
+                    <Condition Binding="{Binding Path=Image, Converter={StaticResource notnull}}" Value="true" />
+                    <Condition Binding="{Binding Path=ShowImage}" Value="true" />
                 </MultiDataTrigger.Conditions>
                 <!--<Setter TargetName="key" Property="ShowLabel" Value="false"/>-->
                 <Setter TargetName="key" Property="CustomContent" Value="{Binding Image}" />

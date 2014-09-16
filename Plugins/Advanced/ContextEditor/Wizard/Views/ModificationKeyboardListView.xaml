@@ -35,7 +35,7 @@
                                        Width="300" Margin="10 0 0 0"/>
                             <Image DockPanel.Dock="Right" 
                                    Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/keyboard.png"
-                                   Margin="10 0" Height="80" ></Image>
+                                   Margin="10 0" Height="80" />
                         </DockPanel>
                     </Button>
                 </DataTemplate>

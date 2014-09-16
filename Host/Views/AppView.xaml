@@ -12,15 +12,15 @@
 
     <Grid Name="grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <tb:TaskbarIcon x:Name="taskbarIcon" IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico" ToolTipText="CiviKey" MenuActivation="LeftOrRightClick" DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}" Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
         </tb:TaskbarIcon>
-        <Image Grid.Row="0" Height="100" Source="SplashTransparent.png"></Image>
+        <Image Grid.Row="0" Height="100" Source="SplashTransparent.png" />
         <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <Label Grid.Row="0" Content="{Binding AppVersion}"></Label>
             <ckcontrols:ImageButton x:Uid="HelpButton" Source="Images/help.png" Width="16" Height="16" Margin="0 0 10 0" ToolTip="Help" Command="{Binding ShowHelpCommand}"></ckcontrols:ImageButton>
+            <Label Grid.Row="0" Content="{Binding AppVersion}" />
         </StackPanel>
         <ContentControl Grid.Row="1" Content="{Binding ConfigManager}" />
     </Grid>

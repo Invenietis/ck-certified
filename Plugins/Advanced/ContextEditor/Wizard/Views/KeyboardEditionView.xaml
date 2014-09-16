@@ -160,8 +160,8 @@
 
             <!-- Style for the treeviewitem of a mode -->
             <Style x:Key="ActualModeKeyTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
-                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource CloudPath}"></Setter>
-                <Setter Property="Header" Value="{Binding Name}"></Setter>
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource CloudPath}" />
+                <Setter Property="Header" Value="{Binding Name}" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Name}" Value="">
                         <Setter Property="Header" Value="default" />
@@ -171,15 +171,15 @@
 
             <!-- Style for the treeviewitem of a mode folder-->
             <Style x:Key="ModefolderTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
-                <Setter Property="ItemContainerStyle" Value="{StaticResource ActualModeKeyTreeViewStyle}"></Setter>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ActualModeKeyTreeViewStyle}" />
                 <Setter Property="ItemsSource" Value="{Binding Items}"/>
-                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource GridPath}"></Setter>
-                <Setter Property="Header" Value="{Binding Name}"></Setter>
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource GridPath}" />
+                <Setter Property="Header" Value="{Binding Name}" />
             </Style>
 
             <!-- Style for the treeviewitem of a key-->
             <Style x:Key="KeyTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
-                <Setter Property="ItemContainerStyle" Value="{StaticResource ModefolderTreeViewStyle}"></Setter>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ModefolderTreeViewStyle}" />
                 <Setter Property="ItemsSource">
                     <Setter.Value>
                         <MultiBinding Converter="{StaticResource folderConverter}" ConverterParameter="Modes,Layouts">
@@ -188,25 +188,25 @@
                         </MultiBinding>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource LayoutKeyPath}"></Setter>
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource LayoutKeyPath}" />
                 <Setter Property="Header" Value="{Binding KeyModeVM.UpLabel}" />
                 <Setter Property="FontFamily" Value="{Binding KeyModeVM.FontFamily}" />
             </Style>
 
             <!-- Style for the treeviewitem of a zone-->
             <Style x:Key="ZoneTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
-                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource CloudPath}"></Setter>
-                <Setter Property="ItemContainerStyle" Value="{StaticResource KeyTreeViewStyle}"></Setter>
-                <Setter Property="ItemsSource" Value="{Binding Keys}"></Setter>
-                <Setter Property="Header" Value="{Binding Name}"></Setter>
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource CloudPath}" />
+                <Setter Property="ItemContainerStyle" Value="{StaticResource KeyTreeViewStyle}" />
+                <Setter Property="ItemsSource" Value="{Binding Keys}" />
+                <Setter Property="Header" Value="{Binding Name}" />
             </Style>
 
             <!-- Style for the treeviewitem of a keyboard-->
             <Style x:Key="KeyboardTreeViewStyle" TargetType="TreeViewItem" BasedOn="{StaticResource HeaderedSelectableTVI}">
-                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource KeyboardPath}"></Setter>
-                <Setter Property="ItemContainerStyle" Value="{StaticResource ZoneTreeViewStyle}"></Setter>
-                <Setter Property="ItemsSource" Value="{Binding Zones}"></Setter>
-                <Setter Property="Header" Value="{Binding Name}"></Setter>
+                <Setter Property="vm:CustomContent.Content" Value="{DynamicResource KeyboardPath}" />
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ZoneTreeViewStyle}" />
+                <Setter Property="ItemsSource" Value="{Binding Zones}" />
+                <Setter Property="Header" Value="{Binding Name}" />
             </Style>
 
         </ResourceDictionary>
@@ -219,9 +219,9 @@
         </Border.Resources>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"></ColumnDefinition>
-                <ColumnDefinition Width="1"></ColumnDefinition>
-                <ColumnDefinition Width="8*"></ColumnDefinition>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1" />
+                <ColumnDefinition Width="8*" />
             </Grid.ColumnDefinitions>
             <!-- TreeView -->
             <TreeView Grid.Column="0" BorderThickness="0" DataContext="{Binding KeyboardVM}" Padding="10" MaxHeight="600">
@@ -232,10 +232,10 @@
             
             <Grid Grid.Column="2" Margin="8 0 8 8 ">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="60"></RowDefinition>
-                    <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="50"></RowDefinition>
-                    <RowDefinition Height="1.5*"></RowDefinition>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="1.5*" />
                 </Grid.RowDefinitions>
                 
                 <!-- Modes -->

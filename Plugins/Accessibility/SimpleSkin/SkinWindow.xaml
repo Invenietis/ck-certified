@@ -22,8 +22,7 @@
         <SolidColorBrush Color="{Binding KeyboardVM.KeyboardBackgroundColor}" Opacity="{Binding KeyboardVM.KeyboardOpacity}"/>
     </ckwincore:CKWindow.Background>
     <Window.Resources>
-        <ResourceDictionary Source="Resources.xaml">
-        </ResourceDictionary>
+        <ResourceDictionary Source="Resources.xaml" />
     </Window.Resources>
 
     <view:ResizableContainer BorderBrush="{Binding KeyboardVM.KeyboardBorderBrush}" BorderThickness="{Binding KeyboardVM.KeyboardBorderThickness}">

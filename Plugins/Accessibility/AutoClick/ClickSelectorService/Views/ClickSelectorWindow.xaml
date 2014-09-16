@@ -19,11 +19,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
-                  Source="Dictionnaries/ClickSelector.xaml">
-                </ResourceDictionary>
+                  Source="Dictionnaries/ClickSelector.xaml" />
                 <ResourceDictionary 
-                  Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml">
-                </ResourceDictionary>
+                  Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

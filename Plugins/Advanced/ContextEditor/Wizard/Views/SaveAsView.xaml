@@ -29,7 +29,7 @@
                             <Button Style="{StaticResource NoFocusSelectableButtonStyle}"  HorizontalAlignment="Center" Margin="10" Width="400" Height="80" Command="{Binding DataContext.SelectionCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}">
                                 <DockPanel LastChildFill="False">
                                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Width="300" Margin="10 0 0 0" Text="{Binding Keyboard.Name}" FontWeight="Bold" FontSize="20" HorizontalAlignment="Left"/>
-                                    <Image  DockPanel.Dock="Right" Height="80" Margin="10 0" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/keyboard.png"></Image>
+                                    <Image  DockPanel.Dock="Right" Height="80" Margin="10 0" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/keyboard.png" />
                                 </DockPanel>
                             </Button>
                         </Grid>

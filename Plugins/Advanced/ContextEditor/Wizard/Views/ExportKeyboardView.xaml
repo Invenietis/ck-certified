@@ -36,7 +36,7 @@
 
             <Style x:Key="overlay" TargetType="Grid">
                 <Setter Property="Background" Value="Black"/>
-                <Setter Property="Visibility" Value="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}"></Setter>
+                <Setter Property="Visibility" Value="{Binding CanExecute, Converter={StaticResource converter}, ConverterParameter=Invert}" />
                 <Setter Property="Opacity" Value="0"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding CanExecute}" Value="False">
@@ -71,15 +71,15 @@
                 </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                        <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}" />
                     </Trigger>
                     <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="#FFF"></Setter>
-                        <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                        <Setter Property="Background" Value="#FFF" />
+                        <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}" />
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="BorderBrush" Value="Gray"></Setter>
-                        <Setter Property="Background" Value="#81b9ee"></Setter>
+                        <Setter Property="BorderBrush" Value="Gray" />
+                        <Setter Property="Background" Value="#81b9ee" />
                     </Trigger>
                 </Style.Triggers>
             </Style>

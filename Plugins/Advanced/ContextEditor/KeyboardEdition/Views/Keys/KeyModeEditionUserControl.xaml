@@ -262,7 +262,7 @@
 
             <!-- Mode : Fallback warning -->
             <StackPanel Style="{StaticResource KeyModeWarningDisplayStyle}">
-                <Image Width="24" Height="24" Margin="5 5 10 5" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/warning.png"></Image>
+                <Image Width="24" Height="24" Margin="5 5 10 5" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/warning.png" />
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Margin="0 0 10 0">
                         <TextBlock x:Uid="keyboard-editor-key-mode-warning1" Foreground="#FFC28C4E" TextWrapping="Wrap" VerticalAlignment="Center" Text="The properties displayed are those of the key on the following mode :" />
@@ -297,8 +297,8 @@
 
                             <Grid Margin="5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                                     <RadioButton GroupName="keyUplabel" x:Name="textcheckbox" IsChecked="{Binding Parent.ShowLabel, Mode=TwoWay }" Margin="5">
@@ -320,11 +320,11 @@
                                     </Grid>
                                     <Grid Margin="2 0" Visibility="{Binding Path=IsChecked, ElementName=imagecheckbox, Converter={StaticResource booltovisibilityconverter}}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"></RowDefinition>
-                                            <RowDefinition Height="36"></RowDefinition>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="36" />
                                         </Grid.RowDefinitions>
                                         <Image Height="36" Width="80" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/picture.png" Grid.Row="0">
                                             <Image.Visibility>
@@ -444,10 +444,10 @@
                                                 </TextBlock.ToolTip>
                                             </TextBlock>
                                             <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.RemoveCommandCommand}" CommandParameter="{Binding}">
-                                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png"></Image>
+                                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/delete.png" />
                                             </Button>
                                             <Button DockPanel.Dock="Right" Width="24" Height="24" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ChangeCommandCommand}" CommandParameter="{Binding}">
-                                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/edit.png"></Image>
+                                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/edit.png" />
                                             </Button>
                                         </DockPanel>
                                     </DataTemplate>

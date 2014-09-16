@@ -56,7 +56,7 @@
                             <TextBox x:Name="zoneCreationTextBox" MinWidth="100" MaxLines="1" AcceptsReturn="False" AcceptsTab="False" Margin="5 0" />
                             <Button Width="24" Height="24" Click="OnConfirmCreateNewZoneClicked" 
                                 Command="{Binding CreateZoneCommand}" CommandParameter="{Binding Text, ElementName=zoneCreationTextBox}">
-                                <Image Stretch="Fill" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
+                                <Image Stretch="Fill" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png" />
                                 <Button.ToolTip>
                                     <ToolTip x:Uid="keyboard-editor-keyboard-new-zone-tooltip">
                                         Confirm the zone's creation
@@ -74,7 +74,7 @@
                                 </Button.Style>
                             </Button>
                             <Button Width="24" Height="24" Click="OnConfirmCreateNewZoneClicked">
-                                <Image Stretch="Fill" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/cancel.png"></Image>
+                                <Image Stretch="Fill" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/cancel.png" />
                                 <Button.ToolTip>
                                     <ToolTip x:Uid="keyboard-editor-keyboard-new-zone-cancel-tooltip">
                                         Cancel the zone's creation
@@ -87,7 +87,7 @@
                     <Border Width="200">
                         <DockPanel x:Name="zoneCreationMainButton">
                             <Button Height="24" Width="24" Margin="5" DockPanel.Dock="Right" VerticalAlignment="Top" Click="OnNewZoneClicked">
-                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
+                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png" />
                                 <Button.ToolTip>
                                     <ToolTip  x:Uid="keyboard-editor-keyboard-new-zone-button-tooltip">
                                         Create a new zone

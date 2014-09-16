@@ -75,7 +75,7 @@
                                 <Button.ToolTip>
                                     <ToolTip x:Uid="keyboard-editor-layout-key-mode-new-key-mode-tooltip" ToolTip="Create a new whole set of parameters for this key when in the current mode" />
                                 </Button.ToolTip>
-                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png"></Image>
+                                <Image Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/plus.png" />
                             </Button>
                         </StackPanel>
                     </StackPanel>
@@ -105,14 +105,14 @@
                                 <Separator Style="{StaticResource SectionSeperatorStyle}"/>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition></ColumnDefinition>
-                                        <ColumnDefinition Width="10"></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition></RowDefinition>
-                                        <RowDefinition></RowDefinition>
-                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0 5">
                                         <TextBlock x:Uid="keyboard-editor-layout-key-visible-checkbox" Grid.IsSharedSizeScope="True" VerticalAlignment="Center" Text="Visible : " Margin="2" />

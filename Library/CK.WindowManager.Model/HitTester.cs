@@ -23,9 +23,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows;
 using System.Linq;
+using System.Windows;
 
 namespace CK.WindowManager.Model
 {

@@ -23,13 +23,11 @@
 
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using CK.Windows.App;
-using System.Threading;
-using System.Globalization;
-using System.Reflection;
-using Host.Services.Helpers;
 using Host.Properties;
+using Host.Services.Helpers;
 
 namespace Host
 {

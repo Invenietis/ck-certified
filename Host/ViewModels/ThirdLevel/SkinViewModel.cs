@@ -21,12 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using Host.Resources;
+using System;
 using CK.Plugin.Config;
 using CK.Reflection;
-using CK.Windows.Config;
 using CK.Windows;
-using System;
+using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
@@ -68,7 +68,7 @@ namespace Host.VM
 
         public bool EnableAutoHide
         {
-            get { return Config != null ? Config.GetOrSet( "autohide", false ) : false; }
+            get { return Config != null && Config.GetOrSet( "autohide", false ); }
             set { if( Config != null ) Config.Set( "autohide", value ); }
         }
 

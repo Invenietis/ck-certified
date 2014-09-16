@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\ModeObject.cs) is part of CiviKey. 
 *  
@@ -23,8 +23,8 @@
 
 using System;
 using System.Collections.Generic;
-using CK.Core;
 using System.Diagnostics;
+using CK.Core;
 using CK.Keyboard.Model;
 
 namespace CK.Keyboard

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\WindowAutoBinder.cs) is part of CiviKey. 
 *  
@@ -21,16 +21,15 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
-using System.Timers;
-using System;
-using System.Diagnostics;
-using System.Windows.Threading;
 
 namespace CK.WindowManager
 {

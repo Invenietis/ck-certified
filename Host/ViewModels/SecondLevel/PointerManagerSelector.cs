@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Windows;
 using CK.Windows.App;
 using CK.Windows.Config;
 using Host.Resources;

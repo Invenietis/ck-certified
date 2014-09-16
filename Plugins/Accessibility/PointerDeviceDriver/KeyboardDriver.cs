@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\PointerDeviceDriver\KeyboardDriver.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
-using CommonServices;
-using CK.Plugin;
-using System.Collections.Generic;
 using System.Windows.Threading;
+using CK.Plugin;
+using CommonServices;
 
 namespace PointerDeviceDriver
 {

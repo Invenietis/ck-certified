@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
-using CK.Plugin;
-using CK.Plugin.Config;
-using System.Windows.Input;
-using CK.Windows.Config;
-using CK.Windows;
-using System.Collections.Generic;
-using CK.Keyboard.Model;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows.Input;
+using CK.Keyboard.Model;
+using CK.Plugin;
+using CK.Windows;
+using CK.Windows.Config;
 
 namespace Host.VM
 {

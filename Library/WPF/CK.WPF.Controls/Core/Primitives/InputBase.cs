@@ -22,9 +22,9 @@
 #endregion
 
 using System;
-using System.Windows.Controls;
-using System.Windows;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Microsoft.Windows.Controls.Primitives
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\MoveMouse\MoveMouseCommandParameterManager.cs) is part of CiviKey. 
 *  
@@ -21,11 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using BasicCommandHandlers.Resources;
-using ProtocolManagerModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BasicCommandHandlers.Resources;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {

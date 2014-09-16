@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Help\Update\ManualUpdate\PluginUpdateViewModel.cs) is part of CiviKey. 
 *  
@@ -24,8 +24,8 @@
 using System.Windows.Input;
 using Caliburn.Micro;
 using CK.Core;
-using Help.Services;
 using CK.WPF.ViewModel;
+using Help.Services;
 
 namespace Help.Update.ManualUpdate
 {

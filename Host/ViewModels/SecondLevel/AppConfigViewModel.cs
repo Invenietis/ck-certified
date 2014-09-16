@@ -22,11 +22,9 @@
 #endregion
 
 using System;
-//using CK.WPF.Controls;
 using CK.Plugin.Config;
-using Host.Resources;
 using CK.Windows.Config;
-using CK.Windows;
+using Host.Resources;
 
 namespace Host.VM
 {

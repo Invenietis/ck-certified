@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\HighlightModel\IHighlightableElementController.cs) is part of CiviKey. 
 *  
@@ -20,11 +20,6 @@
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HighlightModel
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\TopMostService.cs) is part of CiviKey. 
 *  
@@ -23,16 +23,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using CK.Plugin;
-using CK.WindowManager.Model;
 using System.Diagnostics;
+using System.Timers;
+using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using System.Timers;
-using System.Threading;
+using CK.Plugin;
+using CK.WindowManager.Model;
 
 namespace CK.WindowManager
 {

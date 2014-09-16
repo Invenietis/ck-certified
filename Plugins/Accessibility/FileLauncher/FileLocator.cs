@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\FileLauncher\FileLocator.cs) is part of CiviKey. 
 *  
@@ -21,13 +21,13 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonServices;
+using Microsoft.Win32;
 
 namespace FileLauncher
 {

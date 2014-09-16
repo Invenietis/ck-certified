@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\UpdateChecker\UpdateChecker.cs) is part of CiviKey. 
 *  
@@ -26,19 +26,19 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using CK.Context;
-using CK.Plugin;
-using Host.Services;
-using CommonServices;
-using CK.Core;
-using CK.Plugin.Config;
-using System.Text;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using CK.Windows.App;
-using CK.Context.SemVer;
-using UpdateChecker.View;
+using System.Text;
 using System.Windows;
+using CK.Context;
+using CK.Context.SemVer;
+using CK.Core;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Windows.App;
+using CommonServices;
+using Host.Services;
+using UpdateChecker.View;
 
 namespace UpdateChecker
 {

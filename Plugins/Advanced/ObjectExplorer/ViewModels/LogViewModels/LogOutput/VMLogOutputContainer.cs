@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\LogViewModels\LogOutput\VMLogOutputContainer.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Windows.Input;
-using CK.WPF.ViewModel;
-using CK.Plugins.ObjectExplorer.UI.UserControls;
 using System.ComponentModel;
+using System.Windows.Input;
+using CK.Plugins.ObjectExplorer.UI.UserControls;
+using CK.WPF.ViewModel;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels
 {

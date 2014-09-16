@@ -21,13 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-//using CK.WPF.Controls;
-using Host.Resources;
 using System;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
 using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
@@ -66,7 +65,7 @@ namespace Host.VM
 
         public bool ActivateSkin
         {
-            get { return _skinPlugin != null ? _app.IsPluginRunning( _skinPlugin.PluginKey ) : false; }
+            get { return _skinPlugin != null && _app.IsPluginRunning( _skinPlugin.PluginKey ); }
             set
             {
                 using( var waiting = _app.ShowBusyIndicator() )
@@ -92,7 +91,7 @@ namespace Host.VM
 
         public bool EnableAutoHide
         {
-            get { return _config != null ? _config.GetOrSet( "autohide", false ) : false; }
+            get { return _config != null && _config.GetOrSet( "autohide", false ); }
             set { if( _config != null ) _config.Set( "autohide", value ); }
         }
 

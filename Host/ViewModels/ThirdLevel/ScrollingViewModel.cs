@@ -22,23 +22,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using System.Xml;
-using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
-using CK.Storage;
-using CK.Windows;
-using CK.Windows.App;
 using CK.Windows.Config;
 using CommonServices;
-using CommonServices.Accessibility;
-using HighlightModel;
 using Host.Resources;
 using Scroller;
 

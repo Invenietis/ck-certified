@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\ViewModels\DeletionKeyboardListViewModel.cs) is part of CiviKey. 
 *  
@@ -22,6 +21,7 @@ using System.Collections.Generic;
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System.Collections.Generic;
 using CK.Keyboard.Model;
 using CK.WPF.Wizard;
 using KeyboardEditor.Resources;

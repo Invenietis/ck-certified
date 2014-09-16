@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\ScreenScroller\ScreenScroller.cs) is part of CiviKey. 
 *  
@@ -25,13 +25,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Core;
+using CK.WindowManager.Model;
 using CommonServices.Accessibility;
 using HighlightModel;
-using CommonServices;
-using CK.WindowManager.Model;
 using ScreenScroller.Resources;
 
 namespace ScreenScroller

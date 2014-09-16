@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\KeyScroller\Editor\EditorViewModel.cs) is part of CiviKey. 
 *  
@@ -25,9 +25,9 @@ using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
 using CK.Context;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Core;
 using CommonServices;
 using Scroller.Resources;
 

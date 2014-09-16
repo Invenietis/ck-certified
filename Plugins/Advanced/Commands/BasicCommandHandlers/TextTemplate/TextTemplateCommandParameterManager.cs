@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\TextTemplate\TextTemplateCommandParameterManager.cs) is part of CiviKey. 
 *  
@@ -21,18 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Media.Animation;
+using System.Windows.Input;
+using CK.Plugins.SendInputDriver;
 using CK.WPF.ViewModel;
 using CommonServices;
 using ProtocolManagerModel;
-using CK.Plugin.Config;
-using System.Windows.Input;
-using CK.Plugins.SendInputDriver;
 
 namespace BasicCommandHandlers
 {

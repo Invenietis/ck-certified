@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\HighlightModel\IHighlighterService.cs) is part of CiviKey. 
 *  
@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using CK.Core;
 using CK.Plugin;
 using HighlightModel;
 

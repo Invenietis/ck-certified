@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.KeyMode.cs) is part of CiviKey. 
 *  
@@ -21,9 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.WPF.ViewModel;
-using CK.Keyboard.Model;
 using System.Windows.Input;
+using CK.Keyboard.Model;
+using CK.WPF.ViewModel;
 
 namespace KeyboardEditor.ViewModels
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\WindowManagerExecutor.cs) is part of CiviKey. 
 *  
@@ -21,16 +21,13 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Linq;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Threading;
+using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
-using CK.Core;
-using System.Windows;
-using System;
-using CommonServices;
-using System.Windows.Threading;
 using CK.Windows;
-using System.Diagnostics;
 
 namespace CK.WindowManager
 {

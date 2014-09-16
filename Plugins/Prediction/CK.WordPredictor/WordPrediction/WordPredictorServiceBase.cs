@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Prediction\CK.WordPredictor\WordPrediction\WordPredictorServiceBase.cs) is part of CiviKey. 
 *  
@@ -25,14 +25,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CK.Core;
 using CK.Plugin;
 using CK.WordPredictor.Model;
-using CK.Core;
-using System.Linq;
-using System.Diagnostics;
-
 
 namespace CK.WordPredictor
 {

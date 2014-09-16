@@ -22,9 +22,9 @@
 #endregion
 
 using System.Collections;
-using System.Windows.Media;
-using System.Windows.Documents;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Microsoft.Windows.Controls.Core
 {

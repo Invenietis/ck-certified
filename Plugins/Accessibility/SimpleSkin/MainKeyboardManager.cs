@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\MainKeyboardManager.cs) is part of CiviKey. 
 *  
@@ -22,14 +22,14 @@
 #endregion
 
 using System;
+using System.IO;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
-using Host.Services;
-using System.IO;
 using Help.Services;
+using Host.Services;
 
 namespace SimpleSkin
 {

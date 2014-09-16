@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\FileLauncher\View\ApplicationViewModel.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.WPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using CK.WPF.ViewModel;
 
 namespace FileLauncher
 {

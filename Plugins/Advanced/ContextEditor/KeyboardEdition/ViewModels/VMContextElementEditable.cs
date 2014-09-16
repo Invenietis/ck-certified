@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMContextElementEditable.cs) is part of CiviKey. 
 *  
@@ -30,6 +30,7 @@ using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using CK.WPF.ViewModel;
+
 namespace KeyboardEditor.ViewModels
 {
     /// <summary>

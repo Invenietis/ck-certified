@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\Components\TemplateSelectors\AddActionDataTemplateSelector.cs) is part of CiviKey. 
 *  
@@ -21,11 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using BasicCommandHandlers;
-using ProtocolManagerModel;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using BasicCommandHandlers;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\Versionning\150To160.cs) is part of CiviKey. 
 *  
@@ -21,8 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Keyboard.Model;
 using System;
+using CK.Keyboard.Model;
 
 namespace CK.Keyboard.Versionning
 {

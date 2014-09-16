@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMContextEditable.cs) is part of CiviKey. 
 *  
@@ -21,21 +21,21 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.WPF.ViewModel;
-using CK.Keyboard.Model;
-using CK.Plugin.Config;
-using CK.Context;
 using System;
-using CK.Plugin;
-using CommonServices;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using KeyboardEditor.Tools;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
-using ProtocolManagerModel;
-using KeyboardEditor.Resources;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Forms;
+using CK.Context;
+using CK.Keyboard.Model;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.WPF.ViewModel;
+using CommonServices;
+using KeyboardEditor.Resources;
+using KeyboardEditor.Tools;
+using ProtocolManagerModel;
 
 namespace KeyboardEditor.ViewModels
 {

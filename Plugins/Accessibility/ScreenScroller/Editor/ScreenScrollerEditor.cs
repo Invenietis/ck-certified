@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\ScreenScroller\Editor\ScreenScrollerEditor.cs) is part of CiviKey. 
 *  
@@ -22,9 +22,9 @@
 #endregion
 
 using System;
+using CK.Context;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Context;
 
 namespace ScreenScroller.Editor
 {

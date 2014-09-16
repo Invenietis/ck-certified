@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CK.Windows.Config;
+﻿using CK.Windows.Config;
 
 namespace Host.VM
 {

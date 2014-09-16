@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\ProtocolManagerModel\IProtocolEditorsManager.cs) is part of CiviKey. 
 *  
@@ -21,8 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Plugin;
 using System;
+using CK.Plugin;
 
 namespace ProtocolManagerModel
 {

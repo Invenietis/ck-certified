@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\ChangeKeyboard\ChangeKeyboard.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CommonServices;
-using CK.Plugin;
-using CK.Keyboard.Model;
 using System.Linq;
+using CK.Keyboard.Model;
+using CK.Plugin;
+using CommonServices;
 using ProtocolManagerModel;
 
 namespace BasicCommandHandlers

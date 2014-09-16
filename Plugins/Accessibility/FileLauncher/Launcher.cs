@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\FileLauncher\Launcher.cs) is part of CiviKey. 
 *  
@@ -21,12 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
+using System.Diagnostics;
 using CK.Plugin;
 using CommonServices;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-
 
 namespace FileLauncher
 {

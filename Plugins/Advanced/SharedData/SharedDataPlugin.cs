@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CK.Plugin;
-using CommonServices;
-using CK.Context;
-using CK.Plugin.Config;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.ComponentModel;
 using System.Windows.Media;
 using CK.Core;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CommonServices;
 
 namespace SharedData
 {

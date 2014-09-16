@@ -23,28 +23,24 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CK.Context;
+using CK.Context.SemVer;
+using CK.Core;
 using CK.Plugin;
 using CK.Storage;
-using Host.Services;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Media;
-using Host.Services.Helper;
 using CK.Windows.App;
-using System.Collections.Generic;
-using CK.Core;
-using System.ComponentModel;
-using CK.Context.SemVer;
-using System.Windows.Media.Imaging;
-using System.Windows.Interop;
 using CommonServices;
-using CK.Plugin.Config;
-using System.Threading;
-using System.Globalization;
-using CK.Monitoring;
+using Host.Services;
+using Host.Services.Helper;
 
 namespace Host
 {
@@ -109,7 +105,7 @@ namespace Host
 </GrandOutputConfiguration>", logPath ) );
             }
 
-            CK.Core.SystemActivityMonitor.RootLogPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" ); ;
+            CK.Core.SystemActivityMonitor.RootLogPath = Path.Combine( CKApp.CurrentParameters.ApplicationDataPath, @"AppLogs\" );
             CK.Monitoring.GrandOutput.EnsureActiveDefaultWithDefaultSettings();
 
 
@@ -274,11 +270,11 @@ namespace Host
         /// <returns>The development Uri if IsStandAloneInstance is true, null otherwise </returns>
         private Uri GetDevelopmentPath( string fileName )
         {
-            string _isStandAloneInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsStandAloneInstance" );
-            bool _isStandAloneInstance = false;
-            if( !String.IsNullOrEmpty( _isStandAloneInstanceString ) )
+            string isStandAloneInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsStandAloneInstance" );
+            if( !String.IsNullOrEmpty( isStandAloneInstanceString ) )
             {
-                if( Boolean.TryParse( _isStandAloneInstanceString, out _isStandAloneInstance ) && _isStandAloneInstance )
+                bool isStandAloneInstance = false;
+                if( Boolean.TryParse( isStandAloneInstanceString, out isStandAloneInstance ) && isStandAloneInstance )
                 {
                     //string dirPath = Path.Combine( Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), ".." ), "Configurations" );
                     //if( !Directory.Exists( dirPath ) ) Directory.CreateDirectory( dirPath );

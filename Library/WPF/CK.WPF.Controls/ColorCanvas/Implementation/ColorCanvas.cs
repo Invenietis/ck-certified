@@ -23,11 +23,11 @@
 
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using Microsoft.Windows.Controls.Primitives;
 using Microsoft.Windows.Controls.Core.Utilities;
-using System.Windows.Data;
+using Microsoft.Windows.Controls.Primitives;
 
 namespace Microsoft.Windows.Controls
 {

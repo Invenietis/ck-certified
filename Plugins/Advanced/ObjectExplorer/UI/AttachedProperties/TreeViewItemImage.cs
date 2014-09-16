@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\AttachedProperties\TreeViewItemImage.cs) is part of CiviKey. 
 *  
@@ -21,8 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media;
 
 namespace CK.Plugins.ObjectExplorer
 {

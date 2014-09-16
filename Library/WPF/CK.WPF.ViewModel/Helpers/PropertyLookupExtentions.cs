@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.Keyboard.Model;
 using System.Collections.Generic;
+using CK.Keyboard.Model;
 using CK.Plugin.Config;
 
 namespace CK.WPF.ViewModel

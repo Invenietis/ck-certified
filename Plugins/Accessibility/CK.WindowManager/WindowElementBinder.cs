@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\WindowElementBinder.cs) is part of CiviKey. 
 *  
@@ -23,18 +23,16 @@
 
 using System;
 using System.Collections.Generic;
-using CK.Plugin;
-using CK.WindowManager.Model;
-using CK.Core;
 using System.Diagnostics;
-using System.Threading;
-using CK.Storage;
-using System.Xml;
-using CK.Plugin.Config;
 using System.Linq;
 using System.Windows;
-using CK.Windows;
 using System.Windows.Threading;
+using System.Xml;
+using CK.Core;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Storage;
+using CK.WindowManager.Model;
 
 namespace CK.WindowManager
 {

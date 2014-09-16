@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\HelpAwareWizardPage.cs) is part of CiviKey. 
 *  
@@ -22,7 +22,6 @@
 #endregion
 
 using System.Windows.Input;
-using Caliburn.Micro;
 using CK.WPF.Wizard;
 
 namespace KeyboardEditor

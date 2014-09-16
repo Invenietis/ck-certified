@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\KeyboardCollection.Active.cs) is part of CiviKey. 
 *  
@@ -22,10 +22,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections;
-using CK.Keyboard.Model;
+using System.Collections.Generic;
 using System.Linq;
+using CK.Keyboard.Model;
 
 namespace CK.Keyboard
 {

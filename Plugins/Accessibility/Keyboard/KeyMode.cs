@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\KeyMode.cs) is part of CiviKey. 
 *  
@@ -24,9 +24,9 @@
 using System;
 using System.Diagnostics;
 using System.Xml;
-using CK.Storage;
-using CK.Keyboard.Model;
 using CK.Core;
+using CK.Keyboard.Model;
+using CK.Storage;
 
 namespace CK.Keyboard
 {

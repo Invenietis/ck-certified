@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\KeyScroller\ScrollingStrategies\Tools\ScrollingStrategyBase.cs) is part of CiviKey. 
 *  
@@ -24,8 +24,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin.Config;

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\KeyboardDisplayer.cs) is part of CiviKey. 
 *  
@@ -23,6 +23,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 using System.Windows.Threading;
 using CK.Context;
 using CK.Core;
@@ -30,19 +35,12 @@ using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.WindowManager.Model;
+using CK.Windows;
+using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
-using SimpleSkin.ViewModels;
-using CK.Windows;
-using System.Windows;
-using System.ComponentModel;
-using System.Diagnostics;
 using Host.Services;
-using System.Windows.Media;
-using CK.Windows.Helpers;
-using SimpleSkin.Res;
-using System.Linq;
-using CommonServices;
+using SimpleSkin.ViewModels;
 
 namespace SimpleSkin
 {

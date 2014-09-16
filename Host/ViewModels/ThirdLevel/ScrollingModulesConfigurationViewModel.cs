@@ -26,13 +26,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using System.Xml;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Storage;
-using CK.Windows;
 using CK.Windows.App;
 using CK.Windows.Config;
 using CommonServices.Accessibility;
@@ -207,7 +202,7 @@ namespace Host.VM
             Debug.Assert( _modulesFromService.Any( m => m.InternalName == elementInternalName ) );
             Debug.Assert( !_modulesFromConfig.Any( m => m.InternalName == elementInternalName ) );
 
-            var item = _modulesFromService.Where( e => e.InternalName == elementInternalName ).Single();
+            var item = _modulesFromService.Single( e => e.InternalName == elementInternalName );
 
             item.Command = item.Command = new VMCommand( () => RemoveFromConf( item.InternalName ) );
             item.CommandDescription = R.EnableScrolling;
@@ -229,7 +224,7 @@ namespace Host.VM
             Debug.Assert( !_modulesFromService.Any( m => m.InternalName == elementInternalName ) );
             Debug.Assert( _modulesFromConfig.Any( m => m.InternalName == elementInternalName ) );
 
-            var item = _modulesFromConfig.Where( e => e.InternalName == elementInternalName ).Single();
+            var item = _modulesFromConfig.Single( e => e.InternalName == elementInternalName );
 
             _modulesFromConfig.Remove( item );
 
@@ -260,7 +255,7 @@ namespace Host.VM
                 //If the element is found in the service list, we remove it (it has been found in the conf, which means it is disabled)
                 if( _modulesFromService.Any( m => m.InternalName == scrollingElement.InternalName ) )
                 {
-                    _modulesFromService.Remove( _modulesFromService.Where( s => s.InternalName == scrollingElement.InternalName ).Single() );
+                    _modulesFromService.Remove( _modulesFromService.Single( s => s.InternalName == scrollingElement.InternalName ) );
                 }
 
                 if( !_modulesFromConfig.Contains( scrollingElement ) )

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\Helpers\XamlSerializer.cs) is part of CiviKey. 
 *  
@@ -21,15 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.IO;
-using System.Windows.Interop;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using CK.Storage;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Markup;
+using System.Windows.Media.Imaging;
+using CK.Storage;
 
 namespace Host.Services.Helper
 {

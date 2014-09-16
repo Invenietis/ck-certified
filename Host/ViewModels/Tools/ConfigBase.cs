@@ -22,14 +22,11 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
-using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Windows;
 using CK.Windows.Config;
 
 namespace Host.VM

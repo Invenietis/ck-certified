@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\ViewModels\KeyboardEditionViewModel.cs) is part of CiviKey. 
 *  
@@ -23,11 +23,11 @@
 
 using System;
 using System.Collections.Generic;
-using CK.Keyboard.Model;
-using KeyboardEditor.Resources;
-using CK.Plugin;
 using System.Windows.Threading;
+using CK.Keyboard.Model;
+using CK.Plugin;
 using CK.WPF.Wizard;
+using KeyboardEditor.Resources;
 
 namespace KeyboardEditor.ViewModels
 {

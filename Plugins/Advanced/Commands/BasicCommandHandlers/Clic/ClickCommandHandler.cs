@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\Clic\ClickCommandHandler.cs) is part of CiviKey. 
 *  
@@ -21,11 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CommonServices;
-using CK.Plugin;
-using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
 using CK.InputDriver;
+using CK.Plugin;
+using CommonServices;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {

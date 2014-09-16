@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\ClickSelectorService\IClickSelector.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.Plugins.AutoClick.ViewModel;
 using CK.Plugin;
+using CK.Plugins.AutoClick.ViewModel;
 
 namespace CK.Plugins.AutoClick
 {

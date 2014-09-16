@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\ClickSelectorService\Views\ClickSelectorWindow.xaml.cs) is part of CiviKey. 
 *  
@@ -21,11 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Windows;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
+using CK.Windows;
 
 namespace CK.Plugins.AutoClick.Views
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\CK.WordPredictor.Model\ITextualContextService.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.Core;
 using System.Collections.Specialized;
+using CK.Core;
 using CK.Plugin;
 
 namespace CK.WordPredictor.Model

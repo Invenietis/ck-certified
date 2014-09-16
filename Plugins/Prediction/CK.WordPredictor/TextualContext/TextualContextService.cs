@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Prediction\CK.WordPredictor\TextualContext\TextualContextService.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
+using CK.Core;
+using CK.InputDriver;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
-using CK.Core;
-using CK.InputDriver;
 
 namespace CK.WordPredictor
 {

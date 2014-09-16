@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\MonitorOnce\MonitorOnceCommandHandler.cs) is part of CiviKey. 
 *  
@@ -22,13 +22,13 @@
 #endregion
 
 using System;
-using CommonServices;
-using CK.Plugin;
-using CK.Context;
 using System.Collections.Generic;
-using CK.Plugins.SendInputDriver;
-using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using CK.Context;
+using CK.Plugin;
+using CK.Plugins.SendInputDriver;
+using CommonServices;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {

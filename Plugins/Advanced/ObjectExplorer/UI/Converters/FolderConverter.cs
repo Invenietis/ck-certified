@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\Converters\FolderConverter.cs) is part of CiviKey. 
 *  
@@ -22,10 +22,10 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Data;
-using System.Collections;
 
 namespace CK.Plugins.ObjectExplorer
 {

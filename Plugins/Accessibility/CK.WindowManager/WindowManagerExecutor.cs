@@ -46,6 +46,9 @@ namespace CK.WindowManager
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWindowBinder WindowBinder { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
+        public ITopMostService TopMostService { get; set; }
+
         public WindowManagerExecutor()
         {
             _placeholder = new PreviewBindingInfo();
@@ -173,9 +176,10 @@ namespace CK.WindowManager
 
             if( e.BindingType == BindingEventType.Attach )
             {
-                if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding );
+
+                if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding, TopMostService );
             }
-            else _placeholder.Shutdown();
+            else _placeholder.Shutdown( TopMostService );
         }
 
         void OnBeforeBinding( object sender, WindowBindingEventArgs e )
@@ -198,7 +202,7 @@ namespace CK.WindowManager
 
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
-            _placeholder.Shutdown();
+            _placeholder.Shutdown( TopMostService );
         }
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )

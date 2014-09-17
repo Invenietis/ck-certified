@@ -42,16 +42,20 @@ namespace CK.WindowManager.Model
             get { return Position != BindingPosition.None; }
         }
 
-        public void Shutdown()
+        public void Shutdown( ITopMostService topMostService )
         {
             if( HasPreview )
             {
                 Binding = null;
-                if( Window != null ) Window.Dispatcher.BeginInvoke( new Action( () => Window.Hide() ) );
+                if( Window != null ) Window.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    Window.Hide();
+                    topMostService.UnregisterTopMostElement( Window );
+                } ) );
             }
         }
 
-        public void Display( IBinding binding )
+        public void Display( IBinding binding, ITopMostService topMostService )
         {
             if( binding == null ) return;
 
@@ -76,7 +80,8 @@ namespace CK.WindowManager.Model
                     Window.Top = r.Top;
                     Window.Width = r.Width;
                     Window.Height = r.Height;
-                    Window.Topmost = true;
+
+                    topMostService.RegisterTopMostElement( "1", Window );
                 } ) );
             }
         }

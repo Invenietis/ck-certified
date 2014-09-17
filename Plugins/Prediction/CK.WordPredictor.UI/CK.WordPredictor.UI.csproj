@@ -132,6 +132,7 @@
     <Compile Include="Helpers\CaretIndexBehavior.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
     <Compile Include="AutonomousWordPredictorPlugin.cs" />
+    <Compile Include="Helpers\TextToTrimmedTextConverter.cs" />
     <Compile Include="TextualContextPreview.cs" />
     <Compile Include="ViewModels\AutonomousWordPredictorViewModel.cs" />
     <Compile Include="ViewModels\PredictedWordViewModel.cs" />

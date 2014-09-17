@@ -18,8 +18,24 @@
         <Setter Property="FontFamily" Value="{Binding FontFamily}"/>
     </Style>
 
+    <ckwpfcontrols:WidthHeightCountToDimensionConverter x:Key="WidthHeightCountToDimensionConverter" />
+
     <DataTemplate DataType="{x:Type vm:PredictedWordViewModel}">
-        <view:StdKeyView Padding="5" MinWidth="60" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" UpLabel="{Binding Word}" Margin="1">
+        <view:StdKeyView Padding="5" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" UpLabel="{Binding Word}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <view:StdKeyView.Width>
+                <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}">
+                    <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />
+                    <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualHeight" />
+                    <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="DataContext.VMWords.Count" />
+                </MultiBinding>
+            </view:StdKeyView.Width>
+            <view:StdKeyView.Height>
+                <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}" ConverterParameter="true">
+                    <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />
+                    <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualHeight" />
+                    <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="DataContext.VMWords.Count" />
+                </MultiBinding>
+            </view:StdKeyView.Height>
             <view:StdKeyView.Background>
                 <SolidColorBrush Color="{Binding Background}"/>
             </view:StdKeyView.Background>

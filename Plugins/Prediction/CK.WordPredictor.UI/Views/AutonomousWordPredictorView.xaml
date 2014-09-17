@@ -24,20 +24,26 @@
                 <ResourceDictionary Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml"/>
                 <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <ctrls:WidthHeightToOrientationConverter x:Key="WidthHeightToOrientationConverter" />
         </ResourceDictionary>
     </ckwincore:CKNoFocusWindow.Resources>
 
-    <view:ResizableContainer BorderBrush="{Binding KeyboardBorderBrush}" BorderThickness="{Binding KeyboardBorderThickness}">
+    <view:ResizableContainer BorderBrush="{Binding KeyboardBorderBrush}" BorderThickness="{Binding KeyboardBorderThickness}" x:Name="Container">
         <view:ResizableContainer.Content>
-            <Viewbox Margin="5" Stretch="Uniform" StretchDirection="UpOnly" MouseEnter="Viewbox_MouseEnter">
-                <ItemsControl ItemsSource="{Binding VMWords}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"></StackPanel>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </Viewbox>
+            <ItemsControl ItemsSource="{Binding VMWords}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <StackPanel.Orientation>
+                                <MultiBinding Converter="{StaticResource WidthHeightToOrientationConverter}">
+                                    <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="ActualWidth" />
+                                    <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="ActualHeight" />
+                                </MultiBinding>
+                            </StackPanel.Orientation>
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </view:ResizableContainer.Content>
     </view:ResizableContainer>
 </ckwincore:CKNoFocusWindow>

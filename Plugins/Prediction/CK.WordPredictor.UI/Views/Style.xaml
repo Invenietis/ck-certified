@@ -3,6 +3,7 @@
                     xmlns:ckwc="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
                     xmlns:ckwpfcontrols="clr-namespace:CK.WPF.Controls;assembly=CK.WPF.Controls"
                     xmlns:p="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config.Model"
+                    xmlns:helpers="clr-namespace:CK.WordPredictor.UI.Helpers"
                     xmlns:pm="clr-namespace:CK.Plugin;assembly=CK.Plugin.Model"
                     xmlns:view="http://schemas.civikey.org/StandardViews"
                     xmlns:vm="clr-namespace:CK.WordPredictor.UI.ViewModels"
@@ -19,9 +20,10 @@
     </Style>
 
     <ckwpfcontrols:WidthHeightCountToDimensionConverter x:Key="WidthHeightCountToDimensionConverter" />
+    <helpers:TextToTrimmedTextConverter x:Key="TextToTrimmedTextConverter" />
 
     <DataTemplate DataType="{x:Type vm:PredictedWordViewModel}">
-        <view:StdKeyView Padding="5" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" UpLabel="{Binding Word}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <view:StdKeyView Padding="5" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <view:StdKeyView.Width>
                 <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}">
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />
@@ -38,6 +40,12 @@
                     <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="DataContext.VMWords.Count" />
                 </MultiBinding>
             </view:StdKeyView.Height>
+            <view:StdKeyView.UpLabel>
+                <MultiBinding Converter="{StaticResource TextToTrimmedTextConverter}">
+                    <Binding Path="Word" />
+                    <Binding RelativeSource="{RelativeSource Mode=Self}" />
+                </MultiBinding>
+            </view:StdKeyView.UpLabel>
             <view:StdKeyView.Background>
                 <SolidColorBrush Color="{Binding Background}"/>
             </view:StdKeyView.Background>

@@ -26,6 +26,7 @@
                 <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}">
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualHeight" />
+                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Margin" />
                     <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="DataContext.VMWords.Count" />
                 </MultiBinding>
             </view:StdKeyView.Width>
@@ -33,6 +34,7 @@
                 <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}" ConverterParameter="true">
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualHeight" />
+                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="Margin" />
                     <Binding RelativeSource="{RelativeSource AncestorType=view:ResizableContainer, Mode=FindAncestor}" Path="DataContext.VMWords.Count" />
                 </MultiBinding>
             </view:StdKeyView.Height>

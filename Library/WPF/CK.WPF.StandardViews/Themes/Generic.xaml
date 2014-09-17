@@ -73,7 +73,7 @@
                                 Background="{TemplateBinding Background}">
                         </Border>
 
-                        <TextBlock x:Name="Letter"
+                        <TextBlock x:Name="Letter" Padding="{TemplateBinding Padding}"
                                    Foreground="{TemplateBinding Foreground}" 
                                    Text='{TemplateBinding UpLabel}' 
                                    Focusable="False" 
@@ -82,7 +82,7 @@
                                TextTrimming="CharacterEllipsis" >
                         </TextBlock>
 
-                        <TextBlock x:Name="Icon"
+                        <TextBlock x:Name="Icon" Padding="{TemplateBinding Padding}"
                                    Foreground="{TemplateBinding Foreground}" 
                                    Text='{TemplateBinding UpLabel}' 
                                    Focusable="False" 

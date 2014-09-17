@@ -27,6 +27,7 @@ using Host.Resources;
 using CK.Windows.Config;
 using Host.VM;
 using Host.ViewModels;
+using CK.WordPredictor.UI;
 
 namespace Host
 {
@@ -89,7 +90,7 @@ namespace Host
 
             var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
-                new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
+                AutonomousWordPredictorPlugin.PluginId.UniqueId, //AutonomousWordPredictorPlugin
                 new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), //SybilleWordPredictorService
                 new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), //WordPredictedService
                 new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ), //WordPredictorFeature

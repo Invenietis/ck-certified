@@ -15,10 +15,11 @@ using CK.WordPredictor.Model;
 using CK.WPF.Controls;
 using CommonServices;
 using HighlightModel;
+using CK.Core;
 
 namespace CK.WordPredictor.UI.ViewModels
 {
-    public class AutonomousWordPredictorViewModel : VMBase, IHighlightableElement
+    public class AutonomousWordPredictorViewModel : VMBase, IHighlightableElement, IDisposable
     {
         #region fields
 
@@ -107,54 +108,75 @@ namespace CK.WordPredictor.UI.ViewModels
 
         #region IHighlightableElement Members
 
+        bool _isHighlighting;
+        public bool IsHighlighting
+        {
+            get { return _isHighlighting; }
+            set
+            {
+                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                if( value != _isHighlighting )
+                {
+                    SafeSet<bool>( value, ( v ) => _isHighlighting = v );
+                    OnPropertyChanged( "IsHighlighting" );
+                    foreach( var vmWord in VMWords )
+                    {
+                        vmWord.IsHighlighting = value;
+                    }
+                }
+            }
+        }
+
         public Core.ICKReadOnlyList<IHighlightableElement> Children
         {
-            get { throw new NotImplementedException(); }
+            get { return VMWords.ToReadOnlyList(); }
         }
 
         public int X
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int Y
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int Width
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int Height
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public SkippingBehavior Skip
         {
-            get { throw new NotImplementedException(); }
+            get { return VMWords.Count == 0 ? SkippingBehavior.Skip : SkippingBehavior.None; }
         }
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            IsHighlighting = true;
+            return scrollingDirective;
         }
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            IsHighlighting = false;
+            return scrollingDirective;
         }
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            return scrollingDirective;
         }
 
         public bool IsHighlightableTreeRoot
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         #endregion
@@ -282,5 +304,16 @@ namespace CK.WordPredictor.UI.ViewModels
             else
                 NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( setter, val );
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            _sharedData.SharedPropertyChanged -= _sharedData_SharedPropertyChanged;
+            _wordPredictor.Words.CollectionChanged -= OnCollectionChanged;
+        }
+
+        #endregion
     }
 }

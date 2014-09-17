@@ -356,6 +356,10 @@
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
       <Name>Scroller</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\Prediction\CK.WordPredictor.UI\CK.WordPredictor.UI.csproj">
+      <Project>{4cdc576f-47bd-4b76-b1a6-e2a8d7bbff5c}</Project>
+      <Name>CK.WordPredictor.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>

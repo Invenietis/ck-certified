@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
@@ -82,7 +83,7 @@ namespace CK.WordPredictor.UI.ViewModels
         {
             _keyUpCmd = new VMCommand( () =>
             {
-                Application.Current.Dispatcher.BeginInvoke( (Action)(() => _commandManager.SendCommand( this, CommandFromWord( _word ) ) ) );
+                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => _commandManager.SendCommand( this, CommandFromWord( _word ) )) );
             } );
         }
 
@@ -91,105 +92,84 @@ namespace CK.WordPredictor.UI.ViewModels
             return String.Format( @"{0}:{1}", "sendPredictedWord", word );
         }
 
+        #region Design elements
+
         private void UpdateBackground()
         {
-            Color c = _config[_layout].GetOrSet<Color>( "Background", Colors.White );
-            SafeSet<Color>( c, ( v ) =>
-            {
-                if( v == null ) Background = Colors.White;
-                else Background = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            Background = _config[_layout].GetOrSet<Color>( "Background", Colors.White );
         }
 
         private void UpdateHighlightBackground()
         {
-            Color c = _config[_layout].GetOrSet<Color>( "HighlightBackground", Colors.White );
-            SafeSet<Color>( c, ( v ) =>
-            {
-                if( v == null ) HighlightBackground = Colors.White;
-                else HighlightBackground = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            HighlightBackground = _config[_layout].GetOrSet<Color>( "HighlightBackground", Colors.White );
         }
 
         private void UpdateHighlightFontColor()
         {
-            Color c = _config[_layout].GetOrSet<Color>( "HighlightFontColor", Colors.White );
-            SafeSet<Color>( c, ( v ) =>
-            {
-                if( v == null ) HighlightFontColor = Colors.White;
-                else HighlightFontColor = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            HighlightFontColor = _config[_layout].GetOrSet<Color>( "HighlightFontColor", Colors.White );
         }
 
         private void UpdateLetterColor()
         {
-            Color c = _config[_layout].GetOrSet<Color>( "LetterColor", Colors.Black );
-            SafeSet<Color>( c, ( v ) =>
-            {
-                if( v == null ) LetterColor = Colors.Black;
-                else LetterColor = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            LetterColor = _config[_layout].GetOrSet<Color>( "LetterColor", Colors.Black );
         }
 
         private void UpdateFontStyle()
         {
-            FontStyle c = _config[_layout].GetOrSet<FontStyle>( "FontStyle", FontStyles.Normal );
-            SafeSet<FontStyle>( c, ( v ) =>
-            {
-                if( v == null ) FontStyle = FontStyles.Normal;
-                else FontStyle = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            FontStyle = _config[_layout].GetOrSet<FontStyle>( "FontStyle", FontStyles.Normal );
         }
 
         private void UpdateFontWeight()
         {
-            FontWeight c = _config[_layout].GetOrSet<FontWeight>( "FontWeight", FontWeights.Normal );
-            SafeSet<FontWeight>( c, ( v ) =>
-            {
-                if( v == null ) FontWeight = FontWeights.Normal;
-                else FontWeight = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            FontWeight = _config[_layout].GetOrSet<FontWeight>( "FontWeight", FontWeights.Normal );
         }
 
         private void UpdateFontFamily()
         {
-            string c = _config[_layout].GetOrSet<string>( "FontFamily", "Arial" );
-            SafeSet<string>( c, ( v ) =>
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            string v = _config[_layout].GetOrSet<string>( "FontFamily", "Arial" );
+            if( v.Contains( "pack://" ) )
             {
-                if( v.Contains( "pack://" ) )
-                {
-                    string[] split = v.Split( '|' );
-                    FontFamily = new System.Windows.Media.FontFamily( new Uri( split[0] ), split[1] );
-                }
-                else FontFamily = new System.Windows.Media.FontFamily( v );
-            } );
+                string[] split = v.Split( '|' );
+                FontFamily = new System.Windows.Media.FontFamily( new Uri( split[0] ), split[1] );
+            }
+            else FontFamily = new System.Windows.Media.FontFamily( v );
         }
 
         private void UpdateFontSize()
         {
-            double c = _config[_layout].GetOrSet<double>( "FontSize", 15 );
-            SafeSet<double>( c, ( v ) =>
-            {
-                if( v == null ) FontSize = 15;
-                else FontSize = v;
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            FontSize = _config[_layout].GetOrSet<double>( "FontSize", 15 );
         }
 
         private void UpdateTextDecorations()
         {
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             MemoryStream stream = new MemoryStream();
             TextDecorationCollection obj = _config[_layout].GetOrSet<TextDecorationCollection>( "TextDecorations", (TextDecorationCollection)null );
             if( obj != null ) System.Windows.Markup.XamlWriter.Save( obj, stream );
             stream.Seek( 0, SeekOrigin.Begin );
-            SafeSet<Stream>( stream, ( v ) =>
-            {
-                if( stream.Length > 0 )
-                    TextDecorations = (TextDecorationCollection)System.Windows.Markup.XamlReader.Load( stream );
-                else
-                    TextDecorations = null;
+            if( stream.Length > 0 )
+                TextDecorations = (TextDecorationCollection)System.Windows.Markup.XamlReader.Load( stream );
+            else
+                TextDecorations = null;
 
-                stream.Dispose();
-            } );
+            stream.Dispose();
         }
 
         private void UpdateAllProperties()
@@ -204,8 +184,6 @@ namespace CK.WordPredictor.UI.ViewModels
             UpdateLetterColor();
             UpdateTextDecorations();
         }
-
-        #region "Design" properties
 
         Color _background;
         public Color Background
@@ -335,57 +313,80 @@ namespace CK.WordPredictor.UI.ViewModels
 
         #endregion
 
-
         #region IHighlightableElement Members
 
-        public Core.ICKReadOnlyList<IHighlightableElement> Children
+        bool _isHighlighting;
+        public bool IsHighlighting
         {
-            get { throw new NotImplementedException(); }
+            get { return _isHighlighting; }
+            set
+            {
+                Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+                if( value != _isHighlighting )
+                {
+                    _isHighlighting = value;
+                    OnPropertyChanged( "IsHighlighting" );
+                }
+            }
+        }
+
+        public ICKReadOnlyList<IHighlightableElement> Children
+        {
+            get { return CKReadOnlyListEmpty<IHighlightableElement>.Empty; }
         }
 
         public int X
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int Y
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int Width
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public int Height
         {
-            get { throw new NotImplementedException(); }
+            get { return 0; }
         }
 
         public SkippingBehavior Skip
         {
-            get { throw new NotImplementedException(); }
+            get { return SkippingBehavior.None; }
         }
 
         public ScrollingDirective BeginHighlight( BeginScrollingInfo beginScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            IsHighlighting = true;
+            return scrollingDirective;
         }
 
         public ScrollingDirective EndHighlight( EndScrollingInfo endScrollingInfo, ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            IsHighlighting = false;
+            return scrollingDirective;
         }
 
         public ScrollingDirective SelectElement( ScrollingDirective scrollingDirective )
         {
-            throw new NotImplementedException();
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            scrollingDirective.NextActionType = ActionType.GoToRelativeRoot;
+
+            if( KeyUpCommand.CanExecute( null ) )
+            {
+                KeyUpCommand.Execute( null );
+            }
+            return scrollingDirective;
         }
 
         public bool IsHighlightableTreeRoot
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         #endregion
@@ -403,17 +404,6 @@ namespace CK.WordPredictor.UI.ViewModels
         {
             _layout = layout;
             UpdateAllProperties();
-        }
-
-        void SafeSet<T>( T value, Action<T> setter, bool synchronous = true )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            T val = value;
-            if( synchronous )
-                NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );
-            else
-                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( setter, val );
         }
     }
 }

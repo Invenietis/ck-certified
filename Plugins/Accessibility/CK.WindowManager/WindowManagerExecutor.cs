@@ -128,7 +128,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Top && binding.Top != null )
             {
                 slave = binding.Top.Window;
-                if( reference.Height != slave.Height )
+                if( reference.Width != slave.Width )
                 {
                     WindowManager.Resize( slave, reference.Width, slave.Height );
                     ResizingWindow( binding.Top, BindingPosition.Bottom );
@@ -138,7 +138,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Bottom && binding.Bottom != null )
             {
                 slave = binding.Bottom.Window;
-                if( reference.Height != slave.Height )
+                if( reference.Width != slave.Width )
                 {
                     WindowManager.Resize( slave, reference.Width, slave.Height );
                     ResizingWindow( binding.Bottom, BindingPosition.Top );
@@ -148,7 +148,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Left && binding.Left != null )
             {
                 slave = binding.Left.Window;
-                if( reference.Width != slave.Width )
+                if( reference.Height != slave.Height )
                 {
                     WindowManager.Resize( slave, slave.Width, reference.Height );
                     ResizingWindow( binding.Left, BindingPosition.Right );
@@ -158,7 +158,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Right && binding.Right != null )
             {
                 slave = binding.Right.Window;
-                if( reference.Width != slave.Width )
+                if( reference.Height != slave.Height )
                 {
                     WindowManager.Resize( slave, slave.Width, reference.Height );
                     ResizingWindow( binding.Right, BindingPosition.Left );

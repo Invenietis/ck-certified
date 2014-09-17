@@ -19,7 +19,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type vm:PredictedWordViewModel}">
-        <view:StdKeyView Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" UpLabel="{Binding Word}" Margin="1">
+        <view:StdKeyView Padding="5" MinWidth="60" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" UpLabel="{Binding Word}" Margin="1">
             <view:StdKeyView.Background>
                 <SolidColorBrush Color="{Binding Background}"/>
             </view:StdKeyView.Background>

@@ -29,7 +29,7 @@
 
     <view:ResizableContainer BorderBrush="{Binding KeyboardBorderBrush}" BorderThickness="{Binding KeyboardBorderThickness}">
         <view:ResizableContainer.Content>
-            <Viewbox Stretch="Fill" StretchDirection="Both" MouseEnter="Viewbox_MouseEnter">
+            <Viewbox Margin="5" Stretch="Uniform" StretchDirection="UpOnly" MouseEnter="Viewbox_MouseEnter">
                 <ItemsControl ItemsSource="{Binding VMWords}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

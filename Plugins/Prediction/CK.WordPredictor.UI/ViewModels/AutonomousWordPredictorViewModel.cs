@@ -117,7 +117,7 @@ namespace CK.WordPredictor.UI.ViewModels
                 Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
                 if( value != _isHighlighting )
                 {
-                    SafeSet<bool>( value, ( v ) => _isHighlighting = v );
+                     _isHighlighting = value;
                     OnPropertyChanged( "IsHighlighting" );
                     foreach( var vmWord in VMWords )
                     {
@@ -190,6 +190,7 @@ namespace CK.WordPredictor.UI.ViewModels
             }
         }
 
+
         private void UpdateAllProperties()
         {
             SafeUpdateKeyboardBackgroundColor();
@@ -200,46 +201,33 @@ namespace CK.WordPredictor.UI.ViewModels
 
         private void SafeUpdateKeyboardOpacity()
         {
-            var c = _sharedData.WindowOpacity;
-            SafeSet<double>( c, ( v ) =>
-            {
-                KeyboardOpacity = v;
-                OnPropertyChanged( "KeyboardOpacity" );
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            KeyboardOpacity = _sharedData.WindowOpacity;
         }
 
         private void SafeUpdateKeyboardBackgroundColor()
         {
-            Color c = _sharedData.WindowBackgroundColor;
-            SafeSet<Color>( c, ( v ) =>
-            {
-                KeyboardBackgroundColor = v;
-                OnPropertyChanged( "KeyboardBackgroundColor" );
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            KeyboardBackgroundColor = _sharedData.WindowBackgroundColor;
         }
 
         private void SafeUpdateKeyboardBorderThickness()
         {
-            int c = _sharedData.WindowBorderThickness;
-            SafeSet<int>( c, ( v ) =>
-            {
-                KeyboardBorderThickness = v;
-                OnPropertyChanged( "KeyboardBorderThickness" );
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
+            KeyboardBorderThickness = _sharedData.WindowBorderThickness;
         }
 
         private void SafeUpdateKeyboardBorderBrush()
         {
-            Color c = _sharedData.WindowBorderBrush;
-            SafeSet<Color>( c, ( v ) =>
-            {
-                KeyboardBorderBrush = new SolidColorBrush( v );
-                OnPropertyChanged( "KeyboardBorderBrush" );
-            } );
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+            KeyboardBorderBrush = _sharedData.WindowBorderBrush.ToString();
         }
 
-        Brush _keyboardBorderBrush;
-        public Brush KeyboardBorderBrush
+        string _keyboardBorderBrush;
+        public string KeyboardBorderBrush
         {
             get { return _keyboardBorderBrush; }
             set
@@ -292,17 +280,6 @@ namespace CK.WordPredictor.UI.ViewModels
                     OnPropertyChanged();
                 }
             }
-        }
-
-        void SafeSet<T>( T value, Action<T> setter, bool synchronous = true )
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            T val = value;
-            if( synchronous )
-                NoFocusManager.Default.NoFocusDispatcher.Invoke( setter, val );
-            else
-                NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( setter, val );
         }
 
         #region IDisposable Members

@@ -153,4 +153,7 @@
   <data name="HalfZoneScrollingStrategy" xml:space="preserve">
     <value>Défilement par demi-zone</value>
   </data>
+  <data name="StartRecording" xml:space="preserve">
+    <value>Commencer l'enregistrement</value>
+  </data>
 </root>

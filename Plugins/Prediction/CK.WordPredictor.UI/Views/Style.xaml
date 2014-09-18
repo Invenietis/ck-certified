@@ -17,6 +17,8 @@
         <Setter Property="FontSize" Value="{Binding FontSize}"/>
         <Setter Property="Opacity" Value="1"/>
         <Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+        <Setter Property="ShowIcon" Value="false"/>
+        <Setter Property="Description" Value="{Binding Word}"/>
     </Style>
 
     <ckwpfcontrols:WidthHeightCountToDimensionConverter x:Key="WidthHeightCountToDimensionConverter" />
@@ -44,6 +46,7 @@
                 <MultiBinding Converter="{StaticResource TextToTrimmedTextConverter}">
                     <Binding Path="Word" />
                     <Binding RelativeSource="{RelativeSource Mode=Self}" />
+                    <Binding RelativeSource="{RelativeSource Mode=Self}" Path="ActualWidth"/>
                 </MultiBinding>
             </view:StdKeyView.UpLabel>
             <view:StdKeyView.Background>

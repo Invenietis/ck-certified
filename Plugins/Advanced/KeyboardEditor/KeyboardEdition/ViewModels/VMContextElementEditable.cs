@@ -68,7 +68,7 @@ namespace KeyboardEditor.ViewModels
 
         public ICollection<FontFamily> FontFamilies
         {
-            get { return Fonts.SystemFontFamilies; }
+            get { return Fonts.SystemFontFamilies.OrderBy( ff => ff.Source ).ToList(); }
         }
 
         /// <summary>
@@ -496,7 +496,7 @@ namespace KeyboardEditor.ViewModels
 
         #endregion
 
-        internal virtual void OnMove( MoveDirection direction,  int pixels, bool arrangeMovementAmplitude = true ) { }
+        internal virtual void OnMove( MoveDirection direction, int pixels, bool arrangeMovementAmplitude = true ) { }
         internal virtual void OnEscape()
         {
             IsBeingRenamed = false;

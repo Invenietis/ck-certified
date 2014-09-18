@@ -22,6 +22,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/CK.WPF.StandardViews;component/Themes/ResizableContainer.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CK.WPF.Controls;component/TrimmingTextBlock/Generic.xaml" />
                 <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <ctrls:WidthHeightToOrientationConverter x:Key="WidthHeightToOrientationConverter" />

@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="SimpleCommand.cs" />
     <Compile Include="TextBlockService.cs" />
+    <Compile Include="TrimmingTextBlock\TrimmingTextBlock.cs" />
     <Compile Include="VirtualizingWrapPanel.cs" />
     <Compile Include="VMBase.cs" />
     <Page Include="Chromes\Themes\Generic.xaml">
@@ -143,6 +144,10 @@
     <Compile Include="ImageButton.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TrimmingTextBlock\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

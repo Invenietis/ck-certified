@@ -26,6 +26,11 @@
 
     <DataTemplate DataType="{x:Type vm:PredictedWordViewModel}">
         <view:StdKeyView Padding="5" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <view:StdKeyView.Template>
+                <ControlTemplate>
+                    <ckwpfcontrols:TrimmingTextBlock Text="{Binding Word}" />
+                </ControlTemplate>
+            </view:StdKeyView.Template>
             <view:StdKeyView.Width>
                 <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}">
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />

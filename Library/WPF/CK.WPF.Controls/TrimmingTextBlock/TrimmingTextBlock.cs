@@ -200,12 +200,14 @@ namespace CK.WPF.Controls
 
         private string GetFirstStringPart()
         {
-            return Text.Substring( 0, _trimLevel );
+            if (Text.Length/2 - _trimLevel > 0) return Text.Substring(0, Text.Length/2 - _trimLevel);
+            else return String.Empty;
         }
 
         private string GetLastStringPart()
         {
-            return Text.Substring( Text.Length - _trimLevel, _trimLevel );
+            if( Text.Length / 2 - _trimLevel > 0 ) return Text.Substring( (Text.Length % 2 == 0) ? Text.Length / 2 + _trimLevel : Text.Length / 2 + _trimLevel +1, Text.Length / 2 - _trimLevel );
+            else return String.Empty;
         }
 
         private FormattedText CreateFormattedText( string stringFormat )

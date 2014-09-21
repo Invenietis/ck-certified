@@ -28,7 +28,14 @@
         <view:StdKeyView Padding="5" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <view:StdKeyView.Template>
                 <ControlTemplate>
-                    <ckwpfcontrols:TrimmingTextBlock Text="{Binding Word}" />
+                    <Grid Focusable="False" x:Name="buttonGrid">
+                        <Border x:Name="Border" CornerRadius="3"
+                                BorderThickness="0.3"
+                                BorderBrush="Black"
+                                Background="{TemplateBinding Background}">
+                        </Border>
+                        <ckwpfcontrols:TrimmingTextBlock Text="{Binding Word}" HorizontalAlignment="Stretch" />
+                    </Grid>
                 </ControlTemplate>
             </view:StdKeyView.Template>
             <view:StdKeyView.Width>

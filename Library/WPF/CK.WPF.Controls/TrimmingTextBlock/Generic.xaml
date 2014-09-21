@@ -13,7 +13,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <TextBlock x:Name="PART_Text" IsManipulationEnabled="False" />
+                    <TextBlock x:Name="PART_Text" IsManipulationEnabled="False" 
+                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                               VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                               Background="{TemplateBinding Background}"
+                               />
                     <ControlTemplate.Triggers>
                         
                     </ControlTemplate.Triggers>

@@ -52,7 +52,6 @@ namespace CK.WordPredictor.UI.Helpers
                                     textblock.FontStretch ),
                     textblock.FontSize,
                     textblock.Foreground
-                    textblock.ToolTip
                 );
             bool widthOK = formatted.Width < key.ActualWidth;
 

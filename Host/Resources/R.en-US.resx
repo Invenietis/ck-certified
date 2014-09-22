@@ -405,4 +405,16 @@
   <data name="TurboScrollingSpeed" xml:space="preserve">
     <value>Turbo scrolling speed</value>
   </data>
+  <data name="WindowBackgroundColor" xml:space="preserve">
+    <value>Change background color</value>
+  </data>
+  <data name="WindowBorderBrush" xml:space="preserve">
+    <value>Change borders color</value>
+  </data>
+  <data name="WindowConfig" xml:space="preserve">
+    <value>Window Configuration</value>
+  </data>
+  <data name="WindowOpacity" xml:space="preserve">
+    <value>Change opacity</value>
+  </data>
 </root>

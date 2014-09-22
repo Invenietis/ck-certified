@@ -87,5 +87,19 @@ namespace Host.VM
                 }
             }
         }
+
+        bool _isDirectionReversed;
+        public bool IsDirectionReversed
+        {
+            get { return _isDirectionReversed; }
+            set
+            {
+                if( _isDirectionReversed != value )
+                {
+                    _isDirectionReversed = value;
+                    NotifyOfPropertyChange( "IsDirectionReversed" );
+                }
+            }
+        }
     }
 }

@@ -334,11 +334,17 @@ namespace Scroller
                 LastDirective = previousElement.EndHighlight( new EndScrollingInfo( Timer.Interval.Ticks, previousElement, element ), LastDirective );
                 var root = previousElement.IsHighlightableTreeRoot ? previousElement : Walker.Parents.Count > 1 ? Walker.Parents.ElementAt( Walker.Parents.Count - 2 ) : Walker.Current;
                 FireEndHighlightElement( previousElement, root );
+
+                // This (FireEndHighlight()) is called after a MoveNext, which might be called again right away when ActionTime == Immediate, and skip a scrolling step.
+                // So we force NextTick. At worst, this might skip one step.
+                if( LastDirective.ActionTime == ActionTime.Immediate )
+                    LastDirective.ActionTime = ActionTime.NextTick;
+
                 EnsureReactivity();
             }
         }
 
-        private void FireBeginHighlightElement(IHighlightableElement element, IHighlightableElement root )
+        private void FireBeginHighlightElement( IHighlightableElement element, IHighlightableElement root )
         {
             if( BeginHighlightElement != null )
                 BeginHighlightElement( this, new HighlightEventArgs( element, root ) );

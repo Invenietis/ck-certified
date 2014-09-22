@@ -39,6 +39,7 @@ namespace Host.VM
         WordPredictionViewModel _wpVm;
         ShareKeyboardViewModel _skVm;
         AppAdvancedConfigViewModel _appAdvcVm;
+        WindowConfigViewModel _winConfVm;
         ScrollingViewModel _scVm;
 
         public AppConfigViewModel( AppViewModel app )
@@ -68,6 +69,8 @@ namespace Host.VM
             //var g = this.AddGroup();
 
             this.AddLink( _appAdvcVm ?? (_appAdvcVm = new AppAdvancedConfigViewModel( _app )) );
+            this.AddLink( _winConfVm ?? (_winConfVm = new WindowConfigViewModel( R.WindowConfig, _app )) );
+
             //g.AddLink( _scVm ?? (_scVm = new ScrollingViewModel( R.ScrollConfig, _app )) );
             //g.AddLink( _acVm ?? (_acVm = new AutoClickViewModel( _app )) );
             //g.AddLink( _wpVm ?? (_wpVm = new WordPredictionViewModel( _app )) );

@@ -289,7 +289,7 @@ namespace MouseRadar
                     }
                     else
                     {
-                        moveX = curScreen.Bounds.Bottom;
+                        moveX = curScreen.Bounds.Left;
                         moveY = (int)p.Y;
                     }
                     break;

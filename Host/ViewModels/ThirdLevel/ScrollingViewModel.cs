@@ -172,8 +172,8 @@ namespace Host.VM
 
         protected override void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            NotifyOfPropertyChange( () => Speed );
-            NotifyOfPropertyChange( () => TurboSpeed );
+            //NotifyOfPropertyChange( () => Speed );
+            //NotifyOfPropertyChange( () => TurboSpeed );
             NotifyOfPropertyChange( () => Strategy );
             NotifyOfPropertyChange( () => SelectedTrigger );
         }
@@ -186,12 +186,12 @@ namespace Host.VM
                 if( Config != null ) _comboBox.SelectedItem = Config.GetOrSet( "Strategy", "TurboScrollingStrategy" );
                 _recordItem.Refresh();
                 _comboBox.Refresh();
-                _speedSlider.Refresh();
-                _turboSpeedSlider.Refresh();
+                //_speedSlider.Refresh();
+                //_turboSpeedSlider.Refresh();
             }
             NotifyOfPropertyChange( () => ActivatePlugin );
-            NotifyOfPropertyChange( () => Speed );
-            NotifyOfPropertyChange( () => TurboSpeed );
+            //NotifyOfPropertyChange( () => Speed );
+            //NotifyOfPropertyChange( () => TurboSpeed );
             NotifyOfPropertyChange( () => Strategy );
             NotifyOfPropertyChange( () => SelectedTrigger );
         }

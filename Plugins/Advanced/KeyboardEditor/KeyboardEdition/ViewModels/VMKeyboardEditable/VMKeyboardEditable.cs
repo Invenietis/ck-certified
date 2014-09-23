@@ -58,9 +58,7 @@ namespace KeyboardEditor.ViewModels
             foreach( IZone zone in _keyboard.Zones )
             {
                 var vmz = Context.Obtain( zone );
-                // TODO: find a better way....
-                if( zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
-                else Zones.Add( vmz );
+                Zones.Add( vmz );
 
                 foreach( IKey key in zone.Keys )
                 {
@@ -379,8 +377,7 @@ namespace KeyboardEditor.ViewModels
         {
             //TODO : Prediction
             var vmz = Context.Obtain( e.Zone );
-            if( e.Zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
-            else Zones.Add( vmz );
+            Zones.Add( vmz );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )

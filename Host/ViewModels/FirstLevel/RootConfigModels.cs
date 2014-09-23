@@ -30,7 +30,7 @@ using CK.WPF.Controls;
 namespace Host.ViewModels
 {
     public class ContextModel : VMBase, IDisposable
-    { 
+    {
         IKeyboardContext _ctx;
         AppViewModel _app;
 
@@ -48,8 +48,7 @@ namespace Host.ViewModels
             _keyboards = new ObservableCollection<KeyboardModel>();
             foreach( IKeyboard keyboard in _ctx.Keyboards )
             {
-                if( keyboard.Name != "Prediction" )
-                    _keyboards.Add( new KeyboardModel( keyboard ) );
+                _keyboards.Add( new KeyboardModel( keyboard ) );
             }
 
             RegisterEvents();
@@ -73,22 +72,15 @@ namespace Host.ViewModels
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
-            //temporary
-            if( e.Keyboard.Name != "Prediction" )
-            {
-                var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
-                destroyedKeyboard.Dispose();
+            var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
+            destroyedKeyboard.Dispose();
 
-                _keyboards.Remove( destroyedKeyboard );
-            }
+            _keyboards.Remove( destroyedKeyboard );
         }
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
-            if( e.Keyboard.Name != "Prediction" )
-            {
-                _keyboards.Add( new KeyboardModel( e.Keyboard ) );
-            }
+            _keyboards.Add( new KeyboardModel( e.Keyboard ) );
         }
 
         private void RegisterEvents()

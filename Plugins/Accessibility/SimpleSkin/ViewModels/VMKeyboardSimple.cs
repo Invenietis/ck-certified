@@ -447,8 +447,6 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-                //TODO : Improve (temporary)
-                if( Keyboard.Name == "Prediction" ) return SkippingBehavior.EnterChildren;
 
                 if( Zones.Count == 0 || Zones.All( z => z.Skip == SkippingBehavior.Skip ) )
                     return SkippingBehavior.Skip; //If there are no zones or that they are all to be skipped, we skip this root element

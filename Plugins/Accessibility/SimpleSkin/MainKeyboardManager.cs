@@ -91,8 +91,6 @@ namespace SimpleSkin
         {
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                //temporary for prediction
-                if( KeyboardContext.Service.CurrentKeyboard.Name == "Prediction" ) return;
                 if( !active ) KeyboardContext.Service.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
                 KeyboardContext.Service.CurrentKeyboard.IsActive = active;
                 if( active ) KeyboardContext.Service.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;

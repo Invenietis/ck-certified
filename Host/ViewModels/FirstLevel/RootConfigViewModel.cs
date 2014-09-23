@@ -42,6 +42,7 @@ namespace Host
 
         readonly AppViewModel _app;
         AppConfigViewModel _appConfigVm;
+        AdditionalKeyboardSelectionViewModel _additionalKeyboardsVm;
         ConfigItemCurrent<KeyboardModel> _keyboards;
 
         public RootConfigViewModel( AppViewModel app ) 
@@ -99,6 +100,8 @@ namespace Host
                 new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ), //TextualContextCommandHandler
                 new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" )  //PredictionTextAreaBus
                 ), new WordPredictionViewModel( _app ) ) { DisplayName = R.WordPredictionSectionName };
+
+            this.AddLink( _additionalKeyboardsVm ?? (_additionalKeyboardsVm = new AdditionalKeyboardSelectionViewModel( _app )) );
 
             var g = this.AddGroup();
             g.Items.Add( skinStarter );

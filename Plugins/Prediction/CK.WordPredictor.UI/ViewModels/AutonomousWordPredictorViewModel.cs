@@ -26,17 +26,19 @@ namespace CK.WordPredictor.UI.ViewModels
         IWordPredictorService _wordPredictor;
         ICommandManagerService _commandManager;
         ILayout _layout;
-        IPluginConfigAccessor _config;
+        IPluginConfigAccessor _keyboardLayoutConfig;
+        IPluginConfigAccessor _layoutConfig;
         ISharedData _sharedData;
 
         #endregion fields
 
-        public AutonomousWordPredictorViewModel( ILayout layout, IPluginConfigAccessor config, ISharedData sharedData, IWordPredictorService wordPredictor, ICommandManagerService commandManager )
+        public AutonomousWordPredictorViewModel( ILayout layout, IPluginConfigAccessor keyboardLayoutConfig, IPluginConfigAccessor layoutConfig, ISharedData sharedData, IWordPredictorService wordPredictor, ICommandManagerService commandManager )
         {
             _commandManager = commandManager;
             _wordPredictor = wordPredictor;
             _layout = layout;
-            _config = config;
+            _keyboardLayoutConfig = keyboardLayoutConfig;
+            _layoutConfig = layoutConfig;
             _sharedData = sharedData;
 
             _sharedData.SharedPropertyChanged += _sharedData_SharedPropertyChanged;
@@ -92,7 +94,7 @@ namespace CK.WordPredictor.UI.ViewModels
             List<PredictedWordViewModel> vmWords = new List<PredictedWordViewModel>();
             foreach( var predictedWord in _words )
             {
-                vmWords.Add( new PredictedWordViewModel( predictedWord.Word, _layout, _config, _commandManager ) );
+                vmWords.Add( new PredictedWordViewModel( predictedWord.Word, _layout, _keyboardLayoutConfig, _layoutConfig, _commandManager ) );
             }
             VMWords = vmWords;
         }

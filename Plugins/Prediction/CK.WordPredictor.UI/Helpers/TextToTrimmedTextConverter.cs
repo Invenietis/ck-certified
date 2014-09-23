@@ -64,6 +64,7 @@ namespace CK.WordPredictor.UI.Helpers
 
                 while( !widthOK )
                 {
+                    if( part1.Length - 1 < 0 ) break;
                     part1 = part1.Substring( 0, part1.Length - 1 );
                     part2 = part2.Substring( 1, part1.Length );
 

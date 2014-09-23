@@ -246,6 +246,7 @@
     <Compile Include="ViewModels\ThirdLevel\ScrollingModulesConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\WindowConfigViewModel.cs" />
+    <Compile Include="ViewModels\Tools\CancelConfigItem.cs" />
     <Compile Include="ViewModels\Tools\ComboBoxItem.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />

@@ -429,4 +429,25 @@
   <data name="WindowOpacity" xml:space="preserve">
     <value>Change opacity</value>
   </data>
+  <data name="CustomBackground" xml:space="preserve">
+    <value>Background color</value>
+  </data>
+  <data name="CustomFontColor" xml:space="preserve">
+    <value>Font color</value>
+  </data>
+  <data name="CustomFontFamily" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="CustomFontSize" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="CustomHighlightBackground" xml:space="preserve">
+    <value>Highlighted background color</value>
+  </data>
+  <data name="CustomHighlightFontColor" xml:space="preserve">
+    <value>Highlighted font color</value>
+  </data>
+  <data name="CustomLayout" xml:space="preserve">
+    <value>Custom visual</value>
+  </data>
 </root>

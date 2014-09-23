@@ -91,6 +91,13 @@ namespace CK.WPF.StandardViews
         public static readonly DependencyProperty KeyUpCommandProperty = 
         DependencyProperty.Register( "KeyUpCommand", typeof( ICommand ), typeof( StdKeyView ) );
 
+        public static readonly DependencyProperty TextTrimmingProperty = DependencyProperty.Register( "TextTrimming", typeof( TextTrimming ), typeof( StdKeyView ), new UIPropertyMetadata( TextTrimming.CharacterEllipsis ) );
+        public TextTrimming TextTrimming
+        {
+            get { return (TextTrimming)GetValue( TextTrimmingProperty ); }
+            set { SetValue( TextTrimmingProperty, value ); }
+        }
+
         public ICommand KeyPressedCommand
         {
             get { return (ICommand)GetValue( KeyPressedCommandProperty ); }

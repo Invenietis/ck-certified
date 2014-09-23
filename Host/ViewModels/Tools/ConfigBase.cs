@@ -145,6 +145,11 @@ namespace Host.VM
             OnConfigChanged( sender, e );
         }
 
+        /// <summary>
+        /// this method is called by <see cref="NotifyOfPropertiesChange"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected abstract void OnConfigChanged( object sender, ConfigChangedEventArgs e );
 
         protected ConfigActivableSection AddActivableSection( string name, string description )

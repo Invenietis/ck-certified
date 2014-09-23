@@ -19,6 +19,7 @@
         <Setter Property="FontFamily" Value="{Binding FontFamily}"/>
         <Setter Property="ShowIcon" Value="false"/>
         <Setter Property="Description" Value="{Binding Word}"/>
+        <Setter Property="TextTrimming" Value="None"/>
     </Style>
 
     <ckwpfcontrols:WidthHeightCountToDimensionConverter x:Key="WidthHeightCountToDimensionConverter" />
@@ -26,6 +27,12 @@
 
     <DataTemplate DataType="{x:Type vm:PredictedWordViewModel}">
         <view:StdKeyView Padding="5" Name="predicbutton" Command="{Binding KeyUpCommand}" Style="{StaticResource predictionButtonStyle}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <view:StdKeyView.Background>
+                <SolidColorBrush Color="{Binding Background}"/>
+            </view:StdKeyView.Background>
+            <view:StdKeyView.Foreground>
+                <SolidColorBrush Color="{Binding LetterColor}"/>
+            </view:StdKeyView.Foreground>
             <view:StdKeyView.Width>
                 <MultiBinding Converter="{StaticResource WidthHeightCountToDimensionConverter}">
                     <Binding RelativeSource="{RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}" Path="ActualWidth" />
@@ -49,12 +56,6 @@
                     <Binding RelativeSource="{RelativeSource Mode=Self}" Path="ActualWidth"/>
                 </MultiBinding>
             </view:StdKeyView.UpLabel>
-            <view:StdKeyView.Background>
-                <SolidColorBrush Color="{Binding Background}"/>
-            </view:StdKeyView.Background>
-            <view:StdKeyView.Foreground>
-                <SolidColorBrush Color="{Binding LetterColor}"/>
-            </view:StdKeyView.Foreground>
         </view:StdKeyView>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{Binding Path=IsHighlighting}" Value="true">

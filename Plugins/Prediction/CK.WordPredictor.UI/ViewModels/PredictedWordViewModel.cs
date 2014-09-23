@@ -28,7 +28,8 @@ namespace CK.WordPredictor.UI.ViewModels
 
         ICommandManagerService _commandManager;
         ILayout _layout;
-        IPluginConfigAccessor _config;
+        IPluginConfigAccessor _keyboardLayoutConfig;
+        IPluginConfigAccessor _layoutConfig;
 
         #endregion Fields
 
@@ -61,13 +62,15 @@ namespace CK.WordPredictor.UI.ViewModels
 
         #endregion Properties
 
-        public PredictedWordViewModel( string word, ILayout layout, IPluginConfigAccessor config, ICommandManagerService commandManager )
+        public PredictedWordViewModel( string word, ILayout layout, IPluginConfigAccessor keyboardLayoutConfig, IPluginConfigAccessor layoutConfig, ICommandManagerService commandManager )
         {
             _commandManager = commandManager;
             Word = word;
             _layout = layout;
-            _config = config;
-            _config.ConfigChanged += OnConfigChanged;
+            _keyboardLayoutConfig = keyboardLayoutConfig;
+            _layoutConfig = layoutConfig;
+            _keyboardLayoutConfig.ConfigChanged += OnConfigChanged;
+            _layoutConfig.ConfigChanged += OnConfigChanged;
             NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() =>
                 {
                     UpdateAllProperties();
@@ -98,49 +101,49 @@ namespace CK.WordPredictor.UI.ViewModels
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            Background = _config[_layout].GetOrSet<Color>( "Background", Colors.White );
+            Background = (Color)(GetConfigFallBack( "Background" ) ?? Colors.White);
         }
 
         private void UpdateHighlightBackground()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            HighlightBackground = _config[_layout].GetOrSet<Color>( "HighlightBackground", Colors.White );
+            HighlightBackground = (Color)(GetConfigFallBack( "HighlightBackground" ) ?? Colors.Aqua);
         }
 
         private void UpdateHighlightFontColor()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            HighlightFontColor = _config[_layout].GetOrSet<Color>( "HighlightFontColor", Colors.White );
+            HighlightFontColor = (Color)(GetConfigFallBack( "HighlightFontColor" ) ?? Colors.Black);
         }
 
         private void UpdateLetterColor()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            LetterColor = _config[_layout].GetOrSet<Color>( "LetterColor", Colors.Black );
+            LetterColor = (Color)(GetConfigFallBack( "LetterColor" ) ?? Colors.Black);
         }
 
         private void UpdateFontStyle()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            FontStyle = _config[_layout].GetOrSet<FontStyle>( "FontStyle", FontStyles.Normal );
+            FontStyle = (FontStyle)GetConfigFallBack( "FontStyle" );
         }
 
         private void UpdateFontWeight()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            FontWeight = _config[_layout].GetOrSet<FontWeight>( "FontWeight", FontWeights.Normal );
+            FontWeight = (FontWeight)GetConfigFallBack( "FontWeight" );
         }
 
         private void UpdateFontFamily()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            string v = _config[_layout].GetOrSet<string>( "FontFamily", "Arial" );
+            string v = (string)GetConfigFallBack( "FontFamily" );
             if( v.Contains( "pack://" ) )
             {
                 string[] split = v.Split( '|' );
@@ -153,7 +156,7 @@ namespace CK.WordPredictor.UI.ViewModels
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            FontSize = _config[_layout].GetOrSet<double>( "FontSize", 15 );
+            FontSize = (double)(GetConfigFallBack( "FontSize" ) ?? 15);
         }
 
         private void UpdateTextDecorations()
@@ -161,15 +164,18 @@ namespace CK.WordPredictor.UI.ViewModels
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             MemoryStream stream = new MemoryStream();
-            TextDecorationCollection obj = _config[_layout].GetOrSet<TextDecorationCollection>( "TextDecorations", (TextDecorationCollection)null );
+            TextDecorationCollection obj = (TextDecorationCollection)GetConfigFallBack( "TextDecorations" );
             if( obj != null ) System.Windows.Markup.XamlWriter.Save( obj, stream );
             stream.Seek( 0, SeekOrigin.Begin );
-            if( stream.Length > 0 )
-                TextDecorations = (TextDecorationCollection)System.Windows.Markup.XamlReader.Load( stream );
-            else
-                TextDecorations = null;
+            NoFocusManager.Default.NoFocusDispatcher.BeginInvoke( (Action)(() =>
+                {
+                    if( stream.Length > 0 )
+                        TextDecorations = (TextDecorationCollection)System.Windows.Markup.XamlReader.Load( stream );
+                    else
+                        TextDecorations = null;
 
-            stream.Dispose();
+                    stream.Dispose();
+                }) );
         }
 
         private void UpdateAllProperties()
@@ -183,6 +189,21 @@ namespace CK.WordPredictor.UI.ViewModels
             UpdateHighlightFontColor();
             UpdateLetterColor();
             UpdateTextDecorations();
+        }
+
+        private object GetConfigFallBack( string obj )
+        {
+            if( _layoutConfig.User.GetOrSet<bool>( "UseCustomLayout", false ) )
+            {
+                if( _layoutConfig.User.Contains( obj ) )
+                {
+                    return _layoutConfig.User[obj];
+                }
+            }
+            if( _keyboardLayoutConfig[_layout].Contains( obj ) )
+                return _keyboardLayoutConfig[_layout][obj];
+
+            return null;
         }
 
         Color _background;

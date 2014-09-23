@@ -59,6 +59,8 @@ namespace CK.WordPredictor.UI
         public IService<IKeyboardContext> KeyboardContext { get; set; }
 
         [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        public IPluginConfigAccessor LayoutKeyboardConfig { get; set; }
+
         public IPluginConfigAccessor Config { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -118,7 +120,7 @@ namespace CK.WordPredictor.UI
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             _subscriber = new WindowManagerSubscriber( WindowManager, WindowBinder );
-            _predictorViewModel = new AutonomousWordPredictorViewModel( _currentKeyboard.CurrentLayout, Config, SharedData, WordPredictorService.Service, CommandManager.Service );
+            _predictorViewModel = new AutonomousWordPredictorViewModel( _currentKeyboard.CurrentLayout, LayoutKeyboardConfig, Config, SharedData, WordPredictorService.Service, CommandManager.Service );
             _predictorView = NoFocusManager.Default.CreateNoFocusWindow<AutonomousWordPredictorView>( nfm => new AutonomousWordPredictorView( nfm )
             {
                 DataContext = _predictorViewModel

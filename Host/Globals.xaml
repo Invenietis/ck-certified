@@ -5,11 +5,13 @@
                     xmlns:ckwincore="clr-namespace:CK.Windows;assembly=CK.Windows.Core"
                     xmlns:ckwinconf="clr-namespace:CK.Windows.Config;assembly=CK.Windows.Config"
                     xmlns:pluginConfig="clr-namespace:CK.Plugin.Config;assembly=CK.Plugin.Config"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:res="clr-namespace:Host.Resources"
                     xmlns:local="clr-namespace:Host.VM"
                     xmlns:cce="clr-namespace:Microsoft.Windows.Controls;assembly=CK.WPF.Controls"
                     xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
-                    xmlns:highlightModel="clr-namespace:HighlightModel;assembly=HighlightModel">
+                    xmlns:highlightModel="clr-namespace:HighlightModel;assembly=HighlightModel"
+                    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
@@ -24,6 +26,12 @@
     <Style x:Key="ConfigImplementationSelectorItemStyle" TargetType="Button" BasedOn="{StaticResource CK.Config.Link}">
         <Setter Property="Height" Value="Auto"></Setter>
     </Style>
+
+    <CollectionViewSource x:Key="SortedFonts" Source="{x:Static Fonts.SystemFontFamilies}">
+        <CollectionViewSource.SortDescriptions>
+            <scm:SortDescription PropertyName="Source"/>
+        </CollectionViewSource.SortDescriptions>
+    </CollectionViewSource>
 
     <ckwincore:CompositeDataTemplateSelector Fallback="{StaticResource OriginalConfigItemSelector}" x:Key="CK.Config.DefaultItemSelector">
         <!--<ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(pluginConfig:IUriHistoryCollection)}" >
@@ -277,7 +285,7 @@
             <DataTemplate>
                 <DockPanel LastChildFill="True">
                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding Label}"></TextBlock>
-                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Items}" Margin="10 5" SelectedItem="{Binding SelectedItem}" />
+                    <ComboBox DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="center" VerticalContentAlignment="center" HorizontalContentAlignment="Center" ItemsSource="{Binding Items}" Margin="5,0" SelectedItem="{Binding SelectedItem}" />
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
@@ -325,7 +333,38 @@
             <DataTemplate>
                 <DockPanel Margin="0 5 0 5">
                     <TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" />
-                    <cce:ColorPicker Width="40" Margin="5,0" SelectedColor="{Binding Value}"  HorizontalAlignment="Right"/>
+                    <cce:ColorPicker Width="40" Margin="5,0" SelectedColor="{Binding Value}" HorizontalAlignment="Right"/>
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type ckwinconf:IConfigItemProperty(media:FontFamily)}">
+            <DataTemplate>
+                <DockPanel Margin="0 5 0 5">
+                    <ComboBox DockPanel.Dock="Right" Margin="5,0" HorizontalContentAlignment="center" ItemsSource="{Binding Source={StaticResource SortedFonts}}" SelectedValue="{Binding Value}" HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontFamily="{Binding}" FontSize="15"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding DisplayName}" DockPanel.Dock="Left" />
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type local:CancelConfigItem(sys:Object)}">
+            <DataTemplate>
+                <DockPanel Margin="0 5 0 5">
+                    <Button Command="{Binding ResetValueCommand}" DockPanel.Dock="Right" Height="16" Width="16" ToolTip="Cancel">
+                        <Image Source="pack://application:,,,/CiviKey;component/Resources/Images/delete.png" Stretch="Fill"></Image>
+                    </Button>
+                    <ContentControl Content="{Binding ContentItem}" DockPanel.Dock="Left" ContentTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" />
                 </DockPanel>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>

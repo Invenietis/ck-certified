@@ -306,4 +306,10 @@
   <data name="PauseTitle" xml:space="preserve">
     <value>Pause</value>
   </data>
+  <data name="ChangeKeyboard" xml:space="preserve">
+    <value>Changer de clavier</value>
+  </data>
+  <data name="ChangeKeyboardDescription" xml:space="preserve">
+    <value>Permet de changer de clavier</value>
+  </data>
 </root>

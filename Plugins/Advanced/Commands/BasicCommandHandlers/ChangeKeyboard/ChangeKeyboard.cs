@@ -26,6 +26,7 @@ using CK.Plugin;
 using CK.Keyboard.Model;
 using System.Linq;
 using ProtocolManagerModel;
+using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
@@ -69,8 +70,8 @@ namespace BasicCommandHandlers
             base.Start();
             ProtocolManagerService.Service.Register(
                     new VMProtocolEditorMetaData( PROTOCOL_BASE,
-                                                 "Changer de clavier",
-                                                 "Permet de changer de clavier",
+                                                 R.ChangeKeyboard,
+                                                 R.ChangeKeyboardDescription,
                                                  () => { return new ChangeKeyboardCommandParameterManager( KeyboardContext.Service.Keyboards.ToList() ); } ), 
                                                  typeof( IChangeKeyboardCommandHandlerService ) );
 

@@ -142,7 +142,6 @@
     <Compile Include="Views\TextualContextPreviewWindow.xaml.cs">
       <DependentUpon>TextualContextPreviewWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AutonomousKeyboardWordPredictor.cs" />
     <Compile Include="ViewModels\TextualContextPreviewViewModel.cs" />
     <Compile Include="Views\TextualContextAreaWindow.xaml.cs">
       <DependentUpon>TextualContextAreaWindow.xaml</DependentUpon>

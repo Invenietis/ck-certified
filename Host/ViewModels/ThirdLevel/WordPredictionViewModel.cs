@@ -46,7 +46,6 @@ namespace Host.VM
             _wordPredictionPlugins = new List<IPluginProxy>();
             _wordPredictionPluginIds = new List<Guid>();
 
-            _wordPredictionPluginIds.Add( new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ) );
             _wordPredictionPluginIds.Add( new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ) );
             _wordPredictionPluginIds.Add( new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ) );
             _wordPredictionPluginIds.Add( new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ) );

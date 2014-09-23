@@ -34,6 +34,7 @@ namespace Host.VM
         Guid _keyboardEditorId;
         AppViewModel _app;
         ShareKeyboardViewModel _skVm;
+        AdditionalKeyboardSelectionViewModel _additionalKeyboardsVm;
 
         public KeyboardConfigViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -60,6 +61,8 @@ namespace Host.VM
                 action.DisplayName = R.SkinEditorSectionName;
                 this.Items.Add( action );
             }
+
+            this.AddLink( _additionalKeyboardsVm ?? (_additionalKeyboardsVm = new AdditionalKeyboardSelectionViewModel( _app )) );
 
             base.OnInitialize();
         }

@@ -3,26 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CK.Keyboard.Model;
+using CK.Plugin;
+using CK.Plugin.Config;
 using CK.Windows.Config;
 using Host.Resources;
 
 namespace Host.VM
 {
     /// <summary>
-    /// Additional keyboard selection config view. Called from RootConfigViewModel.
+    /// Additional keyboard selection config view. Called from KeyboardConfigViewModel.
     /// </summary>
     class AdditionalKeyboardSelectionViewModel : ConfigPage
     {
-        AppViewModel _app;
-        Dictionary<IKeyboard,ConfigItemProperty<bool>> _keyboardProperties;
+        readonly AppViewModel _app;
+        readonly ISimplePluginRunner _runner;
+        readonly IUserConfiguration _userConf;
+        readonly Dictionary<IKeyboard,ConfigImplementationSelectorItem> _keyboardItems;
+        readonly PluginCluster _emptyPluginCluster;
+
         ConfigGroup _keyboardGroup;
 
-        public AdditionalKeyboardSelectionViewModel( AppViewModel _app )
-            : base( _app.ConfigManager )
+        public AdditionalKeyboardSelectionViewModel( AppViewModel app )
+            : base( app.ConfigManager )
         {
             DisplayName = R.AdditionalKeyboardsDisplayName;
-            this._app = _app;
-            _keyboardProperties = new Dictionary<IKeyboard, ConfigItemProperty<bool>>();
+
+            _app = app;
+            _runner = _app.PluginRunner;
+            _userConf = _app.CivikeyHost.Context.ConfigManager.UserConfiguration;
+
+            _keyboardItems = new Dictionary<IKeyboard, ConfigImplementationSelectorItem>();
+            _emptyPluginCluster = new PluginCluster( _runner, _userConf, Guid.Empty );
         }
 
         protected override void OnInitialize()
@@ -65,17 +76,28 @@ namespace Host.VM
 
         void CreateKeyboardProperty( IKeyboard kb )
         {
-            ConfigItemProperty<bool> kbProperty = _keyboardGroup.AddProperty( kb.Name, kb, x => x.IsActive );
-            _keyboardProperties.Add( kb, kbProperty );
+            ConfigImplementationSelectorItem selectorItem = new ConfigImplementationSelectorItem(
+                _app.ConfigManager,
+                _emptyPluginCluster,
+                String.Empty // Kept empty to enable checkbox
+               );
+            selectorItem.SelectAction = () => { kb.IsActive = true; };
+            selectorItem.DeselectAction = () => { kb.IsActive = false; };
+
+            selectorItem.DisplayName = kb.Name;
+            selectorItem.Description = String.Empty;
+
+            Items.Add( selectorItem );
+            _keyboardItems.Add( kb, selectorItem );
         }
         void DestroyKeyboardProperty( IKeyboard kb )
         {
-            ConfigItemProperty<bool> property;
+            ConfigImplementationSelectorItem item;
 
-            if( _keyboardProperties.TryGetValue( kb, out property ) )
+            if( _keyboardItems.TryGetValue( kb, out item ) )
             {
-                _keyboardProperties.Remove( kb );
-                _keyboardGroup.Items.Remove( property );
+                _keyboardItems.Remove( kb );
+                _keyboardGroup.Items.Remove( item );
             }
         }
     }

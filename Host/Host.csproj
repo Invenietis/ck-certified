@@ -235,7 +235,7 @@
     <Compile Include="ViewModels\MouseRadarViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
-    <Compile Include="ViewModels\SecondLevel\AdditionalKeyboardSelectionViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\AdditionalKeyboardSelectionViewModel.cs" />
     <Compile Include="ViewModels\SecondLevel\KeyboardConfigViewModel.cs" />
     <Compile Include="ViewModels\SecondLevel\PointerManagerSelector.cs" />
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />

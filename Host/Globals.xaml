@@ -15,6 +15,7 @@
         <ResourceDictionary>
             <!--<StaticResource x:Key="OriginalConfigPageSelector" ResourceKey="CK.Config.DefaultPageSelector" />-->
             <StaticResource x:Key="OriginalConfigItemSelector" ResourceKey="CK.Config.DefaultItemSelector" />
+            <ckctrl:StringIsNullOrWhiteSpaceToBoolean x:Key="StringIsNullOrWhiteSpaceToBoolean" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -128,7 +129,18 @@
                                     <ContentControl VerticalAlignment="Center" DockPanel.Dock="Left" Style="{StaticResource ConfigImplementationSelectorItem}" Content="{Binding}" />
                                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}" Margin="5 0 0 0" />
                                 </DockPanel>
-                                <TextBlock Text="{Binding Description}" Foreground="Gray" FontStyle="Italic" />
+                                <TextBlock Text="{Binding Description}" Foreground="Gray" FontStyle="Italic">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Description, Converter={StaticResource StringIsNullOrWhiteSpaceToBoolean}}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </DockPanel>
                     </Button>

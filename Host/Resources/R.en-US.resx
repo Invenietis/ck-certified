@@ -417,4 +417,7 @@
   <data name="WindowOpacity" xml:space="preserve">
     <value>Change opacity</value>
   </data>
+  <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
+    <value>Additional keyboards</value>
+  </data>
 </root>

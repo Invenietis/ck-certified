@@ -6,6 +6,7 @@ using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Windows.Config;
+using CK.WPF.ViewModel;
 using Host.Resources;
 
 namespace Host.VM
@@ -20,8 +21,6 @@ namespace Host.VM
         readonly IUserConfiguration _userConf;
         readonly Dictionary<IKeyboard,ConfigImplementationSelectorItem> _keyboardItems;
         readonly PluginCluster _emptyPluginCluster;
-
-        ConfigGroup _keyboardGroup;
 
         public AdditionalKeyboardSelectionViewModel( AppViewModel app )
             : base( app.ConfigManager )
@@ -38,8 +37,6 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            _keyboardGroup = this.AddGroup();
-
             CreateKeyboardList();
             _app.KeyboardContext.Keyboards.KeyboardCreated += Keyboards_KeyboardCreated;
             _app.KeyboardContext.Keyboards.KeyboardDestroyed += Keyboards_KeyboardDestroyed;
@@ -97,7 +94,7 @@ namespace Host.VM
             if( _keyboardItems.TryGetValue( kb, out item ) )
             {
                 _keyboardItems.Remove( kb );
-                _keyboardGroup.Items.Remove( item );
+                Items.Remove( item );
             }
         }
     }

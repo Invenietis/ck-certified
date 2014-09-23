@@ -429,4 +429,7 @@
   <data name="WindowOpacity" xml:space="preserve">
     <value>Changer l'opacité</value>
   </data>
+  <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
+    <value>Claviers supplémentaires</value>
+  </data>
 </root>

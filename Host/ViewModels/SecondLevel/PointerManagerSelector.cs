@@ -112,6 +112,7 @@ namespace Host.VM
                     _app.KeyboardContext.Keyboards[KeyboardName].IsActive = true;
                 }
                 UseKeyboard = true;
+                Plugin = Current;
             }
             else
             {

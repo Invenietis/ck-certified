@@ -41,6 +41,29 @@ namespace Host.VM
             _app.KeyboardContext.Keyboards.KeyboardCreated += Keyboards_KeyboardCreated;
             _app.KeyboardContext.Keyboards.KeyboardDestroyed += Keyboards_KeyboardDestroyed;
             _app.KeyboardContext.CurrentKeyboardChanged += KeyboardContext_CurrentKeyboardChanged;
+
+            _app.KeyboardContext.Keyboards.KeyboardActivated += Keyboards_KeyboardActivated;
+            _app.KeyboardContext.Keyboards.KeyboardDeactivated += Keyboards_KeyboardDeactivated;
+        }
+
+        void Keyboards_KeyboardDeactivated( object sender, KeyboardEventArgs e )
+        {
+            ConfigImplementationSelectorItem item;
+
+            if( _keyboardItems.TryGetValue( e.Keyboard, out item ) )
+            {
+                item.IsSelected = false;
+            }
+        }
+
+        void Keyboards_KeyboardActivated( object sender, KeyboardEventArgs e )
+        {
+            ConfigImplementationSelectorItem item;
+
+            if( _keyboardItems.TryGetValue( e.Keyboard, out item ) )
+            {
+                item.IsSelected = true;
+            }
         }
 
         void KeyboardContext_CurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
@@ -80,6 +103,7 @@ namespace Host.VM
                );
             selectorItem.SelectAction = () => { kb.IsActive = true; };
             selectorItem.DeselectAction = () => { kb.IsActive = false; };
+            selectorItem.IsSelected = kb.IsActive;
 
             selectorItem.DisplayName = kb.Name;
             selectorItem.Description = String.Empty;

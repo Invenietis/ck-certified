@@ -32,9 +32,18 @@ using CK.InputDriver;
 namespace CK.WordPredictor
 {
 
-    [Plugin( "{86777945-654D-4A56-B301-5E92B498A685}", PublicName = "TextualContext", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextService : IPlugin, ITextualContextService
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{86777945-654D-4A56-B301-5E92B498A685}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Textual Context";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ICommandTextualContextService> CommandTextualContextService { get; set; }
 

@@ -29,18 +29,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BasicCommandHandlers;
+using CK.Core;
 using CK.InputDriver;
 using CK.Plugin;
 using CommonServices;
 
 namespace SnakeMode
 {
-    [Plugin( SnakeMode.PluginIdString, PublicName = PluginPublicName, Version = SnakeMode.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class SnakeMode : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{D237F483-A351-424D-B1B7-E84A17ED5C81}";
+        const string PluginVersion = "0.1.0";
         const string PluginPublicName = "Snake Mode";
-        const string PluginIdString = "{D237F483-A351-424D-B1B7-E84A17ED5C81}";
-        const string PluginIdVersion = "0.1.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }

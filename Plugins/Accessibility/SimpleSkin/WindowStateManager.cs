@@ -19,14 +19,18 @@ using SimpleSkin.Res;
 
 namespace SimpleSkin
 {
-    [Plugin( WindowStateManager.PluginIdString, PublicName = PluginPublicName, Version = WindowStateManager.PluginIdVersion,
-       Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginIdString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class WindowStateManager : IPlugin
     {
-        const string PluginPublicName = "WindowStateManager";
+        #region Plugin description
+
+        const string PluginPublicName = "Window State Manager";
         const string PluginIdString = "{3F8140F5-AD63-4EF4-AB6C-A9A7EE18078A}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWindowManager WindowManager { get; set; }

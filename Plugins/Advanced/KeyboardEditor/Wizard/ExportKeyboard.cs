@@ -38,14 +38,17 @@ using KeyboardEditor.Wizard.ViewModels;
 
 namespace KeyboardEditor
 {
-    [Plugin( ExportKeyboard.PluginIdString, PublicName = ExportKeyboard.PluginPublicName, Version = ExportKeyboard.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ExportKeyboard : IPlugin
     {
-        const string PluginIdString = "{244C578B-322A-4733-A34B-EEC0558F61D5}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Keyboard export";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
+
+        const string PluginGuidString = "{244C578B-322A-4733-A34B-EEC0558F61D5}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Keyboard Export";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -85,7 +88,7 @@ namespace KeyboardEditor
             if( !_isClosing )
             {
                 _isClosing = true;
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginIdString ), ConfigUserAction.Stopped );
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( PluginId.UniqueId, ConfigUserAction.Stopped );
                 Context.PluginRunner.Apply();
                 return;
             }

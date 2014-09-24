@@ -46,11 +46,17 @@ namespace UpdateChecker
     /// This plugin can interact with the user. It is not ideal but since its interactions are minimals (message box),
     /// this avoid the creation of an associated GUI plugin.
     /// </summary>
-    [Plugin( UpdateChecker.PluginIdentifier, Version = UpdateChecker.PluginVersion, PublicName = "Update Checker" )]
+    [Plugin( PluginGuidString, Version = PluginVersion, PublicName = PluginPublicName )]
     public class UpdateChecker : IPlugin, IUpdateChecker
     {
-        const string PluginIdentifier = "{11C83441-6818-4A8B-97A0-1761E1A54251}";
+        #region Plugin description
+
+        const string PluginGuidString = "{11C83441-6818-4A8B-97A0-1761E1A54251}";
         const string PluginVersion = "2.0.0";
+        const string PluginPublicName = "Update Checker";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         IActivityMonitor _log;
 
@@ -270,7 +276,7 @@ namespace UpdateChecker
             _webClient.DownloadFileAsync( new Uri( httpRequest ), _downloading.Path, savedState );
 
             if( Notifications != null )
-                _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
+                _downloadingNotificationHandler = Notifications.ShowNotification( PluginId.UniqueId, "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
         }
 
         void OnDownloadFileCompleted( object sender, AsyncCompletedEventArgs e )

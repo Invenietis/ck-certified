@@ -31,12 +31,22 @@ using System.Timers;
 using System;
 using System.Diagnostics;
 using System.Windows.Threading;
+using CK.Core;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{B63BB144-1C13-4A3B-93BD-AC5233F4F18E}", PublicName = "CK.WindowManager.AutoBinder" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class WindowAutoBinder : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{B63BB144-1C13-4A3B-93BD-AC5233F4F18E}";
+        const string PluginVersion = "0.1.0";
+        const string PluginPublicName = "CK.WindowManager.AutoBinder";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowManager WindowManager { get; set; }
 

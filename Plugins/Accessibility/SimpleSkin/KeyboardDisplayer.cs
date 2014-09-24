@@ -46,14 +46,18 @@ using CommonServices;
 
 namespace SimpleSkin
 {
-    [Plugin( KeyboardDisplayer.PluginIdString, PublicName = PluginPublicName, Version = KeyboardDisplayer.PluginIdVersion,
+    [Plugin( PluginIdString, PublicName = PluginPublicName, Version = PluginVersion,
        Categories = new string[] { "Visual", "Accessibility" } )]
     public class KeyboardDisplayer : IPlugin
     {
-        const string PluginPublicName = "KeyboardDisplayer";
+        #region Plugin description
+
+        const string PluginPublicName = "Keyboard Displayer";
         const string PluginIdString = "{D173E013-2491-4491-BF3E-CA2F8552B5EB}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         const string PredictionKeyboardName = "Prediction";
 

@@ -31,13 +31,17 @@ using CK.Plugin;
 
 namespace CK.Keyboard
 {
-    [Plugin( KeyboardContext.PluginIdString, Version = KeyboardContext.PluginIdVersion, PublicName = PluginPublicName )]
+    [Plugin( PluginIdString, Version = PluginVersion, PublicName = PluginPublicName )]
     public partial class KeyboardContext : IKeyboardContext, IPlugin, IStructuredSerializable, IStructuredSerializer<KeyboardCollection>
     {
+        #region Plugin description
+
         const string PluginIdString = "{2ED1562F-2416-45cb-9FC8-EEF941E3EDBC}";
-        const string PluginIdVersion = "2.5.2";
+        const string PluginVersion = "2.5.2";
         const string PluginPublicName = "CK.KeyboardContext";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         bool _isKeyboardContextDirty;
         KeyboardCollection _keyboards;

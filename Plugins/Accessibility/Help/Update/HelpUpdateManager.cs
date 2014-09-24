@@ -39,14 +39,18 @@ using Host.Services;
 
 namespace Help.Update
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class HelpUpdateManager : IPlugin, IHelpUpdaterService
     {
+        #region Plugin description
+
         const string PluginGuidString = "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Help updater";
-        public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Help Updater";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         Queue<IPluginProxy> _checked;
         Queue<IPluginProxy> _pending;
 

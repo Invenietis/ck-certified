@@ -17,14 +17,18 @@ using System.Windows.Shapes;
 
 namespace CK.WindowManager
 {
-    [Plugin( WindowSaver.PluginIdString, PublicName = PluginPublicName, Version = WindowSaver.PluginIdVersion,
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion,
        Categories = new string[] { "Accessibility" } )]
     public class WindowSaver : IPlugin
     {
-        const string PluginPublicName = "WindowSaver";
-        const string PluginIdString = "{55A95F2F-2D67-4AE1-B5CF-4880337F739F}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
+
+        const string PluginGuidString = "{55A95F2F-2D67-4AE1-B5CF-4880337F739F}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Window Saver";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWindowManager WindowManager { get; set; }

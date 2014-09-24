@@ -87,8 +87,6 @@ namespace Host.VM
             _windowOpacitySlider.Interval = 5;
             g.Items.Add( _windowOpacitySlider );
 
-            this.AddLink( _scVm ?? (_scVm = new ScrollingModulesConfigurationViewModel( R.OtherScrollConfig, _app )) );
-
             _isReady = true;
         }
 

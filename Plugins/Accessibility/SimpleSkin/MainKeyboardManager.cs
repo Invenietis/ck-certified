@@ -34,17 +34,17 @@ using Help.Services;
 namespace SimpleSkin
 {
 
-    [Plugin( PluginIdString,
-        PublicName = PluginPublicName,
-        Version = PluginIdVersion,
-        Categories = new[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginIdString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new[] { "Visual", "Accessibility" } )]
     public class MainKeyboardManager : IPlugin, IHaveDefaultHelp
     {
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
+
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
-        readonly Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginPublicName = "MainKeyboardManager";
-        const string PluginIdVersion = "1.6.0";
+        const string PluginPublicName = "Main Keyboard Manager";
+        const string PluginVersion = "1.6.0";
+
+        #endregion Plugin description
 
         public IPluginConfigAccessor Config { get; set; }
 

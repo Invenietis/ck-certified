@@ -24,6 +24,7 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
+using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
@@ -32,9 +33,18 @@ using CK.WordPredictor.UI.ViewModels;
 namespace CK.WordPredictor.UI
 {
 
-    [Plugin( "{E9D02BE8-B1CA-4057-8E74-2A89C411565C}", PublicName = "TextualContext - Echo", Categories = new string[] { "Prediction", "Visual" }, Version="1.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextPreview : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{E9D02BE8-B1CA-4057-8E74-2A89C411565C}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "TextualContext - Echo";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         const string WindowName = "TextualContextPreview";
 
         TextualContextPreviewViewModel _vm;

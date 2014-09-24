@@ -37,14 +37,17 @@ using CommonServices;
 
 namespace CK.Plugins.AutoClick
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ClickSelector : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin, IVisualizableHighlightableElement
     {
+        #region Plugin description
+
         const string PluginGuidString = "{F9687F04-7370-4812-9EB4-1320EB282DD8}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Click Selector";
-        public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         #region Variables & Properties
 

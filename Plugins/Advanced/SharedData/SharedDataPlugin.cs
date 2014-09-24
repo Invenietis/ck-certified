@@ -15,15 +15,17 @@ using CK.Core;
 
 namespace SharedData
 {
-    [Plugin( SharedDataPlugin.PluginIdString, PublicName = PluginPublicName, Version = SharedDataPlugin.PluginIdVersion,
-       Categories = new string[] { "" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class SharedDataPlugin : IPlugin, ISharedData
     {
-        const string PluginPublicName = "SharedDataPlugin";
-        const string PluginIdString = "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
 
+        const string PluginGuidString = "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Shared Data Plugin";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         /// <summary>
         /// Never use this property to set a config property, because this shotcut the changing/changed mecanism.

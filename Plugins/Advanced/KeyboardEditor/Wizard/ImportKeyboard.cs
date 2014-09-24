@@ -40,15 +40,17 @@ using KeyboardEditor.Wizard.Views;
 
 namespace KeyboardEditor.Wizard
 {
-    [Plugin( ImportKeyboard.PluginGuidString, PublicName = ImportKeyboard.PluginPublicName, Version = ImportKeyboard.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ImportKeyboard : IPlugin
     {
+        #region Plugin description
 
         const string PluginGuidString = "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Keyboard import";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Keyboard Import";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }

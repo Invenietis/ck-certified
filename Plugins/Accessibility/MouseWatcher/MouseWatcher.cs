@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Windows.Threading;
 using CK.Plugin.Config;
 using System.ComponentModel;
+using CK.Core;
 
 namespace MouseWatcher
 {
@@ -36,9 +37,18 @@ namespace MouseWatcher
     /// it also provides the progress value (from 0 to 100) accordingly to the time set
     /// Provides only one instance of watchers, two plugins can't use it with different configurations, the last to be set is the one used.
     /// </summary>
-    [Plugin( "{D4D8660C-973B-46d3-8414-6FCC02AD74F5}", PublicName = "Mouse Watcher", Version = "1.0.0", Categories = new string[] { "Advanced" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" } )]
     public class MouseWatcher : IPlugin, IMouseWatcher
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{D4D8660C-973B-46d3-8414-6FCC02AD74F5}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Mouse Watcher";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IPointerDeviceDriver MouseDriver { get; set; }
 

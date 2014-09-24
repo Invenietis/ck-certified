@@ -24,6 +24,7 @@
 using System;
 using Caliburn.Micro;
 using CK.Context;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
@@ -31,19 +32,21 @@ using CommonServices;
 namespace MouseRadar.Editor
 {
 
-    [Plugin( MouseRadarEditor.PluginIdString,
-           PublicName = MouseRadarEditor.PluginPublicName,
-           Version = MouseRadarEditor.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class MouseRadarEditor : IPlugin
     {
-        internal const string PluginIdString = "{275B0E68-B880-463A-96E5-342C8E31E229}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        #region Plugin description
+
+        const string PluginGuidString = "{275B0E68-B880-463A-96E5-342C8E31E229}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Radar Editor";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         EditorViewModel _editor;
-        [ConfigurationAccessor( MouseRadarPlugin.PluginIdString )]
+
+        [ConfigurationAccessor( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" )] //MouseRadarPlugin
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

@@ -38,9 +38,18 @@ using System.Windows.Threading;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{F6B5D818-3C04-4A46-AD65-AFC5458A394C}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.WindowElementBinder", Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class WindowElementBinder : IWindowBinder, IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{F6B5D818-3C04-4A46-AD65-AFC5458A394C}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "CK.WindowManager.WindowElementBinder";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         IDictionary<IWindowElement,List<IBinding>> _bindings;
         ActivityMonitor _logger;
         SerializableBindings _persistantBindings;

@@ -36,7 +36,7 @@ namespace Host.VM
         Action _action;
 
         public SkinViewModel( AppViewModel app )
-            : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
+            : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app ) //MainKeyboardManager
         {
             _app = app;
 

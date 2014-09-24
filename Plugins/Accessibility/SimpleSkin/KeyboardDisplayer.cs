@@ -73,7 +73,7 @@ namespace SimpleSkin
         [RequiredService]
         public IContext Context { get; set; }
 
-        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )] //MainKeyboardManager
         public IPluginConfigAccessor Config { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]

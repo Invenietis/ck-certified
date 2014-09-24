@@ -49,12 +49,12 @@ namespace Host
         {
             DisplayName = R.Home;
             _app = app;
-            _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
-            _clickSelectorId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
-            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
-            _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
-            _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
-            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" ); //ScreenScrollerPlugin
+            _clickSelectorId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" ); //ClickSelector
+            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" ); //ScrollerPlugin
+            _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" ); //AutoClick
+            _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" ); //MouseRadarPlugin
+            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" ); //MainKeyboardManager
         }
 
         protected override void OnInitialize()
@@ -85,7 +85,7 @@ namespace Host
                 ConfigManager, 
                 _app.PluginRunner,
                 new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[] { new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) }, new Guid[] { _radarId, _screenScrollerId, new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) } ),
-                new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
+                new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling }; //ScrollerVisualizer
 
             var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
@@ -118,12 +118,6 @@ namespace Host
         {
             if( _app.PluginRunner.IsDirty && !_app.PluginRunner.Disabled )
                 _app.PluginRunner.Apply();
-        }
-
-        public void StartObjectExplorer()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }
 }

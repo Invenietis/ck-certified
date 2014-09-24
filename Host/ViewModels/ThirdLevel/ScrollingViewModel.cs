@@ -56,7 +56,7 @@ namespace Host.VM
         ComboBoxItem _comboBox;
         RecordConfigItem _recordItem;
 
-        Guid _scrollGuid = Guid.Parse( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+        Guid _scrollGuid = Guid.Parse( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" ); //ScrollerPlugin
 
         /// <summary>
         /// Return the Scrolling user configuration, can return null if the scroller plugin isn't loaded
@@ -78,7 +78,7 @@ namespace Host.VM
         //}
 
         public ScrollingViewModel( string displayName, AppViewModel app )
-            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", displayName, app )
+            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", displayName, app ) //ScrollerPlugin
         {
             _app = app;
             DisplayName = displayName;

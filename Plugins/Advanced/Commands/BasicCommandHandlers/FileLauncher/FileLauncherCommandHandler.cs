@@ -50,7 +50,7 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IFileLauncherService> FileLauncher { get; set; }
 
-        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )] //MainKeyboardManager
         public IPluginConfigAccessor SkinConfiguration { get; set; }
 
         public override void Start()

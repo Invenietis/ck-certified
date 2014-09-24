@@ -17,9 +17,9 @@ namespace Host.VM
         readonly ISimplePluginRunner _runner;
         readonly IUserConfiguration _userConf;
 
-        readonly Guid _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
-        readonly Guid _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
-        readonly Guid _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+        readonly Guid _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" ); //ScreenScrollerPlugin
+        readonly Guid _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" ); //MouseRadarPlugin
+        readonly Guid _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" ); //ScrollerPlugin
 
         readonly List<ConfigImplementationSelectorItem> _items;
 
@@ -66,7 +66,7 @@ namespace Host.VM
             Items.Add( scroll );
             _items.Add( scroll );
 
-            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _radarId ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), groupName );
+            var radar = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _radarId ), new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), groupName ); //MouseRadarEditor
             radar.DisplayName = R.Radar;
             radar.Description = R.RadarDescription;
             if( defaultPlugin == _radarId

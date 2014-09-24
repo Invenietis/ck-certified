@@ -30,7 +30,7 @@ namespace Host.VM
     public class ScreenScrollerViewModel : ConfigBase
     {
         public ScreenScrollerViewModel( AppViewModel app )
-            : base( "{AE25D80B-B927-487E-9274-48362AF95FC0}", "Configuraton du défilement d'écran", app )
+            : base( "{AE25D80B-B927-487E-9274-48362AF95FC0}", "Configuraton du défilement d'écran", app ) //ScreenScrollerPlugin
         {
         }
 

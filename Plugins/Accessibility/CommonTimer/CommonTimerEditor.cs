@@ -32,7 +32,7 @@ namespace CK.Plugins.CommonTimer
     //    Categories = new string[] { "Editors" } )]
     public class CommonTimerEditor : IPlugin
     {
-        [ConfigurationAccessor( "{E93C53AC-1621-4767-8489-097767205C87}" )]
+        [ConfigurationAccessor( "{E93C53AC-1621-4767-8489-097767205C87}" )] //CommonTimer
         public IPluginConfigAccessor EditedConfiguration { get; set; }
        
         public int Interval

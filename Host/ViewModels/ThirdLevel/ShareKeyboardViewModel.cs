@@ -73,13 +73,13 @@ namespace Host.VM
         public void StartImport()
         {
 
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}" ), ConfigUserAction.Started ); //ImportKeyboard
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
 
         public void StartExport()
         {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{244C578B-322A-4733-A34B-EEC0558F61D5}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{244C578B-322A-4733-A34B-EEC0558F61D5}" ), ConfigUserAction.Started ); //ExportKeyboard
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }

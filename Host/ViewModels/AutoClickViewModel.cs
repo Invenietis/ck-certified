@@ -31,7 +31,7 @@ namespace Host.VM
     public class AutoClickViewModel : ConfigBase
     {
         public AutoClickViewModel( AppViewModel app )
-            : base( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", R.AutoClickConfig, app )
+            : base( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", R.AutoClickConfig, app ) //AutoClick
         {
         }
 

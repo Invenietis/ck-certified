@@ -38,19 +38,19 @@ namespace Host.VM
         IList<Guid> _wordPredictionPluginIds;
 
         public WordPredictionViewModel( AppViewModel app )
-            : base( "{4DC42B82-4B29-4896-A548-3086AA9421D7}", R.WordPredictionConfig, app )
+            : base( "{4DC42B82-4B29-4896-A548-3086AA9421D7}", R.WordPredictionConfig, app ) //WordPredictorFeature
         {
             _app = app;
             _wordPredictionPlugins = new List<IPluginProxy>();
             _wordPredictionPluginIds = new List<Guid>();
 
-            _wordPredictionPluginIds.Add( new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ) );
+            _wordPredictionPluginIds.Add( new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ) ); //AutonomousKeyboardWordPredictor
             _wordPredictionPluginIds.Add( new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ) );
             _wordPredictionPluginIds.Add( new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ) );
-            _wordPredictionPluginIds.Add( new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ) );
-            _wordPredictionPluginIds.Add( new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ) );
-            _wordPredictionPluginIds.Add( new Guid( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}" ) );
-            _wordPredictionPluginIds.Add( new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ) );
+            _wordPredictionPluginIds.Add( new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ) ); //WordPredictorFeature
+            _wordPredictionPluginIds.Add( new Guid( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}" ) ); //SimplePredictedWordSender
+            _wordPredictionPluginIds.Add( new Guid( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}" ) ); //TextualContextArea
+            _wordPredictionPluginIds.Add( new Guid( "{86777945-654D-4A56-B301-5E92B498A685}" ) ); //TextualContextService
             _wordPredictionPluginIds.Add( new Guid( "{B2A76BF2-E9D2-4B0B-ABD4-270958E17DA0}" ) );
             _wordPredictionPluginIds.Add( new Guid( "{55C2A080-30EB-4CC6-B602-FCBBF97C8BA5}" ) );
 

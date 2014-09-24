@@ -56,7 +56,7 @@ namespace Host.VM
         ConfigItemProperty<Color> _windowBorderBrush;
 
         public WindowConfigViewModel( string displayName, AppViewModel app )
-            : base( "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}", displayName, app )
+            : base( "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}", displayName, app ) //SharedDataPlugin
         {
             _app = app;
             DisplayName = displayName;

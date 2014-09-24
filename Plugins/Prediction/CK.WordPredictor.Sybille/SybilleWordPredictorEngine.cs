@@ -166,7 +166,7 @@ namespace CK.WordPredictor.Engines
 
             if( cancellationSource == null )
                 cancellationSource = new CancellationTokenSource();
-
+            
             _currentlyRunningTask = Task.Factory.StartNew( () =>
             {
                 if( cancellationSource.IsCancellationRequested == false )

@@ -94,20 +94,21 @@
     <ControlTemplate x:Key="ClickTypeButtonTemplate" TargetType="{x:Type views:ActionOnMouseEnterButton}">
         <Border x:Name="ButtonContainer">
             <Grid>
-                <Image Name="AutoClickButtonImage" Source="{StaticResource GrayButtonImage}">
-                </Image>
+                <!--<Image Name="AutoClickButtonImage" Source="{StaticResource GrayButtonImage}">
+                </Image>-->
                 <!-- ContentPresenter : The image corresponding to the clickType -->
-                <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Image Opacity="1" x:Name="ClickImage" Source="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" RenderOptions.BitmapScalingMode="HighQuality">
-                    </Image>
+                <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Width}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+                    <!--<Image Opacity="1" x:Name="ClickImage" Source="{TemplateBinding Content}"  RenderOptions.BitmapScalingMode="HighQuality">
+                    </Image>-->
+                    <Path Opacity="1" Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" Data="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" Stretch="Uniform" Width="50" Height="50"  Margin="{TemplateBinding Padding}"  RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Grid>
             </Grid>
         </Border>
-        <ControlTemplate.Triggers>
+        <!--<ControlTemplate.Triggers>
             <Trigger Property="Selected" Value="True">
                 <Setter TargetName="AutoClickButtonImage" Property="Source" Value="{StaticResource BlackButtonImage}" />
             </Trigger>
-        </ControlTemplate.Triggers>
+        </ControlTemplate.Triggers>-->
     </ControlTemplate>
 
     <!-- ClickTypeSelector : ClickTypeSelector Template -->
@@ -134,8 +135,10 @@
                             <Border CornerRadius="5" Background="White" Opacity="0.3">
                             </Border>
                         </Border>
-                        <Viewbox Margin="10">
-                            <views:ActionOnMouseEnterButton Content="{Binding ImagePath, Mode=OneWay, Converter={StaticResource PathToImageConverter}}" 
+                        <Viewbox Margin="0">
+                            <views:ActionOnMouseEnterButton
+                                                        x:Name="ameb"
+                                                        Content="{Binding VectorImagePath}"
                                                         Width="70" Height="70" FontSize="12" Padding="10"
                                                         Template="{StaticResource ClickTypeButtonTemplate}"                                                        
                                                         MouseEnterCommand="{Binding ChangeSelectionCommand}"
@@ -143,6 +146,50 @@
                                 <views:ActionOnMouseEnterButton.ToolTip>
                                     <TextBlock Text="{Binding Name}" />
                                 </views:ActionOnMouseEnterButton.ToolTip>
+                                <views:ActionOnMouseEnterButton.Style>
+                                    <Style>
+                                        <Setter Property="Button.Foreground" Value="#999" />
+
+                                        <Setter Property="Button.Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="#00000000"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected}"  Value="True" >
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard >
+                                                        <Storyboard Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)">
+                                                            <ColorAnimation From="#00000000" To="#33000000" Duration="0:0:0.15" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                    <BeginStoryboard>
+                                                        <Storyboard 
+                                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)">
+                                                            <ColorAnimation From="#999" To="#FFF" Duration="0:0:0.15" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard >
+                                                        <Storyboard Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)">
+                                                            <ColorAnimation To="#00000000" From="#33000000" Duration="0:0:0.3" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                    <BeginStoryboard>
+                                                        <Storyboard 
+                                                                Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)">
+                                                            <ColorAnimation To="#999" From="#FFF" Duration="0:0:0.3" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                           
+                                      
+                                        </Style.Triggers>
+                                    </Style>
+                                </views:ActionOnMouseEnterButton.Style>
                             </views:ActionOnMouseEnterButton>
                         </Viewbox>
                         <!--These paths are arrows indicating the clicktype that is being highlighted (by the scrolling service) -->

@@ -34,7 +34,7 @@
     <view:ResizableContainer BorderBrush="{Binding AutoClickBorderBrush}" BorderThickness="{Binding AutoClickBorderThickness}">
         <view:ResizableContainer.Content>
             <Grid>
-                <Viewbox Stretch="Fill">
+                <Viewbox Stretch="Uniform">
                     <Border>
                         <ContentControl Template="{StaticResource AutoClickTemplate}"/>
                     </Border>

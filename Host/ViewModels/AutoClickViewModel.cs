@@ -25,14 +25,24 @@
 using CK.Plugin.Config;
 using Host.Resources;
 using CK.Windows.Config;
+using CK.Plugin;
+using System;
 
 namespace Host.VM
 {
     public class AutoClickViewModel : ConfigBase
     {
+        readonly ISimplePluginRunner _runner;
+        readonly IUserConfiguration _userConf;
+
+        readonly Guid _clickSelectorHoverId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
+        readonly Guid  _clickSelectorScrollerId = new Guid( "{1986E566-7426-44DC-ACA3-9E8E8EB673B8}" );
+
         public AutoClickViewModel( AppViewModel app )
             : base( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", R.AutoClickConfig, app )
         {
+            _runner = app.PluginRunner;
+            _userConf = _app.CivikeyHost.Context.ConfigManager.UserConfiguration;
         }
 
         protected override void NotifyOfPropertiesChange()
@@ -57,6 +67,12 @@ namespace Host.VM
             {
                 if( Config != null ) Config.Set( "CountDownDuration", value );
             }
+        }
+
+        Guid SelectorPlugin
+        {
+            get { return _app.CivikeyHost.UserConfig.GetOrSet( "ClickSelector_Plugin", _clickSelectorHoverId ); }
+            set { _app.CivikeyHost.UserConfig.Set( "ClickSelector_Plugin", value ); }
         }
 
         public int TimeBeforeCountDownStarts
@@ -92,6 +108,16 @@ namespace Host.VM
             g.Items.Add( p );
 
             g.AddProperty( R.AutoClickShowMousePanelOption, this, h => ShowMouseIndicatorOption );
+
+            var hover = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _clickSelectorHoverId ), "clickselector" );
+            hover.DisplayName = R.ClickTypeSelectorName;
+            hover.Description = R.ClickTypeSelectorName;
+            Items.Add( hover );
+
+            var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _clickSelectorScrollerId ), "clickselector" );
+            scroll.DisplayName = R.ClickTypeSelectorName;
+            scroll.Description = R.ClickTypeSelectorName;
+            Items.Add( scroll );
         }
     }
 }

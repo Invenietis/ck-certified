@@ -131,13 +131,16 @@ namespace CK.WordPredictor
             {
                 string rawContext = TextualContextService.GetTextualContext();
                 PredictionLogger.Instance.Trace().Send( "RawContext: {0}.", rawContext );
-
+                var loggerToken = PredictionLogger.Instance.DependentActivity().CreateToken();
                 var originTask = _engine.PredictAsync( rawContext, Feature.Service.MaxSuggestedWords );
+
                 originTask.ContinueWith( task =>
                 {
-                    PredictionLogger.Instance.Trace().Send( "{0} items currently.", _predictedList.Count );
-                    PredictionLogger.Instance.Trace().Send( "{0}: {1}", task.Result.Count, String.Join( " ", task.Result.Select( w => w.Word ) ) );
-
+                    using( var monitor = loggerToken.CreateDependentMonitor() )
+                    {
+                        monitor.Trace().Send( "{0} items currently.", _predictedList.Count );
+                        monitor.Trace().Send( "{0}: {1}", task.Result.Count, String.Join( " ", task.Result.Select( w => w.Word ) ) );
+                    }
                     _predictedList.ReplaceItems( task.Result );
                 }, TaskContinuationOptions.OnlyOnRanToCompletion );
             }

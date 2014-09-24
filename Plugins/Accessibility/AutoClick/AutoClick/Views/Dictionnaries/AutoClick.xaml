@@ -17,48 +17,42 @@
     <converters:PathToImageConverter x:Key="PathToImageConverter" />-->
 
     <!-- AutoClick : Pie Brush -->
-    <LinearGradientBrush x:Key="pieIndicatorBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Offset="0" Color="LightGreen"></GradientStop>
-        <GradientStop Offset="1" Color="DarkGreen"></GradientStop>
-    </LinearGradientBrush>
+    <SolidColorBrush x:Key="pieIndicatorBrush" Color="#9DC8EB" />
 
     <!-- AutoClick : PieProgressBar Template -->
     <ControlTemplate x:Key="PieProgressBarTemplate">
         <ControlTemplate.Resources>
             <converters:ValueToPointConverter x:Key="ValueToPointConverter"/>
             <converters:ValueToIsLargeArcConverter x:Key="ValueToIsLargeArcConverter"/>
-            <LinearGradientBrush x:Key="backgroundBrush" StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Offset="0" Color="LightGray" />
-                <GradientStop Offset="1" Color="Gray" />
-            </LinearGradientBrush>
+            <SolidColorBrush x:Key="backgroundBrush" Color="#44000000" />
         </ControlTemplate.Resources>
         <Viewbox>
-            <Grid Height="20" Width="20">
-                <Ellipse x:Name="background" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="2"
-                         Width="20" Height="20" Fill="Transparent"/>
-                <Image Margin="2" Name="pauseImage" Width="14" Height="14" Source="/AutoClick;component/Res/Images/Pause.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Image Margin="2" Name="playImage" Width="14" Height="14" Source="/AutoClick;component/Res/Images/Play.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Image x:Name="pie" Stretch="None" Width="20" Height="20" VerticalAlignment="Top" HorizontalAlignment="Center" >
+            <Grid Height="50" Width="50">
+                <Ellipse x:Name="background" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="3"
+                         Width="50" Height="50" Fill="Transparent"/>
+                <Path Margin="2" Name="pauseImage" Fill="#999"  Stretch="Uniform" Width="20" Height="20" Data="M27.270001,0L44.310001,0 44.310001,48.643002 27.270001,48.643002z M0,0L17.040001,0 17.040001,48.643002 0,48.643002z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Path Margin="2" Name="playImage" Fill="#999"  Stretch="Uniform"  Width="20" Height="20" Data="F1M-224.553,1265L-246.174,1283.52 -267.792,1302.04 -267.792,1265 -267.792,1227.97 -246.174,1246.49 -224.553,1265z" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image x:Name="pie" Stretch="None" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" >
                     <Image.Source>
                         <DrawingImage>
                             <DrawingImage.Drawing>
                                 <GeometryDrawing Brush="{StaticResource pieIndicatorBrush}">
                                     <GeometryDrawing.Pen>
-                                        <Pen Brush="Black" Thickness="0.001"/>
+                                        <Pen Brush="#00000000" Thickness="0.001"/>
                                     </GeometryDrawing.Pen>
                                     <GeometryDrawing.Geometry>
                                         <GeometryGroup>
                                             <PathGeometry>
-                                                <PathFigure StartPoint="0,10">
-                                                    <LineSegment Point="20,10"/>
+                                                <PathFigure StartPoint="0,25">
+                                                    <LineSegment Point="50,25"/>
                                                 </PathFigure>
                                             </PathGeometry>
                                             <CombinedGeometry GeometryCombineMode="Exclude">
                                                 <CombinedGeometry.Geometry1>
                                                     <PathGeometry>
-                                                        <PathFigure StartPoint="10,10" IsClosed="True">
-                                                            <LineSegment Point="10,0" />
-                                                            <ArcSegment Size="10,10" SweepDirection="Clockwise">
+                                                        <PathFigure StartPoint="25,25" IsClosed="True">
+                                                            <LineSegment Point="25,0" />
+                                                            <ArcSegment Size="25,25" SweepDirection="Clockwise">
                                                                 <ArcSegment.Point>
                                                                     <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value" Converter="{StaticResource ValueToPointConverter}"></Binding>
                                                                 </ArcSegment.Point>
@@ -71,9 +65,9 @@
                                                 </CombinedGeometry.Geometry1>
                                                 <CombinedGeometry.Geometry2>
                                                     <PathGeometry>
-                                                        <PathFigure StartPoint="10,10" IsClosed="True">
-                                                            <LineSegment Point="10,2" />
-                                                            <ArcSegment Size="8,8" SweepDirection="Clockwise" Point="9.9,2" IsLargeArc="True">
+                                                        <PathFigure StartPoint="25,25" IsClosed="True">
+                                                            <LineSegment Point="25,3" />
+                                                            <ArcSegment Size="22,22" SweepDirection="Clockwise" Point="24.9,3" IsLargeArc="True">
                                                             </ArcSegment>
                                                         </PathFigure>
                                                     </PathGeometry>
@@ -89,7 +83,7 @@
             </Grid>
         </Viewbox>
         <ControlTemplate.Triggers>
-
+            
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsMouseOver" Value="False" />
@@ -115,7 +109,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="pauseImage" Property="Opacity" Value="0"  />
-                <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}" />
+                <Setter TargetName="background" Property="Fill" Value="{StaticResource backgroundBrush}"/>
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -231,7 +225,7 @@
             <!-- The pie-shaped progressbar -->
             <views:WPFClickTypeWatch IsPaused="{Binding IsPaused, Mode=OneWay}"  Style="{StaticResource PieProgressBarStyle}" Margin="10" MouseEnterCommand="{Binding TogglePauseCommand}"
                                      Width="50" Height="50"
-                                     BorderBrush="LightGray" Value="{Binding ProgressValue, Mode=OneWay}">
+                                     BorderBrush="#999" Value="{Binding ProgressValue, Mode=OneWay}">
             </views:WPFClickTypeWatch>
 
             <!-- The Panel showing the next click -->

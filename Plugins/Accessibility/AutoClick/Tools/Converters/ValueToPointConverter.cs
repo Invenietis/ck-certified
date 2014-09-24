@@ -39,8 +39,8 @@ namespace CK.Plugins.AutoClick.Converters
 
             current = current * 0.017453292519943295;
 
-            double x = 10 + 10 * Math.Cos( current );
-            double y = 10 + 10 * Math.Sin( current );
+            double x = 25 + 25 * Math.Cos( current );
+            double y = 25 + 25 * Math.Sin( current );
 
             return new Point( x, y );
         }

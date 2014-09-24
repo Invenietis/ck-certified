@@ -34,11 +34,13 @@ namespace Host
     public class RootConfigViewModel : ConfigPage
     {
         readonly Guid _screenScrollerId;
-        readonly Guid _clickSelectorId;
+        readonly Guid _clickSelectorHoverId;
+        readonly Guid _clickSelectorScrollerId;
         readonly Guid _basicScrollId;
         readonly Guid _autoclicId;
         readonly Guid _radarId;
         readonly Guid _skinId;
+        readonly Guid _visualizerId;
 
         readonly AppViewModel _app;
         AppConfigViewModel _appConfigVm;
@@ -50,11 +52,13 @@ namespace Host
             DisplayName = R.Home;
             _app = app;
             _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
-            _clickSelectorId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
+            _clickSelectorHoverId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
+            _clickSelectorScrollerId = new Guid( "{1986E566-7426-44DC-ACA3-9E8E8EB673B8}" );
             _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
             _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
             _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
             _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _visualizerId = new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" );
         }
 
         protected override void OnInitialize()
@@ -78,13 +82,13 @@ namespace Host
             var autoClicStarter = new ConfigFeatureStarter( 
                 ConfigManager, 
                 _app.PluginRunner, 
-                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorId ),
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorHoverId ),
                 new AutoClickViewModel( _app ) ) { DisplayName = R.AutoClickSectionName };
 
             var basicScrollStarter = new ConfigFeatureStarter( 
                 ConfigManager, 
                 _app.PluginRunner,
-                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[] { new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) }, new Guid[] { _radarId, _screenScrollerId, new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) } ),
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[] { _visualizerId }, new Guid[] { _radarId, _screenScrollerId, _visualizerId } ),
                 new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
 
             var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };

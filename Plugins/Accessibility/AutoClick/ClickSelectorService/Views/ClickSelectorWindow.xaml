@@ -32,7 +32,7 @@
     <view:ResizableContainer BorderBrush="{Binding ClicksVM.ClickSelectorBorderBrush}" BorderThickness="{Binding ClicksVM.ClickSelectorBorderThickness}">
         <view:ResizableContainer.Content>
             <Grid>
-                <Viewbox Stretch="Fill">
+                <Viewbox Stretch="Uniform">
                     <Border>
                         <ContentControl Template="{StaticResource ClickTypeSelectorTemplate}"/>
                     </Border>

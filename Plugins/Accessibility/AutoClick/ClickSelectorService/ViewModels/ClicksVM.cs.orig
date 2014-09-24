@@ -191,28 +191,28 @@ namespace CK.Plugins.AutoClick.ViewModel
         {
             ClickEmbedderVM clickEmbedderVM;
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.LeftClick, _leftClickVectorPath );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.LeftClick, "/Res/Images/LeftClick.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Gauche", new List<ClickInstruction>()
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
                 } ) );
             Add( clickEmbedderVM );
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.RightClick, _rightClickVectorPath );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.RightClick, "/Res/Images/RightClick.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Clic Droit", new List<ClickInstruction>() 
                 { 
                    ClickInstruction.RightButtonDown, ClickInstruction.RightButtonUp
                 } ) );
             Add( clickEmbedderVM );
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.DoubleClick, _dbClickVectorPath );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.DoubleClick, "/Res/Images/DoubleLeftClick.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, "Double Clic", new List<ClickInstruction>() 
                 { 
                     ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp, ClickInstruction.LeftButtonDown, ClickInstruction.LeftButtonUp
                 } ) );
             Add( clickEmbedderVM );
 
-            clickEmbedderVM = new ClickEmbedderVM( this, R.DragDrop, _dragDropVectorPath );
+            clickEmbedderVM = new ClickEmbedderVM( this, R.DragDrop, "/Res/Images/DragDrop.png" );
             clickEmbedderVM.Add( new ClickVM( clickEmbedderVM, R.LeftDown, new List<ClickInstruction>() 
                 { 
                      ClickInstruction.LeftButtonDown

@@ -35,7 +35,7 @@ namespace CK.Plugins.AutoClick
         /// Triggers the choosing of a click type.
         /// This method doesn't return the Click as it may need to be asyncronous (when the PointerClickTypeSelector is enabled)
         /// </summary>
-        void AskClickType();
+        void AskClickType( ClickEmbedderVM click = null );
 
         #endregion
 

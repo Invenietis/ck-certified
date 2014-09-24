@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<grammar xml:lang="fr-FR" root="root" tag-format="semantics/1.0" version="1.0" xmlns="http://www.w3.org/2001/06/grammar">
+  <rule id="root" scope="private">
+    <one-of>
+      <item>
+        <ruleref uri="#ID_DEPLACER6" />
+        <tag>out=6;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER4" />
+        <tag>out=4;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER11" />
+        <tag>out=11;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER9" />
+        <tag>out=9;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER10" />
+        <tag>out=10;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER5" />
+        <tag>out=5;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER8" />
+        <tag>out=8;</tag>
+      </item>
+      <item>
+        <ruleref uri="#ID_DEPLACER7" />
+        <tag>out=7;</tag>
+      </item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER6">
+    <one-of>
+      <item>6</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER4">
+    <one-of>
+      <item>4</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER11">
+    <one-of>
+      <item>11</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER9">
+    <one-of>
+      <item>9</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER10">
+    <one-of>
+      <item>10</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER5">
+    <one-of>
+      <item>5</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER8">
+    <one-of>
+      <item>8</item>
+    </one-of>
+  </rule>
+  <rule id="ID_DEPLACER7">
+    <one-of>
+      <item>7</item>
+    </one-of>
+  </rule>
+</grammar>

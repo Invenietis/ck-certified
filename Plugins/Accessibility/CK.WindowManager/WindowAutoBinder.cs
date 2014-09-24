@@ -87,6 +87,7 @@ namespace CK.WindowManager
                 _activationTimer.Start();
             }
 
+            _resizeMoveLock = false;
             _pointerDownLock = true;
         }
 
@@ -151,6 +152,7 @@ namespace CK.WindowManager
                     IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
 
                     IBinding result = _tester.Test( binding, rect, AttractionRadius );
+                    _tester.Block();
                     if( result != null )
                     {
                         _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
@@ -163,9 +165,9 @@ namespace CK.WindowManager
                             _bindResult = null;
                         }
                     }
+                    _tester.Release();
                 }
             }
-            _resizeMoveLock = false;
         }
 
         #endregion WindowManager Members

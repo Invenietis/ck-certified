@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HighlightModel
 {
-    public interface IVizualizableHighlightableElement : IHighlightableElement
+    public interface IVisualizableHighlightableElement : IHighlightableElement
     {
         string ElementName { get; }
 

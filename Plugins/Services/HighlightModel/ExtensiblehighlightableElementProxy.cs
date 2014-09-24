@@ -30,7 +30,7 @@ using CK.Core;
 namespace HighlightModel
 {
     //QUESTION JL : there should be comments here, to understand its purpose
-    public class ExtensibleHighlightableElementProxy : IExtensibleHighlightableElement, IVizualizableHighlightableElement
+    public class ExtensibleHighlightableElementProxy : IExtensibleHighlightableElement, IVisualizableHighlightableElement
     {
         IHighlightableElement _element;
 

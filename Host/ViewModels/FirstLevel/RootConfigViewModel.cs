@@ -83,8 +83,8 @@ namespace Host
 
             var basicScrollStarter = new ConfigFeatureStarter( 
                 ConfigManager, 
-                _app.PluginRunner, 
-                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[0], new Guid[] { _radarId, _screenScrollerId } ),
+                _app.PluginRunner,
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[] { new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) }, new Guid[] { _radarId, _screenScrollerId, new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) } ),
                 new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
 
             var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };

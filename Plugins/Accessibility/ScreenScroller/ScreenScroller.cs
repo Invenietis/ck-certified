@@ -39,7 +39,7 @@ namespace ScreenScroller
     [Plugin( ScreenScrollerPlugin.PluginIdString,
            PublicName = ScreenScrollerPlugin.PluginPublicName,
            Version = ScreenScrollerPlugin.PluginIdVersion )]
-    public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IVizualizableHighlightableElement, IRootNode
+    public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IVisualizableHighlightableElement, IRootNode
     {
         internal const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
         readonly Guid PluginGuid = new Guid( PluginIdString );

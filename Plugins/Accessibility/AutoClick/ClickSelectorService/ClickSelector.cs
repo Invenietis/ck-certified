@@ -38,7 +38,7 @@ using CommonServices;
 namespace CK.Plugins.AutoClick
 {
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
-    public class ClickSelector : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin, IVizualizableHighlightableElement
+    public class ClickSelector : CK.WPF.ViewModel.VMBase, IClickSelector, IPlugin, IVisualizableHighlightableElement
     {
         const string PluginGuidString = "{F9687F04-7370-4812-9EB4-1320EB282DD8}";
         Guid PluginGuid = new Guid( PluginGuidString );

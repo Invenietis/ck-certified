@@ -49,7 +49,7 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" );
+            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" ); //KeyboardEditor
 
             var profiles = this.AddCurrentItem( R.Profile, "", _app.CivikeyHost.Context.ConfigManager.SystemConfiguration, a => a.CurrentUserProfile, a => a.UserProfiles, false, "" );
             _app.CivikeyHost.Context.ConfigManager.SystemConfiguration.UserProfiles.CollectionChanged += ( s, e ) =>
@@ -112,18 +112,5 @@ namespace Host.VM
             _app.CivikeyHost.Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( _keyboardEditorId, ConfigPluginStatus.AutomaticStart );
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
-
-       
-        public void StartRadarEditor()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{275B0E68-B880-463A-96E5-342C8E31E229}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
-        }
-
-        //public void StartScreenScrollerEditor()
-        //{
-        //    _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{652CFF65-5CF7-4FE9-8FF5-45C5E2A942E6}" ), ConfigUserAction.Started );
-        //    _app.CivikeyHost.Context.PluginRunner.Apply();
-        //}
     }
 }

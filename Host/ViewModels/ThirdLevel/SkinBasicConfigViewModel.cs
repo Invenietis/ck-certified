@@ -106,7 +106,7 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" ); //MainKeyboardManager
             InitializePlugin();
 
             var skinGroup = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig, this, h => h.ActivateSkin, this );

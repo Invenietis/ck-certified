@@ -35,9 +35,18 @@ using Host.Services;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager", Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class WindowManager : IWindowManager, IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{1B56170E-EB91-4E25-89B6-DEA94F85F604}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Window Manager";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         IDictionary<IWindowElement, WindowElementData> _dic = new Dictionary<IWindowElement, WindowElementData>();
 
         IWindowElement _lastFocused;

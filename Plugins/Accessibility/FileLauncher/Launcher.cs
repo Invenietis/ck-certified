@@ -24,20 +24,23 @@
 using System;
 using System.Diagnostics;
 using CK.Plugin;
+using CK.Core;
 using CommonServices;
 
 namespace FileLauncher
 {
-    [Plugin( Launcher.PluginIdString,
-           PublicName = PluginPublicName,
-           Version = Launcher.PluginIdVersion,
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
     public class Launcher : IPlugin, IFileLauncherService
     {
-        const string PluginIdString = "{02D08D49-171F-454A-A84C-89DD7F959958}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        #region Plugin description
+
+        const string PluginGuidString = "{02D08D49-171F-454A-A84C-89DD7F959958}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "File Launcher";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         public void Start()
         {

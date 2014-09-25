@@ -25,25 +25,27 @@ using System;
 using CK.Context;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Core;
 
 namespace ScreenScroller.Editor
 {
 
-    [Plugin( ScreenScrollerEditor.PluginIdString,
-           PublicName = ScreenScrollerEditor.PluginPublicName,
-           Version = ScreenScrollerEditor.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class ScreenScrollerEditor : IPlugin
     {
-        internal const string PluginIdString = "{652CFF65-5CF7-4FE9-8FF5-45C5E2A942E6}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Screen scroller Editor";
+        #region Plugin description
+
+        const string PluginGuidString = "{652CFF65-5CF7-4FE9-8FF5-45C5E2A942E6}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Screen Scroller Editor";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         EditorViewModel _editor;
         EditorView _window;
 
-        [ConfigurationAccessor( ScreenScrollerPlugin.PluginIdString )]
+        [ConfigurationAccessor( "{AE25D80B-B927-487E-9274-48362AF95FC0}" )] //ScreenScrollerPlugin
         public IPluginConfigAccessor Configuration { get; set; }
 
         [RequiredService]

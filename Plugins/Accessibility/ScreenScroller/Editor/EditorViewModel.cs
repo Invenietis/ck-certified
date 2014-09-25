@@ -109,7 +109,7 @@ namespace ScreenScroller.Editor
         {
             if( !_isClosing )
             {
-                _context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( ScreenScrollerEditor.PluginIdString ), ConfigUserAction.Stopped );
+                _context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( ScreenScrollerEditor.PluginId.UniqueId, ConfigUserAction.Stopped );
                 _context.GetService<ISimplePluginRunner>( true ).Apply();
             }
         }

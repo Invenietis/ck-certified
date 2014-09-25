@@ -34,18 +34,17 @@ using HighlightModel;
 
 namespace Scroller
 {
-    [Plugin( ScrollerPlugin.PluginIdString,
-           PublicName = PluginPublicName,
-           Version = ScrollerPlugin.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class ScrollerPlugin : IPlugin, IHighlighterService
     {
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
 
-        internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginGuidString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Scroller";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         Dictionary<string, IHighlightableElement> _registeredElements;
         StrategyBridge _scrollingStrategy;

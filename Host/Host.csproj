@@ -261,7 +261,6 @@
     <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
     <Compile Include="ViewModels\Tools\PointerManagerPluginStarter.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
-    <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="ViewModels\Tools\RecordConfigItem.cs" />
     <Compile Include="ViewModels\Tools\SliderConfigItem.cs" />

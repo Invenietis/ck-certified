@@ -31,9 +31,18 @@ using CK.Windows;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" }, Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class WindowManagerExecutor : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "CK.WindowManager.Executor";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         PreviewBindingInfo _placeholder;
         ActivityMonitor _logger;
 
@@ -173,7 +182,6 @@ namespace CK.WindowManager
 
             if( e.BindingType == BindingEventType.Attach )
             {
-
                 if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding, TopMostService );
             }
             else _placeholder.Shutdown( TopMostService );
@@ -199,7 +207,10 @@ namespace CK.WindowManager
 
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
-            _placeholder.Shutdown( TopMostService );
+            if(e.BindingType == BindingEventType.Attach)
+            {
+                _placeholder.Shutdown( TopMostService );
+            }
         }
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )

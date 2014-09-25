@@ -44,14 +44,18 @@ using SimpleSkin.ViewModels;
 
 namespace SimpleSkin
 {
-    [Plugin( KeyboardDisplayer.PluginIdString, PublicName = PluginPublicName, Version = KeyboardDisplayer.PluginIdVersion,
+    [Plugin( PluginIdString, PublicName = PluginPublicName, Version = PluginVersion,
        Categories = new string[] { "Visual", "Accessibility" } )]
     public class KeyboardDisplayer : IPlugin
     {
-        const string PluginPublicName = "KeyboardDisplayer";
+        #region Plugin description
+
+        const string PluginPublicName = "Keyboard Displayer";
         const string PluginIdString = "{D173E013-2491-4491-BF3E-CA2F8552B5EB}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ISharedData SharedData { get; set; }
@@ -65,7 +69,7 @@ namespace SimpleSkin
         [RequiredService]
         public IContext Context { get; set; }
 
-        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )] //MainKeyboardManager
         public IPluginConfigAccessor Config { get; set; }
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]

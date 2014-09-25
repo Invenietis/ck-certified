@@ -29,7 +29,7 @@ namespace Host.VM
     public class MouseRadarViewModel : ConfigBase
     {
         public MouseRadarViewModel( AppViewModel app )
-            : base( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}", "Configuraton du Radar", app )
+            : base( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}", "Configuraton du Radar", app ) //MouseRadarPlugin
         {
         }
 

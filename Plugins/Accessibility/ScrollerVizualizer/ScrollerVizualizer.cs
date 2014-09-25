@@ -6,19 +6,19 @@ using HighlightModel;
 
 namespace ScrollerVisualizer
 {
-    [Plugin( ScrollerVisualizer.PluginIdString,
-        PublicName = PluginPublicName,
-        Version = ScrollerVisualizer.PluginIdVersion,
-        Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class ScrollerVisualizer : IPlugin
     {
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
-        bool _isInit;
+        #region Plugin description
 
-        internal const string PluginIdString = "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginGuidString = "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Scroller Visualizer";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
+        bool _isInit;
 
         [DynamicService( Requires = RunningRequirement.Optional )]
         public IService<IHighlighterService> Scroller { get; set; }

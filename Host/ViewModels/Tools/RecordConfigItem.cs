@@ -10,7 +10,7 @@ namespace Host.VM
     public class RecordConfigItem : ConfigItemProperty<ITrigger>
     {
         AppViewModel _app;
-        Guid _triggerGuid = Guid.Parse( "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}" );
+        Guid _triggerGuid = Guid.Parse( "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}" ); //InputTrigger
         ITriggerService _triggerService;
         ITriggerService TriggerService
         {

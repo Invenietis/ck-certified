@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Threading;
 using CK.Plugin;
+using CK.Core;
 using CommonServices;
 
 namespace PointerDeviceDriver
@@ -34,11 +35,20 @@ namespace PointerDeviceDriver
     /// <summary>
     /// Implementation of IPointerDeviceDriver used to Drive the Mouse in a Windows environement
     /// </summary>
-    [Plugin( "{484FD138-A311-40F4-9482-37879D6A1F0E}", PublicName = "Keyboard driver", Version = "0.1",
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion,
      Categories = new string[] { "Advanced" },
      Description = "A plugin that catches keyboard events." )]
     public class KeyboardDriver : IPlugin, IKeyboardDriver
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{484FD138-A311-40F4-9482-37879D6A1F0E}";
+        const string PluginPublicName = "Keyboard Driver";
+        const string PluginVersion = "1.0.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         private const int WM_KEYDOWN = 0x0100;
 
         WindowsHook _windowsHook;

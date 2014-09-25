@@ -22,6 +22,7 @@
 #endregion
 
 using System;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Plugins.SendInputDriver;
@@ -29,9 +30,18 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}", PublicName = "Simple TextualContext aware predicted word sender", Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Prediction" }, Version="1.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Description = "Listens to a successful prediction and prints the word, according to the current textual context.", Categories = new string[] { "Prediction" } )]
     public class SimplePredictedWordSender : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{8789CDCC-A7BB-46E5-B119-28DC48C9A8B3}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Simple TextualContext aware predicted word sender";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IWordPredictedService WordPredictedService { get; set; }
 

@@ -42,18 +42,19 @@ using ProtocolManagerModel;
 
 namespace KeyboardEditor
 {
-    [Plugin( KeyboardEditor.PluginIdString,
-        PublicName = PluginPublicName,
-        Version = KeyboardEditor.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public partial class KeyboardEditor : IPlugin, IKeyboardEditorRoot, IHaveDefaultHelp
     {
-        const string PluginIdString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Keyboard editor";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
 
-        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        const string PluginGuidString = "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Keyboard Editor";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )] //MainKeyboardManager
         public IPluginConfigAccessor SkinConfiguration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
@@ -164,7 +165,7 @@ namespace KeyboardEditor
 
                 System.Action stop = () =>
                 {
-                    Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginGuid, ConfigPluginStatus.Disabled );
+                    Context.ConfigManager.UserConfiguration.PluginsStatus.SetStatus( PluginId.UniqueId, ConfigPluginStatus.Disabled );
                     Context.PluginRunner.Apply();
                 };
                 e.Cancel = true;

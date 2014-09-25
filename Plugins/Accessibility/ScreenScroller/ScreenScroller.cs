@@ -35,15 +35,17 @@ using ScreenScroller.Resources;
 
 namespace ScreenScroller
 {
-    [Plugin( ScreenScrollerPlugin.PluginIdString,
-           PublicName = ScreenScrollerPlugin.PluginPublicName,
-           Version = ScreenScrollerPlugin.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IVisualizableHighlightableElement, IRootNode
     {
-        internal const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
-        readonly Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "0.0.1";
+        #region Plugin description
+
+        const string PluginGuidString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
+        const string PluginVersion = "0.1.0";
         const string PluginPublicName = "Screen Scroller";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         IList<Screen> _screens;
 
@@ -116,7 +118,7 @@ namespace ScreenScroller
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( PluginId.UniqueId ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 switch( e.Key )
                 {

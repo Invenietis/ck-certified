@@ -32,12 +32,18 @@ using TextTemplate.Resource;
 
 namespace TextTemplate
 {
-    [Plugin( "{DD0D0FBA-9FC2-48FA-B3D1-6CE9CB2D133E}",
-        Categories = new string[] { "Accessibility" },
-        Version = "1.0.0",
-        PublicName = "Text Template" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" })]
     public class TextTemplate : IPlugin, IHighlightableElement, ITextTemplateService
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{DD0D0FBA-9FC2-48FA-B3D1-6CE9CB2D133E}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Text Template";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         public static readonly string PlaceholderOpenTag = "{{";
         public static readonly string PlaceholderCloseTag = "}}";
         bool _isHighlightable = false;

@@ -63,7 +63,7 @@ namespace MouseRadar.Editor
         {
             if( close && !Stopping )
             {
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( MouseRadarEditor.PluginIdString ), ConfigUserAction.Stopped );
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( MouseRadarEditor.PluginId.UniqueId, ConfigUserAction.Stopped );
                 Context.GetService<ISimplePluginRunner>( true ).Apply();
             }
             

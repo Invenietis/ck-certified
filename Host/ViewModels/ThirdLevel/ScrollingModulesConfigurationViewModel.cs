@@ -47,7 +47,7 @@ namespace Host.VM
         IsDirtyConfigItemApply _applyButton;
 
         public ScrollingModulesConfigurationViewModel( string displayName, AppViewModel app )
-            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", "Scrolling", app )
+            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", "Scrolling", app ) //ScrollerPlugin
         {
             DisplayName = displayName;
         }

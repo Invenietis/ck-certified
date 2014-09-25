@@ -30,17 +30,22 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using CK.Plugin;
 using CK.WindowManager.Model;
+using CK.Core;
 
 namespace CK.WindowManager
 {
 
-    [Plugin( "{5EDDAD09-122A-4967-9A06-374B21E403FC}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.TopMostService", Version = "0.1.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class TopMostService : ITopMostService, IPlugin
     {
+        #region Plugin description
 
+        const string PluginGuidString = "{5EDDAD09-122A-4967-9A06-374B21E403FC}";
+        const string PluginVersion = "0.2.0";
         const string PluginPublicName = "CK.WindowManager.TopMostService";
-        const string PluginIdString = "{5EDDAD09-122A-4967-9A06-374B21E403FC}";
-        const string PluginIdVersion = "0.1.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         Dictionary<Window,string> _windowToString;
 

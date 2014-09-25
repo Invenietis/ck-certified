@@ -29,14 +29,18 @@ using CommonServices;
 
 namespace CK.Plugins.CommonTimerWindow
 {
-    [Plugin( CommonTimerWindow.PluginIdString, PublicName = "Common timer window", Version = CommonTimerWindow.PluginIdVersion,
-     Categories = new string[] { "Visual" },
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual" },
      Description="Simple user interface to show the events of the CommonTimer")]
     public class CommonTimerWindow : IPlugin
     {
-        const string PluginIdString = "{62C9697A-95A1-475e-AFDE-1094B018382A}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly IVersionedUniqueId PluginId = new SimpleVersionedUniqueId( PluginIdString, PluginIdVersion );
+        #region Plugin description
+
+        const string PluginGuidString = "{62C9697A-95A1-475e-AFDE-1094B018382A}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Common Timer Window";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         ICommonTimer _timer;
         TimerView _window;

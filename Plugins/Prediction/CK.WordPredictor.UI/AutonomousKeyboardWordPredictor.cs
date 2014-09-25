@@ -26,6 +26,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Threading;
+using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
@@ -34,9 +35,18 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor.UI
 {
-    [Plugin( "{1756C34D-EF4F-45DA-9224-1232E96964D2}", PublicName = "Word Prediction - Autonomous Keyboard", Categories = new string[] { "Prediction", "Visual" }, Version = "1.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Prediction", "Visual" } )]
     public class AutonomousKeyboardWordPredictor : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{1756C34D-EF4F-45DA-9224-1232E96964D2}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Word Prediction - Autonomous Keyboard";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IKeyboardContext Context { get; set; }
 

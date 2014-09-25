@@ -30,12 +30,22 @@ using System.Windows.Threading;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CommonServices;
+using CK.Core;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{B63BB144-1C13-4A3B-93BD-AC5233F4F18E}", PublicName = "CK.WindowManager.AutoBinder" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class WindowAutoBinder : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{B63BB144-1C13-4A3B-93BD-AC5233F4F18E}";
+        const string PluginVersion = "0.1.0";
+        const string PluginPublicName = "CK.WindowManager.AutoBinder";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistTryStart )]
         public IWindowManager WindowManager { get; set; }
 
@@ -71,11 +81,12 @@ namespace CK.WindowManager
             if( _bindResult != null && _activationTimer == null )
             {
                 _activationTimer = new DispatcherTimer();
-                _activationTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                _activationTimer.Interval = new TimeSpan( 0, 0, 0, 0, 50 );
                 _activationTimer.Tick += _activationTimer_Tick;
                 _activationTimer.Start();
             }
 
+            _resizeMoveLock = false;
             _pointerDownLock = true;
         }
 
@@ -108,11 +119,13 @@ namespace CK.WindowManager
             _tester.Block();
         }
 
+        bool _afterUnbind;
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
 
             _tester.Release();
+            _afterUnbind = e.BindingType == BindingEventType.Detach;
         }
 
         #endregion WindowBinder Members
@@ -142,7 +155,7 @@ namespace CK.WindowManager
                     IBinding result = _tester.Test( binding, rect, AttractionRadius );
                     if( result != null )
                     {
-                        _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
+                        if( !_afterUnbind ) _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
                     }
                     else
                     {
@@ -151,10 +164,10 @@ namespace CK.WindowManager
                             WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
                             _bindResult = null;
                         }
+                        _afterUnbind = false;
                     }
                 }
             }
-            _resizeMoveLock = false;
         }
 
         #endregion WindowManager Members

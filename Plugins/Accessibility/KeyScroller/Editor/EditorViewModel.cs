@@ -161,7 +161,7 @@ namespace Scroller.Editor
         {
             if( close && !Stopping )
             {
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( BasicScrollEditor.PluginIdString ), ConfigUserAction.Stopped );
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( BasicScrollEditor.PluginId.UniqueId, ConfigUserAction.Stopped );
                 Context.GetService<ISimplePluginRunner>( true ).Apply();
             }
             base.OnDeactivate( close );

@@ -1,5 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shapes;
+using CK.Windows.Core;
+using CK.Windows.Interop;
 
 namespace CK.WPF.StandardViews
 {

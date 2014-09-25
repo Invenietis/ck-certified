@@ -22,6 +22,7 @@
 #endregion
 
 using System.ComponentModel;
+using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
@@ -29,9 +30,18 @@ using CK.WordPredictor.Model;
 
 namespace CK.WordPredictor
 {
-    [Plugin( "{4DC42B82-4B29-4896-A548-3086AA9421D7}", PublicName = "WordPredictor Feature", Categories = new string[] { "Advanced", "Prediction" }, Version = "1.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced", "Prediction" } )]
     public class WordPredictorFeature : IPlugin, IWordPredictorFeature
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{4DC42B82-4B29-4896-A548-3086AA9421D7}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "WordPredictor Feature";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         private IKeyboardContextPredictionFactory _predictionContextFactory;
         private IKeyboardContextPredictionFactory _autonomousPredictionContextFactory;
 

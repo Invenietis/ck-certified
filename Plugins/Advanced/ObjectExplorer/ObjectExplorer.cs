@@ -31,16 +31,19 @@ using Help.Services;
 
 namespace CK.Plugins.ObjectExplorer
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion, Categories = new string[] { "Advanced" },
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" },
      IconUri = "Plugins/ObjectExplorer/UI/Resources/objectExplorerIcon.ico" )]
     public class ObjectExplorer : IPlugin
     {
+        #region Plugin description
+
         const string PluginGuidString = "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Object Explorer";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
-        
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         VMIContextView _view;
 
         public VMIContextViewModel VMIContext { get; private set; }

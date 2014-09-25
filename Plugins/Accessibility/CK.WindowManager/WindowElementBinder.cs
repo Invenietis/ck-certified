@@ -328,25 +328,21 @@ namespace CK.WindowManager
 
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Bottom.UnbindButton );
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Left.UnbindButton );
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Top.UnbindButton );
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Right.UnbindButton );
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );
                     }

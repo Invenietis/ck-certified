@@ -82,7 +82,7 @@ namespace CK.WindowManager
             if( _bindResult != null && _activationTimer == null )
             {
                 _activationTimer = new DispatcherTimer();
-                _activationTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+                _activationTimer.Interval = new TimeSpan( 0, 0, 0, 0, 50 );
                 _activationTimer.Tick += _activationTimer_Tick;
                 _activationTimer.Start();
             }
@@ -120,11 +120,13 @@ namespace CK.WindowManager
             _tester.Block();
         }
 
+        bool _afterUnbind;
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
 
             _tester.Release();
+            _afterUnbind = e.BindingType == BindingEventType.Detach;
         }
 
         #endregion WindowBinder Members
@@ -156,10 +158,9 @@ namespace CK.WindowManager
                         IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
 
                         IBinding result = _tester.Test( binding, rect, AttractionRadius );
-                        _tester.Block();
                         if( result != null )
                         {
-                            _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
+                            if( !_afterUnbind ) _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
                         }
                         else
                         {
@@ -168,8 +169,8 @@ namespace CK.WindowManager
                                 WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
                                 _bindResult = null;
                             }
+                            _afterUnbind = false;
                         }
-                        _tester.Release();
                     }
                 }
                 _firstMove = false;

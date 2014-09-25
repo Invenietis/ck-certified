@@ -210,7 +210,10 @@ namespace CK.WindowManager
 
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
-            _placeholder.Shutdown( TopMostService );
+            if(e.BindingType == BindingEventType.Attach)
+            {
+                _placeholder.Shutdown( TopMostService );
+            }
         }
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )

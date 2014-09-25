@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMIFolder.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.WPF.ViewModel;
 using System.Collections;
+using CK.WPF.ViewModel;
 
 namespace CK.Plugins.ObjectExplorer
 {

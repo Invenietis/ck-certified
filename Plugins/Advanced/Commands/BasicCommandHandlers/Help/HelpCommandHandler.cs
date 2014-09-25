@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\Help\HelpCommandHandler.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
-using CommonServices;
-using CK.Plugin;
+using BasicCommandHandlers.Resources;
 using CK.Core;
+using CK.Plugin;
+using CommonServices;
 using Help.Services;
 using ProtocolManagerModel;
-using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {

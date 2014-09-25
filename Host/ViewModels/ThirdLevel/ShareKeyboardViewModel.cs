@@ -22,10 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using CK.Plugin.Config;
 using CK.Windows;
 using CK.Windows.Config;

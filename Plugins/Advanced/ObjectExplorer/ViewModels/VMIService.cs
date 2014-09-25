@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMIService.cs) is part of CiviKey. 
 *  
@@ -21,13 +21,13 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Plugin;
-using CK.Plugins.ObjectExplorer.ViewModels.LogViewModels;
-using CK.WPF.ViewModel;
-using CK.Plugin.Hosting;
+using System;
 using System.Collections.Generic;
 using CK.Core;
-using System;
+using CK.Plugin;
+using CK.Plugin.Hosting;
+using CK.Plugins.ObjectExplorer.ViewModels.LogViewModels;
+using CK.WPF.ViewModel;
 
 namespace CK.Plugins.ObjectExplorer
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\MouseRadar\Editor\EditorViewModel.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
+using System.Windows.Media;
 using Caliburn.Micro;
 using CK.Context;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Core;
-using System.Windows.Media;
 using MouseRadar.Resources;
 
 namespace MouseRadar.Editor

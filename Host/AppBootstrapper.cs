@@ -23,8 +23,8 @@
 
 using System;
 using System.Linq;
-using Caliburn.Micro;
 using System.Windows.Controls;
+using Caliburn.Micro;
 
 namespace Host
 {

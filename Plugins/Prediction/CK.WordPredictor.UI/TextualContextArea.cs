@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Prediction\CK.WordPredictor.UI\TextualContextArea.cs) is part of CiviKey. 
 *  
@@ -23,14 +23,13 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using CK.Keyboard.Model;
 using CK.Plugin;
-using System.Linq;
 using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
-using System.Diagnostics;
 
 namespace CK.WordPredictor.UI
 {

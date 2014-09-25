@@ -10,9 +10,9 @@
                             
                             <Grid>
                                 <!--Content Section-->
-                                <ContentControl Content="{TemplateBinding Content}"></ContentControl>
+                                <ContentControl Content="{TemplateBinding Content}" />
 
-                                <Rectangle Cursor="SizeNS" Name="bottom" Height="7" Margin="10,0,10,-5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent"></Rectangle>
+                                <Rectangle Cursor="SizeNS" Name="bottom" Height="7" Margin="10,0,10,-5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" PreviewMouseDown="Resize" Fill="Transparent" />
                                 <Rectangle Cursor="SizeNS" Name="top" Height="7" Margin="10,-5,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" PreviewMouseDown="Resize" Fill="Transparent" />
 
                                 <Rectangle Cursor="SizeWE" Name="left" Width="7" Margin="-5,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Stretch" PreviewMouseDown="Resize" Fill="Transparent" />

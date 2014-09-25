@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ObjectExplorer.cs) is part of CiviKey. 
 *  
@@ -21,12 +21,12 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using CK.Context;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
-using System;
-using CK.Core;
 using Help.Services;
 
 namespace CK.Plugins.ObjectExplorer

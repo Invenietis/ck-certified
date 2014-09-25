@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Prediction\CK.WordPredictor\WordPredicted\WordPredictedService.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.WordPredictor.Model;
 using CK.Plugin;
+using CK.WordPredictor.Model;
 using CommonServices;
 
 namespace CK.WordPredictor

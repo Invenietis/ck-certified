@@ -21,15 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Linq;
-//using CK.WPF.Controls;
-using CK.Plugin;
-using CK.Plugin.Config;
 using System.Windows.Input;
-using CK.Windows.Config;
+using CK.Plugin;
 using CK.Windows;
-using System.Collections.Generic;
+using CK.Windows.Config;
 
 namespace Host.VM
 {

@@ -52,12 +52,12 @@
     <!-- Rounded : Taken from the host's Generix.xaml-->
     <!-- Could cause duplicate keys  -->
     <Style TargetType="Border" x:Key="Rounded">
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="BorderBrush" Value="Gray"></Setter>
-        <Setter Property="BorderThickness" Value="0.5"></Setter>
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="Margin" Value="5 0 5 5"></Setter>
-        <Setter Property="Padding" Value="5 5"></Setter>
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="BorderThickness" Value="0.5" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Margin" Value="5 0 5 5" />
+        <Setter Property="Padding" Value="5 5" />
     </Style>
 
     <!-- AutoClickEditorTemplate (Editor)-->
@@ -103,10 +103,8 @@
             <Border Style="{StaticResource Rounded}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*">                            
-                        </ColumnDefinition>
-                        <ColumnDefinition Width="auto">
-                        </ColumnDefinition>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock x:Uid="autoclick-editor-showprogressmouse" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Show a progress indicator above the pointer :" Style="{StaticResource CTEditor_OptionsTextBlock}" />
                     <CheckBox Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ShowMouseIndicatorOption, Mode=TwoWay}" Margin="0 0 20 0"/>

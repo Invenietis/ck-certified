@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Windows.Config;

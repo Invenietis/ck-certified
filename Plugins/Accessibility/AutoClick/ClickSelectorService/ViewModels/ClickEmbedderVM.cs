@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\ClickSelectorService\ViewModels\ClickEmbedderVM.cs) is part of CiviKey. 
 *  
@@ -23,10 +23,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Input;
 using HighlightModel;
 
 namespace CK.Plugins.AutoClick.ViewModel

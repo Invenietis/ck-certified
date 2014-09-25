@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\TextTemplate\Word.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Core;
-using HighlightModel;
 using System;
 using System.ComponentModel;
+using CK.Core;
+using HighlightModel;
 
 namespace TextTemplate
 {

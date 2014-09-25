@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\TemplateSelectors\TreeDisplay.cs) is part of CiviKey. 
 *  
@@ -21,8 +21,8 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace CK.Plugins.ObjectExplorer.UI.TemplateSelectors
 {

@@ -21,15 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using CK.Windows.Config;
 using CK.WPF.ViewModel;
-using System.Diagnostics;
-using System.ComponentModel;
 
 namespace Host.VM
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\ViewModels\ElementViewModels\CheckBoxExportKeyboardViewModel.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using CK.Keyboard.Model;
 using CK.WPF.ViewModel;

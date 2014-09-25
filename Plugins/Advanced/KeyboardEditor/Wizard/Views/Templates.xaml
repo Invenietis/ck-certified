@@ -103,7 +103,7 @@
                             Command="{Binding GoBackCommand}" 
                             Content="Back"/>
 
-                <ckcontrols:ImageButton DockPanel.Dock="Right" VerticalAlignment="Bottom" x:Uid="editor-help-button" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/help.png" Width="16" Height="16" Margin="5" ToolTip="Help" Command="{Binding ActiveItem.ShowHelpCommand}"></ckcontrols:ImageButton>
+                <ckcontrols:ImageButton DockPanel.Dock="Right" VerticalAlignment="Bottom" x:Uid="editor-help-button" Source="pack://application:,,,/KeyboardEditor;component/Resources/Images/help.png" Width="16" Height="16" Margin="5" ToolTip="Help" Command="{Binding ActiveItem.ShowHelpCommand}" />
 
                 <!--Forward button-->
                 <Button Style="{StaticResource ForwardButtonStyle}" DockPanel.Dock="Right" IsEnabled="{Binding ActiveItem.CanGoFurther}" Margin="0 0 0 20">

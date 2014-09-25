@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\ExportKeyboard.cs) is part of CiviKey. 
 *  
@@ -24,14 +24,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.SharedDic;
 using CK.Storage;
 using KeyboardEditor.s;
 using KeyboardEditor.Wizard.ViewModels;

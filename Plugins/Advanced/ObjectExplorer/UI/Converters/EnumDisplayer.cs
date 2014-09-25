@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\UI\Converters\EnumDisplayer.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Windows.Data;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows.Markup;
 using System.Reflection;
+using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace CK.Plugins.ObjectExplorer
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\KeyScroller\Scroller.cs) is part of CiviKey. 
 *  
@@ -25,11 +25,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
-using System.Xml;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Storage;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;

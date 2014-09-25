@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\SendKey\SendKeyCommandHandler.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
-using CommonServices;
-using CK.Plugin;
 using System.Windows.Forms;
-using CK.Context;
-using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using CK.Context;
+using CK.Plugin;
+using CommonServices;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {

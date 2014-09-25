@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMApplicationInfo.cs) is part of CiviKey. 
 *  
@@ -22,11 +22,11 @@
 #endregion
 
 using System;
-using System.Windows.Input;
-using CK.WPF.ViewModel;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Windows.Input;
 using CK.Context;
+using CK.WPF.ViewModel;
 
 namespace CK.Plugins.ObjectExplorer
 {

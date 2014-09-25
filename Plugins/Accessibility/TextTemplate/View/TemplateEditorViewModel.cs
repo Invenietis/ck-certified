@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\TextTemplate\View\TemplateEditorViewModel.cs) is part of CiviKey. 
 *  
@@ -21,13 +21,13 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
+using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows.Media;
 using CK.Core;
 using CK.WPF.ViewModel;
 using HighlightModel;
-using System;
-using System.ComponentModel;
-using System.Windows.Media;
-using System.Windows.Input;
 
 namespace TextTemplate
 {

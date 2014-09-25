@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\MouseWatcher\MouseWatcher.cs) is part of CiviKey. 
 *  
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
-using CommonServices;
-using CK.Plugin;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Threading;
+using CK.Plugin;
 using CK.Plugin.Config;
-using System.ComponentModel;
+using CommonServices;
 
 namespace MouseWatcher
 {

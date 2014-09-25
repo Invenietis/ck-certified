@@ -174,8 +174,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" LastChildFill="False" Margin="0 0 0 5">
             <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding Categories}">

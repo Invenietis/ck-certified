@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\KeySequence\KeySequenceCommandParameterManager.cs) is part of CiviKey. 
 *  
@@ -21,14 +21,14 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using BasicCommandHandlers.Resources;
-using CK.InputDriver.Replay;
-using CK.WPF.ViewModel;
-using ProtocolManagerModel;
 using System;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
+using BasicCommandHandlers.Resources;
+using CK.InputDriver.Replay;
+using CK.WPF.ViewModel;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {

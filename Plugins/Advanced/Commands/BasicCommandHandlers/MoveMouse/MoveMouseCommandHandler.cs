@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\MoveMouse\MoveMouseCommandHandler.cs) is part of CiviKey. 
 *  
@@ -22,15 +22,15 @@
 #endregion
 
 using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Windows.Threading;
+using BasicCommandHandlers.Resources;
+using CK.InputDriver;
+using CK.Plugin;
 using CommonServices;
 using CommonServices.Accessibility;
-using CK.Plugin;
-using System.Windows.Threading;
 using ProtocolManagerModel;
-using BasicCommandHandlers.Resources;
-using System.Windows.Forms;
-using System.Drawing;
-using CK.InputDriver;
 
 namespace BasicCommandHandlers
 {

@@ -23,9 +23,9 @@
 
 using System;
 using CK.Plugin.Config;
-using Host.Resources;
-using CK.Windows.Config;
 using CK.Windows;
+using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {

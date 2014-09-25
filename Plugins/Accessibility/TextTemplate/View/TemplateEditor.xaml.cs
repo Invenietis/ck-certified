@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\TextTemplate\View\TemplateEditor.xaml.cs) is part of CiviKey. 
 *  
@@ -22,14 +22,11 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using System.Windows.Controls.Primitives;
-using System.Linq;
+
 namespace TextTemplate
 {
     public class ContentControlDuFutur : ContentControl

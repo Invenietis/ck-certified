@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\ShowNotificationBehavior.cs) is part of CiviKey. 
 *  
@@ -21,9 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using System.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
-using System;
 
 namespace Host.Services
 {

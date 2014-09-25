@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using System.Windows.Input;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace CK.WPF.Controls
 {

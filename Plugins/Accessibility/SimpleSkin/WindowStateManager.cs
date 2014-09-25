@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Threading;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.WindowManager.Model;
-using CK.Windows;
 using CK.Windows.Helpers;
 using CommonServices.Accessibility;
-using Host;
 using SimpleSkin.Res;
 
 namespace SimpleSkin

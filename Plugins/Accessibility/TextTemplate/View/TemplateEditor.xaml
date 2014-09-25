@@ -93,18 +93,18 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    <Setter Property="Background" Value="{StaticResource DarkerDefaultColor}" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#FFF"></Setter>
-                    <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}"></Setter>
+                    <Setter Property="Background" Value="#FFF" />
+                    <Setter Property="Foreground" Value="{StaticResource DarkerDefaultColor}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="BorderBrush" Value="Gray"></Setter>
-                    <Setter Property="Background" Value="#81b9ee"></Setter>
+                    <Setter Property="BorderBrush" Value="Gray" />
+                    <Setter Property="Background" Value="#81b9ee" />
                 </Trigger>
                 
             </Style.Triggers>

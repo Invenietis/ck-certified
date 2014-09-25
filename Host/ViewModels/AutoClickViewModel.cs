@@ -21,10 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-//using CK.WPF.Controls;
 using CK.Plugin.Config;
-using Host.Resources;
 using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
@@ -70,7 +69,7 @@ namespace Host.VM
 
         public bool ShowMouseIndicatorOption
         {
-            get { return Config != null ? Config.GetOrSet( "ShowMouseIndicatorOption", false ) : false; }
+            get { return Config != null && Config.GetOrSet( "ShowMouseIndicatorOption", false ); }
             set
             {
                 if( Config != null ) Config.Set( "ShowMouseIndicatorOption", value );

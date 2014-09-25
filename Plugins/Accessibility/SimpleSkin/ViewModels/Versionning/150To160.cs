@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\ViewModels\Versionning\150To160.cs) is part of CiviKey. 
 *  
@@ -21,9 +21,9 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
-using System;
 
 namespace SimpleSkin.ViewModels.Versionning
 {

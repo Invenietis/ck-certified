@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\KeyScroller\ScrollingStrategies\ZoneSplittingScrollingStrategy.cs) is part of CiviKey. 
 *  
@@ -21,15 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Windows.Threading;
-using CK.Core;
-using CK.Plugin.Config;
 using HighlightModel;
 using SimpleSkin.ViewModels;
-using System.Timers;
-using System;
 
 namespace Scroller
 {

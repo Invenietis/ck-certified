@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\CommonServices\Advanced\Commands\IDynCommandHandlerService.cs) is part of CiviKey. 
 *  
@@ -22,6 +22,7 @@
 #endregion
 
 using CK.Plugin;
+
 namespace CommonServices
 {
     public interface IDynCommandHandlerService : IDynamicService

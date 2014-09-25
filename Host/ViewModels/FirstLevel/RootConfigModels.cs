@@ -59,13 +59,11 @@ namespace Host.ViewModels
         {
             get
             {
-                return _ctx.CurrentKeyboard != null ? _keyboards.Where( k => k.Name == _ctx.CurrentKeyboard.Name ).Single() : null;
+                return _ctx.CurrentKeyboard != null ? _keyboards.Single( k => k.Name == _ctx.CurrentKeyboard.Name ) : null;
             }
             set
             {
-                if( value != null )
-                    _ctx.CurrentKeyboard = value.Model;
-                else _ctx.CurrentKeyboard = null;
+                _ctx.CurrentKeyboard = ( value != null ) ? value.Model : null;
 
                 OnPropertyChanged( "Current" );
             }
@@ -76,7 +74,7 @@ namespace Host.ViewModels
             //temporary
             if( e.Keyboard.Name != "Prediction" )
             {
-                var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
+                var destroyedKeyboard = _keyboards.Single( k => k.Name == e.Keyboard.Name );
                 destroyedKeyboard.Dispose();
 
                 _keyboards.Remove( destroyedKeyboard );

@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-//using CK.WPF.Controls;
 using CK.Plugin.Config;
 using CK.Windows.Config;
 

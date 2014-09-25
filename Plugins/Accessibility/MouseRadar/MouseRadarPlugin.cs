@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\MouseRadar\MouseRadarPlugin.cs) is part of CiviKey. 
 *  
@@ -22,15 +22,15 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Windows.Media;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.WindowManager.Model;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
-using CK.Core;
-using System.Diagnostics;
-using CK.WindowManager.Model;
 using MouseRadar.Resources;
 
 namespace MouseRadar

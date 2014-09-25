@@ -23,10 +23,10 @@
 
 using System;
 using CK.Plugin.Config;
-using Host.Resources;
 using CK.Windows.Config;
-using Host.VM;
+using Host.Resources;
 using Host.ViewModels;
+using Host.VM;
 
 namespace Host
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\AutoClick\Views\CustomControls\ActionOnOverButton.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 

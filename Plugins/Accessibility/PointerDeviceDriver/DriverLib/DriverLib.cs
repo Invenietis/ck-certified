@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\PointerDeviceDriver\DriverLib\DriverLib.cs) is part of CiviKey. 
 *  
@@ -27,7 +27,6 @@
 //****************************************************
 using System;
 using System.Runtime.InteropServices;
-
 
 namespace PointerDeviceDriver
 {

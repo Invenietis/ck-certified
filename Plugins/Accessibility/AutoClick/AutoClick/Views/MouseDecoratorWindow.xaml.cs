@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\AutoClick\Views\MouseDecoratorWindow.xaml.cs) is part of CiviKey. 
 *  
@@ -21,7 +21,6 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Windows;
 using CK.Windows;
 
 namespace CK.Plugins.AutoClick.Views

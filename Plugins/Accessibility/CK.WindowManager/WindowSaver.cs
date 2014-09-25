@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Xml;
+using System.Windows.Forms;
+using BasicCommandHandlers;
+using CK.Context;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Storage;
 using CK.WindowManager.Model;
-using CK.Core;
-using System.ComponentModel;
-using CK.Context;
-using BasicCommandHandlers;
-using System.Windows.Forms;
-using System.Windows.Shapes;
 
 namespace CK.WindowManager
 {

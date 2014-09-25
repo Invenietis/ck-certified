@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\AutoClick\AutoClick.cs) is part of CiviKey. 
 *  
@@ -22,25 +22,22 @@
 #endregion
 
 using System;
-using System.Linq;
-using CK.Plugin;
-using System.Windows.Input;
-using CK.Plugins.AutoClick.Views;
-using CommonServices;
-using CK.Plugins.AutoClick.Model;
-using CK.WPF.ViewModel;
-using System.Windows;
-using CK.Plugin.Config;
-using CK.Core;
 using System.ComponentModel;
-using CK.Windows;
-using CK.Windows.Helpers;
-using CK.WindowManager.Model;
 using System.IO;
-using Help.Services;
-using CK.InputDriver;
-using CK.InputDriver.Hook;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using CK.Core;
+using CK.InputDriver;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Plugins.AutoClick.Model;
+using CK.Plugins.AutoClick.Views;
+using CK.WindowManager.Model;
+using CK.WPF.ViewModel;
+using CommonServices;
+using Help.Services;
 
 namespace CK.Plugins.AutoClick
 {

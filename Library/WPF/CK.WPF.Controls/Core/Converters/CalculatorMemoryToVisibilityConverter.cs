@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using System.Windows.Data;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Microsoft.Windows.Controls.Core.Converters
 {

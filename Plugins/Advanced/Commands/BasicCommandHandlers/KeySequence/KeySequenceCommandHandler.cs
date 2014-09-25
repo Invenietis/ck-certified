@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\KeySequence\KeySequenceCommandHandler.cs) is part of CiviKey. 
 *  
@@ -21,10 +21,10 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CommonServices;
-using CK.Plugin;
-using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using CK.Plugin;
+using CommonServices;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {

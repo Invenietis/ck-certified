@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyEditable\VMKeyEditable.DragDrop.cs) is part of CiviKey. 
 *  
@@ -22,10 +22,10 @@
 #endregion
 
 using System;
-using CK.WPF.ViewModel;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using CK.WPF.ViewModel;
 using CommonServices;
 
 namespace KeyboardEditor.ViewModels

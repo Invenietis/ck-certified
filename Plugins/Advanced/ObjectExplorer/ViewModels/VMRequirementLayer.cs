@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\VMRequirementLayer.cs) is part of CiviKey. 
 *  
@@ -23,8 +23,8 @@
 
 using System;
 using System.Linq;
-using CK.WPF.ViewModel;
 using CK.Plugin;
+using CK.WPF.ViewModel;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels
 {

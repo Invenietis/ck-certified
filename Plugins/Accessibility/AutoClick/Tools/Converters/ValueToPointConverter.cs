@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\Tools\Converters\ValueToPointConverter.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using System.Windows.Data;
 using System.Windows;
+using System.Windows.Data;
 
 namespace CK.Plugins.AutoClick.Converters
 {

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Services\CommonServices\Accessibility\IMouseWatcher.cs) is part of CiviKey. 
 *  
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.Plugin;
 using System.ComponentModel;
+using CK.Plugin;
 
 namespace CommonServices
 {

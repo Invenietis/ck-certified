@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\FileLauncher\FileLauncherCommandParameterManager.cs) is part of CiviKey. 
 *  
@@ -24,13 +24,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Media.Animation;
+using CK.Plugin.Config;
 using CK.WPF.ViewModel;
 using CommonServices;
 using ProtocolManagerModel;
-using CK.Plugin.Config;
 
 namespace BasicCommandHandlers
 {

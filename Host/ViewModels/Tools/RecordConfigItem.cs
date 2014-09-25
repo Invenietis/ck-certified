@@ -87,7 +87,7 @@ namespace Host.VM
         string _toggleContent;
         public string ToggleContent
         {
-            get { return _toggleContent ?? "Start Reccording"; }
+            get { return _toggleContent ?? Scroller.Resources.R.StartRecording; }
             set
             {
                 if( _toggleContent != value )

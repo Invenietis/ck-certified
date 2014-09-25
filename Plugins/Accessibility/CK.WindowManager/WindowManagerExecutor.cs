@@ -185,7 +185,6 @@ namespace CK.WindowManager
 
             if( e.BindingType == BindingEventType.Attach )
             {
-
                 if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding, TopMostService );
             }
             else _placeholder.Shutdown( TopMostService );

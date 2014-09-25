@@ -137,8 +137,10 @@ namespace CK.WindowManager
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
 
             _resizeMoveLock = true;
+            _firstMove = true;
         }
 
+        bool _firstMove = true;
         void OnWindowMoved( object sender, WindowElementLocationEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == Application.Current.Dispatcher, "This method should only be called by the Application Thread." );
@@ -146,27 +148,31 @@ namespace CK.WindowManager
             //avoids bind during a resize
             if( !_resizeMoveLock && !_pointerDownLock )
             {
-                if( _tester.CanTest )
+                if( !_firstMove )
                 {
-                    ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
-                    IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
+                    if( _tester.CanTest )
+                    {
+                        ISpatialBinding binding = WindowBinder.GetBinding( e.Window );
+                        IDictionary<IWindowElement, Rect> rect = WindowManager.WindowElements.ToDictionary( x => x, y => WindowManager.GetClientArea( y ) );
 
-                    IBinding result = _tester.Test( binding, rect, AttractionRadius );
-                    _tester.Block();
-                    if( result != null )
-                    {
-                        _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
-                    }
-                    else
-                    {
-                        if( _tester.LastResult != null )
+                        IBinding result = _tester.Test( binding, rect, AttractionRadius );
+                        _tester.Block();
+                        if( result != null )
                         {
-                            WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
-                            _bindResult = null;
+                            _bindResult = WindowBinder.PreviewBind( result.Target, result.Origin, result.Position );
                         }
+                        else
+                        {
+                            if( _tester.LastResult != null )
+                            {
+                                WindowBinder.PreviewUnbind( _tester.LastResult.Target, _tester.LastResult.Origin );
+                                _bindResult = null;
+                            }
+                        }
+                        _tester.Release();
                     }
-                    _tester.Release();
                 }
+                _firstMove = false;
             }
         }
 

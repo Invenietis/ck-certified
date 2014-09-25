@@ -163,16 +163,15 @@ namespace CK.WindowManager
             WindowPlacement wp = Config.User.GetOrSet<WindowPlacement>( we.Name, (WindowPlacement)null );
             if( wp != null )
             {
-
                 if( OnePointIsContainsInScreen( wp ) )
                 {
-                    we.Move( wp.Top, wp.Left );
+                    WindowManager.Move( we, wp.Top, wp.Left );
                 }
                 else
                 {
-                    we.Move( 0, 0 );
+                    WindowManager.Move( we, 0, 0 );
                 }
-                we.Resize( wp.Width, wp.Height );
+                WindowManager.Resize( we, wp.Width, wp.Height );
             }
         }
 

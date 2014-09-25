@@ -75,12 +75,12 @@ namespace CK.WindowManager.Model
                     Window.ResizeMode = ResizeMode.NoResize;
                     Window.WindowStyle = WindowStyle.None;
                     Window.ShowInTaskbar = false;
-                    Window.Show();
                     Window.Left = r.Left;
                     Window.Top = r.Top;
                     Window.Width = r.Width;
                     Window.Height = r.Height;
 
+                    Window.Show();
                     topMostService.RegisterTopMostElement( "1", Window );
                 } ) );
             }

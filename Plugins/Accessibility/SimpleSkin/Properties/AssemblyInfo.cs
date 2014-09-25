@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -33,12 +33,12 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle( "SimpleSkin" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct( "SimpleSkin" )]
-[assembly: AssemblyCopyright( "Copyright ©  2010" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
-[assembly: XmlnsDefinition("http://schemas.civikey.org/SimpleSkin/ViewModels","SimpleSkin.ViewModels")]
+[assembly: XmlnsDefinition( "http://schemas.civikey.org/SimpleSkin/ViewModels", "SimpleSkin.ViewModels" )]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
 // aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 
@@ -63,4 +63,4 @@ using System.Windows.Markup;
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "1.0.0.0" )]
 
-[assembly: InternalsVisibleTo("Certified.Tests")]
+[assembly: InternalsVisibleTo( "Certified.Tests" )]

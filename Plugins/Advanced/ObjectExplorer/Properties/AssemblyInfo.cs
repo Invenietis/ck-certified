@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -33,9 +33,9 @@ using System.Windows;
 [assembly: AssemblyTitle( "ObjectExplorer" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "" )]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct( "ObjectExplorer" )]
-[assembly: AssemblyCopyright( "Copyright ©  2010" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -51,7 +51,7 @@ using System.Windows;
 //l'attribut NeutralResourceLanguage ci-dessous. Mettez à jour "fr-FR" dans
 //la ligne ci-après pour qu'elle corresponde au paramètre UICulture du fichier projet.
 
-[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
+[assembly: NeutralResourcesLanguage( "en-US", UltimateResourceFallbackLocation.Satellite )]
 
 
 [assembly: ThemeInfo(
@@ -79,4 +79,4 @@ using System.Windows;
 
 // Allow CVKTests assembly to acces to Internals of CK.Context.
 // Here to ease the set up of NUnit tests.
-[assembly: InternalsVisibleTo("Certified.Tests")]
+[assembly: InternalsVisibleTo( "Certified.Tests" )]

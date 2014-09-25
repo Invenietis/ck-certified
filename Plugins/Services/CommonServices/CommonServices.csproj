@@ -118,6 +118,7 @@
     <Compile Include="Advanced\Commands\ISendKeyCommandHandlerService.cs" />
     <Compile Include="Advanced\Commands\ICommandManagerService.cs" />
     <Compile Include="Advanced\Commands\ITextTemplateCommandHandlerService.cs" />
+    <Compile Include="Advanced\IAppVisibility.cs" />
     <Compile Include="Advanced\ISharedData.cs" />
     <Compile Include="Advanced\ITriggerService.cs" />
     <Compile Include="Advanced\ILogService.cs" />

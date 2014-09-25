@@ -277,6 +277,69 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Background color.
+        /// </summary>
+        public static string CustomBackground {
+            get {
+                return ResourceManager.GetString("CustomBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font color.
+        /// </summary>
+        public static string CustomFontColor {
+            get {
+                return ResourceManager.GetString("CustomFontColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font.
+        /// </summary>
+        public static string CustomFontFamily {
+            get {
+                return ResourceManager.GetString("CustomFontFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        public static string CustomFontSize {
+            get {
+                return ResourceManager.GetString("CustomFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlighted background color.
+        /// </summary>
+        public static string CustomHighlightBackground {
+            get {
+                return ResourceManager.GetString("CustomHighlightBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlighted font color.
+        /// </summary>
+        public static string CustomHighlightFontColor {
+            get {
+                return ResourceManager.GetString("CustomHighlightFontColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom visual.
+        /// </summary>
+        public static string CustomLayout {
+            get {
+                return ResourceManager.GetString("CustomLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click on the picture or on the new system tray icon to edit the configuration..
         /// </summary>
         public static string EditConfig {

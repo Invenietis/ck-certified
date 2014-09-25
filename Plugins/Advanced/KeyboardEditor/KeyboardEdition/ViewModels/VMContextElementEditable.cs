@@ -67,9 +67,9 @@ namespace KeyboardEditor.ViewModels
                 _context.SkinConfiguration.ConfigChanged += OnLayoutConfigChanged;
         }
 
-        public ICollection<FontFamily> FontFamilies
+        public IEnumerable<FontFamily> FontFamilies
         {
-            get { return Fonts.SystemFontFamilies.OrderBy( ff => ff.Source ).ToList(); }
+            get { return Fonts.SystemFontFamilies.OrderBy( ff => ff.Source ); }
         }
 
         /// <summary>

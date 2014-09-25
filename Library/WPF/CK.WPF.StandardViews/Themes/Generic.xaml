@@ -73,22 +73,22 @@
                                 Background="{TemplateBinding Background}">
                         </Border>
 
-                        <TextBlock x:Name="Letter"
+                        <TextBlock x:Name="Letter" Padding="{TemplateBinding Padding}"
                                    Foreground="{TemplateBinding Foreground}" 
                                    Text='{TemplateBinding UpLabel}' 
                                    Focusable="False" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
                                FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}"
-                               TextTrimming="CharacterEllipsis" >
+                               TextTrimming="{TemplateBinding TextTrimming}" >
                         </TextBlock>
 
-                        <TextBlock x:Name="Icon"
+                        <TextBlock x:Name="Icon" Padding="{TemplateBinding Padding}"
                                    Foreground="{TemplateBinding Foreground}" 
                                    Text='{TemplateBinding UpLabel}' 
                                    Focusable="False" 
                                HorizontalAlignment="Center" VerticalAlignment="Center"  TextDecorations="{TemplateBinding TextDecorations}"
                                FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}" FontFamily="{TemplateBinding FontFamily}"
-                               TextTrimming="CharacterEllipsis" >
+                               TextTrimming="{TemplateBinding TextTrimming}" >
                         </TextBlock>
 
                         <ContentPresenter x:Name="Image" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding CustomContent}" Margin="1.5"/>

@@ -49,9 +49,7 @@ namespace KeyboardEditor.ViewModels
             _keyboards = new List<IKeyboard>( model );
             foreach( var keyboard in model )
             {
-                //temporary
-                if( root.KeyboardContext.Service.CurrentKeyboard != keyboard && keyboard.Name != "Prediction" )
-                    KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
+                KeyboardVms.Add( new KeyboardViewModel( keyboard ) );
             }
 
             HideNext = true;

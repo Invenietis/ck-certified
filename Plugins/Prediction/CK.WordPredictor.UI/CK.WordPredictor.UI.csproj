@@ -73,6 +73,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Storage.3.0.30\lib\net40\CK.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="CK.Windows.App, Version=2.13.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CK.Windows.App.2.13.0-develop\lib\net40\CK.Windows.App.dll</HintPath>
+    </Reference>
     <Reference Include="CK.Windows.Core, Version=2.13.0.0, Culture=neutral, PublicKeyToken=731c291b31fb8d27, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\CK.Windows.Core.2.13.0-develop\lib\net40\CK.Windows.Core.dll</HintPath>
@@ -127,11 +131,17 @@
     <Compile Include="Helpers\SelectedTextBehavior.cs" />
     <Compile Include="Helpers\CaretIndexBehavior.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
+    <Compile Include="AutonomousWordPredictorPlugin.cs" />
+    <Compile Include="Helpers\TextToTrimmedTextConverter.cs" />
     <Compile Include="TextualContextPreview.cs" />
+    <Compile Include="ViewModels\AutonomousWordPredictorViewModel.cs" />
+    <Compile Include="ViewModels\PredictedWordViewModel.cs" />
+    <Compile Include="Views\AutonomousWordPredictorView.xaml.cs">
+      <DependentUpon>AutonomousWordPredictorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TextualContextPreviewWindow.xaml.cs">
       <DependentUpon>TextualContextPreviewWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AutonomousKeyboardWordPredictor.cs" />
     <Compile Include="ViewModels\TextualContextPreviewViewModel.cs" />
     <Compile Include="Views\TextualContextAreaWindow.xaml.cs">
       <DependentUpon>TextualContextAreaWindow.xaml</DependentUpon>
@@ -156,6 +166,14 @@
     <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.Controls\CK.WPF.Controls.csproj">
       <Project>{6C0F25A7-6468-4D02-ABA4-DC7F1AD209E1}</Project>
       <Name>CK.WPF.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.StandardViews\CK.WPF.StandardViews.csproj">
+      <Project>{6f198d3d-39e5-4de6-917e-dfb99af31e3e}</Project>
+      <Name>CK.WPF.StandardViews</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\WPF\CK.WPF.ViewModel\CK.WPF.ViewModel.csproj">
+      <Project>{b0336c23-51f9-4eeb-a49b-93543f3cd1bb}</Project>
+      <Name>CK.WPF.ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Accessibility\KeyScroller\Scroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
@@ -183,11 +201,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AutonomousWordPredictorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TextualContextPreviewWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\TextualContextAreaWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

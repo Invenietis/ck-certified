@@ -53,8 +53,6 @@ namespace SimpleSkin
         const string PluginIdVersion = "1.0.0";
         public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
 
-        const string PredictionKeyboardName = "Prediction";
-
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public ISharedData SharedData { get; set; }
 
@@ -136,17 +134,11 @@ namespace SimpleSkin
                 }
             }
             RegisterEvents();
-
-            //temporary
-            UnregisterPrediction();
-            RegisterPrediction();
         }
 
         public void Stop()
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-            //temporary
-            UnregisterPrediction();
 
             UnregisterEvents();
 
@@ -194,10 +186,7 @@ namespace SimpleSkin
 
             if( TopMostService.Status == InternalRunningStatus.Started )
             {
-                //skinInfo.Dispatcher.BeginInvoke( new Action( () =>
-                //{
                 TopMostService.Service.UnregisterTopMostElement( skinInfo.Skin );
-                //} ) );
             }
         }
 
@@ -279,12 +268,10 @@ namespace SimpleSkin
             if( e.Current == InternalRunningStatus.Started )
             {
                 ForEachSkin( s => RegisterHighlighter( s ) );
-                DirtyTemporaryPredictionInjectionInCurrentKeyboard();
             }
             else if( e.Current == InternalRunningStatus.Stopping )
             {
                 ForEachSkin( s => UnregisterFromHighlighter( s ) );
-                UnregisterPrediction();
             }
         }
 
@@ -307,72 +294,6 @@ namespace SimpleSkin
                 Highlighter.Service.RegisterTree( skinInfo.NameKeyboard, skinInfo.NameKeyboard,
                     new ExtensibleHighlightableElementProxy( skinInfo.NameKeyboard, skinInfo.ViewModel.KeyboardVM, true ) );
             }
-        }
-
-        #endregion
-
-        #region Prediction temporary region
-
-        string _includedKeyboardName = string.Empty;
-        //if the target keyboard isn't active and isn't registered, the prediction is registered as a module (a root element)
-        private void RegisterPrediction()
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            if( Highlighter.Status == InternalRunningStatus.Started )
-            {
-                if( _skins.ContainsKey( PredictionKeyboardName ) )
-                {
-                    if( KeyboardContext.Status == InternalRunningStatus.Started )
-                    {
-                        //if the current isn't registered
-                        if( Highlighter.Service.RegisterInRegisteredElementAt( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins[PredictionKeyboardName].ViewModel.KeyboardVM ) )
-                        {
-                            Object o = Config[KeyboardContext.Service.CurrentKeyboard.CurrentLayout]["HighlightBackground"];
-                            if( o != null ) Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = o;
-                            _includedKeyboardName = KeyboardContext.Service.CurrentKeyboard.Name;
-                            return;
-                        }
-                    }
-                    Config[_skins[PredictionKeyboardName].ViewModel.KeyboardVM.Keyboard.CurrentLayout]["HighlightBackground"] = ColorConverter.ConvertFromString( "#FFBDCFF4" );
-                    VMKeyboardSimple elem = _skins[PredictionKeyboardName].ViewModel.KeyboardVM;
-                    elem.IsHighlightableTreeRoot = false;
-
-                    Highlighter.Service.RegisterTree( PredictionKeyboardName, PredictionKeyboardName, elem );
-                }
-            }
-        }
-
-        private void UnregisterPrediction()
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            if( Highlighter.Status == InternalRunningStatus.Started )
-            {
-                if( _skins.ContainsKey( PredictionKeyboardName ) )
-                {
-                    if( KeyboardContext.Status == InternalRunningStatus.Started )
-                    {
-                        if( !string.IsNullOrEmpty( _includedKeyboardName ) && Highlighter.Service.UnregisterInRegisteredElement( _includedKeyboardName, _includedKeyboardName, ChildPosition.Pre, _skins[PredictionKeyboardName].ViewModel.KeyboardVM ) )
-                        {
-                            _includedKeyboardName = string.Empty;
-                            return;
-                        }
-                    }
-
-                    Highlighter.Service.UnregisterTree( PredictionKeyboardName, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
-                    Highlighter.Service.UnregisterInRegisteredElement( KeyboardContext.Service.CurrentKeyboard.Name, KeyboardContext.Service.CurrentKeyboard.Name, ChildPosition.Pre, _skins[PredictionKeyboardName].ViewModel.KeyboardVM );
-                    _includedKeyboardName = string.Empty;
-                }
-            }
-        }
-
-        private void DirtyTemporaryPredictionInjectionInCurrentKeyboard()
-        {
-            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
-
-            UnregisterPrediction();
-            RegisterPrediction();
         }
 
         #endregion
@@ -438,16 +359,13 @@ namespace SimpleSkin
             Debug.Assert( _skins.ContainsKey( e.Keyboard.Name ) );
 
             UninitializeActiveWindows( _skins[e.Keyboard.Name] );
-            UnregisterPrediction();
             _skins.Remove( _skins[e.Keyboard.Name].ViewModel.KeyboardVM.Keyboard.Name );
-            RegisterPrediction();
         }
 
         void OnKeyboardActivated( object sender, KeyboardEventArgs e )
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
             InitializeActiveWindow( e.Keyboard );
-            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
 
         void OnKeyboardRenamed( object sender, KeyboardRenamedEventArgs e )
@@ -508,9 +426,6 @@ namespace SimpleSkin
                     {
                         RestoreSkin();
                     }
-
-                    //temporary
-                    UnregisterPrediction();
                 }) );
             }
         }
@@ -523,7 +438,6 @@ namespace SimpleSkin
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
             ForEachSkin( RegisterHighlighter );
-            DirtyTemporaryPredictionInjectionInCurrentKeyboard();
         }
 
         #endregion temporary
@@ -560,7 +474,6 @@ namespace SimpleSkin
         {
             Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.ExternalDispatcher, "This method should only be called by the ExternalThread." );
 
-            //TODO : re-enable
             if( Notification != null )
             {
                 Notification.ShowNotification( PluginId.UniqueId, "Aucun clavier n'est actif",

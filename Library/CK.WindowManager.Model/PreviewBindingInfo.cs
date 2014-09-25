@@ -62,6 +62,15 @@ namespace CK.WindowManager.Model
             if( Window == null )
             {
                 Window = new CKWindow();
+                Window.Dispatcher.BeginInvoke( new Action( () =>
+                {
+                    Window.Opacity = .8;
+                    Window.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromRgb( 152, 120, 152 ) );
+                    Window.ResizeMode = ResizeMode.NoResize;
+                    Window.WindowStyle = WindowStyle.None;
+                    Window.ShowInTaskbar = false;
+                    Window.ShowActivated = false;
+                } ) );
             }
             Binding = binding;
 
@@ -70,17 +79,12 @@ namespace CK.WindowManager.Model
             {
                 Window.Dispatcher.BeginInvoke( new Action( () =>
                 {
-                    Window.Opacity = .8;
-                    Window.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromRgb( 152, 120, 152 ) );
-                    Window.ResizeMode = ResizeMode.NoResize;
-                    Window.WindowStyle = WindowStyle.None;
-                    Window.ShowInTaskbar = false;
                     Window.Left = r.Left;
                     Window.Top = r.Top;
                     Window.Width = r.Width;
                     Window.Height = r.Height;
-
                     Window.Show();
+
                     topMostService.RegisterTopMostElement( "1", Window );
                 } ) );
             }

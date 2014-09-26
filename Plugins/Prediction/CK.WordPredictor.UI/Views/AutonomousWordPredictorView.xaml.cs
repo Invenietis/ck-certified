@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CK.Windows;
+using CK.Windows.Core;
 using SimpleSkin.Helpers;
 
 namespace CK.WordPredictor.UI.Views
@@ -49,8 +50,13 @@ namespace CK.WordPredictor.UI.Views
 
         private void Viewbox_MouseEnter( object sender, MouseEventArgs e )
         {
-
             Console.WriteLine( "" );
+        }
+
+        protected override bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
+        {
+            specialElement = visualElement as IHitTestElementController;
+            return specialElement != null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
@@ -8,6 +9,7 @@ using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.WindowManager.Model;
+using CK.Windows;
 
 namespace CK.WindowManager
 {
@@ -121,6 +123,15 @@ namespace CK.WindowManager
         }
 
         void OnIsVisibleChanged( object sender, DependencyPropertyChangedEventArgs e )
+        {
+            if( ((Window)sender).Dispatcher == NoFocusManager.Default.NoFocusDispatcher )
+            {
+                NoFocusManager.Default.ExternalDispatcher.BeginInvoke( (Action)(() => IsVisibleChanged( sender, e )) );
+            }
+            else IsVisibleChanged( sender, e );
+        }
+
+        private void IsVisibleChanged( object sender, DependencyPropertyChangedEventArgs e )
         {
             if( (bool)e.NewValue )
             {

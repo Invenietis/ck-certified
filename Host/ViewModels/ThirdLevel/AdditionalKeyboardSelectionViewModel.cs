@@ -68,8 +68,20 @@ namespace Host.VM
 
         void KeyboardContext_CurrentKeyboardChanged( object sender, CurrentKeyboardChangedEventArgs e )
         {
-            DestroyKeyboardProperty( e.Current );
-            CreateKeyboardProperty( e.Previous );
+            ConfigImplementationSelectorItem item;
+
+            if( _keyboardItems.TryGetValue( e.Current, out item ) )
+            {
+                item.Description = "Main keyboard"; // TODO
+                item.IsSelected = true;
+                item.Enabled = false;
+            }
+            if( _keyboardItems.TryGetValue( e.Previous, out item ) )
+            {
+                item.Description = null;
+                item.IsSelected = e.Previous.IsActive;
+                item.Enabled = true;
+            }
         }
 
         void Keyboards_KeyboardDestroyed( object sender, KeyboardEventArgs e )
@@ -86,19 +98,18 @@ namespace Host.VM
         {
             foreach( IKeyboard kb in _app.KeyboardContext.Keyboards )
             {
-                // Do not add the Current (main) keyboard to the list
-                if( _app.KeyboardContext.CurrentKeyboard != kb )
-                {
-                    CreateKeyboardProperty( kb );
-                }
+                CreateKeyboardProperty( kb );
             }
         }
 
         void CreateKeyboardProperty( IKeyboard kb )
         {
+            ConfigPage page = new AdditionalKeyboardConfigurationViewModel( _app, kb );
+
             ConfigImplementationSelectorItem selectorItem = new ConfigImplementationSelectorItem(
                 _app.ConfigManager,
                 _emptyPluginCluster,
+                page,
                 String.Empty // Kept empty to enable checkbox
                );
             selectorItem.SelectAction = () => { kb.IsActive = true; };
@@ -107,6 +118,13 @@ namespace Host.VM
 
             selectorItem.DisplayName = kb.Name;
             selectorItem.Description = String.Empty;
+
+            if( _app.KeyboardContext.CurrentKeyboard == kb )
+            {
+                selectorItem.Description = "Main keyboard"; // TODO
+                selectorItem.IsSelected = true;
+                selectorItem.Enabled = false;
+            }
 
             Items.Add( selectorItem );
             _keyboardItems.Add( kb, selectorItem );

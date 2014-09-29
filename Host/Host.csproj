@@ -231,6 +231,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FourthLevel\AdditionalKeyboardConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ScreenScrollerViewModel.cs" />
     <Compile Include="ViewModels\MouseRadarViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
@@ -435,9 +436,7 @@
   <ItemGroup>
     <Resource Include="Views\Images\help.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\FourthLevel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Contexts\readme.txt" />
   </ItemGroup>

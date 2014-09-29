@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -25,20 +26,20 @@ namespace ProcessMonitor
 
         delegate void WinEventDelegate( IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime );
 
-        [DllImport( "user32.dll" )]
+        [DllImport( "user32.dll", SetLastError = true )]
         static extern IntPtr SetWinEventHook( uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags );
 
-        [DllImport( "user32.dll" )]
+        [DllImport( "user32.dll", SetLastError = true )]
         static extern IntPtr GetForegroundWindow();
 
-        [DllImport( "user32.dll" )]
+        [DllImport( "user32.dll", SetLastError = true )]
         static extern int GetWindowText( IntPtr hWnd, StringBuilder text, int count );
 
-        [DllImport( "user32.dll" )]
+        [DllImport( "user32.dll", SetLastError = true )]
         static extern UInt32 GetWindowThreadProcessId( Int32 hWnd, out Int32 lpdwProcessId );
 
-        [DllImport( "user32.dll" )]
-        static extern bool UnhookWindowsHookEx( IntPtr hhk );
+        [DllImport( "user32.dll", SetLastError = true )]
+        static extern bool UnhookWinEvent( IntPtr hhk );
 
         static Int32 GetWindowProcessID( Int32 hwnd )
         {
@@ -57,7 +58,7 @@ namespace ProcessMonitor
             StringBuilder Buff = new StringBuilder( nChars );
             handle = GetForegroundWindow();
 
-            if( GetWindowText( handle, Buff, nChars ) > 0 )
+            if( handle != IntPtr.Zero && GetWindowText( handle, Buff, nChars ) > 0 )
             {
                 return Buff.ToString();
             }
@@ -68,12 +69,15 @@ namespace ProcessMonitor
         {
             Process p = GetForegroundWindowProcess();
 
-            string appName = p.ProcessName;
-
-            if( p.Id != _lastProcessId )
+            if( p != null )
             {
-                _lastProcessId = p.Id;
-                FireActiveWindowProcessChanged( p );
+                string appName = p.ProcessName;
+
+                if( p.Id != _lastProcessId )
+                {
+                    _lastProcessId = p.Id;
+                    FireActiveWindowProcessChanged( p );
+                }
             }
         }
 
@@ -81,16 +85,23 @@ namespace ProcessMonitor
         /// Gets the Process from the current foreground window.
         /// </summary>
         /// <remarks>The returned Process instance will always be a new one. If you want to compare two Process instances, use Process.Id.</remarks>
-        /// <returns></returns>
+        /// <returns>A new instance of a System.Diagnostics.Process pointing on the process owning the foreground Window, or null when no active window is defined.</returns>
         public static Process GetForegroundWindowProcess()
         {
             IntPtr hWnd = IntPtr.Zero;
             hWnd = GetForegroundWindow();
 
-            Int32 pid = GetWindowProcessID( hWnd.ToInt32() );
-            Process p = Process.GetProcessById( pid );
+            if( hWnd != IntPtr.Zero )
+            {
+                Int32 pid = GetWindowProcessID( hWnd.ToInt32() );
+                Process p = Process.GetProcessById( pid );
 
-            return p;
+                return p;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         void FireActiveWindowProcessChanged( Process process )
@@ -108,7 +119,12 @@ namespace ProcessMonitor
         {
             if( !_disposed )
             {
-                UnhookWindowsHookEx( _eventHook );
+                bool successfullyUnhooked = UnhookWinEvent( _eventHook );
+                if( !successfullyUnhooked )
+                {
+                    throw new Win32Exception( Marshal.GetLastWin32Error() );
+                }
+
                 _eventDelegate = null;
                 _eventHook = IntPtr.Zero;
 

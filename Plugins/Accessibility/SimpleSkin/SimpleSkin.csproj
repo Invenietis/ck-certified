@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\DraggableVisualAttachedProperty.cs" />
+    <Compile Include="ProcessBoundKeyboardManager.cs" />
     <Compile Include="WindowStateManager.cs" />
     <Compile Include="MiniView.xaml.cs">
       <DependentUpon>MiniView.xaml</DependentUpon>

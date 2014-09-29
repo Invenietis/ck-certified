@@ -432,4 +432,7 @@
   <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
     <value>Additional keyboards</value>
   </data>
+  <data name="KeyboardAutoLaunch" xml:space="preserve">
+    <value>Keyboard auto-activation</value>
+  </data>
 </root>

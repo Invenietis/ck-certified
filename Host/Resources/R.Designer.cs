@@ -448,6 +448,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyboard auto-activation.
+        /// </summary>
+        public static string KeyboardAutoLaunch {
+            get {
+                return ResourceManager.GetString("KeyboardAutoLaunch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current keyboard has changed.
         /// </summary>
         public static string KeyboardChanged {

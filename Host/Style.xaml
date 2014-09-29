@@ -45,7 +45,7 @@
     </Style>
 
     <DataTemplate x:Key="CheckboxTemplate">
-        <CheckBox IsChecked="{Binding IsSelected}"></CheckBox>
+        <CheckBox IsChecked="{Binding IsSelected}" IsEnabled="{Binding Enabled}"></CheckBox>
     </DataTemplate>
 
     <DataTemplate x:Key="RadioButtonTemplate">

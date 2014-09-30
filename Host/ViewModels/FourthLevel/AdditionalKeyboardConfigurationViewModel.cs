@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using CK.Keyboard.Model;
-using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Windows.Config;
-using CK.WPF.ViewModel;
 using Host.Resources;
 
 namespace Host.VM
@@ -20,11 +17,58 @@ namespace Host.VM
     class AdditionalKeyboardConfigurationViewModel : ConfigBase
     {
         readonly AppViewModel _app;
-        readonly IUserConfiguration _userConf;
         readonly IKeyboard _kb;
 
         ConfigGroup _programGroup;
         SimpleSkin.ProcessBoundKeyboardConfig _config;
+
+        public bool KeepKeyboardWithProcessInBackground
+        {
+            get
+            {
+                return _config.KeepKeyboardWithProcessInBackground;
+            }
+            set
+            {
+                if( value != _config.KeepKeyboardWithProcessInBackground )
+                {
+                    _config.KeepKeyboardWithProcessInBackground = value;
+                    SaveConfig();
+                }
+            }
+        }
+
+        public bool DeactivateWithProcess
+        {
+            get
+            {
+                return _config.DeactivateWithProcess;
+            }
+            set
+            {
+                if( value != _config.DeactivateWithProcess )
+                {
+                    _config.DeactivateWithProcess = value;
+                    SaveConfig();
+                }
+            }
+        }
+
+        public bool UseAsMainKeyboard
+        {
+            get
+            {
+                return _config.UseAsMainKeyboard;
+            }
+            set
+            {
+                if( value != _config.UseAsMainKeyboard )
+                {
+                    _config.UseAsMainKeyboard = value;
+                    SaveConfig();
+                }
+            }
+        }
 
         /// <summary>
         /// ProcessBoundKeyboardManager configuration
@@ -40,16 +84,19 @@ namespace Host.VM
 
             _kb = kb;
             _app = app;
-            _userConf = _app.CivikeyHost.Context.ConfigManager.UserConfiguration;
         }
 
         protected override void OnInitialize()
         {
             this.Description = _kb.Name;
 
+            this.AddProperty( R.KeepKeyboardInBackground, this, (x => x.KeepKeyboardWithProcessInBackground) );
+            this.AddProperty( R.DeactivateWithProcess, this, (x => x.DeactivateWithProcess) );
+            this.AddProperty( R.UseAsMainKeyboard, this, (x => x.UseAsMainKeyboard) );
+
             _programGroup = this.AddGroup();
 
-            this.AddAction( "Ajouter un programme", AddProcess );
+            this.AddAction( R.AddProgram, AddProcess );
 
             LoadConfig();
         }
@@ -60,18 +107,42 @@ namespace Host.VM
 
             if( processName != null && !_config.BoundProcessNames.Contains( processName ) )
             {
-                _programGroup.Items.Add( new Label() { Content = processName } ); // TODO
-
+                // SaveConfig will cause ConfigChanged to be triggered and call LoadConfig. Items will be added to the list there.
                 _config.BoundProcessNames.Add( processName );
                 SaveConfig();
             }
         }
 
+        /// <summary>
+        /// Temporary process name UI element generation. Forms style. Will be removed. But functional!
+        /// TODO
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <returns></returns>
+        [Obsolete( "Temporary method" )]
+        static UIElement GenerateProcessElement( string processName, Action removeClickAction )
+        {
+            DockPanel panel = new DockPanel();
+
+            Label l = new Label();
+            l.Content = processName;
+
+            Button b = new Button();
+            b.Content = R.Remove;
+            b.Click += ( s, e ) => { removeClickAction(); };
+
+            panel.Children.Add( b );
+            panel.Children.Add( l );
+            DockPanel.SetDock( b, Dock.Right );
+
+            return panel;
+        }
+
         void LoadConfig()
         {
-            SimpleSkin.ProcessBoundKeyboardCollectionConfig configs = GetKeyboardConfigs();
+            SimpleSkin.ProcessBoundKeyboardCollectionConfig keyboardCollectionConfig = GetKeyboardConfigs();
 
-            _config = configs.Keyboards.SingleOrDefault( x => x.Keyboard == _kb.Name );
+            _config = keyboardCollectionConfig.Keyboards.SingleOrDefault( x => x.Keyboard == _kb.Name );
             if( _config == null ) _config = new SimpleSkin.ProcessBoundKeyboardConfig( _kb.Name );
 
             // _programGroup can be null, when eg. closing.
@@ -80,7 +151,7 @@ namespace Host.VM
                 _programGroup.Items.Clear();
                 foreach( string processName in _config.BoundProcessNames )
                 {
-                    _programGroup.Items.Add( new Label() { Content = processName } ); // TODO
+                    _programGroup.Items.Add( GenerateProcessElement( processName, () => { RemoveProcess( processName ); } ) ); // TODO
                 }
             }
         }
@@ -89,7 +160,7 @@ namespace Host.VM
         {
             SimpleSkin.ProcessBoundKeyboardCollectionConfig configs = GetKeyboardConfigs( true );
 
-            // Remove existing keyboard
+            // Remove existing keyboard before adding it again
             var existingConfig = configs.Keyboards.SingleOrDefault( x => x.Keyboard == _kb.Name );
             if( existingConfig != null )
             {
@@ -102,6 +173,12 @@ namespace Host.VM
             {
                 var cs = Config.Set( "ProcessBoundKeyboardCollectionConfig", configs );
             }
+        }
+
+        void RemoveProcess( string processName )
+        {
+            _config.BoundProcessNames.Remove( processName );
+            SaveConfig();
         }
 
         /// <summary>
@@ -134,7 +211,7 @@ namespace Host.VM
         {
             Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
 
-            ofd.Title = "Ajouter un programme"; // TODO
+            ofd.Title = R.AddProgram;
             ofd.Filter = "Executables|*.exe";
             ofd.FilterIndex = 0;
             ofd.Multiselect = false;

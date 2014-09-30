@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Management;
 using CK.Plugin;
 using CommonServices;
@@ -37,7 +38,7 @@ namespace ProcessMonitor
 
             _processStartEventWatcher.EventArrived += new EventArrivedEventHandler( delegate( object sender, EventArrivedEventArgs e )
             {
-                OnProcessStart( e.NewEvent.Properties["ProcessName"].Value.ToString() );
+                OnProcessStart( Convert.ToInt32( e.NewEvent.Properties["ProcessID"].Value ) );
             } );
             _processStopEventWatcher.EventArrived += new EventArrivedEventHandler( delegate( object sender, EventArrivedEventArgs e )
             {
@@ -84,11 +85,12 @@ namespace ProcessMonitor
             _processStopEventWatcher = null;
         }
 
-        void OnProcessStart( string processName )
+        void OnProcessStart( int processId )
         {
             if( ProcessStarted != null )
             {
-                var args = new ProcessEventArgs( processName );
+                Process p = Process.GetProcessById( processId );
+                var args = new ProcessEventArgs( p );
                 ProcessStarted( this, args );
             }
         }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.Windows.Threading;
 using System.Xml;
 using CK.Core;
 using CK.Keyboard.Model;
@@ -10,6 +9,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Plugin.Config.Model;
 using CK.Storage;
+using CK.Windows;
 using CommonServices;
 
 namespace SimpleSkin
@@ -57,6 +57,20 @@ namespace SimpleSkin
             ProcessMonitorService.Service.ProcessStopped += Service_ProcessStopped;
         }
 
+        public void Stop()
+        {
+            SaveConfig();
+            ProcessMonitorService.Service.ForegroundProcessChanged -= Service_ForegroundProcessChanged;
+            ProcessMonitorService.Service.ProcessStarted -= Service_ProcessStarted;
+            ProcessMonitorService.Service.ProcessStopped -= Service_ProcessStopped;
+        }
+
+        public void Teardown()
+        {
+        }
+
+        #endregion
+
         void Config_ConfigChanged( object sender, ConfigChangedEventArgs e )
         {
             LoadConfig();
@@ -89,60 +103,78 @@ namespace SimpleSkin
 
         void Service_ProcessStopped( object sender, ProcessEventArgs e )
         {
-            HandleKeyboard( e.ProcessName, ( kb, config ) =>
+            NoFocusManager.Default.ExternalDispatcher.Invoke( new Action( () =>
             {
-                /**
-                 * The process was stopped.
-                 * If DeactivateWithProcess is true, then we need to reset the keyboard to its previous state.
-                 * */
-                if( config.DeactivateWithProcess )
+                HandleKeyboard( e.ProcessName, ( kb, config ) =>
                 {
-                    DisableKeyboardOrResetPreviousCurrent( kb, config );
-                }
-            } );
+                    /**
+                     * The process was stopped.
+                     * If DeactivateWithProcess is true, then we need to reset the keyboard to its previous state.
+                     * */
+                    if( config.DeactivateWithProcess )
+                    {
+                        DisableKeyboardOrResetPreviousCurrent( kb, config );
+                    }
+                } );
+            } ) );
         }
 
         void Service_ProcessStarted( object sender, ProcessEventArgs e )
         {
-            HandleKeyboard( e.ProcessName, ( kb, config ) =>
+            NoFocusManager.Default.ExternalDispatcher.Invoke( new Action( () =>
             {
-                /**
-                 * The process was started.
-                 * If KeepKeyboardWithProcessInBackground is enabled, then the keyboard should be enabled even if it's not in foreground.
-                 * */
-
-                if( config.KeepKeyboardWithProcessInBackground )
+                HandleKeyboard( e.ProcessName, ( kb, config ) =>
                 {
-                    EnableKeyboardOrSetAsCurrent( kb, config );
-                }
-            } );
+                    /**
+                     * The process was started.
+                     * If KeepKeyboardWithProcessInBackground is enabled, then the keyboard should be enabled even if it's not in foreground.
+                     * */
+
+                    if( config.KeepKeyboardWithProcessInBackground )
+                    {
+                        EnableKeyboardOrSetAsCurrent( kb, config );
+                    }
+                } );
+            } ) );
         }
 
         void Service_ForegroundProcessChanged( object sender, ProcessEventArgs e )
         {
-            if( _previousForegroundProcessName != null )
+            // Ignore where Civikey is concerned.
+            if( e.Process.Id == Process.GetCurrentProcess().Id )
             {
-                OnLeaveForegroundProcess( _previousForegroundProcessName );
+                return;
             }
 
-            _previousForegroundProcessName = e.ProcessName;
-
-
-            HandleKeyboard( e.ProcessName, ( kb, config ) =>
+            NoFocusManager.Default.ExternalDispatcher.Invoke( new Action( () =>
             {
-                /**
-                 * Process went to foreground.
-                 * If KeepKeyboardWithProcessInBackground is disabled, then we should enable accordingly.
-                 * */
-                if( !config.KeepKeyboardWithProcessInBackground )
+
+                if( _previousForegroundProcessName != null )
                 {
-                    EnableKeyboardOrSetAsCurrent( kb, config );
+                    OnLeaveForegroundProcess( _previousForegroundProcessName );
                 }
-            } );
+
+                _previousForegroundProcessName = e.ProcessName;
+
+                HandleKeyboard( e.ProcessName, ( kb, config ) =>
+                {
+                    /**
+                     * Process went to foreground.
+                     * If KeepKeyboardWithProcessInBackground is disabled, then we should enable accordingly.
+                     * */
+                    if( !config.KeepKeyboardWithProcessInBackground )
+                    {
+                        EnableKeyboardOrSetAsCurrent( kb, config );
+                    }
+                } );
+            } ) );
         }
 
         void OnLeaveForegroundProcess( string previousForegroundProcess )
         {
+            // Already in dispatcher
+            Debug.Assert( Dispatcher.CurrentDispatcher == NoFocusManager.Default.ExternalDispatcher, "This method should only be called by the ExternalThread." );
+
             HandleKeyboard( previousForegroundProcess, ( kb, config ) =>
             {
                 /**
@@ -168,6 +200,7 @@ namespace SimpleSkin
                 kb.IsActive = true;
             }
         }
+
         void DisableKeyboardOrResetPreviousCurrent( IKeyboard kb, ProcessBoundKeyboardConfig config )
         {
             if( config.UseAsMainKeyboard && _previousCurrentKeyboard != null )
@@ -180,20 +213,6 @@ namespace SimpleSkin
             }
         }
 
-        public void Stop()
-        {
-            SaveConfig();
-            ProcessMonitorService.Service.ForegroundProcessChanged -= Service_ForegroundProcessChanged;
-            ProcessMonitorService.Service.ProcessStarted -= Service_ProcessStarted;
-            ProcessMonitorService.Service.ProcessStopped -= Service_ProcessStopped;
-        }
-
-        public void Teardown()
-        {
-        }
-
-        #endregion
-
         void LoadConfig()
         {
             _currentKeyboardConfigs.Clear();
@@ -203,6 +222,9 @@ namespace SimpleSkin
 
             foreach( var config in configs.Keyboards )
             {
+                // Won't work if config has empty value.
+                if( String.IsNullOrEmpty( config.Keyboard ) ) continue;
+
                 // Only add when keyboard exists.
                 IKeyboard kb = KeyboardContext.Service.Keyboards[config.Keyboard];
                 if( kb != null )
@@ -252,7 +274,6 @@ namespace SimpleSkin
         List<ProcessBoundKeyboardConfig> _keyboards = new List<ProcessBoundKeyboardConfig>();
         public List<ProcessBoundKeyboardConfig> Keyboards { get { return _keyboards; } }
 
-
         #region IStructuredSerializable Members
 
         public void ReadContent( IStructuredReader sr )
@@ -264,7 +285,8 @@ namespace SimpleSkin
             {
                 while( r.IsStartElement( "ProcessBoundKeyboardConfig" ) )
                 {
-                    ProcessBoundKeyboardConfig config = sr.ReadInlineObjectStructured( typeof( ProcessBoundKeyboardConfig ) ) as ProcessBoundKeyboardConfig;
+                    ProcessBoundKeyboardConfig config = new ProcessBoundKeyboardConfig();
+                    sr.ReadInlineObjectStructuredElement( "ProcessBoundKeyboardConfig", config );
                     _keyboards.Add( config );
                 }
             }
@@ -279,7 +301,7 @@ namespace SimpleSkin
 
             foreach( ProcessBoundKeyboardConfig config in _keyboards )
             {
-                sw.WriteInlineObjectStructured( config );
+                sw.WriteInlineObjectStructuredElement( "ProcessBoundKeyboardConfig", config );
             }
 
             w.WriteFullEndElement();
@@ -320,7 +342,6 @@ namespace SimpleSkin
         readonly List<string> _boundProcessNames;
         public IList<string> BoundProcessNames { get { return _boundProcessNames; } }
 
-
         public ProcessBoundKeyboardConfig( string keyboardName = null, IEnumerable<string> processNames = null )
         {
             _keyboard = keyboardName;
@@ -338,8 +359,6 @@ namespace SimpleSkin
         {
             XmlReader r = sr.Xml;
 
-            r.ReadStartElement( "ProcessBoundKeyboardConfig" );
-
             string keyboardName = r.GetAttribute( "KeyboardName" );
             _keyboard = keyboardName;
 
@@ -347,7 +366,6 @@ namespace SimpleSkin
             KeepKeyboardWithProcessInBackground = r.GetAttributeBoolean( "KeepKeyboardWithProcessInBackground", false );
             UseAsMainKeyboard = r.GetAttributeBoolean( "UseAsMainKeyboard", false );
 
-            r.ReadStartElement( "ProcessNames" );
 
             using( XmlReader r2 = r.ReadSubtree() )
             {
@@ -356,32 +374,41 @@ namespace SimpleSkin
                     switch( r2.NodeType )
                     {
                         case XmlNodeType.Element:
-                            if( r.Name == "ProcessName" )
+                            if( r2.Name == "ProcessNames" )
                             {
-                                string processName = r.Value;
-                                _boundProcessNames.Add( processName );
+                                using( XmlReader r3 = r.ReadSubtree() )
+                                {
+                                    while( r3.Read() )
+                                    {
+                                        switch( r3.NodeType )
+                                        {
+                                            case XmlNodeType.Element:
+                                                if( r3.Name == "ProcessName" )
+                                                {
+                                                    string processName = r3.ReadElementContentAsString();
+                                                    _boundProcessNames.Add( processName );
+                                                }
+                                                break;
+                                        }
+                                    }
+                                }
                             }
                             break;
                     }
                 }
             }
 
-            r.ReadEndElement();
-
-            r.ReadEndElement();
         }
 
         public void WriteContent( IStructuredWriter sw )
         {
             XmlWriter w = sw.Xml;
 
-            w.WriteStartElement( "ProcessBoundKeyboardConfig" );
-
             w.WriteAttributeString( "KeyboardName", _keyboard );
 
-            w.WriteAttributeString( "DeactivateWithProcess", DeactivateWithProcess.ToString() );
-            w.WriteAttributeString( "KeepKeyboardWithProcessInBackground", KeepKeyboardWithProcessInBackground.ToString() );
-            w.WriteAttributeString( "UseAsMainKeyboard", UseAsMainKeyboard.ToString() );
+            w.WriteAttributeString( "DeactivateWithProcess", DeactivateWithProcess.ToString().ToLowerInvariant() );
+            w.WriteAttributeString( "KeepKeyboardWithProcessInBackground", KeepKeyboardWithProcessInBackground.ToString().ToLowerInvariant() );
+            w.WriteAttributeString( "UseAsMainKeyboard", UseAsMainKeyboard.ToString().ToLowerInvariant() );
 
             w.WriteStartElement( "ProcessNames" );
 
@@ -389,8 +416,6 @@ namespace SimpleSkin
             {
                 w.WriteElementString( "ProcessName", processName );
             }
-
-            w.WriteFullEndElement();
 
             w.WriteFullEndElement();
         }

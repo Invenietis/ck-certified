@@ -420,4 +420,10 @@
   <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
     <value>Additional keyboards</value>
   </data>
+  <data name="AddProgram" xml:space="preserve">
+    <value>Add program</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

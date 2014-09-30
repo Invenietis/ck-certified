@@ -79,6 +79,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add program.
+        /// </summary>
+        public static string AddProgram {
+            get {
+                return ResourceManager.GetString("AddProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced configuration.
         /// </summary>
         public static string AdvancedAppConfig {
@@ -286,6 +295,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically remove keyboard.
+        /// </summary>
+        public static string DeactivateWithProcess {
+            get {
+                return ResourceManager.GetString("DeactivateWithProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click on the picture or on the new system tray icon to edit the configuration..
         /// </summary>
         public static string EditConfig {
@@ -435,6 +453,15 @@ namespace Host.Resources {
         public static string ImportKeyboard {
             get {
                 return ResourceManager.GetString("ImportKeyboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep keyboard when process is in background.
+        /// </summary>
+        public static string KeepKeyboardInBackground {
+            get {
+                return ResourceManager.GetString("KeepKeyboardInBackground", resourceCulture);
             }
         }
         
@@ -691,6 +718,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Screen scroler configuration.
         /// </summary>
         public static string ScreenScrollerConfiguration {
@@ -903,6 +939,15 @@ namespace Host.Resources {
         public static string UpdateMessage {
             get {
                 return ResourceManager.GetString("UpdateMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use as main keyboard while process is active.
+        /// </summary>
+        public static string UseAsMainKeyboard {
+            get {
+                return ResourceManager.GetString("UseAsMainKeyboard", resourceCulture);
             }
         }
         

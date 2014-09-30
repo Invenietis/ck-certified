@@ -435,4 +435,19 @@
   <data name="KeyboardAutoLaunch" xml:space="preserve">
     <value>Keyboard auto-activation</value>
   </data>
+  <data name="AddProgram" xml:space="preserve">
+    <value>Add program</value>
+  </data>
+  <data name="DeactivateWithProcess" xml:space="preserve">
+    <value>Automatically remove keyboard</value>
+  </data>
+  <data name="KeepKeyboardInBackground" xml:space="preserve">
+    <value>Keep keyboard when process is in background</value>
+  </data>
+  <data name="UseAsMainKeyboard" xml:space="preserve">
+    <value>Use as main keyboard while process is active</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>

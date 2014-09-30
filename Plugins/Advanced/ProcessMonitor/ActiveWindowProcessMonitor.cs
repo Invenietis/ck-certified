@@ -17,6 +17,7 @@ namespace ProcessMonitor
         WinEventDelegate _eventDelegate;
         IntPtr _eventHook;
         int _lastProcessId = -1;
+        bool _ignoreForegroundChange = false; // Prevents reentrency, in case ActiveWindowProcessChanged causes another foreground window change.
 
         public ActiveWindowProcessMonitor()
         {
@@ -106,9 +107,15 @@ namespace ProcessMonitor
 
         void FireActiveWindowProcessChanged( Process process )
         {
+            if( _ignoreForegroundChange ) return;
+
             if( ActiveWindowProcessChanged != null )
             {
+                _ignoreForegroundChange = true;
+
                 ActiveWindowProcessChanged( this, new ActiveWindowProcessEventArgs( process ) );
+
+                _ignoreForegroundChange = false;
             }
         }
 

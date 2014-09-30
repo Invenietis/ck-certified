@@ -26,10 +26,8 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="MiniViewStoryboard" AutoReverse="True" RepeatBehavior="Forever" DesiredFrameRate="20" FillBehavior="HoldEnd">
-            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)">
-            </DoubleAnimation>
-            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)">
-            </DoubleAnimation>
+            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleX)" />
+            <DoubleAnimation Duration="0:0:0.2" From="0.9" To="1" Storyboard.TargetProperty="(Image.RenderTransform).(TransformGroup.Children)[1].(ScaleTransform.ScaleY)" />
         </Storyboard>
     </Window.Resources>
     <Window.Triggers>
@@ -44,7 +42,7 @@
     <Grid>
         <Image x:Name="image" Source="/SimpleSkin;component/Images/logo.png" RenderTransformOrigin="0.5,0.5">
             <Image.CacheMode>
-                <BitmapCache EnableClearType="False" RenderAtScale="1" SnapsToDevicePixels="False"></BitmapCache>
+                <BitmapCache EnableClearType="False" RenderAtScale="1" SnapsToDevicePixels="False" />
             </Image.CacheMode>
             <Image.Style>
                 <Style TargetType="Image">

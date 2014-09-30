@@ -14,20 +14,19 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-//using CK.WPF.Controls;
-using Host.Resources;
 using System;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
 using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
@@ -66,7 +65,7 @@ namespace Host.VM
 
         public bool ActivateSkin
         {
-            get { return _skinPlugin != null ? _app.IsPluginRunning( _skinPlugin.PluginKey ) : false; }
+            get { return _skinPlugin != null && _app.IsPluginRunning( _skinPlugin.PluginKey ); }
             set
             {
                 using( var waiting = _app.ShowBusyIndicator() )
@@ -92,7 +91,7 @@ namespace Host.VM
 
         public bool EnableAutoHide
         {
-            get { return _config != null ? _config.GetOrSet( "autohide", false ) : false; }
+            get { return _config != null && _config.GetOrSet( "autohide", false ); }
             set { if( _config != null ) _config.Set( "autohide", value ); }
         }
 
@@ -107,7 +106,7 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" ); //MainKeyboardManager
             InitializePlugin();
 
             var skinGroup = this.AddActivableSection( R.SkinSectionName.ToLower(), R.SkinConfig, this, h => h.ActivateSkin, this );

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\UnbindButtonManager.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -24,10 +24,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Threading;
+using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
 using CK.Windows;
@@ -35,9 +33,18 @@ using CommonServices;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{BEA2BC3A-B7A1-4AF5-A86E-A039B7197BA8}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.UnbindButtonManager", Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class UnbindButtonManager : IPlugin, IUnbindButtonManager
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{BEA2BC3A-B7A1-4AF5-A86E-A039B7197BA8}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Unbind Button Manager";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IWindowManager> WindowManager { get; set; }
 

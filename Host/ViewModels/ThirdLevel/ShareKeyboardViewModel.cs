@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,10 +22,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using CK.Plugin.Config;
 using CK.Windows;
 using CK.Windows.Config;
@@ -73,13 +70,13 @@ namespace Host.VM
         public void StartImport()
         {
 
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}" ), ConfigUserAction.Started ); //ImportKeyboard
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
 
         public void StartExport()
         {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{244C578B-322A-4733-A34B-EEC0558F61D5}" ), ConfigUserAction.Started );
+            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{244C578B-322A-4733-A34B-EEC0558F61D5}" ), ConfigUserAction.Started ); //ExportKeyboard
             _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }

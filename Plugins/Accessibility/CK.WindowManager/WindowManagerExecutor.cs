@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\WindowManagerExecutor.cs) is part of CiviKey. 
 *  
@@ -14,29 +14,35 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Linq;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Threading;
+using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
-using CK.Core;
-using System.Windows;
-using System;
-using CommonServices;
-using System.Windows.Threading;
 using CK.Windows;
-using System.Diagnostics;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}", PublicName = "CK.WindowManager.Executor", Categories = new string[] { "Accessibility" }, Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class WindowManagerExecutor : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{B91D6A8D-2294-4BAA-AD31-AC1F296D82C4}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "CK.WindowManager.Executor";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         PreviewBindingInfo _placeholder;
         ActivityMonitor _logger;
 
@@ -131,7 +137,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Top && binding.Top != null )
             {
                 slave = binding.Top.Window;
-                if( reference.Height != slave.Height )
+                if( reference.Width != slave.Width )
                 {
                     WindowManager.Resize( slave, reference.Width, slave.Height );
                     ResizingWindow( binding.Top, BindingPosition.Bottom );
@@ -141,7 +147,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Bottom && binding.Bottom != null )
             {
                 slave = binding.Bottom.Window;
-                if( reference.Height != slave.Height )
+                if( reference.Width != slave.Width )
                 {
                     WindowManager.Resize( slave, reference.Width, slave.Height );
                     ResizingWindow( binding.Bottom, BindingPosition.Top );
@@ -151,7 +157,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Left && binding.Left != null )
             {
                 slave = binding.Left.Window;
-                if( reference.Width != slave.Width )
+                if( reference.Height != slave.Height )
                 {
                     WindowManager.Resize( slave, slave.Width, reference.Height );
                     ResizingWindow( binding.Left, BindingPosition.Right );
@@ -161,7 +167,7 @@ namespace CK.WindowManager
             if( masterPosition != BindingPosition.Right && binding.Right != null )
             {
                 slave = binding.Right.Window;
-                if( reference.Width != slave.Width )
+                if( reference.Height != slave.Height )
                 {
                     WindowManager.Resize( slave, slave.Width, reference.Height );
                     ResizingWindow( binding.Right, BindingPosition.Left );
@@ -176,7 +182,6 @@ namespace CK.WindowManager
 
             if( e.BindingType == BindingEventType.Attach )
             {
-
                 if( !_placeholder.IsPreviewOf( e.Binding ) ) _placeholder.Display( e.Binding, TopMostService );
             }
             else _placeholder.Shutdown( TopMostService );
@@ -202,7 +207,10 @@ namespace CK.WindowManager
 
         void OnAfterBinding( object sender, WindowBindedEventArgs e )
         {
-            _placeholder.Shutdown( TopMostService );
+            if(e.BindingType == BindingEventType.Attach)
+            {
+                _placeholder.Shutdown( TopMostService );
+            }
         }
 
         void OnWindowRestored( object sender, WindowElementEventArgs e )

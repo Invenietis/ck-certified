@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Prediction\CK.WordPredictor.UI\TextualContextArea.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -23,21 +23,29 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using CK.Keyboard.Model;
 using CK.Plugin;
-using System.Linq;
 using CK.WindowManager.Model;
 using CK.WordPredictor.Model;
 using CK.WordPredictor.UI.ViewModels;
-using System.Diagnostics;
+using CK.Core;
 
 namespace CK.WordPredictor.UI
 {
-
-    [Plugin( "{69E910CC-C51B-4B80-86D3-E86B6C668C61}", PublicName = "TextualContext - Input Area", Categories = new string[] { "Prediction", "Visual" }, Version = "1.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextArea : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{69E910CC-C51B-4B80-86D3-E86B6C668C61}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "TextualContext - Input Area";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         internal const string WindowName = "TextualContextArea";
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

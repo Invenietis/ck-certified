@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -31,24 +31,24 @@ using CommonServices;
 
 namespace Scroller.Editor
 {
-    [Plugin( BasicScrollEditor.PluginIdString,
-           PublicName = PluginPublicName,
-           Version = BasicScrollEditor.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class BasicScrollEditor : IPlugin
-    {   
-        internal const string PluginIdString = "{48D3977C-EC26-48EF-8E47-806E11A1C041}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Scroller Editor";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+    {
+        #region Plugin description
+
+        const string PluginGuidString = "{48D3977C-EC26-48EF-8E47-806E11A1C041}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Scroller editor";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         EditorViewModel _editor;
 
         [RequiredService]
         public IContext Context { get; set; }
 
-        [ConfigurationAccessor( ScrollerPlugin.PluginIdString )]
+        [ConfigurationAccessor( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" )] //ScrollerPlugin
         public IPluginConfigAccessor BasicScrollConfiguration { get; set; }
 
         [ConfigurationAccessor( "{4E3A3B25-7FD0-406F-A958-ECB50AC6A597}" )]

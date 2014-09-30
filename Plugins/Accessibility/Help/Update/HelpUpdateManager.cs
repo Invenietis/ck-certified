@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using CK.Context;
@@ -39,21 +40,25 @@ using Host.Services;
 
 namespace Help.Update
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class HelpUpdateManager : IPlugin, IHelpUpdaterService
     {
+        #region Plugin description
+
         const string PluginGuidString = "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Help updater";
-        public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Help Updater";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         Queue<IPluginProxy> _checked;
         Queue<IPluginProxy> _pending;
 
         IActivityMonitor _log;
 
         string _helpServerUrl;
-        //HttpClient _http;
+        HttpClient _http;
         HelpContentManipulator _helpContents;
 
         [RequiredService]
@@ -74,7 +79,7 @@ namespace Help.Update
 
         public bool Setup( IPluginSetupInfo info )
         {
-            //_http = new HttpClient();
+            _http = new HttpClient();
             
             return true;
         }
@@ -103,7 +108,7 @@ namespace Help.Update
 
         public void Teardown()
         {
-            //_http.Dispose();
+            _http.Dispose();
         }
 
         void OnPluginRunnerApplyDone( object sender, ApplyDoneEventArgs e )
@@ -182,85 +187,81 @@ namespace Help.Update
 
         void AutoUpdateAsync( INamedVersionedUniqueId plugin )
         {
-            //CheckForUpdate( plugin, true )
-            //    .ContinueWith( u =>
-            //    {
-            //        if( u.Result )
-            //        {
+            CheckForUpdate( plugin, true )
+                .ContinueWith( u =>
+                {
+                    if( u.Result )
+                    {
 
-            //            Console.WriteLine( "Check updates for" + plugin.PublicName );
-            //            DownloadUpdate( plugin, true )
-            //                .ContinueWith( t => AutoInstallUpdate( plugin, t.Result ) );
-            //        }
-            //    } );
+                        Console.WriteLine( "Check updates for" + plugin.PublicName );
+                        DownloadUpdate( plugin, true )
+                            .ContinueWith( t => AutoInstallUpdate( plugin, t.Result ) );
+                    }
+                } );
         }
 
         Task ManualUpdateAsync( INamedVersionedUniqueId plugin )
         {
-            return null;
-            //return CheckForUpdate( plugin, false )
-            //    .ContinueWith( u =>
-            //    {
-            //        if( u.Result )
-            //        {
-            //            DownloadUpdate( plugin, false )
-            //                .Wait();
-            //        }
-            //    } );
+            return CheckForUpdate( plugin, false )
+                .ContinueWith( u =>
+                {
+                    if( u.Result )
+                    {
+                        DownloadUpdate( plugin, false )
+                            .Wait();
+                    }
+                } );
         }
 
         Task<bool> CheckForUpdate( INamedVersionedUniqueId plugin, bool silent = false )
         {
-            return null;
-            //// lookup and found the help hash
-            //string hash = "HASHNOTFOUND";
-            //var helpIndex = _helpContents.GetHelpContentFilePath( plugin );
-            //if( helpIndex != _helpContents.NoContentFilePath )
-            //{
-            //    var hashFile = new FileInfo( helpIndex ).Directory.EnumerateFiles( "hash" ).FirstOrDefault();
-            //    if( hashFile != null )
-            //    {
-            //        using( var rdr = hashFile.OpenText() )
-            //            hash = rdr.ReadLine();
-            //    }
-            //}
+            // lookup and found the help hash
+            string hash = "HASHNOTFOUND";
+            var helpIndex = _helpContents.GetHelpContentFilePath( plugin );
+            if( helpIndex != _helpContents.NoContentFilePath )
+            {
+                var hashFile = new FileInfo( helpIndex ).Directory.EnumerateFiles( "hash" ).FirstOrDefault();
+                if( hashFile != null )
+                {
+                    using( var rdr = hashFile.OpenText() )
+                        hash = rdr.ReadLine();
+                }
+            }
 
-            //// create the update url to request
-            //string url = string.Format( "{0}v2/help/{1}/{2}/{3}/{4}/isupdated", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version == null ? "" : plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
+            // create the update url to request
+            string url = string.Format( "{0}v2/help/{1}/{2}/{3}/{4}/isupdated", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version == null ? "" : plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName, hash );
 
-            //// start the request and return the task
-            //return _http.GetAsync( url ).ContinueWith( u =>
-            //{
-            //    // parse the result to return if the plugin has a new help content that we have to download
-            //    bool result = false;
-            //    if( u.Result.StatusCode == System.Net.HttpStatusCode.OK )
-            //    {
-            //        string rawresult = u.Result.Content.ReadAsStringAsync().Result;
-            //        bool.TryParse( rawresult, out result );
-            //    }
-            //    if( result && !silent )
-            //        InvokeEvent( UpdateAvailable, new HelpUpdateEventArgs( plugin ) );
-            //    return result;
-            //} );
+            // start the request and return the task
+            return _http.GetAsync( url ).ContinueWith( u =>
+            {
+                // parse the result to return if the plugin has a new help content that we have to download
+                bool result = false;
+                if( u.Result.StatusCode == System.Net.HttpStatusCode.OK )
+                {
+                    string rawresult = u.Result.Content.ReadAsStringAsync().Result;
+                    bool.TryParse( rawresult, out result );
+                }
+                if( result && !silent )
+                    InvokeEvent( UpdateAvailable, new HelpUpdateEventArgs( plugin ) );
+                return result;
+            } );
         }
 
         Task<DownloadResult> DownloadUpdate( INamedVersionedUniqueId plugin, bool silent = false )
         {
-            //// create the download url
-            //string url = string.Format( "{0}v2/help/{1}/{2}/{3}", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName );
+            // create the download url
+            string url = string.Format( "{0}v2/help/{1}/{2}/{3}", _helpServerUrl, plugin.UniqueId.ToString( "B" ), plugin.Version.ToString(), CultureInfo.CurrentCulture.TextInfo.CultureName );
 
-            //// start the request
-            //// and continue with
-            //return _http.GetStreamAsync( url ).ContinueWith( t =>
-            //{
-            //    var r = new DownloadResult( _log, t.Result );
-            //    if( !silent )
-            //        InvokeEvent( UpdateDownloaded, new HelpUpdateDownloadedEventArgs( plugin, r ) );
+            // start the request
+            // and continue with
+            return _http.GetStreamAsync( url ).ContinueWith( t =>
+            {
+                var r = new DownloadResult( _log, t.Result );
+                if( !silent )
+                    InvokeEvent( UpdateDownloaded, new HelpUpdateDownloadedEventArgs( plugin, r ) );
 
-            //    return r;
-            //} );
-
-            return null;
+                return r;
+            } );
         }
 
         void AutoInstallUpdate( INamedVersionedUniqueId plugin, DownloadResult downloadResult )
@@ -335,6 +336,5 @@ namespace Help.Update
         }
 
         #endregion
-
     }
 }

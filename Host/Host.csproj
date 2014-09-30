@@ -248,6 +248,7 @@
     <Compile Include="ViewModels\ThirdLevel\ScrollingModulesConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\WindowConfigViewModel.cs" />
+    <Compile Include="ViewModels\Tools\CancelConfigItem.cs" />
     <Compile Include="ViewModels\Tools\ComboBoxItem.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
@@ -262,7 +263,6 @@
     <Compile Include="ViewModels\Tools\IsDirtyConfigItemApply.cs" />
     <Compile Include="ViewModels\Tools\PointerManagerPluginStarter.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
-    <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
     <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="ViewModels\Tools\RecordConfigItem.cs" />
     <Compile Include="ViewModels\Tools\SliderConfigItem.cs" />
@@ -358,6 +358,10 @@
     <ProjectReference Include="..\Plugins\Accessibility\KeyScroller\Scroller.csproj">
       <Project>{61618f4c-1288-401f-8644-77990429918c}</Project>
       <Name>Scroller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugins\Prediction\CK.WordPredictor.UI\CK.WordPredictor.UI.csproj">
+      <Project>{4cdc576f-47bd-4b76-b1a6-e2a8d7bbff5c}</Project>
+      <Name>CK.WordPredictor.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\Accessibility\SimpleSkin\SimpleSkin.csproj">
       <Project>{6ffe0480-6c42-413b-b59d-78793ac651c7}</Project>

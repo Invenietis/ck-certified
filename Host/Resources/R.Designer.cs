@@ -88,7 +88,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Advanced configuration.
+        ///   Looks up a localized string similar to Advanced settings.
         /// </summary>
         public static string AdvancedAppConfig {
             get {
@@ -106,7 +106,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application Configuration.
+        ///   Looks up a localized string similar to Application settings.
         /// </summary>
         public static string AppConfig {
             get {
@@ -133,7 +133,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto clic feature configuration.
+        ///   Looks up a localized string similar to Auto-click feature configuration.
         /// </summary>
         public static string AutoClickConfig {
             get {
@@ -151,7 +151,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto click.
+        ///   Looks up a localized string similar to Auto-click.
         /// </summary>
         public static string AutoClickSectionName {
             get {
@@ -223,7 +223,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuration.
+        ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Configuration {
             get {
@@ -295,6 +295,69 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Background color.
+        /// </summary>
+        public static string CustomBackground {
+            get {
+                return ResourceManager.GetString("CustomBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font color.
+        /// </summary>
+        public static string CustomFontColor {
+            get {
+                return ResourceManager.GetString("CustomFontColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font.
+        /// </summary>
+        public static string CustomFontFamily {
+            get {
+                return ResourceManager.GetString("CustomFontFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        public static string CustomFontSize {
+            get {
+                return ResourceManager.GetString("CustomFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlighted background color.
+        /// </summary>
+        public static string CustomHighlightBackground {
+            get {
+                return ResourceManager.GetString("CustomHighlightBackground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Highlighted font color.
+        /// </summary>
+        public static string CustomHighlightFontColor {
+            get {
+                return ResourceManager.GetString("CustomHighlightFontColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom visual.
+        /// </summary>
+        public static string CustomLayout {
+            get {
+                return ResourceManager.GetString("CustomLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically remove keyboard.
         /// </summary>
         public static string DeactivateWithProcess {
@@ -331,7 +394,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured during the plugin startup, or given requirements cannot be fullfilled. We cannot give you more informations yet, we&apos;re working on it..
+        ///   Looks up a localized string similar to An error occured during plugin startup, or given requirements cannot be fullfilled. We cannot give you more information yet, we&apos;re working on it..
         /// </summary>
         public static string ErrorApplyingConfiguration {
             get {
@@ -403,7 +466,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The System&apos;s configuration has been corrupted.
+        ///   Looks up a localized string similar to The system&apos;s configuration has been corrupted.
         /// </summary>
         public static string ForbiddenAction {
             get {
@@ -493,7 +556,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The current keyboard has changed. You&apos;re now using the keyboard nammed {0}..
+        ///   Looks up a localized string similar to The current keyboard has changed. You&apos;re now using the keyboard named {0}..
         /// </summary>
         public static string KeyboardChangedContent {
             get {
@@ -511,7 +574,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uses a keyboard to move the mouse.
+        ///   Looks up a localized string similar to Use a keyboard to move the mouse.
         /// </summary>
         public static string KeyboardPointerDescription {
             get {
@@ -565,7 +628,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move mouse.
+        ///   Looks up a localized string similar to Mouse move.
         /// </summary>
         public static string MoveMouse {
             get {
@@ -601,7 +664,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop all pointing mecanisms.
+        ///   Looks up a localized string similar to Stop all pointing mechanisms.
         /// </summary>
         public static string NoPointingDeviceDescription {
             get {
@@ -610,7 +673,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Objects Explorer.
+        ///   Looks up a localized string similar to Object explorer.
         /// </summary>
         public static string ObjectExplorer {
             get {
@@ -619,7 +682,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
+        ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string Ok {
             get {
@@ -637,7 +700,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Advanced configurations.
+        ///   Looks up a localized string similar to Advanced settings.
         /// </summary>
         public static string OtherScrollConfig {
             get {
@@ -646,7 +709,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Oups !.
+        ///   Looks up a localized string similar to Oops !.
         /// </summary>
         public static string Oups {
             get {
@@ -655,7 +718,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The plugin called {0} can&apos;t be launched, would you like to start CiviKey without this plugin ?.
+        ///   Looks up a localized string similar to The plugin called {0} can&apos;t be launched. Would you like to start CiviKey without this plugin ?.
         /// </summary>
         public static string PluginThrewExceptionAtStart {
             get {
@@ -691,7 +754,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Radar configuration.
+        ///   Looks up a localized string similar to Radar settings.
         /// </summary>
         public static string RadarConfiguration {
             get {
@@ -700,7 +763,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move the pointer thanks to the &quot;radar&quot; mecanism.
+        ///   Looks up a localized string similar to Move the pointer with a &quot;radar&quot; mechanism.
         /// </summary>
         public static string RadarDescription {
             get {
@@ -727,7 +790,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Screen scroler configuration.
+        ///   Looks up a localized string similar to Screen scroller settings.
         /// </summary>
         public static string ScreenScrollerConfiguration {
             get {
@@ -772,7 +835,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to General Scrolling.
+        ///   Looks up a localized string similar to General scrolling.
         /// </summary>
         public static string Scrolling {
             get {
@@ -817,7 +880,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show Systray icon.
+        ///   Looks up a localized string similar to Show system tray icon.
         /// </summary>
         public static string ShowSystrayIcon {
             get {
@@ -835,7 +898,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable the autohide feature.
+        ///   Looks up a localized string similar to Enable the auto-hide feature.
         /// </summary>
         public static string SkinAutohideFeature {
             get {
@@ -844,7 +907,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout until the skin disappear (in ms).
+        ///   Looks up a localized string similar to Timeout until the skin disappear (ms).
         /// </summary>
         public static string SkinAutohideTimeout {
             get {
@@ -853,7 +916,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Basic configuration.
+        ///   Looks up a localized string similar to Basic settings.
         /// </summary>
         public static string SkinBasicConfig {
             get {
@@ -862,7 +925,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to On screen keyboard configuration.
+        ///   Looks up a localized string similar to On-screen keyboard settings.
         /// </summary>
         public static string SkinConfig {
             get {
@@ -880,7 +943,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on screen keyboard.
+        ///   Looks up a localized string similar to On-screen keyboard.
         /// </summary>
         public static string SkinSectionName {
             get {
@@ -889,7 +952,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit on screen keyboard visual configuration.
+        ///   Looks up a localized string similar to Edit on-screen keyboard visual configuration.
         /// </summary>
         public static string SkinViewConfig {
             get {
@@ -907,7 +970,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured during the loading. CiviKey cannot load the chosen context..
+        ///   Looks up a localized string similar to An error occured while loading. CiviKey cannot load the chosen context..
         /// </summary>
         public static string UnableToLoadContext {
             get {
@@ -916,7 +979,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not scrollable modules.
+        ///   Looks up a localized string similar to Unscrollable modules.
         /// </summary>
         public static string UnScrollableElements {
             get {
@@ -934,7 +997,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new version of CiviKey is available, would you like to launch the upgraded now ?.
+        ///   Looks up a localized string similar to A new version of CiviKey is available. Would you like to launch the upgrade now ?.
         /// </summary>
         public static string UpdateMessage {
             get {
@@ -997,7 +1060,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Afficher la fenêtre de l&apos;éditeur de prédiction.
+        ///   Looks up a localized string similar to Show prediction editor window.
         /// </summary>
         public static string WordPredictionDisplayPredictionEditorWindow {
             get {
@@ -1006,7 +1069,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filters already suggested words.
+        ///   Looks up a localized string similar to Filter already suggested words.
         /// </summary>
         public static string WordPredictionFilterAlreadySuggestedWord {
             get {
@@ -1024,7 +1087,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max suggested words (maximum).
+        ///   Looks up a localized string similar to Max. suggested words.
         /// </summary>
         public static string WordPredictionMaxSuggestedWords {
             get {
@@ -1042,7 +1105,7 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uses semantic prediction.
+        ///   Looks up a localized string similar to Use semantic prediction.
         /// </summary>
         public static string WordPredictionUseSemanticPrediction {
             get {

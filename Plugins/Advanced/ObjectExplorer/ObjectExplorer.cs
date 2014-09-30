@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ObjectExplorer.cs) is part of CiviKey. 
 *  
@@ -14,33 +14,36 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using CK.Context;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
 using CommonServices;
-using System;
-using CK.Core;
 using Help.Services;
 
 namespace CK.Plugins.ObjectExplorer
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion, Categories = new string[] { "Advanced" },
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" },
      IconUri = "Plugins/ObjectExplorer/UI/Resources/objectExplorerIcon.ico" )]
     public class ObjectExplorer : IPlugin
     {
+        #region Plugin description
+
         const string PluginGuidString = "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Object Explorer";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
-        
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         VMIContextView _view;
 
         public VMIContextViewModel VMIContext { get; private set; }

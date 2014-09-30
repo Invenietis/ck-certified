@@ -23,9 +23,9 @@
 
 using System;
 using CK.Plugin.Config;
-using Host.Resources;
-using CK.Windows.Config;
 using CK.Windows;
+using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
@@ -45,7 +45,7 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" );
+            _keyboardEditorId = new Guid( "{66AD1D1C-BF19-405D-93D3-30CA39B9E52F}" ); //KeyboardEditor
 
             var profiles = this.AddCurrentItem( R.Profile, "", _app.CivikeyHost.Context.ConfigManager.SystemConfiguration, a => a.CurrentUserProfile, a => a.UserProfiles, false, "" );
             _app.CivikeyHost.Context.ConfigManager.SystemConfiguration.UserProfiles.CollectionChanged += ( s, e ) =>

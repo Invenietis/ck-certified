@@ -121,19 +121,19 @@
     <value>(Advanced user)</value>
   </data>
   <data name="AppConfig" xml:space="preserve">
-    <value>Application Configuration</value>
+    <value>App settings</value>
   </data>
   <data name="AppFeature" xml:space="preserve">
     <value>Features</value>
   </data>
   <data name="AutoClickConfig" xml:space="preserve">
-    <value>Auto clic feature configuration</value>
+    <value>Auto-click configuration</value>
   </data>
   <data name="AutoClickCountDownDuration" xml:space="preserve">
     <value>Countdown duration (ms)</value>
   </data>
   <data name="AutoClickSectionName" xml:space="preserve">
-    <value>Auto click</value>
+    <value>Auto-click</value>
   </data>
   <data name="ClickTypeSelectorName" xml:space="preserve">
     <value>Scroll to click</value>
@@ -181,7 +181,7 @@
     <value>Start keyboard skin editor</value>
   </data>
   <data name="ErrorApplyingConfiguration" xml:space="preserve">
-    <value>An error occured during the plugin startup, or given requirements cannot be fullfilled. We cannot give you more informations yet, we're working on it.</value>
+    <value>An error occured during the plugin startup, or given requirements cannot be fullfilled. We cannot give you more information yet, we're working on it.</value>
   </data>
   <data name="ExceptionNotificationTitle" xml:space="preserve">
     <value>An exception has been raised !</value>
@@ -199,7 +199,7 @@
     <value>Current keyboard has changed</value>
   </data>
   <data name="KeyboardChangedContent" xml:space="preserve">
-    <value>The current keyboard has changed. You're now using the keyboard nammed {0}.</value>
+    <value>The current keyboard has changed. You're now using the keyboard named {0}.</value>
   </data>
   <data name="Keyboards" xml:space="preserve">
     <value>Keyboards</value>
@@ -211,37 +211,37 @@
     <value>Load a user configuration</value>
   </data>
   <data name="ObjectExplorer" xml:space="preserve">
-    <value>Objects Explorer</value>
+    <value>Object explorer</value>
   </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="Oups" xml:space="preserve">
-    <value>Oups !</value>
+    <value>Oops !</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
   </data>
   <data name="ShowSystrayIcon" xml:space="preserve">
-    <value>Show Systray icon</value>
+    <value>Show system tray icon</value>
   </data>
   <data name="ShowTaskbarIcon" xml:space="preserve">
     <value>Show Taskbar icon</value>
   </data>
   <data name="SkinAutohideFeature" xml:space="preserve">
-    <value>Enable the autohide feature</value>
+    <value>Enable the auto-hide feature</value>
   </data>
   <data name="SkinAutohideTimeout" xml:space="preserve">
     <value>Timeout until the skin disappear (in ms)</value>
   </data>
   <data name="SkinConfig" xml:space="preserve">
-    <value>On screen keyboard configuration</value>
+    <value>On-screen keyboard configuration</value>
   </data>
   <data name="SkinSectionName" xml:space="preserve">
-    <value>on screen keyboard</value>
+    <value>On-screen keyboard</value>
   </data>
   <data name="SkinViewConfig" xml:space="preserve">
-    <value>Edit on screen keyboard visual configuration</value>
+    <value>Edit on-screen keyboard visual configuration</value>
   </data>
   <data name="UnableToLoadContext" xml:space="preserve">
     <value>An error occured during the loading. CiviKey cannot load the chosen context.</value>
@@ -250,7 +250,7 @@
     <value>An update is available</value>
   </data>
   <data name="UpdateMessage" xml:space="preserve">
-    <value>A new version of CiviKey is available, would you like to launch the upgraded now ?</value>
+    <value>A new version of CiviKey is available. Would you like to launch the upgraded now ?</value>
   </data>
   <data name="ForbiddenAction" xml:space="preserve">
     <value>The System's configuration has been corrupted</value>
@@ -259,10 +259,10 @@
     <value>Forbidden action</value>
   </data>
   <data name="PluginThrewExceptionAtStart" xml:space="preserve">
-    <value>The plugin called {0} can't be launched, would you like to start CiviKey without this plugin ?</value>
+    <value>The plugin called {0} cannot be launched. Would you like to start CiviKey without this plugin ?</value>
   </data>
   <data name="PluginThrewExceptionAtStartTitle" xml:space="preserve">
-    <value>Error while launching a plugin</value>
+    <value>Error while launching plugin</value>
   </data>
   <data name="ContextAddressRequired" xml:space="preserve">
     <value>An address for the context is required.</value>
@@ -289,7 +289,7 @@
     <value>No</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
@@ -316,7 +316,7 @@
     <value>Advanced configuration</value>
   </data>
   <data name="WordPredictionMaxSuggestedWords" xml:space="preserve">
-    <value>Max suggested words (maximum)</value>
+    <value>Max. suggested words</value>
   </data>
   <data name="SkinBasicConfig" xml:space="preserve">
     <value>Basic configuration</value>
@@ -325,16 +325,16 @@
     <value>Insert space after predicted words</value>
   </data>
   <data name="WordPredictionSectionName" xml:space="preserve">
-    <value>Word Prediction</value>
+    <value>Word prediction</value>
   </data>
   <data name="WordPredictionDisplayPredictionEditorWindow" xml:space="preserve">
-    <value>Afficher la fenêtre de l'éditeur de prédiction</value>
+    <value>Show prediction editor window</value>
   </data>
   <data name="WordPredictionFilterAlreadySuggestedWord" xml:space="preserve">
-    <value>Filters already suggested words</value>
+    <value>Filter already suggested words</value>
   </data>
   <data name="WordPredictionUseSemanticPrediction" xml:space="preserve">
-    <value>Uses semantic prediction</value>
+    <value>Use semantic prediction</value>
   </data>
   <data name="Radar" xml:space="preserve">
     <value>Radar</value>
@@ -343,13 +343,13 @@
     <value>Radar configuration</value>
   </data>
   <data name="ScreenScrollerConfiguration" xml:space="preserve">
-    <value>Screen scroler configuration</value>
+    <value>Screen scroller configuration</value>
   </data>
   <data name="ScreenScrolling" xml:space="preserve">
     <value>Screen scrolling</value>
   </data>
   <data name="Scrolling" xml:space="preserve">
-    <value>General Scrolling</value>
+    <value>General scrolling</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>Apply</value>
@@ -358,10 +358,10 @@
     <value>None</value>
   </data>
   <data name="NoPointingDeviceDescription" xml:space="preserve">
-    <value>Stop all pointing mecanisms</value>
+    <value>Stop all pointing mechanisms</value>
   </data>
   <data name="RadarDescription" xml:space="preserve">
-    <value>Move the pointer thanks to the "radar" mecanism</value>
+    <value>Move the pointer with a "radar" mechanism</value>
   </data>
   <data name="ScreenScrollingDescription" xml:space="preserve">
     <value>Create a grid on the screen to move the mouse pointer</value>
@@ -391,7 +391,7 @@
     <value>Scrollable modules</value>
   </data>
   <data name="UnScrollableElements" xml:space="preserve">
-    <value>Not scrollable modules</value>
+    <value>Unscrollable modules</value>
   </data>
   <data name="MouseScrollingSelection" xml:space="preserve">
     <value>Mouse scrolling type selection</value>
@@ -416,6 +416,27 @@
   </data>
   <data name="WindowOpacity" xml:space="preserve">
     <value>Change opacity</value>
+  </data>
+  <data name="CustomBackground" xml:space="preserve">
+    <value>Background color</value>
+  </data>
+  <data name="CustomFontColor" xml:space="preserve">
+    <value>Font color</value>
+  </data>
+  <data name="CustomFontFamily" xml:space="preserve">
+    <value>Font</value>
+  </data>
+  <data name="CustomFontSize" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="CustomHighlightBackground" xml:space="preserve">
+    <value>Highlighted background color</value>
+  </data>
+  <data name="CustomHighlightFontColor" xml:space="preserve">
+    <value>Highlighted font color</value>
+  </data>
+  <data name="CustomLayout" xml:space="preserve">
+    <value>Custom visual</value>
   </data>
   <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
     <value>Additional keyboards</value>

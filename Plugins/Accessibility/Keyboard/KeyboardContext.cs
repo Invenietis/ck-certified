@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\Keyboard\KeyboardContext.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -23,21 +23,25 @@
 
 using System;
 using System.Collections.Generic;
-using CK.Keyboard.Model;
-using CK.Storage;
-using CK.Plugin.Config;
 using CK.Core;
+using CK.Keyboard.Model;
 using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Storage;
 
 namespace CK.Keyboard
 {
-    [Plugin( KeyboardContext.PluginIdString, Version = KeyboardContext.PluginIdVersion, PublicName = PluginPublicName )]
+    [Plugin( PluginIdString, Version = PluginVersion, PublicName = PluginPublicName )]
     public partial class KeyboardContext : IKeyboardContext, IPlugin, IStructuredSerializable, IStructuredSerializer<KeyboardCollection>
     {
+        #region Plugin description
+
         const string PluginIdString = "{2ED1562F-2416-45cb-9FC8-EEF941E3EDBC}";
-        const string PluginIdVersion = "2.5.2";
+        const string PluginVersion = "2.5.2";
         const string PluginPublicName = "CK.KeyboardContext";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         bool _isKeyboardContextDirty;
         KeyboardCollection _keyboards;

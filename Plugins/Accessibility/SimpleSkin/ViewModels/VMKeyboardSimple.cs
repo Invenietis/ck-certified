@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\ViewModels\VMKeyboardSimple.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,17 +22,15 @@
 #endregion
 
 using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Media;
+using System.Windows.Threading;
+using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
 using HighlightModel;
-using CK.Core;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using CK.Windows;
-using System.Diagnostics;
-using System.Windows.Threading;
 
 namespace SimpleSkin.ViewModels
 {
@@ -447,8 +445,6 @@ namespace SimpleSkin.ViewModels
         {
             get
             {
-                //TODO : Improve (temporary)
-                if( Keyboard.Name == "Prediction" ) return SkippingBehavior.EnterChildren;
 
                 if( Zones.Count == 0 || Zones.All( z => z.Skip == SkippingBehavior.Skip ) )
                     return SkippingBehavior.Skip; //If there are no zones or that they are all to be skipped, we skip this root element

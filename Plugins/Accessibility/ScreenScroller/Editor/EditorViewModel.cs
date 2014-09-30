@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\ScreenScroller\Editor\EditorViewModel.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,11 +22,11 @@
 #endregion
 
 using System;
-using CK.Plugin;
-using CK.Core;
 using System.ComponentModel;
-using CK.Plugin.Config;
 using CK.Context;
+using CK.Core;
+using CK.Plugin;
+using CK.Plugin.Config;
 using ScreenScroller.Resources;
 
 namespace ScreenScroller.Editor
@@ -109,7 +109,7 @@ namespace ScreenScroller.Editor
         {
             if( !_isClosing )
             {
-                _context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( ScreenScrollerEditor.PluginIdString ), ConfigUserAction.Stopped );
+                _context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( ScreenScrollerEditor.PluginId.UniqueId, ConfigUserAction.Stopped );
                 _context.GetService<ISimplePluginRunner>( true ).Apply();
             }
         }

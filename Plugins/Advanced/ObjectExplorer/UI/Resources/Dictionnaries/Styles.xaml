@@ -333,8 +333,8 @@
                 <ControlTemplate TargetType="{x:Type ContentControl}">
                     <Grid Name="container">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="20"></ColumnDefinition>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" Orientation="Horizontal">

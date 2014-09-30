@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\MouseRadar\Radar\Radar.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,13 +22,14 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Threading;
 using CommonServices;
 using HighlightModel;
-using System.Diagnostics;
+
 namespace MouseRadar
 {
     public enum RadarStep

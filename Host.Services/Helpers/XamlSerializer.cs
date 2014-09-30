@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Host.Services\Helpers\XamlSerializer.cs) is part of CiviKey. 
 *  
@@ -14,22 +14,19 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.IO;
-using System.Windows.Interop;
-using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using CK.Storage;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Markup;
+using System.Windows.Media.Imaging;
+using CK.Storage;
 
 namespace Host.Services.Helper
 {

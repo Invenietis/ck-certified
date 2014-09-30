@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,23 +22,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using System.Xml;
-using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
-using CK.Storage;
-using CK.Windows;
-using CK.Windows.App;
 using CK.Windows.Config;
 using CommonServices;
-using CommonServices.Accessibility;
-using HighlightModel;
 using Host.Resources;
 using Scroller;
 
@@ -56,7 +43,7 @@ namespace Host.VM
         ComboBoxItem _comboBox;
         RecordConfigItem _recordItem;
 
-        Guid _scrollGuid = Guid.Parse( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+        Guid _scrollGuid = Guid.Parse( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" ); //ScrollerPlugin
 
         /// <summary>
         /// Return the Scrolling user configuration, can return null if the scroller plugin isn't loaded
@@ -78,7 +65,7 @@ namespace Host.VM
         //}
 
         public ScrollingViewModel( string displayName, AppViewModel app )
-            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", displayName, app )
+            : base( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}", displayName, app ) //ScrollerPlugin
         {
             _app = app;
             DisplayName = displayName;

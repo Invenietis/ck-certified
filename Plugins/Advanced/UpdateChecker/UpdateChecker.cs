@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\UpdateChecker\UpdateChecker.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -26,19 +26,19 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using CK.Context;
-using CK.Plugin;
-using Host.Services;
-using CommonServices;
-using CK.Core;
-using CK.Plugin.Config;
-using System.Text;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using CK.Windows.App;
-using CK.Context.SemVer;
-using UpdateChecker.View;
+using System.Text;
 using System.Windows;
+using CK.Context;
+using CK.Context.SemVer;
+using CK.Core;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Windows.App;
+using CommonServices;
+using Host.Services;
+using UpdateChecker.View;
 
 namespace UpdateChecker
 {
@@ -46,11 +46,17 @@ namespace UpdateChecker
     /// This plugin can interact with the user. It is not ideal but since its interactions are minimals (message box),
     /// this avoid the creation of an associated GUI plugin.
     /// </summary>
-    [Plugin( UpdateChecker.PluginIdentifier, Version = UpdateChecker.PluginVersion, PublicName = "Update Checker" )]
+    [Plugin( PluginGuidString, Version = PluginVersion, PublicName = PluginPublicName )]
     public class UpdateChecker : IPlugin, IUpdateChecker
     {
-        const string PluginIdentifier = "{11C83441-6818-4A8B-97A0-1761E1A54251}";
+        #region Plugin description
+
+        const string PluginGuidString = "{11C83441-6818-4A8B-97A0-1761E1A54251}";
         const string PluginVersion = "2.0.0";
+        const string PluginPublicName = "Update Checker";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         IActivityMonitor _log;
 
@@ -270,7 +276,7 @@ namespace UpdateChecker
             _webClient.DownloadFileAsync( new Uri( httpRequest ), _downloading.Path, savedState );
 
             if( Notifications != null )
-                _downloadingNotificationHandler = Notifications.ShowNotification( new Guid( PluginIdentifier ), "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
+                _downloadingNotificationHandler = Notifications.ShowNotification( PluginId.UniqueId, "Update in progress", "CiviKey is downloading its new version.", 0, NotificationTypes.Message );
         }
 
         void OnDownloadFileCompleted( object sender, AsyncCompletedEventArgs e )

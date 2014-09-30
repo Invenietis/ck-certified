@@ -1,22 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
-using CK.Plugin;
-using CK.Plugin.Config;
 using CK.Windows.Config;
 using CommonServices;
-using Host.Resources;
 
 namespace Host.VM
 {
     public class RecordConfigItem : ConfigItemProperty<ITrigger>
     {
         AppViewModel _app;
-        Guid _triggerGuid = Guid.Parse( "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}" );
+        Guid _triggerGuid = Guid.Parse( "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}" ); //InputTrigger
         ITriggerService _triggerService;
         ITriggerService TriggerService
         {
@@ -93,7 +87,7 @@ namespace Host.VM
         string _toggleContent;
         public string ToggleContent
         {
-            get { return _toggleContent ?? "Start Reccording"; }
+            get { return _toggleContent ?? Scroller.Resources.R.StartRecording; }
             set
             {
                 if( _toggleContent != value )

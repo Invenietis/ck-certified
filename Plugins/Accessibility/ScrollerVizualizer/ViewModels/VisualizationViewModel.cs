@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using HighlightModel;
-using CommonServices.Accessibility;
-using SimpleSkin.ViewModels;
 using System.ComponentModel;
-using ScrollerVisualizer.Resources;
+using System.Linq;
+using CommonServices.Accessibility;
+using HighlightModel;
 
 namespace ScrollerVisualizer
 {

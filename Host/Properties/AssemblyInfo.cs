@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -32,9 +32,9 @@ using Host.Services.Helpers;
 [assembly: AssemblyTitle( "CK-Certified" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Microsoft" )]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct( "CK-Certified" )]
-[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2013" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -76,4 +76,4 @@ using Host.Services.Helpers;
 [assembly: AssemblyVersion( "1.0.0.0" )]
 [assembly: AssemblyFileVersion( "1.0.0.0" )]
 
-[assembly: Distribution("Std")]
+[assembly: Distribution( "Std" )]

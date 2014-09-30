@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\Help\HelpCommandHandler.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,12 +22,12 @@
 #endregion
 
 using System;
-using CommonServices;
-using CK.Plugin;
+using BasicCommandHandlers.Resources;
 using CK.Core;
+using CK.Plugin;
+using CommonServices;
 using Help.Services;
 using ProtocolManagerModel;
-using BasicCommandHandlers.Resources;
 
 namespace BasicCommandHandlers
 {
@@ -38,7 +38,7 @@ namespace BasicCommandHandlers
     {
         const string PROTOCOL_BASE = "help";
         const string PROTOCOL = PROTOCOL_BASE + ":";
-        IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36c4764a-111c-45e4-83d6-e38fc1df5979}", new Version( "1.6.0" ) );
+        IVersionedUniqueId skinUniqueId = new SimpleVersionedUniqueId( "{36c4764a-111c-45e4-83d6-e38fc1df5979}", new Version( "1.6.0" ) ); //MainKeyboardManager
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IHelpViewerService> HelpService { get; set; }

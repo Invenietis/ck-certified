@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -32,7 +32,7 @@ namespace CK.Plugins.CommonTimer
     //    Categories = new string[] { "Editors" } )]
     public class CommonTimerEditor : IPlugin
     {
-        [ConfigurationAccessor( "{E93C53AC-1621-4767-8489-097767205C87}" )]
+        [ConfigurationAccessor( "{E93C53AC-1621-4767-8489-097767205C87}" )] //CommonTimer
         public IPluginConfigAccessor EditedConfiguration { get; set; }
        
         public int Interval

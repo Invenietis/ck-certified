@@ -17,8 +17,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
-                  Source="Dictionnaries/AutoClick.xaml">
-                </ResourceDictionary>
+                  Source="Dictionnaries/AutoClick.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

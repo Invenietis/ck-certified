@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -24,21 +24,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CK.Core;
 using CK.Plugin;
 using CommonServices;
 
 namespace InputTrigger
 {
-    [Plugin( InputTrigger.PluginIdString,
-           PublicName = PluginPublicName,
-           Version = InputTrigger.PluginIdVersion,
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
     public class InputTrigger : IPlugin , ITriggerService
     {
-        const string PluginIdString = "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        #region Plugin description
+
+        const string PluginGuidString = "{14FE0383-2BE4-43A1-9627-A66C2CA775A6}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Input Trigger";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardDriver> KeyboardDriver { get; set; }
@@ -73,7 +76,6 @@ namespace InputTrigger
 
         public void Teardown()
         {
-
         }
 
         public void RegisterFor(ITrigger trigger, Action<ITrigger> action, bool preventDefault = true)

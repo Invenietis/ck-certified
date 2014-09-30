@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,14 +22,11 @@
 #endregion
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
-using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Windows;
 using CK.Windows.Config;
 
 namespace Host.VM
@@ -145,6 +142,11 @@ namespace Host.VM
             OnConfigChanged( sender, e );
         }
 
+        /// <summary>
+        /// this method is called by <see cref="NotifyOfPropertiesChange"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected abstract void OnConfigChanged( object sender, ConfigChangedEventArgs e );
 
         protected ConfigActivableSection AddActivableSection( string name, string description )

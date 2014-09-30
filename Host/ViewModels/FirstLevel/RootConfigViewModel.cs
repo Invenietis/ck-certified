@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -23,11 +23,12 @@
 
 using System;
 using CK.Plugin.Config;
-using Host.Resources;
 using CK.Windows.Config;
-using Host.VM;
+using Host.Resources;
 using Host.ViewModels;
 using SimpleSkin;
+using Host.VM;
+using CK.WordPredictor.UI;
 
 namespace Host
 {
@@ -50,12 +51,12 @@ namespace Host
         {
             DisplayName = R.Home;
             _app = app;
-            _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
-            _clickSelectorId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
-            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
-            _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" );
-            _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
-            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" );
+            _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" ); //ScreenScrollerPlugin
+            _clickSelectorId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" ); //ClickSelector
+            _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" ); //ScrollerPlugin
+            _autoclicId = new Guid( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}" ); //AutoClick
+            _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" ); //MouseRadarPlugin
+            _skinId = new Guid( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" ); //MainKeyboardManager
         }
 
         protected override void OnInitialize()
@@ -86,11 +87,11 @@ namespace Host
                 ConfigManager, 
                 _app.PluginRunner,
                 new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _basicScrollId, new Guid[] { new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) }, new Guid[] { _radarId, _screenScrollerId, new Guid( "{D58F0DC4-E45D-47D9-9AA0-88B53B3B2351}" ) } ),
-                new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling };
+                new ScrollingViewModel( R.ScrollConfig, _app ) ) { DisplayName = R.Scrolling }; //ScrollerVisualizer
 
             var pointerManager = new PointerManagerPluginStarter( _app, new PointerManagerSelector( _app ) ) { DisplayName = R.MoveMouse };
             var wordPredictionStarter = new ConfigFeatureStarter( ConfigManager, _app.PluginRunner, new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration,
-                new Guid( "{1756C34D-EF4F-45DA-9224-1232E96964D2}" ), //InKeyboardWordPredictor
+                AutonomousWordPredictorPlugin.PluginId.UniqueId, //AutonomousWordPredictorPlugin
                 new Guid( "{1764F522-A9E9-40E5-B821-25E12D10DC65}" ), //SybilleWordPredictorService
                 new Guid( "{669622D4-4E7E-4CCE-96B1-6189DC5CD5D6}" ), //WordPredictedService
                 new Guid( "{4DC42B82-4B29-4896-A548-3086AA9421D7}" ), //WordPredictorFeature
@@ -119,12 +120,6 @@ namespace Host
         {
             if( _app.PluginRunner.IsDirty && !_app.PluginRunner.Disabled )
                 _app.PluginRunner.Apply();
-        }
-
-        public void StartObjectExplorer()
-        {
-            _app.CivikeyHost.Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( "{4BF2616D-ED41-4E9F-BB60-72661D71D4AF}" ), ConfigUserAction.Started );
-            _app.CivikeyHost.Context.PluginRunner.Apply();
         }
     }
 }

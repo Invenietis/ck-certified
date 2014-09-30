@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\KeyScroller\ScrollingStrategies\OneByOneScrollingStrategy.cs) is part of CiviKey. 
 *  
@@ -14,27 +14,22 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System.Collections.Generic;
-using System.Windows.Threading;
-using CK.Core;
-using HighlightModel;
-using CK.Plugin.Config;
-using System.Diagnostics;
-using System.Timers;
 using System.Linq;
+using HighlightModel;
+
 namespace Scroller
 {
     /// <summary>
     /// A ScrollingStrategy that scroll only on sheets elements.
     /// </summary>
-    [StrategyAttribute( OneByOneScrollingStrategy.StrategyName )]
+    [Strategy( OneByOneScrollingStrategy.StrategyName )]
     public class OneByOneScrollingStrategy : ScrollingStrategyBase
     {
         const string StrategyName = "OneByOneScrollingStrategy";

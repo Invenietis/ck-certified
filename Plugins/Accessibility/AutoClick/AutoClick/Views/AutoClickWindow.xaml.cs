@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\AutoClick\Views\AutoClickWindow.xaml.cs) is part of CiviKey. 
 *  
@@ -14,16 +14,18 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Windows;
 using System.Windows;
 using System.Windows.Media;
+using CK.Windows;
+using CK.Windows.Core;
+using System.Windows.Shapes;
 
 namespace CK.Plugins.AutoClick.Views
 {
@@ -42,6 +44,12 @@ namespace CK.Plugins.AutoClick.Views
         {
             var parent = VisualTreeHelper.GetParent( visualElement );
             return parent is AutoClickWindow;
+        }
+
+        protected override bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
+        {
+            specialElement = visualElement as IHitTestElementController;
+            return specialElement != null;
         }
     }
 }

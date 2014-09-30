@@ -14,24 +14,23 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-//using CK.WPF.Controls;
 using CK.Plugin.Config;
-using Host.Resources;
 using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
     public class AutoClickViewModel : ConfigBase
     {
         public AutoClickViewModel( AppViewModel app )
-            : base( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", R.AutoClickConfig, app )
+            : base( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", R.AutoClickConfig, app ) //AutoClick
         {
         }
 
@@ -70,7 +69,7 @@ namespace Host.VM
 
         public bool ShowMouseIndicatorOption
         {
-            get { return Config != null ? Config.GetOrSet( "ShowMouseIndicatorOption", false ) : false; }
+            get { return Config != null && Config.GetOrSet( "ShowMouseIndicatorOption", false ); }
             set
             {
                 if( Config != null ) Config.Set( "ShowMouseIndicatorOption", value );

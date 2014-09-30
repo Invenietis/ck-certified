@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\FileLauncher\Launcher.cs) is part of CiviKey. 
 *  
@@ -14,32 +14,33 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Plugin;
-using CommonServices;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
-
+using CK.Plugin;
+using CK.Core;
+using CommonServices;
 
 namespace FileLauncher
 {
-    [Plugin( Launcher.PluginIdString,
-           PublicName = PluginPublicName,
-           Version = Launcher.PluginIdVersion,
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion,
            Categories = new string[] { "Visual", "Accessibility" } )]
     public class Launcher : IPlugin, IFileLauncherService
     {
-        const string PluginIdString = "{02D08D49-171F-454A-A84C-89DD7F959958}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        #region Plugin description
+
+        const string PluginGuidString = "{02D08D49-171F-454A-A84C-89DD7F959958}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "File Launcher";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         public void Start()
         {

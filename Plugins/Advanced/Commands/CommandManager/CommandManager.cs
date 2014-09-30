@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -33,12 +33,18 @@ using CommonServices;
 
 namespace CK.StandardPlugins.CommandManager
 {
-    [Plugin( "{7CCD8104-FB8A-4495-8855-3E7B56EE5100}",
-        Categories = new string[] { "Advanced" },
-        Version = "1.0.1",
-        PublicName = "CommandManager" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" } )]
     public class CommandManager : IPlugin, ICommandManagerService
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{7CCD8104-FB8A-4495-8855-3E7B56EE5100}";
+        const string PluginVersion = "1.0.1";
+        const string PluginPublicName = "Command Manager";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         const int TIMER_MILLI_SPAN = 20; //in milliseconds
 
         Queue<DictionaryEntry> _runningCommands;

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\KeyScroller\Scroller.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -25,48 +25,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
-using System.Xml;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Storage;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
 
 namespace Scroller
 {
-    [Plugin( ScrollerPlugin.PluginIdString,
-           PublicName = PluginPublicName,
-           Version = ScrollerPlugin.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class ScrollerPlugin : IPlugin, IHighlighterService
     {
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
 
-        internal const string PluginIdString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginGuidString = "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Scroller";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         Dictionary<string, IHighlightableElement> _registeredElements;
         StrategyBridge _scrollingStrategy;
         DispatcherTimer _timer;
         ITrigger _currentTrigger;
+        IAppVisibility _appVisibility;
 
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ITriggerService> InputTrigger { get; set; }
 
+        [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
+        public IService<ICommandManagerService> CommandManager { get; set; }
+
         public event EventHandler<HighlightElementRegisterEventArgs> ElementRegisteredOrUnregistered;
         public event EventHandler<EventArgs> TriggerChanged;
         public event EventHandler<EventArgs> HighliterStatusChanged;
         public event EventHandler<HighlightEventArgs> BeginHighlight
         {
-            add 
-            { 
-                _scrollingStrategy.BeginHighlightElement += value; 
+            add
+            {
+                _scrollingStrategy.BeginHighlightElement += value;
             }
             remove { _scrollingStrategy.BeginHighlightElement -= value; }
         }
@@ -150,12 +151,14 @@ namespace Scroller
             _timer = new DispatcherTimer();
 
             _timer.Interval = new TimeSpan( 0, 0, 0, 0, Configuration.User.GetOrSet( "Speed", 1000 ) );
-            
+
             _registeredElements = new Dictionary<string, IHighlightableElement>();
             var conf = Configuration.User.GetOrSet<ScrollingElementConfiguration>( "ScrollableModules", new ScrollingElementConfiguration() );
             _disabledElements = conf.Select( m => m.InternalName ).ToList();
 
             _scrollingStrategy = new StrategyBridge( _timer, () => ScrollableElements, Configuration );
+
+            InitializeAppVisibility();
 
             return true;
         }
@@ -171,6 +174,12 @@ namespace Scroller
             {
                 FireHighliterStatusChanged();
             };
+        }
+
+        private void InitializeAppVisibility()
+        {
+            Type tIAppVisibility = Type.GetTypeFromCLSID( new Guid( "7E5FE3D9-985F-4908-91F9-EE19F9FD1514" ) );
+            _appVisibility = (IAppVisibility)Activator.CreateInstance( tIAppVisibility );
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -370,6 +379,17 @@ namespace Scroller
 
         private void OnInputTriggered( ITrigger t )
         {
+            bool launcherVisible;
+
+            //test if tiles mode is active, if true we send windowskey when the trigger is pressed
+            if( HRESULT.S_OK == _appVisibility.IsLauncherVisible( out launcherVisible ) && launcherVisible )
+            {
+                if( CommandManager.Status == InternalRunningStatus.Started )
+                {
+                    CommandManager.Service.SendCommand( this, "dyncommand:windowskey" );
+                    return;
+                }
+            }
             FireOnTrigger();
             _scrollingStrategy.OnExternalEvent();
         }
@@ -382,8 +402,8 @@ namespace Scroller
 
         void FireTriggerChanged()
         {
-            if(TriggerChanged != null) 
-                TriggerChanged(this, new EventArgs());
+            if( TriggerChanged != null )
+                TriggerChanged( this, new EventArgs() );
         }
 
         void FireHighliterStatusChanged()

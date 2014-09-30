@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\ImportKeyboard.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -26,8 +26,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Windows.Input;
 using System.Xml;
 using CK.Context;
 using CK.Core;
@@ -40,15 +38,17 @@ using KeyboardEditor.Wizard.Views;
 
 namespace KeyboardEditor.Wizard
 {
-    [Plugin( ImportKeyboard.PluginGuidString, PublicName = ImportKeyboard.PluginPublicName, Version = ImportKeyboard.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ImportKeyboard : IPlugin
     {
+        #region Plugin description
 
         const string PluginGuidString = "{D94D1757-5BFB-4B80-9C8E-1B108F5C7086}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Keyboard import";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Keyboard Import";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }

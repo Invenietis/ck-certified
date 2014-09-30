@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,10 +22,10 @@
 #endregion
 
 using System;
-using System.Linq;
-using System.Windows.Media;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Media;
 using Microsoft.Windows.Controls.Primitives;
 
 namespace Microsoft.Windows.Controls.Core.Utilities

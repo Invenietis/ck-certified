@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\ViewModels\VMKeySimple.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,27 +22,22 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CK.WPF.ViewModel;
-using CK.Keyboard.Model;
-using System.Windows;
-using CK.Plugin.Config;
-using HighlightModel;
-using CK.Core;
-using System.Windows.Input;
-using System.Collections.Generic;
-using System.IO;
-using CK.Storage;
-using Color = System.Windows.Media.Color;
-using FontStyle = System.Windows.FontStyle;
-using Image = System.Windows.Controls.Image;
-using System.Windows.Interop;
-using CK.Windows;
-using System.Diagnostics;
 using System.Windows.Threading;
+using CK.Core;
+using CK.Keyboard.Model;
+using CK.Plugin.Config;
+using CK.Storage;
+using CK.WPF.ViewModel;
+using HighlightModel;
 
 namespace SimpleSkin.ViewModels
 {

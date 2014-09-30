@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\MouseRadar\MouseRadarPlugin.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,32 +22,34 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Windows.Media;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.WindowManager.Model;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
-using CK.Core;
-using System.Diagnostics;
-using CK.WindowManager.Model;
 using MouseRadar.Resources;
 
 namespace MouseRadar
 {
-    [Plugin( MouseRadarPlugin.PluginIdString,
-           PublicName = MouseRadarPlugin.PluginPublicName,
-           Version = MouseRadarPlugin.PluginIdVersion,
-           Categories = new string[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual", "Accessibility" } )]
     public class MouseRadarPlugin : IPlugin, IVisualizableHighlightableElement
     {
-        internal const string PluginIdString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        #region Plugin description
+
+        const string PluginGuidString = "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Mouse Radar";
-        bool _yield;
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         public bool IsActive { get { return _radar.CurrentStep != RadarStep.Paused; } }
 
+        bool _yield;
         float _blurredOpacity;
         float _focusedOpacity;
 
@@ -56,7 +58,7 @@ namespace MouseRadar
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
 
-        [ConfigurationAccessor( MouseRadarPlugin.PluginIdString )]
+        [ConfigurationAccessor( MouseRadarPlugin.PluginGuidString )]
         public IPluginConfigAccessor Configuration { get; set; }
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]

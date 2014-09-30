@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\MouseWatcher\MouseWatcher.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,12 +22,13 @@
 #endregion
 
 using System;
-using CommonServices;
-using CK.Plugin;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Threading;
+using CK.Plugin;
 using CK.Plugin.Config;
-using System.ComponentModel;
+using CommonServices;
+using CK.Core;
 
 namespace MouseWatcher
 {
@@ -36,9 +37,18 @@ namespace MouseWatcher
     /// it also provides the progress value (from 0 to 100) accordingly to the time set
     /// Provides only one instance of watchers, two plugins can't use it with different configurations, the last to be set is the one used.
     /// </summary>
-    [Plugin( "{D4D8660C-973B-46d3-8414-6FCC02AD74F5}", PublicName = "Mouse Watcher", Version = "1.0.0", Categories = new string[] { "Advanced" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" } )]
     public class MouseWatcher : IPlugin, IMouseWatcher
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{D4D8660C-973B-46d3-8414-6FCC02AD74F5}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Mouse Watcher";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IPointerDeviceDriver MouseDriver { get; set; }
 

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CommonTimerWindow\CommonTimerWindow.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -23,20 +23,24 @@
 
 using System;
 using System.Windows.Media.Animation;
+using CK.Core;
 using CK.Plugin;
 using CommonServices;
-using CK.Core;
 
 namespace CK.Plugins.CommonTimerWindow
 {
-    [Plugin( CommonTimerWindow.PluginIdString, PublicName = "Common timer window", Version = CommonTimerWindow.PluginIdVersion,
-     Categories = new string[] { "Visual" },
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Visual" },
      Description="Simple user interface to show the events of the CommonTimer")]
     public class CommonTimerWindow : IPlugin
     {
-        const string PluginIdString = "{62C9697A-95A1-475e-AFDE-1094B018382A}";
-        const string PluginIdVersion = "1.0.0";
-        public static readonly IVersionedUniqueId PluginId = new SimpleVersionedUniqueId( PluginIdString, PluginIdVersion );
+        #region Plugin description
+
+        const string PluginGuidString = "{62C9697A-95A1-475e-AFDE-1094B018382A}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Common Timer Window";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         ICommonTimer _timer;
         TimerView _window;

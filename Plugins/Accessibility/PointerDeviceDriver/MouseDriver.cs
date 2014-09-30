@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\PointerDeviceDriver\MouseDriver.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -26,11 +26,10 @@
 // Date : 01-05-2008
 //****************************************************
 using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using CommonServices;
-using CK.Plugin;
 using CK.InputDriver.Hook;
+using CK.Plugin;
+using CK.Core;
+using CommonServices;
 
 namespace PointerDeviceDriver
 {
@@ -38,11 +37,18 @@ namespace PointerDeviceDriver
     /// 
     /// Implementation of IPointerDeviceDriver used to Drive the Mouse in a Windows environement
     /// </summary>
-    [Plugin( "{CD792CE7-9ABA-4177-858C-AF7BA5D8D5B3}", PublicName = "Pointer DeviceDriver", Version = "1.0",
-     Categories = new string[] { "Advanced" },
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" },
      Description = "Plugin that enables catching MouseMove events." )]
     public class MouseDriver : IPlugin, IPointerDeviceDriver
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{CD792CE7-9ABA-4177-858C-AF7BA5D8D5B3}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Pointer Device driver";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
         MouseHook _m;
         PointStruct _lastPointerPosition;
         

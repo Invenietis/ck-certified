@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -31,14 +31,17 @@ using Host.Services;
 
 namespace Help
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class HelpViewer : IPlugin, IHelpViewerService
     {
+        #region Plugin description
+
         const string PluginGuidString = "{1DB78D66-B5EC-43AC-828C-CCAB91FA6210}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.2";
-        const string PluginPublicName = "Help viewer";
-        public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        const string PluginVersion = "1.0.2";
+        const string PluginPublicName = "Help Viewer";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         HelpBrowser _helpBrowser;
         HelpContentManipulator _helpContents;

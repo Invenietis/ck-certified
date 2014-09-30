@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\Commands\BasicCommandHandlers\FileLauncher\FileLauncherCommandHandler.cs) is part of CiviKey. 
 *  
@@ -14,19 +14,19 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Plugin;
-using CommonServices;
 using System;
-using ProtocolManagerModel;
 using BasicCommandHandlers.Resources;
+using CK.Plugin;
 using CK.Plugin.Config;
+using CommonServices;
+using ProtocolManagerModel;
 
 namespace BasicCommandHandlers
 {
@@ -50,7 +50,7 @@ namespace BasicCommandHandlers
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IFileLauncherService> FileLauncher { get; set; }
 
-        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )]
+        [ConfigurationAccessor( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}" )] //MainKeyboardManager
         public IPluginConfigAccessor SkinConfiguration { get; set; }
 
         public override void Start()

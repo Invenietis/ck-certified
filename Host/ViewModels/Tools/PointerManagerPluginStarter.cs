@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
-using CK.Plugin;
-using CK.Plugin.Config;
-using System.Windows.Input;
-using CK.Windows.Config;
-using CK.Windows;
-using System.Collections.Generic;
-using CK.Keyboard.Model;
 using System.Diagnostics;
+using System.Linq;
+using System.Windows.Input;
+using CK.Keyboard.Model;
+using CK.Plugin;
+using CK.Windows;
+using CK.Windows.Config;
 
 namespace Host.VM
 {
@@ -19,9 +17,9 @@ namespace Host.VM
         AppViewModel _app;
         IKeyboard _keyboard;
 
-        readonly Guid _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" );
-        readonly Guid _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" );
-        readonly Guid _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" );
+        readonly Guid _screenScrollerId = new Guid( "{AE25D80B-B927-487E-9274-48362AF95FC0}" ); //ScreenScrollerPlugin
+        readonly Guid _radarId = new Guid( "{390AFE83-C5A2-4733-B5BC-5F680ABD0111}" ); //MouseRadarPlugin
+        readonly Guid _basicScrollId = new Guid( "{84DF23DC-C95A-40ED-9F60-F39CD350E79A}" ); //ScrollerPlugin
 
         string KeyboardName
         {

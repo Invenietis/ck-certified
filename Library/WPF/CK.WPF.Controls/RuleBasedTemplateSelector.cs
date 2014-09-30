@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -23,10 +23,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Markup;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace CK.WPF.Controls
 {

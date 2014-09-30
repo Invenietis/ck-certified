@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\SendInputDriver\SendStringPlugin.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,15 +22,24 @@
 #endregion
 
 using System;
-using CK.Plugin;
 using CK.InputDriver;
+using CK.Plugin;
+using CK.Core;
 
 namespace CK.Plugins.SendInputDriver
 {
-    [Plugin( "{4F82CC10-1115-4FF0-B483-E95EEEA21107}", Categories = new string[] { "Advanced" },
-        PublicName = "Send string command handler", Version = "2.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" } )]
     public class SendStringPlugin : IPlugin, ISendStringService, IDynamicService
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{4F82CC10-1115-4FF0-B483-E95EEEA21107}";
+        const string PluginVersion = "2.0.0";
+        const string PluginPublicName = "Send string command handler";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         public event EventHandler<StringSentEventArgs>  StringSent;
         public event EventHandler<StringSendingEventArgs>  StringSending;
 

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\Wizard\ExportKeyboard.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -24,28 +24,28 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.SharedDic;
 using CK.Storage;
 using KeyboardEditor.s;
 using KeyboardEditor.Wizard.ViewModels;
 
 namespace KeyboardEditor
 {
-    [Plugin( ExportKeyboard.PluginIdString, PublicName = ExportKeyboard.PluginPublicName, Version = ExportKeyboard.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ExportKeyboard : IPlugin
     {
-        const string PluginIdString = "{244C578B-322A-4733-A34B-EEC0558F61D5}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "Keyboard export";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
+
+        const string PluginGuidString = "{244C578B-322A-4733-A34B-EEC0558F61D5}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Keyboard Export";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IKeyboardContext> KeyboardContext { get; set; }
@@ -85,7 +85,7 @@ namespace KeyboardEditor
             if( !_isClosing )
             {
                 _isClosing = true;
-                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( new Guid( PluginIdString ), ConfigUserAction.Stopped );
+                Context.ConfigManager.UserConfiguration.LiveUserConfiguration.SetAction( PluginId.UniqueId, ConfigUserAction.Stopped );
                 Context.PluginRunner.Apply();
                 return;
             }

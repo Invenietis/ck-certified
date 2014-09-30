@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SnakeMode\SnakeMode.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,25 +22,27 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BasicCommandHandlers;
+using CK.Core;
 using CK.InputDriver;
 using CK.Plugin;
 using CommonServices;
 
 namespace SnakeMode
 {
-    [Plugin( SnakeMode.PluginIdString, PublicName = PluginPublicName, Version = SnakeMode.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class SnakeMode : IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{D237F483-A351-424D-B1B7-E84A17ED5C81}";
+        const string PluginVersion = "0.1.0";
         const string PluginPublicName = "Snake Mode";
-        const string PluginIdString = "{D237F483-A351-424D-B1B7-E84A17ED5C81}";
-        const string PluginIdVersion = "0.1.0";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> PointerDriver { get; set; }

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\ScreenScroller\ScreenScroller.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -25,26 +25,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
-using CK.Core;
+using CK.WindowManager.Model;
 using CommonServices.Accessibility;
 using HighlightModel;
-using CommonServices;
-using CK.WindowManager.Model;
 using ScreenScroller.Resources;
 
 namespace ScreenScroller
 {
-    [Plugin( ScreenScrollerPlugin.PluginIdString,
-           PublicName = ScreenScrollerPlugin.PluginPublicName,
-           Version = ScreenScrollerPlugin.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ScreenScrollerPlugin : NodeViewModel, IPlugin, IVisualizableHighlightableElement, IRootNode
     {
-        internal const string PluginIdString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
-        readonly Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "0.0.1";
+        #region Plugin description
+
+        const string PluginGuidString = "{AE25D80B-B927-487E-9274-48362AF95FC0}";
+        const string PluginVersion = "0.1.0";
         const string PluginPublicName = "Screen Scroller";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         IList<Screen> _screens;
 
@@ -117,7 +118,7 @@ namespace ScreenScroller
 
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( PluginId.UniqueId ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 switch( e.Key )
                 {

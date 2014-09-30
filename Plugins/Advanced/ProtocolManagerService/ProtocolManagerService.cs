@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ProtocolManagerService\ProtocolManagerService.cs) is part of CiviKey. 
 *  
@@ -14,30 +14,33 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
+using System;
 using BasicCommandHandlers;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
 using ProtocolManagerModel;
-using System;
+using CK.Core;
 
 namespace ProtocolManagerService
 {
-    [Plugin( ProtocolManagerService.PluginIdString,
-         PublicName = ProtocolManagerService.PluginPublicName,
-         Version = ProtocolManagerService.PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class ProtocolManagerService : IPlugin, IProtocolEditorsManager
     {
-        const string PluginIdString = "{616A53FE-3AAF-4410-8691-7CE0A97D3266}";
-        Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginIdVersion = "1.0.0";
+        #region Plugin description
+
+        const string PluginGuidString = "{616A53FE-3AAF-4410-8691-7CE0A97D3266}";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "Protocol Editors Manager";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         VMProtocolEditorsProvider _vmProtocolEditorsProvider;
 

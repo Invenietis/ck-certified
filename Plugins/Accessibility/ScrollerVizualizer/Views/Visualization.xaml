@@ -61,12 +61,9 @@
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
         </Storyboard>
-        <SolidColorBrush x:Key="highlightedColor" Color="#FFF">
-        </SolidColorBrush>
-        <SolidColorBrush x:Key="defaultColor" Color="#999">
-        </SolidColorBrush>
-        <SolidColorBrush x:Key="selectColor" Color="#9DC8EB">
-        </SolidColorBrush>
+        <SolidColorBrush x:Key="highlightedColor" Color="#FFF" />
+        <SolidColorBrush x:Key="defaultColor" Color="#999" />
+        <SolidColorBrush x:Key="selectColor" Color="#9DC8EB" />
         <ColorAnimation  x:Key="highlight" From="#999" To="#FFF"  Duration="0:0:0.3"/>
 
         <ControlTemplate x:Key="itemsDataTemplate" >
@@ -143,7 +140,7 @@
                             <StackPanel>
                                 <StackPanel.Style>
                                     <Style>
-                                        <Setter Property="StackPanel.Opacity" Value="0"></Setter>
+                                        <Setter Property="StackPanel.Opacity" Value="0" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.VerticalOrientation}" Value="True">
                                                 <Setter Property="StackPanel.Orientation" Value="Horizontal" />

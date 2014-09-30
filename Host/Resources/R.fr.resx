@@ -432,10 +432,31 @@
   <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
     <value>Claviers supplémentaires</value>
   </data>
+  <data name="CustomBackground" xml:space="preserve">
+    <value>Couleur de fond</value>
+  </data>
   <data name="AddProgram" xml:space="preserve">
     <value>Ajouter un programme</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Retirer</value>
+  </data>
+  <data name="CustomFontColor" xml:space="preserve">
+    <value>Couleur du texte</value>
+  </data>
+  <data name="CustomFontFamily" xml:space="preserve">
+    <value>Police de caractère</value>
+  </data>
+  <data name="CustomFontSize" xml:space="preserve">
+    <value>Taille de police</value>
+  </data>
+  <data name="CustomHighlightBackground" xml:space="preserve">
+    <value>Couleur de surbrillance</value>
+  </data>
+  <data name="CustomHighlightFontColor" xml:space="preserve">
+    <value>Couleur de surbrillance du texte</value>
+  </data>
+  <data name="CustomLayout" xml:space="preserve">
+    <value>personnalisation du visuel</value>
   </data>
 </root>

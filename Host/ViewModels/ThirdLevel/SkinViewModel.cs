@@ -14,19 +14,19 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using Host.Resources;
+using System;
 using CK.Plugin.Config;
 using CK.Reflection;
-using CK.Windows.Config;
 using CK.Windows;
-using System;
+using CK.Windows.Config;
+using Host.Resources;
 
 namespace Host.VM
 {
@@ -36,7 +36,7 @@ namespace Host.VM
         Action _action;
 
         public SkinViewModel( AppViewModel app )
-            : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app )
+            : base( "{36C4764A-111C-45e4-83D6-E38FC1DF5979}", R.SkinConfig, app ) //MainKeyboardManager
         {
             _app = app;
 
@@ -68,7 +68,7 @@ namespace Host.VM
 
         public bool EnableAutoHide
         {
-            get { return Config != null ? Config.GetOrSet( "autohide", false ) : false; }
+            get { return Config != null && Config.GetOrSet( "autohide", false ); }
             set { if( Config != null ) Config.Set( "autohide", value ); }
         }
 

@@ -14,15 +14,14 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary 
-                  Source="Dictionnaries/Editor.xaml">
-                </ResourceDictionary>
+                  Source="Dictionnaries/Editor.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
     <StackPanel>
         <Grid>
-            <Image Height="100" Source="pack://application:,,,/AutoClick;component/Res/Images/splash.png"></Image>
-            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 0"></Label>            
+            <Image Height="100" Source="pack://application:,,,/AutoClick;component/Res/Images/splash.png" />
+            <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 0" />
         </Grid>
         <ContentControl Template="{StaticResource AutoClickEditorTemplate}"/>
     </StackPanel>

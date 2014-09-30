@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMKeyboardEditable\VMKeyboardEditable.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,14 +22,14 @@
 #endregion
 
 using System;
-using CK.WPF.ViewModel;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows.Media;
 using CK.Keyboard.Model;
 using CK.Plugin.Config;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Diagnostics;
+using CK.WPF.ViewModel;
 using System.Windows.Input;
 using CK.Windows.App;
 using System.Windows;
@@ -58,9 +58,7 @@ namespace KeyboardEditor.ViewModels
             foreach( IZone zone in _keyboard.Zones )
             {
                 var vmz = Context.Obtain( zone );
-                // TODO: find a better way....
-                if( zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
-                else Zones.Add( vmz );
+                Zones.Add( vmz );
 
                 foreach( IKey key in zone.Keys )
                 {
@@ -379,8 +377,7 @@ namespace KeyboardEditor.ViewModels
         {
             //TODO : Prediction
             var vmz = Context.Obtain( e.Zone );
-            if( e.Zone.Name == "Prediction" ) Zones.Insert( 0, vmz );
-            else Zones.Add( vmz );
+            Zones.Add( vmz );
         }
 
         void OnZoneDestroyed( object sender, ZoneEventArgs e )

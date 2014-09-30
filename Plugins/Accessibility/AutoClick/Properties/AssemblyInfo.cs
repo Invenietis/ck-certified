@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\Properties\AssemblyInfo.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,8 +22,8 @@
 #endregion
 
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Resources;
+using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -31,9 +31,9 @@ using System.Resources;
 [assembly: AssemblyTitle( "AutoClick" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
-[assembly: AssemblyCompany( "Microsoft" )]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct( "AutoClick" )]
-[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2013" )]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

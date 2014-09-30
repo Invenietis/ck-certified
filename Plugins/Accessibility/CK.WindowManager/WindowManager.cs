@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\WindowManager.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -31,14 +31,22 @@ using CK.Context;
 using CK.Core;
 using CK.Plugin;
 using CK.WindowManager.Model;
-using CK.Windows;
 using Host.Services;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{1B56170E-EB91-4E25-89B6-DEA94F85F604}", Categories = new string[] { "Accessibility" }, PublicName = "WindowManager", Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class WindowManager : IWindowManager, IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{1B56170E-EB91-4E25-89B6-DEA94F85F604}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Window Manager";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         IDictionary<IWindowElement, WindowElementData> _dic = new Dictionary<IWindowElement, WindowElementData>();
 
         IWindowElement _lastFocused;
@@ -54,7 +62,7 @@ namespace CK.WindowManager
 
         public IReadOnlyList<IWindowElement> WindowElements
         {
-            get { return _dic.Keys.ToArray(); }
+            get { return _dic.Keys.ToReadOnlyList(); }
         }
 
         public Rect GetClientArea( IWindowElement e )

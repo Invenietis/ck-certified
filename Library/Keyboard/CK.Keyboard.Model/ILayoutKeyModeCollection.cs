@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Library\Keyboard\CK.Keyboard.Model\ILayoutKeyModeCollection.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,8 +22,8 @@
 #endregion
 
 using System;
-using CK.Core;
 using System.Diagnostics.CodeAnalysis;
+using CK.Core;
 
 #region CodeAnalysis
 [module: SuppressMessage( "Microsoft.Design", "CA1043:UseIntegralOrStringArgumentForIndexers", Scope = "member", Target =  "CK.Keyboard.Model.ILLayoutKeyModeCollection.#Item[CK.Keyboard.Model.IKeyboardMode]" )]

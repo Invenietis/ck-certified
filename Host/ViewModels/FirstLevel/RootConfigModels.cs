@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -30,7 +30,7 @@ using CK.WPF.Controls;
 namespace Host.ViewModels
 {
     public class ContextModel : VMBase, IDisposable
-    { 
+    {
         IKeyboardContext _ctx;
         AppViewModel _app;
 
@@ -48,8 +48,7 @@ namespace Host.ViewModels
             _keyboards = new ObservableCollection<KeyboardModel>();
             foreach( IKeyboard keyboard in _ctx.Keyboards )
             {
-                if( keyboard.Name != "Prediction" )
-                    _keyboards.Add( new KeyboardModel( keyboard ) );
+                _keyboards.Add( new KeyboardModel( keyboard ) );
             }
 
             RegisterEvents();
@@ -59,13 +58,11 @@ namespace Host.ViewModels
         {
             get
             {
-                return _ctx.CurrentKeyboard != null ? _keyboards.Where( k => k.Name == _ctx.CurrentKeyboard.Name ).Single() : null;
+                return _ctx.CurrentKeyboard != null ? _keyboards.Single( k => k.Name == _ctx.CurrentKeyboard.Name ) : null;
             }
             set
             {
-                if( value != null )
-                    _ctx.CurrentKeyboard = value.Model;
-                else _ctx.CurrentKeyboard = null;
+                _ctx.CurrentKeyboard = ( value != null ) ? value.Model : null;
 
                 OnPropertyChanged( "Current" );
             }
@@ -73,22 +70,15 @@ namespace Host.ViewModels
 
         void OnKeyboardDestroyed( object sender, KeyboardEventArgs e )
         {
-            //temporary
-            if( e.Keyboard.Name != "Prediction" )
-            {
-                var destroyedKeyboard = _keyboards.Where( k => k.Name == e.Keyboard.Name ).Single();
-                destroyedKeyboard.Dispose();
+            var destroyedKeyboard = _keyboards.Single( k => k.Name == e.Keyboard.Name );
+            destroyedKeyboard.Dispose();
 
-                _keyboards.Remove( destroyedKeyboard );
-            }
+            _keyboards.Remove( destroyedKeyboard );
         }
 
         void OnKeyboardCreated( object sender, KeyboardEventArgs e )
         {
-            if( e.Keyboard.Name != "Prediction" )
-            {
-                _keyboards.Add( new KeyboardModel( e.Keyboard ) );
-            }
+            _keyboards.Add( new KeyboardModel( e.Keyboard ) );
         }
 
         private void RegisterEvents()

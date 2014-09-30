@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -28,22 +28,22 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("KeyboardEditor")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyTitle( "KeyboardEditor" )]
+[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyConfiguration( "" )]
+[assembly: AssemblyCompany( "Invenietis" )]
 [assembly: AssemblyProduct( "KeyboardEditor" )]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyCopyright( "Copyright © Invenietis - In’Tech INFO 2007-2014" )]
+[assembly: AssemblyTrademark( "" )]
+[assembly: AssemblyCulture( "" )]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+[assembly: ComVisible( false )]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("11e5b4b4-0ec8-4fb3-aba2-d2bbc465fc38")]
+[assembly: Guid( "11e5b4b4-0ec8-4fb3-aba2-d2bbc465fc38" )]
 
 [assembly: NeutralResourcesLanguage( "en-US", UltimateResourceFallbackLocation.Satellite )]
 
@@ -57,5 +57,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion( "1.0.0.0" )]
+[assembly: AssemblyFileVersion( "1.0.0.0" )]

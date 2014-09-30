@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ServiceLogs\ServiceLogs.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,28 +22,32 @@
 #endregion
 
 using System;
-using CK.Plugin;
-using CK.Context;
-using Host.Services;
-using CK.Core;
-using System.IO;
 using System.Diagnostics;
-using CommonServices;
-using ServiceLogs;
+using System.IO;
+using CK.Context;
+using CK.Core;
+using CK.Plugin;
 using CK.Windows.App;
+using CommonServices;
+using Host.Services;
+using ServiceLogs;
 
 namespace LogPlugin
 {
     /// <summary>
     /// Plugin that creates logs for developpers (CiviKey's life cycle & errors).
     /// </summary>
-    [Plugin( PluginIdString, PublicName = PluginPublicName, Version = PluginIdVersion, Categories = new string[] { "Advanced" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Advanced" } )]
     public class ServiceLogs : IPlugin, ILogService
     {
-        const string PluginIdString = "{FEA8570C-2ECE-44b3-B1CE-0DBA414D5045}";
-        const string PluginIdVersion = "1.0.0";
-        const string PluginPublicName = "ServiceLogs";
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
+
+        const string PluginGuidString = "{FEA8570C-2ECE-44b3-B1CE-0DBA414D5045}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Service Logs";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         IActivityMonitor _log;
 

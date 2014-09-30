@@ -21,27 +21,11 @@
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml;
-using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Reflection;
-using CK.Storage;
-using CK.Windows;
-using CK.Windows.App;
 using CK.Windows.Config;
-using CommonServices;
-using CommonServices.Accessibility;
-using HighlightModel;
 using Host.Resources;
-using Scroller;
 
 namespace Host.VM
 {
@@ -56,7 +40,7 @@ namespace Host.VM
         ConfigItemProperty<Color> _windowBorderBrush;
 
         public WindowConfigViewModel( string displayName, AppViewModel app )
-            : base( "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}", displayName, app )
+            : base( "{BCD4DE84-E6C9-47C3-B29D-3EAA0D50B14C}", displayName, app ) //SharedDataPlugin
         {
             _app = app;
             DisplayName = displayName;
@@ -86,8 +70,6 @@ namespace Host.VM
             _windowOpacitySlider.Maximum = 100;
             _windowOpacitySlider.Interval = 5;
             g.Items.Add( _windowOpacitySlider );
-
-            this.AddLink( _scVm ?? (_scVm = new ScrollingModulesConfigurationViewModel( R.OtherScrollConfig, _app )) );
 
             _isReady = true;
         }

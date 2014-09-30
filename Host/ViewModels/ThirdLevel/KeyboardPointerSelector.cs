@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using CK.Keyboard.Model;
 using CK.Windows.Config;
 using Host.Resources;

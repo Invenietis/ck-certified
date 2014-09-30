@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\MainKeyboardManager.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,29 +22,29 @@
 #endregion
 
 using System;
+using System.IO;
 using CK.Context;
 using CK.Core;
 using CK.Keyboard.Model;
 using CK.Plugin;
 using CK.Plugin.Config;
-using Host.Services;
-using System.IO;
 using Help.Services;
+using Host.Services;
 
 namespace SimpleSkin
 {
 
-    [Plugin( PluginIdString,
-        PublicName = PluginPublicName,
-        Version = PluginIdVersion,
-        Categories = new[] { "Visual", "Accessibility" } )]
+    [Plugin( PluginIdString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new[] { "Visual", "Accessibility" } )]
     public class MainKeyboardManager : IPlugin, IHaveDefaultHelp
     {
-        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginIdVersion, PluginPublicName );
+        #region Plugin description
+
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginIdString, PluginVersion, PluginPublicName );
         const string PluginIdString = "{36C4764A-111C-45e4-83D6-E38FC1DF5979}";
-        readonly Guid PluginGuid = new Guid( PluginIdString );
-        const string PluginPublicName = "MainKeyboardManager";
-        const string PluginIdVersion = "1.6.0";
+        const string PluginPublicName = "Main Keyboard Manager";
+        const string PluginVersion = "1.6.0";
+
+        #endregion Plugin description
 
         public IPluginConfigAccessor Config { get; set; }
 
@@ -91,8 +91,6 @@ namespace SimpleSkin
         {
             if( KeyboardContext.Status == InternalRunningStatus.Started && KeyboardContext.Service.Keyboards.Count > 0 )
             {
-                //temporary for prediction
-                if( KeyboardContext.Service.CurrentKeyboard.Name == "Prediction" ) return;
                 if( !active ) KeyboardContext.Service.Keyboards.KeyboardDeactivated -= OnKeyboardDeactivated;
                 KeyboardContext.Service.CurrentKeyboard.IsActive = active;
                 if( active ) KeyboardContext.Service.Keyboards.KeyboardDeactivated += OnKeyboardDeactivated;

@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Prediction\CK.WordPredictor\TextualContext\TextualContextService.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,19 +22,28 @@
 #endregion
 
 using System;
+using CK.Core;
+using CK.InputDriver;
 using CK.Plugin;
 using CK.Plugins.SendInputDriver;
 using CK.WordPredictor.Model;
 using CommonServices;
-using CK.Core;
-using CK.InputDriver;
 
 namespace CK.WordPredictor
 {
 
-    [Plugin( "{86777945-654D-4A56-B301-5E92B498A685}", PublicName = "TextualContext", Categories = new string[] { "Prediction", "Visual" } )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Prediction", "Visual" } )]
     public class TextualContextService : IPlugin, ITextualContextService
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{86777945-654D-4A56-B301-5E92B498A685}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "Textual Context";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<ICommandTextualContextService> CommandTextualContextService { get; set; }
 

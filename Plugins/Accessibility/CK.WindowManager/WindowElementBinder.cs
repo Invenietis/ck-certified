@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\CK.WindowManager\WindowElementBinder.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -23,24 +23,31 @@
 
 using System;
 using System.Collections.Generic;
-using CK.Plugin;
-using CK.WindowManager.Model;
-using CK.Core;
 using System.Diagnostics;
-using System.Threading;
-using CK.Storage;
-using System.Xml;
-using CK.Plugin.Config;
 using System.Linq;
 using System.Windows;
-using CK.Windows;
 using System.Windows.Threading;
+using System.Xml;
+using CK.Core;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Storage;
+using CK.WindowManager.Model;
 
 namespace CK.WindowManager
 {
-    [Plugin( "{F6B5D818-3C04-4A46-AD65-AFC5458A394C}", Categories = new string[] { "Accessibility" }, PublicName = "CK.WindowManager.WindowElementBinder", Version = "1.0.0" )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion, Categories = new string[] { "Accessibility" } )]
     public class WindowElementBinder : IWindowBinder, IPlugin
     {
+        #region Plugin description
+
+        const string PluginGuidString = "{F6B5D818-3C04-4A46-AD65-AFC5458A394C}";
+        const string PluginVersion = "1.0.0";
+        const string PluginPublicName = "CK.WindowManager.WindowElementBinder";
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
+
         IDictionary<IWindowElement,List<IBinding>> _bindings;
         ActivityMonitor _logger;
         SerializableBindings _persistantBindings;
@@ -319,25 +326,21 @@ namespace CK.WindowManager
 
                     if( spatialBinding.Bottom != null && spatialBinding.Bottom.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Bottom.UnbindButton );
                         spatialBinding.Bottom = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Left != null && spatialBinding.Left.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Left.UnbindButton );
                         spatialBinding.Left = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Top != null && spatialBinding.Top.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Top.UnbindButton );
                         spatialBinding.Top = null;
                         Unbind( other, me, saveBinding );
                     }
                     if( spatialBinding.Right != null && spatialBinding.Right.Window == other )
                     {
-                        //UnbindButtonManager.Service.RemoveButton( spatialBinding.Right.UnbindButton );
                         spatialBinding.Right = null;
                         Unbind( other, me, saveBinding );
                     }
@@ -473,8 +476,8 @@ namespace CK.WindowManager
             public void Remove( CK.WindowManager.WindowElementBinder.SimpleBinding binding )
             {
                 //TODO performance
-                var serBind = Bindings.Where( sb => (sb.Origin == binding.Origin.Name && sb.Target == binding.Target.Name)
-                                      || (sb.Target == binding.Origin.Name && sb.Origin == binding.Target.Name) ).FirstOrDefault();
+                var serBind = Bindings.FirstOrDefault( sb => (sb.Origin == binding.Origin.Name && sb.Target == binding.Target.Name)
+                                      || (sb.Target == binding.Origin.Name && sb.Origin == binding.Target.Name) );
                 if( serBind != null ) Bindings.Remove( serBind );
             }
 

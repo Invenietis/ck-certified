@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 * Copyright � 2007-2012, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
@@ -23,28 +23,24 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CK.Context;
+using CK.Context.SemVer;
+using CK.Core;
 using CK.Plugin;
 using CK.Storage;
-using Host.Services;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Media;
-using Host.Services.Helper;
 using CK.Windows.App;
-using System.Collections.Generic;
-using CK.Core;
-using System.ComponentModel;
-using CK.Context.SemVer;
-using System.Windows.Media.Imaging;
-using System.Windows.Interop;
 using CommonServices;
-using CK.Plugin.Config;
-using System.Threading;
-using System.Globalization;
-using CK.Monitoring;
+using Host.Services;
+using Host.Services.Helper;
 
 namespace Host
 {
@@ -134,9 +130,9 @@ namespace Host
                 hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun );//MoveMouseCommandHandler
 
                 // ToDoJL
-                //hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
                 hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
-            //hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+                hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
 
                 ctx.PluginRunner.Add( hostRequirements );
 
@@ -277,11 +273,11 @@ namespace Host
         /// <returns>The development Uri if IsStandAloneInstance is true, null otherwise </returns>
         private Uri GetDevelopmentPath( string fileName )
         {
-            string _isStandAloneInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsStandAloneInstance" );
-            bool _isStandAloneInstance = false;
-            if( !String.IsNullOrEmpty( _isStandAloneInstanceString ) )
+            string isStandAloneInstanceString = System.Configuration.ConfigurationManager.AppSettings.Get( "IsStandAloneInstance" );
+            if( !String.IsNullOrEmpty( isStandAloneInstanceString ) )
             {
-                if( Boolean.TryParse( _isStandAloneInstanceString, out _isStandAloneInstance ) && _isStandAloneInstance )
+                bool isStandAloneInstance = false;
+                if( Boolean.TryParse( isStandAloneInstanceString, out isStandAloneInstance ) && isStandAloneInstance )
                 {
                     //string dirPath = Path.Combine( Path.Combine( Path.GetDirectoryName( Assembly.GetEntryAssembly().Location ), ".." ), "Configurations" );
                     //if( !Directory.Exists( dirPath ) ) Directory.CreateDirectory( dirPath );

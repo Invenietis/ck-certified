@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ContextEditor\KeyboardEdition\ViewModels\VMZoneEditable.cs) is part of CiviKey. 
 *  
@@ -14,22 +14,22 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using CK.Keyboard.Model;
-using CK.Core;
-using System.Linq;
 using System;
+using System.Linq;
 using System.Windows.Input;
-using CK.Windows.App;
-using KeyboardEditor.Resources;
-using CK.WPF.ViewModel;
+using CK.Core;
+using CK.Keyboard.Model;
 using CK.Plugin.Config;
+using CK.Windows.App;
+using CK.WPF.ViewModel;
+using KeyboardEditor.Resources;
 using KeyboardEditor.Model;
 using System.Collections;
 
@@ -307,7 +307,7 @@ namespace KeyboardEditor.ViewModels
 
         void OnLayoutConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => String.Compare( c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", StringComparison.InvariantCultureIgnoreCase ) == 0 ) )
+            if( e.MultiPluginId.Any( ( c ) => String.Compare( c.UniqueId.ToString(), "36C4764A-111C-45E4-83D6-E38FC1DF5979", StringComparison.InvariantCultureIgnoreCase ) == 0 ) ) //MainKeyboardManager
             {
                 switch( e.Key )
                 {

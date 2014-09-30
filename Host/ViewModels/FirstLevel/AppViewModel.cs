@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,23 +22,23 @@
 #endregion
 
 using System;
-using Caliburn.Micro;
-using System.Windows;
-using CK.Windows.Config;
-using CK.Keyboard.Model;
-using Host.Services;
-using CK.Plugin.Config;
-using CK.Plugin;
-using CK.Core;
-using System.Windows.Input;
 using System.Diagnostics;
-using Host.Resources;
-using CK.Windows.App;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using Help.Services;
-using CK.Windows;
+using Caliburn.Micro;
+using CK.Core;
+using CK.Keyboard.Model;
+using CK.Plugin;
+using CK.Plugin.Config;
 using CK.Plugin.Config.Model;
+using CK.Windows;
+using CK.Windows.App;
+using CK.Windows.Config;
+using Help.Services;
+using Host.Resources;
+using Host.Services;
 
 namespace Host
 {
@@ -173,7 +173,7 @@ namespace Host
         public bool IsOverlayed()
         {
             var view = GetView( null ) as Window;
-            return CK.Windows.Helpers.WindowHelper.IsOverLayed( view ); ;
+            return CK.Windows.Helpers.WindowHelper.IsOverLayed( view );
         }
 
         void OnBeforeExitApplication( object sender, CK.Context.ApplicationExitingEventArgs e )

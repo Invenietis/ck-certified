@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\SimpleSkin\SkinWindow.xaml.cs) is part of CiviKey. 
 *  
@@ -14,26 +14,19 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
 *-----------------------------------------------------------------------------*/
 #endregion
 
-using System;
 using System.Windows;
-using CK.Windows;
 using System.Windows.Media;
+using CK.Windows;
 using SimpleSkin.Helpers;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Shapes;
-using CK.Interop;
-using CK.Windows.Interop;
-using System.Diagnostics;
-using System.Windows.Interop;
-using System.Runtime.InteropServices;
+using CK.Windows.Core;
+using CK.WPF.StandardViews;
 
 namespace SimpleSkin
 {
@@ -56,6 +49,12 @@ namespace SimpleSkin
             if( DraggableVisualAttachedProperty.GetDraggableVisual( visualElement ) ) return true;
             var parent = VisualTreeHelper.GetParent( visualElement );
             return parent is SkinWindow || base.IsDraggableVisual( visualElement );
+        }
+
+        protected override bool EnableHitTestElementController( DependencyObject visualElement, Point p, int currentHTCode, out IHitTestElementController specialElement )
+        {
+            specialElement = visualElement as IHitTestElementController;
+            return specialElement != null;
         }
     }
 }

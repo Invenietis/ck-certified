@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Accessibility\AutoClick\AutoClick\AutoClick.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,36 +22,36 @@
 #endregion
 
 using System;
-using System.Linq;
-using CK.Plugin;
-using System.Windows.Input;
-using CK.Plugins.AutoClick.Views;
-using CommonServices;
-using CK.Plugins.AutoClick.Model;
-using CK.WPF.ViewModel;
-using System.Windows;
-using CK.Plugin.Config;
-using CK.Core;
 using System.ComponentModel;
-using CK.Windows;
-using CK.Windows.Helpers;
-using CK.WindowManager.Model;
 using System.IO;
-using Help.Services;
-using CK.InputDriver;
-using CK.InputDriver.Hook;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using CK.Core;
+using CK.InputDriver;
+using CK.Plugin;
+using CK.Plugin.Config;
+using CK.Plugins.AutoClick.Model;
+using CK.Plugins.AutoClick.Views;
+using CK.WindowManager.Model;
+using CK.WPF.ViewModel;
+using CommonServices;
+using Help.Services;
 
 namespace CK.Plugins.AutoClick
 {
-    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
+    [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginVersion )]
     public class AutoClick : VMBase, IPlugin, IHaveDefaultHelp
     {
+        #region Plugin description
+
         const string PluginGuidString = "{989BE0E6-D710-489e-918F-FBB8700E2BB2}";
-        Guid PluginGuid = new Guid( PluginGuidString );
-        const string PluginIdVersion = "1.0.0";
+        const string PluginVersion = "1.0.0";
         const string PluginPublicName = "AutoClick Plugin";
-        public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        public static readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginVersion, PluginPublicName );
+
+        #endregion Plugin description
 
         [DynamicService( Requires = RunningRequirement.MustExistAndRun )]
         public IService<IPointerDeviceDriver> MouseDriver { get; set; }
@@ -295,7 +295,7 @@ namespace CK.Plugins.AutoClick
         /// <param name="e"></param>
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( PluginId.UniqueId ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 switch( e.Key )
                 {

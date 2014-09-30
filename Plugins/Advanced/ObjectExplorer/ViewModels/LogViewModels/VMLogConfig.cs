@@ -1,4 +1,4 @@
-#region LGPL License
+﻿#region LGPL License
 /*----------------------------------------------------------------------------
 * This file (Plugins\Advanced\ObjectExplorer\ViewModels\LogViewModels\VMLogConfig.cs) is part of CiviKey. 
 *  
@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU Lesser General Public License 
 * along with CiviKey.  If not, see <http://www.gnu.org/licenses/>. 
 *  
-* Copyright © 2007-2012, 
+* Copyright © 2007-2014, 
 *     Invenietis <http://www.invenietis.com>,
 *     In’Tech INFO <http://www.intechinfo.fr>,
 * All rights reserved. 
@@ -22,16 +22,16 @@
 #endregion
 
 using System;
-using System.Linq;
-using CK.Plugin;
-using CK.Core;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using CK.WPF.ViewModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using CK.Plugin.Hosting;
+using System.Linq;
+using System.Windows.Input;
+using CK.Core;
+using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Plugin.Hosting;
+using CK.WPF.ViewModel;
 using CommonServices;
 
 namespace CK.Plugins.ObjectExplorer.ViewModels.LogViewModels

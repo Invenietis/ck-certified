@@ -195,7 +195,7 @@ namespace SimpleSkin
                 _previousCurrentKeyboard = KeyboardContext.Service.CurrentKeyboard;
                 KeyboardContext.Service.CurrentKeyboard = kb;
             }
-            else
+            else if( KeyboardContext.Service.CurrentKeyboard != kb )
             {
                 kb.IsActive = true;
             }
@@ -207,7 +207,7 @@ namespace SimpleSkin
             {
                 KeyboardContext.Service.CurrentKeyboard = _previousCurrentKeyboard;
             }
-            else if( !config.UseAsMainKeyboard )
+            else if( !config.UseAsMainKeyboard && KeyboardContext.Service.CurrentKeyboard != kb )
             {
                 kb.IsActive = false;
             }
@@ -351,6 +351,8 @@ namespace SimpleSkin
             {
                 _boundProcessNames.AddRange( processNames );
             }
+
+            DeactivateWithProcess = true;
         }
 
         #region IStructuredSerializable Members
@@ -362,7 +364,7 @@ namespace SimpleSkin
             string keyboardName = r.GetAttribute( "KeyboardName" );
             _keyboard = keyboardName;
 
-            DeactivateWithProcess = r.GetAttributeBoolean( "DeactivateWithProcess", false );
+            DeactivateWithProcess = r.GetAttributeBoolean( "DeactivateWithProcess", true );
             KeepKeyboardWithProcessInBackground = r.GetAttributeBoolean( "KeepKeyboardWithProcessInBackground", false );
             UseAsMainKeyboard = r.GetAttributeBoolean( "UseAsMainKeyboard", false );
 

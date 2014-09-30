@@ -178,6 +178,51 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bind to foreground window.
+        /// </summary>
+        public static string BindToForegroundWindow {
+            get {
+                return ResourceManager.GetString("BindToForegroundWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This keyboard will only be activated while a window of the program is in foreground..
+        /// </summary>
+        public static string BindToForegroundWindowDescription {
+            get {
+                return ResourceManager.GetString("BindToForegroundWindowDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bind to program.
+        /// </summary>
+        public static string BindToProcess {
+            get {
+                return ResourceManager.GetString("BindToProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This keyboard will be activated while the program is on, even in background..
+        /// </summary>
+        public static string BindToProcessDescription {
+            get {
+                return ResourceManager.GetString("BindToProcessDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bound programs.
+        /// </summary>
+        public static string BoundPrograms {
+            get {
+                return ResourceManager.GetString("BoundPrograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CiviKey - Standard.
         /// </summary>
         public static string CiviKey {
@@ -367,6 +412,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The keyboard will automatically be deactivated when the program closes or leaves foreground..
+        /// </summary>
+        public static string DeactivateWithProcessDescription {
+            get {
+                return ResourceManager.GetString("DeactivateWithProcessDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click on the picture or on the new system tray icon to edit the configuration..
         /// </summary>
         public static string EditConfig {
@@ -538,6 +592,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This keyboard can be automatically activated or deactivated with specific programs..
+        /// </summary>
+        public static string KeyboardAutoActivationDescription {
+            get {
+                return ResourceManager.GetString("KeyboardAutoActivationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keyboard auto-activation.
         /// </summary>
         public static string KeyboardAutoLaunch {
@@ -669,6 +732,15 @@ namespace Host.Resources {
         public static string NoPointingDeviceDescription {
             get {
                 return ResourceManager.GetString("NoPointingDeviceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No programs linked. Use the Add Program button to link one..
+        /// </summary>
+        public static string NoProgramsLinked {
+            get {
+                return ResourceManager.GetString("NoProgramsLinked", resourceCulture);
             }
         }
         
@@ -862,6 +934,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import or Export a keyboard.
         /// </summary>
         public static string ShareKeyboard {
@@ -1006,11 +1087,20 @@ namespace Host.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use as main keyboard while process is active.
+        ///   Looks up a localized string similar to Use as main keyboard.
         /// </summary>
         public static string UseAsMainKeyboard {
             get {
                 return ResourceManager.GetString("UseAsMainKeyboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will replace the main keyboard with this one..
+        /// </summary>
+        public static string UseAsMainKeyboardDescription {
+            get {
+                return ResourceManager.GetString("UseAsMainKeyboardDescription", resourceCulture);
             }
         }
         

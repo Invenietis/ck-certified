@@ -381,6 +381,17 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type local:RemovableConfigItem}">
+            <DataTemplate>
+                <DockPanel Margin="0 5 0 5">
+                    <Button Command="{Binding RemoveCommand}" DockPanel.Dock="Right" Height="16" Width="16" ToolTip="{Binding TooltipText, Mode=OneWay}">
+                        <Image Source="pack://application:,,,/CiviKey;component/Resources/Images/delete.png" Stretch="Fill"></Image>
+                    </Button>
+                    <ContentControl Content="{Binding ContentItem, Mode=OneWay}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" />
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
         <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type local:CreditConfigItem}" >
             <DataTemplate>
                 <Grid>
@@ -394,6 +405,7 @@
                 </Grid>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
+
     </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

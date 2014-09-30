@@ -16,11 +16,16 @@ namespace Host.VM
     /// </summary>
     class AdditionalKeyboardConfigurationViewModel : ConfigBase
     {
-        readonly AppViewModel _app;
         readonly IKeyboard _kb;
+        readonly PluginCluster _pluginCluster;
+        readonly string _radioGroupName;
 
         ConfigGroup _programGroup;
+
         SimpleSkin.ProcessBoundKeyboardConfig _config;
+        ConfigImplementationSelectorItem _processBoundSelectorItem;
+        ConfigImplementationSelectorItem _foregroundBoundSelectorItem;
+
 
         public bool KeepKeyboardWithProcessInBackground
         {
@@ -83,22 +88,75 @@ namespace Host.VM
             DisplayName = R.AdditionalKeyboardsDisplayName;
 
             _kb = kb;
-            _app = app;
+            _pluginCluster = new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, new Guid( "{A6E29D3A-4376-4DD7-AA4C-3A77EBEE13AF}" ) );
+            _radioGroupName = "KeyboardProgramTriggerBehaviorGroup";
         }
 
         protected override void OnInitialize()
         {
             this.Description = _kb.Name;
 
-            this.AddProperty( R.KeepKeyboardInBackground, this, (x => x.KeepKeyboardWithProcessInBackground) );
-            this.AddProperty( R.DeactivateWithProcess, this, (x => x.DeactivateWithProcess) );
-            this.AddProperty( R.UseAsMainKeyboard, this, (x => x.UseAsMainKeyboard) );
+            this.Items.Add( new TitleItem( _app.ConfigManager, _kb.Name ) );
+            this.Items.Add( new TextItem( _app.ConfigManager, R.KeyboardAutoActivationDescription, 12 ) );
 
+            this.Items.Add( new TitleItem( _app.ConfigManager, R.BoundPrograms, 13 ) );
             _programGroup = this.AddGroup();
 
             this.AddAction( R.AddProgram, AddProcess );
 
+
+            this.Items.Add( new TitleItem( _app.ConfigManager, R.Settings, 13 ) );
+            CreateRadioButtonsGroup();
+
+            this.AddProperty(
+                R.DeactivateWithProcess,
+                //R.DeactivateWithProcessDescription,
+                this,
+                (x => x.DeactivateWithProcess)
+                );
+            this.AddProperty(
+                R.UseAsMainKeyboard,
+                //R.UseAsMainKeyboardDescription,
+                this,
+                (x => x.UseAsMainKeyboard)
+                );
+
             LoadConfig();
+        }
+
+        void CreateRadioButtonsGroup()
+        {
+            _processBoundSelectorItem = new ConfigImplementationSelectorItem(
+                _app.ConfigManager,
+                _pluginCluster,
+                _radioGroupName
+               );
+            _processBoundSelectorItem.SelectAction = () => { KeepKeyboardWithProcessInBackground = true; };
+
+            _processBoundSelectorItem.DisplayName = R.BindToProcess;
+            _processBoundSelectorItem.Description = R.BindToProcessDescription;
+
+            _foregroundBoundSelectorItem = new ConfigImplementationSelectorItem(
+                _app.ConfigManager,
+                _pluginCluster,
+                _radioGroupName
+               );
+            _foregroundBoundSelectorItem.SelectAction = () => { KeepKeyboardWithProcessInBackground = false; };
+
+            _foregroundBoundSelectorItem.DisplayName = R.BindToForegroundWindow;
+            _foregroundBoundSelectorItem.Description = R.BindToForegroundWindowDescription;
+
+            this.Items.Add( _foregroundBoundSelectorItem );
+            this.Items.Add( _processBoundSelectorItem );
+        }
+
+        void UpdateRadioGroupStatus()
+        {
+            // Might be called during base construction because of OnConfigChanged, while we don't have the UI items. Ignore when this is the case.
+            if( _foregroundBoundSelectorItem == null ) return;
+
+            _foregroundBoundSelectorItem.IsSelected = !KeepKeyboardWithProcessInBackground;
+            _processBoundSelectorItem.IsSelected = KeepKeyboardWithProcessInBackground;
         }
 
         void AddProcess()
@@ -113,29 +171,14 @@ namespace Host.VM
             }
         }
 
-        /// <summary>
-        /// Temporary process name UI element generation. Forms style. Will be removed. But functional!
-        /// TODO
-        /// </summary>
-        /// <param name="processName"></param>
-        /// <returns></returns>
-        [Obsolete( "Temporary method" )]
-        static UIElement GenerateProcessElement( string processName, Action removeClickAction )
+        ConfigItem GenerateProcessConfigItem( string processName, Action removeClickAction )
         {
-            DockPanel panel = new DockPanel();
+            TextItem textItem = new TextItem( _app.ConfigManager, processName, 12 );
+            RemovableConfigItem removableItem = new RemovableConfigItem( _app.ConfigManager, textItem );
 
-            Label l = new Label();
-            l.Content = processName;
+            removableItem.RemoveClick += ( s, e ) => { removeClickAction(); };
 
-            Button b = new Button();
-            b.Content = R.Remove;
-            b.Click += ( s, e ) => { removeClickAction(); };
-
-            panel.Children.Add( b );
-            panel.Children.Add( l );
-            DockPanel.SetDock( b, Dock.Right );
-
-            return panel;
+            return removableItem;
         }
 
         void LoadConfig()
@@ -145,15 +188,24 @@ namespace Host.VM
             _config = keyboardCollectionConfig.Keyboards.SingleOrDefault( x => x.Keyboard == _kb.Name );
             if( _config == null ) _config = new SimpleSkin.ProcessBoundKeyboardConfig( _kb.Name );
 
-            // _programGroup can be null, when eg. closing.
+            // _programGroup can be null, when eg. closing or during base constructor.
             if( _programGroup != null )
             {
                 _programGroup.Items.Clear();
-                foreach( string processName in _config.BoundProcessNames )
+                if( _config.BoundProcessNames.Count == 0 )
                 {
-                    _programGroup.Items.Add( GenerateProcessElement( processName, () => { RemoveProcess( processName ); } ) ); // TODO
+                    _programGroup.Items.Add( new TextItem( _app.ConfigManager, R.NoProgramsLinked, 12 ) );
+                }
+                else
+                {
+                    foreach( string processName in _config.BoundProcessNames )
+                    {
+                        _programGroup.Items.Add( GenerateProcessConfigItem( processName, () => { RemoveProcess( processName ); } ) );
+                    }
                 }
             }
+
+            UpdateRadioGroupStatus();
         }
 
         void SaveConfig()

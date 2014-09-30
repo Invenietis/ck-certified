@@ -24,14 +24,7 @@ namespace CommonServices
         {
             get
             {
-                if( _process != null )
-                {
-                    return Process.ProcessName;
-                }
-                else
-                {
-                    return _processName;
-                }
+                return _processName;
             }
         }
 
@@ -45,6 +38,7 @@ namespace CommonServices
         public ProcessEventArgs( Process process )
         {
             _process = process;
+            _processName = _process.ProcessName;
         }
         public ProcessEventArgs( string processName )
         {

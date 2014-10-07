@@ -429,8 +429,17 @@
   <data name="WindowOpacity" xml:space="preserve">
     <value>Changer l'opacité</value>
   </data>
+  <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
+    <value>Claviers supplémentaires</value>
+  </data>
   <data name="CustomBackground" xml:space="preserve">
     <value>Couleur de fond</value>
+  </data>
+  <data name="AddProgram" xml:space="preserve">
+    <value>Ajouter un programme</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Retirer</value>
   </data>
   <data name="CustomFontColor" xml:space="preserve">
     <value>Couleur du texte</value>
@@ -449,5 +458,48 @@
   </data>
   <data name="CustomLayout" xml:space="preserve">
     <value>personnalisation du visuel</value>
+  </data>
+  <data name="BindToForegroundWindow" xml:space="preserve">
+    <value>Lier à la fenêtre au premier plan</value>
+  </data>
+  <data name="BindToForegroundWindowDescription" xml:space="preserve">
+    <value>Ca clavier sera activé lorsqu'une fenêtre du programme est en premier plan.</value>
+    <comment>This keyboard will only be activated while a window of the program is in foreground.</comment>
+  </data>
+  <data name="BindToProcess" xml:space="preserve">
+    <value>Lier au programme</value>
+  </data>
+  <data name="BindToProcessDescription" xml:space="preserve">
+    <value>Ce clavier sera activé pendant que le programme marche, même en arrière-plan.</value>
+    <comment>This keyboard will be activated while the program is on, even in background.</comment>
+  </data>
+  <data name="BoundPrograms" xml:space="preserve">
+    <value>Programmes liés</value>
+  </data>
+  <data name="DeactivateWithProcess" xml:space="preserve">
+    <value>Désactiver automatiquement</value>
+    <comment>Automatically remove keyboard</comment>
+  </data>
+  <data name="DeactivateWithProcessDescription" xml:space="preserve">
+    <value>Le clavier sera automatiquement désactivé quand le programme se ferme ou passe en arrière-plan.</value>
+    <comment>The keyboard will automatically be deactivated when the program closes or leaves foreground.</comment>
+  </data>
+  <data name="KeyboardAutoActivationDescription" xml:space="preserve">
+    <value>Ce clavier peut être activé ou désactivé avec certains programmes.</value>
+    <comment>This keyboard can be automatically activated or deactivated with specific programs.</comment>
+  </data>
+  <data name="NoProgramsLinked" xml:space="preserve">
+    <value>Pas de programmes liés à ce clavier.</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="UseAsMainKeyboard" xml:space="preserve">
+    <value>Utiliser en tant que clavier principal</value>
+    <comment>Use as main keyboard</comment>
+  </data>
+  <data name="UseAsMainKeyboardDescription" xml:space="preserve">
+    <value>Le clavier principal sera remplacé par celui-ci.</value>
+    <comment>This will replace the main keyboard with this one.</comment>
   </data>
 </root>

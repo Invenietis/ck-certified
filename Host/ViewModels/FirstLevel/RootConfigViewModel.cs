@@ -26,6 +26,7 @@ using CK.Plugin.Config;
 using CK.Windows.Config;
 using Host.Resources;
 using Host.ViewModels;
+using SimpleSkin;
 using Host.VM;
 using CK.WordPredictor.UI;
 
@@ -73,7 +74,7 @@ namespace Host
             var skinStarter = new ConfigFeatureStarter( 
                 ConfigManager, 
                 _app.PluginRunner, 
-                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId ),
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _skinId, KeyboardDisplayer.PluginId.UniqueId ),
                 new KeyboardConfigViewModel( _app ) ) { DisplayName = R.SkinSectionName };
 
             var autoClicStarter = new ConfigFeatureStarter( 

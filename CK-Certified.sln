@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{0C102B01-5ABA-4CC9-B531-78ECC48390F3}"
 EndProject
@@ -128,6 +128,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WPF.Wizard", "Library\WPF\CK.WPF.Wizard\CK.WPF.Wizard.csproj", "{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CK.WindowFactory", "CK.WindowFactory\CK.WindowFactory.csproj", "{6882311A-0F2D-404A-BEE2-1A90B43F3EC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessMonitor", "Plugins\Advanced\ProcessMonitor\ProcessMonitor.csproj", "{33F459A0-CB20-4FCC-83A8-0A7F3B162207}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -601,6 +603,16 @@ Global
 		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF}.Release|x86.ActiveCfg = Release|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207}.Release|x86.ActiveCfg = Release|Any CPU
 		{6882311A-0F2D-404A-BEE2-1A90B43F3EC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6882311A-0F2D-404A-BEE2-1A90B43F3EC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6882311A-0F2D-404A-BEE2-1A90B43F3EC4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -667,6 +679,7 @@ Global
 		{373C34BF-D8D7-47B1-AB17-6F7FC221E94D} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
 		{30ADB3D6-ED05-403D-BEEC-9862200126B0} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
 		{DD6F2CFF-00E9-4630-ABA8-5B58F765ABAF} = {B25D5EBB-16BB-4907-B699-DCFA34A0F05B}
+		{33F459A0-CB20-4FCC-83A8-0A7F3B162207} = {252C7A9E-4C20-409B-B69F-DCF01A002287}
 		{6882311A-0F2D-404A-BEE2-1A90B43F3EC4} = {E6C58F21-3F26-4CB5-BC4B-F960C6499033}
 	EndGlobalSection
 EndGlobal

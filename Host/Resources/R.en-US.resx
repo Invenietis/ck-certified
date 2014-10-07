@@ -438,4 +438,49 @@
   <data name="CustomLayout" xml:space="preserve">
     <value>Custom visual</value>
   </data>
+  <data name="AdditionalKeyboardsDisplayName" xml:space="preserve">
+    <value>Additional keyboards</value>
+  </data>
+  <data name="AddProgram" xml:space="preserve">
+    <value>Add program</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="BindToForegroundWindow" xml:space="preserve">
+    <value>Bind to foreground window</value>
+  </data>
+  <data name="BindToForegroundWindowDescription" xml:space="preserve">
+    <value>This keyboard will only be activated while a window of the program is in foreground.</value>
+  </data>
+  <data name="BindToProcess" xml:space="preserve">
+    <value>Bind to program</value>
+  </data>
+  <data name="BindToProcessDescription" xml:space="preserve">
+    <value>This keyboard will be activated while the program is on, even in background.</value>
+  </data>
+  <data name="BoundPrograms" xml:space="preserve">
+    <value>Bound programs</value>
+  </data>
+  <data name="DeactivateWithProcess" xml:space="preserve">
+    <value>Automatically remove keyboard</value>
+  </data>
+  <data name="DeactivateWithProcessDescription" xml:space="preserve">
+    <value>The keyboard will automatically be deactivated when the program closes or leaves foreground.</value>
+  </data>
+  <data name="KeyboardAutoActivationDescription" xml:space="preserve">
+    <value>This keyboard can be automatically activated or deactivated with specific programs.</value>
+  </data>
+  <data name="NoProgramsLinked" xml:space="preserve">
+    <value>No programs linked. Use the Add Program button to link one.</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="UseAsMainKeyboard" xml:space="preserve">
+    <value>Use as main keyboard</value>
+  </data>
+  <data name="UseAsMainKeyboardDescription" xml:space="preserve">
+    <value>This will replace the main keyboard with this one.</value>
+  </data>
 </root>

@@ -202,6 +202,8 @@ namespace Host.VM
 
         private void OnSelectItem()
         {
+            if( !Enabled ) return;
+
             if( IsRadioButton && IsSelected ) return;
             IsSelected = !_isSelected;
         }

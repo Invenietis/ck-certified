@@ -202,7 +202,7 @@ namespace CK.Keyboard
                     {
                         CurrentChanged( this, new CurrentKeyboardChangedEventArgs( Context, previous ) );
                     }
-                    
+
                     Context.SetKeyboardContextDirty();
                 }
             }
@@ -251,8 +251,10 @@ namespace CK.Keyboard
                 string n = r.GetAttribute( "Name" );
                 Keyboard kb = Create( n );
                 bool isCurrent = r.GetAttribute( "IsCurrent" ) == "1";
+                bool isActive = r.GetAttribute( "IsActive" ) == "True";
                 sr.ReadInlineObjectStructured( kb );
                 if( isCurrent ) current = kb;
+                if( isActive ) kb.IsActive = true;
             }
             if( current != null ) Current = current;
         }

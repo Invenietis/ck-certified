@@ -17,6 +17,7 @@
         <ResourceDictionary>
             <!--<StaticResource x:Key="OriginalConfigPageSelector" ResourceKey="CK.Config.DefaultPageSelector" />-->
             <StaticResource x:Key="OriginalConfigItemSelector" ResourceKey="CK.Config.DefaultItemSelector" />
+            <ckctrl:StringIsNullOrWhiteSpaceToBoolean x:Key="StringIsNullOrWhiteSpaceToBoolean" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -136,7 +137,18 @@
                                     <ContentControl VerticalAlignment="Center" DockPanel.Dock="Left" Style="{StaticResource ConfigImplementationSelectorItem}" Content="{Binding}" />
                                     <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Text="{Binding DisplayName}" Margin="5 0 0 0" />
                                 </DockPanel>
-                                <TextBlock Text="{Binding Description}" Foreground="Gray" FontStyle="Italic" />
+                                <TextBlock Text="{Binding Description}" Foreground="Gray" FontStyle="Italic">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Description, Converter={StaticResource StringIsNullOrWhiteSpaceToBoolean}}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </DockPanel>
                     </Button>
@@ -369,6 +381,17 @@
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
 
+        <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type local:RemovableConfigItem}">
+            <DataTemplate>
+                <DockPanel Margin="0 5 0 5">
+                    <Button Command="{Binding RemoveCommand}" DockPanel.Dock="Right" Height="16" Width="16" ToolTip="{Binding TooltipText, Mode=OneWay}">
+                        <Image Source="pack://application:,,,/CiviKey;component/Resources/Images/delete.png" Stretch="Fill"></Image>
+                    </Button>
+                    <ContentControl Content="{Binding ContentItem, Mode=OneWay}" ContentTemplateSelector="{DynamicResource CK.Config.DefaultItemSelector}" />
+                </DockPanel>
+            </DataTemplate>
+        </ckwincore:TypeDataTemplateSelector>
+
         <ckwincore:TypeDataTemplateSelector Type="{ckwincore:Type local:CreditConfigItem}" >
             <DataTemplate>
                 <Grid>
@@ -382,6 +405,7 @@
                 </Grid>
             </DataTemplate>
         </ckwincore:TypeDataTemplateSelector>
+
     </ckwincore:CompositeDataTemplateSelector>
 
 </ResourceDictionary>

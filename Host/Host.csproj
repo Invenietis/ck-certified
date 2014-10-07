@@ -231,10 +231,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>R.fr.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FourthLevel\AdditionalKeyboardConfigurationViewModel.cs" />
     <Compile Include="ViewModels\ScreenScrollerViewModel.cs" />
     <Compile Include="ViewModels\MouseRadarViewModel.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigModels.cs" />
     <Compile Include="ViewModels\FirstLevel\RootConfigViewModel.cs" />
+    <Compile Include="ViewModels\ThirdLevel\AdditionalKeyboardSelectionViewModel.cs" />
     <Compile Include="ViewModels\SecondLevel\KeyboardConfigViewModel.cs" />
     <Compile Include="ViewModels\SecondLevel\PointerManagerSelector.cs" />
     <Compile Include="ViewModels\ThirdLevel\AppAdvancedConfigViewModel.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="ViewModels\ThirdLevel\ShareKeyboardViewModel.cs" />
     <Compile Include="ViewModels\ThirdLevel\WindowConfigViewModel.cs" />
     <Compile Include="ViewModels\Tools\CancelConfigItem.cs" />
+    <Compile Include="ViewModels\Tools\RemovableConfigItem.cs" />
     <Compile Include="ViewModels\Tools\ComboBoxItem.cs" />
     <Compile Include="ViewModels\Tools\ConfigBase.cs" />
     <Compile Include="ViewModels\Tools\ConfigFeatureStarter.cs" />
@@ -361,6 +364,10 @@
       <Project>{4cdc576f-47bd-4b76-b1a6-e2a8d7bbff5c}</Project>
       <Name>CK.WordPredictor.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\Accessibility\SimpleSkin\SimpleSkin.csproj">
+      <Project>{6ffe0480-6c42-413b-b59d-78793ac651c7}</Project>
+      <Name>SimpleSkin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\Services\CommonServices\CommonServices.csproj">
       <Project>{6c45425e-6768-42e3-b0a5-4d603eb14426}</Project>
       <Name>CommonServices</Name>
@@ -434,9 +441,7 @@
   <ItemGroup>
     <Resource Include="Views\Images\help.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\FourthLevel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Contexts\readme.txt" />
   </ItemGroup>

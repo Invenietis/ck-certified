@@ -28,6 +28,7 @@ using System.Windows.Threading;
 using CK.Core;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Windows.Core;
 using CommonServices;
 using CommonServices.Accessibility;
 using HighlightModel;
@@ -178,8 +179,11 @@ namespace Scroller
 
         private void InitializeAppVisibility()
         {
-            Type tIAppVisibility = Type.GetTypeFromCLSID( new Guid( "7E5FE3D9-985F-4908-91F9-EE19F9FD1514" ) );
-            _appVisibility = (IAppVisibility)Activator.CreateInstance( tIAppVisibility );
+            if( OSVersionInfo.OSLevel >= CK.Windows.Core.OSVersionInfo.SimpleOSLevel.Windows8 )
+            {
+                Type tIAppVisibility = Type.GetTypeFromCLSID( new Guid( "7E5FE3D9-985F-4908-91F9-EE19F9FD1514" ) );
+                _appVisibility = (IAppVisibility)Activator.CreateInstance( tIAppVisibility );
+            }
         }
 
         private void OnConfigChanged( object sender, ConfigChangedEventArgs e )
@@ -382,14 +386,15 @@ namespace Scroller
             bool launcherVisible;
 
             //test if tiles mode is active, if true we send windowskey when the trigger is pressed
-            if( HRESULT.S_OK == _appVisibility.IsLauncherVisible( out launcherVisible ) && launcherVisible )
+            if( _appVisibility != null
+                && _appVisibility.IsLauncherVisible( out launcherVisible ) == HRESULT.S_OK
+                && launcherVisible
+                && CommandManager.Status == InternalRunningStatus.Started )
             {
-                if( CommandManager.Status == InternalRunningStatus.Started )
-                {
-                    CommandManager.Service.SendCommand( this, "dyncommand:windowskey" );
-                    return;
-                }
+                CommandManager.Service.SendCommand( this, "dyncommand:windowskey" );
+                return;
             }
+
             FireOnTrigger();
             _scrollingStrategy.OnExternalEvent();
         }

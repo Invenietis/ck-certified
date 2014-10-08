@@ -62,7 +62,7 @@ namespace Host
         private CivikeyStandardHost( CKAppParameters parameters )
         {
             applicationParameters = parameters;
-            
+
             ApplicationUniqueId = new SimpleUniqueId( App.ApplicationId );
         }
 
@@ -129,10 +129,10 @@ namespace Host
                 hostRequirements.PluginRequirements.AddOrSet( new Guid( "{4EDBED5A-C38E-4A94-AD34-18720B09F3B7}" ), RunningRequirement.MustExistAndRun );//ClicCommandHandler
                 hostRequirements.PluginRequirements.AddOrSet( new Guid( "{B2EC4D13-7A4F-4F9E-A713-D5F8DDD161EF}" ), RunningRequirement.MustExistAndRun );//MoveMouseCommandHandler
 
-                // ToDoJL
                 hostRequirements.PluginRequirements.AddOrSet( new Guid( "{DC7F6FC8-EA12-4FDF-8239-03B0B64C4EDE}" ), RunningRequirement.MustExistAndRun );//HelpUpdater
                 hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpViewerService", RunningRequirement.MustExistAndRun );
                 hostRequirements.ServiceRequirements.AddOrSet( "Help.Services.IHelpUpdaterService", RunningRequirement.MustExistAndRun );
+                hostRequirements.PluginRequirements.AddOrSet( new Guid( "{A6E29D3A-4376-4DD7-AA4C-3A77EBEE13AF}" ), RunningRequirement.MustExistAndRun );//KeyboardAutoLaunch
 
                 ctx.PluginRunner.Add( hostRequirements );
 

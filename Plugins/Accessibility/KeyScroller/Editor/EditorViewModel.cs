@@ -55,19 +55,20 @@ namespace Scroller.Editor
         public bool Stopping { get; set; }
         private bool _isRecording;
 
-        public bool IsRecording 
+        public bool IsRecording
         {
             get { return _isRecording; }
             set
             {
                 _isRecording = value;
-                
+
                 if( value )
                 {
-                    _triggerService.InputListener.Record( ( ITrigger trigger ) => {
-                        _scrollConfig.User["Trigger"] = trigger;
+                    _triggerService.InputListener.Record( ( ITrigger trigger ) =>
+                    {
+                        _scrollConfig.User.Set( "Trigger", trigger );
                         IsRecording = false;
-                        
+
                         NotifyOfPropertyChange( () => SelectedKey );
                         NotifyOfPropertyChange( () => IsRecording );
                     } );
@@ -80,7 +81,7 @@ namespace Scroller.Editor
             get { return _scrollConfig.User.GetOrSet( "Speed", 1000 ); }
             set
             {
-                _scrollConfig.User["Speed"] = value;
+                _scrollConfig.User.Set( "Speed", value );
                 NotifyOfPropertyChange( () => Speed );
                 NotifyOfPropertyChange( () => FormatedSpeed );
             }
@@ -91,19 +92,19 @@ namespace Scroller.Editor
             get { return _scrollConfig.User.GetOrSet( "TurboSpeed", 100 ); }
             set
             {
-                _scrollConfig.User["TurboSpeed"] = value;
+                _scrollConfig.User.Set( "TurboSpeed", value );
                 NotifyOfPropertyChange( () => TurboSpeed );
                 NotifyOfPropertyChange( () => FormatedTurboSpeed );
             }
         }
-        
+
         public IEnumerable<string> AvailableStrategies
         {
             get
             {
                 foreach( string name in StrategyBridge.AvailableStrategies )
                 {
-                    yield return R.ResourceManager.GetString(name);
+                    yield return R.ResourceManager.GetString( name );
                 }
             }
         }
@@ -117,7 +118,7 @@ namespace Scroller.Editor
         {
             set
             {
-                _scrollConfig.User["Strategy"] = StrategyBridge.AvailableStrategies[value];
+                _scrollConfig.User.Set( "Strategy", StrategyBridge.AvailableStrategies[value] );
                 _currentIndexStrategy = value;
                 NotifyOfPropertyChange( () => CurrentIndexStrategy );
                 NotifyOfPropertyChange( () => IsTurboStrategy );
@@ -129,14 +130,14 @@ namespace Scroller.Editor
         {
             get
             {
-                var selectedKey = _scrollConfig.User.GetOrSet( "Trigger",  _triggerService.DefaultTrigger );
+                var selectedKey = _scrollConfig.User.GetOrSet( "Trigger", _triggerService.DefaultTrigger );
 
-                if( selectedKey != null ) 
+                if( selectedKey != null )
                 {
                     if( selectedKey.Source == TriggerDevice.Keyboard )
                     {
-                        System.Windows.Forms.Keys keyName = (System.Windows.Forms.Keys) selectedKey.KeyCode;
-                      
+                        System.Windows.Forms.Keys keyName = (System.Windows.Forms.Keys)selectedKey.KeyCode;
+
                         return string.Format( Scroller.Resources.R.Listening, keyName.ToString() );
                     }
                     else if( selectedKey.Source == TriggerDevice.Pointer )

@@ -84,10 +84,44 @@ namespace CK.Plugins.AutoClick
 
         bool _isClosing;
         bool _isPaused;
+        bool _mouseIndicatorIsEnable;
         public bool IsPaused
         {
             get { return _isPaused; }
-            set { _isPaused = value; OnPropertyChanged( "IsPaused" ); OnPropertyChanged( "ShowMouseIndicator" ); }
+            set
+            {
+                if( _isPaused != value )
+                {
+                    _isPaused = value;
+                    MouseIndicatorIsEnable = !value;
+                    OnPropertyChanged( "IsPaused" );
+                    OnPropertyChanged( "ShowMouseIndicator" );
+                }
+            }
+        }
+
+        public bool MouseIndicatorIsEnable
+        {
+            get { return _mouseIndicatorIsEnable; }
+            set 
+            {
+                if( _mouseIndicatorIsEnable != value )
+                {
+                    _mouseIndicatorIsEnable = value;
+                    OnPropertyChanged( "MouseIndicatorIsEnable" );
+                    OnPropertyChanged( "ShowMouseIndicator" );
+
+                    if( _mouseIndicatorIsEnable )
+                    {
+                        MouseDriver.Service.PointerMove += OnPointerMove;
+                        SetPointerPosition( MouseDriver.Service.CurrentPointerXLocation, MouseDriver.Service.CurrentPointerYLocation );
+                    }
+                    else
+                    {
+                        MouseDriver.Service.PointerMove -= OnPointerMove;
+                    }
+                }
+            }
         }
 
         //true if the user wants to see the indicator next to the mouse pointer
@@ -100,7 +134,7 @@ namespace CK.Plugins.AutoClick
         //true if the user wants to see the MousePanel and the autoclick is not paused
         public bool ShowMouseIndicator
         {
-            get { return !_isPaused && ShowMouseIndicatorOption; }
+            get { return !IsPaused && MouseIndicatorIsEnable && ShowMouseIndicatorOption; }
         }
 
         /// <summary>
@@ -130,6 +164,7 @@ namespace CK.Plugins.AutoClick
         public bool Setup( IPluginSetupInfo info )
         {
             _isPaused = true;
+            _mouseIndicatorIsEnable = false;
             _isClosing = false;
 
             defaultHeight = (int)(System.Windows.SystemParameters.WorkArea.Width) / 10;
@@ -320,14 +355,21 @@ namespace CK.Plugins.AutoClick
         {
             if( e.Current == InternalRunningStatus.Stopped )
             {
-                MouseDriver.Service.PointerMove -= new PointerDeviceEventHandler( OnPointerMove );
+                MouseDriver.Service.PointerMove -= OnPointerMove;
+                MouseDriver.Service.PointerButtonDown -= OnPointerButtonDown;
+                MouseDriver.Service.PointerButtonUp -= OnPointerButtonUp;
             }
         }
 
         void OnPointerMove( object sender, PointerDeviceEventArgs e )
         {
-            _mouseIndicatorWindow.Left = e.X + 10;
-            _mouseIndicatorWindow.Top = e.Y - 20;
+            SetPointerPosition( e.X, e.Y );
+        }
+
+        void SetPointerPosition( int X, int Y )
+        {
+            _mouseIndicatorWindow.Left = X + 10;
+            _mouseIndicatorWindow.Top = Y - 20;
         }
 
         private void OnEditorWindowVisibilityChanged( object sender, DependencyPropertyChangedEventArgs e )
@@ -343,15 +385,13 @@ namespace CK.Plugins.AutoClick
 
         private void OnHasPaused( object sender, EventArgs e )
         {
-            _isPaused = true;
+            IsPaused = true;
             OnPropertyChanged( "ProgressValue" );
-            OnPropertyChanged( "ShowMouseIndicator" );
         }
 
         private void OnHasResumed( object sender, EventArgs e )
         {
-            _isPaused = false;
-            OnPropertyChanged( "ShowMouseIndicator" );
+            IsPaused = false;
         }
 
         private void OnProgressValueChanged( object sender, AutoClickProgressValueChangedEventArgs e )
@@ -464,7 +504,8 @@ namespace CK.Plugins.AutoClick
 
         private void RegisterEvents()
         {
-            MouseDriver.Service.PointerMove += OnPointerMove;
+            MouseDriver.Service.PointerButtonDown += OnPointerButtonDown;
+            MouseDriver.Service.PointerButtonUp += OnPointerButtonUp;
 
             MouseWatcher.Service.LaunchClick += OnClickAsked;
             MouseWatcher.Service.ProgressValueChanged += OnProgressValueChanged;
@@ -481,10 +522,24 @@ namespace CK.Plugins.AutoClick
             SharedData.Service.SharedPropertyChanged += OnSharedPropertyChanged;
         }
 
+        void OnPointerButtonDown( object sender, PointerDeviceEventArgs e )
+        {
+            MouseIndicatorIsEnable = false;
+        }
+
+        void OnPointerButtonUp( object sender, PointerDeviceEventArgs e )
+        {
+            MouseIndicatorIsEnable = true;
+        }
+
         private void UnregisterEvents()
         {
             if( MouseDriver.Status != InternalRunningStatus.Stopped && MouseDriver.Status != InternalRunningStatus.Disabled )
+            {
                 MouseDriver.Service.PointerMove -= OnPointerMove;
+                MouseDriver.Service.PointerButtonDown -= OnPointerButtonDown;
+                MouseDriver.Service.PointerButtonUp -= OnPointerButtonUp;
+            }
 
             if( MouseWatcher.Status != InternalRunningStatus.Stopped && MouseWatcher.Status != InternalRunningStatus.Disabled )
             {

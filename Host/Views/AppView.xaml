@@ -15,7 +15,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <tb:TaskbarIcon x:Name="taskbarIcon" IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico" ToolTipText="CiviKey" MenuActivation="LeftOrRightClick" DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}" Visibility="{Binding ShowSystrayIcon, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
+        <tb:TaskbarIcon x:Name="taskbarIcon" IconSource="pack://application:,,,/CiviKey;component/Resources/Icons/logo_16x16.ico" ToolTipText="CiviKey" MenuActivation="LeftOrRightClick" DoubleClickCommand="{Binding EnsureMainWindowVisibleCommand}" ser:ShowNotificationBehavior.NotificationContext="{Binding NotificationCtx}">
         </tb:TaskbarIcon>
         <Image Grid.Row="0" Height="100" Source="SplashTransparent.png" />
         <StackPanel Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal">

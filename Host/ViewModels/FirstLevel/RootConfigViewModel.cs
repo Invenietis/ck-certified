@@ -27,6 +27,7 @@ using Host.Resources;
 using CK.Windows.Config;
 using Host.VM;
 using Host.ViewModels;
+using CK.Utils;
 
 namespace Host
 {
@@ -81,8 +82,8 @@ namespace Host
 
             var autoClicStarter = new ConfigFeatureStarter( 
                 ConfigManager, 
-                _app.PluginRunner, 
-                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId, _clickSelectorHoverId ),
+                _app.PluginRunner,
+                new PluginCluster( _app.PluginRunner, _app.CivikeyHost.Context.ConfigManager.UserConfiguration, _autoclicId ),
                 new AutoClickViewModel( _app ) ) { DisplayName = R.AutoClickSectionName };
 
             var basicScrollStarter = new ConfigFeatureStarter( 

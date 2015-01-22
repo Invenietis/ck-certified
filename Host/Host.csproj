@@ -251,7 +251,6 @@
     <Compile Include="ViewModels\Tools\PointerManagerPluginStarter.cs" />
     <Compile Include="ViewModels\Tools\RadioConfigItemApply.cs" />
     <Compile Include="ViewModels\SecondLevel\ImplementationSelector.cs" />
-    <Compile Include="ViewModels\Tools\PluginCluster.cs" />
     <Compile Include="ViewModels\Tools\SliderConfigItem.cs" />
     <Compile Include="ViewModels\Tools\TextItem.cs" />
     <Compile Include="ViewModels\Tools\DescriptionItem.cs" />
@@ -328,6 +327,10 @@
       <Project>{97C12498-7A6E-4A87-8889-C965509443E8}</Project>
       <Name>Host.Services</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\CK.Utils\CK.Utils.csproj">
+      <Project>{f34bdd61-cda7-428b-ad88-e053c7c6a329}</Project>
+      <Name>CK.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Library\Keyboard\CK.Keyboard.Model\CK.Keyboard.Model.csproj">
       <Project>{B2E36713-7CDB-4304-B274-2AD75BC142C4}</Project>

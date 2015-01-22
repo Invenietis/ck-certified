@@ -31,6 +31,7 @@ using System.Text;
 using System.Windows.Input;
 using CK.Plugin;
 using CK.Plugin.Config;
+using CK.Utils;
 using CK.Windows.App;
 using CK.Windows.Config;
 

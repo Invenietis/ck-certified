@@ -405,4 +405,7 @@
   <data name="TurboScrollingSpeed" xml:space="preserve">
     <value>Turbo scrolling speed</value>
   </data>
+  <data name="ClickTypeScrollerSelector" xml:space="preserve">
+    <value>Scroller preview selector</value>
+  </data>
 </root>

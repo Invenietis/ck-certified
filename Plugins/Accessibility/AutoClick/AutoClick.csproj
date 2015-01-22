@@ -213,6 +213,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\CK.Utils\CK.Utils.csproj">
+      <Project>{f34bdd61-cda7-428b-ad88-e053c7c6a329}</Project>
+      <Name>CK.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Library\CK.WindowManager.Model\CK.WindowManager.Model.csproj">
       <Project>{fda960f6-d429-4696-9306-b473dae41e5b}</Project>
       <Name>CK.WindowManager.Model</Name>

@@ -47,6 +47,8 @@ namespace Host.VM
         public RadioConfigItemApply( ConfigManager configManager, ICommand cmd, params INotifySelectionChanged[] linkedItems )
             : base( configManager, cmd )
         {
+            if( !linkedItems.Any( i => i.IsSelected ) ) throw new ArgumentException( "One linked item must be selected at least" );
+
             if( linkedItems.Length > 0 )
             {
                 _linkedItems = linkedItems;

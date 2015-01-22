@@ -268,7 +268,7 @@
                 <!-- Edited keyboard view -->
                 <Grid MaxHeight="400" MaxWidth="1200" Grid.Row="1">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <view:StdKeyboardView DataContext="{Binding KeyboardVM}" />
+                        <view:StdKeyboardView DataContext="{Binding KeyboardVM}" Background="#4F4F4F"/>
                     </ScrollViewer>
                 </Grid>
 
@@ -277,12 +277,12 @@
                     <ItemsControl ItemsSource="{Binding SelectedElement.Parents}" Height="50">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="5" />
+                                <StackPanel Orientation="Horizontal" Margin="5"  />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal" >
                                     <Button Style="{StaticResource StandardButtonStyle}" VerticalAlignment="Center" Content="{Binding Name}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.SelectCommand}" CommandParameter="{Binding}" />
                                     <TextBlock Text=">" VerticalAlignment="Center" Margin="5 0" />
                                 </StackPanel>

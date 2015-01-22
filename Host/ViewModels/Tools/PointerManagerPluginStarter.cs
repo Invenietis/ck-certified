@@ -8,6 +8,7 @@ using CK.Windows;
 using System.Collections.Generic;
 using CK.Keyboard.Model;
 using System.Diagnostics;
+using CK.Utils;
 
 namespace Host.VM
 {

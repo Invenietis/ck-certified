@@ -47,8 +47,8 @@ namespace CK.Plugins.AutoClick
     [Plugin( PluginGuidString, PublicName = PluginPublicName, Version = PluginIdVersion )]
     public class AutoClick : VMBase, IPlugin, IHaveDefaultHelp
     {
-        const string PluginGuidString = "{989BE0E6-D710-489e-918F-FBB8700E2BB2}";
-        Guid PluginGuid = new Guid( PluginGuidString );
+        public const string PluginGuidString = "{989BE0E6-D710-489e-918F-FBB8700E2BB2}";
+        public static readonly Guid PluginGuid = new Guid( PluginGuidString );
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "AutoClick Plugin";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
@@ -295,7 +295,7 @@ namespace CK.Plugins.AutoClick
         /// <param name="e"></param>
         void OnConfigChanged( object sender, ConfigChangedEventArgs e )
         {
-            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( this.PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
+            if( e.MultiPluginId.Any( ( c ) => c.UniqueId.Equals( PluginGuid ) ) && !String.IsNullOrEmpty( e.Key ) )
             {
                 switch( e.Key )
                 {

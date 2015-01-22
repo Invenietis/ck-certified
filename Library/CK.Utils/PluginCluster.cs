@@ -29,7 +29,7 @@ using CK.Plugin;
 using CK.Plugin.Config;
 using CK.Core;
 
-namespace Host.VM
+namespace CK.Utils
 {
     /// <summary>
     /// This object wraps a number of plugins that work together to create a functionnality.

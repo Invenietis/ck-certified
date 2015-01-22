@@ -34,6 +34,8 @@ using CK.WindowManager.Model;
 using AutoClick.Res;
 using System.ComponentModel;
 using CommonServices;
+using System.Linq;
+using CK.Utils;
 
 namespace CK.Plugins.AutoClick
 {
@@ -45,6 +47,8 @@ namespace CK.Plugins.AutoClick
         const string PluginIdVersion = "1.0.0";
         const string PluginPublicName = "Click Selector by hover";
         public readonly INamedVersionedUniqueId PluginId = new SimpleNamedVersionedUniqueId( PluginGuidString, PluginIdVersion, PluginPublicName );
+        IPluginProxy _autoClick;
+        PluginCluster _cluster;
 
         #region Variables & Properties
 
@@ -56,6 +60,12 @@ namespace CK.Plugins.AutoClick
 
         [DynamicService( Requires = RunningRequirement.OptionalTryStart )]
         public IService<ITopMostService> TopMostService { get; set; }
+
+        [RequiredService]
+        public ISimplePluginRunner PluginRunner { get; set; }
+
+        [RequiredService]
+        public IUserConfiguration UserConfig { get; set; }
 
         private CKReadOnlyCollectionOnICollection<ClickEmbedderVM> _clicksVmReadOnlyAdapter;
         private ClickSelectorWindow _clickSelectorWindow;
@@ -77,6 +87,15 @@ namespace CK.Plugins.AutoClick
 
         public void Start()
         {
+            _autoClick = PluginRunner.PluginHost.LoadedPlugins.FirstOrDefault( p => p.UniqueId == AutoClick.PluginGuid );
+            _cluster = new PluginCluster( PluginRunner, UserConfig, PluginGuid );
+            
+            PluginRunner.PluginHost.StatusChanged += ( o, e ) => {
+                if( _autoClick.Status.IsStoppedOrDisabled )
+                {
+                    _cluster.StopPlugin();
+                }
+            }; 
             ClicksVM = new ClicksVM( this, SharedData );
             _clicksVmReadOnlyAdapter = new CKReadOnlyCollectionOnICollection<ClickEmbedderVM>( ClicksVM );
             _clickSelectorWindow = new ClickSelectorWindow() { DataContext = this };

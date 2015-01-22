@@ -30,6 +30,7 @@ using System.Windows.Input;
 using CK.Windows.Config;
 using CK.Windows;
 using System.Collections.Generic;
+using CK.Utils;
 
 namespace Host.VM
 {

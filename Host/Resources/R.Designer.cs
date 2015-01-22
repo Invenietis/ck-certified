@@ -178,6 +178,15 @@ namespace Host.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scroller preview selector.
+        /// </summary>
+        public static string ClickTypeScrollerSelector {
+            get {
+                return ResourceManager.GetString("ClickTypeScrollerSelector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scroll to click.
         /// </summary>
         public static string ClickTypeSelectorName {

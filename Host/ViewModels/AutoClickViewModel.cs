@@ -27,6 +27,10 @@ using Host.Resources;
 using CK.Windows.Config;
 using CK.Plugin;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using CK.Windows.App;
+using CK.Utils;
 
 namespace Host.VM
 {
@@ -37,12 +41,17 @@ namespace Host.VM
 
         readonly Guid _clickSelectorHoverId = new Guid( "{F9687F04-7370-4812-9EB4-1320EB282DD8}" );
         readonly Guid  _clickSelectorScrollerId = new Guid( "{1986E566-7426-44DC-ACA3-9E8E8EB673B8}" );
+        readonly List<ConfigImplementationSelectorItem> _items;
+
+        Guid _previous;
+        Guid _current;
 
         public AutoClickViewModel( AppViewModel app )
             : base( "{989BE0E6-D710-489e-918F-FBB8700E2BB2}", R.AutoClickConfig, app )
         {
             _runner = app.PluginRunner;
             _userConf = _app.CivikeyHost.Context.ConfigManager.UserConfiguration;
+            _items = new List<ConfigImplementationSelectorItem>();
         }
 
         protected override void NotifyOfPropertiesChange()
@@ -95,7 +104,9 @@ namespace Host.VM
 
         protected override void OnInitialize()
         {
-            base.OnInitialize();
+            Guid defaultPlugin = GetDefaultItem( _clickSelectorHoverId, _clickSelectorScrollerId );
+            _previous = defaultPlugin;
+            _current = defaultPlugin;
 
             var g = this.AddActivableSection( R.AutoClickSectionName.ToLower(), R.AutoClickConfig );
 
@@ -112,12 +123,61 @@ namespace Host.VM
             var hover = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _clickSelectorHoverId ), "clickselector" );
             hover.DisplayName = R.ClickTypeSelectorName;
             hover.Description = R.ClickTypeSelectorName;
+            hover.IsDefaultItem = defaultPlugin == _clickSelectorHoverId || defaultPlugin == Guid.Empty;
             Items.Add( hover );
+            _items.Add( hover );
 
             var scroll = new ConfigImplementationSelectorItem( _app.ConfigManager, new PluginCluster( _runner, _userConf, () => _clickSelectorScrollerId ), "clickselector" );
-            scroll.DisplayName = R.ClickTypeSelectorName;
-            scroll.Description = R.ClickTypeSelectorName;
+            scroll.DisplayName = R.ClickTypeScrollerSelector;
+            scroll.Description = R.ClickTypeScrollerSelector;
+            scroll.IsDefaultItem = defaultPlugin == _clickSelectorScrollerId;
             Items.Add( scroll );
+            _items.Add( scroll );
+
+            var apply = new RadioConfigItemApply( _app.ConfigManager, new VMCommand( Apply ), hover, scroll );
+            apply.DisplayName = R.Apply;
+            Items.Add( apply );
+
+            base.OnInitialize();
+        }
+
+        private void SetConfigStopped()
+        {
+            foreach( var i in _items )
+            {
+                if( !i.IsSelected )
+                {
+                    i.PluginCluster.StopPlugin();
+                }
+            }
+        }
+
+        private void SetConfigStarted()
+        {
+            foreach( var i in _items )
+            {
+                if( i.IsSelected )
+                {
+                    i.PluginCluster.StartPlugin();
+                }
+            }
+        }
+
+        private void Apply()
+        {
+            _previous = _current;
+
+            SetConfigStopped();
+            SetConfigStarted();
+            _runner.Apply();
+
+            _items.Single( ( i ) => i.IsSelected );
+        }
+
+        private Guid GetDefaultItem( params Guid[] ids )
+        {
+            if( ids.Count( i => _runner.PluginHost.IsPluginRunning( i ) ) == 1 ) return ids.First( i => _runner.PluginHost.IsPluginRunning( i ) );
+            return Guid.Empty;
         }
     }
 }
